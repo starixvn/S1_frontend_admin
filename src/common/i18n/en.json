@@ -1,0 +1,21 @@
+{
+	"System": {
+		"Label_Success": "Success",
+		"Label_Failed": "Failed",
+		"Label_Unauthorized": "Unauthorized",
+		"Label_PageNoFound": "Page No Found",
+		"Label_NotExpectedServerError": "Not Expected Server Error",
+		"Label_Network_Error": "Network Error",
+		"Label_LoginSuccess": "Login Success",
+		"Label_LoginFailed": "Login Failed",
+		"Label_LogoutSuccess": "Logout Success"
+	},
+	"Login": {
+		"Label_WelcomeBack": "Welcome Back!",
+		"Label_UserName": "User Name",
+		"Label_SignIn": "Sign In",
+		"Label_Password": "Password"
+	},
+	"Label_ChangePassword": "Change Password",
+	"Label_SignOut": "Sign Out"
+}
