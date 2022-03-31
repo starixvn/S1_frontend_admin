@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useAuth } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { gray } from "app/styles";
+import { geekblue } from "@ant-design/colors";
 
 const Wrapper = styled.div`
 	min-height: 100vh;
@@ -13,31 +15,27 @@ const Wrapper = styled.div`
 	background-color: #f5f5f5;
 `;
 
-export interface LocationState {
-	state: {
-		from: {
-			pathname: string;
-		};
-	};
-}
-
 const Login = () => {
 	const { t } = useTranslation();
 
 	const { onSignIn } = useAuth();
 
+	const [loading, setLoading] = useState<boolean | undefined>();
 	const [userName, setUserName] = useState<string>("");
 	const [userPassword, setUserPassword] = useState<string>("");
 
-	const handleLogin = () => {
-		onSignIn(userName, userPassword);
+	const handleLogin = async () => {
+		setLoading(true);
+		await onSignIn(userName, userPassword);
+		setLoading(false);
 	};
 
 	return (
 		<Wrapper>
 			<Card
 				title={t("Login.Label_WelcomeBack")}
-				style={{ width: "400px", margin: "4px" }}>
+				style={{ width: "400px", margin: "4px" }}
+				headStyle={{ background: geekblue.primary, color: gray[0] }}>
 				<Form
 					layout="vertical"
 					className="login-form"
@@ -73,6 +71,7 @@ const Login = () => {
 
 					<Form.Item>
 						<Button
+							loading={loading}
 							block
 							type="primary"
 							htmlType="submit"
@@ -86,4 +85,4 @@ const Login = () => {
 	);
 };
 
-export { Login };
+export default Login;

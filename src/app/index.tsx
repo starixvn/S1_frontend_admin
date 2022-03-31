@@ -4,8 +4,8 @@ import { AuthProvider } from "common/config-provider";
 import { I18nextProvider } from "react-i18next";
 import styled from "styled-components";
 import i18n from "common/i18n/config";
-import routes from "./routes";
 import GlobalStyle from "./styles/GlobalStyle";
+import routes from "./routes";
 
 const Wrapper = styled.div`
 	min-height: 100vh;

@@ -1,14 +1,119 @@
 {
+	"Menu": {
+		"Label_Home": "Home",
+		"Label_Dashboard": "Dashboard",
+		"Label_Reports": "Reports",
+		"Label_Settings": "Settings",
+		"Label_Bonus": "Bonus",
+		"Label_Rebate": "Rebate",
+		"Label_Referral": "Referral",
+		"Label_Reward": "Reward",
+		"Label_BankTransfer": "Bank Transfer",
+		"CSD": {
+			"Label_CSD": "CSD",
+			"Label_MemberListing": "Member Listing",
+			"Label_RegistrationReport": "Registration Report",
+			"Label_ChangeVipLevel": "Change Vip Level",
+			"Label_TagManagement": "Tag Management",
+			"Label_TpFailRecordReport": "Bet Failure Record",
+			"Label_Communication": "Communication",
+			"Label_PersonalMessage": "Personal Message",
+			"Label_TeleMarketing": "Tele Marketing",
+			"Label_KYC": "KYC",
+			"Label_WithdrawalSetting": "Withdrawal Setting",
+			"Label_MemberGameSetting": "Member Game Setting",
+			"Label_MemberGameExclusion": "Member Game Exclusion",
+			"Label_UserBetLimit": "User Bet Limit"
+		},
+		"Content": {
+			"Label_Content": "Content",
+			"Label_Announcement": "Announcement",
+			"Label_NewsManagement": "News Management",
+			"Label_BannerManagement": "Banner Management",
+			"Label_GameCasinoManagement": "Game Casino Management",
+			"Label_HotEventManagement": "Hot Event Management",
+			"Label_VideoManagement": "Video Management",
+			"Label_DomainManagement": "Domain Management",
+			"Label_GameProviderMaintenance": "Game Provider Maintenance",
+			"Label_LeaderBoardPointManagement": "Leader Board Point Management",
+			"Label_AppDownloadUrlManagement": "App Download Url Management",
+			"Label_SlotGamesManagement": "Slot Games Management",
+			"Label_GameDisplayManagement": "Game Display Management"
+		},
+		"Finance": {
+			"Label_Finance": "Finance",
+			"Label_DepositListing": "Deposit Listing",
+			"Label_WithdrawalListing": "Withdrawal Listing",
+			"Label_WithdrawalReconcile": "Withdrawal Reconcile",
+			"Label_WithdrawableAdjustment": "Withdrawable Adjustment",
+			"Label_WithdrawableAdjustmentBatch": "Withdrawable Adjustment Batch",
+			"Label_AdjustmentListing": "Adjustment Listing",
+			"Label_GameWalletAdjustment": "Game Wallet Adjustment",
+			"Label_DepositTime": "Deposit Time",
+			"Label_WithdrawalTime": "Withdrawal Time",
+			"Label_Adjustment": "Adjustment",
+			"Label_BankAccount": "Bank Account",
+			"Label_BankTransferAccount": "Bank Transfer Account",
+			"Label_PaymentGateway": "Payment Gateway",
+			"Label_DepositLimit": "Deposit Limit",
+			"Label_WithdrawalLimit": "Withdrawal Limit",
+			"Label_CryptoWithdrawalLimit": "Crypto Withdrawal Limit",
+			"Label_AdjustmentLimit": "AdjustmentLimit",
+			"Label_ReconciliationAccount": "Reconciliation Account",
+			"Label_ReconciliationReason": "Reconciliation Reason",
+			"Label_LineChannelManagement": "Line Channel Management"
+		},
+		"Marketing": {
+			"Label_Marketing": "Marketing",
+			"Label_DrawPrizeReport": "Draw Prize Report",
+			"Label_VipLevelReview": "Vip Level Review",
+			"Label_BonusImport": "Bonus Import",
+			"Label_BonusManagement": "Bonus Management",
+			"Label_AppliedBonus": "Applied Bonus",
+			"Label_PendingBonus": "Pending Bonus",
+			"Label_RebateInfoReport": "Rebate Info Report",
+			"Label_RebateReport": "Rebate Report",
+			"Label_VipRebateReport": "Vip Rebate Report",
+			"Label_VipRebateManagement": "Vip Rebate Management",
+			"Label_ReferralManagement": "Referral Management",
+			"Label_ReferralReport": "Referral Report",
+			"Label_VerificationReward": "Verification Reward",
+			"Label_VerificationRewardManagement": "Verification Reward Management",
+			"Label_PointLevelManagement": "Point Level Management"
+		},
+		"Game": {
+			"Label_Game": "Game",
+			"Label_BetFailureRecord": "Bet Failure Record"
+		},
+		"Report": {
+			"Label_MainFinancialReport": "Main Financial Report",
+			"Label_DepositReport": "Deposit Report",
+			"Label_StatisticalReport": "Statistical Report",
+			"Label_CustomerStatisticalReport": "Customer Statistical Report",
+			"Label_UserOnlineReport": "User Online Report",
+			"Label_TransferInfoReport": "Transfer Info Report",
+			"Label_BankFinancialReport": "Bank Financial Report"
+		},
+		"Administration": {
+			"Label_Administration": "Administration",
+			"Label_RoleSetting": "Role Setting",
+			"Label_UserSetting": "User Setting",
+			"Label_SpecialPasswordManagement": "Special Password Management",
+			"Label_UserActivityLog": "User Activity Log"
+		}
+	},
 	"System": {
 		"Label_Success": "Success",
 		"Label_Failed": "Failed",
 		"Label_Unauthorized": "Unauthorized",
 		"Label_PageNoFound": "Page No Found",
+		"Label_WrongPassword": "Wrong Password",
 		"Label_NotExpectedServerError": "Not Expected Server Error",
 		"Label_Network_Error": "Network Error",
 		"Label_LoginSuccess": "Login Success",
 		"Label_LoginFailed": "Login Failed",
-		"Label_LogoutSuccess": "Logout Success"
+		"Label_LogoutSuccess": "Logout Success",
+		"Label_ChangePasswordSuccess": "Change Password Success"
 	},
 	"Login": {
 		"Label_WelcomeBack": "Welcome Back!",
@@ -16,6 +121,18 @@
 		"Label_SignIn": "Sign In",
 		"Label_Password": "Password"
 	},
-	"Label_ChangePassword": "Change Password",
-	"Label_SignOut": "Sign Out"
+	"ChangePassword": {
+		"Label_ChangePassword": "Change Password",
+		"Label_OldPassword": "Old Password",
+		"Label_NewPassword": "New Password",
+		"Label_ConfirmNewPassword": "Confirm New Password",
+		"Label_ErrorMessage_1": "Password cannot be the same as old password",
+		"Label_ErrorMessage_2": "Confirm password cannot be different as new password",
+		"Label_ErrorMessage_3": "Please input old password",
+		"Label_ErrorMessage_4": "Please input new password",
+		"Label_ErrorMessage_5": "Please input confirm new password!"
+	},
+	"Label_SignOut": "Sign Out",
+	"Label_Footer": "admin ©2022 Created by ailab team",
+	"Label_RequiredInput": "Please input {{field}}"
 }
