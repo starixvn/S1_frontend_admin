@@ -1,6 +1,6 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
-import { SITE_INFO } from "config";
+import { SITE_INFO } from "app/config";
 import en from "./en.json";
 
 const resources = {

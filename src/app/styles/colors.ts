@@ -1,5 +1,3 @@
-import antdColors from "@ant-design/colors";
-
 export const gray = [
 	"#ffffff",
 	"#fafafa",

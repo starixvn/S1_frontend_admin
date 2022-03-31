@@ -1,10 +1,11 @@
-import { useState, FC } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, FC, useEffect } from "react";
 import { Layout as AntdLayout } from "antd";
 import { LayoutSideBar } from "./LayoutSideBar";
 import { LayoutHeader } from "./LayoutHeader";
 import { LayoutContent } from "./LayoutContent";
-
-const { Footer } = AntdLayout;
+import { useAuth } from "hooks";
+import { useLocation } from "react-router-dom";
 
 const useMenuCollapsed = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(true);
@@ -13,17 +14,33 @@ const useMenuCollapsed = () => {
 		setCollapsed(prev => !prev);
 	};
 
-	return { collapsed, onToggleCollapsed };
+	const onCloseCollapsed = () => {
+		setCollapsed(true);
+	};
+
+	return { collapsed, onToggleCollapsed, onCloseCollapsed };
 };
 
 const Layout: FC = () => {
-	const { collapsed, onToggleCollapsed } = useMenuCollapsed();
+	const auth = useAuth();
+	const location = useLocation();
+
+	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed();
+
+	useEffect(() => {
+		auth.onCheckSignIn();
+	}, [location.pathname]);
+
+	useEffect(() => {
+		auth.onFetchUserAllowedRoles();
+	}, []);
 
 	return (
 		<AntdLayout style={{ minHeight: "100vh" }}>
 			<LayoutSideBar
 				collapsed={collapsed}
 				onToggleCollapsed={onToggleCollapsed}
+				onCloseCollapsed={onCloseCollapsed}
 			/>
 
 			<AntdLayout>
@@ -34,14 +51,10 @@ const Layout: FC = () => {
 
 				<AntdLayout style={{ padding: "0 24px 24px" }}>
 					<LayoutContent />
-
-					<Footer style={{ textAlign: "center" }}>
-						Ant Design ©2022 Created by ailab
-					</Footer>
 				</AntdLayout>
 			</AntdLayout>
 		</AntdLayout>
 	);
 };
 
-export { Layout };
+export default Layout;
