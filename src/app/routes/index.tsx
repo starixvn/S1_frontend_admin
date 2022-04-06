@@ -1,37 +1,37 @@
-import createRoutesWithMenu from "./createRoutesWithMenu";
-import { RouteObject } from "react-router-dom";
-import path from "app/constants/paths";
+import { RouteObject } from 'react-router-dom'
+import path from 'app/constants/paths'
 
-import { Login, Layout } from "app/pages";
-import { UIStatePage } from "components/UIStatePage";
-import { RequireAuth } from "./RequireAuth";
+import { Login, Layout } from 'app/pages'
+import { UIStatePage } from 'components/UIStatePage'
+import createRoutesWithMenu from './createRoutesWithMenu'
+import { RequireAuth } from './RequireAuth'
 
-let routes: RouteObject[] = [
+const routes: RouteObject[] = [
 	{
 		path: path.login.root,
 		element: (
-			<RequireAuth allowedRole={true}>
+			<RequireAuth allowedRole>
 				<Login />
 			</RequireAuth>
-		)
+		),
 	},
 	{
 		path: path.layout.root,
 		element: <Layout />,
-		children: createRoutesWithMenu()
+		children: createRoutesWithMenu(),
 	},
 	{
-		path: "/403",
+		path: '/403',
 		element: (
-			<RequireAuth allowedRole={true}>
+			<RequireAuth allowedRole>
 				<UIStatePage status={403} />
 			</RequireAuth>
-		)
+		),
 	},
 	{
-		path: "*",
-		element: <UIStatePage status={404} />
-	}
-];
+		path: '*',
+		element: <UIStatePage status={404} />,
+	},
+]
 
-export default routes;
+export default routes

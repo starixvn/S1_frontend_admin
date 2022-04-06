@@ -1,18 +1,18 @@
 export interface LocationState {
 	state: {
 		from: {
-			pathname: string;
-		};
-	};
+			pathname: string
+		}
+	}
 }
 
 export interface UserMenuState {
-	childs: null | Array<UserMenuState>;
-	funcKey: string;
+	childs: null | Array<UserMenuState>
+	funcKey: string
 }
 
 export interface UserAllowedRole {
-	funcKey: string;
-	isView: boolean;
-	isEdit: boolean;
+	funcKey: string
+	isView: boolean
+	isEdit: boolean
 }

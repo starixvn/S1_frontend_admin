@@ -1,1 +1,1 @@
-export { default as UIStatePage } from "./UIStatePage";
+export { default as UIStatePage } from './UIStatePage'

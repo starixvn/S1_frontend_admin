@@ -1,111 +1,112 @@
-import { useState } from "react";
-import _ from "lodash";
-import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from 'react'
+import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 
-import { LocationState, UserAllowedRole } from "type";
+import { LocationState, UserAllowedRole } from 'type'
 import {
 	MenuItemType,
 	MenuListType,
 	MENU_LIST,
-	SubMenuType
-} from "app/constants/menu";
-import { Menu, MenuProps } from "antd";
-import { useAuth } from "hooks";
-import { useMediaQuery } from "usehooks-ts";
-import { getRoutePath } from "app/routes/getRoutePath";
+	SubMenuType,
+} from 'app/constants/menu'
+import { Menu, MenuProps } from 'antd'
+import { useAuth } from 'hooks'
+import { useMediaQuery } from 'usehooks-ts'
+import { getRoutePath } from 'app/routes/getRoutePath'
 
-const { SubMenu } = Menu;
+const { SubMenu } = Menu
 // const { Search } = Input;
 
 const menuConfig = ({
 	collapsed,
-	openKeys
+	openKeys,
 }: {
-	collapsed: boolean;
-	openKeys: string[];
+	collapsed: boolean
+	openKeys: string[]
 }): MenuProps => {
-	let config: MenuProps = { mode: "inline", theme: "dark" };
+	let config: MenuProps = { mode: 'inline', theme: 'dark' }
 
 	if (!collapsed) {
-		config = { ...config, openKeys };
+		config = { ...config, openKeys }
 	}
-	return config;
-};
+	return config
+}
 
 const LayoutMenu = ({
 	collapsed,
-	onCloseCollapsed
+	onCloseCollapsed,
 }: {
-	collapsed: boolean;
-	onCloseCollapsed: () => void;
+	collapsed: boolean
+	onCloseCollapsed: () => void
 }) => {
-	const { t } = useTranslation();
-	const location = useLocation();
-	const mediaMdMatches = useMediaQuery("(min-width: 768px)");
+	const { t } = useTranslation()
+	const location = useLocation()
+	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
 
-	const [openKeys, setOpenKeys] = useState<string[]>([]);
+	const [openKeys, setOpenKeys] = useState<string[]>([])
 
-	const { userAllowedRoles } = useAuth();
+	const { userAllowedRoles } = useAuth()
 
-	let from = (location as LocationState)?.state?.from?.pathname || "/";
+	const from = (location as LocationState)?.state?.from?.pathname || '/'
 
 	const handleClickMenuItem = () => {
 		if (!mediaMdMatches) {
-			onCloseCollapsed();
+			onCloseCollapsed()
 		}
-	};
+	}
 
 	const handleToggleMenu = ({ key }: { key: string }) => {
-		let newOpenKeys: string[] = [];
-		const menuKeyArray = key.split(".");
+		let newOpenKeys: string[] = []
+		const menuKeyArray = key.split('.')
 
 		if (_.includes(openKeys, key)) {
 			newOpenKeys =
 				_.map(menuKeyArray, (_key, index) => {
-					return _.join(_.slice(menuKeyArray, 0, index), ".");
-				}) ?? [];
+					return _.join(_.slice(menuKeyArray, 0, index), '.')
+				}) ?? []
 		} else {
 			newOpenKeys =
 				_.map(menuKeyArray, (_key, index) => {
-					return _.join(_.slice(menuKeyArray, 0, index + 1), ".");
-				}) ?? [];
+					return _.join(_.slice(menuKeyArray, 0, index + 1), '.')
+				}) ?? []
 		}
 
-		setOpenKeys(newOpenKeys);
-	};
+		setOpenKeys(newOpenKeys)
+	}
 
 	const mappingMenu = (_menuList: MenuListType) => {
 		return _menuList.map(menu => {
 			if (!menu.childs) {
 				const { isIndex, pathMode, newPath, oldPath, allowedRole, displayKey } =
-					menu as MenuItemType;
+					menu as MenuItemType
 
 				const path = getRoutePath({
 					pathMode,
 					newPath,
-					oldPath
-				});
+					oldPath,
+				})
 
 				const userAllowedRole = _.find(userAllowedRoles, {
-					funcKey: allowedRole
-				}) as UserAllowedRole | undefined;
+					funcKey: allowedRole,
+				}) as UserAllowedRole | undefined
 
-				if (!userAllowedRole?.isView) return null;
+				if (!userAllowedRole?.isView) return null
 
 				return (
 					<Menu.Item
 						onClick={handleClickMenuItem}
 						key={allowedRole}
-						icon={menu.icon}>
-						<Link to={isIndex ? "/" : path} state={{ from }}>
+						icon={menu.icon}
+					>
+						<Link to={isIndex ? '/' : path} state={{ from }}>
 							{t(displayKey)}
 						</Link>
 					</Menu.Item>
-				);
+				)
 			}
 
-			const { icon, childs, menuKey, displayKey }: SubMenuType = menu;
+			const { icon, childs, menuKey, displayKey }: SubMenuType = menu
 
 			return (
 				<SubMenu
@@ -113,14 +114,15 @@ const LayoutMenu = ({
 					key={menuKey}
 					title={t(displayKey)}
 					icon={icon}
-					theme={collapsed ? "light" : "dark"}>
+					theme={collapsed ? 'light' : 'dark'}
+				>
 					{mappingMenu(childs)}
 				</SubMenu>
-			);
-		});
-	};
+			)
+		})
+	}
 
-	const renderMenu = mappingMenu(MENU_LIST);
+	const renderMenu = mappingMenu(MENU_LIST)
 
 	// TODOS
 	// const onSearch = (value: string) => console.log(value);
@@ -138,7 +140,7 @@ const LayoutMenu = ({
 
 			{renderMenu}
 		</Menu>
-	);
-};
+	)
+}
 
-export { LayoutMenu };
+export { LayoutMenu }

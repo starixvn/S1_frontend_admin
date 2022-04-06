@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const UIStateMain = styled.div`
 	min-height: 100vh;
@@ -6,6 +6,6 @@ const UIStateMain = styled.div`
 	justify-content: center;
 	align-items: center;
 	background-color: #f5f5f5;
-`;
+`
 
-export { UIStateMain };
+export { UIStateMain }

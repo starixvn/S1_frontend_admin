@@ -1,252 +1,252 @@
 const path = {
 	layout: {
-		root: "/"
+		root: '/',
 	},
 	dashboard: {
-		root: "dashboard"
+		root: 'dashboard',
 	},
 	login: {
-		root: "login"
+		root: 'login',
 	},
 	csd: {
-		root: "csd",
+		root: 'csd',
 		sub: {
 			memberListing: {
-				root: "csd/memberListing"
+				root: 'csd/memberListing',
 			},
 			changeVipLevel: {
-				root: "csd/changeVipLevel"
+				root: 'csd/changeVipLevel',
 			},
 			tagManagement: {
-				root: "csd/tagManagement"
+				root: 'csd/tagManagement',
 			},
 			registrationReport: {
-				root: "csd/registrationReport"
+				root: 'csd/registrationReport',
 			},
 			tpFailRecordReport: {
-				root: "csd/tpFailRecordReport"
+				root: 'csd/tpFailRecordReport',
 			},
 			personalMsgBatch: {
-				root: "csd/personalMsgBatch"
+				root: 'csd/personalMsgBatch',
 			},
 			teleMarketing: {
-				root: "csd/teleMarketing"
+				root: 'csd/teleMarketing',
 			},
 			withdrawalSetting: {
-				root: "csd/withdrawalSetting"
+				root: 'csd/withdrawalSetting',
 			},
 			memberGameExclusion: {
-				root: "csd/memberGameExclusion"
+				root: 'csd/memberGameExclusion',
 			},
 			userBetLimit: {
-				root: "csd/userBetLimit"
-			}
-		}
+				root: 'csd/userBetLimit',
+			},
+		},
 	},
 	content: {
-		root: "content",
+		root: 'content',
 		sub: {
 			announcement: {
-				root: "announcement"
+				root: 'announcement',
 			},
 			newsManage: {
-				root: "csd/newsManage"
+				root: 'csd/newsManage',
 			},
 			bannerManage: {
-				root: "csd/bannerManage"
+				root: 'csd/bannerManage',
 			},
 			gameCasinoManagement: {
-				root: "csd/gameCasinoManagement"
+				root: 'csd/gameCasinoManagement',
 			},
 			hotEventManagement: {
-				root: "csd/root"
+				root: 'csd/root',
 			},
 			videoManagement: {
-				root: "csd/videoManagement"
+				root: 'csd/videoManagement',
 			},
 			domainManage: {
-				root: "csd/domainManage"
+				root: 'csd/domainManage',
 			},
 			gameProviderMaintenance: {
-				root: "csd/gameProviderMaintenance"
+				root: 'csd/gameProviderMaintenance',
 			},
 			leaderBoardPointManagement: {
-				root: "csd/leaderBoardPointManagement"
+				root: 'csd/leaderBoardPointManagement',
 			},
 			appDownloadUrlManagement: {
-				root: "csd/appDownloadUrlManagement"
+				root: 'csd/appDownloadUrlManagement',
 			},
 			slotGamesManagement: {
-				root: "csd/slotGamesManagement"
+				root: 'csd/slotGamesManagement',
 			},
 			gameDisplayManagement: {
-				root: "csd/gameDisplayManagement"
-			}
-		}
+				root: 'csd/gameDisplayManagement',
+			},
+		},
 	},
 	finance: {
-		root: "finance",
+		root: 'finance',
 		sub: {
 			depositListing: {
-				root: "finance/depositListing"
+				root: 'finance/depositListing',
 			},
 			withdrawalListing: {
-				root: "finance/withdrawalListing"
+				root: 'finance/withdrawalListing',
 			},
 			withdrawalReconcile: {
-				root: "finance/withdrawalReconcile"
+				root: 'finance/withdrawalReconcile',
 			},
 			withdrawableAdjustment: {
-				root: "finance/withdrawableAdjustment"
+				root: 'finance/withdrawableAdjustment',
 			},
 			withdrawableAdjustmentBatch: {
-				root: "finance/withdrawableAdjustmentBatch"
+				root: 'finance/withdrawableAdjustmentBatch',
 			},
 			adjustmentListing: {
-				root: "finance/adjustmentListing"
+				root: 'finance/adjustmentListing',
 			},
 			gameWalletAdjustment: {
-				root: "finance/gameWalletAdjustment"
+				root: 'finance/gameWalletAdjustment',
 			},
 			depositTime: {
-				root: "finance/depositTime"
+				root: 'finance/depositTime',
 			},
 			withdrawalTime: {
-				root: "finance/withdrawalTime"
+				root: 'finance/withdrawalTime',
 			},
 			adjustment: {
-				root: "finance/adjustment"
+				root: 'finance/adjustment',
 			},
 			bankInfoList: {
-				root: "finance/bankInfoList"
+				root: 'finance/bankInfoList',
 			},
 			bankTransferAccount: {
-				root: "finance/bankTransferAccount"
+				root: 'finance/bankTransferAccount',
 			},
 			paymentGateway: {
-				root: "finance/paymentGateway"
+				root: 'finance/paymentGateway',
 			},
 			depositLimit: {
-				root: "finance/depositLimit"
+				root: 'finance/depositLimit',
 			},
 			withdrawalLimit: {
-				root: "finance/withdrawalLimit"
+				root: 'finance/withdrawalLimit',
 			},
 			cryptoWithdrawalLimit: {
-				root: "finance/cryptoWithdrawalLimit"
+				root: 'finance/cryptoWithdrawalLimit',
 			},
 			adjustmentLimit: {
-				root: "finance/adjustmentLimit"
+				root: 'finance/adjustmentLimit',
 			},
 			reconciliationAccount: {
-				root: "finance/reconciliationAccount"
+				root: 'finance/reconciliationAccount',
 			},
 			reconciliationReason: {
-				root: "finance/reconciliationReason"
+				root: 'finance/reconciliationReason',
 			},
 			lineChannelManagement: {
-				root: "finance/lineChannelManagement"
-			}
-		}
+				root: 'finance/lineChannelManagement',
+			},
+		},
 	},
 	marketing: {
-		root: "marketing",
+		root: 'marketing',
 		sub: {
 			drawPrizeReport: {
-				root: "marketing/drawPrizeReport"
+				root: 'marketing/drawPrizeReport',
 			},
 			vipLevelReview: {
-				root: "marketing/vipLevelReview"
+				root: 'marketing/vipLevelReview',
 			},
 			bonusImport: {
-				root: "marketing/bonusImport"
+				root: 'marketing/bonusImport',
 			},
 			bonusManagement: {
-				root: "marketing/bonusManagement"
+				root: 'marketing/bonusManagement',
 			},
 			appliedBonus: {
-				root: "marketing/appliedBonus"
+				root: 'marketing/appliedBonus',
 			},
 			pendingBonus: {
-				root: "marketing/pendingBonus"
+				root: 'marketing/pendingBonus',
 			},
 			rebateInfoReport: {
-				root: "marketing/rebateInfoReport"
+				root: 'marketing/rebateInfoReport',
 			},
 			rebateReport: {
-				root: "marketing/rebateReport"
+				root: 'marketing/rebateReport',
 			},
 			vipRebateReport: {
-				root: "marketing/vipRebateReport"
+				root: 'marketing/vipRebateReport',
 			},
 			vipRebateManagement: {
-				root: "marketing/vipRebateManagement"
+				root: 'marketing/vipRebateManagement',
 			},
 			referralManagement: {
-				root: "marketing/referralManagement"
+				root: 'marketing/referralManagement',
 			},
 			referralReport: {
-				root: "marketing/referralReport"
+				root: 'marketing/referralReport',
 			},
 			verificationReward: {
-				root: "marketing/verificationReward"
+				root: 'marketing/verificationReward',
 			},
 			verificationRewardManagement: {
-				root: "marketing/verificationRewardManagement"
+				root: 'marketing/verificationRewardManagement',
 			},
 			pointLevelManagement: {
-				root: "marketing/pointLevelManagement"
-			}
-		}
+				root: 'marketing/pointLevelManagement',
+			},
+		},
 	},
 	game: {
-		root: "game",
+		root: 'game',
 		sub: {
 			betFailureRecord: {
-				root: "game/betFailureRecord"
-			}
-		}
+				root: 'game/betFailureRecord',
+			},
+		},
 	},
 	report: {
-		root: "report",
+		root: 'report',
 		sub: {
 			mainFinancialReport: {
-				root: "report/mainFinancialReport"
+				root: 'report/mainFinancialReport',
 			},
 			depositReport: {
-				root: "report/depositReport"
+				root: 'report/depositReport',
 			},
 			statisticalReport: {
-				root: "report/statisticalReport"
+				root: 'report/statisticalReport',
 			},
 			customerStatisticalReport: {
-				root: "report/customerStatisticalReport"
+				root: 'report/customerStatisticalReport',
 			},
 			userOnlineReport: {
-				root: "report/userOnlineReport"
+				root: 'report/userOnlineReport',
 			},
 			transferInfoReport: {
-				root: "report/transferInfoReport"
+				root: 'report/transferInfoReport',
 			},
 			bankFinancialReport: {
-				root: "report/bankFinancialReport"
-			}
-		}
+				root: 'report/bankFinancialReport',
+			},
+		},
 	},
 	administration: {
-		root: "administration",
+		root: 'administration',
 		sub: {
 			roleSetting: {
-				root: "administration/roleSetting"
+				root: 'administration/roleSetting',
 			},
 			userSetting: {
-				root: "administration/userSetting"
+				root: 'administration/userSetting',
 			},
 			specialPasswordManagement: {
-				root: "administration/specialPasswordManagement"
-			}
-		}
-	}
-};
+				root: 'administration/specialPasswordManagement',
+			},
+		},
+	},
+}
 
-export default path;
+export default path

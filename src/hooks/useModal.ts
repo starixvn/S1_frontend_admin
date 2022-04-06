@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 export interface ModalState {
-	visible: boolean;
-	onOpen: () => void;
-	onCancel: () => void;
+	visible: boolean
+	onOpen: () => void
+	onCancel: () => void
 }
 
 const useModal = (): ModalState => {
-	const [visible, setVisible] = useState(false);
+	const [visible, setVisible] = useState(false)
 
-	const onOpen = () => setVisible(true);
+	const onOpen = () => setVisible(true)
 
-	const onCancel = () => setVisible(false);
+	const onCancel = () => setVisible(false)
 
 	const modal = {
 		visible,
 		onOpen,
-		onCancel
-	};
+		onCancel,
+	}
 
-	return modal;
-};
+	return modal
+}
 
-export { useModal };
+export { useModal }

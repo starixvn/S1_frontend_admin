@@ -1,21 +1,21 @@
-import { Suspense } from "react";
-import { useRoutes } from "react-router-dom";
-import { AuthProvider } from "common/config-provider";
-import { I18nextProvider } from "react-i18next";
-import styled from "styled-components";
-import i18n from "common/i18n/config";
-import GlobalStyle from "./styles/GlobalStyle";
-import routes from "./routes";
+import { Suspense } from 'react'
+import { useRoutes } from 'react-router-dom'
+import { AuthProvider } from 'common/config-provider'
+import { I18nextProvider } from 'react-i18next'
+import styled from 'styled-components'
+import i18n from 'common/i18n/config'
+import GlobalStyle from './styles/GlobalStyle'
+import routes from './routes'
 
 const Wrapper = styled.div`
 	min-height: 100vh;
-`;
+`
 
 function App() {
-	let element = useRoutes(routes);
+	const element = useRoutes(routes)
 
 	return (
-		<Suspense fallback="loading...">
+		<Suspense fallback='loading...'>
 			<GlobalStyle />
 
 			<AuthProvider>
@@ -24,7 +24,7 @@ function App() {
 				</I18nextProvider>
 			</AuthProvider>
 		</Suspense>
-	);
+	)
 }
 
-export default App;
+export default App

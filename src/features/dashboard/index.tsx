@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 // TODO: Dashboard
 const Dashboard = () => {
@@ -105,7 +105,7 @@ const Dashboard = () => {
 			<br />
 			Dashboard
 		</div>
-	);
-};
+	)
+}
 
-export default Dashboard;
+export default Dashboard

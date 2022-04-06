@@ -1,73 +1,74 @@
-import axios from "axios";
+import axios from 'axios'
 
-const rootURL = "";
+const rootURL = ''
 
 export const ApiV2 = axios.create({
 	withCredentials: true,
 	baseURL: `${rootURL}/apiV2`,
-	headers: { "Content-Type": "application/json" },
-	timeout: 20000
-});
+	headers: { 'Content-Type': 'application/json' },
+	timeout: 20000,
+})
 
 export default class BoApi {
-	static get = (url: string, data = null) => ApiV2.get(url, { params: data });
-	static post = (url: string, data = null) => ApiV2.post(url, data);
+	static get = (url: string, data = null) => ApiV2.get(url, { params: data })
+
+	static post = (url: string, data = null) => ApiV2.post(url, data)
 
 	static onCheckSignIn = async () => {
-		const response = await ApiV2.post("/home/CheckSignIn");
+		const response = await ApiV2.post('/home/CheckSignIn')
 
 		if (response?.data?.errorCode !== 0) {
-			throw new Error(response?.data?.message);
+			throw new Error(response?.data?.message)
 		}
 
 		return {
 			user: response?.data.data,
-			isLogin: true
-		};
-	};
+			isLogin: true,
+		}
+	}
 
 	static onSignIn = async (userName: string, userPassword: string) => {
-		const response = await ApiV2.post("/home/Signin", {
-			userName: userName,
-			userPwd: userPassword
-		});
+		const response = await ApiV2.post('/home/Signin', {
+			userName,
+			userPwd: userPassword,
+		})
 
 		if (response?.data.errorCode !== 0) {
 			switch (response?.data?.errorCode) {
 				case 1004:
-					throw new Error("System.Label_WrongPassword");
+					throw new Error('System.Label_WrongPassword')
 
 				default:
-					throw new Error("System.Label_LoginFailed");
+					throw new Error('System.Label_LoginFailed')
 			}
 		}
 
 		return {
 			user: response?.data.data,
-			isLogin: true
-		};
-	};
+			isLogin: true,
+		}
+	}
 
-	static onSignOut = async () => ApiV2.post("/home/SignOut");
+	static onSignOut = async () => ApiV2.post('/home/SignOut')
 
 	static onChangePassword = async ({
 		oldPassword,
-		newPassword
+		newPassword,
 	}: {
-		oldPassword: string;
-		newPassword: string;
+		oldPassword: string
+		newPassword: string
 	}) => {
-		await ApiV2.post("/home/ChangePwd", {
+		await ApiV2.post('/home/ChangePwd', {
 			OldPwd: oldPassword,
-			NewPwd: newPassword
-		});
-	};
+			NewPwd: newPassword,
+		})
+	}
 
 	static getUserMenu = async () => {
-		const response = await ApiV2.post("/Permission/GetUserMenu");
+		const response = await ApiV2.post('/Permission/GetUserMenu')
 
-		const menuList = response?.data?.data ?? [];
+		const menuList = response?.data?.data ?? []
 
-		return menuList;
-	};
+		return menuList
+	}
 }
