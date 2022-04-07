@@ -10,12 +10,14 @@ export const ApiV2 = axios.create({
 })
 
 export default class BoApi {
-	static get = (url: string, data = null) => ApiV2.get(url, { params: data })
+	static get = (url: string, data: Object | null = null) =>
+		ApiV2.get(url, { params: data })
 
-	static post = (url: string, data = null) => ApiV2.post(url, data)
+	static post = (url: string, data: Object | null = null) =>
+		ApiV2.post(url, data)
 
 	static onCheckSignIn = async () => {
-		const response = await ApiV2.post('/home/CheckSignIn')
+		const response = await BoApi.post('/home/CheckSignIn')
 
 		if (response?.data?.errorCode !== 0) {
 			throw new Error(response?.data?.message)
@@ -28,7 +30,7 @@ export default class BoApi {
 	}
 
 	static onSignIn = async (userName: string, userPassword: string) => {
-		const response = await ApiV2.post('/home/Signin', {
+		const response = await BoApi.post('/home/Signin', {
 			userName,
 			userPwd: userPassword,
 		})
@@ -49,7 +51,7 @@ export default class BoApi {
 		}
 	}
 
-	static onSignOut = async () => ApiV2.post('/home/SignOut')
+	static onSignOut = async () => BoApi.post('/home/SignOut')
 
 	static onChangePassword = async ({
 		oldPassword,
@@ -58,14 +60,14 @@ export default class BoApi {
 		oldPassword: string
 		newPassword: string
 	}) => {
-		await ApiV2.post('/home/ChangePwd', {
+		await BoApi.post('/home/ChangePwd', {
 			OldPwd: oldPassword,
 			NewPwd: newPassword,
 		})
 	}
 
 	static getUserMenu = async () => {
-		const response = await ApiV2.post('/Permission/GetUserMenu')
+		const response = await BoApi.post('/Permission/GetUserMenu')
 
 		const menuList = response?.data?.data ?? []
 
