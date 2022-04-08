@@ -1,4 +1,4 @@
-import { useAuth } from 'hooks'
+import { useAuth } from 'common/hooks'
 import { useLocation } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
 import { Layout as AntdLayout } from 'antd'
@@ -56,4 +56,4 @@ const Layout: FC = () => {
 	)
 }
 
-export default Layout
+export { Layout }

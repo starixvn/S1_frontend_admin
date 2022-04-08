@@ -1,1 +1,1 @@
-export { default as ChangePasswordModal } from './ChangePasswordModal'
+export * from './ChangePasswordModal'

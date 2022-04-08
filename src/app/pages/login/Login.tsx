@@ -1,7 +1,7 @@
 import { Button, Card, Form, Input } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
-import { useAuth } from 'hooks'
+import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { gray } from 'app/styles'
@@ -86,4 +86,4 @@ const Login = () => {
 	)
 }
 
-export default Login
+export { Login }

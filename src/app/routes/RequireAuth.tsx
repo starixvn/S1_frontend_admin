@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from 'hooks'
+import { useAuth } from 'common/hooks'
 
 import { LocationState, UserAllowedRole } from 'type'
 import path from 'app/constants/paths'

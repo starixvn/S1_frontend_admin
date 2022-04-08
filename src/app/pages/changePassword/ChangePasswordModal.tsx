@@ -1,16 +1,15 @@
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Modal } from 'antd'
-import { ModalState, useAuth } from 'hooks'
-import { LockOutlined } from '@ant-design/icons'
+import { Form, Modal } from 'antd'
+import { ModalState, useAuth } from 'common/hooks'
+import { ChangePasswordForm } from './ChangePasswordForm'
 
-const ChangePasswordModal: FC<ModalState> = modal => {
-	const { t } = useTranslation()
+const useForm = (modal: ModalState) => {
 	const auth = useAuth()
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState<boolean | undefined>()
 
-	const handleChangePassword = async () => {
+	const onChangePassword = async () => {
 		setLoading(true)
 
 		form.validateFields().then(() => {
@@ -28,89 +27,24 @@ const ChangePasswordModal: FC<ModalState> = modal => {
 		}
 	}, [modal.visible])
 
+	return { form, loading, onChangePassword }
+}
+
+const ChangePasswordModal: FC<ModalState> = modal => {
+	const { t } = useTranslation()
+	const { form, loading, onChangePassword } = useForm(modal)
+
 	return (
 		<Modal
 			title={t('ChangePassword.Label_ChangePassword')}
 			visible={modal.visible}
-			onOk={handleChangePassword}
+			onOk={onChangePassword}
 			confirmLoading={loading}
 			onCancel={modal.onCancel}
 		>
-			<Form form={form} noValidate layout='vertical' className='login-form'>
-				<Form.Item
-					label={t('ChangePassword.Label_OldPassword')}
-					name='oldPassword'
-					rules={[
-						{
-							required: true,
-							message: t('ChangePassword.Label_ErrorMessage_3'),
-						},
-					]}
-				>
-					<Input
-						prefix={<LockOutlined className='site-form-item-icon' />}
-						type='password'
-						placeholder='Old Password'
-					/>
-				</Form.Item>
-				<Form.Item
-					label={t('ChangePassword.Label_NewPassword')}
-					name='newPassword'
-					rules={[
-						{
-							required: true,
-							message: t('ChangePassword.Label_ErrorMessage_4'),
-						},
-						{
-							validator: () => {
-								const { oldPassword, newPassword } = form.getFieldsValue()
-
-								return oldPassword !== newPassword
-									? Promise.resolve()
-									: Promise.reject(
-											new Error(t('ChangePassword.Label_ErrorMessage_1'))
-									  )
-							},
-						},
-					]}
-				>
-					<Input
-						prefix={<LockOutlined className='site-form-item-icon' />}
-						type='password'
-						placeholder='New Password'
-					/>
-				</Form.Item>
-				<Form.Item
-					label={t('ChangePassword.Label_ConfirmNewPassword')}
-					name='confirmNewPassword'
-					rules={[
-						{
-							required: true,
-							message: t('ChangePassword.Label_ErrorMessage_5'),
-						},
-						{
-							validator: () => {
-								const { newPassword, confirmNewPassword } =
-									form.getFieldsValue()
-
-								return newPassword === confirmNewPassword
-									? Promise.resolve()
-									: Promise.reject(
-											new Error(t('ChangePassword.Label_ErrorMessage_2'))
-									  )
-							},
-						},
-					]}
-				>
-					<Input
-						prefix={<LockOutlined className='site-form-item-icon' />}
-						type='password'
-						placeholder='New Password'
-					/>
-				</Form.Item>
-			</Form>
+			<ChangePasswordForm form={form} />
 		</Modal>
 	)
 }
 
-export default ChangePasswordModal
+export { ChangePasswordModal }

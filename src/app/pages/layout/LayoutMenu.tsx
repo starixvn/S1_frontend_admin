@@ -11,7 +11,7 @@ import {
 	SubMenuType,
 } from 'app/constants/menu'
 import { Menu, MenuProps } from 'antd'
-import { useAuth } from 'hooks'
+import { useAuth } from 'common/hooks'
 import { useMediaQuery } from 'usehooks-ts'
 import { getRoutePath } from 'app/routes/getRoutePath'
 

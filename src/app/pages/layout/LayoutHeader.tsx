@@ -9,7 +9,7 @@ import {
 	DownOutlined,
 } from '@ant-design/icons'
 import { useMediaQuery } from 'usehooks-ts'
-import { useAuth, useModal } from 'hooks'
+import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { ChangePasswordModal } from 'app/pages/changePassword'
 
