@@ -134,5 +134,7 @@
 	},
 	"Label_SignOut": "Sign Out",
 	"Label_Footer": "admin ©2022 Created by ailab team",
-	"Label_RequiredInput": "Please input {{field}}"
+	"Label_RequiredInput": "Please input {{field}}",
+	"Label_Search": "Search",
+	"Label_Dashboard": "Dashboard"
 }

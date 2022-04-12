@@ -1,21 +1,27 @@
 import _ from 'lodash'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from 'common/hooks'
-
 import { LocationState, UserAllowedRole } from 'type'
 import path from 'app/constants/paths'
+import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 
-const RequireAuth = ({
-	allowedRole,
-	children,
-}: {
+interface RequireAuthProps {
 	allowedRole: null | string | boolean
 	children: JSX.Element
-}) => {
-	const { auth, userAllowedRoles } = useAuth()
+}
 
+const AuthRequire = ({ allowedRole, children }: RequireAuthProps) => {
+	const { auth, userAllowedRoles } = useAuth()
+	const navigate = useNavigate()
 	const location = useLocation()
+
 	const from = (location as LocationState)?.state?.from?.pathname || '/'
+
+	// useEffect(() => {
+	// 	navigate(`${location.pathname}${location.search}`, {
+
+	// 	})
+	// }, [location.pathname])
 
 	const userAllowedRole = _.find(userAllowedRoles, {
 		funcKey: allowedRole,
@@ -33,4 +39,4 @@ const RequireAuth = ({
 	return children
 }
 
-export { RequireAuth }
+export { AuthRequire }

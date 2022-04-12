@@ -2,7 +2,7 @@ import { MenuItemType } from 'app/constants/menu'
 import { Iframe } from 'components/Iframe'
 import { RouteObject } from 'react-router-dom'
 import { getRoutePath } from './getRoutePath'
-import { RequireAuth } from './RequireAuth'
+import { AuthRequire } from '../../common/auth/AuthRequire'
 
 export const createRoute = ({
 	isIndex,
@@ -22,11 +22,11 @@ export const createRoute = ({
 
 	const element =
 		pathMode === 'NewAdmin' ? (
-			<RequireAuth allowedRole={allowedRole}>{originElement}</RequireAuth>
+			<AuthRequire allowedRole={allowedRole}>{originElement}</AuthRequire>
 		) : (
-			<RequireAuth allowedRole={allowedRole}>
+			<AuthRequire allowedRole={allowedRole}>
 				<Iframe path={oldPath || ''} />
-			</RequireAuth>
+			</AuthRequire>
 		)
 
 	if (isIndex) {

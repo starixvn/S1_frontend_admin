@@ -1,7 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import { enumReducer } from 'common/enum'
+import { dashboardSlice } from 'features/dashboard'
 
 export const store = configureStore({
-	reducer: {},
+	reducer: {
+		allEnum: enumReducer,
+		dashboard: dashboardSlice,
+	},
 })
 
 export type AppDispatch = typeof store.dispatch

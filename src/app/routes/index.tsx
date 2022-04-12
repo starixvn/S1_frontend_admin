@@ -1,18 +1,19 @@
 import { RouteObject } from 'react-router-dom'
 import path from 'app/constants/paths'
 
-import { Login, Layout } from 'app/pages'
+import { Login } from 'app/pages/login'
+import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import createRoutesWithMenu from './createRoutesWithMenu'
-import { RequireAuth } from './RequireAuth'
+import { AuthRequire } from '../../common/auth/AuthRequire'
 
 const routes: RouteObject[] = [
 	{
 		path: path.login.root,
 		element: (
-			<RequireAuth allowedRole>
+			<AuthRequire allowedRole>
 				<Login />
-			</RequireAuth>
+			</AuthRequire>
 		),
 	},
 	{
@@ -23,9 +24,9 @@ const routes: RouteObject[] = [
 	{
 		path: '/403',
 		element: (
-			<RequireAuth allowedRole>
+			<AuthRequire allowedRole>
 				<UIStatePage status={403} />
-			</RequireAuth>
+			</AuthRequire>
 		),
 	},
 	{
