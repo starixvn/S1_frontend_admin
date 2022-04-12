@@ -34,7 +34,7 @@ const DashboardFilter: FC<DashboardFilterInterface> = ({
 	return (
 		<LayoutContent.Card>
 			<Row justify='start' gutter={8}>
-				<Col span={6}>
+				<Col md={6} xs={12}>
 					<Select
 						loading={loading}
 						value={currency?.currencyId}
@@ -48,7 +48,7 @@ const DashboardFilter: FC<DashboardFilterInterface> = ({
 					</Select>
 				</Col>
 
-				<Col span={6}>
+				<Col md={6} xs={12}>
 					<Select
 						loading={loading}
 						value={baseCurrency?.currencyId}
