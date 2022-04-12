@@ -1,6 +1,10 @@
+import _ from 'lodash'
 import { useAuth } from 'common/hooks'
-import { useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'app/store'
+import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Layout as AntdLayout } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
@@ -20,7 +24,33 @@ const useMenuCollapsed = () => {
 	return { collapsed, onToggleCollapsed, onCloseCollapsed }
 }
 
+const useUserSiteEffect = () => {
+	const dispatch = useAppDispatch()
+	const [searchParams] = useSearchParams()
+
+	const site = searchParams.get('site')
+
+	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
+	const loading = useAppSelector(state => state.allEnum.loading)
+
+	const handleUserSiteSelect = async () => {
+		await dispatch(fetchAllEnumAsync())
+	}
+
+	useEffect(() => {
+		const newUserSite =
+			_.find(userSiteList, { siteId: Number(site) }) ?? userSiteList[0]
+
+		dispatch(selectUserSite(newUserSite))
+	}, [loading])
+
+	useEffect(() => {
+		handleUserSiteSelect()
+	}, [])
+}
+
 const Layout: FC = () => {
+	const { t } = useTranslation()
 	const auth = useAuth()
 	const location = useLocation()
 
@@ -30,8 +60,14 @@ const Layout: FC = () => {
 		auth.onCheckSignIn()
 	}, [location.pathname])
 
+	useUserSiteEffect()
+
 	useEffect(() => {
-		auth.onFetchUserAllowedRoles()
+		const init = async () => {
+			auth.onFetchUserAllowedRoles()
+		}
+
+		init()
 	}, [])
 
 	return (

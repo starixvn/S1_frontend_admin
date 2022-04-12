@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
-import { AuthProvider } from 'common/config-provider'
+import { AuthProvider } from 'common/auth'
 import { I18nextProvider } from 'react-i18next'
 import styled from 'styled-components'
 import i18n from 'common/i18n/config'

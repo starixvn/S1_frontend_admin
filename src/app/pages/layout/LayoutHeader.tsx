@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Button, Col, Dropdown, Layout, Menu, Row, Space } from 'antd'
+import { Button, Col, Dropdown, Layout, Menu, Row } from 'antd'
 import {
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
@@ -8,10 +7,12 @@ import {
 	PoweroffOutlined,
 	DownOutlined,
 } from '@ant-design/icons'
-import { useMediaQuery } from 'usehooks-ts'
 import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { ChangePasswordModal } from 'app/pages/changePassword'
+import { useLocation } from 'react-router-dom'
+
+import { LayoutHeaderUserSite } from './LayoutHeaderUserSite'
 
 const { Header } = Layout
 
@@ -20,17 +21,16 @@ interface LayoutHeaderProps {
 	onToggleCollapsed: () => void
 }
 
-// TODO: test only, using fetch data later
-const SITE_LIST: string[] = []
-
 const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 	const { t } = useTranslation()
 	const { auth, onSignOut } = useAuth()
-	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
+
+	const location = useLocation()
+
+	const isNewPathMode =
+		!location.pathname.match('internal') && !location.pathname.match('Internal')
 
 	const changePasswordModal = useModal()
-
-	const [site, setSite] = useState<string>()
 
 	const menu = (
 		<Menu>
@@ -47,14 +47,6 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 			<Menu.Item key={3} onClick={onSignOut} icon={<PoweroffOutlined />} danger>
 				{t('Label_SignOut')}
 			</Menu.Item>
-		</Menu>
-	)
-
-	const siteMenu = (
-		<Menu>
-			{SITE_LIST.map(_site => (
-				<Menu.Item key={_site}>{_site}</Menu.Item>
-			))}
 		</Menu>
 	)
 
@@ -83,27 +75,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 
 					<Col flex='auto' />
 
-					{mediaMdMatches ? (
-						<Col flex='260px'>
-							<Space>
-								{SITE_LIST.map(_site => (
-									<Button
-										onClick={() => setSite(_site)}
-										key={_site}
-										type={_site === site ? 'primary' : 'text'}
-									>
-										{_site}
-									</Button>
-								))}
-							</Space>
-						</Col>
-					) : (
-						<Col flex='96px'>
-							<Dropdown trigger={['click']} overlay={siteMenu}>
-								<Button type='primary'>goal123</Button>
-							</Dropdown>
-						</Col>
-					)}
+					{isNewPathMode && <LayoutHeaderUserSite />}
 
 					<Col flex='120px'>
 						<Dropdown

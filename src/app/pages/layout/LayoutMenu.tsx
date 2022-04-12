@@ -48,7 +48,8 @@ const LayoutMenu = ({
 
 	const { userAllowedRoles } = useAuth()
 
-	const from = (location as LocationState)?.state?.from?.pathname || '/'
+	const locationState = (location as LocationState)?.state
+	const from = locationState?.from?.pathname || '/'
 
 	const handleClickMenuItem = () => {
 		if (!mediaMdMatches) {
@@ -99,7 +100,7 @@ const LayoutMenu = ({
 						key={allowedRole}
 						icon={menu.icon}
 					>
-						<Link to={isIndex ? '/' : path} state={{ from }}>
+						<Link to={isIndex ? '/' : path} state={{ ...locationState, from }}>
 							{t(displayKey)}
 						</Link>
 					</Menu.Item>
