@@ -19,7 +19,7 @@ import paths from './paths'
 const Dashboard = lazy(() => import('features/dashboard'))
 
 const iconStyle: CSSProperties = {
-	fontSize: '22px',
+	fontSize: '20px',
 }
 interface moduleIconInterface {
 	[moduleId: number]: JSX.Element
@@ -37,9 +37,15 @@ export const MODULE_ICON_MAPPING: moduleIconInterface = {
 }
 
 export const getMapMenu = (functionId: number) => {
-	const { internalPath, newAdminPath, pathMode, icon, index } =
-		(MENU_MAPPING.find(item => item.functionId === functionId) ??
-			{}) as MenMappingInterface
+	const {
+		internalPath,
+		newAdminPath,
+		pathMode,
+		icon,
+		index,
+		internalFunctionKey,
+	} = (MENU_MAPPING.find(item => item.functionId === functionId) ??
+		{}) as MenMappingInterface
 
 	const path = pathMode
 		? {
@@ -49,7 +55,9 @@ export const getMapMenu = (functionId: number) => {
 		: ''
 
 	return {
+		...(pathMode === 'Internal' && { internalFunctionKey }),
 		path: index || !path ? '/' : `/${pathMode}/${path}`,
+		pathMode,
 		icon,
 	}
 }
@@ -71,7 +79,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: <DashboardOutlined style={iconStyle} />,
 		functionId: 1,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Home/DashboardNew',
 		internalFunctionKey: allowedRoles.HomeDashboardNew,
 		newAdminPath: paths.dashboard.root,

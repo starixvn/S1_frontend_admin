@@ -90,7 +90,7 @@ const LayoutMenu = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const { userMenuList } = useAuth()
+	const { userMenuList, internalPermissionFunctionKeys } = useAuth()
 
 	const { openKeys, handleClickMenuItem, handleToggleMenu } = useMenuAction({
 		mediaMdMatches,
@@ -105,13 +105,27 @@ const LayoutMenu = ({
 		const { name, moduleId, functionId } = menu
 		const isGroup = Boolean(moduleId)
 
-		const menuMap = getMapMenu(Number(functionId))
+		const { path, icon, internalFunctionKey, pathMode } = getMapMenu(
+			Number(functionId)
+		)
 
-		return isGroup ? (
-			renderSubMenuItem(menu)
-		) : (
-			<Menu.Item key={name} icon={menuMap.icon} onClick={handleClickMenuItem}>
-				<Link to={menuMap.path}>{name}</Link>
+		const hasPermission = _.includes(
+			internalPermissionFunctionKeys,
+			internalFunctionKey
+		)
+
+		if (isGroup) return renderSubMenuItem(menu)
+
+		if (pathMode === 'Internal' && !hasPermission) return null
+
+		return (
+			<Menu.Item
+				style={{ fontSize: '12px' }}
+				key={name}
+				icon={icon}
+				onClick={handleClickMenuItem}
+			>
+				<Link to={path}>{name}</Link>
 			</Menu.Item>
 		)
 	}
@@ -123,6 +137,7 @@ const LayoutMenu = ({
 
 		return (
 			<SubMenu
+				style={{ fontSize: '12px' }}
 				onTitleClick={() => handleToggleMenu(menuKey, moduleId)}
 				key={menuKey}
 				title={name}

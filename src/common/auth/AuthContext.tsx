@@ -86,7 +86,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await BoApi.onSignOut()
 
 			setAuth(initialAuth)
-			navigate(`/${paths.login.root}`)
+
+			window.location.href = `/${paths.login.root}`
 			message.success(t('System.Label_LogoutSuccess'))
 		} catch (error) {
 			message.error(t((error as Error).message))
