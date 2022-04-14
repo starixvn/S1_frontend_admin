@@ -5,7 +5,7 @@ const rootURL = ''
 export const ApiV2 = axios.create({
 	withCredentials: true,
 	baseURL: `${rootURL}/apiV2`,
-	timeout: 20000,
+	timeout: 10000,
 })
 
 export default class BoApi {
@@ -65,11 +65,17 @@ export default class BoApi {
 		})
 	}
 
-	static getUserMenu = async () => {
-		const response = await BoApi.post('/Permission/GetUserMenu')
+	static getUserMenu = async (lang: string | null) => {
+		const response = await BoApi.post('/Permission/GetUserMenu', { lang })
 
-		const menuList = response?.data?.data ?? []
+		const userMenuList = response?.data?.data ?? []
 
-		return menuList
+		return userMenuList
+	}
+
+	static getAllMenu = async (lang: string) => {
+		const response = await BoApi.post('/Permission/GetAllMenu', { lang })
+
+		return response?.data?.data ?? []
 	}
 }

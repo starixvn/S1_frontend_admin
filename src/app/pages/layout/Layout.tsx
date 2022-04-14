@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Layout as AntdLayout } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
@@ -50,7 +49,6 @@ const useUserSiteEffect = () => {
 }
 
 const Layout: FC = () => {
-	const { t } = useTranslation()
 	const auth = useAuth()
 	const location = useLocation()
 
@@ -64,7 +62,8 @@ const Layout: FC = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			auth.onFetchUserAllowedRoles()
+			auth.onFetchInternalAllowRoles()
+			auth.onFetchUserMenuList('cs')
 		}
 
 		init()

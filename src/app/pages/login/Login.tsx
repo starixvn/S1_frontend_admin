@@ -1,11 +1,14 @@
 import { Button, Card, Form, Input } from 'antd'
+import { Navigate } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { gray } from 'app/styles'
 import { geekblue } from '@ant-design/colors'
+import { getMapMenu } from 'app/constants/menuMapping'
+import imgLoginBg from 'assets/images/common/login-bg.png'
 
 const Wrapper = styled.div`
 	min-height: 100vh;
@@ -13,12 +16,12 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	background-color: #f5f5f5;
+	background-image: url(${imgLoginBg});
 `
 
 const Login = () => {
 	const { t } = useTranslation()
-
-	const { onSignIn } = useAuth()
+	const { auth, onSignIn, onCheckSignIn } = useAuth()
 
 	const [loading, setLoading] = useState<boolean | undefined>()
 	const [userName, setUserName] = useState<string>('')
@@ -30,11 +33,21 @@ const Login = () => {
 		setLoading(false)
 	}
 
+	useEffect(() => {
+		onCheckSignIn()
+	}, [])
+
+	if (auth.isLogin) {
+		const { path: dashboardPath } = getMapMenu(1)
+
+		return <Navigate to={`${dashboardPath}`} />
+	}
+
 	return (
 		<Wrapper>
 			<Card
 				title={t('Login.Label_WelcomeBack')}
-				style={{ width: '400px', margin: '4px' }}
+				style={{ width: '400px', border: 'none' }}
 				headStyle={{ background: geekblue.primary, color: gray[0] }}
 			>
 				<Form
@@ -55,12 +68,13 @@ const Login = () => {
 							placeholder='Username'
 						/>
 					</Form.Item>
+
 					<Form.Item
 						label={t('Login.Label_Password')}
 						name='password'
-						rules={[{ required: true, message: 'Please input your Password!' }]}
+						rules={[{ required: true, message: 'Please input your password!' }]}
 					>
-						<Input
+						<Input.Password
 							value={userPassword}
 							onChange={event => setUserPassword(event.target.value)}
 							prefix={<LockOutlined className='site-form-item-icon' />}

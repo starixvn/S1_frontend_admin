@@ -1,33 +1,77 @@
 import { RouteObject } from 'react-router-dom'
-import path from 'app/constants/paths'
-
+import paths from 'app/constants/paths'
+import { Iframe } from 'components/Iframe'
 import { Login } from 'app/pages/login'
 import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
-import createRoutesWithMenu from './createRoutesWithMenu'
+import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
+
 import { AuthRequire } from '../../common/auth/AuthRequire'
+
+const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(({ pathMode }) =>
+	Boolean(pathMode)
+).map(
+	({
+		internalPath,
+		newAdminPath,
+		functionId,
+		internalFunctionKey,
+		index,
+		pathMode,
+		element: originElement,
+	}: MenMappingInterface) => {
+		if (pathMode === 'Internal')
+			return {
+				...(index
+					? { index }
+					: {
+							path: `${pathMode}/${internalPath}`,
+					  }),
+				element: (
+					<AuthRequire
+						pathMode={pathMode}
+						functionId={Number(functionId)}
+						internalFunctionKey={internalFunctionKey}
+					>
+						<Iframe path={internalPath ?? ''} />
+					</AuthRequire>
+				),
+			}
+
+		const element = originElement as JSX.Element
+
+		return {
+			...(index
+				? { index }
+				: {
+						path: `${pathMode}/${newAdminPath}`,
+				  }),
+			element: (
+				<AuthRequire
+					pathMode={pathMode}
+					functionId={Number(functionId)}
+					internalFunctionKey={internalFunctionKey}
+				>
+					{element}
+				</AuthRequire>
+			),
+		}
+	}
+)
 
 const routes: RouteObject[] = [
 	{
-		path: path.login.root,
-		element: (
-			<AuthRequire allowedRole>
-				<Login />
-			</AuthRequire>
-		),
+		path: paths.login.root,
+		element: <Login />,
 	},
 	{
-		path: path.layout.root,
+		path: paths.layout.root,
 		element: <Layout />,
-		children: createRoutesWithMenu(),
+		children: [...routesWithMenu],
 	},
 	{
 		path: '/403',
-		element: (
-			<AuthRequire allowedRole>
-				<UIStatePage status={403} />
-			</AuthRequire>
-		),
+		element: <UIStatePage status={403} />,
 	},
 	{
 		path: '*',
