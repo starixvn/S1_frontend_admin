@@ -1,4 +1,5 @@
 import { Layout } from 'antd'
+import { getMapMenu } from 'app/constants/menuMapping'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'usehooks-ts'
 import { LayoutMenu } from './LayoutMenu'
@@ -19,7 +20,7 @@ const LayoutSideBar = ({
 	return (
 		<Sider
 			className='layout-side-bar'
-			width={240}
+			width={280}
 			trigger={null}
 			breakpoint='md'
 			collapsedWidth={mediaMdMatches ? '80' : '0'}
@@ -31,10 +32,10 @@ const LayoutSideBar = ({
 				className='header'
 				style={{ display: 'flex', justifyContent: 'center' }}
 			>
-				<Link to='/'>
+				<Link to={getMapMenu(1).path}>
 					<img
-						width={80}
-						src='https://image.0814media.net/SiteSkin/img/logo_en.png'
+						width={100}
+						src='http://admin.n88dev.com/images/logo.png'
 						alt='logo'
 					/>
 				</Link>

@@ -6,13 +6,23 @@ export interface LocationState {
 	}
 }
 
-export interface UserMenuState {
-	childs: null | Array<UserMenuState>
-	funcKey: string
+interface MenuPermission {
+	permissionId: number
+	name: string
+	canUse: boolean
 }
 
-export interface UserAllowedRole {
-	funcKey: string
-	isView: boolean
-	isEdit: boolean
+export interface MenuFunctionDatas {
+	functionId: number
+	name: string
+	permission: MenuPermission[]
+}
+
+export interface MenuInterface {
+	moduleId?: number
+	functionId: number | null
+	name: string
+	permission: MenuPermission[]
+	functionDatas?: MenuFunctionDatas[]
+	subLayerDatas?: MenuInterface[]
 }

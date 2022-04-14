@@ -1,39 +1,46 @@
 import _ from 'lodash'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from 'common/hooks'
-import { LocationState, UserAllowedRole } from 'type'
+
 import path from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 
 interface RequireAuthProps {
-	allowedRole: null | string | boolean
+	pathMode?: typeof OLD_SITE_PREFIX_URL | typeof NEW_SITE_PREFIX_URL
+	functionId?: number
+	internalFunctionKey?: string
 	children: JSX.Element
 }
 
-const AuthRequire = ({ allowedRole, children }: RequireAuthProps) => {
-	const { auth, userAllowedRoles } = useAuth()
-	const navigate = useNavigate()
+const AuthRequire = ({
+	pathMode,
+	functionId,
+	internalFunctionKey,
+	children,
+}: RequireAuthProps) => {
+	const { auth, userMenuFunctionData, internalPermissionFunctionKeys } =
+		useAuth()
+
+	const menuFunctionData = _.find(userMenuFunctionData, { functionId })
+
+	const hasPermission =
+		pathMode === 'Internal'
+			? internalPermissionFunctionKeys?.some(key => key === internalFunctionKey)
+			: _.find(menuFunctionData?.permission, {
+					name: 'View',
+			  })?.canUse
+
 	const location = useLocation()
 
-	const from = (location as LocationState)?.state?.from?.pathname || '/'
-
-	// useEffect(() => {
-	// 	navigate(`${location.pathname}${location.search}`, {
-
-	// 	})
-	// }, [location.pathname])
-
-	const userAllowedRole = _.find(userAllowedRoles, {
-		funcKey: allowedRole,
-	}) as UserAllowedRole | undefined
-
-	if (allowedRole === true) return children
-
 	if (auth.isLogin === false)
-		return <Navigate to={`/${path.login.root}`} state={{ from }} replace />
+		return (
+			<Navigate to={`/${path.login.root}`} state={{ from: location }} replace />
+		)
 
-	if (userAllowedRoles !== undefined && !userAllowedRole?.isView) {
-		return <Navigate to='/403' state={{ from }} replace />
+	if (hasPermission === true) return children
+
+	if (hasPermission !== undefined && hasPermission === false) {
+		return <Navigate to='/403' state={{ from: location }} replace />
 	}
 
 	return children

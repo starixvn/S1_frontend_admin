@@ -1,4 +1,4 @@
-const path = {
+const paths = {
 	layout: {
 		root: '/',
 	},
@@ -249,4 +249,4 @@ const path = {
 	},
 }
 
-export default path
+export default paths
