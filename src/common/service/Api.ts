@@ -5,7 +5,6 @@ const rootURL = ''
 export const ApiV2 = axios.create({
 	withCredentials: true,
 	baseURL: `${rootURL}/apiV2`,
-	timeout: 10000,
 })
 
 export default class BoApi {
