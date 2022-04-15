@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import { useAuth } from 'common/hooks'
+import { useAuth, useResetScrollBar } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
-import { Layout as AntdLayout } from 'antd'
+import { Layout as AntdLayout, BackTop } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
 import { LayoutContent } from './LayoutContent'
@@ -56,6 +56,8 @@ const Layout: FC = () => {
 		auth.onCheckSignIn()
 	}, [location.pathname])
 
+	useResetScrollBar()
+
 	useUserSiteEffect()
 
 	useEffect(() => {
@@ -69,6 +71,8 @@ const Layout: FC = () => {
 
 	return (
 		<AntdLayout style={{ minHeight: '100vh' }}>
+			<BackTop />
+
 			<LayoutSideBar
 				collapsed={collapsed}
 				onToggleCollapsed={onToggleCollapsed}
