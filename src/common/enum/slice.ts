@@ -5,7 +5,7 @@ import { fetchAllEnumAsync } from './thunk'
 import { Currency, UserSite } from './type'
 
 export interface EnumState {
-	loading: Boolean | undefined
+	loading: boolean | undefined
 	userSite?: UserSite
 	userSiteList: UserSite[]
 	allCurrencyList: Currency[]
@@ -33,7 +33,6 @@ const enumSlice = createSlice({
 			})
 			.addCase(fetchAllEnumAsync.fulfilled, (state, action) => {
 				const { userSiteList, allCurrencyList } = action.payload as EnumState
-
 				state.loading = false
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
@@ -42,6 +41,8 @@ const enumSlice = createSlice({
 
 export const selectCurrencyListBySite = (state: RootState) => {
 	const { allCurrencyList, userSite } = state.allEnum
+
+	if (userSite === undefined) return undefined
 
 	// Returns the currency of the site
 	return _.filter(allCurrencyList, currency =>

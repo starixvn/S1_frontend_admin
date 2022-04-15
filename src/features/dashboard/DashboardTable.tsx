@@ -83,7 +83,7 @@ const DashboardTable = ({
 	loading,
 	dashboardData,
 }: {
-	loading: boolean
+	loading: boolean | undefined
 	dashboardData: DashBoardData
 }) => {
 	const {

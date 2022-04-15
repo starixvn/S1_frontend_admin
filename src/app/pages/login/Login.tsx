@@ -15,8 +15,7 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #f5f5f5;
-	background-image: url(${imgLoginBg});
+	background: url(${imgLoginBg}) round;
 `
 
 const Login = () => {
