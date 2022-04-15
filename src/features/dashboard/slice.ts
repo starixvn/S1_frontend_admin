@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from 'app/store'
 import { fetchDashBoardGetDataAsync } from './thunk'
 import { DashBoardData } from './type'
 
@@ -32,11 +31,5 @@ const dashBoardSlice = createSlice({
 				state.loading = false
 			}),
 })
-
-const selectDashboardLoading = (state: RootState) => state.dashboard.loading
-
-const selectDashboardData = (state: RootState) => state.dashboard.data
-
-export { selectDashboardLoading, selectDashboardData }
 
 export default dashBoardSlice.reducer

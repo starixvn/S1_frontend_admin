@@ -32,19 +32,17 @@ const useUserSiteEffect = () => {
 	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
 	const loading = useAppSelector(state => state.allEnum.loading)
 
-	const handleUserSiteSelect = async () => {
-		await dispatch(fetchAllEnumAsync())
-	}
-
 	useEffect(() => {
-		const newUserSite =
-			_.find(userSiteList, { siteId: Number(site) }) ?? userSiteList[0]
+		if (loading === false) {
+			const newUserSite =
+				_.find(userSiteList, { siteId: Number(site) }) || userSiteList[0]
 
-		dispatch(selectUserSite(newUserSite))
+			dispatch(selectUserSite(newUserSite))
+		}
 	}, [loading])
 
 	useEffect(() => {
-		handleUserSiteSelect()
+		dispatch(fetchAllEnumAsync())
 	}, [])
 }
 

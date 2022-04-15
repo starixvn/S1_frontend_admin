@@ -136,5 +136,8 @@
 	"Label_Footer": "admin ©2022 Created by ailab team",
 	"Label_RequiredInput": "Please input {{field}}",
 	"Label_Search": "Search",
-	"Label_Dashboard": "Dashboard"
+	"Label_Dashboard": "Dashboard",
+	"Label_Currency": "Currency",
+	"Label_BaseCurrency": "BaseCurrency",
+	"Label_SelectAll": "Select All"
 }
