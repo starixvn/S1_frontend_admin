@@ -1,3 +1,4 @@
+import { HomeOutlined } from '@ant-design/icons'
 import { Layout } from 'antd'
 import { getMapMenu } from 'app/constants/menuMapping'
 import { Link } from 'react-router-dom'
@@ -30,10 +31,7 @@ const LayoutSideBar = ({
 			style={{
 				overflow: 'auto',
 				height: '100vh',
-				position: 'fixed',
-				left: 0,
-				top: 0,
-				bottom: 0,
+				position: 'static',
 			}}
 		>
 			<Header
@@ -42,7 +40,7 @@ const LayoutSideBar = ({
 			>
 				<Link to={getMapMenu(1).path}>
 					<img
-						width={100}
+						width={80}
 						src='http://admin.n88dev.com/images/logo.png'
 						alt='logo'
 					/>
