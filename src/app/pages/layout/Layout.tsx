@@ -63,7 +63,7 @@ const Layout: FC = () => {
 	useEffect(() => {
 		const init = async () => {
 			auth.onFetchInternalAllowRoles()
-			auth.onFetchUserMenuList('cs')
+			auth.onFetchUserMenuList('en')
 		}
 
 		init()
