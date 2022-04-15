@@ -79,7 +79,7 @@ const Layout: FC = () => {
 				onCloseCollapsed={onCloseCollapsed}
 			/>
 
-			<AntdLayout style={{ marginLeft: 280 }}>
+			<AntdLayout>
 				<LayoutHeader
 					collapsed={collapsed}
 					onToggleCollapsed={onToggleCollapsed}
