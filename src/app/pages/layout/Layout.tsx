@@ -70,7 +70,7 @@ const Layout: FC = () => {
 	}, [])
 
 	return (
-		<AntdLayout style={{ minHeight: '100vh' }}>
+		<AntdLayout hasSider style={{ minHeight: '100vh' }}>
 			<BackTop />
 
 			<LayoutSideBar
@@ -79,7 +79,7 @@ const Layout: FC = () => {
 				onCloseCollapsed={onCloseCollapsed}
 			/>
 
-			<AntdLayout>
+			<AntdLayout style={{ marginLeft: 280 }}>
 				<LayoutHeader
 					collapsed={collapsed}
 					onToggleCollapsed={onToggleCollapsed}
