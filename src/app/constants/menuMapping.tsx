@@ -1,6 +1,7 @@
 import {
 	BankOutlined,
 	BarChartOutlined,
+	ControlOutlined,
 	DashboardOutlined,
 	EditOutlined,
 	ExclamationCircleOutlined,
@@ -34,6 +35,7 @@ export const MODULE_ICON_MAPPING: moduleIconInterface = {
 	7: <BarChartOutlined style={iconStyle} />,
 	8: <TransactionOutlined style={iconStyle} />,
 	9: <RiUserSettingsLine style={iconStyle} />,
+	19: <ControlOutlined style={iconStyle} />,
 }
 
 export const getMapMenu = (functionId: number) => {
@@ -212,6 +214,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
+		newAdminPath: '',
+	},
+	{
+		icon: null,
+		functionId: 94,
+		pathMode: 'Internal',
+		internalPath: 'Finance/WithdrawalAccountingList',
+		internalFunctionKey: allowedRoles.FinanceWithdrawalAccountingList,
 		newAdminPath: '',
 	},
 	{
