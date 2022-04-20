@@ -24,7 +24,9 @@ const LayoutContent: LayoutContentInterface = () => {
 			style={{
 				margin: 0,
 				padding: 0,
-				minHeight: 340,
+				overflow: 'auto',
+				minHeight: '80vh',
+				position: 'static',
 			}}
 		>
 			<Outlet />
