@@ -77,8 +77,6 @@ const BaseLayout: FC = () => {
 				/>
 
 				<LayoutContent />
-
-				<br />
 			</Layout>
 		</Layout>
 	)
