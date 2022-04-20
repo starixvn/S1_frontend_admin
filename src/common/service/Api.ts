@@ -58,10 +58,14 @@ export default class BoApi {
 		oldPassword: string
 		newPassword: string
 	}) => {
-		await BoApi.post('/home/ChangePwd', {
+		const response = await BoApi.post('/home/ChangePwd', {
 			OldPwd: oldPassword,
 			NewPwd: newPassword,
 		})
+
+		if (response?.data.errorCode !== 0) {
+			throw new Error(response?.data?.message ?? '')
+		}
 	}
 
 	static getUserMenu = async (lang: string | null) => {

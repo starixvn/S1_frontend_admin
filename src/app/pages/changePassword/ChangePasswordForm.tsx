@@ -17,10 +17,10 @@ const ChangePasswordForm = ({ form }: { form: FormInstance }) => {
 					},
 				]}
 			>
-				<Input
+				<Input.Password
 					prefix={<LockOutlined className='site-form-item-icon' />}
 					type='password'
-					placeholder='Old Password'
+					placeholder={t('ChangePassword.Label_OldPassword')}
 				/>
 			</Form.Item>
 			<Form.Item
@@ -44,10 +44,10 @@ const ChangePasswordForm = ({ form }: { form: FormInstance }) => {
 					},
 				]}
 			>
-				<Input
+				<Input.Password
 					prefix={<LockOutlined className='site-form-item-icon' />}
 					type='password'
-					placeholder='New Password'
+					placeholder={t('ChangePassword.Label_NewPassword')}
 				/>
 			</Form.Item>
 			<Form.Item
@@ -71,10 +71,10 @@ const ChangePasswordForm = ({ form }: { form: FormInstance }) => {
 					},
 				]}
 			>
-				<Input
+				<Input.Password
 					prefix={<LockOutlined className='site-form-item-icon' />}
 					type='password'
-					placeholder='New Password'
+					placeholder={t('ChangePassword.Label_ConfirmNewPassword')}
 				/>
 			</Form.Item>
 		</Form>

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { useAuth, useResetScrollBar } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
 import { Layout as AntdLayout, BackTop } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
@@ -48,13 +48,8 @@ const useUserSiteEffect = () => {
 
 const Layout: FC = () => {
 	const auth = useAuth()
-	const location = useLocation()
 
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
-
-	useEffect(() => {
-		auth.onCheckSignIn()
-	}, [location.pathname])
 
 	useResetScrollBar()
 
