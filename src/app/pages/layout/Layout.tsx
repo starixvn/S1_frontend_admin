@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import { useAuth, useResetScrollBar } from 'common/hooks'
+import { useAuth } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
 import { useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
-import { Layout as AntdLayout, BackTop } from 'antd'
+import { Layout } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
 import { LayoutContent } from './LayoutContent'
@@ -46,12 +46,10 @@ const useUserSiteEffect = () => {
 	}, [])
 }
 
-const Layout: FC = () => {
+const BaseLayout: FC = () => {
 	const auth = useAuth()
 
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
-
-	useResetScrollBar()
 
 	useUserSiteEffect()
 
@@ -65,27 +63,25 @@ const Layout: FC = () => {
 	}, [])
 
 	return (
-		<AntdLayout hasSider style={{ minHeight: '100vh' }}>
-			<BackTop />
-
+		<Layout hasSider style={{ height: '100vh' }}>
 			<LayoutSideBar
 				collapsed={collapsed}
 				onToggleCollapsed={onToggleCollapsed}
 				onCloseCollapsed={onCloseCollapsed}
 			/>
 
-			<AntdLayout>
+			<Layout>
 				<LayoutHeader
 					collapsed={collapsed}
 					onToggleCollapsed={onToggleCollapsed}
 				/>
 
-				<AntdLayout style={{ padding: '0 24px 24px', minWidth: 380 }}>
-					<LayoutContent />
-				</AntdLayout>
-			</AntdLayout>
-		</AntdLayout>
+				<LayoutContent />
+
+				<br />
+			</Layout>
+		</Layout>
 	)
 }
 
-export { Layout }
+export { BaseLayout as Layout }

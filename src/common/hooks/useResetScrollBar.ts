@@ -1,14 +1,16 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const useResetScrollBar = () => {
+const useResetScrollBar = (ref: any) => {
 	const { pathname } = useLocation()
 
 	useEffect(() => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth',
-		})
+		if (ref) {
+			ref.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			})
+		}
 	}, [pathname])
 }
 

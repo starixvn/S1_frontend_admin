@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
+import { useResetScrollBar } from 'common/hooks'
 import { LayoutContentTitle } from './LayoutContentTitle'
 
 const { Content } = Layout
@@ -19,14 +20,18 @@ interface LayoutContentInterface extends FC {
 }
 
 const LayoutContent: LayoutContentInterface = () => {
+	const ref = useRef<HTMLElement>(null)
+
+	useResetScrollBar(ref.current)
+
 	return (
 		<Content
+			ref={ref}
 			style={{
+				padding: '0 24px 24px',
 				margin: 0,
-				padding: 0,
+				height: '90vh',
 				overflow: 'auto',
-				minHeight: '80vh',
-				position: 'static',
 			}}
 		>
 			<Outlet />

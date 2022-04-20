@@ -46,7 +46,7 @@ const Login = () => {
 		<Wrapper>
 			<Card
 				title={t('Login.Label_WelcomeBack')}
-				style={{ width: '400px', border: 'none', margin: 8 }}
+				style={{ width: '400px', border: 'none', margin: 12 }}
 				headStyle={{ background: geekblue.primary, color: gray[0] }}
 			>
 				<Form

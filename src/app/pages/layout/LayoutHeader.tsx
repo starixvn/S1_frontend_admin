@@ -54,7 +54,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 		<>
 			<ChangePasswordModal {...changePasswordModal} />
 
-			<Header className='layout-header'>
+			<Header className='layout-header' style={{ height: '10vh' }}>
 				<Row wrap={false} align='middle'>
 					<Col
 						flex='80px'
