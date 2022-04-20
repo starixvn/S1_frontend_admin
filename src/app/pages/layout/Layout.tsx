@@ -80,7 +80,7 @@ const Layout: FC = () => {
 					onToggleCollapsed={onToggleCollapsed}
 				/>
 
-				<AntdLayout style={{ padding: '0 24px 24px' }}>
+				<AntdLayout style={{ padding: '0 24px 24px', minWidth: 380 }}>
 					<LayoutContent />
 				</AntdLayout>
 			</AntdLayout>
