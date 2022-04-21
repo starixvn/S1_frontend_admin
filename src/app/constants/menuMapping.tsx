@@ -18,6 +18,7 @@ import allowedRoles from './allowedRoles'
 import paths from './paths'
 
 const Dashboard = lazy(() => import('features/dashboard'))
+const RoleManagement = lazy(() => import('features/roleManagement'))
 
 const iconStyle: CSSProperties = {
 	fontSize: '20px',
@@ -674,9 +675,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: 90,
 		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Admin/GroupAuthoritySetting',
-		newAdminPath: '',
+		newAdminPath: 'Administration/RoleManagement',
+		element: <RoleManagement />,
 	},
 	{
 		icon: null,
