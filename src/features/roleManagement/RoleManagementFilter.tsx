@@ -16,9 +16,9 @@ const RoleManagementFilter = ({
 
 	return (
 		<LayoutContent.Card>
-			<Form layout='vertical' form={form} onFinish={onSearch}>
-				<Row gutter={24} align='middle'>
-					<Col md={6} xs={12}>
+			<Form size='small' layout='vertical' form={form} onFinish={onSearch}>
+				<Row align='middle' gutter={8}>
+					<Col lg={6} md={6} xs={8}>
 						<Form.Item name='roleName' label={t('Label_RoleName')}>
 							<Input />
 						</Form.Item>
@@ -29,6 +29,7 @@ const RoleManagementFilter = ({
 					<Col>
 						<Form.Item>
 							<Button
+								size='middle'
 								loading={loading}
 								icon={<SearchOutlined />}
 								htmlType='submit'

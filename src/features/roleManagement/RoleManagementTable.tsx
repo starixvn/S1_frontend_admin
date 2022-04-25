@@ -118,6 +118,7 @@ const RoleManagementTable = () => {
 				loading={loading}
 				columns={columns}
 				dataSource={roleManagementDataList}
+				pagination={{ position: ['topLeft'] }}
 			/>
 		</LayoutContent.Card>
 	)

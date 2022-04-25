@@ -234,10 +234,13 @@ const paths = {
 		},
 	},
 	administration: {
-		root: 'administration',
+		root: 'Administration',
 		sub: {
-			roleSetting: {
-				root: 'administration/roleSetting',
+			roleManagement: {
+				root: 'Administration/RoleManagement',
+			},
+			addRoleManagement: {
+				root: 'Administration/RoleManagement/AddNew',
 			},
 			userSetting: {
 				root: 'administration/userSetting',

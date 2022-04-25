@@ -1,14 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
-import { fetchPermissionGetRoleListAsync } from './thunk'
+import { RequestStatusType } from 'type'
+import {
+	fetchPermissionAddRolePermissionAsync,
+	fetchPermissionGetAllRolePermissionAsync,
+	fetchPermissionGetRoleListAsync,
+} from './thunk'
 import { roleManagementInterface } from './type'
 
+interface allRolePermissionInterface {
+	currencyList: number[]
+	permission: any[]
+}
+
 interface RoleManagementState {
+	allRolePermission: allRolePermissionInterface
 	roleManagementDataList: roleManagementInterface[]
-	status: 'idle' | 'pending' | 'succeeded' | 'failed'
+	status: RequestStatusType
 }
 
 const initialState: RoleManagementState = {
+	allRolePermission: {
+		currencyList: [],
+		permission: [],
+	},
 	roleManagementDataList: [],
 	status: 'idle',
 }
@@ -27,6 +42,19 @@ const roleManagementSlice = createSlice({
 
 				state.roleManagementDataList = data
 				state.status = 'succeeded'
+			})
+			.addCase(fetchPermissionGetRoleListAsync.rejected, state => {
+				state.status = 'failed'
+			})
+
+			.addCase(
+				fetchPermissionGetAllRolePermissionAsync.fulfilled,
+				(state, action) => {
+					state.allRolePermission = action.payload
+				}
+			)
+			.addCase(fetchPermissionAddRolePermissionAsync.fulfilled, state => {
+				state.roleManagementDataList = []
 			}),
 })
 
@@ -35,5 +63,8 @@ export const selectRoleManagementDataList = (state: RootState) =>
 
 export const selectRoleManagementStatus = (state: RootState) =>
 	state.roleManagement.status
+
+export const selectAllRolePermission = (state: RootState) =>
+	state.roleManagement.allRolePermission
 
 export default roleManagementSlice.reducer

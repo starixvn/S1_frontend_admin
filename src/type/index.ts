@@ -1,3 +1,5 @@
+export type RequestStatusType = 'idle' | 'pending' | 'succeeded' | 'failed'
+
 export interface LocationState {
 	state: {
 		from: {

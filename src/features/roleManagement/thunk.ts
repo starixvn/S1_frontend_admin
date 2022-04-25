@@ -1,6 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { fetchPermissionGetRoleList } from './api'
+import {
+	AddRolePermissionInterface,
+	fetchPermissionAddRolePermission,
+	fetchPermissionGetAllRolePermission,
+	fetchPermissionGetRoleList,
+} from './api'
 
 export const fetchPermissionGetRoleListAsync = createAsyncThunk(
 	'roleManagement/fetchPermissionGetRoleList',
@@ -8,5 +13,21 @@ export const fetchPermissionGetRoleListAsync = createAsyncThunk(
 		const data = await fetchPermissionGetRoleList(roleName)
 
 		return data
+	}
+)
+
+export const fetchPermissionGetAllRolePermissionAsync = createAsyncThunk(
+	'roleManagement/fetchPermissionGetAllRolePermission',
+	async () => {
+		const data = await fetchPermissionGetAllRolePermission()
+
+		return data
+	}
+)
+
+export const fetchPermissionAddRolePermissionAsync = createAsyncThunk(
+	'roleManagement/fetchPermissionAddRolePermission',
+	async (body: AddRolePermissionInterface) => {
+		await fetchPermissionAddRolePermission(body)
 	}
 )

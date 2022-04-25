@@ -145,5 +145,9 @@
 	"Label_Action": "Action",
 	"Label_RoleName": "Role Name",
 	"Label_CheckUserListing": "Check User Listing",
-	"Label_UserListing": "User Listing({{count}})"
+	"Label_UserListing": "User Listing({{count}})",
+	"Label_AddRoleManagement": "Add Role Management",
+	"Label_AddRoleSuccess": "Add Role Success",
+	"Label_RoleNameRequire": "Role Name is Require",
+	"Label_CurrencyRequire": "Currency is Require"
 }
