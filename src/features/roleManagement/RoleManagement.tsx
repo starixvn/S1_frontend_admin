@@ -9,7 +9,10 @@ import { useNavigate } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
 import { RoleManagementTable } from './RoleManagementTable'
 import { selectRoleManagementStatus } from './slice'
-import { fetchPermissionGetRoleListAsync } from './thunk'
+import {
+	fetchPermissionDeleteRolePermissionAsync,
+	fetchPermissionGetRoleListAsync,
+} from './thunk'
 
 const RoleManagement = () => {
 	const { t } = useTranslation()
@@ -32,6 +35,16 @@ const RoleManagement = () => {
 		}
 	}
 
+	const handleDelete = async (role: number) => {
+		try {
+			await dispatch(fetchPermissionDeleteRolePermissionAsync(role)).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const loading = roleManagementStatus === 'pending'
 
 	return (
@@ -44,7 +57,9 @@ const RoleManagement = () => {
 				onSearch={handleSearch}
 			/>
 
-			{roleManagementStatus !== 'idle' && <RoleManagementTable />}
+			{roleManagementStatus !== 'idle' && (
+				<RoleManagementTable onDelete={handleDelete} />
+			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

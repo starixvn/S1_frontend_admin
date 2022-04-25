@@ -148,6 +148,8 @@
 	"Label_UserListing": "User Listing({{count}})",
 	"Label_AddRoleManagement": "Add Role Management",
 	"Label_AddRoleSuccess": "Add Role Success",
-	"Label_RoleNameRequire": "Role Name is Require",
-	"Label_CurrencyRequire": "Currency is Require"
+	"Label_RoleNameRequire": "Role Name is required",
+	"Label_CurrencyRequire": "Currency is required",
+	"Label_SureToDelete": "Sure to delete?",
+	"Label_Delete": "Delete"
 }

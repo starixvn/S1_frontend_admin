@@ -46,3 +46,15 @@ export const fetchPermissionAddRolePermission = async ({
 		throw new Error(response?.data?.message)
 	}
 }
+
+export const fetchPermissionDeleteRolePermission = async (role: number) => {
+	const response = await BoApi.post('Permission/DeleteRolePermission', {
+		role,
+	})
+
+	if (response?.data?.errorCode !== 0) {
+		throw new Error(response?.data?.message)
+	}
+
+	return role
+}

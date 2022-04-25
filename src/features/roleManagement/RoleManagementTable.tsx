@@ -1,4 +1,4 @@
-import { Button, List, Modal, Table, Typography } from 'antd'
+import { Button, List, Modal, Popconfirm, Table, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import _ from 'lodash'
@@ -8,7 +8,11 @@ import {
 	selectRoleManagementStatus,
 } from './slice'
 
-const RoleManagementTable = () => {
+interface RoleManagementTableInterface {
+	onDelete: (role: number) => void
+}
+
+const RoleManagementTable = ({ onDelete }: RoleManagementTableInterface) => {
 	const { t } = useTranslation()
 	const allCurrencyList = useAppSelector(state => state.allEnum.allCurrencyList)
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
@@ -57,7 +61,14 @@ const RoleManagementTable = () => {
 			key: 'operation',
 			width: 80,
 			align: 'center' as 'center',
-			render: () => <span>action</span>,
+			render: (values: any) => (
+				<Popconfirm
+					title={t('Label_SureToDelete')}
+					onConfirm={() => onDelete(values.role)}
+				>
+					<Typography.Link>{t('Label_Delete')}</Typography.Link>
+				</Popconfirm>
+			),
 		},
 		{
 			title: t('Label_RoleName'),

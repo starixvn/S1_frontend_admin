@@ -3,6 +3,7 @@ import { RootState } from 'app/store'
 import { RequestStatusType } from 'type'
 import {
 	fetchPermissionAddRolePermissionAsync,
+	fetchPermissionDeleteRolePermissionAsync,
 	fetchPermissionGetAllRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
 } from './thunk'
@@ -55,7 +56,21 @@ const roleManagementSlice = createSlice({
 			)
 			.addCase(fetchPermissionAddRolePermissionAsync.fulfilled, state => {
 				state.roleManagementDataList = []
-			}),
+			})
+			.addCase(
+				fetchPermissionDeleteRolePermissionAsync.fulfilled,
+				(state, action) => {
+					const deleteRole = action.payload
+
+					if (!deleteRole) {
+						return
+					}
+					const roleManagementDataList = state.roleManagementDataList.filter(
+						roleManagementData => roleManagementData.role !== deleteRole
+					)
+					state.roleManagementDataList = roleManagementDataList
+				}
+			),
 })
 
 export const selectRoleManagementDataList = (state: RootState) =>
