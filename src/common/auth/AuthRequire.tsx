@@ -14,7 +14,7 @@ interface RequireAuthProps {
 }
 
 const AuthRequire = ({
-	pathMode,
+	pathMode = 'NewAdmin',
 	functionId,
 	internalFunctionKey,
 	children,

@@ -10,8 +10,11 @@ const { Content } = Layout
 export const StyledCard = styled(Content)`
 	background: white;
 	margin-bottom: 32px;
-	padding: 20px;
+	padding: 12px 32px;
 	border-radius: 4px;
+	overflow: auto;
+}
+
 `
 
 interface LayoutContentInterface extends FC {
@@ -26,6 +29,7 @@ const LayoutContent: LayoutContentInterface = () => {
 
 	return (
 		<Content
+			id='layout-content'
 			ref={ref}
 			style={{
 				padding: '0 24px 24px',
