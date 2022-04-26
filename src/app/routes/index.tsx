@@ -7,15 +7,24 @@ import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
-
 import { AuthRequire } from '../../common/auth/AuthRequire'
+
+const Dashboard = lazy(() => import('features/dashboard'))
+
+const RoleManagement = lazy(
+	() => import('features/roleManagement/RoleManagement')
+)
 
 const AddRoleManagement = lazy(
 	() => import('features/roleManagement/AddRoleManagement')
 )
 
-const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(({ pathMode }) =>
-	Boolean(pathMode)
+const EditRoleManagement = lazy(
+	() => import('features/roleManagement/EditRoleManagement')
+)
+
+const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
+	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
 	({
 		internalPath,
@@ -76,10 +85,40 @@ const routes: RouteObject[] = [
 		children: [
 			...routesWithMenu,
 			{
+				index: true,
+				element: (
+					<AuthRequire functionId={paths.dashboard.functionId}>
+						<Dashboard />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.roleManagement.functionId}
+					>
+						<RoleManagement />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.addRoleManagement.root}`,
 				element: (
-					<AuthRequire>
+					<AuthRequire
+						functionId={paths.administration.sub.addRoleManagement.functionId}
+					>
 						<AddRoleManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editRoleManagement.root}/:roleId`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.editRoleManagement.functionId}
+					>
+						<EditRoleManagement />
 					</AuthRequire>
 				),
 			},

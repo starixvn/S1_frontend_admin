@@ -4,8 +4,9 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
 import { RoleManagementTable } from './RoleManagementTable'
 import { selectRoleManagementStatus } from './slice'
@@ -18,8 +19,10 @@ const RoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-
 	const [form] = Form.useForm()
+	const [searchParams, setSearchParams] = useSearchParams()
+
+	const searchParamRoleName = searchParams.get('roleName')
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
@@ -28,6 +31,10 @@ const RoleManagement = () => {
 
 		try {
 			await dispatch(fetchPermissionGetRoleListAsync(roleName)).unwrap()
+
+			setSearchParams({
+				roleName,
+			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -38,6 +45,8 @@ const RoleManagement = () => {
 	const handleDelete = async (role: number) => {
 		try {
 			await dispatch(fetchPermissionDeleteRolePermissionAsync(role)).unwrap()
+
+			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -46,6 +55,16 @@ const RoleManagement = () => {
 	}
 
 	const loading = roleManagementStatus === 'pending'
+
+	useEffect(() => {
+		dispatch(fetchPermissionGetRoleListAsync(searchParamRoleName ?? ''))
+	}, [])
+
+	useEffect(() => {
+		form.setFieldsValue({
+			roleName: searchParamRoleName ?? '',
+		})
+	}, [searchParamRoleName])
 
 	return (
 		<main>
@@ -76,4 +95,4 @@ const RoleManagement = () => {
 	)
 }
 
-export { RoleManagement }
+export default RoleManagement

@@ -1,17 +1,17 @@
-import { Form, message } from 'antd'
+import { message } from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
-import _ from 'lodash'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { RequestStatusType } from 'type'
-import { RoleManagementForm } from './RoleManagementForm'
+import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
 import {
 	fetchPermissionAddRolePermissionAsync,
+	fetchPermissionGetAllRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
 } from './thunk'
 
@@ -25,10 +25,14 @@ const AddRoleManagement = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>()
-	const [form] = Form.useForm()
-	const [permissionList, setPermissionList] = useState<
-		FormPermissionInterface[]
-	>([])
+
+	const {
+		form,
+		permissionList,
+		setPermissionList,
+		handlePermissionChange,
+		handleCheckAllPermission,
+	} = useRoleManagementForm()
 
 	const handleCreate = async () => {
 		const isValid = await form.validateFields()
@@ -62,7 +66,7 @@ const AddRoleManagement = () => {
 				`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`
 			)
 
-			message.success(t('Label_AddRoleSuccess'))
+			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -72,48 +76,9 @@ const AddRoleManagement = () => {
 		}
 	}
 
-	const handlePermissionChange = ({
-		displayKey,
-		permissionId,
-	}: {
-		displayKey: number
-		permissionId: number
-	}) => {
-		const newPermissionList = _.cloneDeep(permissionList)
-		const currentIndex = newPermissionList?.findIndex(
-			permission => permission.displayKey === displayKey
-		)
-
-		if (currentIndex === -1) {
-			setPermissionList([
-				...newPermissionList,
-				{
-					displayKey,
-					permissionIdList: [permissionId],
-				},
-			])
-		} else {
-			const originPermissionIdList =
-				newPermissionList[currentIndex].permissionIdList
-			let newPermissionIdList = []
-
-			if (_.includes(originPermissionIdList, permissionId)) {
-				newPermissionIdList = _.filter(
-					originPermissionIdList,
-					mapPermissionId => mapPermissionId !== permissionId
-				)
-			} else {
-				newPermissionIdList = [...originPermissionIdList, permissionId]
-			}
-
-			newPermissionList[currentIndex] = {
-				displayKey,
-				permissionIdList: newPermissionIdList,
-			}
-
-			setPermissionList(newPermissionList)
-		}
-	}
+	useEffect(() => {
+		dispatch(fetchPermissionGetAllRolePermissionAsync())
+	}, [])
 
 	return (
 		<main>
@@ -123,6 +88,7 @@ const AddRoleManagement = () => {
 				form={form}
 				permissionList={permissionList}
 				onPermissionChange={handlePermissionChange}
+				onCheckAllPermission={handleCheckAllPermission}
 			/>
 
 			<AffixButtons>

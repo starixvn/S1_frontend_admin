@@ -3,7 +3,8 @@ const paths = {
 		root: '/',
 	},
 	dashboard: {
-		root: 'dashboard',
+		root: '',
+		functionId: 1,
 	},
 	login: {
 		root: 'login',
@@ -238,9 +239,15 @@ const paths = {
 		sub: {
 			roleManagement: {
 				root: 'Administration/RoleManagement',
+				functionId: 90,
 			},
 			addRoleManagement: {
 				root: 'Administration/RoleManagement/AddNew',
+				functionId: 90,
+			},
+			editRoleManagement: {
+				root: 'Administration/RoleManagement/Edit',
+				functionId: 90,
 			},
 			userSetting: {
 				root: 'administration/userSetting',

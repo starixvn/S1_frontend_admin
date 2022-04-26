@@ -1,8 +1,11 @@
-import { Button, List, Modal, Popconfirm, Table, Typography } from 'antd'
+import { Space, Button, List, Modal, Popconfirm, Table, Typography } from 'antd'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import {
 	selectRoleManagementDataList,
 	selectRoleManagementStatus,
@@ -14,6 +17,7 @@ interface RoleManagementTableInterface {
 
 const RoleManagementTable = ({ onDelete }: RoleManagementTableInterface) => {
 	const { t } = useTranslation()
+	const navigate = useNavigate()
 	const allCurrencyList = useAppSelector(state => state.allEnum.allCurrencyList)
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
@@ -62,12 +66,24 @@ const RoleManagementTable = ({ onDelete }: RoleManagementTableInterface) => {
 			width: 80,
 			align: 'center' as 'center',
 			render: (values: any) => (
-				<Popconfirm
-					title={t('Label_SureToDelete')}
-					onConfirm={() => onDelete(values.role)}
-				>
-					<Typography.Link>{t('Label_Delete')}</Typography.Link>
-				</Popconfirm>
+				<Space>
+					<Popconfirm
+						title={t('Label_SureToDelete')}
+						onConfirm={() => onDelete(values.role)}
+					>
+						<Typography.Link>{t('Label_Delete')}</Typography.Link>
+					</Popconfirm>
+
+					<Typography.Link
+						onClick={() =>
+							navigate(
+								`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editRoleManagement.root}/${values.role}`
+							)
+						}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
+				</Space>
 			),
 		},
 		{

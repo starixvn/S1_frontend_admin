@@ -6,22 +6,18 @@ import {
 	fetchPermissionDeleteRolePermissionAsync,
 	fetchPermissionGetAllRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
+	fetchPermissionGetRolePermissionAsync,
 } from './thunk'
-import { roleManagementInterface } from './type'
-
-interface allRolePermissionInterface {
-	currencyList: number[]
-	permission: any[]
-}
+import { RoleManagementInterface, RolePermissionInterface } from './type'
 
 interface RoleManagementState {
-	allRolePermission: allRolePermissionInterface
-	roleManagementDataList: roleManagementInterface[]
+	rolePermission: RolePermissionInterface
+	roleManagementDataList: RoleManagementInterface[]
 	status: RequestStatusType
 }
 
 const initialState: RoleManagementState = {
-	allRolePermission: {
+	rolePermission: {
 		currencyList: [],
 		permission: [],
 	},
@@ -48,12 +44,20 @@ const roleManagementSlice = createSlice({
 				state.status = 'failed'
 			})
 
+			.addCase(fetchPermissionGetAllRolePermissionAsync.pending, state => {
+				state.status = 'pending'
+			})
 			.addCase(
 				fetchPermissionGetAllRolePermissionAsync.fulfilled,
 				(state, action) => {
-					state.allRolePermission = action.payload
+					state.rolePermission = action.payload
+					state.status = 'succeeded'
 				}
 			)
+			.addCase(fetchPermissionGetAllRolePermissionAsync.rejected, state => {
+				state.status = 'failed'
+			})
+
 			.addCase(fetchPermissionAddRolePermissionAsync.fulfilled, state => {
 				state.roleManagementDataList = []
 			})
@@ -70,7 +74,20 @@ const roleManagementSlice = createSlice({
 					)
 					state.roleManagementDataList = roleManagementDataList
 				}
-			),
+			)
+			.addCase(fetchPermissionGetRolePermissionAsync.pending, state => {
+				state.status = 'pending'
+			})
+			.addCase(
+				fetchPermissionGetRolePermissionAsync.fulfilled,
+				(state, action) => {
+					state.rolePermission = action.payload
+					state.status = 'succeeded'
+				}
+			)
+			.addCase(fetchPermissionGetRolePermissionAsync.rejected, state => {
+				state.status = 'failed'
+			}),
 })
 
 export const selectRoleManagementDataList = (state: RootState) =>
@@ -79,7 +96,7 @@ export const selectRoleManagementDataList = (state: RootState) =>
 export const selectRoleManagementStatus = (state: RootState) =>
 	state.roleManagement.status
 
-export const selectAllRolePermission = (state: RootState) =>
-	state.roleManagement.allRolePermission
+export const selectRolePermission = (state: RootState) =>
+	state.roleManagement.rolePermission
 
 export default roleManagementSlice.reducer

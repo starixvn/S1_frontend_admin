@@ -12,6 +12,9 @@ export const StyledCard = styled(Content)`
 	margin-bottom: 32px;
 	padding: 12px 32px;
 	border-radius: 4px;
+	overflow: auto;
+}
+
 `
 
 interface LayoutContentInterface extends FC {

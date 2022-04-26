@@ -18,9 +18,9 @@ const RoleManagementFilter = ({
 		<LayoutContent.Card>
 			<Form size='small' layout='vertical' form={form} onFinish={onSearch}>
 				<Row align='middle' gutter={8}>
-					<Col lg={6} md={6} xs={8}>
+					<Col lg={6} md={6} xs={12}>
 						<Form.Item name='roleName' label={t('Label_RoleName')}>
-							<Input />
+							<Input allowClear />
 						</Form.Item>
 					</Col>
 				</Row>

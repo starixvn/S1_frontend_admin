@@ -1,7 +1,14 @@
 import BoApi from 'common/service/Api'
-import { roleManagementInterface } from './type'
+import {
+	AddRolePermissionInterface,
+	RoleManagementInterface,
+	RolePermissionInterface,
+	UpdateRolePermissionInterface,
+} from './type'
 
-export const fetchPermissionGetRoleList = async (roleName: string) => {
+export const fetchPermissionGetRoleList = async (
+	roleName: string
+): Promise<RoleManagementInterface[]> => {
 	const response = await BoApi.post('Permission/GetRoleList', {
 		RoleName: roleName,
 	})
@@ -10,7 +17,7 @@ export const fetchPermissionGetRoleList = async (roleName: string) => {
 		throw new Error(response?.data?.message)
 	}
 
-	return (response?.data?.data as roleManagementInterface[]) ?? []
+	return response?.data?.data ?? []
 }
 
 export const fetchPermissionGetAllRolePermission = async () => {
@@ -23,12 +30,6 @@ export const fetchPermissionGetAllRolePermission = async () => {
 	return response?.data?.data
 }
 
-export interface AddRolePermissionInterface {
-	name: string
-	mark: string
-	currencyList: number[]
-	permission: any[]
-}
 export const fetchPermissionAddRolePermission = async ({
 	name = '',
 	mark = '',
@@ -57,4 +58,38 @@ export const fetchPermissionDeleteRolePermission = async (role: number) => {
 	}
 
 	return role
+}
+
+export const fetchPermissionGetRolePermission = async (
+	role: number
+): Promise<RolePermissionInterface> => {
+	const response = await BoApi.post('Permission/GetRolePermission', {
+		role,
+	})
+
+	if (response?.data?.errorCode !== 0) {
+		throw new Error(response?.data?.message)
+	}
+
+	return response?.data?.data
+}
+
+export const updateRolePermission = async ({
+	name = '',
+	mark = '',
+	role,
+	currencyList = [],
+	permission = [],
+}: UpdateRolePermissionInterface) => {
+	const response = await BoApi.post('Permission/UpdateRolePermission', {
+		name,
+		mark,
+		role,
+		currencyList,
+		permission,
+	})
+
+	if (response?.data?.errorCode !== 0) {
+		throw new Error(response?.data?.message)
+	}
 }
