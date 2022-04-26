@@ -53,6 +53,9 @@ export const selectCurrencyListBySite = (state: RootState) => {
 	)
 }
 
+export const selectAllCurrencyList = (state: RootState) =>
+	state.allEnum.allCurrencyList
+
 export const { selectUserSite } = enumSlice.actions
 
 export default enumSlice.reducer

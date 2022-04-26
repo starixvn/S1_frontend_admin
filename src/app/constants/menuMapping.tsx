@@ -11,13 +11,11 @@ import {
 } from '@ant-design/icons'
 import { Button, Result } from 'antd'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
-import { CSSProperties, lazy } from 'react'
+import { CSSProperties } from 'react'
 import { RiUserSettingsLine } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import allowedRoles from './allowedRoles'
 import paths from './paths'
-
-const Dashboard = lazy(() => import('features/dashboard'))
 
 const iconStyle: CSSProperties = {
 	fontSize: '20px',
@@ -80,12 +78,11 @@ export interface MenMappingInterface {
 export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: <DashboardOutlined style={iconStyle} />,
-		functionId: 1,
+		functionId: paths.dashboard.functionId,
 		pathMode: 'NewAdmin',
 		internalPath: 'Home/DashboardNew',
 		internalFunctionKey: allowedRoles.HomeDashboardNew,
 		newAdminPath: paths.dashboard.root,
-		element: <Dashboard />,
 	},
 	{
 		icon: null,
@@ -672,11 +669,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 90,
+		functionId: paths.administration.sub.roleManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Admin/GroupAuthoritySetting',
-		newAdminPath: '',
+		newAdminPath: `${paths.administration.sub.roleManagement.root}`,
 	},
 	{
 		icon: null,

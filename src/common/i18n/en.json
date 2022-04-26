@@ -137,7 +137,21 @@
 	"Label_RequiredInput": "Please input {{field}}",
 	"Label_Search": "Search",
 	"Label_Dashboard": "Dashboard",
+	"Label_Remark": "Remark",
 	"Label_Currency": "Currency",
 	"Label_BaseCurrency": "BaseCurrency",
-	"Label_SelectAll": "Select All"
+	"Label_SelectAll": "Select All",
+	"Label_CheckAll": "Check All",
+	"Label_RoleManagement": "Role Management",
+	"Label_Action": "Action",
+	"Label_RoleName": "Role Name",
+	"Label_CheckUserListing": "Check User Listing",
+	"Label_UserListing": "User Listing({{count}})",
+	"Label_AddRoleManagement": "Add Role Management",
+	"Label_RoleNameRequire": "Role Name is required",
+	"Label_CurrencyRequire": "Currency is required",
+	"Label_SureToDelete": "Sure to delete?",
+	"Label_Delete": "Delete",
+	"Label_Edit": "Edit",
+	"Label_EditRoleManagement": "Edit Role Management"
 }
