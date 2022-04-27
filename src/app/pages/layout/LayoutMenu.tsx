@@ -102,21 +102,26 @@ const LayoutMenu = ({
 	// const onSearch = (value: string) => console.log(value);
 
 	const renderMenuItem = (menu: MenuInterface) => {
-		const { name, moduleId, functionId } = menu
+		const { name, moduleId, functionId, permission } = menu
 		const isGroup = Boolean(moduleId)
 
 		const { path, icon, internalFunctionKey, pathMode } = getMapMenu(
 			Number(functionId)
 		)
 
-		const hasPermission = _.includes(
+		const hasNotInternalPermission = !_.includes(
 			internalPermissionFunctionKeys,
 			internalFunctionKey
 		)
 
+		const hasNotNewAdminPermission =
+			_.find(permission, { name: 'View' })?.canUse === false
+
 		if (isGroup) return renderSubMenuItem(menu)
 
-		if (pathMode === 'Internal' && !hasPermission) return null
+		if (pathMode === 'Internal' && hasNotInternalPermission) return null
+
+		if (pathMode === 'NewAdmin' && hasNotNewAdminPermission) return null
 
 		return (
 			<Menu.Item
@@ -135,6 +140,21 @@ const LayoutMenu = ({
 		const menuKey = makeMenuKey(name, moduleId)
 		const moduleIcon = moduleId ? MODULE_ICON_MAPPING?.[moduleId] : null
 
+		const renderFunctionDatas = menu.functionDatas
+			?.map(functionData => renderMenuItem(functionData))
+			.filter(Boolean)
+
+		const renderSubLayerDatas = menu.subLayerDatas
+			?.map(subLayerData => renderMenuItem(subLayerData))
+			.filter(Boolean)
+
+		if (
+			renderFunctionDatas?.length === 0 &&
+			renderSubLayerDatas?.length === 0
+		) {
+			return null
+		}
+
 		return (
 			<SubMenu
 				style={{ fontSize: '12px' }}
@@ -144,9 +164,9 @@ const LayoutMenu = ({
 				icon={moduleIcon}
 				theme={collapsed ? 'light' : 'dark'}
 			>
-				{menu.functionDatas?.map(functionData => renderMenuItem(functionData))}
+				{renderFunctionDatas}
 
-				{menu.subLayerDatas?.map(subLayerData => renderMenuItem(subLayerData))}
+				{renderSubLayerDatas}
 			</SubMenu>
 		)
 	}
