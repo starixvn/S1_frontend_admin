@@ -1,8 +1,8 @@
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import React from 'react'
+import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { UIStateMain } from './Main'
 
 export const UI_STATUS_TYPE = {
@@ -14,11 +14,6 @@ interface UIStatePageProps {
 }
 const UIStatePage = ({ status }: UIStatePageProps) => {
 	const { t } = useTranslation()
-	const navigate = useNavigate()
-
-	const prevPage = () => {
-		navigate(-1)
-	}
 
 	const renderText = () => {
 		let text = null
@@ -46,9 +41,11 @@ const UIStatePage = ({ status }: UIStatePageProps) => {
 					{status} | {renderText()}
 				</div>
 				<br />
-				<Button onClick={prevPage} type='primary' icon={<ArrowLeftOutlined />}>
-					click here to back
-				</Button>
+				<Link to={`/${paths.dashboard.root}`}>
+					<Button type='primary' icon={<ArrowLeftOutlined />}>
+						click here to back
+					</Button>
+				</Link>
 			</div>
 		</UIStateMain>
 	)
