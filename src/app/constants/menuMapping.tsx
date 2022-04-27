@@ -671,7 +671,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.administration.sub.roleManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		internalPath: 'Admin/GroupAuthoritySetting',
 		newAdminPath: `${paths.administration.sub.roleManagement.root}`,
 	},
