@@ -14,3 +14,13 @@ export interface Currency {
 	isoCode: string
 	note: string
 }
+
+export interface AdjustmentInfoLogMenuItem {
+	name: string
+	value: number
+}
+
+export interface ActionType {
+	name: string
+	value: number
+}

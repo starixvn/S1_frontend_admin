@@ -249,6 +249,10 @@ const paths = {
 				root: 'Administration/RoleManagement/Edit',
 				functionId: 90,
 			},
+			adjustmentLogReport: {
+				root: 'Administration/AdjustmentLogReport',
+				functionId: 93,
+			},
 			userSetting: {
 				root: 'administration/userSetting',
 			},
