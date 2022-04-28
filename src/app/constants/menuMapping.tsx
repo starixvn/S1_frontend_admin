@@ -695,8 +695,8 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: 93,
 		internalFunctionKey: allowedRoles.FinanceAdjustmentLogReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/AdjustmentLogReport',
-		newAdminPath: '',
+		newAdminPath: paths.administration.sub.adjustmentLogReport.root,
 	},
 ]

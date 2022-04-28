@@ -153,5 +153,15 @@
 	"Label_SureToDelete": "Sure to delete?",
 	"Label_Delete": "Delete",
 	"Label_Edit": "Edit",
-	"Label_EditRoleManagement": "Edit Role Management"
+	"Label_EditRoleManagement": "Edit Role Management",
+	"Label_DateRangeRequire": "Date Range is required",
+	"Label_DateRange": "Date Range",
+	"Label_Function": "Function",
+	"Label_ActionType": "Action Type",
+	"Label_TransId": "TransId",
+	"Label_Operator": "Operator",
+	"Label_AdjustmentLogReport": "Adjustment Log Report",
+	"Label_Before": "Before",
+	"Label_After": "After",
+	"Label_CreateTime": "CreateTime"
 }

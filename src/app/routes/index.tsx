@@ -23,6 +23,10 @@ const EditRoleManagement = lazy(
 	() => import('features/roleManagement/EditRoleManagement')
 )
 
+const AdjustmentLogReport = lazy(
+	() => import('features/adjustmentLogReport/AdjustmentLogReport')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -119,6 +123,16 @@ const routes: RouteObject[] = [
 						functionId={paths.administration.sub.editRoleManagement.functionId}
 					>
 						<EditRoleManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.adjustmentLogReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.adjustmentLogReport.functionId}
+					>
+						<AdjustmentLogReport />
 					</AuthRequire>
 				),
 			},

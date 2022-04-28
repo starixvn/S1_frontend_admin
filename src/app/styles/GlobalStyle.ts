@@ -10,6 +10,15 @@ const GlobalStyle = createGlobalStyle`
         background-color: transparent;
     }
     
+
+    .ant-collapse {
+      background: white;
+    }
+    
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+
     .layout-header {
       padding:0;
 

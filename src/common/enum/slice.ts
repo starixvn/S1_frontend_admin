@@ -2,13 +2,20 @@ import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
 import _ from 'lodash'
 import { fetchAllEnumAsync } from './thunk'
-import { Currency, UserSite } from './type'
+import {
+	ActionType,
+	AdjustmentInfoLogMenuItem,
+	Currency,
+	UserSite,
+} from './type'
 
 export interface EnumState {
 	loading: boolean | undefined
 	userSite?: UserSite
 	userSiteList: UserSite[]
 	allCurrencyList: Currency[]
+	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
+	actionTypeList: ActionType[]
 }
 
 const initialState: EnumState = {
@@ -16,13 +23,15 @@ const initialState: EnumState = {
 	userSite: undefined,
 	userSiteList: [],
 	allCurrencyList: [],
+	adjustmentInfoLogMenu: [],
+	actionTypeList: [],
 }
 
 const enumSlice = createSlice({
 	name: 'enum',
 	initialState,
 	reducers: {
-		selectUserSite: (state, action) => {
+		onChangeUserSite: (state, action) => {
 			state.userSite = action.payload
 		},
 	},
@@ -32,10 +41,17 @@ const enumSlice = createSlice({
 				state.loading = true
 			})
 			.addCase(fetchAllEnumAsync.fulfilled, (state, action) => {
-				const { userSiteList, allCurrencyList } = action.payload as EnumState
+				const {
+					userSiteList,
+					allCurrencyList,
+					adjustmentInfoLogMenu,
+					actionTypeList,
+				} = action.payload as EnumState
 				state.loading = false
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
+				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
+				state.actionTypeList = actionTypeList
 			}),
 })
 
@@ -53,9 +69,17 @@ export const selectCurrencyListBySite = (state: RootState) => {
 	)
 }
 
+export const selectUserSite = (state: RootState) => state.allEnum.userSite
+
 export const selectAllCurrencyList = (state: RootState) =>
 	state.allEnum.allCurrencyList
 
-export const { selectUserSite } = enumSlice.actions
+export const selectAdjustmentInfoLogMenu = (state: RootState) =>
+	state.allEnum.adjustmentInfoLogMenu
+
+export const selectActionTypeList = (state: RootState) =>
+	state.allEnum.actionTypeList
+
+export const { onChangeUserSite } = enumSlice.actions
 
 export default enumSlice.reducer

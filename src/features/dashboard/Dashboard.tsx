@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
