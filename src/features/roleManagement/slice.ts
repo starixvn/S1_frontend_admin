@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
 import { RequestStatusType } from 'type'
 import {
@@ -13,7 +13,7 @@ import { RoleManagementInterface, RolePermissionInterface } from './type'
 interface RoleManagementState {
 	rolePermission: RolePermissionInterface
 	roleManagementDataList: RoleManagementInterface[]
-	status: RequestStatusType
+	status: RequestStatusType | undefined
 }
 
 const initialState: RoleManagementState = {
@@ -22,42 +22,33 @@ const initialState: RoleManagementState = {
 		permission: [],
 	},
 	roleManagementDataList: [],
-	status: 'idle',
+	status: undefined,
 }
 
 const roleManagementSlice = createSlice({
 	name: 'roleManagement',
 	initialState,
-	reducers: {},
+	reducers: {
+		setRoleManagementStatus: (
+			state,
+			action: PayloadAction<RequestStatusType>
+		) => {
+			state.status = action.payload
+		},
+	},
 	extraReducers: build =>
 		build
-			.addCase(fetchPermissionGetRoleListAsync.pending, state => {
-				state.status = 'pending'
-			})
 			.addCase(fetchPermissionGetRoleListAsync.fulfilled, (state, action) => {
 				const data = action.payload
 
 				state.roleManagementDataList = data
-				state.status = 'succeeded'
-			})
-			.addCase(fetchPermissionGetRoleListAsync.rejected, state => {
-				state.status = 'failed'
-			})
-
-			.addCase(fetchPermissionGetAddRolePermissionAsync.pending, state => {
-				state.status = 'pending'
 			})
 			.addCase(
 				fetchPermissionGetAddRolePermissionAsync.fulfilled,
 				(state, action) => {
 					state.rolePermission = action.payload
-					state.status = 'succeeded'
 				}
 			)
-			.addCase(fetchPermissionGetAddRolePermissionAsync.rejected, state => {
-				state.status = 'failed'
-			})
-
 			.addCase(fetchPermissionAddRolePermissionAsync.fulfilled, state => {
 				state.roleManagementDataList = []
 			})
@@ -75,19 +66,12 @@ const roleManagementSlice = createSlice({
 					state.roleManagementDataList = roleManagementDataList
 				}
 			)
-			.addCase(fetchPermissionGetUpdateRolePermissionAsync.pending, state => {
-				state.status = 'pending'
-			})
 			.addCase(
 				fetchPermissionGetUpdateRolePermissionAsync.fulfilled,
 				(state, action) => {
 					state.rolePermission = action.payload
-					state.status = 'succeeded'
 				}
-			)
-			.addCase(fetchPermissionGetUpdateRolePermissionAsync.rejected, state => {
-				state.status = 'failed'
-			}),
+			),
 })
 
 export const selectRoleManagementDataList = (state: RootState) =>
@@ -99,4 +83,8 @@ export const selectRoleManagementStatus = (state: RootState) =>
 export const selectRolePermission = (state: RootState) =>
 	state.roleManagement.rolePermission
 
-export default roleManagementSlice.reducer
+export const { setRoleManagementStatus } = roleManagementSlice.actions
+
+const roleManagementReducer = roleManagementSlice.reducer
+
+export default roleManagementReducer

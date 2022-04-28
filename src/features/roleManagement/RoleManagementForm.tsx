@@ -15,10 +15,10 @@ import {
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { selectAllCurrencyList } from 'common/enum'
-
+import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { selectRoleManagementStatus, selectRolePermission } from './slice'
+import { selectRolePermission } from './slice'
 import { FormPermissionInterface } from './AddRoleManagement'
 
 const { Option } = Select
@@ -116,6 +116,7 @@ export const useRoleManagementForm = () => {
 
 interface RoleManagementFormInterface {
 	form: FormInstance
+	loading: boolean
 	permissionList: FormPermissionInterface[]
 	onPermissionChange: ({
 		displayKey,
@@ -129,6 +130,7 @@ interface RoleManagementFormInterface {
 
 const RoleManagementForm = ({
 	form,
+	loading,
 	permissionList,
 	onPermissionChange,
 	onCheckAllPermission,
@@ -137,7 +139,6 @@ const RoleManagementForm = ({
 
 	const allCurrencyList = useSelector(selectAllCurrencyList)
 	const rolePermission = useAppSelector(selectRolePermission)
-	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 	const filteredAllCurrencyListByRole = allCurrencyList.filter(currency =>
 		_.some(
 			rolePermission?.currencyList,
@@ -231,16 +232,13 @@ const RoleManagementForm = ({
 		)
 	}
 
-	const loading =
-		roleManagementStatus === 'idle' || roleManagementStatus === 'pending'
-
 	return (
 		<LayoutContent.Card>
 			{loading ? (
 				<Skeleton />
 			) : (
 				<Form form={form} size='small' layout='vertical'>
-					<Row align='middle' gutter={8}>
+					<Row align='middle' gutter={16}>
 						<Col lg={6} md={6} xs={12}>
 							<Form.Item
 								name='roleName'
@@ -273,20 +271,17 @@ const RoleManagementForm = ({
 									},
 								]}
 							>
-								<Select
-									allowClear
-									mode='multiple'
-									onChange={onChangeCurrency}
-									style={{ width: '100%' }}
-								>
-									<Option value={0}>{t('Label_SelectAll')}</Option>
+								<MultipleSelect onChange={onChangeCurrency}>
+									{(filteredAllCurrencyListByRole?.length as number) > 1 && (
+										<Option value={0}>{t('Label_SelectAll')}</Option>
+									)}
 
 									{filteredAllCurrencyListByRole.map(item => (
 										<Option key={item.currencyId} value={item.currencyId}>
 											{item.isoCode}
 										</Option>
 									))}
-								</Select>
+								</MultipleSelect>
 							</Form.Item>
 						</Col>
 					</Row>

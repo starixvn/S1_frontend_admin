@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
 import { RoleManagementTable } from './RoleManagementTable'
-import { selectRoleManagementStatus } from './slice'
+import { selectRoleManagementStatus, setRoleManagementStatus } from './slice'
 import {
 	fetchPermissionDeleteRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
@@ -21,13 +21,14 @@ const RoleManagement = () => {
 	const dispatch = useAppDispatch()
 	const [form] = Form.useForm()
 	const [searchParams, setSearchParams] = useSearchParams()
-
 	const searchParamRoleName = searchParams.get('roleName')
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
 	const handleSearch = async (formValues: any) => {
 		const { roleName = '' } = formValues
+
+		dispatch(setRoleManagementStatus('pending'))
 
 		try {
 			await dispatch(fetchPermissionGetRoleListAsync(roleName)).unwrap()
@@ -39,10 +40,13 @@ const RoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
+		} finally {
+			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
 	const handleDelete = async (role: number) => {
+		dispatch(setRoleManagementStatus('pending'))
 		try {
 			await dispatch(fetchPermissionDeleteRolePermissionAsync(role)).unwrap()
 
@@ -51,6 +55,8 @@ const RoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
+		} finally {
+			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
@@ -76,8 +82,8 @@ const RoleManagement = () => {
 				onSearch={handleSearch}
 			/>
 
-			{roleManagementStatus !== 'idle' && (
-				<RoleManagementTable onDelete={handleDelete} />
+			{roleManagementStatus !== undefined && (
+				<RoleManagementTable loading={loading} onDelete={handleDelete} />
 			)}
 
 			<AffixButtons>

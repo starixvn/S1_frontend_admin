@@ -6,21 +6,21 @@ import { useAppSelector } from 'app/store'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {
-	selectRoleManagementDataList,
-	selectRoleManagementStatus,
-} from './slice'
+import { selectRoleManagementDataList } from './slice'
 
 interface RoleManagementTableInterface {
+	loading: boolean
 	onDelete: (role: number) => void
 }
 
-const RoleManagementTable = ({ onDelete }: RoleManagementTableInterface) => {
+const RoleManagementTable = ({
+	loading,
+	onDelete,
+}: RoleManagementTableInterface) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const allCurrencyList = useAppSelector(state => state.allEnum.allCurrencyList)
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
-	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
 	const onOpenUserListingInfo = ({
 		roleName,
@@ -133,8 +133,6 @@ const RoleManagementTable = ({ onDelete }: RoleManagementTableInterface) => {
 			},
 		},
 	]
-
-	const loading = roleManagementStatus === 'pending'
 
 	return (
 		<LayoutContent.Card>

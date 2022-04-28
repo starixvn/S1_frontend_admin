@@ -2,13 +2,13 @@ import { message } from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
-import { useAppDispatch } from 'app/store'
+import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { RequestStatusType } from 'type'
 import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
+import { selectRoleManagementStatus, setRoleManagementStatus } from './slice'
 import {
 	fetchPermissionAddRolePermissionAsync,
 	fetchPermissionGetAddRolePermissionAsync,
@@ -24,7 +24,8 @@ const AddRoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const [requestStatus, setRequestStatus] = useState<RequestStatusType>()
+
+	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
 	const {
 		form,
@@ -43,7 +44,7 @@ const AddRoleManagement = () => {
 
 		const { roleName, remark, currencyList } = form.getFieldsValue()
 
-		setRequestStatus('pending')
+		dispatch(setRoleManagementStatus('pending'))
 
 		try {
 			await dispatch(
@@ -72,7 +73,7 @@ const AddRoleManagement = () => {
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		} finally {
-			setRequestStatus('idle')
+			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
@@ -80,12 +81,15 @@ const AddRoleManagement = () => {
 		dispatch(fetchPermissionGetAddRolePermissionAsync())
 	}, [])
 
+	const loading = roleManagementStatus === 'pending'
+
 	return (
 		<main>
 			<LayoutContent.Title title={t('Label_AddRoleManagement')} />
 
 			<RoleManagementForm
 				form={form}
+				loading={loading}
 				permissionList={permissionList}
 				onPermissionChange={handlePermissionChange}
 				onCheckAllPermission={handleCheckAllPermission}
@@ -95,7 +99,7 @@ const AddRoleManagement = () => {
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.Saved
-					loading={requestStatus === 'pending'}
+					loading={roleManagementStatus === 'pending'}
 					onClick={handleCreate}
 				/>
 
