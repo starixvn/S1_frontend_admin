@@ -54,7 +54,8 @@ const AddRoleManagement = () => {
 					currencyList,
 					permission: permissionList,
 				})
-			)
+			).unwrap()
+
 			form.setFieldsValue({
 				roleName: undefined,
 				remark: undefined,
