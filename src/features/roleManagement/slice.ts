@@ -4,9 +4,9 @@ import { RequestStatusType } from 'type'
 import {
 	fetchPermissionAddRolePermissionAsync,
 	fetchPermissionDeleteRolePermissionAsync,
-	fetchPermissionGetAllRolePermissionAsync,
+	fetchPermissionGetAddRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
-	fetchPermissionGetRolePermissionAsync,
+	fetchPermissionGetUpdateRolePermissionAsync,
 } from './thunk'
 import { RoleManagementInterface, RolePermissionInterface } from './type'
 
@@ -44,17 +44,17 @@ const roleManagementSlice = createSlice({
 				state.status = 'failed'
 			})
 
-			.addCase(fetchPermissionGetAllRolePermissionAsync.pending, state => {
+			.addCase(fetchPermissionGetAddRolePermissionAsync.pending, state => {
 				state.status = 'pending'
 			})
 			.addCase(
-				fetchPermissionGetAllRolePermissionAsync.fulfilled,
+				fetchPermissionGetAddRolePermissionAsync.fulfilled,
 				(state, action) => {
 					state.rolePermission = action.payload
 					state.status = 'succeeded'
 				}
 			)
-			.addCase(fetchPermissionGetAllRolePermissionAsync.rejected, state => {
+			.addCase(fetchPermissionGetAddRolePermissionAsync.rejected, state => {
 				state.status = 'failed'
 			})
 
@@ -75,17 +75,17 @@ const roleManagementSlice = createSlice({
 					state.roleManagementDataList = roleManagementDataList
 				}
 			)
-			.addCase(fetchPermissionGetRolePermissionAsync.pending, state => {
+			.addCase(fetchPermissionGetUpdateRolePermissionAsync.pending, state => {
 				state.status = 'pending'
 			})
 			.addCase(
-				fetchPermissionGetRolePermissionAsync.fulfilled,
+				fetchPermissionGetUpdateRolePermissionAsync.fulfilled,
 				(state, action) => {
 					state.rolePermission = action.payload
 					state.status = 'succeeded'
 				}
 			)
-			.addCase(fetchPermissionGetRolePermissionAsync.rejected, state => {
+			.addCase(fetchPermissionGetUpdateRolePermissionAsync.rejected, state => {
 				state.status = 'failed'
 			}),
 })

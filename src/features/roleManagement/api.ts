@@ -20,8 +20,8 @@ export const fetchPermissionGetRoleList = async (
 	return response?.data?.data ?? []
 }
 
-export const fetchPermissionGetAllRolePermission = async () => {
-	const response = await BoApi.post('Permission/GetAllRolePermission')
+export const fetchPermissionGetAddRolePermission = async () => {
+	const response = await BoApi.post('Permission/GetAddRolePermission')
 
 	if (response?.data?.errorCode !== 0) {
 		throw new Error(response?.data?.message)
@@ -60,10 +60,10 @@ export const fetchPermissionDeleteRolePermission = async (role: number) => {
 	return role
 }
 
-export const fetchPermissionGetRolePermission = async (
+export const fetchPermissionGetUpdateRolePermission = async (
 	role: number
 ): Promise<RolePermissionInterface> => {
-	const response = await BoApi.post('Permission/GetRolePermission', {
+	const response = await BoApi.post('Permission/GetUpdateRolePermission', {
 		role,
 	})
 

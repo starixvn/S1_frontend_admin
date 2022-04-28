@@ -14,7 +14,7 @@ import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
 import { selectRoleManagementStatus, selectRolePermission } from './slice'
 import {
 	fetchPermissionGetRoleListAsync,
-	fetchPermissionGetRolePermissionAsync,
+	fetchPermissionGetUpdateRolePermissionAsync,
 } from './thunk'
 import { updateRolePermission } from './api'
 import { FormPermissionInterface } from './AddRoleManagement'
@@ -122,7 +122,9 @@ const EditRoleManagement = () => {
 	}
 
 	useEffect(() => {
-		dispatch(fetchPermissionGetRolePermissionAsync(Number(params?.roleId)))
+		dispatch(
+			fetchPermissionGetUpdateRolePermissionAsync(Number(params?.roleId))
+		)
 	}, [])
 
 	useEffect(() => {

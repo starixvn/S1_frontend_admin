@@ -11,7 +11,7 @@ import { RequestStatusType } from 'type'
 import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
 import {
 	fetchPermissionAddRolePermissionAsync,
-	fetchPermissionGetAllRolePermissionAsync,
+	fetchPermissionGetAddRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
 } from './thunk'
 
@@ -77,7 +77,7 @@ const AddRoleManagement = () => {
 	}
 
 	useEffect(() => {
-		dispatch(fetchPermissionGetAllRolePermissionAsync())
+		dispatch(fetchPermissionGetAddRolePermissionAsync())
 	}, [])
 
 	return (
