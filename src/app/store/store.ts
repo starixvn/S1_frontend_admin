@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
+import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { dashboardSlice } from 'features/dashboard'
 import roleManagementReducer from 'features/roleManagement/slice'
 
@@ -8,6 +9,7 @@ export const store = configureStore({
 		allEnum: enumReducer,
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
+		adjustmentLogReport: adjustmentLogReportReducer,
 	},
 })
 

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { useAuth } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { fetchAllEnumAsync, selectUserSite } from 'common/enum'
+import { fetchAllEnumAsync, onChangeUserSite } from 'common/enum'
 import { useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
 import { Layout } from 'antd'
@@ -37,7 +37,7 @@ const useUserSiteEffect = () => {
 			const newUserSite =
 				_.find(userSiteList, { siteId: Number(site) }) || userSiteList[0]
 
-			dispatch(selectUserSite(newUserSite))
+			dispatch(onChangeUserSite(newUserSite))
 		}
 	}, [loading])
 
