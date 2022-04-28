@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { RootState } from 'app/store'
+import { RequestStatusType } from 'type'
 import { fetchDashBoardGetDataAsync } from './thunk'
 import { DashBoardData } from './type'
 
 interface DashBoardState {
-	loading?: boolean
-	data: DashBoardData
+	status?: RequestStatusType
+	dashBoardData: DashBoardData
 }
 
 const initialState: DashBoardState = {
-	loading: undefined,
-	data: {},
+	status: undefined,
+	dashBoardData: {},
 }
 
 const dashBoardSlice = createSlice({
@@ -19,17 +21,23 @@ const dashBoardSlice = createSlice({
 	extraReducers: builder =>
 		builder
 			.addCase(fetchDashBoardGetDataAsync.pending, state => {
-				state.loading = true
+				state.status = 'pending'
 			})
 			.addCase(fetchDashBoardGetDataAsync.fulfilled, (state, action) => {
 				const dashBoardData = action.payload
 
-				state.loading = false
-				state.data = dashBoardData
+				state.status = 'idle'
+				state.dashBoardData = dashBoardData
 			})
 			.addCase(fetchDashBoardGetDataAsync.rejected, state => {
-				state.loading = false
+				state.status = 'idle'
 			}),
 })
+
+export const selectDashboardStatus = (state: RootState) =>
+	state.dashboard.status
+
+export const selectDashboardData = (state: RootState) =>
+	state.dashboard.dashBoardData
 
 export default dashBoardSlice.reducer

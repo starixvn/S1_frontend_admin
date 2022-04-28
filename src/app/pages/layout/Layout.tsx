@@ -1,7 +1,11 @@
 import _ from 'lodash'
 import { useAuth } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { fetchAllEnumAsync, onChangeUserSite } from 'common/enum'
+import {
+	fetchAllEnumAsync,
+	onChangeUserSite,
+	selectEnumStatus,
+} from 'common/enum'
 import { useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
 import { Layout } from 'antd'
@@ -30,16 +34,17 @@ const useUserSiteEffect = () => {
 	const site = searchParams.get('site')
 
 	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
-	const loading = useAppSelector(state => state.allEnum.loading)
+
+	const enumStatus = useAppSelector(selectEnumStatus)
 
 	useEffect(() => {
-		if (loading === false) {
+		if (enumStatus === 'idle') {
 			const newUserSite =
 				_.find(userSiteList, { siteId: Number(site) }) || userSiteList[0]
 
 			dispatch(onChangeUserSite(newUserSite))
 		}
-	}, [loading])
+	}, [enumStatus])
 
 	useEffect(() => {
 		dispatch(fetchAllEnumAsync())

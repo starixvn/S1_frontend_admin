@@ -1,11 +1,5 @@
 import BoApi from 'common/service/Api'
-import { DashBoardData } from './type'
-
-interface FetchDashBoardGetDataInterface {
-	siteId?: number
-	currencyId?: number
-	baseCurrencyId?: number
-}
+import { DashBoardData, FetchDashBoardGetDataInterface } from './type'
 
 export const fetchDashBoardGetData = async ({
 	siteId,
