@@ -1,3 +1,9 @@
+export interface FetchDashBoardGetDataInterface {
+	siteId?: number
+	currencyId?: number
+	baseCurrencyId?: number
+}
+
 export interface DashBoardDataTodayData {
 	reportName: string
 	noPlayer: number

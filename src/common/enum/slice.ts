@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
 import _ from 'lodash'
+import { RequestStatusType } from 'type'
 import { fetchAllEnumAsync } from './thunk'
 import {
 	ActionType,
@@ -10,7 +11,7 @@ import {
 } from './type'
 
 export interface EnumState {
-	loading: boolean | undefined
+	status: RequestStatusType | undefined
 	userSite?: UserSite
 	userSiteList: UserSite[]
 	allCurrencyList: Currency[]
@@ -19,7 +20,7 @@ export interface EnumState {
 }
 
 const initialState: EnumState = {
-	loading: undefined,
+	status: undefined,
 	userSite: undefined,
 	userSiteList: [],
 	allCurrencyList: [],
@@ -38,7 +39,7 @@ const enumSlice = createSlice({
 	extraReducers: builder =>
 		builder
 			.addCase(fetchAllEnumAsync.pending, state => {
-				state.loading = true
+				state.status = 'pending'
 			})
 			.addCase(fetchAllEnumAsync.fulfilled, (state, action) => {
 				const {
@@ -47,7 +48,7 @@ const enumSlice = createSlice({
 					adjustmentInfoLogMenu,
 					actionTypeList,
 				} = action.payload as EnumState
-				state.loading = false
+				state.status = 'idle'
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
 				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
@@ -68,6 +69,8 @@ export const selectCurrencyListBySite = (state: RootState) => {
 		)
 	)
 }
+
+export const selectEnumStatus = (state: RootState) => state.allEnum.status
 
 export const selectUserSite = (state: RootState) => state.allEnum.userSite
 

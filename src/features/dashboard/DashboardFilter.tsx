@@ -1,8 +1,8 @@
-import { Button, Col, Form, Row, Select, Skeleton } from 'antd'
+import { Button, Col, Form, FormInstance, Row, Select, Skeleton } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { SearchOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
+import { selectCurrencyListBySite, selectEnumStatus } from 'common/enum'
 import { FC } from 'react'
 
 import { useTranslation } from 'react-i18next'
@@ -11,13 +11,8 @@ import { fetchDashBoardGetDataAsync } from './thunk'
 const { Option } = Select
 
 const useDashboardFilterAction = () => {
-	const [form] = Form.useForm()
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(state => state.allEnum.userSite)
-
-	const { loading: allEnumLoading } = useAppSelector(state => state.allEnum)
-	const { loading: dashboardLoading } = useAppSelector(state => state.dashboard)
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const handleSearch = (formValues: any) => {
 		const { currencyId, baseCurrencyId } = formValues
@@ -31,46 +26,36 @@ const useDashboardFilterAction = () => {
 		)
 	}
 
-	return {
-		form,
-		allEnumLoading,
-		dashboardLoading,
-		currencyListBySite,
-		handleSearch,
-	}
+	return {}
 }
 
-const DashboardFilter: FC = () => {
+const DashboardFilter: FC<{
+	form: FormInstance<any>
+	loading: boolean
+	onSearch: (formValues: any) => void
+}> = ({ form, loading, onSearch }) => {
 	const { t } = useTranslation()
-
-	const {
-		form,
-		allEnumLoading,
-		dashboardLoading,
-		currencyListBySite,
-		handleSearch,
-	} = useDashboardFilterAction()
-
-	const loading = allEnumLoading || currencyListBySite === undefined
+	const enumStatus = useAppSelector(selectEnumStatus)
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	return (
 		<LayoutContent.Card>
-			{loading ? (
+			{enumStatus === 'pending' || currencyListBySite === undefined ? (
 				<Skeleton />
 			) : (
 				<Form
 					layout='vertical'
 					form={form}
-					onFinish={handleSearch}
+					onFinish={onSearch}
 					initialValues={{
 						currencyId: 0,
 						baseCurrencyId: currencyListBySite?.[0]?.currencyId ?? null,
 					}}
 				>
-					<Row gutter={24} align='middle'>
-						<Col md={6} xs={12}>
+					<Row gutter={16} align='middle'>
+						<Col lg={6} md={12} xs={12}>
 							<Form.Item name='currencyId' label={t('Label_Currency')}>
-								<Select loading={allEnumLoading} placeholder='select'>
+								<Select placeholder='select'>
 									<Option value={0}>{t('Label_SelectAll')}</Option>
 
 									{currencyListBySite?.map(item => (
@@ -81,9 +66,9 @@ const DashboardFilter: FC = () => {
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col md={6} xs={12}>
+						<Col lg={6} md={12} xs={12}>
 							<Form.Item name='baseCurrencyId' label={t('BaseCurrency')}>
-								<Select loading={allEnumLoading} placeholder='select'>
+								<Select placeholder='select'>
 									{currencyListBySite?.map(item => (
 										<Option key={item.currencyId} value={item.currencyId}>
 											{item.isoCode}
@@ -99,7 +84,7 @@ const DashboardFilter: FC = () => {
 							<Form.Item>
 								<Button
 									icon={<SearchOutlined />}
-									loading={dashboardLoading}
+									loading={loading}
 									htmlType='submit'
 									type='primary'
 								>

@@ -135,6 +135,7 @@ const DashboardTable = ({
 				columns={columns}
 				dataSource={todayData}
 				rowKey={({ reportName }) => reportName}
+				pagination={false}
 			/>
 		</LayoutContent.Card>
 	)
