@@ -10,7 +10,7 @@ const { Content } = Layout
 export const StyledCard = styled(Content)`
 	background: white;
 	margin-top: 32px;
-	padding: 12px 28px;
+	padding: 8px 28px;
 	border-radius: 4px;
 	overflow: auto;
 }

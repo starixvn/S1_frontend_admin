@@ -33,6 +33,7 @@ const { Option } = Select
 
 interface AdjustmentLogReportFilterInterface {
 	form: FormInstance<any>
+	loading: boolean
 	onSearch: ({
 		current,
 		pageSize,
@@ -45,6 +46,7 @@ interface AdjustmentLogReportFilterInterface {
 
 const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 	form,
+	loading,
 	onSearch,
 	onTimeZoneChange,
 }) => {
@@ -94,13 +96,13 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 			<Panel header='' key='1'>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
-						size='middle'
 						layout='vertical'
+						size='middle'
 						form={form}
 						onFinish={() => onSearch({})}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
+							<Col lg={10} md={24} xs={24}>
 								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
 										compact
@@ -143,8 +145,7 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
-
-							<Col lg={8} md={12} xs={24}>
+							<Col lg={8} md={24} xs={24}>
 								<Form.Item name='menus' label={t('Label_Function')}>
 									<MultipleSelect onChange={onChangeMenus}>
 										{(adjustmentInfoLogMenu?.length as number) > 1 && (
@@ -159,8 +160,10 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 									</MultipleSelect>
 								</Form.Item>
 							</Col>
+						</Row>
 
-							<Col lg={8} md={12} xs={24}>
+						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='currencyIds' label={t('Label_Currency')}>
 									<MultipleSelect onChange={onChangeCurrency}>
 										{(currencyListBySite?.length as number) > 1 && (
@@ -176,7 +179,7 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 								</Form.Item>
 							</Col>
 
-							<Col lg={8} md={12} xs={12}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='actionTypes' label={t('Label_ActionType')}>
 									<MultipleSelect onChange={onChangeActionTypes}>
 										{(actionTypeList?.length as number) > 1 && (
@@ -192,12 +195,12 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 								</Form.Item>
 							</Col>
 
-							<Col lg={8} md={12} xs={12}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='transId' label={t('Label_TransId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
-							<Col lg={8} md={12} xs={12}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_Operator')}>
 									<Input allowClear />
 								</Form.Item>
@@ -208,16 +211,14 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 
 						<Row justify='end' align='middle'>
 							<Col>
-								<Form.Item>
-									<Button
-										size='middle'
-										icon={<SearchOutlined />}
-										htmlType='submit'
-										type='primary'
-									>
-										{t('Label_Search')}
-									</Button>
-								</Form.Item>
+								<Button
+									loading={loading}
+									icon={<SearchOutlined />}
+									htmlType='submit'
+									type='primary'
+								>
+									{t('Label_Search')}
+								</Button>
 							</Col>
 						</Row>
 					</Form>
