@@ -237,9 +237,9 @@ const RoleManagementForm = ({
 			{loading ? (
 				<Skeleton />
 			) : (
-				<Form form={form} size='small' layout='vertical'>
+				<Form form={form} layout='vertical'>
 					<Row align='middle' gutter={16}>
-						<Col lg={6} md={6} xs={12}>
+						<Col lg={6} md={12} xs={12}>
 							<Form.Item
 								name='roleName'
 								label={t('Label_RoleName')}
@@ -254,13 +254,13 @@ const RoleManagementForm = ({
 							</Form.Item>
 						</Col>
 
-						<Col lg={6} md={6} xs={12}>
+						<Col lg={6} md={12} xs={12}>
 							<Form.Item name='remark' label={t('Label_Remark')}>
 								<Input allowClear />
 							</Form.Item>
 						</Col>
 
-						<Col lg={6} md={6} xs={12}>
+						<Col lg={6} md={12} xs={12}>
 							<Form.Item
 								name='currencyList'
 								label={t('Label_Currency')}

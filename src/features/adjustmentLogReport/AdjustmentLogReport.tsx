@@ -79,6 +79,7 @@ const AdjustmentLogReport = () => {
 
 			<AdjustmentLogReportFilter
 				form={form}
+				loading={loading}
 				onSearch={onSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
