@@ -20,6 +20,7 @@ const allowedRoles = [
 	'CMS/BannerManage',
 	'CMS/GameCasinoManagement',
 	'CMS/HotEventManagement',
+	'CMS/HotGamesManagement',
 	'CMS/LatestHighlightVideoManagement',
 	'CMS/DomainManage',
 	'CMS/TpMaintain',

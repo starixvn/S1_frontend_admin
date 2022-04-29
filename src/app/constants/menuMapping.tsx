@@ -373,6 +373,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
 		newAdminPath: '',
 	},
+	{
+		icon: null,
+		functionId: 95,
+		pathMode: 'Internal',
+		internalPath: 'Marketing/HotGamesManagement',
+		internalFunctionKey: allowedRoles.CMSHotEventManagement,
+		newAdminPath: '',
+	},
 
 	{
 		icon: null,
@@ -671,7 +679,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.administration.sub.roleManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		internalPath: 'Admin/GroupAuthoritySetting',
 		newAdminPath: `${paths.administration.sub.roleManagement.root}`,
 	},
@@ -695,7 +703,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: 93,
 		internalFunctionKey: allowedRoles.FinanceAdjustmentLogReport,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		internalPath: 'Finance/AdjustmentLogReport',
 		newAdminPath: paths.administration.sub.adjustmentLogReport.root,
 	},
