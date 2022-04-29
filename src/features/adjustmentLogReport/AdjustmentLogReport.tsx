@@ -10,6 +10,7 @@ import { selectUserSite } from 'common/enum'
 import { AdjustmentLogReportFilter } from './AdjustmentLogReportFilter'
 import { fetchLogReportListAsync } from './thunk'
 import { AdjustmentLogReportTable } from './AdjustmentLogReportTable'
+import { selectAdjustmentLogReportStatus } from './slice'
 
 const AdjustmentLogReport = () => {
 	const { t } = useTranslation()
@@ -18,9 +19,11 @@ const AdjustmentLogReport = () => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const userSite = useAppSelector(selectUserSite)
 
-	const [pagination, setPagination] = usePagination()
+	const adjustmentLogReportStatus = useAppSelector(
+		selectAdjustmentLogReportStatus
+	)
 
-	const [requestStatus, setRequestStatus] = useState<RequestStatusType>()
+	const [pagination, setPagination] = usePagination()
 
 	const onSearch = async ({
 		current = 1,
@@ -36,8 +39,6 @@ const AdjustmentLogReport = () => {
 			dateRange,
 			timeZoneUtcOffset
 		)
-
-		setRequestStatus('pending')
 
 		try {
 			await dispatch(
@@ -60,8 +61,6 @@ const AdjustmentLogReport = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-		} finally {
-			setRequestStatus('idle')
 		}
 	}
 
@@ -71,7 +70,7 @@ const AdjustmentLogReport = () => {
 		await onSearch({ current, pageSize })
 	}
 
-	const loading = requestStatus === 'pending'
+	const loading = adjustmentLogReportStatus === 'pending'
 
 	return (
 		<main>
@@ -84,7 +83,7 @@ const AdjustmentLogReport = () => {
 				onTimeZoneChange={onTimeZoneChange}
 			/>
 
-			{requestStatus !== undefined && (
+			{adjustmentLogReportStatus !== 'idle' && (
 				<AdjustmentLogReportTable
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
