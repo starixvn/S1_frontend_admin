@@ -38,7 +38,7 @@ const useUserSiteEffect = () => {
 	const enumStatus = useAppSelector(selectEnumStatus)
 
 	useEffect(() => {
-		if (enumStatus === 'idle') {
+		if (enumStatus === 'succeeded') {
 			const newUserSite =
 				_.find(userSiteList, { siteId: Number(site) }) || userSiteList[0]
 

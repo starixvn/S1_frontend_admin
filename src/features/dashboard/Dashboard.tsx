@@ -38,7 +38,7 @@ const Dashboard = () => {
 
 			<DashboardFilter form={form} loading={loading} onSearch={handleSearch} />
 
-			{dashboardStatus !== undefined && (
+			{dashboardStatus !== 'idle' && (
 				<DashboardTable loading={loading} dashboardData={dashboardData ?? []} />
 			)}
 		</main>

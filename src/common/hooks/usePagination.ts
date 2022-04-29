@@ -19,9 +19,9 @@ const usePagination = (): [
 ] => {
 	const [pagination, setPagination] = useState({
 		current: 1,
-		pageSize: 10,
+		pageSize: 25,
 		position: ['topLeft'],
-		pageSizeOptions: [10, 25, 50, 100, 200, 300, 1000],
+		pageSizeOptions: [10, 25, 50, 100, 200, 300],
 	})
 
 	return [pagination, setPagination]

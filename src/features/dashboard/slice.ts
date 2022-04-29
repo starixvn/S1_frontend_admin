@@ -23,14 +23,14 @@ const dashBoardSlice = createSlice({
 			.addCase(fetchDashBoardGetDataAsync.pending, state => {
 				state.status = 'pending'
 			})
+			.addCase(fetchDashBoardGetDataAsync.rejected, state => {
+				state.status = 'failed'
+			})
 			.addCase(fetchDashBoardGetDataAsync.fulfilled, (state, action) => {
 				const dashBoardData = action.payload
 
-				state.status = 'idle'
+				state.status = 'succeeded'
 				state.dashBoardData = dashBoardData
-			})
-			.addCase(fetchDashBoardGetDataAsync.rejected, state => {
-				state.status = 'idle'
 			}),
 })
 

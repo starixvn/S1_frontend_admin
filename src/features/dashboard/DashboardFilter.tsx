@@ -1,33 +1,13 @@
+import { FC } from 'react'
 import { Button, Col, Form, FormInstance, Row, Select, Skeleton } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { SearchOutlined } from '@ant-design/icons'
-import { useAppDispatch, useAppSelector } from 'app/store'
+import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectEnumStatus } from 'common/enum'
-import { FC } from 'react'
 
 import { useTranslation } from 'react-i18next'
-import { fetchDashBoardGetDataAsync } from './thunk'
 
 const { Option } = Select
-
-const useDashboardFilterAction = () => {
-	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(state => state.allEnum.userSite)
-
-	const handleSearch = (formValues: any) => {
-		const { currencyId, baseCurrencyId } = formValues
-
-		dispatch(
-			fetchDashBoardGetDataAsync({
-				siteId: userSite?.siteId,
-				currencyId,
-				baseCurrencyId,
-			})
-		)
-	}
-
-	return {}
-}
 
 const DashboardFilter: FC<{
 	form: FormInstance<any>
