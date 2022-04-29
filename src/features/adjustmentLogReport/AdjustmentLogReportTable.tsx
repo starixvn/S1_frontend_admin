@@ -2,16 +2,19 @@ import { Table, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { PaginationInterface } from 'common/hooks'
+import { utcFormatter } from 'components/TimeZoneSelect'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { selectAdjustmentLogReportList } from './slice'
 
 const AdjustmentLogReportTable = ({
 	loading,
+	timeZoneUtcOffset,
 	pagination,
 	onTableChange,
 }: {
 	loading: boolean
+	timeZoneUtcOffset: number
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
 }) => {
@@ -76,11 +79,14 @@ const AdjustmentLogReportTable = ({
 			},
 		},
 		{
-			title: t('Label_Operator'),
+			title: t('Label_CreateTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
 			width: 120,
-			render: (createTime: string) => moment(createTime).format('YYYY MM DD'),
+			render: (createTime: string) =>
+				moment(createTime)
+					.utcOffset(timeZoneUtcOffset)
+					.format('YYYY-DD-MM  hh:mm:ss'),
 		},
 		{
 			title: t('Label_Operator'),

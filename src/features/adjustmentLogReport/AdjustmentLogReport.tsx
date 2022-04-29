@@ -87,6 +87,7 @@ const AdjustmentLogReport = () => {
 			{requestStatus !== undefined && (
 				<AdjustmentLogReportTable
 					loading={loading}
+					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
 					onTableChange={handleTableChange}
 				/>
