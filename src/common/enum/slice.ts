@@ -11,7 +11,7 @@ import {
 } from './type'
 
 export interface EnumState {
-	status: RequestStatusType | undefined
+	status: RequestStatusType
 	userSite?: UserSite
 	userSiteList: UserSite[]
 	allCurrencyList: Currency[]
@@ -20,7 +20,7 @@ export interface EnumState {
 }
 
 const initialState: EnumState = {
-	status: undefined,
+	status: 'idle',
 	userSite: undefined,
 	userSiteList: [],
 	allCurrencyList: [],
@@ -41,6 +41,9 @@ const enumSlice = createSlice({
 			.addCase(fetchAllEnumAsync.pending, state => {
 				state.status = 'pending'
 			})
+			.addCase(fetchAllEnumAsync.rejected, state => {
+				state.status = 'failed'
+			})
 			.addCase(fetchAllEnumAsync.fulfilled, (state, action) => {
 				const {
 					userSiteList,
@@ -48,11 +51,12 @@ const enumSlice = createSlice({
 					adjustmentInfoLogMenu,
 					actionTypeList,
 				} = action.payload as EnumState
-				state.status = 'idle'
+
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
 				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
 				state.actionTypeList = actionTypeList
+				state.status = 'succeeded'
 			}),
 })
 
