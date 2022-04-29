@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
-import { selectRoleManagementStatus, setRoleManagementStatus } from './slice'
+import { selectRoleManagementStatus } from './slice'
 import {
 	fetchPermissionAddRolePermissionAsync,
 	fetchPermissionGetAddRolePermissionAsync,
@@ -44,8 +44,6 @@ const AddRoleManagement = () => {
 
 		const { roleName, remark, currencyList } = form.getFieldsValue()
 
-		dispatch(setRoleManagementStatus('pending'))
-
 		try {
 			await dispatch(
 				fetchPermissionAddRolePermissionAsync({
@@ -73,8 +71,6 @@ const AddRoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-		} finally {
-			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
@@ -99,10 +95,7 @@ const AddRoleManagement = () => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
-				<AffixButtons.Saved
-					loading={roleManagementStatus === 'pending'}
-					onClick={handleCreate}
-				/>
+				<AffixButtons.Saved loading={loading} onClick={handleCreate} />
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>

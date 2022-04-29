@@ -1,19 +1,15 @@
-import { message } from 'antd'
-import { LayoutContent } from 'app/pages/layout'
 import _ from 'lodash'
+import { message } from 'antd'
+import { useEffect } from 'react'
+import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
-import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
-import {
-	selectRoleManagementStatus,
-	selectRolePermission,
-	setRoleManagementStatus,
-} from './slice'
+import { selectRoleManagementStatus, selectRolePermission } from './slice'
 import {
 	fetchPermissionGetRoleListAsync,
 	fetchPermissionGetUpdateRolePermissionAsync,
@@ -98,8 +94,6 @@ const EditRoleManagement = () => {
 
 		const { roleName, remark, currencyList } = form.getFieldsValue()
 
-		dispatch(setRoleManagementStatus('pending'))
-
 		try {
 			await updateRolePermission({
 				name: roleName,
@@ -109,7 +103,7 @@ const EditRoleManagement = () => {
 				permission: permissionList,
 			})
 
-			dispatch(fetchPermissionGetRoleListAsync(''))
+			await dispatch(fetchPermissionGetRoleListAsync(''))
 			navigate(
 				`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`
 			)
@@ -118,29 +112,17 @@ const EditRoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-		} finally {
-			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
 	useEffect(() => {
-		const init = async () => {
-			dispatch(setRoleManagementStatus('pending'))
-
-			try {
-				await dispatch(
-					fetchPermissionGetUpdateRolePermissionAsync(Number(params?.roleId))
-				)
-			} finally {
-				dispatch(setRoleManagementStatus('idle'))
-			}
-		}
-
-		init()
+		dispatch(
+			fetchPermissionGetUpdateRolePermissionAsync(Number(params?.roleId))
+		)
 	}, [])
 
 	useEffect(() => {
-		if (roleManagementStatus === 'idle') {
+		if (roleManagementStatus === 'succeeded') {
 			form.setFieldsValue({
 				roleName: rolePermission.name,
 				remark: rolePermission.mark,
@@ -171,10 +153,7 @@ const EditRoleManagement = () => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
-				<AffixButtons.Saved
-					loading={roleManagementStatus === 'pending'}
-					onClick={handleUpdate}
-				/>
+				<AffixButtons.Saved loading={loading} onClick={handleUpdate} />
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>

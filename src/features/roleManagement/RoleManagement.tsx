@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
 import { RoleManagementTable } from './RoleManagementTable'
-import { selectRoleManagementStatus, setRoleManagementStatus } from './slice'
+import { selectRoleManagementStatus } from './slice'
 import {
 	fetchPermissionDeleteRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
@@ -28,8 +28,6 @@ const RoleManagement = () => {
 	const handleSearch = async (formValues: any) => {
 		const { roleName = '' } = formValues
 
-		dispatch(setRoleManagementStatus('pending'))
-
 		try {
 			await dispatch(fetchPermissionGetRoleListAsync(roleName)).unwrap()
 
@@ -40,13 +38,10 @@ const RoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-		} finally {
-			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
 	const handleDelete = async (role: number) => {
-		dispatch(setRoleManagementStatus('pending'))
 		try {
 			await dispatch(fetchPermissionDeleteRolePermissionAsync(role)).unwrap()
 
@@ -55,8 +50,6 @@ const RoleManagement = () => {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-		} finally {
-			dispatch(setRoleManagementStatus('idle'))
 		}
 	}
 
