@@ -2,40 +2,58 @@ import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
 import { RequestStatusType } from 'type'
 import { fetchLogReportListAsync } from './thunk'
+import { LogReportInterface } from './type'
 
 interface AdjustmentLogReportState {
+	form: any
 	status: RequestStatusType
-	AdjustmentLogReportList: any[]
+	adjustmentLogReportList: LogReportInterface[]
+	paginationTotal: number
 }
 
 const initialState: AdjustmentLogReportState = {
+	form: {},
 	status: 'idle',
-	AdjustmentLogReportList: [],
+	adjustmentLogReportList: [],
+	paginationTotal: 0,
 }
 
 const adjustmentLogReportSlice = createSlice({
 	name: 'adjustmentLogReport',
 	initialState,
-	reducers: {},
+	reducers: {
+		setAdjustmentLogForm: (state, action) => {
+			state.form = action.payload
+		},
+	},
 	extraReducers: build =>
 		build
 			.addCase(fetchLogReportListAsync.pending, state => {
 				state.status = 'pending'
 			})
 			.addCase(fetchLogReportListAsync.rejected, state => {
+				state.adjustmentLogReportList = []
 				state.status = 'failed'
 			})
 			.addCase(fetchLogReportListAsync.fulfilled, (state, action) => {
-				state.AdjustmentLogReportList = action.payload
+				const { data, rowCount } = action.payload
+
+				state.adjustmentLogReportList = data
+				state.paginationTotal = rowCount
 				state.status = 'succeeded'
 			}),
 })
+
+export const { setAdjustmentLogForm } = adjustmentLogReportSlice.actions
+
+export const selectAdjustmentLogForm = (state: RootState) =>
+	state.adjustmentLogReport.form
 
 export const selectAdjustmentLogReportStatus = (state: RootState) =>
 	state.adjustmentLogReport.status
 
 export const selectAdjustmentLogReportList = (state: RootState) =>
-	state.adjustmentLogReport.AdjustmentLogReportList
+	state.adjustmentLogReport.adjustmentLogReportList
 
 const adjustmentLogReportReducer = adjustmentLogReportSlice.reducer
 

@@ -1,28 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export interface PaginationInterface {
-	current?: number
-	pageSize?: number
-	position: string[]
+export const PAGINATION = {
+	defaultCurrent: 1,
+	defaultPageSize: 25,
+	position: ['topLeft'],
+	pageSizeOptions: [10, 25, 50, 100, 200, 300],
 }
 
-const usePagination = (): [
+export interface PaginationInterface {
+	current: number
+	pageSize: number
+	total: number
+	position: string[]
+	pageSizeOptions: number[]
+}
+
+const usePagination = ({
+	paginationTotal,
+}: {
+	paginationTotal: number
+}): [
 	PaginationInterface,
-	React.Dispatch<
-		React.SetStateAction<{
-			current: number
-			pageSize: number
-			position: string[]
-			pageSizeOptions: number[]
-		}>
-	>
+	React.Dispatch<React.SetStateAction<PaginationInterface>>
 ] => {
 	const [pagination, setPagination] = useState({
-		current: 1,
-		pageSize: 25,
-		position: ['topLeft'],
-		pageSizeOptions: [10, 25, 50, 100, 200, 300],
+		current: PAGINATION.defaultCurrent,
+		pageSize: PAGINATION.defaultPageSize,
+		total: 0,
+		position: PAGINATION.position,
+		pageSizeOptions: PAGINATION.pageSizeOptions,
 	})
+
+	useEffect(() => {
+		setPagination(prev => ({ ...prev, total: paginationTotal }))
+	}, [paginationTotal])
 
 	return [pagination, setPagination]
 }

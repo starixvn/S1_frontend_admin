@@ -1,9 +1,8 @@
+import moment from 'moment'
 import { Table, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { PaginationInterface } from 'common/hooks'
-import { utcFormatter } from 'components/TimeZoneSelect'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { selectAdjustmentLogReportList } from './slice'
 
@@ -77,6 +76,14 @@ const AdjustmentLogReportTable = ({
 					</div>
 				))
 			},
+		},
+		{
+			title: t('Label_TransId'),
+			key: 'refTransId',
+			dataIndex: 'refTransId',
+			width: 120,
+			align: 'center' as 'center',
+			render: (refTransId: any) => refTransId || 'N/A',
 		},
 		{
 			title: t('Label_CreateTime'),

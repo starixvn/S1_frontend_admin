@@ -1,8 +1,18 @@
-import { Space, Button, List, Modal, Popconfirm, Table, Typography } from 'antd'
+import {
+	Space,
+	Button,
+	List,
+	Modal,
+	Popconfirm,
+	Table,
+	Typography,
+	TablePaginationConfig,
+} from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
+import { PAGINATION } from 'common/hooks'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -143,7 +153,7 @@ const RoleManagementTable = ({
 				loading={loading}
 				columns={columns}
 				dataSource={roleManagementDataList}
-				pagination={{ position: ['topLeft'] }}
+				pagination={PAGINATION as TablePaginationConfig}
 			/>
 		</LayoutContent.Card>
 	)
