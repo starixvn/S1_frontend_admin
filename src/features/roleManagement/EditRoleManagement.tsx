@@ -8,14 +8,15 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
+import { RoleManagementForm } from './RoleManagementForm'
 import { selectRoleManagementStatus, selectRolePermission } from './slice'
 import {
 	fetchPermissionGetRoleListAsync,
 	fetchPermissionGetUpdateRolePermissionAsync,
 } from './thunk'
 import { updateRolePermission } from './api'
-import { FormPermissionInterface } from './AddRoleManagement'
+import { FormPermissionInterface } from './type'
+import { useRoleManagementForm } from './hooks'
 
 const getPermissionList = (
 	permissionList: any[]
