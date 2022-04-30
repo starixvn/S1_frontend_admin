@@ -31,3 +31,8 @@ export interface UpdateRolePermissionInterface {
 	role?: number
 	permission: any[]
 }
+
+export interface FormPermissionInterface {
+	displayKey: number
+	permissionIdList: number[]
+}

@@ -7,18 +7,14 @@ import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { RoleManagementForm, useRoleManagementForm } from './RoleManagementForm'
+import { useRoleManagementForm } from './hooks'
+import { RoleManagementForm } from './RoleManagementForm'
 import { selectRoleManagementStatus } from './slice'
 import {
 	fetchPermissionAddRolePermissionAsync,
 	fetchPermissionGetAddRolePermissionAsync,
 	fetchPermissionGetRoleListAsync,
 } from './thunk'
-
-export interface FormPermissionInterface {
-	displayKey: number
-	permissionIdList: number[]
-}
 
 const AddRoleManagement = () => {
 	const { t } = useTranslation()

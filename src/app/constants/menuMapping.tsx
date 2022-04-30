@@ -20,11 +20,11 @@ import paths from './paths'
 const iconStyle: CSSProperties = {
 	fontSize: '20px',
 }
-interface moduleIconInterface {
+interface ModuleIconInterface {
 	[moduleId: number]: JSX.Element
 }
 
-export const MODULE_ICON_MAPPING: moduleIconInterface = {
+export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	2: <UserSwitchOutlined style={iconStyle} />,
 	3: <BankOutlined style={iconStyle} />,
 	4: <ShopOutlined style={iconStyle} />,
