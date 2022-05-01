@@ -18,7 +18,7 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
-import TimeZoneSelect, { timeZoneLocalOffset } from 'components/TimeZoneSelect'
+import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import {
 	selectAdjustmentInfoLogMenu,
@@ -34,12 +34,15 @@ const { Option } = Select
 interface AdjustmentLogReportFilterInterface {
 	form: FormInstance<any>
 	loading: boolean
+	timeZoneUtcOffset: number
 	onSearch: ({
 		current,
 		pageSize,
+		currentTimeZoneUtcOffset,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
+		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 }
@@ -47,10 +50,12 @@ interface AdjustmentLogReportFilterInterface {
 const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 	form,
 	loading,
+	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
 }) => {
 	const { t } = useTranslation()
+
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const adjustmentInfoLogMenu = useAppSelector(selectAdjustmentInfoLogMenu)
 	const actionTypeList = useAppSelector(selectActionTypeList)
@@ -138,7 +143,7 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 
 										<div>
 											<TimeZoneSelect
-												defaultValue={timeZoneLocalOffset}
+												value={timeZoneUtcOffset}
 												onChange={onTimeZoneChange}
 											/>
 										</div>

@@ -5,14 +5,12 @@ import { fetchLogReportListAsync } from './thunk'
 import { LogReportInterface } from './type'
 
 interface AdjustmentLogReportState {
-	form: any
 	status: RequestStatusType
 	adjustmentLogReportList: LogReportInterface[]
 	paginationTotal: number
 }
 
 const initialState: AdjustmentLogReportState = {
-	form: {},
 	status: 'idle',
 	adjustmentLogReportList: [],
 	paginationTotal: 0,
@@ -22,8 +20,8 @@ const adjustmentLogReportSlice = createSlice({
 	name: 'adjustmentLogReport',
 	initialState,
 	reducers: {
-		setAdjustmentLogForm: (state, action) => {
-			state.form = action.payload
+		setAdjustmentLogReportStatus: (state, action) => {
+			state.status = action.payload
 		},
 	},
 	extraReducers: build =>
@@ -43,11 +41,7 @@ const adjustmentLogReportSlice = createSlice({
 				state.status = 'succeeded'
 			}),
 })
-
-export const { setAdjustmentLogForm } = adjustmentLogReportSlice.actions
-
-export const selectAdjustmentLogForm = (state: RootState) =>
-	state.adjustmentLogReport.form
+export const { setAdjustmentLogReportStatus } = adjustmentLogReportSlice.actions
 
 export const selectAdjustmentLogReportStatus = (state: RootState) =>
 	state.adjustmentLogReport.status
