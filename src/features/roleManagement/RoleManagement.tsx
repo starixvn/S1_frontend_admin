@@ -3,10 +3,11 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch, useAppSelector } from 'app/store'
+import { useQueryParams } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
 import { RoleManagementTable } from './RoleManagementTable'
 import { selectRoleManagementStatus } from './slice'
@@ -19,19 +20,19 @@ const RoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
+	const [queryParams, setQueryParams] = useQueryParams()
+
 	const [form] = Form.useForm()
-	const [searchParams, setSearchParams] = useSearchParams()
-	const searchParamRoleName = searchParams.get('roleName')
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
-	const handleSearch = async (formValues: any) => {
-		const { roleName = '' } = formValues
+	const handleSearch = async () => {
+		const { roleName = '' } = form.getFieldsValue()
 
 		try {
 			await dispatch(fetchPermissionGetRoleListAsync(roleName)).unwrap()
 
-			setSearchParams({
+			setQueryParams({
 				roleName,
 			})
 		} catch (error) {
@@ -56,14 +57,19 @@ const RoleManagement = () => {
 	const loading = roleManagementStatus === 'pending'
 
 	useEffect(() => {
-		dispatch(fetchPermissionGetRoleListAsync(searchParamRoleName ?? ''))
+		dispatch(fetchPermissionGetRoleListAsync(queryParams?.roleName ?? ''))
 	}, [])
 
 	useEffect(() => {
-		form.setFieldsValue({
-			roleName: searchParamRoleName ?? '',
-		})
-	}, [searchParamRoleName])
+		const init = () => {
+			const { roleName } = queryParams
+			form.setFieldsValue({
+				roleName: roleName ?? '',
+			})
+		}
+
+		init()
+	}, [])
 
 	return (
 		<main>

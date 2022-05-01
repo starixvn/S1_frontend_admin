@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import _ from 'lodash'
 import moment from 'moment'
+import { useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone, dateRangeToUtcFormatter } from 'components/TimeZoneSelect'
-import { PAGINATION, usePagination } from 'common/hooks'
+import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
@@ -12,20 +13,19 @@ import { AdjustmentLogReportFilter } from './AdjustmentLogReportFilter'
 import { fetchLogReportListAsync } from './thunk'
 import { AdjustmentLogReportTable } from './AdjustmentLogReportTable'
 import {
-	selectAdjustmentLogForm,
 	selectAdjustmentLogReportStatus,
-	setAdjustmentLogForm,
+	setAdjustmentLogReportStatus,
 } from './slice'
 
 const AdjustmentLogReport = () => {
 	const { t } = useTranslation()
 	const dispatch = useAppDispatch()
+	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const userSite = useAppSelector(selectUserSite)
 
-	const adjustmentLogForm = useAppSelector(selectAdjustmentLogForm)
 	const adjustmentLogReportStatus = useAppSelector(
 		selectAdjustmentLogReportStatus
 	)
@@ -35,24 +35,35 @@ const AdjustmentLogReport = () => {
 
 	const [pagination, setPagination] = usePagination({ paginationTotal })
 
-	const saveAdjustmentLogForm = (newForm: object) => {
-		dispatch(setAdjustmentLogForm(newForm))
-	}
-
-	const onSearch = async ({
+	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
+		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
+		currentTimeZoneUtcOffset?: number
 	}) => {
 		const { actionTypes, currencyIds, menus, transId, userName, dateRange } =
 			form.getFieldsValue()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
+
+		setQueryParams({
+			actionTypes,
+			currencyIds,
+			menus,
+			transId,
+			userName,
+			startDate,
+			endDate,
+			current,
+			pageSize,
+			tz: timeZoneUtcOffset,
+		})
 
 		try {
 			await dispatch(
@@ -71,10 +82,6 @@ const AdjustmentLogReport = () => {
 			)
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			saveAdjustmentLogForm({
-				...form.getFieldsValue(),
-				dateRange: [startDate, endDate],
-			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -85,22 +92,59 @@ const AdjustmentLogReport = () => {
 	const handleTableChange = async (newPagination: TablePaginationConfig) => {
 		const { current, pageSize } = newPagination
 
-		await onSearch({ current, pageSize })
+		await handleSearch({
+			current,
+			pageSize,
+			currentTimeZoneUtcOffset: timeZoneUtcOffset,
+		})
 	}
 
 	useEffect(() => {
-		const setDefaultForm = () => {
-			const { dateRange: [startDate, endDate] = [], ...fieldsValue } =
-				adjustmentLogForm
+		const init = async () => {
+			if (_.isEmpty(queryParams)) return
 
+			const {
+				actionTypes,
+				currencyIds,
+				menus,
+				transId,
+				userName,
+				startDate,
+				endDate,
+				current,
+				pageSize,
+				tz,
+			} = queryParams
+
+			onTimeZoneChange(Number(tz))
 			form.setFieldsValue({
-				...fieldsValue,
+				actionTypes: _.isArray(actionTypes)
+					? actionTypes.map((actionType: string) => Number(actionType))
+					: [],
+				currencyIds: _.isArray(currencyIds)
+					? currencyIds.map((currencyId: string) => Number(currencyId))
+					: [],
+				menus: _.isArray(menus)
+					? menus.map((currencyId: string) => Number(currencyId))
+					: [],
+				transId,
+				userName,
 				dateRange: [moment(startDate), moment(endDate)],
+			})
+
+			handleSearch({
+				current: Number(current),
+				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(tz),
 			})
 		}
 
-		if (Object.keys(adjustmentLogForm).length) {
-			setDefaultForm()
+		init()
+	}, [])
+
+	useEffect(() => {
+		return () => {
+			dispatch(setAdjustmentLogReportStatus('idle'))
 		}
 	}, [])
 
@@ -113,7 +157,8 @@ const AdjustmentLogReport = () => {
 			<AdjustmentLogReportFilter
 				form={form}
 				loading={loading}
-				onSearch={onSearch}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
 
