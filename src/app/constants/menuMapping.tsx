@@ -685,11 +685,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 91,
+		functionId: paths.administration.sub.userSetting.functionId,
 		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
 		pathMode: 'Internal',
 		internalPath: 'Admin/UserAuthoritySetting',
-		newAdminPath: '',
+		newAdminPath: `${paths.administration.sub.userSetting.root}`,
 	},
 	{
 		icon: null,

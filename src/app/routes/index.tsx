@@ -23,6 +23,16 @@ const EditRoleManagement = lazy(
 	() => import('features/roleManagement/EditRoleManagement')
 )
 
+const UserSettings = lazy(() => import('features/userSettings/UserSettings'))
+
+const AddUserSettings = lazy(
+	() => import('features/userSettings/AddUserSettings')
+)
+
+const EditUserSettings = lazy(
+	() => import('features/userSettings/EditUserSettings')
+)
+
 const AdjustmentLogReport = lazy(
 	() => import('features/adjustmentLogReport/AdjustmentLogReport')
 )
@@ -123,6 +133,36 @@ const routes: RouteObject[] = [
 						functionId={paths.administration.sub.editRoleManagement.functionId}
 					>
 						<EditRoleManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.userSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.userSetting.functionId}
+					>
+						<UserSettings />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.addUserSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.addUserSetting.functionId}
+					>
+						<AddUserSettings />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editUserSetting.root}/:userId`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.editUserSetting.functionId}
+					>
+						<EditUserSettings />
 					</AuthRequire>
 				),
 			},

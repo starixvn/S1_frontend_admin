@@ -3,6 +3,7 @@ import { enumReducer } from 'common/enum'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { dashboardSlice } from 'features/dashboard'
 import roleManagementReducer from 'features/roleManagement/slice'
+import { userSettingsApi } from 'features/userSettings/api'
 
 export const store = configureStore({
 	reducer: {
@@ -10,7 +11,10 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
+		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 	},
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware().concat(userSettingsApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -1,0 +1,170 @@
+import { FC } from 'react'
+import _ from 'lodash'
+import { useIsMounted } from 'usehooks-ts'
+import { useNavigate } from 'react-router-dom'
+import {
+	Popconfirm,
+	Space,
+	Table,
+	Typography,
+	TablePaginationConfig,
+	FormInstance,
+} from 'antd'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { GoKey } from 'react-icons/go'
+
+import { LayoutContent } from 'app/pages/layout'
+import { useAppSelector } from 'app/store'
+import { selectAllCurrencyList } from 'common/enum'
+import { ModalState, PAGINATION } from 'common/hooks'
+import { useTranslation } from 'react-i18next'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
+import { UserAdminState } from './type'
+
+interface UserSettingsTableProps {
+	form: FormInstance
+	loading: boolean
+	userAdminList: UserAdminState[]
+	updatePasswordModal: ModalState
+	onDelete: (userId: number) => void
+	onSetAdminUserStatus: (userId: number, status: number) => void
+}
+
+const UserSettingsTable: FC<UserSettingsTableProps> = ({
+	form,
+	loading,
+	userAdminList,
+	updatePasswordModal,
+	onDelete,
+	onSetAdminUserStatus,
+}) => {
+	const { t } = useTranslation()
+	const navigate = useNavigate()
+	const allCurrencyList = useAppSelector(selectAllCurrencyList)
+
+	const isMounted = useIsMounted()
+
+	const columns = [
+		{
+			title: t('Label_Action'),
+			key: 'operation',
+			width: 80,
+			align: 'center' as 'center',
+			render: (values: any) => (
+				<Space>
+					{values.status === 1 ? (
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							onConfirm={() =>
+								onSetAdminUserStatus(values.userId, values.status)
+							}
+						>
+							<Typography.Link type='success'>
+								<CheckOutlined />
+							</Typography.Link>
+						</Popconfirm>
+					) : (
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							onConfirm={() =>
+								onSetAdminUserStatus(values.userId, values.status)
+							}
+						>
+							<Typography.Link type='danger'>
+								<CloseOutlined />
+							</Typography.Link>
+						</Popconfirm>
+					)}
+
+					<Typography.Link
+						type='secondary'
+						onClick={() => {
+							form.setFieldsValue({
+								userId: values.userId,
+							})
+
+							updatePasswordModal.onOpen()
+						}}
+					>
+						<GoKey style={{ marginTop: '8px' }} />
+					</Typography.Link>
+
+					<Popconfirm
+						title={t('Label_SureToDelete')}
+						onConfirm={() => onDelete(values.userId)}
+					>
+						<Typography.Link>{t('Label_Delete')}</Typography.Link>
+					</Popconfirm>
+
+					<Typography.Link
+						onClick={() =>
+							navigate(
+								`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editUserSetting.root}/${values.userId}`
+							)
+						}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
+				</Space>
+			),
+		},
+		{
+			title: t('Label_UserName'),
+			key: 'userName',
+			dataIndex: 'userName',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_RoleName'),
+			key: 'roleName',
+			dataIndex: 'roleName',
+			width: 120,
+			align: 'center' as 'center',
+			render: (roleName: string | null) => roleName || 'N/A',
+		},
+		{
+			title: t('Label_Brand'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Currency'),
+			key: 'currency',
+			dataIndex: 'icurrencyList',
+			width: 120,
+			align: 'center' as 'center',
+			render: (icurrencyList: number[]) => {
+				const currency = icurrencyList.map(
+					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
+				)
+
+				return currency.filter(Boolean).join('/')
+			},
+		},
+	]
+
+	if (!isMounted()) {
+		return null
+	}
+
+	return (
+		<LayoutContent.Card>
+			<Table
+				bordered
+				rowKey={record => record.userId}
+				size='small'
+				scroll={{ x: 240 }}
+				loading={loading}
+				columns={columns}
+				dataSource={userAdminList}
+				pagination={PAGINATION as TablePaginationConfig}
+			/>
+		</LayoutContent.Card>
+	)
+}
+
+export { UserSettingsTable }

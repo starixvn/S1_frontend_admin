@@ -163,5 +163,17 @@
 	"Label_AdjustmentLogReport": "Adjustment Log Report",
 	"Label_Before": "Before",
 	"Label_After": "After",
-	"Label_CreateTime": "CreateTime"
+	"Label_CreateTime": "CreateTime",
+	"Label_UserSetting": "User Setting",
+	"Label_UserName": "User Name",
+	"Label_Brand": "Brand",
+	"Label_AddUser": "Add User",
+	"Label_EditUser": "Edit User",
+	"Label_Password": "Password",
+	"Label_UserNameRequire": "User Name is required",
+	"Label_PasswordRequire": "Password is required",
+	"Label_RoleRequire": "Role is required",
+	"Label_AreYouSure": "Are you sure?",
+	"Label_Submit": "Submit",
+	"Label_Cancel": "Cancel"
 }
