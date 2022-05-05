@@ -1,10 +1,46 @@
+import _ from 'lodash'
 import moment from 'moment'
-import { Table, TablePaginationConfig } from 'antd'
+import { Table, TablePaginationConfig, Tag } from 'antd'
+import styled from 'styled-components'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { selectAdjustmentLogReportList } from './slice'
+
+const StaticTitle = styled.span`
+	color: rgba(0, 0, 0, 0.45);
+	font-size: 14px;
+`
+
+const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
+	if (_.isString(item[key]) || _.isNumber(item[key])) return item[key]
+
+	if (_.isArray(item[key]))
+		return (item[key] as any[]).map(o =>
+			Object.keys(o).map(oKey => (
+				<div>
+					{oKey}: {renderDetailItem(o, oKey)}
+				</div>
+			))
+		)
+
+	return 'null'
+}
+
+const renderDetailContent = (value: any): any => {
+	if (!value) return 'N/A'
+
+	const result = _.isArray(value) ? [...value] : [value]
+
+	return result.map(item =>
+		Object.keys(item).map((key: string) => (
+			<div style={{ width: 180 }}>
+				<StaticTitle>{key}:</StaticTitle> {renderDetailItem(item, key)}
+			</div>
+		))
+	)
+}
 
 const AdjustmentLogReportTable = ({
 	loading,
@@ -42,40 +78,35 @@ const AdjustmentLogReportTable = ({
 			dataIndex: 'actionTypeName',
 			width: 120,
 			align: 'center' as 'center',
+			render: (actionTypeName: string) => (
+				<Tag color='blue' key={actionTypeName}>
+					{actionTypeName}
+				</Tag>
+			),
 		},
 		{
 			title: t('Label_Before'),
-			key: 'beforeDetailInfo',
-			dataIndex: 'beforeDetailInfo',
+			key: 'beforeDetailInfoObject',
+			dataIndex: 'beforeDetailInfoObject',
 			width: 120,
-			render: (beforeDetailInfo: any | null) => {
-				if (beforeDetailInfo === null) return 'N/A'
-
-				const jsonBeforeDetailInfo = JSON.parse(beforeDetailInfo)
-
-				return Object.keys(jsonBeforeDetailInfo).map((key: string) => (
-					<div>
-						{key} : {jsonBeforeDetailInfo[key]}
-					</div>
-				))
-			},
+			render: (
+				beforeDetailInfoObject:
+					| null
+					| { [key: string]: string }
+					| { [key: string]: string }[]
+			) => renderDetailContent(beforeDetailInfoObject),
 		},
 		{
 			title: t('Label_After'),
-			key: 'afterDetailInfo',
-			dataIndex: 'afterDetailInfo',
+			key: 'afterDetailInfoObject',
+			dataIndex: 'afterDetailInfoObject',
 			width: 120,
-			render: (afterDetailInfo: any | null) => {
-				if (afterDetailInfo === null) return 'N/A'
-
-				const jsonBeforeDetailInfo = JSON.parse(afterDetailInfo)
-
-				return Object.keys(jsonBeforeDetailInfo).map((key: string) => (
-					<div>
-						{key} : {jsonBeforeDetailInfo[key]}
-					</div>
-				))
-			},
+			render: (
+				afterDetailInfoObject:
+					| null
+					| { [key: string]: string }
+					| { [key: string]: string }[]
+			) => renderDetailContent(afterDetailInfoObject),
 		},
 		{
 			title: t('Label_TransId'),
@@ -89,7 +120,8 @@ const AdjustmentLogReportTable = ({
 			title: t('Label_CreateTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
-			width: 120,
+			width: 140,
+			align: 'center' as 'center',
 			render: (createTime: string) =>
 				moment(createTime)
 					.utcOffset(timeZoneUtcOffset)
@@ -101,6 +133,11 @@ const AdjustmentLogReportTable = ({
 			dataIndex: 'operator',
 			width: 120,
 			align: 'center' as 'center',
+			render: (operator: string) => (
+				<Tag color='blue' key={operator}>
+					{operator}
+				</Tag>
+			),
 		},
 	]
 
