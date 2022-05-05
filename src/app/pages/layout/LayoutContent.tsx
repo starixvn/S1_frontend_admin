@@ -1,21 +1,12 @@
 import { FC, useRef } from 'react'
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
-import styled from 'styled-components'
+
 import { useResetScrollBar } from 'common/hooks'
 import { LayoutContentTitle } from './LayoutContentTitle'
+import { StyledCard } from './LayoutCard'
 
 const { Content } = Layout
-
-export const StyledCard = styled(Content)`
-	background: white;
-	margin-top: 32px;
-	padding: 8px 28px;
-	border-radius: 4px;
-	overflow: auto;
-}
-
-`
 
 interface LayoutContentInterface extends FC {
 	Title: typeof LayoutContentTitle
