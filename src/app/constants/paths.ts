@@ -249,13 +249,23 @@ const paths = {
 				root: 'Administration/RoleManagement/Edit',
 				functionId: 90,
 			},
+			userSetting: {
+				root: 'Administration/userSetting',
+				functionId: 91,
+			},
+			addUserSetting: {
+				root: 'Administration/UserSetting/AddUserSetting',
+				functionId: 91,
+			},
+			editUserSetting: {
+				root: 'Administration/UserSetting/EditUserSetting',
+				functionId: 91,
+			},
 			adjustmentLogReport: {
 				root: 'Administration/AdjustmentLogReport',
 				functionId: 93,
 			},
-			userSetting: {
-				root: 'administration/userSetting',
-			},
+
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',
 			},

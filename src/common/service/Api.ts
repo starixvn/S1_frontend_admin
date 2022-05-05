@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const rootURL = ''
+export const baseUrl = '/apiV2/'
 
 export const ApiV2 = axios.create({
 	withCredentials: true,
-	baseURL: `${rootURL}/apiV2`,
+	baseURL: baseUrl,
 })
 
 export default class BoApi {

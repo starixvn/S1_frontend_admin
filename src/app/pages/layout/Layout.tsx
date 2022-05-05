@@ -8,7 +8,8 @@ import {
 } from 'common/enum'
 import { useSearchParams } from 'react-router-dom'
 import { useState, FC, useEffect } from 'react'
-import { Layout } from 'antd'
+import { RequestStatusType } from 'type'
+import { Layout, Spin } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
 import { LayoutContent } from './LayoutContent'
@@ -52,7 +53,11 @@ const useUserSiteEffect = () => {
 }
 
 const BaseLayout: FC = () => {
+	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
+
 	const auth = useAuth()
+
+	const enumStatus = useAppSelector(selectEnumStatus)
 
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
 
@@ -60,12 +65,20 @@ const BaseLayout: FC = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			auth.onFetchInternalAllowRoles()
-			auth.onFetchUserMenuList('en')
+			setRequestStatus('pending')
+
+			await Promise.all([
+				auth.onFetchInternalAllowRoles(),
+				auth.onFetchUserMenuList('en'),
+			])
+
+			setRequestStatus('idle')
 		}
 
 		init()
 	}, [])
+
+	const loading = enumStatus === 'pending' || requestStatus === 'pending'
 
 	return (
 		<Layout hasSider style={{ height: '100vh' }}>
@@ -81,7 +94,9 @@ const BaseLayout: FC = () => {
 					onToggleCollapsed={onToggleCollapsed}
 				/>
 
-				<LayoutContent />
+				<Spin spinning={loading}>
+					<LayoutContent />
+				</Spin>
 			</Layout>
 		</Layout>
 	)
