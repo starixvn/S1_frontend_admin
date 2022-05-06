@@ -14,6 +14,7 @@ export interface AddRolePermissionInterface {
 	mark: string
 	currencyList: number[]
 	permission: any[]
+	siteId?: number
 }
 
 export interface RolePermissionInterface {
@@ -30,6 +31,7 @@ export interface UpdateRolePermissionInterface {
 	currencyList: number[]
 	role?: number
 	permission: any[]
+	siteId?: number
 }
 
 export interface FormPermissionInterface {

@@ -11,8 +11,11 @@ import { AddRolePermissionInterface } from './type'
 
 export const fetchPermissionGetRoleListAsync = createAsyncThunk(
 	'roleManagement/fetchPermissionGetRoleList',
-	async (roleName: string = '') => {
-		const data = await fetchPermissionGetRoleList(roleName)
+	async ({ roleName, siteId }: { roleName: string; siteId?: number }) => {
+		const data = await fetchPermissionGetRoleList({
+			roleName,
+			siteId,
+		})
 
 		return data
 	}
@@ -20,8 +23,10 @@ export const fetchPermissionGetRoleListAsync = createAsyncThunk(
 
 export const fetchPermissionGetAddRolePermissionAsync = createAsyncThunk(
 	'roleManagement/fetchPermissionGetAddRolePermission',
-	async () => {
-		const data = await fetchPermissionGetAddRolePermission()
+	async ({ siteId }: { siteId?: number }) => {
+		const data = await fetchPermissionGetAddRolePermission({
+			siteId,
+		})
 
 		return data
 	}
@@ -36,8 +41,11 @@ export const fetchPermissionAddRolePermissionAsync = createAsyncThunk(
 
 export const fetchPermissionDeleteRolePermissionAsync = createAsyncThunk(
 	'roleManagement/fetchPermissionDeleteRolePermission',
-	async (role: number) => {
-		const deleteRole = await fetchPermissionDeleteRolePermission(role)
+	async ({ role, siteId }: { role: number; siteId?: number }) => {
+		const deleteRole = await fetchPermissionDeleteRolePermission({
+			role,
+			siteId,
+		})
 
 		return deleteRole
 	}
@@ -45,8 +53,11 @@ export const fetchPermissionDeleteRolePermissionAsync = createAsyncThunk(
 
 export const fetchPermissionGetUpdateRolePermissionAsync = createAsyncThunk(
 	'roleManagement/fetchPermissionGetUpdateRolePermissionAsync',
-	async (role: number) => {
-		const data = await fetchPermissionGetUpdateRolePermission(role)
+	async ({ role, siteId }: { role: number; siteId?: number }) => {
+		const data = await fetchPermissionGetUpdateRolePermission({
+			role,
+			siteId,
+		})
 
 		return data
 	}

@@ -1,18 +1,18 @@
 import _ from 'lodash'
-import { useAuth } from 'common/hooks'
+import { useAuth, useQueryParams } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
 	fetchAllEnumAsync,
 	onChangeUserSite,
 	selectEnumStatus,
 } from 'common/enum'
-import { useSearchParams } from 'react-router-dom'
-import { useState, FC, useEffect } from 'react'
+import { useState, FC, useEffect, Suspense } from 'react'
 import { RequestStatusType } from 'type'
 import { Layout, Spin } from 'antd'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
 import { LayoutContent } from './LayoutContent'
+import LayoutSuspense from './LayoutSuspense'
 
 const useMenuCollapsed = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(true)
@@ -30,9 +30,8 @@ const useMenuCollapsed = () => {
 
 const useUserSiteEffect = () => {
 	const dispatch = useAppDispatch()
-	const [searchParams] = useSearchParams()
 
-	const site = searchParams.get('site')
+	const [queryParams] = useQueryParams()
 
 	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
 
@@ -41,24 +40,19 @@ const useUserSiteEffect = () => {
 	useEffect(() => {
 		if (enumStatus === 'succeeded') {
 			const newUserSite =
-				_.find(userSiteList, { siteId: Number(site) }) || userSiteList[0]
+				_.find(userSiteList, { siteId: Number(queryParams.siteId) }) ||
+				userSiteList[0]
 
 			dispatch(onChangeUserSite(newUserSite))
 		}
 	}, [enumStatus])
-
-	useEffect(() => {
-		dispatch(fetchAllEnumAsync())
-	}, [])
 }
 
 const BaseLayout: FC = () => {
+	const dispatch = useAppDispatch()
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
-
 	const auth = useAuth()
-
 	const enumStatus = useAppSelector(selectEnumStatus)
-
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
 
 	useUserSiteEffect()
@@ -70,6 +64,7 @@ const BaseLayout: FC = () => {
 			await Promise.all([
 				auth.onFetchInternalAllowRoles(),
 				auth.onFetchUserMenuList('en'),
+				dispatch(fetchAllEnumAsync()),
 			])
 
 			setRequestStatus('idle')
@@ -94,9 +89,17 @@ const BaseLayout: FC = () => {
 					onToggleCollapsed={onToggleCollapsed}
 				/>
 
-				<Spin spinning={loading}>
-					<LayoutContent />
-				</Spin>
+				<Suspense
+					fallback={
+						<LayoutSuspense>
+							<Spin />
+						</LayoutSuspense>
+					}
+				>
+					<Spin spinning={loading}>
+						<LayoutContent />
+					</Spin>
+				</Suspense>
 			</Layout>
 		</Layout>
 	)

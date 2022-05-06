@@ -7,7 +7,6 @@ import { selectUserSite } from 'common/enum'
 import { useModal, useQueryParams } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
-
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -35,7 +34,7 @@ const UserSettings = () => {
 
 	const [
 		getUserAdminListByUserName,
-		{ data: userAdminList, isLoading: isUserAdminListLoading },
+		{ data: userAdminList, isFetching: isUserAdminListFetching },
 	] = useLazyGetUserAdminListByUserNameQuery()
 
 	const [deleteAdminUserByUserId] = useDeleteAdminUserByUserIdMutation()
@@ -49,7 +48,10 @@ const UserSettings = () => {
 		const { userName = '' } = form.getFieldsValue()
 
 		try {
-			await getUserAdminListByUserName(userName).unwrap()
+			await getUserAdminListByUserName({
+				userName,
+				siteId: userSite?.siteId,
+			}).unwrap()
 
 			setQueryParams({
 				userName,
@@ -63,7 +65,10 @@ const UserSettings = () => {
 
 	const handleDelete = async (userId: number) => {
 		try {
-			await deleteAdminUserByUserId(userId)
+			await deleteAdminUserByUserId({
+				userId,
+				siteId: userSite?.siteId,
+			})
 
 			message.success(t('System.Label_Success'))
 		} catch (error) {
@@ -112,6 +117,8 @@ const UserSettings = () => {
 	}
 
 	useEffect(() => {
+		if (!userSite?.siteId) return
+
 		const init = async () => {
 			const { userName = '' } = queryParams
 
@@ -123,9 +130,9 @@ const UserSettings = () => {
 		}
 
 		init()
-	}, [])
+	}, [userSite?.siteId])
 
-	const loading = isUserAdminListLoading
+	const loading = isUserAdminListFetching
 
 	return (
 		<main>

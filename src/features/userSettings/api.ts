@@ -14,29 +14,38 @@ export const userSettingsApi = createApi({
 	baseQuery: axiosBaseQuery({ baseUrl }),
 	tagTypes: ['POST'],
 	endpoints: builder => ({
-		getUserAdminListByUserName: builder.query<UserAdminState[], string>({
-			query: userName => ({
+		getUserAdminListByUserName: builder.query<
+			UserAdminState[],
+			{ userName: string; siteId?: number }
+		>({
+			query: data => ({
 				url: `Permission/GetAdminUserList`,
 				method: 'POST',
-				data: { userName },
+				data,
 			}),
 			providesTags: ['POST'],
 		}),
-		getAddAdminUserCurrency: builder.query<any[], unknown>({
-			query: () => ({
+		getAddAdminUserCurrency: builder.query<
+			any[],
+			{
+				siteId?: number
+			}
+		>({
+			query: data => ({
 				url: `Permission/GetAddAdminUserCurrency`,
 				method: 'POST',
+				data,
 			}),
 			providesTags: ['POST'],
 		}),
 		getOriginAdminPermissionListByRole: builder.query<
 			AdminUserPermissionInterface[],
-			number
+			{ role: number; siteId?: number }
 		>({
-			query: role => ({
+			query: data => ({
 				url: `Permission/GetAddAdminUser`,
 				method: 'POST',
-				data: { role },
+				data,
 			}),
 			transformResponse: (response: {
 				permission: AdminUserPermissionInterface[]
@@ -50,11 +59,14 @@ export const userSettingsApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		getUpdateAdminUser: builder.query<AdminUserInterface, number>({
-			query: userId => ({
+		getUpdateAdminUser: builder.query<
+			AdminUserInterface,
+			{ userId: number; siteId?: number }
+		>({
+			query: data => ({
 				url: `Permission/GetUpdateAdminUser`,
 				method: 'POST',
-				data: { userId },
+				data,
 			}),
 		}),
 		updateAdminUser: builder.mutation<any, UpdateAdminUserArgs>({
@@ -65,11 +77,17 @@ export const userSettingsApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		deleteAdminUserByUserId: builder.mutation<any, number>({
-			query: userId => ({
+		deleteAdminUserByUserId: builder.mutation<
+			any,
+			{
+				userId: number
+				siteId?: number
+			}
+		>({
+			query: data => ({
 				url: `Permission/DeleteAdminUser`,
 				method: 'POST',
-				data: { userId },
+				data,
 			}),
 			invalidatesTags: ['POST'],
 		}),

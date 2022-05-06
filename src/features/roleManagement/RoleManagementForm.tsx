@@ -9,7 +9,7 @@ import {
 	Row,
 	Select,
 	Typography,
-	Skeleton,
+	Spin,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -141,10 +141,8 @@ const RoleManagementForm = ({
 	}
 
 	return (
-		<LayoutContent.Card>
-			{loading ? (
-				<Skeleton />
-			) : (
+		<Spin spinning={loading}>
+			<LayoutContent.Card>
 				<Form form={form} layout='vertical'>
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
@@ -203,8 +201,8 @@ const RoleManagementForm = ({
 						</div>
 					))}
 				</Form>
-			)}
-		</LayoutContent.Card>
+			</LayoutContent.Card>
+		</Spin>
 	)
 }
 

@@ -31,8 +31,10 @@ const AddUserSettings: FC = () => {
 		handleCheckAllPermission,
 	} = usePermissionForm(form)
 
-	const { data: roleCurrencyList, isLoading: isAddAdminUserCurrencyLoading } =
-		useGetAddAdminUserCurrencyQuery(null)
+	const { data: roleCurrencyList, isFetching: isAddAdminUserCurrencyFetching } =
+		useGetAddAdminUserCurrencyQuery({
+			siteId: userSite?.siteId,
+		})
 
 	const [
 		getOriginAdminPermissionListByRole,
@@ -71,7 +73,10 @@ const AddUserSettings: FC = () => {
 	const handleRoleChange = async (role: number | null) => {
 		if (role) {
 			const { data: newOriginAdminPermissionList } =
-				await getOriginAdminPermissionListByRole(role)
+				await getOriginAdminPermissionListByRole({
+					role,
+					siteId: userSite?.siteId,
+				})
 
 			const newOriginPermissionList = getPermissionList(
 				newOriginAdminPermissionList ?? []
@@ -88,7 +93,7 @@ const AddUserSettings: FC = () => {
 			<LayoutContent.Title title={t('Label_AddUser')} />
 
 			<UserSettingsForm
-				loading={isAddAdminUserCurrencyLoading}
+				loading={isAddAdminUserCurrencyFetching}
 				form={form}
 				permissionList={permissionList}
 				roleCurrencyList={roleCurrencyList ?? []}

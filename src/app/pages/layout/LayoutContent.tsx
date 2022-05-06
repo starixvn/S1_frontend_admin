@@ -1,7 +1,6 @@
 import { FC, useRef } from 'react'
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
-
 import { useResetScrollBar } from 'common/hooks'
 import { LayoutContentTitle } from './LayoutContentTitle'
 import { StyledCard } from './LayoutCard'

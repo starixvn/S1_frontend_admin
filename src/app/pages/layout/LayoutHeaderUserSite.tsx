@@ -11,7 +11,7 @@ const useUserSiteAction = () => {
 
 	const handleSelectUserSite = (newUserSite: UserSite) => {
 		const searchParams = new URLSearchParams({
-			site: String(newUserSite.siteId),
+			siteId: String(newUserSite.siteId),
 		})
 
 		window.location.href = `${location.pathname}?${searchParams.toString()}`

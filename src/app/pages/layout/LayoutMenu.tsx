@@ -6,6 +6,8 @@ import { MenuInterface } from 'type'
 import { getMapMenu, MODULE_ICON_MAPPING } from 'app/constants/menuMapping'
 import _ from 'lodash'
 import { useAuth } from 'common/hooks'
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 
 // const { Search } = Input;
 
@@ -91,6 +93,7 @@ const LayoutMenu = ({
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
 	const { userMenuList, internalPermissionFunctionKeys } = useAuth()
+	const userSite = useAppSelector(selectUserSite)
 
 	const { openKeys, handleClickMenuItem, handleToggleMenu } = useMenuAction({
 		mediaMdMatches,
@@ -130,7 +133,7 @@ const LayoutMenu = ({
 				icon={icon}
 				onClick={handleClickMenuItem}
 			>
-				<Link to={path}>{name}</Link>
+				<Link to={`${path}?siteId=${userSite?.siteId}`}>{name}</Link>
 			</Menu.Item>
 		)
 	}

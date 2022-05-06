@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useTimeZone, dateRangeToUtcFormatter } from 'components/TimeZoneSelect'
 import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
+import { withOutSiteIdParams } from 'common/utils'
 import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import { AdjustmentLogReportFilter } from './AdjustmentLogReportFilter'
@@ -100,8 +101,10 @@ const AdjustmentLogReport = () => {
 	}
 
 	useEffect(() => {
+		if (!userSite?.siteId) return
+
 		const init = async () => {
-			if (_.isEmpty(queryParams)) return
+			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
 
 			const {
 				actionTypes,
@@ -117,6 +120,7 @@ const AdjustmentLogReport = () => {
 			} = queryParams
 
 			onTimeZoneChange(Number(tz))
+
 			form.setFieldsValue({
 				actionTypes: _.isArray(actionTypes)
 					? actionTypes.map((actionType: string) => Number(actionType))
@@ -140,7 +144,7 @@ const AdjustmentLogReport = () => {
 		}
 
 		init()
-	}, [])
+	}, [userSite?.siteId])
 
 	useEffect(() => {
 		return () => {
