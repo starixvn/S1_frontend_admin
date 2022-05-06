@@ -3,6 +3,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch, useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 import { useQueryParams } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
@@ -20,6 +21,7 @@ const RoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
+	const userSite = useAppSelector(selectUserSite)
 	const [queryParams, setQueryParams] = useQueryParams()
 
 	const [form] = Form.useForm()
@@ -30,7 +32,9 @@ const RoleManagement = () => {
 		const { roleName = '' } = form.getFieldsValue()
 
 		try {
-			await dispatch(fetchPermissionGetRoleListAsync(roleName)).unwrap()
+			await dispatch(
+				fetchPermissionGetRoleListAsync({ roleName, siteId: userSite?.siteId })
+			).unwrap()
 
 			setQueryParams({
 				roleName,
@@ -44,7 +48,12 @@ const RoleManagement = () => {
 
 	const handleDelete = async (role: number) => {
 		try {
-			await dispatch(fetchPermissionDeleteRolePermissionAsync(role)).unwrap()
+			await dispatch(
+				fetchPermissionDeleteRolePermissionAsync({
+					role,
+					siteId: userSite?.siteId,
+				})
+			).unwrap()
 
 			message.success(t('System.Label_Success'))
 		} catch (error) {
@@ -56,20 +65,28 @@ const RoleManagement = () => {
 
 	const loading = roleManagementStatus === 'pending'
 
-	useEffect(() => {
-		dispatch(fetchPermissionGetRoleListAsync(queryParams?.roleName ?? ''))
-	}, [])
+	useEffect(() => {}, [])
 
 	useEffect(() => {
-		const init = () => {
+		if (!userSite?.siteId) return
+
+		const init = async () => {
 			const { roleName } = queryParams
+
+			await dispatch(
+				fetchPermissionGetRoleListAsync({
+					roleName: roleName ?? '',
+					siteId: userSite?.siteId,
+				})
+			)
+
 			form.setFieldsValue({
 				roleName: roleName ?? '',
 			})
 		}
 
 		init()
-	}, [])
+	}, [userSite?.siteId])
 
 	return (
 		<main>

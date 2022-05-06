@@ -3,6 +3,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch, useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +21,7 @@ const AddRoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
+	const userSite = useAppSelector(selectUserSite)
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
@@ -47,6 +49,7 @@ const AddRoleManagement = () => {
 					mark: remark,
 					currencyList,
 					permission: permissionList,
+					siteId: userSite?.siteId,
 				})
 			).unwrap()
 
@@ -57,7 +60,12 @@ const AddRoleManagement = () => {
 			})
 
 			setPermissionList([])
-			dispatch(fetchPermissionGetRoleListAsync(''))
+			dispatch(
+				fetchPermissionGetRoleListAsync({
+					roleName: '',
+					siteId: userSite?.siteId,
+				})
+			)
 			navigate(
 				`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`
 			)
@@ -71,7 +79,11 @@ const AddRoleManagement = () => {
 	}
 
 	useEffect(() => {
-		dispatch(fetchPermissionGetAddRolePermissionAsync())
+		dispatch(
+			fetchPermissionGetAddRolePermissionAsync({
+				siteId: userSite?.siteId,
+			})
+		)
 	}, [])
 
 	const loading = roleManagementStatus === 'pending'

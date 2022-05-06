@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { message } from 'antd'
 import { useEffect } from 'react'
+import { selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
@@ -72,6 +73,7 @@ const EditRoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
+	const userSite = useAppSelector(selectUserSite)
 	const params = useParams()
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
@@ -102,9 +104,15 @@ const EditRoleManagement = () => {
 				role: Number(params.roleId),
 				currencyList,
 				permission: permissionList,
+				siteId: userSite?.siteId,
 			})
 
-			await dispatch(fetchPermissionGetRoleListAsync(''))
+			await dispatch(
+				fetchPermissionGetRoleListAsync({
+					roleName: '',
+					siteId: userSite?.siteId,
+				})
+			)
 			navigate(
 				`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`
 			)
@@ -118,7 +126,10 @@ const EditRoleManagement = () => {
 
 	useEffect(() => {
 		dispatch(
-			fetchPermissionGetUpdateRolePermissionAsync(Number(params?.roleId))
+			fetchPermissionGetUpdateRolePermissionAsync({
+				role: Number(params?.roleId),
+				siteId: userSite?.siteId,
+			})
 		)
 	}, [])
 

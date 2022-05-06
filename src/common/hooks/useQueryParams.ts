@@ -1,3 +1,5 @@
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 import _ from 'lodash'
 import { useSearchParams } from 'react-router-dom'
 
@@ -45,12 +47,12 @@ const useQueryParams = (): [
 	(values: object) => void
 ] => {
 	const [searchParams, setSearchParams] = useSearchParams()
-
+	const userSite = useAppSelector(selectUserSite)
 	const queryParams = readParams(searchParams)
 
 	const setQueryParams = (values: object) => {
 		if (values) {
-			setSearchParams(buildParams(values))
+			setSearchParams(buildParams({ ...values, siteId: userSite?.siteId }))
 		}
 	}
 	return [queryParams, setQueryParams]

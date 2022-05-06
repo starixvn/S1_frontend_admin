@@ -1,11 +1,16 @@
-import { Form } from 'antd'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Form } from 'antd'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { selectUserSite } from 'common/enum'
 import { DashboardFilter } from './DashboardFilter'
 import { DashboardTable } from './DashboardTable'
-import { selectDashboardData, selectDashboardStatus } from './slice'
+import {
+	onChangeDashBoardStatus,
+	selectDashboardData,
+	selectDashboardStatus,
+} from './slice'
 import { fetchDashBoardGetDataAsync } from './thunk'
 
 const Dashboard = () => {
@@ -31,6 +36,12 @@ const Dashboard = () => {
 	}
 
 	const loading = dashboardStatus === 'pending'
+
+	useEffect(() => {
+		return () => {
+			dispatch(onChangeDashBoardStatus('idle'))
+		}
+	}, [])
 
 	return (
 		<main>

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Button, Col, Form, FormInstance, Row, Select, Skeleton } from 'antd'
+import { Button, Col, Form, FormInstance, Row, Select, Spin } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { SearchOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'app/store'
@@ -18,11 +18,11 @@ const DashboardFilter: FC<{
 	const enumStatus = useAppSelector(selectEnumStatus)
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
+	const spinning = enumStatus === 'pending' || currencyListBySite === undefined
+
 	return (
-		<LayoutContent.Card>
-			{enumStatus === 'pending' || currencyListBySite === undefined ? (
-				<Skeleton />
-			) : (
+		<Spin spinning={spinning}>
+			<LayoutContent.Card>
 				<Form
 					layout='vertical'
 					form={form}
@@ -74,8 +74,8 @@ const DashboardFilter: FC<{
 						</Col>
 					</Row>
 				</Form>
-			)}
-		</LayoutContent.Card>
+			</LayoutContent.Card>
+		</Spin>
 	)
 }
 

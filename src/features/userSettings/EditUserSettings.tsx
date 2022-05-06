@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
+import { getPermissionList } from 'common/permissionForm/utils'
 import { Form, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-
-import { getPermissionList } from 'common/permissionForm/utils'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { AffixButtons } from 'components/AffixButtons'
@@ -20,6 +21,7 @@ import { AdminUserPermissionInterface } from './type'
 const EditUserSettings = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
+	const userSite = useAppSelector(selectUserSite)
 	const { userId } = useParams()
 	const [form] = Form.useForm()
 
@@ -48,12 +50,11 @@ const EditUserSettings = () => {
 	const handleUpdate = async () => {
 		await form.validateFields()
 
-		const { siteId, userName, password, currencyList, role } =
-			form.getFieldsValue()
+		const { userName, password, currencyList, role } = form.getFieldsValue()
 
 		try {
 			await updateAdminUser({
-				siteId,
+				siteId: userSite?.siteId,
 				userId: Number(userId),
 				userName,
 				password,
@@ -84,7 +85,10 @@ const EditUserSettings = () => {
 	const handleRoleChange = async (role: number | null) => {
 		if (role) {
 			const { data: newOriginAdminPermissionList } =
-				await getOriginAdminPermissionListByRole(role)
+				await getOriginAdminPermissionListByRole({
+					role,
+					siteId: userSite?.siteId,
+				})
 
 			const newOriginPermissionList = getPermissionList(
 				newOriginAdminPermissionList ?? []
@@ -99,21 +103,15 @@ const EditUserSettings = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const { data: newUpdateAdminUserData } = await getUpdateAdminUser(
-				Number(userId)
-			)
+			const { data: newUpdateAdminUserData } = await getUpdateAdminUser({
+				userId: Number(userId),
+				siteId: userSite?.siteId,
+			})
 
-			const {
-				siteId,
-				userName,
-				password,
-				selectCurrencyList,
-				role,
-				permission,
-			} = newUpdateAdminUserData ?? {}
+			const { userName, password, selectCurrencyList, role, permission } =
+				newUpdateAdminUserData ?? {}
 
 			form.setFieldsValue({
-				siteId,
 				userName,
 				password,
 				currencyList: selectCurrencyList,

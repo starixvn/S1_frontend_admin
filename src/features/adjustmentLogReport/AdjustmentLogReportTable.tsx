@@ -17,10 +17,10 @@ const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
 	if (_.isString(item[key]) || _.isNumber(item[key])) return item[key]
 
 	if (_.isArray(item[key]))
-		return (item[key] as any[]).map(o =>
-			Object.keys(o).map(oKey => (
-				<div>
-					{oKey}: {renderDetailItem(o, oKey)}
+		return (item[key] as any[]).map(detailItem =>
+			Object.keys(detailItem).map(detailItemKey => (
+				<div key={detailItemKey}>
+					{detailItemKey}: {renderDetailItem(detailItem, detailItemKey)}
 				</div>
 			))
 		)
@@ -35,7 +35,7 @@ const renderDetailContent = (value: any): any => {
 
 	return result.map(item =>
 		Object.keys(item).map((key: string) => (
-			<div style={{ width: 180 }}>
+			<div key={key} style={{ width: 180 }}>
 				<StaticTitle>{key}:</StaticTitle> {renderDetailItem(item, key)}
 			</div>
 		))

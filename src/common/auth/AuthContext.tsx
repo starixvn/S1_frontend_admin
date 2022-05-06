@@ -70,11 +70,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			const { path: dashboardPath } = getMapMenu(1)
 
-			const from =
-				(location as LocationState)?.state?.from?.pathname || dashboardPath
+			const from = (location as LocationState)?.state?.from
+
+			const path = from?.pathname
+				? `${from?.pathname}${from?.search}`
+				: dashboardPath
 
 			setAuth(newAuth)
-			navigate(from, { replace: true })
+			navigate(path, { replace: true })
 			message.success(t('System.Label_LoginSuccess'))
 		} catch (error) {
 			message.error(t((error as Error).message))

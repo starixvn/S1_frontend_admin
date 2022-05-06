@@ -8,7 +8,7 @@ import {
 	Input,
 	Row,
 	Select,
-	Skeleton,
+	Spin,
 } from 'antd'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleManagementDataList } from 'features/roleManagement/slice'
@@ -16,7 +16,7 @@ import { fetchPermissionGetRoleListAsync } from 'features/roleManagement/thunk'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { MultipleSelect } from 'components/Select'
-import { selectAllCurrencyList } from 'common/enum'
+import { selectAllCurrencyList, selectUserSite } from 'common/enum'
 import { LockOutlined } from '@ant-design/icons'
 import PermissionForm from 'common/permissionForm'
 import { FormPermissionInterface } from 'type'
@@ -52,6 +52,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 }) => {
 	const { t } = useTranslation()
 	const dispatch = useAppDispatch()
+	const userSite = useAppSelector(selectUserSite)
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
 	const filteredAllCurrencyListByUser = allCurrencyList.filter(currency =>
 		_.some(
@@ -72,16 +73,19 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	}
 
 	useEffect(() => {
-		dispatch(fetchPermissionGetRoleListAsync(''))
+		dispatch(
+			fetchPermissionGetRoleListAsync({
+				roleName: '',
+				siteId: userSite?.siteId,
+			})
+		)
 	}, [])
 
 	const isPasswordEnable = form.getFieldValue('password') === null
 
 	return (
-		<LayoutContent.Card>
-			{loading ? (
-				<Skeleton />
-			) : (
+		<Spin spinning={loading}>
+			<LayoutContent.Card>
 				<Form form={form} layout='vertical'>
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
@@ -180,8 +184,8 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 						onCheckAllPermission={onCheckAllPermission}
 					/>
 				</Form>
-			)}
-		</LayoutContent.Card>
+			</LayoutContent.Card>
+		</Spin>
 	)
 }
 

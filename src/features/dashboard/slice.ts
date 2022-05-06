@@ -10,14 +10,18 @@ interface DashBoardState {
 }
 
 const initialState: DashBoardState = {
-	status: undefined,
+	status: 'idle',
 	dashBoardData: {},
 }
 
 const dashBoardSlice = createSlice({
 	name: 'dashBoard',
 	initialState,
-	reducers: {},
+	reducers: {
+		onChangeDashBoardStatus: (state, action) => {
+			state.status = action.payload
+		},
+	},
 	extraReducers: builder =>
 		builder
 			.addCase(fetchDashBoardGetDataAsync.pending, state => {
@@ -39,5 +43,7 @@ export const selectDashboardStatus = (state: RootState) =>
 
 export const selectDashboardData = (state: RootState) =>
 	state.dashboard.dashBoardData
+
+export const { onChangeDashBoardStatus } = dashBoardSlice.actions
 
 export default dashBoardSlice.reducer
