@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
+import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { dashboardSlice } from 'features/dashboard'
 import roleManagementReducer from 'features/roleManagement/slice'
 import { userSettingsApi } from 'features/userSettings/api'
@@ -12,9 +13,12 @@ export const store = configureStore({
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
+		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
-		getDefaultMiddleware().concat(userSettingsApi.middleware),
+		getDefaultMiddleware()
+			.concat(userSettingsApi.middleware)
+			.concat(blockBankAccountApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

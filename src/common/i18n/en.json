@@ -163,7 +163,8 @@
 	"Label_AdjustmentLogReport": "Adjustment Log Report",
 	"Label_Before": "Before",
 	"Label_After": "After",
-	"Label_CreateTime": "CreateTime",
+	"Label_CreateTime": "Create Time",
+	"Label_UpdateTime": "Update Time",
 	"Label_UserSetting": "User Setting",
 	"Label_UserName": "User Name",
 	"Label_Brand": "Brand",
@@ -175,5 +176,16 @@
 	"Label_RoleRequire": "Role is required",
 	"Label_AreYouSure": "Are you sure?",
 	"Label_Submit": "Submit",
-	"Label_Cancel": "Cancel"
+	"Label_Cancel": "Cancel",
+	"Label_Status": "Status",
+	"Label_MemberId": "Member Id",
+	"Label_AccountNum": "Account Num",
+	"Label_Unlock": "Unlock",
+	"Label_Lock": "Lock",
+	"Label_Open": "Open",
+	"Label_BankName": "Bank Name",
+	"Label_AccountName": "Account Name",
+	"Label_Updater": "Updater",
+	"Label_UserList": "User List",
+	"Label_BlockBankAccInfoDescribe1": "Reminder: This lock is a locked card number, and the following users who bind this card will also be affected."
 }

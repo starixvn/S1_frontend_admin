@@ -493,19 +493,6 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: 70,
 		pathMode: 'NewAdmin',
 		newAdminPath: 'Risk/BlockBankAccount',
-		element: (
-			<Result
-				status='warning'
-				title='Page Not Found: Risk/BlockBankAccount'
-				extra={
-					<Link to='/Internal/Home/DashboardNew'>
-						<Button type='primary' key='console'>
-							Back Dashboard
-						</Button>
-					</Link>
-				}
-			/>
-		),
 	},
 	{
 		icon: null,
