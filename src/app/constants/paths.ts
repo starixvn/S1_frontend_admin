@@ -234,6 +234,15 @@ const paths = {
 			},
 		},
 	},
+	risk: {
+		root: 'risk',
+		sub: {
+			blockBankAccount: {
+				root: 'Risk/BlockBankAccount',
+				functionId: 70,
+			},
+		},
+	},
 	administration: {
 		root: 'Administration',
 		sub: {
