@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { v4 as uuidV4 } from 'uuid'
 import moment from 'moment'
 import { Space, Table, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
@@ -41,7 +42,10 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (values: any) => {
 				const statusDisplayKey = _.find(BANK_BLOCK_STATUS, {
-					value: values.status,
+					value:
+						values.status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+							? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
+							: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK,
 				})?.displayKey
 
 				const text = statusDisplayKey ? t(statusDisplayKey) : 'N/A'
@@ -142,7 +146,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 		<LayoutContent.Card>
 			<Table
 				bordered
-				rowKey={record => `${record.userName}-${record.accountNum}`}
+				rowKey={() => uuidV4()}
 				size='small'
 				scroll={{ x: 240 }}
 				loading={loading}
