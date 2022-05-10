@@ -694,4 +694,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalPath: 'Finance/AdjustmentLogReport',
 		newAdminPath: paths.administration.sub.adjustmentLogReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.administration.sub.oldRoleManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.administration.sub.oldRoleManagement.root,
+	},
+	{
+		icon: null,
+		functionId: paths.administration.sub.oldUserSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.administration.sub.oldUserSetting.root,
+	},
 ]

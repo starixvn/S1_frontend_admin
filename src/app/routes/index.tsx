@@ -188,6 +188,26 @@ const routes: RouteObject[] = [
 					</AuthRequire>
 				),
 			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldRoleManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.oldRoleManagement.functionId}
+					>
+						<Iframe path={paths.administration.sub.oldRoleManagement.root} />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldUserSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.oldUserSetting.functionId}
+					>
+						<Iframe path={paths.administration.sub.oldUserSetting.root} />
+					</AuthRequire>
+				),
+			},
 		],
 	},
 	{
