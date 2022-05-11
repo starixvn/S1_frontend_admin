@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    tools {nodejs "nodejs"}
+    environment{
+        env = 'release'
+        platform= 'admin'
+        node_modules_exists = fileExists 'node_modules'
+    }
+    stages {
+        stage('Install dependencies') {   
+            when {
+                anyOf {
+                    changeset "package.json"
+                    expression { node_modules_exists == 'false' }
+                }
+            }
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Zip'){
+            steps {
+                dir("build"){
+                    script {
+                        env.commitHash = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
+                    }
+                    sh 'zip -r ${platform}-${env}-${commitHash} *'
+                    sh 'curl -x http://10.4.194.104:3128 -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://172.31.28.233:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
+                    sh 'echo admin-${env}-${commitHash}'
+                }
+            }
+        }
+        stage('Deploy') {
+             steps {
+                sh 'ansible-playbook -i host.yml deploy.yml --extra-vars "commitId=${commitHash} host=${platform} env=${env}"'
+            }
+        }
+    }
+}
