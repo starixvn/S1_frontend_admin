@@ -30,7 +30,7 @@ pipeline {
                         env.commitHash = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
                     }
                     sh 'zip -r ${platform}-${env}-${commitHash} *'
-                    sh 'curl -x http://10.4.194.104:3128 -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://172.31.28.233:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
+                    sh 'curl -x http://10.4.194.104:3128 -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://13.213.82.69:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
                     sh 'echo admin-${env}-${commitHash}'
                 }
             }
