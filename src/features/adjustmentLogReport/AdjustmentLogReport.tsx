@@ -8,7 +8,12 @@ import { useTimeZone, dateRangeToUtcFormatter } from 'components/TimeZoneSelect'
 import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { withOutSiteIdParams } from 'common/utils'
-import { selectUserSite } from 'common/enum'
+import {
+	selectActionTypeList,
+	selectAdjustmentInfoLogMenu,
+	selectCurrencyListBySite,
+	selectUserSite,
+} from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import { AdjustmentLogReportFilter } from './AdjustmentLogReportFilter'
 import { fetchLogReportListAsync } from './thunk'
@@ -23,6 +28,10 @@ const AdjustmentLogReport = () => {
 	const dispatch = useAppDispatch()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
+
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const adjustmentInfoLogMenu = useAppSelector(selectAdjustmentInfoLogMenu)
+	const actionTypeList = useAppSelector(selectActionTypeList)
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const userSite = useAppSelector(selectUserSite)
@@ -100,11 +109,53 @@ const AdjustmentLogReport = () => {
 		})
 	}
 
+	const onChangeCurrency = (newCurrencyIds: number[]) => {
+		if (newCurrencyIds.includes(0)) {
+			form.setFieldsValue({
+				currencyIds: currencyListBySite?.map(item => item.currencyId),
+			})
+		} else {
+			form.setFieldsValue({
+				currencyIds: newCurrencyIds,
+			})
+		}
+	}
+
+	const onChangeMenus = (newMenus: number[]) => {
+		if (newMenus.includes(0)) {
+			form.setFieldsValue({
+				menus: adjustmentInfoLogMenu?.map(item => item.value),
+			})
+		} else {
+			form.setFieldsValue({
+				menus: newMenus,
+			})
+		}
+	}
+
+	const onChangeActionTypes = (newActionTypes: number[]) => {
+		if (newActionTypes.includes(0)) {
+			form.setFieldsValue({
+				actionTypes: actionTypeList?.map(item => item.value),
+			})
+		} else {
+			form.setFieldsValue({
+				actionTypes: newActionTypes,
+			})
+		}
+	}
+
 	useEffect(() => {
 		if (!userSite?.siteId) return
 
 		const init = async () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
+			if (_.isEmpty(withOutSiteIdParams(queryParams))) {
+				onChangeCurrency([0])
+				onChangeMenus([0])
+				onChangeActionTypes([0])
+
+				return
+			}
 
 			const {
 				actionTypes,
@@ -164,6 +215,9 @@ const AdjustmentLogReport = () => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				onChangeCurrency={onChangeCurrency}
+				onChangeMenus={onChangeMenus}
+				onChangeActionTypes={onChangeActionTypes}
 			/>
 
 			{adjustmentLogReportStatus !== 'idle' && (

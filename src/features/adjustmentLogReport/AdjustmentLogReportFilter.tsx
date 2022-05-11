@@ -45,6 +45,9 @@ interface AdjustmentLogReportFilterInterface {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
+	onChangeCurrency: (newCurrencyIds: number[]) => void
+	onChangeMenus: (newMenus: number[]) => void
+	onChangeActionTypes: (newActionTypes: number[]) => void
 }
 
 const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
@@ -53,48 +56,15 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
+	onChangeCurrency,
+	onChangeMenus,
+	onChangeActionTypes,
 }) => {
 	const { t } = useTranslation()
 
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const adjustmentInfoLogMenu = useAppSelector(selectAdjustmentInfoLogMenu)
 	const actionTypeList = useAppSelector(selectActionTypeList)
-
-	const onChangeCurrency = (newCurrencyIds: number[]) => {
-		if (newCurrencyIds.includes(0)) {
-			form.setFieldsValue({
-				currencyIds: currencyListBySite?.map(item => item.currencyId),
-			})
-		} else {
-			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
-			})
-		}
-	}
-
-	const onChangeMenus = (newMenus: number[]) => {
-		if (newMenus.includes(0)) {
-			form.setFieldsValue({
-				menus: adjustmentInfoLogMenu?.map(item => item.value),
-			})
-		} else {
-			form.setFieldsValue({
-				menus: newMenus,
-			})
-		}
-	}
-
-	const onChangeActionTypes = (newActionTypes: number[]) => {
-		if (newActionTypes.includes(0)) {
-			form.setFieldsValue({
-				actionTypes: actionTypeList?.map(item => item.value),
-			})
-		} else {
-			form.setFieldsValue({
-				actionTypes: newActionTypes,
-			})
-		}
-	}
 
 	return (
 		<Collapse defaultActiveKey={1}>
