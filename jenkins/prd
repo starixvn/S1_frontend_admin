@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "nodejs"}
     environment{
-        env = 'release'
+        env = 'prd'
         platform= 'admin'
         node_modules_exists = fileExists 'node_modules'
     }
