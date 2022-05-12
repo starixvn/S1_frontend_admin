@@ -9,6 +9,7 @@ import { selectUserSite } from 'common/enum'
 import { usePermissionForm } from 'common/permissionForm'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { getPermissionList } from 'common/permissionForm/utils'
 import {
 	useAddAdminUserMutation,
@@ -31,10 +32,12 @@ const AddUserSettings: FC = () => {
 		handleCheckAllPermission,
 	} = usePermissionForm(form)
 
-	const { data: roleCurrencyList, isFetching: isAddAdminUserCurrencyFetching } =
-		useGetAddAdminUserCurrencyQuery({
-			siteId: userSite?.siteId,
-		})
+	const {
+		data: { data: roleCurrencyList } = {} as IAxiosResponse<any[]>,
+		isFetching: isAddAdminUserCurrencyFetching,
+	} = useGetAddAdminUserCurrencyQuery({
+		siteId: userSite?.siteId,
+	})
 
 	const [
 		getOriginAdminPermissionListByRole,

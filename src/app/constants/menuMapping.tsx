@@ -9,11 +9,9 @@ import {
 	TransactionOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons'
-import { Button, Result } from 'antd'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
 import { RiUserSettingsLine } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
 import allowedRoles from './allowedRoles'
 import paths from './paths'
 
@@ -492,26 +490,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: 70,
 		pathMode: 'NewAdmin',
-		newAdminPath: 'Risk/BlockBankAccount',
+		newAdminPath: paths.risk.sub.blockBankAccount.root,
 	},
 	{
 		icon: null,
 		functionId: 71,
 		pathMode: 'NewAdmin',
-		newAdminPath: 'Risk/BlockIP',
-		element: (
-			<Result
-				status='warning'
-				title='Page Not Found: Risk/BlockIP'
-				extra={
-					<Link to='/Internal/Home/DashboardNew'>
-						<Button type='primary' key='console'>
-							Back Dashboard
-						</Button>
-					</Link>
-				}
-			/>
-		),
+		newAdminPath: paths.risk.sub.blockIp.root,
 	},
 	{
 		icon: null,

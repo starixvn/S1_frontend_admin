@@ -5,6 +5,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useModal, useQueryParams } from 'common/hooks'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +17,7 @@ import {
 	useSetAdminUserStatusMutation,
 } from './api'
 import { ADMIN_USER_STATUS } from './constants'
+import { UserAdminState } from './type'
 import { UpdateUserPasswordModal } from './UpdateUserPasswordModal'
 import { UserSettingsFilter } from './UserSettingsFilter'
 import { UserSettingsTable } from './UserSettingsTable'
@@ -34,7 +36,10 @@ const UserSettings = () => {
 
 	const [
 		getUserAdminListByUserName,
-		{ data: userAdminList, isFetching: isUserAdminListFetching },
+		{
+			data: { data: userAdminList } = {} as IAxiosResponse<UserAdminState[]>,
+			isFetching: isUserAdminListFetching,
+		},
 	] = useLazyGetUserAdminListByUserNameQuery()
 
 	const [deleteAdminUserByUserId] = useDeleteAdminUserByUserIdMutation()

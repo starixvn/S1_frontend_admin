@@ -241,6 +241,10 @@ const paths = {
 				root: 'Risk/BlockBankAccount',
 				functionId: 70,
 			},
+			blockIp: {
+				root: 'Risk/BlockIp',
+				functionId: 71,
+			},
 		},
 	},
 	administration: {

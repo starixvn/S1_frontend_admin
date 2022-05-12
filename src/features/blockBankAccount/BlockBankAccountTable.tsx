@@ -7,13 +7,13 @@ import { Space, Table, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
 import { useIsMounted } from 'usehooks-ts'
-import { IBlockBankAccResponse } from './type'
+import { IBlockBankAccState } from './type'
 import { BANK_BLOCK_STATUS, BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
 
 interface IBlockBankAccountTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
-	blockBankAccData: IBlockBankAccResponse[]
+	blockBankAccData: IBlockBankAccState[]
 	onBlockBankAcc: ({
 		sysId,
 		accountNum,

@@ -6,6 +6,7 @@ import { getPermissionList } from 'common/permissionForm/utils'
 import { Form, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import paths from 'app/constants/paths'
 import { AffixButtons } from 'components/AffixButtons'
 import { usePermissionForm } from 'common/permissionForm'
@@ -16,7 +17,7 @@ import {
 	useUpdateAdminUserMutation,
 } from './api'
 import UserSettingsForm from './UserSettingsForm'
-import { AdminUserPermissionInterface } from './type'
+import { AdminUserInterface, AdminUserPermissionInterface } from './type'
 
 const EditUserSettings = () => {
 	const { t } = useTranslation()
@@ -38,7 +39,12 @@ const EditUserSettings = () => {
 
 	const [
 		getUpdateAdminUser,
-		{ isLoading: isGetUpdateAdminUserLoading, data: updateAdminUserData },
+		{
+			data: {
+				data: updateAdminUserData,
+			} = {} as IAxiosResponse<AdminUserInterface>,
+			isLoading: isGetUpdateAdminUserLoading,
+		},
 	] = useLazyGetUpdateAdminUserQuery()
 
 	const [getOriginAdminPermissionListByRole] =
@@ -103,7 +109,11 @@ const EditUserSettings = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const { data: newUpdateAdminUserData } = await getUpdateAdminUser({
+			const {
+				data: {
+					data: newUpdateAdminUserData,
+				} = {} as IAxiosResponse<AdminUserInterface>,
+			} = await getUpdateAdminUser({
 				userId: Number(userId),
 				siteId: userSite?.siteId,
 			})

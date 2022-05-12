@@ -9,6 +9,7 @@ import { selectUserSite } from 'common/enum'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import BlockBankAccountFilter from './BlockBankAccountFilter'
 import BlockBankAccountTable from './BlockBankAccountTable'
 import {
@@ -17,7 +18,7 @@ import {
 	useSetBlockAccountMutation,
 } from './api'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
-import { IGetBlockBankAccListResponse } from './type'
+import { IBlockBankAccListResponse, IBlockBankAccState } from './type'
 
 const BlockBankAccount: FC = () => {
 	const { t } = useTranslation()
@@ -29,7 +30,12 @@ const BlockBankAccount: FC = () => {
 
 	const [
 		getBlockBankAcc,
-		{ data: blockBankAccData, isFetching: isBlockBankAccFetching },
+		{
+			data: { data: blockBankAccData } = {} as IAxiosResponse<
+				IBlockBankAccState[]
+			>,
+			isFetching: isBlockBankAccFetching,
+		},
 	] = useLazyGetBlockBankAccQuery()
 
 	const [getBlockBankAccList, { isFetching: isGetBlockBankAccListFetching }] =
@@ -86,7 +92,7 @@ const BlockBankAccount: FC = () => {
 		status: number
 	}) => {
 		try {
-			const blockBankAccListData = await getBlockBankAccList({
+			const { data: blockBankAccListData } = await getBlockBankAccList({
 				sysId,
 				accountNum,
 			}).unwrap()
@@ -113,7 +119,7 @@ const BlockBankAccount: FC = () => {
 		sysId: number
 		accountNum: string
 		status: number
-		blockBankAccListData: IGetBlockBankAccListResponse[] | null
+		blockBankAccListData: IBlockBankAccListResponse[] | null
 	}) => {
 		const okText =
 			status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
