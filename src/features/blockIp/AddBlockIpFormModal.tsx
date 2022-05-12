@@ -46,6 +46,7 @@ const AddBlockIpFormModal: FC<IAddBlockIpFormModalProps> = ({
 					label={t('Label_Ip')}
 					name='ip'
 					rules={[
+						{ required: true },
 						{
 							whitespace: true,
 							validator: (_validator, value) => {

@@ -6,7 +6,7 @@ export const utcFormatter = (
 	date: moment.Moment | Date,
 	utc: number | string
 ) => {
-	return moment(date).utcOffset(utc).format()
+	return moment(date).utcOffset(0, true).add(utc, 'hour').format()
 }
 
 export const dateRangeToUtcFormatter = (
