@@ -1,15 +1,9 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import moment from 'moment'
-import {
-	Popconfirm,
-	Space,
-	Table,
-	TablePaginationConfig,
-	Typography,
-} from 'antd'
+import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
+import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { v4 as uuidV4 } from 'uuid'
 import { useIsMounted } from 'usehooks-ts'
 import { PaginationInterface } from 'common/hooks'
 import { IBlockIpState } from './type'
@@ -39,7 +33,7 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 		return null
 	}
 
-	const columns: any[] = [
+	const columns = [
 		{
 			title: t('Label_Action'),
 			key: 'operation',
@@ -98,10 +92,6 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 	return (
 		<LayoutContent.Card>
 			<Table
-				bordered
-				rowKey={() => uuidV4()}
-				size='small'
-				scroll={{ x: 240 }}
 				loading={loading}
 				columns={columns}
 				dataSource={blockIpListData}

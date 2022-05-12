@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import { Form, message, TablePaginationConfig } from 'antd'
-import { withOutSiteIdParams } from 'common/utils'
+import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
@@ -13,7 +13,7 @@ import {
 } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { dateRangeToUtcFormatter, useTimeZone } from 'components/TimeZoneSelect'
+import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import {
 	useDeleteBlockIpMutation,
@@ -78,7 +78,6 @@ const BlockIp = () => {
 				pageNumber: current,
 				pageSize,
 			})
-
 			setQueryParams({
 				ip,
 				startDate,
@@ -86,7 +85,6 @@ const BlockIp = () => {
 				pageNumber: current,
 				tz: timeZoneUtcOffset,
 			})
-
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -146,8 +144,6 @@ const BlockIp = () => {
 			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
 
 			const { startDate, endDate, ip = '', tz } = queryParams
-
-			onTimeZoneChange(Number(tz))
 
 			onTimeZoneChange(Number(tz))
 

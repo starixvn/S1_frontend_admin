@@ -1,5 +1,5 @@
+import { timeZoneLocalOffset } from 'common/utils'
 import { useState } from 'react'
-import { timeZoneLocalOffset } from '../utils'
 
 const useTimeZone = () => {
 	const [timeZoneUtcOffset, setTimeZoneUtcOffset] =
