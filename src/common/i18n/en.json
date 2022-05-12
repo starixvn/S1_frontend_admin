@@ -187,5 +187,9 @@
 	"Label_AccountName": "Account Name",
 	"Label_Updater": "Updater",
 	"Label_UserList": "User List",
-	"Label_BlockBankAccInfoDescribe1": "Reminder: This lock is a locked card number, and the following users who bind this card will also be affected."
+	"Label_BlockBankAccInfoDescribe1": "Reminder: This lock is a locked card number, and the following users who bind this card will also be affected.",
+	"Label_Ip": "Ip",
+	"Label_Memo": "Memo",
+	"Label_AddBlockIp": "Add Block Ip",
+	"Label_InputCurrentIpAddress": "please input current ip address"
 }

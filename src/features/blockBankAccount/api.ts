@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
-	IBlockBankAccArgs,
-	IBlockBankAccResponse,
+	IGetBlockBankAccArgs,
+	IBlockBankAccState,
 	IGetBlockBankAccListArgs,
-	IGetBlockBankAccListResponse,
+	IBlockBankAccListResponse,
 	ISetBlockAccountArgs,
 } from './type'
 
@@ -14,7 +14,10 @@ export const blockBankAccountApi = createApi({
 	baseQuery: axiosBaseQuery({ baseUrl }),
 	tagTypes: ['POST'],
 	endpoints: builder => ({
-		getBlockBankAcc: builder.query<IBlockBankAccResponse[], IBlockBankAccArgs>({
+		getBlockBankAcc: builder.query<
+			IAxiosResponse<IBlockBankAccState[]>,
+			IGetBlockBankAccArgs
+		>({
 			query: data => ({
 				url: `Block/GetBlockBankAcc`,
 				method: 'POST',
@@ -23,7 +26,7 @@ export const blockBankAccountApi = createApi({
 			providesTags: ['POST'],
 		}),
 		getBlockBankAccList: builder.query<
-			IGetBlockBankAccListResponse[],
+			IAxiosResponse<IBlockBankAccListResponse[]>,
 			IGetBlockBankAccListArgs
 		>({
 			query: data => ({
@@ -32,7 +35,7 @@ export const blockBankAccountApi = createApi({
 				data,
 			}),
 		}),
-		setBlockAccount: builder.mutation<null, ISetBlockAccountArgs>({
+		setBlockAccount: builder.mutation<void, ISetBlockAccountArgs>({
 			query: data => ({
 				url: `Block/BlockAccountSet`,
 				method: 'POST',

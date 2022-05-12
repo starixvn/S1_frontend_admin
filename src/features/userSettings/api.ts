@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	AddAdminUserArgs,
 	AdminUserInterface,
@@ -15,7 +15,7 @@ export const userSettingsApi = createApi({
 	tagTypes: ['POST'],
 	endpoints: builder => ({
 		getUserAdminListByUserName: builder.query<
-			UserAdminState[],
+			IAxiosResponse<UserAdminState[]>,
 			{ userName: string; siteId?: number }
 		>({
 			query: data => ({
@@ -26,7 +26,7 @@ export const userSettingsApi = createApi({
 			providesTags: ['POST'],
 		}),
 		getAddAdminUserCurrency: builder.query<
-			any[],
+			IAxiosResponse<any[]>,
 			{
 				siteId?: number
 			}
@@ -48,8 +48,8 @@ export const userSettingsApi = createApi({
 				data,
 			}),
 			transformResponse: (response: {
-				permission: AdminUserPermissionInterface[]
-			}) => response?.permission ?? [],
+				data: { permission: AdminUserPermissionInterface[] }
+			}) => response.data?.permission ?? [],
 		}),
 		addAdminUser: builder.mutation<any, AddAdminUserArgs>({
 			query: data => ({
@@ -60,7 +60,7 @@ export const userSettingsApi = createApi({
 			invalidatesTags: ['POST'],
 		}),
 		getUpdateAdminUser: builder.query<
-			AdminUserInterface,
+			IAxiosResponse<AdminUserInterface>,
 			{ userId: number; siteId?: number }
 		>({
 			query: data => ({
@@ -69,7 +69,7 @@ export const userSettingsApi = createApi({
 				data,
 			}),
 		}),
-		updateAdminUser: builder.mutation<any, UpdateAdminUserArgs>({
+		updateAdminUser: builder.mutation<void, UpdateAdminUserArgs>({
 			query: data => ({
 				url: `Permission/UpdateAdminUser`,
 				method: 'POST',
@@ -78,7 +78,7 @@ export const userSettingsApi = createApi({
 			invalidatesTags: ['POST'],
 		}),
 		deleteAdminUserByUserId: builder.mutation<
-			any,
+			void,
 			{
 				userId: number
 				siteId?: number
@@ -92,7 +92,7 @@ export const userSettingsApi = createApi({
 			invalidatesTags: ['POST'],
 		}),
 		setAdminUserStatus: builder.mutation<
-			any,
+			void,
 			{ userId: number; siteId?: number; status: number }
 		>({
 			query: data => ({
@@ -103,7 +103,7 @@ export const userSettingsApi = createApi({
 			invalidatesTags: ['POST'],
 		}),
 		setAdminUserPassword: builder.mutation<
-			any,
+			void,
 			{ userId: number; siteId?: number; password: any }
 		>({
 			query: data => ({

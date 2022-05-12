@@ -41,6 +41,8 @@ const BlockBankAccount = lazy(
 	() => import('features/blockBankAccount/BlockBankAccount')
 )
 
+const BlockIp = lazy(() => import('features/blockIp/BlockIp'))
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -185,6 +187,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.risk.sub.blockBankAccount.functionId}>
 						<BlockBankAccount />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.risk.sub.blockIp.root}`,
+				element: (
+					<AuthRequire functionId={paths.risk.sub.blockIp.functionId}>
+						<BlockIp />
 					</AuthRequire>
 				),
 			},
