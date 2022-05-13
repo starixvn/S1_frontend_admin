@@ -78,7 +78,7 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 				createTime
 					? moment(createTime)
 							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  hh:mm:ss')
+							.format('YYYY-MM-DD  HH:mm:ss')
 					: '',
 		},
 		{

@@ -114,7 +114,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 				createTime
 					? moment(createTime)
 							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  hh:mm:ss')
+							.format('YYYY-MM-DD  HH:mm:ss')
 					: '',
 		},
 		{
@@ -127,7 +127,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 				updateTime
 					? moment(updateTime)
 							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  hh:mm:ss')
+							.format('YYYY-MM-DD  HH:mm:ss')
 					: '',
 		},
 		{
