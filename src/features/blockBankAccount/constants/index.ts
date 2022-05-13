@@ -10,7 +10,7 @@ export const BANK_BLOCK_STATUS = [
 		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 	},
 	{
-		displayKey: 'Label_Unlock',
+		displayKey: 'Label_Open',
 		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK,
 	},
 	{

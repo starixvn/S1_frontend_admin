@@ -125,7 +125,7 @@ const AdjustmentLogReportTable = ({
 			render: (createTime: string) =>
 				moment(createTime)
 					.utcOffset(timeZoneUtcOffset)
-					.format('YYYY-MM-DD  hh:mm:ss'),
+					.format('YYYY-MM-DD  HH:mm:ss'),
 		},
 		{
 			title: t('Label_Operator'),
