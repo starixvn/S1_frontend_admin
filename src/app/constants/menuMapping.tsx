@@ -681,14 +681,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.administration.sub.oldRoleManagement.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.administration.sub.oldRoleManagement.root,
+		functionId: 96,
+		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
+		pathMode: 'Internal',
+		internalPath: allowedRoles.AdminGroupAuthoritySetting,
 	},
 	{
 		icon: null,
-		functionId: paths.administration.sub.oldUserSetting.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.administration.sub.oldUserSetting.root,
+		functionId: 97,
+		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
+		pathMode: 'Internal',
+		internalPath: allowedRoles.AdminUserAuthoritySetting,
 	},
 ]

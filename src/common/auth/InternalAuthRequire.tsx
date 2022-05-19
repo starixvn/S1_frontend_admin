@@ -20,7 +20,7 @@ const InternalAuthRequire: FC<InternalAuthRequireProps> = ({
 
 	useEffect(() => {
 		onInternalCheckSignIn()
-	}, [])
+	}, [location.pathname])
 
 	if (auth.isLogin === false)
 		return (
