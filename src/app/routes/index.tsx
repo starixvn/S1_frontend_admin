@@ -7,6 +7,7 @@ import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { InternalAuthRequire } from 'common/auth'
 import { AuthRequire } from '../../common/auth/AuthRequire'
 
 const Dashboard = lazy(() => import('features/dashboard'))
@@ -48,50 +49,21 @@ const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 ).map(
 	({
 		internalPath,
-		newAdminPath,
-		functionId,
 		internalFunctionKey,
 		index,
 		pathMode,
-		element: originElement,
-	}: MenMappingInterface) => {
-		if (pathMode === 'Internal')
-			return {
-				...(index
-					? { index }
-					: {
-							path: `${pathMode}/${internalPath}`,
-					  }),
-				element: (
-					<AuthRequire
-						pathMode={pathMode}
-						functionId={Number(functionId)}
-						internalFunctionKey={internalFunctionKey}
-					>
-						<Iframe path={internalPath ?? ''} />
-					</AuthRequire>
-				),
-			}
-
-		const element = originElement as JSX.Element
-
-		return {
-			...(index
-				? { index }
-				: {
-						path: `${pathMode}/${newAdminPath}`,
-				  }),
-			element: (
-				<AuthRequire
-					pathMode={pathMode}
-					functionId={Number(functionId)}
-					internalFunctionKey={internalFunctionKey}
-				>
-					{element}
-				</AuthRequire>
-			),
-		}
-	}
+	}: MenMappingInterface) => ({
+		...(index
+			? { index }
+			: {
+					path: `${pathMode}/${internalPath}`,
+			  }),
+		element: (
+			<InternalAuthRequire internalFunctionKey={internalFunctionKey}>
+				<Iframe path={internalPath ?? ''} />
+			</InternalAuthRequire>
+		),
+	})
 )
 
 const routes: RouteObject[] = [

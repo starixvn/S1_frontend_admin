@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from 'common/hooks'
 
-import path from 'app/constants/paths'
+import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { useEffect } from 'react'
 
@@ -42,16 +42,29 @@ const AuthRequire = ({
 
 	if (auth.isLogin === false)
 		return (
-			<Navigate to={`/${path.login.root}`} state={{ from: location }} replace />
+			<Navigate
+				to={`/${paths.login.root}`}
+				state={{ from: location }}
+				replace
+			/>
 		)
 
-	if (hasPermission === true) return children
+	if (hasPermission === true)
+		return (
+			<div
+				style={{
+					padding: '0 24px',
+				}}
+			>
+				{children}
+			</div>
+		)
 
 	if (hasPermission !== undefined && hasPermission === false) {
 		return <Navigate to='/403' state={{ from: location }} replace />
 	}
 
-	return children
+	return null
 }
 
 export { AuthRequire }

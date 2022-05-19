@@ -22,9 +22,8 @@ const LayoutContent: LayoutContentInterface = () => {
 			id='layout-content'
 			ref={ref}
 			style={{
-				padding: '0 24px',
 				margin: 0,
-				height: '90vh',
+				height: 'calc(100vh - 64px)',
 				overflow: 'auto',
 			}}
 		>

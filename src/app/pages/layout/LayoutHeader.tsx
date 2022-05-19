@@ -23,7 +23,7 @@ interface LayoutHeaderProps {
 
 const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 	const { t } = useTranslation()
-	const { auth, onSignOut } = useAuth()
+	const { auth, onSignOut, onInternalSignOut } = useAuth()
 
 	const location = useLocation()
 
@@ -31,6 +31,10 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 		!location.pathname.match('internal') && !location.pathname.match('Internal')
 
 	const changePasswordModal = useModal()
+
+	const handleSignOut = () => {
+		Promise.allSettled([onInternalSignOut(), onSignOut()])
+	}
 
 	const menu = (
 		<Menu>
@@ -44,7 +48,12 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 
 			<Menu.Divider key={2} />
 
-			<Menu.Item key={3} onClick={onSignOut} icon={<PoweroffOutlined />} danger>
+			<Menu.Item
+				key={3}
+				onClick={handleSignOut}
+				icon={<PoweroffOutlined />}
+				danger
+			>
 				{t('Label_SignOut')}
 			</Menu.Item>
 		</Menu>
