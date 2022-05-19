@@ -278,14 +278,6 @@ const paths = {
 				root: 'Administration/AdjustmentLogReport',
 				functionId: 93,
 			},
-			oldRoleManagement: {
-				root: 'Admin/GroupAuthoritySetting',
-				functionId: 96,
-			},
-			oldUserSetting: {
-				root: 'Admin/UserAuthoritySetting',
-				functionId: 97,
-			},
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',
 			},

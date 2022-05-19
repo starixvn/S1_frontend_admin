@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 import paths from 'app/constants/paths'
-import { Iframe } from 'components/Iframe'
+import { Iframe } from 'components'
 import { Login } from 'app/pages/login'
 import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
@@ -167,26 +167,6 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.risk.sub.blockIp.functionId}>
 						<BlockIp />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldRoleManagement.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.administration.sub.oldRoleManagement.functionId}
-					>
-						<Iframe path={paths.administration.sub.oldRoleManagement.root} />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldUserSetting.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.administration.sub.oldUserSetting.functionId}
-					>
-						<Iframe path={paths.administration.sub.oldUserSetting.root} />
 					</AuthRequire>
 				),
 			},
