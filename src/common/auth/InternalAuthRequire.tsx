@@ -1,7 +1,6 @@
 import { FC, ReactElement, useEffect } from 'react'
 import { Iframe } from 'components'
 import { useAuth } from 'common/hooks'
-import { Spin } from 'antd'
 import { Navigate, useLocation } from 'react-router-dom'
 import paths from 'app/constants/paths'
 
@@ -31,13 +30,7 @@ const InternalAuthRequire: FC<InternalAuthRequireProps> = ({
 			/>
 		)
 
-	if (internalAuth.isLogin === undefined)
-		return (
-			<Spin
-				spinning={internalAuth.isLogin === undefined}
-				style={{ height: '100vh' }}
-			/>
-		)
+	if (internalAuth.isLogin === undefined) return null
 
 	return internalAuth.isLogin ? (
 		(children as ReactElement)
