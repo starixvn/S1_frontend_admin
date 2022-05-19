@@ -10,4 +10,4 @@ const Iframe = ({ path }: { path: string }) => {
 	)
 }
 
-export default Iframe
+export { Iframe }

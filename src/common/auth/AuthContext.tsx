@@ -13,6 +13,14 @@ interface UserMenuState {
 }
 
 export interface AuthContextType {
+	internalAuth: AuthState
+	onInternalCheckSignIn: () => void
+	onInternalSignIn: (
+		userName: string,
+		userPassword: string,
+		redirectUrl: string
+	) => void
+	onInternalSignOut: () => void
 	auth: AuthState
 	userMenuList: MenuInterface[]
 	userMenuFunctionData: MenuFunctionDatas[]
@@ -49,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const location = useLocation()
 
 	const [auth, setAuth] = useState<AuthState>(initialAuth)
+	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
 
 	const [userMenuList, setUserMenuList] = useState<MenuInterface[]>([])
 	const [internalPermissionFunctionKeys, setInternalPermissionFunctionKeys] =
@@ -61,6 +70,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			setAuth(newAuth)
 		} catch (error) {
 			setAuth({ user: '', isLogin: false })
+		}
+	}
+
+	const onInternalCheckSignIn = async () => {
+		try {
+			const newInternalAuth: AuthState = await BoApi.onInternalCheckSignIn()
+			setInternalAuth(newInternalAuth)
+		} catch (error) {
+			setInternalAuth({ user: '', isLogin: false })
+		}
+	}
+
+	const onInternalSignIn = async (
+		userName: string,
+		userPassword: string,
+		redirectUrl: string
+	) => {
+		try {
+			const newAuth = await BoApi.onInternalSignIn(
+				userName,
+				userPassword,
+				redirectUrl
+			)
+
+			setInternalAuth(newAuth)
+		} catch (error) {
+			message.error(t((error as Error).message))
+		}
+	}
+
+	const onInternalSignOut = async () => {
+		try {
+			await BoApi.onInternalSignOut()
+
+			setInternalAuth(initialAuth)
+		} catch (error) {
+			message.error(t((error as Error).message))
 		}
 	}
 
@@ -182,6 +228,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const userMenuFunctionData: MenuFunctionDatas[] = getUserMenuFunctionData()
 
 	const value = {
+		internalAuth,
+		onInternalCheckSignIn,
+		onInternalSignIn,
+		onInternalSignOut,
 		auth,
 		userMenuList,
 		userMenuFunctionData,
