@@ -140,7 +140,7 @@ const UserSettings = () => {
 	const loading = isUserAdminListFetching
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_UserSetting')} />
 
 			<UserSettingsFilter
@@ -176,7 +176,7 @@ const UserSettings = () => {
 				onFinish={handleUpdatePassword}
 				onCancel={updatePasswordModal.onCancel}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

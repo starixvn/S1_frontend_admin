@@ -44,7 +44,7 @@ const Dashboard = () => {
 	}, [])
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_Dashboard')} />
 
 			<DashboardFilter form={form} loading={loading} onSearch={handleSearch} />
@@ -52,7 +52,7 @@ const Dashboard = () => {
 			{dashboardStatus !== 'idle' && (
 				<DashboardTable loading={loading} dashboardData={dashboardData ?? []} />
 			)}
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

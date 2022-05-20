@@ -1,15 +1,21 @@
 import { FC, useRef } from 'react'
+import styled from 'styled-components'
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
 import { useResetScrollBar } from 'common/hooks'
 import { LayoutContentTitle } from './LayoutContentTitle'
-import { StyledCard } from './LayoutCard'
+import LayoutCard from './LayoutCard'
 
 const { Content } = Layout
 
+export const LayoutContentMain = styled.main`
+	padding: 0 24px;
+`
+
 interface LayoutContentInterface extends FC {
+	Main: typeof LayoutContentMain
 	Title: typeof LayoutContentTitle
-	Card: typeof StyledCard
+	Card: typeof LayoutCard
 }
 
 const LayoutContent: LayoutContentInterface = () => {
@@ -32,7 +38,8 @@ const LayoutContent: LayoutContentInterface = () => {
 	)
 }
 
+LayoutContent.Main = LayoutContentMain
 LayoutContent.Title = LayoutContentTitle
-LayoutContent.Card = StyledCard
+LayoutContent.Card = LayoutCard
 
 export { LayoutContent }

@@ -89,7 +89,7 @@ const RoleManagement = () => {
 	}, [userSite?.siteId])
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_RoleManagement')} />
 
 			<RoleManagementFilter
@@ -113,7 +113,7 @@ const RoleManagement = () => {
 					}
 				/>
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

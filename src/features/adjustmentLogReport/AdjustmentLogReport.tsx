@@ -206,7 +206,7 @@ const AdjustmentLogReport = () => {
 	const loading = adjustmentLogReportStatus === 'pending'
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_AdjustmentLogReport')} />
 
 			<AdjustmentLogReportFilter
@@ -232,7 +232,7 @@ const AdjustmentLogReport = () => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 
