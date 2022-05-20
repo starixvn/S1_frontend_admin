@@ -148,6 +148,15 @@ const paths = {
 			lineChannelManagement: {
 				root: 'finance/lineChannelManagement',
 			},
+			accounting: {
+				root: 'finance/accounting',
+				sub: {
+					depositAccounting: {
+						root: 'finance/accounting/depositAccounting',
+						functionId: 99,
+					},
+				},
+			},
 		},
 	},
 	marketing: {

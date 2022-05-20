@@ -213,6 +213,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.finance.sub.accounting.sub.depositAccounting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.accounting.sub.depositAccounting.root,
+	},
+	{
+		icon: null,
 		functionId: 94,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalAccountingList',

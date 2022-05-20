@@ -4,6 +4,7 @@ import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
 import { dashboardSlice } from 'features/dashboard'
+import { depositAccountingApi } from 'features/depositAccounting/api'
 import roleManagementReducer from 'features/roleManagement/slice'
 import { userSettingsApi } from 'features/userSettings/api'
 
@@ -16,12 +17,16 @@ export const store = configureStore({
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
+		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
-		getDefaultMiddleware()
+		getDefaultMiddleware({
+			serializableCheck: false,
+		})
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
-			.concat(blockIpApi.middleware),
+			.concat(blockIpApi.middleware)
+			.concat(depositAccountingApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
