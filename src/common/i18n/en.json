@@ -191,5 +191,12 @@
 	"Label_Ip": "Ip",
 	"Label_Memo": "Memo",
 	"Label_AddBlockIp": "Add Block Ip",
-	"Label_InputCurrentIpAddress": "please input current ip address"
+	"Label_InputCurrentIpAddress": "please input current ip address",
+	"Label_Amount": "amount",
+	"Label_AccountNo": "Acc. No.",
+	"Label_ApprovedTime": "Approved Time",
+	"Label_LatestUpdateOperator": "Latest Update Operator",
+	"Label_LatestUpdateTime": "Latest Update Time",
+	"Label_DepositAmount": "Deposit Amount",
+	"Label_EditDepositAccount": "Edit Deposit Account"
 }

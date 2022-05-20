@@ -2,7 +2,12 @@ import BoApi from 'common/service/Api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createContext, ReactNode, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LocationState, MenuFunctionDatas, MenuInterface } from 'type'
+import {
+	ActionPermissions,
+	LocationState,
+	MenuFunctionData,
+	MenuInterface,
+} from 'type'
 import { message } from 'antd'
 import paths from 'app/constants/paths'
 import { getMapMenu } from 'app/constants/menuMapping'
@@ -23,7 +28,9 @@ export interface AuthContextType {
 	onInternalSignOut: () => void
 	auth: AuthState
 	userMenuList: MenuInterface[]
-	userMenuFunctionData: MenuFunctionDatas[]
+	userMenuFunctionData: MenuFunctionData[]
+	actionPermissions?: ActionPermissions
+	setActionPermissions: (newActionPermission: ActionPermissions) => void
 	internalPermissionFunctionKeys?: string[]
 	onSignIn: (userName: string, userPassword: string) => void
 	onSignOut: () => void
@@ -55,6 +62,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const location = useLocation()
+
+	const [actionPermissions, setActionPermissions] =
+		useState<ActionPermissions>()
 
 	const [auth, setAuth] = useState<AuthState>(initialAuth)
 	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
@@ -197,7 +207,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	const getUserMenuFunctionData = () => {
-		const originAllMenuFunctionData: MenuFunctionDatas[] = []
+		const originAllMenuFunctionData: MenuFunctionData[] = []
 		const mapping = (list: MenuInterface[]) => {
 			list.forEach(menu => {
 				if (menu.functionId) {
@@ -209,7 +219,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				}
 
 				if (menu?.functionDatas ? menu?.functionDatas.length > 0 : 0) {
-					menu?.functionDatas?.forEach((functionData: MenuFunctionDatas) => {
+					menu?.functionDatas?.forEach((functionData: MenuFunctionData) => {
 						originAllMenuFunctionData.push(functionData)
 					})
 				}
@@ -225,7 +235,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return originAllMenuFunctionData
 	}
 
-	const userMenuFunctionData: MenuFunctionDatas[] = getUserMenuFunctionData()
+	const userMenuFunctionData: MenuFunctionData[] = getUserMenuFunctionData()
 
 	const value = {
 		internalAuth,
@@ -235,6 +245,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		auth,
 		userMenuList,
 		userMenuFunctionData,
+		actionPermissions,
+		setActionPermissions,
 		internalPermissionFunctionKeys,
 		onSignIn,
 		onSignOut,

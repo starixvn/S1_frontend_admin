@@ -44,6 +44,10 @@ const BlockBankAccount = lazy(
 
 const BlockIp = lazy(() => import('features/blockIp/BlockIp'))
 
+const DepositAccounting = lazy(
+	() => import('features/depositAccounting/DepositAccounting')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -81,6 +85,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.dashboard.functionId}>
 						<Dashboard />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.administration.sub.roleManagement.functionId}
+					>
+						<RoleManagement />
 					</AuthRequire>
 				),
 			},
@@ -167,6 +181,18 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.risk.sub.blockIp.functionId}>
 						<BlockIp />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.accounting.sub.depositAccounting.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.accounting.sub.depositAccounting.functionId
+						}
+					>
+						<DepositAccounting />
 					</AuthRequire>
 				),
 			},

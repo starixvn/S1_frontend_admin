@@ -5,6 +5,7 @@ import {
 	SyncOutlined,
 } from '@ant-design/icons'
 import { ButtonProps } from 'antd'
+import { BiExport } from 'react-icons/bi'
 import StyledButton from './StyledButton'
 
 const CreateButton = (props: ButtonProps) => {
@@ -46,9 +47,20 @@ const ReloadButton = (props: ButtonProps) => (
 	/>
 )
 
+const FileExportButton = (props: ButtonProps) => (
+	<StyledButton icon={<BiExport />} type='primary' shape='circle' {...props} />
+)
+
 CreateButton.AFFIX_BUTTON_TYPE = 'CREATE_BUTTON'
 DeleteButton.AFFIX_BUTTON_TYPE = 'DELETE_BUTTON'
 SavedButton.AFFIX_BUTTON_TYPE = 'SAVED_BUTTON'
 ReloadButton.AFFIX_BUTTON_TYPE = 'RELOAD_BUTTON'
+FileExportButton.AFFIX_BUTTON_TYPE = 'FILE_EXPORT_BUTTON'
 
-export { CreateButton, DeleteButton, SavedButton, ReloadButton }
+export {
+	CreateButton,
+	DeleteButton,
+	SavedButton,
+	ReloadButton,
+	FileExportButton,
+}
