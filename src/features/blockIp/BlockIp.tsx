@@ -163,7 +163,7 @@ const BlockIp = () => {
 	const loading = isGetBlockIPListFetching || isAddBlockIpLoading
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title='block ip' />
 
 			<BlockIpFilter
@@ -198,7 +198,7 @@ const BlockIp = () => {
 				onCancel={addBlockIpModal.onCancel}
 				onFinish={handleAddBlockIp}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

@@ -231,7 +231,7 @@ const BlockBankAccount: FC = () => {
 	const loading = isBlockBankAccFetching || isGetBlockBankAccListFetching
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title='block bank account' />
 
 			<BlockBankAccountFilter
@@ -248,7 +248,7 @@ const BlockBankAccount: FC = () => {
 				blockBankAccData={blockBankAccData ?? []}
 				onBlockBankAcc={handleBlockBankAcc}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

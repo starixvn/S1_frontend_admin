@@ -238,7 +238,7 @@ const DepositAccounting: FC<{
 	const loading = isDepositAccountsFetching
 
 	return (
-		<main style={{ padding: '0 24px' }}>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<DepositAccountingFilter
@@ -279,7 +279,7 @@ const DepositAccounting: FC<{
 				modal={editDepositAccountModal}
 				onFinish={handleEditDepositAccount}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 
