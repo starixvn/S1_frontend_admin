@@ -5,6 +5,7 @@ import {
 	fetchAllEnumAsync,
 	onChangeUserSite,
 	selectEnumStatus,
+	selectUserSite,
 } from 'common/enum'
 import { useState, FC, useEffect, Suspense } from 'react'
 import { RequestStatusType } from 'type'
@@ -53,19 +54,22 @@ const BaseLayout: FC = () => {
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const auth = useAuth()
 	const enumStatus = useAppSelector(selectEnumStatus)
+	const userSite = useAppSelector(selectUserSite)
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
 
 	useUserSiteEffect()
 
 	useEffect(() => {
+		if (userSite?.siteId) {
+			auth.onFetchUserMenuList({ lang: 'en', siteId: userSite.siteId })
+		}
+	}, [userSite?.siteId])
+
+	useEffect(() => {
 		const init = async () => {
 			setRequestStatus('pending')
 
-			await Promise.all([
-				auth.onFetchInternalAllowRoles(),
-				auth.onFetchUserMenuList('en'),
-				dispatch(fetchAllEnumAsync()),
-			])
+			await dispatch(fetchAllEnumAsync())
 
 			setRequestStatus('idle')
 		}

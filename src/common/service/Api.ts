@@ -115,8 +115,17 @@ export default class BoApi {
 		}
 	}
 
-	static getUserMenu = async (lang: string | null) => {
-		const response = await BoApi.post('/Permission/GetUserMenu', { lang })
+	static getUserMenu = async ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => {
+		const response = await BoApi.post('/Permission/GetUserMenu', {
+			lang,
+			siteId,
+		})
 
 		const userMenuList = response?.data?.data ?? []
 

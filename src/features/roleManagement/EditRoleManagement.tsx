@@ -103,7 +103,9 @@ const EditRoleManagement = () => {
 				mark: remark,
 				role: Number(params.roleId),
 				currencyList,
-				permission: permissionList,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
 				siteId: userSite?.siteId,
 			})
 

@@ -92,7 +92,7 @@ const LayoutMenu = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const { userMenuList, internalPermissionFunctionKeys } = useAuth()
+	const { userMenuList } = useAuth()
 	const userSite = useAppSelector(selectUserSite)
 
 	const { openKeys, handleClickMenuItem, handleToggleMenu } = useMenuAction({
@@ -108,23 +108,15 @@ const LayoutMenu = ({
 		const { name, moduleId, functionId, permission } = menu
 		const isGroup = Boolean(moduleId)
 
-		const { path, icon, internalFunctionKey, pathMode } = getMapMenu(
-			Number(functionId)
-		)
+		const { path, icon } = getMapMenu(Number(functionId))
 
-		const hasNotInternalPermission = !_.includes(
-			internalPermissionFunctionKeys,
-			internalFunctionKey
-		)
-
-		const hasNotNewAdminPermission =
-			_.find(permission, { name: 'View' })?.canUse === false
+		const hasPermission = _.find(permission, {
+			name: 'View',
+		})?.canUse
 
 		if (isGroup) return renderSubMenuItem(menu)
 
-		if (pathMode === 'Internal' && hasNotInternalPermission) return null
-
-		if (pathMode === 'NewAdmin' && hasNotNewAdminPermission) return null
+		if (!hasPermission) return null
 
 		return (
 			<Menu.Item

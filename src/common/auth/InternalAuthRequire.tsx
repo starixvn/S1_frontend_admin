@@ -12,13 +12,16 @@ const InternalAuthRequire: FC<InternalAuthRequireProps> = ({
 	internalFunctionKey,
 	children,
 }) => {
-	const { auth, internalAuth, onInternalCheckSignIn } = useAuth()
+	const { auth, internalAuth, onCheckSignIn, onInternalCheckSignIn } = useAuth()
 	const location = useLocation()
 
 	const redirectPath = `Home/Signin?redirectUrl=${internalFunctionKey}`
 
 	useEffect(() => {
-		onInternalCheckSignIn()
+		const handleCheckSignIn = async () => {
+			await Promise.all([onCheckSignIn(), onInternalCheckSignIn()])
+		}
+		handleCheckSignIn()
 	}, [location.pathname])
 
 	if (auth.isLogin === false)
