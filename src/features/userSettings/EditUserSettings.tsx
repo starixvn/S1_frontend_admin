@@ -66,7 +66,9 @@ const EditUserSettings = () => {
 				password,
 				role,
 				currencyList,
-				permission: permissionList,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
 			}).unwrap()
 
 			navigate(

@@ -59,7 +59,9 @@ const AddUserSettings: FC = () => {
 				password,
 				role,
 				currencyList,
-				permission: permissionList,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
 			})
 
 			navigate(

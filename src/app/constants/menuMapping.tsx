@@ -55,7 +55,6 @@ export const getMapMenu = (functionId: number) => {
 	return {
 		...(pathMode === 'Internal' && { internalFunctionKey }),
 		path: index || !path ? '/' : `/${pathMode}/${path}`,
-		pathMode,
 		icon,
 	}
 }

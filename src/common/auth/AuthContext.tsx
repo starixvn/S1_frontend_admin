@@ -12,11 +12,6 @@ import { message } from 'antd'
 import paths from 'app/constants/paths'
 import { getMapMenu } from 'app/constants/menuMapping'
 
-interface UserMenuState {
-	childs: null | Array<UserMenuState>
-	funcKey: string
-}
-
 export interface AuthContextType {
 	internalAuth: AuthState
 	onInternalCheckSignIn: () => void
@@ -31,7 +26,6 @@ export interface AuthContextType {
 	userMenuFunctionData: MenuFunctionData[]
 	actionPermissions?: ActionPermissions
 	setActionPermissions: (newActionPermission: ActionPermissions) => void
-	internalPermissionFunctionKeys?: string[]
 	onSignIn: (userName: string, userPassword: string) => void
 	onSignOut: () => void
 	onCheckSignIn: () => void
@@ -42,8 +36,13 @@ export interface AuthContextType {
 		oldPassword: string
 		newPassword: string
 	}) => void
-	onFetchUserMenuList: (lang: string) => void
-	onFetchInternalAllowRoles: () => void
+	onFetchUserMenuList: ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => void
 }
 
 const AuthContext = createContext<AuthContextType>(null!)
@@ -70,8 +69,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
 
 	const [userMenuList, setUserMenuList] = useState<MenuInterface[]>([])
-	const [internalPermissionFunctionKeys, setInternalPermissionFunctionKeys] =
-		useState<string[]>()
 
 	const onCheckSignIn = async () => {
 		try {
@@ -174,34 +171,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}
 
-	const onFetchInternalAllowRoles = async () => {
-		const internalAllowRoles = await BoApi.getUserMenu(null)
-
-		const newInternalPermissionFunctionKeys: string[] = []
-
-		const mapping = (_menuList: UserMenuState[]) => {
-			_menuList.forEach(({ funcKey, childs }) => {
-				if (funcKey) {
-					newInternalPermissionFunctionKeys.push(funcKey)
-				}
-
-				if (childs?.length) {
-					mapping(childs)
-				}
-			})
-
-			return _menuList
-		}
-
-		if (internalAllowRoles.length > 0) {
-			mapping(internalAllowRoles)
-		}
-
-		setInternalPermissionFunctionKeys(newInternalPermissionFunctionKeys)
-	}
-
-	const onFetchUserMenuList = async (lang: string) => {
-		const originUserMenuList = await BoApi.getUserMenu(lang)
+	const onFetchUserMenuList = async ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => {
+		const originUserMenuList = await BoApi.getUserMenu({ lang, siteId })
 
 		setUserMenuList(originUserMenuList)
 	}
@@ -247,13 +224,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		userMenuFunctionData,
 		actionPermissions,
 		setActionPermissions,
-		internalPermissionFunctionKeys,
 		onSignIn,
 		onSignOut,
 		onCheckSignIn,
 		onChangePassword,
 		onFetchUserMenuList,
-		onFetchInternalAllowRoles,
 	}
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
