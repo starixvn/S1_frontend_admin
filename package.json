@@ -58,8 +58,6 @@
 		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^5.21.0",
 		"@typescript-eslint/parser": "^5.21.0",
-		"commitizen": "^4.2.4",
-		"cz-conventional-changelog": "^3.3.0",
 		"downloadjs": "^1.4.7",
 		"eslint": "^8.12.0",
 		"eslint-config-airbnb": "^19.0.4",
