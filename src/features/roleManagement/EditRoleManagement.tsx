@@ -5,10 +5,11 @@ import { selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { useAuth } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { RoleManagementForm } from './RoleManagementForm'
 import { selectRoleManagementStatus, selectRolePermission } from './slice'
 import {
@@ -71,6 +72,7 @@ const getPermissionList = (
 
 const EditRoleManagement = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(selectUserSite)
@@ -151,6 +153,8 @@ const EditRoleManagement = () => {
 	}, [roleManagementStatus])
 
 	const loading = roleManagementStatus === 'pending'
+
+	if (!editPermission?.canUse) return <Navigate to='/403' />
 
 	return (
 		<main>

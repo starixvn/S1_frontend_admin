@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -7,6 +7,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
 	PAGINATION,
+	useAuth,
 	useModal,
 	usePagination,
 	useQueryParams,
@@ -25,8 +26,13 @@ import BlockIpTable from './BlockIpTable'
 import AddBlockIpFormModal from './AddBlockIpFormModal'
 import { IBlockIpResponse } from './type'
 
-const BlockIp = () => {
+const BlockIp: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const { actionPermissions: { addPermission, deletePermission } = {} } =
+		useAuth()
+
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -164,7 +170,7 @@ const BlockIp = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title='block ip' />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<BlockIpFilter
 				loading={loading}
@@ -178,6 +184,7 @@ const BlockIp = () => {
 				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				blockIpListData={blockIpListData ?? []}
+				deletePermission={deletePermission}
 				pagination={pagination}
 				onDeleteBlockIp={handleDeleteBlockIp}
 				onTableChange={handleTableChange}
@@ -187,6 +194,7 @@ const BlockIp = () => {
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.Create
+					disabled={!addPermission?.canUse}
 					loading={loading}
 					onClick={() => addBlockIpModal.onOpen()}
 				/>

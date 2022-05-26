@@ -17,7 +17,6 @@ import {
 } from 'common/hooks'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
-
 import {
 	useEditDepositAccountMutation,
 	useExportDepositAccountsFileMutation,
@@ -32,21 +31,18 @@ const DepositAccounting: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const {
-		actionPermissions: {
-			viewPermission,
-			editPermission,
-			exportExcelPermission,
-		} = {},
-	} = useAuth()
+	const { actionPermissions: { editPermission, exportExcelPermission } = {} } =
+		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const userSite = useAppSelector(selectUserSite)
+
 	const editDepositAccountModal = useModal()
 
 	const [editTransId, setEditTransId] = useState<string>('')
+	const [editCurrencyId, setEditCurrencyId] = useState<number>()
 
 	const [
 		getDepositAccounts,
@@ -110,8 +106,12 @@ const DepositAccounting: FC<{
 		}
 	}
 
-	const handleEditDepositAccountModal = async (transId: string) => {
-		setEditTransId(transId)
+	const handleEditDepositAccountModal = async (
+		newEditTransId: string,
+		newEditCurrencyId: number
+	) => {
+		setEditTransId(newEditTransId)
+		setEditCurrencyId(newEditCurrencyId)
 		editDepositAccountModal.onOpen()
 	}
 
@@ -242,7 +242,6 @@ const DepositAccounting: FC<{
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<DepositAccountingFilter
-				viewPermission={viewPermission}
 				loading={loading}
 				form={form}
 				timeZoneUtcOffset={timeZoneUtcOffset}
@@ -273,12 +272,15 @@ const DepositAccounting: FC<{
 				/>
 			</AffixButtons>
 
-			<EditDepositAccountFormModal
-				editTransId={editTransId}
-				loading={isEditDepositAccountLoading}
-				modal={editDepositAccountModal}
-				onFinish={handleEditDepositAccount}
-			/>
+			{editDepositAccountModal.visible && (
+				<EditDepositAccountFormModal
+					editTransId={editTransId}
+					editCurrencyId={editCurrencyId}
+					loading={isEditDepositAccountLoading}
+					modal={editDepositAccountModal}
+					onFinish={handleEditDepositAccount}
+				/>
+			)}
 		</LayoutContent.Main>
 	)
 }

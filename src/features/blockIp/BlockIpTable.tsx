@@ -6,12 +6,14 @@ import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { useIsMounted } from 'usehooks-ts'
 import { PaginationInterface } from 'common/hooks'
+import { PermissionInterface } from 'type'
 import { IBlockIpState } from './type'
 
 interface IBlockIpTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
 	blockIpListData: IBlockIpState[]
+	deletePermission?: PermissionInterface
 	pagination: PaginationInterface
 	onDeleteBlockIp: (ip: string) => void
 	onTableChange: (newPagination: TablePaginationConfig) => void
@@ -22,6 +24,7 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 	timeZoneUtcOffset,
 	pagination,
 	blockIpListData,
+	deletePermission,
 	onDeleteBlockIp,
 	onTableChange,
 }) => {
@@ -42,10 +45,13 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 			render: (values: any) => (
 				<Space>
 					<Popconfirm
+						disabled={!deletePermission?.canUse}
 						title={t('Label_SureToDelete')}
 						onConfirm={() => onDeleteBlockIp(values.ip)}
 					>
-						<Typography.Link>{t('Label_Delete')}</Typography.Link>
+						<Typography.Link disabled={!deletePermission?.canUse}>
+							{t('Label_Delete')}
+						</Typography.Link>
 					</Popconfirm>
 				</Space>
 			),

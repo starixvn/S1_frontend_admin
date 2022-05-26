@@ -1,7 +1,6 @@
 {
 	"Menu": {
 		"Label_Home": "Home",
-		"Label_Dashboard": "Dashboard",
 		"Label_Reports": "Reports",
 		"Label_Settings": "Settings",
 		"Label_Bonus": "Bonus",
@@ -97,7 +96,6 @@
 		"Administration": {
 			"Label_Administration": "Administration",
 			"Label_RoleSetting": "Role Setting",
-			"Label_UserSetting": "User Setting",
 			"Label_SpecialPasswordManagement": "Special Password Management",
 			"Label_UserActivityLog": "User Activity Log"
 		}
@@ -136,13 +134,11 @@
 	"Label_Footer": "admin ©2022 Created by ailab team",
 	"Label_RequiredInput": "Please input {{field}}",
 	"Label_Search": "Search",
-	"Label_Dashboard": "Dashboard",
 	"Label_Remark": "Remark",
 	"Label_Currency": "Currency",
 	"Label_BaseCurrency": "BaseCurrency",
 	"Label_SelectAll": "Select All",
 	"Label_CheckAll": "Check All",
-	"Label_RoleManagement": "Role Management",
 	"Label_Action": "Action",
 	"Label_RoleName": "Role Name",
 	"Label_CheckUserListing": "Check User Listing",
@@ -160,12 +156,10 @@
 	"Label_ActionType": "Action Type",
 	"Label_TransId": "TransId",
 	"Label_Operator": "Operator",
-	"Label_AdjustmentLogReport": "Adjustment Log Report",
 	"Label_Before": "Before",
 	"Label_After": "After",
 	"Label_CreateTime": "Create Time",
 	"Label_UpdateTime": "Update Time",
-	"Label_UserSetting": "User Setting",
 	"Label_UserName": "User Name",
 	"Label_Brand": "Brand",
 	"Label_AddUser": "Add User",

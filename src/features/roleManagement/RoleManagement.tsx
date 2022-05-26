@@ -4,9 +4,9 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { useQueryParams } from 'common/hooks'
+import { useAuth, useQueryParams } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { RoleManagementFilter } from './RoleManagementFilter'
@@ -17,8 +17,14 @@ import {
 	fetchPermissionGetRoleListAsync,
 } from './thunk'
 
-const RoleManagement = () => {
+const RoleManagement: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: { addPermission, deletePermission, editPermission } = {},
+	} = useAuth()
+
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(selectUserSite)
@@ -90,7 +96,7 @@ const RoleManagement = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_RoleManagement')} />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<RoleManagementFilter
 				loading={loading}
@@ -99,13 +105,19 @@ const RoleManagement = () => {
 			/>
 
 			{roleManagementStatus !== undefined && (
-				<RoleManagementTable loading={loading} onDelete={handleDelete} />
+				<RoleManagementTable
+					deletePermission={deletePermission}
+					editPermission={editPermission}
+					loading={loading}
+					onDelete={handleDelete}
+				/>
 			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.Create
+					disabled={!addPermission?.canUse}
 					onClick={() =>
 						navigate(
 							`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.addRoleManagement.root}`

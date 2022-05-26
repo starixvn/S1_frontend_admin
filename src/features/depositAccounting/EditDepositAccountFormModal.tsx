@@ -1,11 +1,20 @@
 import { FC, useEffect } from 'react'
-import { Form, Input, message, Modal, Spin } from 'antd'
+import { Form, Input, message, Modal, Select, Spin } from 'antd'
 import { ModalState } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
+import { selectUserSite } from 'common/enum'
+import { useAppSelector } from 'app/store'
+import {
+	GET_BANK_INFO_OFF_LIST_ARGS,
+	useGetBankInfoOffListQuery,
+} from 'common/service/baseDataApi/api'
 import { useLazyGetDepositAccountByTransIdQuery } from './api'
+
+const { Option } = Select
 
 interface IEditDepositAccountFormModalProps {
 	editTransId: string
+	editCurrencyId?: number
 	loading: boolean
 	modal: ModalState
 	onFinish: ({
@@ -21,6 +30,7 @@ interface IEditDepositAccountFormModalProps {
 
 const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 	editTransId,
+	editCurrencyId,
 	loading,
 	modal,
 	onFinish,
@@ -28,6 +38,16 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 	const { visible, onCancel } = modal
 	const [form] = Form.useForm()
 	const { t } = useTranslation()
+	const userSite = useAppSelector(selectUserSite)
+
+	const {
+		data: { data: bankInfoOffList } = {},
+		isFetching: isBankInfoOffListFetching,
+	} = useGetBankInfoOffListQuery({
+		siteId: userSite?.siteId,
+		currencyId: editCurrencyId,
+		purpose: GET_BANK_INFO_OFF_LIST_ARGS.PURPOSE.DEPOSIT,
+	})
 
 	const [
 		getDepositAccountByTransId,
@@ -79,7 +99,11 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 				})
 			}}
 		>
-			<Spin spinning={isDepositAccountByTransIdFetching}>
+			<Spin
+				spinning={
+					isDepositAccountByTransIdFetching || isBankInfoOffListFetching
+				}
+			>
 				<Form
 					form={form}
 					layout='vertical'
@@ -94,11 +118,17 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 					</Form.Item>
 
 					<Form.Item
-						label={t('Label_AccountNo')}
 						name='accountNo'
+						label={t('Label_AccountNo')}
 						rules={[{ required: true }]}
 					>
-						<Input allowClear />
+						<Select placeholder='select'>
+							{bankInfoOffList?.map(bankInfo => (
+								<Option key={bankInfo.bankId} value={bankInfo.accountNo}>
+									{`${bankInfo.accountName} / ${bankInfo.bankName} / ${bankInfo.accountNo}`}
+								</Option>
+							))}
+						</Select>
 					</Form.Item>
 
 					<Form.Item label={t('Label_Memo')} name='memo'>

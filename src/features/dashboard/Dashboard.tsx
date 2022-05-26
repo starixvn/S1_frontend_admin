@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { FC, useEffect } from 'react'
 import { Form } from 'antd'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -13,10 +12,10 @@ import {
 } from './slice'
 import { fetchDashBoardGetDataAsync } from './thunk'
 
-const Dashboard = () => {
+const Dashboard: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const [form] = Form.useForm()
-	const { t } = useTranslation()
-
 	const dispatch = useAppDispatch()
 
 	const userSite = useAppSelector(selectUserSite)
@@ -45,7 +44,7 @@ const Dashboard = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_Dashboard')} />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<DashboardFilter form={form} loading={loading} onSearch={handleSearch} />
 

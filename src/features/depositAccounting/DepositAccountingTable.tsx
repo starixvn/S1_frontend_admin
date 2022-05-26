@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
+import { numberFormatter, timeFormat } from 'common/utils/format'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { PermissionInterface } from 'type'
@@ -15,7 +16,7 @@ interface IDepositAccountingTableProps {
 	pagination: PaginationInterface
 	editPermission?: PermissionInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
-	onEditDepositAccountModal: (transId: string) => void
+	onEditDepositAccountModal: (transId: string, currencyId: number) => void
 }
 
 const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
@@ -45,7 +46,9 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			render: (values: any) => (
 				<Typography.Link
 					disabled={!editPermission?.canUse}
-					onClick={() => onEditDepositAccountModal(values.transId)}
+					onClick={() =>
+						onEditDepositAccountModal(values.transId, values.currencyId)
+					}
 				>
 					{t('Label_Edit')}
 				</Typography.Link>
@@ -71,6 +74,7 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			dataIndex: 'amount',
 			width: 120,
 			align: 'center' as 'center',
+			render: (amount: number) => numberFormatter.format(amount),
 		},
 		{
 			title: t('Label_AccountNo'),
@@ -101,9 +105,7 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			align: 'center' as 'center',
 			render: (approvedTime: string) =>
 				approvedTime
-					? moment(approvedTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  HH:mm:ss')
+					? moment(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -121,9 +123,7 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			align: 'center' as 'center',
 			render: (approvedTime: string) =>
 				approvedTime
-					? moment(approvedTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  HH:mm:ss')
+					? moment(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

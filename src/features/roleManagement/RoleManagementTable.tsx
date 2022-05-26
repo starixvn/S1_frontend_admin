@@ -16,16 +16,21 @@ import { PAGINATION } from 'common/hooks'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { PermissionInterface } from 'type'
 import { selectRoleManagementDataList } from './slice'
 
 interface RoleManagementTableInterface {
 	loading: boolean
 	onDelete: (role: number) => void
+	deletePermission?: PermissionInterface
+	editPermission?: PermissionInterface
 }
 
 const RoleManagementTable = ({
 	loading,
 	onDelete,
+	deletePermission,
+	editPermission,
 }: RoleManagementTableInterface) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
@@ -78,13 +83,17 @@ const RoleManagementTable = ({
 			render: (values: any) => (
 				<Space>
 					<Popconfirm
+						disabled={!deletePermission?.canUse}
 						title={t('Label_SureToDelete')}
 						onConfirm={() => onDelete(values.role)}
 					>
-						<Typography.Link>{t('Label_Delete')}</Typography.Link>
+						<Typography.Link disabled={!deletePermission?.canUse}>
+							{t('Label_Delete')}
+						</Typography.Link>
 					</Popconfirm>
 
 					<Typography.Link
+						disabled={!editPermission?.canUse}
 						onClick={() =>
 							navigate(
 								`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editRoleManagement.root}/${values.role}`

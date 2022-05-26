@@ -4,14 +4,13 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { useModal, useQueryParams } from 'common/hooks'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {
-	useDeleteAdminUserByUserIdMutation,
 	useLazyGetUserAdminListByUserNameQuery,
 	useSetAdminUserPasswordMutation,
 	useSetAdminUserStatusMutation,
@@ -22,8 +21,19 @@ import { UpdateUserPasswordModal } from './UpdateUserPasswordModal'
 import { UserSettingsFilter } from './UserSettingsFilter'
 import { UserSettingsTable } from './UserSettingsTable'
 
-const UserSettings = () => {
+const UserSettings: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: {
+			addPermission,
+			changePasswordPermission,
+			editPermission,
+			setActivePermission,
+		} = {},
+	} = useAuth()
+
 	const navigate = useNavigate()
 
 	const updatePasswordModal = useModal()
@@ -42,8 +52,6 @@ const UserSettings = () => {
 		},
 	] = useLazyGetUserAdminListByUserNameQuery()
 
-	const [deleteAdminUserByUserId] = useDeleteAdminUserByUserIdMutation()
-
 	const [setAdminUserStatus] = useSetAdminUserStatusMutation()
 
 	const [setAdminUserPassword, { isLoading }] =
@@ -61,21 +69,6 @@ const UserSettings = () => {
 			setQueryParams({
 				userName,
 			})
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
-	}
-
-	const handleDelete = async (userId: number) => {
-		try {
-			await deleteAdminUserByUserId({
-				userId,
-				siteId: userSite?.siteId,
-			})
-
-			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -141,7 +134,7 @@ const UserSettings = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_UserSetting')} />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<UserSettingsFilter
 				loading={loading}
@@ -154,14 +147,17 @@ const UserSettings = () => {
 				loading={loading}
 				userAdminList={userAdminList ?? []}
 				updatePasswordModal={updatePasswordModal}
+				changePasswordPermission={changePasswordPermission}
+				editPermission={editPermission}
+				setActivePermission={setActivePermission}
 				onSetAdminUserStatus={handleSetAdminUserStatus}
-				onDelete={handleDelete}
 			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.Create
+					disabled={!addPermission?.canUse}
 					onClick={() =>
 						navigate(
 							`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.addUserSetting.root}`
