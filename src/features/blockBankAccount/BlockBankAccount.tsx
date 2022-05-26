@@ -3,7 +3,7 @@ import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
-import { useQueryParams } from 'common/hooks'
+import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { selectUserSite } from 'common/enum'
 import { useAppSelector } from 'app/store'
@@ -20,8 +20,12 @@ import {
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
 import { IBlockBankAccListResponse, IBlockBankAccState } from './type'
 
-const BlockBankAccount: FC = () => {
+const BlockBankAccount: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
+
 	const userSite = useAppSelector(selectUserSite)
 
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -135,6 +139,9 @@ const BlockBankAccount: FC = () => {
 			title: t('Label_UserList'),
 			closable: true,
 			okText,
+			okButtonProps: {
+				disabled: !editPermission?.canUse,
+			},
 			content: (
 				<>
 					<h5>{t('Label_BlockBankAccInfoDescribe1')}</h5>
@@ -232,7 +239,7 @@ const BlockBankAccount: FC = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title='block bank account' />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<BlockBankAccountFilter
 				loading={loading}

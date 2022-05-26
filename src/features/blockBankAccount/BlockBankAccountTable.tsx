@@ -32,7 +32,6 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 	onBlockBankAcc,
 }) => {
 	const { t } = useTranslation()
-
 	const isMounted = useIsMounted()
 
 	const columns = [

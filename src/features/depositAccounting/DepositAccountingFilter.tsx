@@ -22,14 +22,12 @@ import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
-import { PermissionInterface } from 'type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
 
 interface IDepositAccountingFilterProps {
-	viewPermission?: PermissionInterface
 	loading: boolean
 	form: FormInstance<any>
 	timeZoneUtcOffset: number
@@ -46,7 +44,6 @@ interface IDepositAccountingFilterProps {
 	onChangeCurrency: (newCurrencyIds: number[]) => void
 }
 const DepositAccountingFilter: FC<IDepositAccountingFilterProps> = ({
-	viewPermission,
 	loading,
 	form,
 	timeZoneUtcOffset,
@@ -149,7 +146,6 @@ const DepositAccountingFilter: FC<IDepositAccountingFilterProps> = ({
 						<Row justify='end' align='middle'>
 							<Col>
 								<Button
-									disabled={!viewPermission?.canUse}
 									loading={loading}
 									icon={<SearchOutlined />}
 									htmlType='submit'

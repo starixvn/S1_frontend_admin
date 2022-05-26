@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -23,8 +23,11 @@ import {
 	setAdjustmentLogReportStatus,
 } from './slice'
 
-const AdjustmentLogReport = () => {
+const AdjustmentLogReport: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+
 	const dispatch = useAppDispatch()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
@@ -207,7 +210,7 @@ const AdjustmentLogReport = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_AdjustmentLogReport')} />
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<AdjustmentLogReportFilter
 				form={form}

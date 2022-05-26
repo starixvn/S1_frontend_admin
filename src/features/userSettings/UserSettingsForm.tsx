@@ -20,6 +20,8 @@ import { selectAllCurrencyList, selectUserSite } from 'common/enum'
 import { LockOutlined } from '@ant-design/icons'
 import PermissionForm from 'common/permissionForm'
 import { FormPermissionInterface } from 'type'
+import { useLocation } from 'react-router-dom'
+import paths from 'app/constants/paths'
 
 const { Option } = Select
 
@@ -51,6 +53,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	onCheckAllPermission,
 }) => {
 	const { t } = useTranslation()
+	const location = useLocation()
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(selectUserSite)
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
@@ -83,6 +86,10 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 
 	const isPasswordEnable = form.getFieldValue('password') === null
 
+	const isEdit = Boolean(
+		location.pathname.match(paths.administration.sub.editUserSetting.root)
+	)
+
 	return (
 		<Spin spinning={loading}>
 			<LayoutContent.Card>
@@ -99,7 +106,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									},
 								]}
 							>
-								<Input allowClear />
+								<Input allowClear disabled={isEdit} />
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
