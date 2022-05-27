@@ -9,6 +9,9 @@ const paths = {
 	login: {
 		root: 'login',
 	},
+	assignBrand: {
+		root: 'AssignBrand',
+	},
 	csd: {
 		root: 'csd',
 		sub: {

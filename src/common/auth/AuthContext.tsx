@@ -7,6 +7,7 @@ import {
 	LocationState,
 	MenuFunctionData,
 	MenuInterface,
+	UserDataState,
 } from 'type'
 import { message } from 'antd'
 import paths from 'app/constants/paths'
@@ -21,11 +22,13 @@ export interface AuthContextType {
 		redirectUrl: string
 	) => void
 	onInternalSignOut: () => void
+	userData?: UserDataState
 	auth: AuthState
 	userMenuList: MenuInterface[]
 	userMenuFunctionData: MenuFunctionData[]
 	actionPermissions?: ActionPermissions
 	setActionPermissions: (newActionPermission: ActionPermissions) => void
+	onGetUserData: (siteId: number) => void
 	onSignIn: (userName: string, userPassword: string) => void
 	onSignOut: () => void
 	onCheckSignIn: () => void
@@ -62,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const navigate = useNavigate()
 	const location = useLocation()
 
+	const [userData, setUserData] = useState<UserDataState>()
 	const [actionPermissions, setActionPermissions] =
 		useState<ActionPermissions>()
 
@@ -69,6 +73,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
 
 	const [userMenuList, setUserMenuList] = useState<MenuInterface[]>([])
+
+	const onGetUserData = async (siteId: number) => {
+		const newUserData = await BoApi.getUserData(siteId)
+
+		setUserData(newUserData)
+	}
 
 	const onCheckSignIn = async () => {
 		try {
@@ -219,11 +229,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		onInternalCheckSignIn,
 		onInternalSignIn,
 		onInternalSignOut,
+		userData,
 		auth,
 		userMenuList,
 		userMenuFunctionData,
 		actionPermissions,
 		setActionPermissions,
+		onGetUserData,
 		onSignIn,
 		onSignOut,
 		onCheckSignIn,

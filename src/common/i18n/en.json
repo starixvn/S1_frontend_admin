@@ -162,6 +162,7 @@
 	"Label_UpdateTime": "Update Time",
 	"Label_UserName": "User Name",
 	"Label_Brand": "Brand",
+	"Label_SetBrand": "Set Brand",
 	"Label_AddUser": "Add User",
 	"Label_EditUser": "Edit User",
 	"Label_Password": "Password",
@@ -192,5 +193,7 @@
 	"Label_LatestUpdateOperator": "Latest Update Operator",
 	"Label_LatestUpdateTime": "Latest Update Time",
 	"Label_DepositAmount": "Deposit Amount",
-	"Label_EditDepositAccount": "Edit Deposit Account"
+	"Label_EditDepositAccount": "Edit Deposit Account",
+	"Label_LoginTime": "Login Time",
+	"Label_AssignBrand": "Assign Brand"
 }

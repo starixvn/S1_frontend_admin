@@ -78,6 +78,9 @@ export const selectEnumStatus = (state: RootState) => state.allEnum.status
 
 export const selectUserSite = (state: RootState) => state.allEnum.userSite
 
+export const selectUserSiteList = (state: RootState) =>
+	state.allEnum.userSiteList
+
 export const selectAllCurrencyList = (state: RootState) =>
 	state.allEnum.allCurrencyList
 

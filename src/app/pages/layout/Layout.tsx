@@ -62,6 +62,7 @@ const BaseLayout: FC = () => {
 	useEffect(() => {
 		if (userSite?.siteId) {
 			auth.onFetchUserMenuList({ lang: 'en', siteId: userSite.siteId })
+			auth.onGetUserData(userSite.siteId)
 		}
 	}, [userSite?.siteId])
 

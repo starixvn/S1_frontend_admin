@@ -6,11 +6,14 @@ import {
 	FileProtectOutlined,
 	PoweroffOutlined,
 	DownOutlined,
+	ApiOutlined,
 } from '@ant-design/icons'
 import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { ChangePasswordModal } from 'app/pages/changePassword'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 
 import { LayoutHeaderUserSite } from './LayoutHeaderUserSite'
 
@@ -23,7 +26,8 @@ interface LayoutHeaderProps {
 
 const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 	const { t } = useTranslation()
-	const { auth, onSignOut, onInternalSignOut } = useAuth()
+	const navigate = useNavigate()
+	const { auth, onSignOut, onInternalSignOut, userData } = useAuth()
 
 	const location = useLocation()
 
@@ -45,6 +49,18 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 			>
 				{t('ChangePassword.Label_ChangePassword')}
 			</Menu.Item>
+
+			{userData?.isSuper && (
+				<Menu.Item
+					key={4}
+					icon={<ApiOutlined />}
+					onClick={() =>
+						navigate(`/${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`)
+					}
+				>
+					{t('Label_AssignBrand')}
+				</Menu.Item>
+			)}
 
 			<Menu.Divider key={2} />
 
