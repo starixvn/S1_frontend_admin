@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
 import { baseDataApi } from 'common/service/baseDataApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
+import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
 import { dashboardSlice } from 'features/dashboard'
@@ -20,6 +21,7 @@ export const store = configureStore({
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
 		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
+		[assignBrandApi.reducerPath]: assignBrandApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -29,7 +31,8 @@ export const store = configureStore({
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
 			.concat(blockIpApi.middleware)
-			.concat(depositAccountingApi.middleware),
+			.concat(depositAccountingApi.middleware)
+			.concat(assignBrandApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

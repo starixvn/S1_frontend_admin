@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { UserDataState } from 'type'
 
 export const baseUrl = '/apiV2/'
 
@@ -60,6 +61,16 @@ export default class BoApi {
 	}
 
 	static onInternalSignOut = async () => ApiV1.post('/Home/SignOut')
+
+	static getUserData = async (siteId: number) => {
+		const response = await BoApi.post('/Home/GetUserData', { siteId })
+
+		if (response?.data?.errorCode !== 0) {
+			throw new Error(response?.data?.message)
+		}
+
+		return response?.data?.data as UserDataState
+	}
 
 	static onCheckSignIn = async () => {
 		const response = await BoApi.post('/Home/CheckSignIn')

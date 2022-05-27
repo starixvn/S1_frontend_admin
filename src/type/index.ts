@@ -9,6 +9,18 @@ export interface LocationState {
 	}
 }
 
+export interface UserDataState {
+	userId: number
+	userName: string
+	userpwd: null
+	isSuper: boolean
+	status: boolean
+	createTime: string
+	role: null
+	currencyList: string
+	siteId: number
+	loginTime: string
+}
 export interface ActionPermissions {
 	viewPermission: PermissionInterface
 	exportExcelPermission: PermissionInterface
