@@ -126,12 +126,12 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			dataIndex: 'icurrencyList',
 			width: 120,
 			align: 'center' as 'center',
-			render: (icurrencyList: number[]) => {
-				const currency = icurrencyList.map(
+			render: (icurrencyList: number[] | null) => {
+				const currency = icurrencyList?.map(
 					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
 				)
 
-				return currency.filter(Boolean).join('/')
+				return currency?.filter(Boolean).join('/')
 			},
 		},
 	]
