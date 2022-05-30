@@ -1,8 +1,9 @@
+import moment from 'moment'
 import { FC } from 'react'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
-import moment from 'moment'
+import { timeFormat } from 'common/utils/format'
 import { Space, Table, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
@@ -111,9 +112,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  HH:mm:ss')
+					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -124,9 +123,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  HH:mm:ss')
+					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
