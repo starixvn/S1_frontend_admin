@@ -11,12 +11,14 @@ import { AssignBrandState } from './type'
 interface AssignBrandTableProps {
 	loading: boolean
 	assignBrands: AssignBrandState[]
+	timeZoneUtcOffset: number
 	onOpenEditBrandModal: ({ userId }: { userId: number }) => void
 }
 
 const AssignBrandTable: FC<AssignBrandTableProps> = ({
 	loading,
 	assignBrands,
+	timeZoneUtcOffset,
 	onOpenEditBrandModal,
 }) => {
 	const { t } = useTranslation()
@@ -66,7 +68,9 @@ const AssignBrandTable: FC<AssignBrandTableProps> = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (loginTime: string) =>
-				loginTime ? moment(loginTime).format(timeFormat) : '',
+				loginTime
+					? moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
 		},
 		{
 			title: t('Label_UpdateTime'),
@@ -75,7 +79,9 @@ const AssignBrandTable: FC<AssignBrandTableProps> = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
-				updateTime ? moment(updateTime).format(timeFormat) : '',
+				updateTime
+					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
 		},
 	]
 	return (

@@ -5,6 +5,7 @@ import { useForm } from 'antd/lib/form/Form'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectEnumStatus, selectUserSiteList } from 'common/enum'
 import { useGetUserBrandQuery, useLazyGetAssignBrandQuery } from './api'
@@ -19,6 +20,7 @@ const AssignBrand: FC = () => {
 	const { userData } = useAuth()
 	const [form] = useForm()
 	const [queryParams, setQueryParams] = useQueryParams()
+	const { timeZoneUtcOffset } = useTimeZone()
 
 	const userSiteList = useAppSelector(selectUserSiteList)
 	const enumStatus = useAppSelector(selectEnumStatus)
@@ -115,6 +117,7 @@ const AssignBrand: FC = () => {
 			<AssignBrandTable
 				loading={isAssignBrandsFetching}
 				assignBrands={assignBrands ?? []}
+				timeZoneUtcOffset={timeZoneUtcOffset}
 				onOpenEditBrandModal={onOpenEditBrandModal}
 			/>
 
