@@ -1,6 +1,6 @@
 import { FC } from 'react'
+import moment from 'moment'
 import _ from 'lodash'
-import { useIsMounted } from 'usehooks-ts'
 import { useNavigate } from 'react-router-dom'
 import {
 	Popconfirm,
@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { GoKey } from 'react-icons/go'
+import { timeFormat } from 'common/utils/format'
 
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -27,6 +28,7 @@ interface UserSettingsTableProps {
 	form: FormInstance
 	loading: boolean
 	userAdminList: UserAdminState[]
+	timeZoneUtcOffset: number
 	updatePasswordModal: ModalState
 	changePasswordPermission?: PermissionInterface
 	editPermission?: PermissionInterface
@@ -38,6 +40,7 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 	form,
 	loading,
 	userAdminList,
+	timeZoneUtcOffset,
 	changePasswordPermission,
 	editPermission,
 	setActivePermission,
@@ -47,8 +50,6 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
-
-	const isMounted = useIsMounted()
 
 	const columns = [
 		{
@@ -134,11 +135,29 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 				return currency?.filter(Boolean).join('/')
 			},
 		},
+		{
+			title: t('Label_LoginTime'),
+			key: 'loginTime',
+			dataIndex: 'loginTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (loginTime: string) =>
+				loginTime
+					? moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
+		},
+		{
+			title: t('Label_UpdateTime'),
+			key: 'updateTime',
+			dataIndex: 'updateTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (updateTime: string) =>
+				updateTime
+					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
+		},
 	]
-
-	if (!isMounted()) {
-		return null
-	}
 
 	return (
 		<LayoutContent.Card>

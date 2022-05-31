@@ -66,12 +66,23 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
 
+	const selectedCurrencyList = form.getFieldValue('currencyList')
+
+	const filteredRoleBySelectedCurrencyList = roleManagementDataList.filter(
+		roleManagementData => {
+			return _.intersection(
+				roleManagementData.icurrencyList,
+				selectedCurrencyList
+			).length
+		}
+	)
+
 	const onChangeCurrency = (newCurrencyList: number[]) => {
-		const currencyList = newCurrencyList.includes(0)
+		const result = newCurrencyList.includes(0)
 			? filteredAllCurrencyListByUser.map(item => item.currencyId)
 			: newCurrencyList
 
-		form.setFieldsValue({ currencyList, role: null })
+		form.setFieldsValue({ currencyList: result, role: null })
 		onRoleChange(null)
 	}
 
@@ -172,7 +183,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									placeholder='select'
 									onChange={role => onRoleChange(role)}
 								>
-									{roleManagementDataList?.map(item => (
+									{filteredRoleBySelectedCurrencyList?.map(item => (
 										<Option key={item.role} value={item.role}>
 											{item.roleName}
 										</Option>
