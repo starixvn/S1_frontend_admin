@@ -7,6 +7,7 @@ import { selectUserSite } from 'common/enum'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
+import { useTimeZone } from 'components/TimeZoneSelect'
 import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -37,11 +38,9 @@ const UserSettings: FC<{
 	const navigate = useNavigate()
 
 	const updatePasswordModal = useModal()
-
 	const [queryParams, setQueryParams] = useQueryParams()
-
+	const { timeZoneUtcOffset } = useTimeZone()
 	const [form] = Form.useForm()
-
 	const userSite = useAppSelector(selectUserSite)
 
 	const [
@@ -150,6 +149,7 @@ const UserSettings: FC<{
 				changePasswordPermission={changePasswordPermission}
 				editPermission={editPermission}
 				setActivePermission={setActivePermission}
+				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSetAdminUserStatus={handleSetAdminUserStatus}
 			/>
 

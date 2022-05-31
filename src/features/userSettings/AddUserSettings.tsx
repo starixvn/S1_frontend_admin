@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Form, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -11,7 +11,6 @@ import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { getPermissionList } from 'common/permissionForm/utils'
-import { useAuth } from 'common/hooks'
 import {
 	useAddAdminUserMutation,
 	useGetAddAdminUserCurrencyQuery,
@@ -21,7 +20,6 @@ import UserSettingsForm from './UserSettingsForm'
 
 const AddUserSettings: FC = () => {
 	const { t } = useTranslation()
-	const { actionPermissions: { addPermission } = {} } = useAuth()
 	const navigate = useNavigate()
 	const userSite = useAppSelector(selectUserSite)
 
@@ -94,8 +92,6 @@ const AddUserSettings: FC = () => {
 			setPermissionList([])
 		}
 	}
-
-	if (!addPermission?.canUse) return <Navigate to='/403' />
 
 	return (
 		<LayoutContent.Main>
