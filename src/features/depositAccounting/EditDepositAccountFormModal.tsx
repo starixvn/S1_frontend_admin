@@ -110,11 +110,11 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 					initialValues={{ accountNo: '', memo: '' }}
 				>
 					<Form.Item label={t('Label_MemberId')} name='userName'>
-						<Input readOnly />
+						<Input readOnly disabled />
 					</Form.Item>
 
 					<Form.Item label={t('Label_DepositAmount')} name='amount'>
-						<Input readOnly />
+						<Input readOnly disabled />
 					</Form.Item>
 
 					<Form.Item
@@ -131,7 +131,11 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 						</Select>
 					</Form.Item>
 
-					<Form.Item label={t('Label_Memo')} name='memo'>
+					<Form.Item
+						label={t('Label_Memo')}
+						name='memo'
+						rules={[{ required: true }]}
+					>
 						<Input allowClear />
 					</Form.Item>
 				</Form>
