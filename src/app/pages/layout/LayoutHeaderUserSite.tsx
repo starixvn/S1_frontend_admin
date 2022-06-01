@@ -1,20 +1,18 @@
 import { Button, Col, Dropdown, Menu, Row } from 'antd'
 import { useMediaQuery } from 'usehooks-ts'
-import { useLocation } from 'react-router-dom'
+
 import { useAppSelector } from 'app/store'
 import { UserSite } from 'common/enum/type'
+import { useChangeBrandMutation } from 'common/service/homeApi/api'
 
 const useUserSiteAction = () => {
-	const location = useLocation()
-
+	const [changeBrand] = useChangeBrandMutation()
 	const { userSite, userSiteList } = useAppSelector(state => state.allEnum)
 
-	const handleSelectUserSite = (newUserSite: UserSite) => {
-		const searchParams = new URLSearchParams({
-			siteId: String(newUserSite.siteId),
-		})
+	const handleSelectUserSite = async (newUserSite: UserSite) => {
+		await changeBrand({ siteId: newUserSite.siteId })
 
-		window.location.href = `${location.pathname}?${searchParams.toString()}`
+		window.location.href = `/`
 	}
 
 	return { userSite, userSiteList, handleSelectUserSite }

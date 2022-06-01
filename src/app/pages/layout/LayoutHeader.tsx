@@ -27,7 +27,7 @@ interface LayoutHeaderProps {
 const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
-	const { auth, onSignOut, onInternalSignOut, userData } = useAuth()
+	const { onSignOut, onInternalSignOut, userData } = useAuth()
 
 	const location = useLocation()
 
@@ -110,7 +110,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 						>
 							<Button type='text' style={{ marginBottom: 16 }}>
 								<UserOutlined style={{ fontSize: '16px' }} />
-								{auth.user}
+								{userData?.userName ?? ''}
 								<DownOutlined style={{ fontSize: '10px' }} />
 							</Button>
 						</Dropdown>

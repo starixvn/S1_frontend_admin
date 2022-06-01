@@ -1,6 +1,5 @@
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { UIStateMain } from './Main'
@@ -41,7 +40,7 @@ const UIStatePage = ({ status }: UIStatePageProps) => {
 					{status} | {renderText()}
 				</div>
 				<br />
-				<Link to={`/${paths.dashboard.root}`}>
+				<Link to='/'>
 					<Button type='primary' icon={<ArrowLeftOutlined />}>
 						click here to back
 					</Button>
