@@ -25,7 +25,7 @@ const EditUserSettings = () => {
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
 	const userSite = useAppSelector(selectUserSite)
-	const { userId } = useParams()
+	const { userId: editUserId } = useParams()
 	const [form] = Form.useForm()
 
 	const [adminPermissionList, setAdminPermissionList] = useState<
@@ -63,7 +63,7 @@ const EditUserSettings = () => {
 		try {
 			await updateAdminUser({
 				siteId: userSite?.siteId,
-				userId: Number(userId),
+				userId: Number(editUserId),
 				userName,
 				password,
 				role,
@@ -118,7 +118,7 @@ const EditUserSettings = () => {
 					data: newUpdateAdminUserData,
 				} = {} as IAxiosResponse<AdminUserInterface>,
 			} = await getUpdateAdminUser({
-				userId: Number(userId),
+				userId: Number(editUserId),
 				siteId: userSite?.siteId,
 			})
 
@@ -137,9 +137,10 @@ const EditUserSettings = () => {
 		}
 
 		init()
-	}, [userId])
+	}, [editUserId])
 
-	if (!editPermission?.canUse) return <Navigate to='/403' />
+	if (editPermission?.canUse !== undefined && !editPermission?.canUse)
+		return <Navigate to='/403' />
 
 	return (
 		<LayoutContent.Main>
