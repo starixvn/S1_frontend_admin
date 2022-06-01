@@ -57,16 +57,28 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(selectUserSite)
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
+
+	const selectedCurrencyList: number[] =
+		form.getFieldValue('currencyList') ?? []
+
+	const userAllCurrencyList = _.uniq([
+		...selectedCurrencyList,
+		...roleCurrencyList,
+	])
+
+	const userAllCurrencyWithoutRoleCurrency = _.filter(
+		selectedCurrencyList,
+		currency => !_.includes(roleCurrencyList, currency)
+	)
+
 	const filteredAllCurrencyListByUser = allCurrencyList.filter(currency =>
 		_.some(
-			roleCurrencyList,
+			userAllCurrencyList,
 			userCurrency => userCurrency === currency.currencyId
 		)
 	)
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
-
-	const selectedCurrencyList = form.getFieldValue('currencyList')
 
 	const filteredRoleBySelectedCurrencyList = roleManagementDataList.filter(
 		roleManagementData => {
@@ -78,11 +90,20 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	)
 
 	const onChangeCurrency = (newCurrencyList: number[]) => {
-		const result = newCurrencyList.includes(0)
-			? filteredAllCurrencyListByUser.map(item => item.currencyId)
-			: newCurrencyList
+		let result = []
 
-		form.setFieldsValue({ currencyList: result, role: null })
+		if (newCurrencyList.length === 0) {
+			result = userAllCurrencyWithoutRoleCurrency
+		} else {
+			result = newCurrencyList.includes(0)
+				? userAllCurrencyList
+				: newCurrencyList
+		}
+
+		form.setFieldsValue({
+			currencyList: result,
+			role: null,
+		})
 		onRoleChange(null)
 	}
 
@@ -160,7 +181,11 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									)}
 
 									{filteredAllCurrencyListByUser.map(item => (
-										<Option key={item.currencyId} value={item.currencyId}>
+										<Option
+											key={item.currencyId}
+											disabled={!_.includes(roleCurrencyList, item.currencyId)}
+											value={item.currencyId}
+										>
 											{item.isoCode}
 										</Option>
 									))}
