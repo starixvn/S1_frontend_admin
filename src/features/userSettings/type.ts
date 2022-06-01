@@ -37,6 +37,7 @@ export interface AdminUserInterface {
 	userName: string
 	password: any
 	role: null | number
+	roleName: null | string
 	permission: AdminUserPermissionInterface[]
 	currencyList: number[]
 	selectCurrencyList: number[]

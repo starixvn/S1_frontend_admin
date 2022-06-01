@@ -139,6 +139,12 @@ const EditUserSettings = () => {
 		init()
 	}, [editUserId])
 
+	const editRole = {
+		role: updateAdminUserData?.role,
+		roleName: updateAdminUserData?.roleName,
+		userId: Number(editUserId),
+	}
+
 	if (editPermission?.canUse !== undefined && !editPermission?.canUse)
 		return <Navigate to='/403' />
 
@@ -149,6 +155,7 @@ const EditUserSettings = () => {
 			<UserSettingsForm
 				loading={isGetUpdateAdminUserLoading}
 				form={form}
+				editRole={editRole}
 				permissionList={permissionList}
 				roleCurrencyList={updateAdminUserData?.currencyList ?? []}
 				originAdminPermissionList={adminPermissionList ?? []}
