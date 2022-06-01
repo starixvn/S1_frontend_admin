@@ -157,7 +157,7 @@ const EditRoleManagement = () => {
 	if (!editPermission?.canUse) return <Navigate to='/403' />
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_EditRoleManagement')} />
 
 			<RoleManagementForm
@@ -175,7 +175,7 @@ const EditRoleManagement = () => {
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 
