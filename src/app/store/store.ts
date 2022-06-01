@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
-import { baseDataApi } from 'common/service/baseDataApi/api'
+import { baseDataApi } from 'common/service/baseDataApi'
+import { homeApi } from 'common/service/homeApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
@@ -16,6 +17,7 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
+		[homeApi.reducerPath]: homeApi.reducer,
 		[baseDataApi.reducerPath]: baseDataApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
@@ -27,6 +29,7 @@ export const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: false,
 		})
+			.concat(homeApi.middleware)
 			.concat(baseDataApi.middleware)
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)

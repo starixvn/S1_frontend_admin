@@ -7,7 +7,7 @@ import { useAppSelector } from 'app/store'
 import {
 	GET_BANK_INFO_OFF_LIST_ARGS,
 	useGetBankInfoOffListQuery,
-} from 'common/service/baseDataApi/api'
+} from 'common/service/baseDataApi'
 import { useLazyGetDepositAccountByTransIdQuery } from './api'
 
 const { Option } = Select

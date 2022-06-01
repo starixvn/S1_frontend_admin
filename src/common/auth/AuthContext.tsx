@@ -51,12 +51,10 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType>(null!)
 
 export interface AuthState {
-	user: string
 	isLogin: boolean | undefined
 }
 
 const initialAuth = {
-	user: '',
 	isLogin: undefined,
 }
 
@@ -86,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setAuth(newAuth)
 		} catch (error) {
-			setAuth({ user: '', isLogin: false })
+			setAuth({ isLogin: false })
 		}
 	}
 
@@ -95,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			const newInternalAuth: AuthState = await BoApi.onInternalCheckSignIn()
 			setInternalAuth(newInternalAuth)
 		} catch (error) {
-			setInternalAuth({ user: '', isLogin: false })
+			setInternalAuth({ isLogin: false })
 		}
 	}
 

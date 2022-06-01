@@ -3,7 +3,7 @@ const paths = {
 		root: '/',
 	},
 	dashboard: {
-		root: '',
+		root: 'dashboard',
 		functionId: 1,
 	},
 	login: {

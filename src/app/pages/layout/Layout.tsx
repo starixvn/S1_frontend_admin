@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { useAuth, useQueryParams } from 'common/hooks'
+import { useAuth } from 'common/hooks'
+import { useCheckBrandQuery } from 'common/service/homeApi/api'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
 	fetchAllEnumAsync,
@@ -31,8 +32,7 @@ const useMenuCollapsed = () => {
 
 const useUserSiteEffect = () => {
 	const dispatch = useAppDispatch()
-
-	const [queryParams] = useQueryParams()
+	const { data: { data: siteId } = {} } = useCheckBrandQuery()
 
 	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
 
@@ -40,9 +40,7 @@ const useUserSiteEffect = () => {
 
 	useEffect(() => {
 		if (enumStatus === 'succeeded') {
-			const newUserSite =
-				_.find(userSiteList, { siteId: Number(queryParams.siteId) }) ||
-				userSiteList[0]
+			const newUserSite = _.find(userSiteList, { siteId })
 
 			dispatch(onChangeUserSite(newUserSite))
 		}
@@ -51,6 +49,7 @@ const useUserSiteEffect = () => {
 
 const BaseLayout: FC = () => {
 	const dispatch = useAppDispatch()
+
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const auth = useAuth()
 	const enumStatus = useAppSelector(selectEnumStatus)

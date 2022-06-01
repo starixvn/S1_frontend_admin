@@ -79,10 +79,7 @@ export default class BoApi {
 			throw new Error(response?.data?.message)
 		}
 
-		return {
-			user: response?.data.data,
-			isLogin: true,
-		}
+		return { isLogin: true }
 	}
 
 	static onSignOut = async () => BoApi.post('/Home/SignOut')
