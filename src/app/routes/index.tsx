@@ -83,6 +83,14 @@ const routes: RouteObject[] = [
 		children: [
 			...routesWithMenu,
 			{
+				index: true,
+				element: (
+					<AuthRequire>
+						<div />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.dashboard.root}`,
 				element: (
 					<AuthRequire functionId={paths.dashboard.functionId}>
