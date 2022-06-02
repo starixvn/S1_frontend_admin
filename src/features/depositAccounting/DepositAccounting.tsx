@@ -148,7 +148,7 @@ const DepositAccounting: FC<{
 				timeZoneUtcOffset
 			)
 
-			const response = await exportDepositAccountsFile({
+			const blob = await exportDepositAccountsFile({
 				siteIds: userSite?.siteId ? [userSite?.siteId] : [],
 				startDate,
 				endDate,
@@ -158,8 +158,8 @@ const DepositAccounting: FC<{
 			}).unwrap()
 
 			download(
-				response.data,
-				`ExportDepositAccounts_${moment().format('YYYYMMDDHHmmss')}`
+				blob,
+				`ExportDepositAccounts_${moment().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
