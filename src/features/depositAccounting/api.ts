@@ -44,7 +44,7 @@ export const depositAccountingApi = createApi({
 			invalidatesTags: ['POST'],
 		}),
 		exportDepositAccountsFile: builder.mutation<
-			any,
+			Blob,
 			IExportDepositAccountsFileArgs
 		>({
 			query: data => ({
