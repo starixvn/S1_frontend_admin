@@ -94,5 +94,19 @@
 	"Label_DepositAmount": "Deposit Amount",
 	"Label_EditDepositAccount": "Edit Deposit Account",
 	"Label_LoginTime": "Login Time",
-	"Label_AssignBrand": "Assign Brand"
+	"Label_AssignBrand": "Assign Brand",
+	"Label_BonusAmount": "Bonus Amount",
+	"Label_InvitationLimit": "Invitation Limit",
+	"Label_ReferralFreeCredit": "Referral Free Credit",
+	"Label_ValidBet": "Valid Bet",
+	"Label_ValidityDeposit": "Validity Deposit",
+	"Label_PeriodDays": "Term Period Within(days)",
+	"Label_EditReferralManagement": "Edit Referral Management",
+	"Label_AgentDeposit": "Agent Deposit",
+	"Label_SettleBetAmount": "Settle Bet Amount",
+	"Label_BannerUrl": "bannerUrl",
+	"Label_Title": "Title",
+	"Label_Description": "description",
+	"Label_Detail": "detail",
+	"Label_Required": "{{key}} is Required"
 }

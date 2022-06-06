@@ -50,6 +50,14 @@ const DepositAccounting = lazy(
 
 const AssignBrand = lazy(() => import('features/assignBrand/AssignBrand'))
 
+const ReferralManagement = lazy(
+	() => import('features/referralManagement/ReferralManagement')
+)
+
+const EditReferralManagement = lazy(
+	() => import('features/referralManagement/EditReferralManagement')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -211,6 +219,26 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire>
 						<AssignBrand />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralManagement.functionId}
+					>
+						<ReferralManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.editReferralManagement.root}/:editCurrencyId`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.editReferralManagement.functionId}
+					>
+						<EditReferralManagement />
 					</AuthRequire>
 				),
 			},
