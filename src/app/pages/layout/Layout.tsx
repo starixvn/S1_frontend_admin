@@ -69,7 +69,10 @@ const BaseLayout: FC = () => {
 		const init = async () => {
 			setRequestStatus('pending')
 
-			await dispatch(fetchAllEnumAsync())
+			await Promise.all([
+				auth.onFetchUserMenuList({ lang: 'en', siteId: 1 }),
+				dispatch(fetchAllEnumAsync()),
+			])
 
 			setRequestStatus('idle')
 		}

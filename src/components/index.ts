@@ -1,3 +1,4 @@
 export * from './Statistic'
 export * from './Table'
 export * from './Iframe'
+export * from './Editor'
