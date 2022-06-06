@@ -36,6 +36,7 @@ export const referralManagementApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 		updateReferralStatus: builder.mutation<
 			void,
