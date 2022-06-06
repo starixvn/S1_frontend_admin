@@ -494,13 +494,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 70,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		newAdminPath: paths.risk.sub.blockBankAccount.root,
 	},
 	{
 		icon: null,
 		functionId: 71,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		newAdminPath: paths.risk.sub.blockIp.root,
 	},
 	{
@@ -655,17 +655,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.administration.sub.roleManagement.functionId,
-		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'Internal',
-		internalPath: 'Admin/GroupAuthoritySetting',
+		pathMode: 'NewAdmin',
 		newAdminPath: `${paths.administration.sub.roleManagement.root}`,
 	},
 	{
 		icon: null,
 		functionId: paths.administration.sub.userSetting.functionId,
-		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
-		pathMode: 'Internal',
-		internalPath: 'Admin/UserAuthoritySetting',
+		pathMode: 'NewAdmin',
 		newAdminPath: `${paths.administration.sub.userSetting.root}`,
 	},
 	{
@@ -679,9 +675,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 93,
-		internalFunctionKey: allowedRoles.FinanceAdjustmentLogReport,
-		pathMode: 'Internal',
-		internalPath: 'Finance/AdjustmentLogReport',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.administration.sub.adjustmentLogReport.root,
 	},
 	{
