@@ -96,6 +96,22 @@ const ReferralManagementTable: FC<IReferralManagementTableProps> = ({
 			render: (bonusAmount: number) => numberFormatter.format(bonusAmount),
 		},
 		{
+			title: t('Label_DepositAmount'),
+			key: 'agentDeposit',
+			dataIndex: 'agentDeposit',
+			width: 120,
+			align: 'center' as 'center',
+			render: (agentDeposit: number) => numberFormatter.format(agentDeposit),
+		},
+		{
+			title: t('Label_SettleBetAmount'),
+			key: 'agentValidBet',
+			dataIndex: 'agentValidBet',
+			width: 120,
+			align: 'center' as 'center',
+			render: (agentValidBet: number) => numberFormatter.format(agentValidBet),
+		},
+		{
 			title: t('Label_InvitationLimit'),
 			key: 'invitationLimit',
 			dataIndex: 'invitationLimit',

@@ -18,7 +18,7 @@ const ActionForm: FC<ActionFormFormProps> = ({ form }) => {
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='Search Criteria' key='1'>
+			<Panel header='' key='1'>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form form={form} layout='vertical'>
 						<Row align='middle' gutter={16}>
@@ -41,7 +41,8 @@ const ActionForm: FC<ActionFormFormProps> = ({ form }) => {
 									</Select>
 								</Form.Item>
 							</Col>
-
+						</Row>
+						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='bonusAmount'
@@ -54,8 +55,8 @@ const ActionForm: FC<ActionFormFormProps> = ({ form }) => {
 
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
-									name='agentDeposit'
-									label={t('Label_DepositAmount')}
+									name='agentValidBet'
+									label={t('Label_SettleBetAmount')}
 									rules={[{ required: true }]}
 								>
 									<Input allowClear type='number' />
@@ -64,8 +65,8 @@ const ActionForm: FC<ActionFormFormProps> = ({ form }) => {
 
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
-									name='agentValidBet'
-									label={t('Label_SettleBetAmount')}
+									name='agentDeposit'
+									label={t('Label_DepositAmount')}
 									rules={[{ required: true }]}
 								>
 									<Input allowClear type='number' />

@@ -5,6 +5,7 @@ import { useAppSelector } from 'app/store'
 import { message, Form } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import paths from 'app/constants/paths'
@@ -29,6 +30,11 @@ const EditReferralManagement = () => {
 		useLazyGetReferralQuery()
 
 	const [setReferral] = useSetReferralMutation()
+
+	const { data: { data: languageList } = {} } = useGetLanguageListQuery({
+		siteId: userSite?.siteId,
+		currencyId: Number(editCurrencyId),
+	})
 
 	const handleCreate = async () => {
 		await form.validateFields()
@@ -124,7 +130,7 @@ const EditReferralManagement = () => {
 
 			<ActionForm form={form} />
 
-			<ActionTabs form={form} />
+			<ActionTabs form={form} languageList={languageList ?? []} />
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

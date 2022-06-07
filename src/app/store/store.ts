@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
 import { baseDataApi } from 'common/service/baseDataApi'
 import { homeApi } from 'common/service/homeApi/api'
+import { permissionApi } from 'common/service/permissionApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
@@ -20,6 +21,7 @@ export const store = configureStore({
 		adjustmentLogReport: adjustmentLogReportReducer,
 		[homeApi.reducerPath]: homeApi.reducer,
 		[baseDataApi.reducerPath]: baseDataApi.reducer,
+		[permissionApi.reducerPath]: permissionApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
@@ -33,6 +35,7 @@ export const store = configureStore({
 		})
 			.concat(homeApi.middleware)
 			.concat(baseDataApi.middleware)
+			.concat(permissionApi.middleware)
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
 			.concat(blockIpApi.middleware)
