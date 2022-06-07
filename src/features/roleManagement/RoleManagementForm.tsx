@@ -194,12 +194,14 @@ const RoleManagementForm = ({
 
 					<Divider />
 
-					{rolePermission.permission.map((permission: any) => (
-						<div key={permission.name}>
-							{renderPermissionCheckBoxItem(permission)}
-							<Divider />
-						</div>
-					))}
+					<Form.Item label='Permission' required>
+						{rolePermission.permission.map((permission: any) => (
+							<div key={permission.name}>
+								{renderPermissionCheckBoxItem(permission)}
+								<Divider />
+							</div>
+						))}
+					</Form.Item>
 				</Form>
 			</LayoutContent.Card>
 		</Spin>

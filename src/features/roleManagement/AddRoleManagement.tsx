@@ -40,6 +40,15 @@ const AddRoleManagement = () => {
 			return
 		}
 
+		if (permissionList.length <= 0) {
+			message.warning(
+				t('Label_Required', {
+					key: t('Label_Permission'),
+				})
+			)
+			return
+		}
+
 		const { roleName, remark, currencyList } = form.getFieldsValue()
 
 		try {

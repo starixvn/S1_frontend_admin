@@ -108,5 +108,6 @@
 	"Label_Title": "Title",
 	"Label_Description": "description",
 	"Label_Detail": "detail",
-	"Label_Required": "{{key}} is Required"
+	"Label_Required": "{{key}} is Required",
+	"Label_Permission": "Permission"
 }
