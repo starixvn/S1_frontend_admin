@@ -59,10 +59,12 @@ const getPermissionList = (
 			({ permissionId }) => permissionId
 		)
 
-		newPermissionList.push({
-			displayKey,
-			permissionIdList,
-		})
+		if (permissionIdList.length > 0) {
+			newPermissionList.push({
+				displayKey,
+				permissionIdList,
+			})
+		}
 	}
 
 	permissionList.forEach(permission => makePermission(permission))
@@ -94,6 +96,15 @@ const EditRoleManagement = () => {
 		const isValid = await form.validateFields()
 
 		if (!isValid) {
+			return
+		}
+
+		if (permissionList.length <= 0) {
+			message.warning(
+				t('Label_Required', {
+					key: t('Label_Permission'),
+				})
+			)
 			return
 		}
 

@@ -67,15 +67,13 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	)
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
-
-	const selectedCurrencyList = form.getFieldValue('currencyList')
+	const currencyList: any[] = Form.useWatch('currencyList', form)
+	const role: number = Form.useWatch('role', form)
 
 	const filteredRoleBySelectedCurrencyList = roleManagementDataList.filter(
 		roleManagementData => {
-			return _.intersection(
-				roleManagementData.icurrencyList,
-				selectedCurrencyList
-			).length
+			return _.intersection(roleManagementData.icurrencyList, currencyList)
+				.length
 		}
 	)
 
@@ -171,19 +169,11 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 						</Col>
 
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item
-								name='role'
-								label='Role'
-								rules={[
-									{
-										required: true,
-										message: t('Label_RoleRequire'),
-									},
-								]}
-							>
+							<Form.Item name='role' label='Role'>
 								<Select
+									allowClear
 									placeholder='select'
-									onChange={role => onRoleChange(role)}
+									onChange={newRole => onRoleChange(newRole)}
 								>
 									{isEdit &&
 										!filteredRoleBySelectedCurrencyList.some(
@@ -210,12 +200,14 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 
 					<Divider />
 
-					<PermissionForm
-						originAdminPermissionList={originAdminPermissionList}
-						permissionList={permissionList}
-						onPermissionChange={onPermissionChange}
-						onCheckAllPermission={onCheckAllPermission}
-					/>
+					{currencyList?.length > 0 && role && (
+						<PermissionForm
+							originAdminPermissionList={originAdminPermissionList}
+							permissionList={permissionList}
+							onPermissionChange={onPermissionChange}
+							onCheckAllPermission={onCheckAllPermission}
+						/>
+					)}
 				</Form>
 			</LayoutContent.Card>
 		</Spin>
