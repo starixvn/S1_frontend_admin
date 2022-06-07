@@ -1,20 +1,17 @@
 import { FC } from 'react'
 import { FormInstance, Tabs } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
 
 import ActionTabPane from './ActionTabPane'
 
 const ActionTabs: FC<{
+	languageList: string[]
 	form: FormInstance<any>
-}> = ({ form }) => {
-	const userSite = useAppSelector(selectUserSite)
-
+}> = ({ languageList, form }) => {
 	return (
 		<LayoutContent.Card>
 			<Tabs type='card' style={{ height: 600 }}>
-				{userSite?.iLangList.map(lang => {
+				{languageList.map(lang => {
 					return <ActionTabPane lang={lang} form={form} key={lang} tab={lang} />
 				})}
 			</Tabs>

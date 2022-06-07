@@ -33,14 +33,6 @@ const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
 						<Form.Item
 							name={['specific', lang, 'bannerUrl']}
 							label={t('Label_BannerUrl')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_BannerUrl'),
-									}),
-								},
-							]}
 						>
 							<Input allowClear />
 						</Form.Item>
@@ -49,14 +41,6 @@ const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
 						<Form.Item
 							name={['specific', lang, 'title']}
 							label={t('Label_Title')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Title'),
-									}),
-								},
-							]}
 						>
 							<Input allowClear />
 						</Form.Item>
@@ -65,14 +49,6 @@ const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
 						<Form.Item
 							name={['specific', lang, 'description']}
 							label={t('Label_Description')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Description'),
-									}),
-								},
-							]}
 						>
 							<Input allowClear />
 						</Form.Item>
