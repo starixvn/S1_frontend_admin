@@ -31,10 +31,10 @@
 		"usehooks-ts": "^2.4.2"
 	},
 	"scripts": {
-		"start": "react-app-rewired build start",
+		"start": "react-app-rewired start",
 		"build": "react-app-rewired build",
-		"test": "react-app-rewired build test",
-		"eject": "react-app-rewired build eject",
+		"test": "react-app-rewired test",
+		"eject": "react-app-rewired eject",
 		"analyze": "react-app-rewired build --stats && webpack-bundle-analyzer build/bundle-stats.json"
 	},
 	"eslintConfig": {
