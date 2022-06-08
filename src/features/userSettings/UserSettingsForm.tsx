@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import _ from 'lodash'
+import { intersection, some } from 'lodash'
 import {
 	Col,
 	Divider,
@@ -60,10 +60,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	const userSite = useAppSelector(selectUserSite)
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
 	const filteredAllCurrencyListByUser = allCurrencyList.filter(currency =>
-		_.some(
-			roleCurrencyList,
-			userCurrency => userCurrency === currency.currencyId
-		)
+		some(roleCurrencyList, userCurrency => userCurrency === currency.currencyId)
 	)
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
@@ -72,8 +69,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 
 	const filteredRoleBySelectedCurrencyList = roleManagementDataList.filter(
 		roleManagementData => {
-			return _.intersection(roleManagementData.icurrencyList, currencyList)
-				.length
+			return intersection(roleManagementData.icurrencyList, currencyList).length
 		}
 	)
 

@@ -21,6 +21,7 @@
 		"project": "./tsconfig.json"
 	},
 	"plugins": ["react", "@typescript-eslint", "prettier"],
+	"ignorePatterns": ["config-overrides.js"],
 	"rules": {
 		"react/jsx-filename-extension": [
 			1,

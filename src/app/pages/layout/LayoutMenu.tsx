@@ -4,7 +4,7 @@ import { Menu } from 'antd'
 import { useMediaQuery } from 'usehooks-ts'
 import { MenuInterface } from 'type'
 import { getMapMenu, MODULE_ICON_MAPPING } from 'app/constants/menuMapping'
-import _ from 'lodash'
+import { filter, find, includes } from 'lodash'
 import { useAuth } from 'common/hooks'
 
 // const { Search } = Input;
@@ -70,10 +70,10 @@ const useMenuAction = ({
 
 	const handleToggleMenu = (key: string, moduleId: number | undefined) => {
 		const menuKeyArray =
-			_.find(rootSubmenuKeys, { moduleId })?.key.split('.') ?? []
+			find(rootSubmenuKeys, { moduleId })?.key.split('.') ?? []
 
-		if (_.includes(openKeys, key)) {
-			setOpenKeys(_.filter(menuKeyArray, menuKey => menuKey !== key))
+		if (includes(openKeys, key)) {
+			setOpenKeys(filter(menuKeyArray, menuKey => menuKey !== key))
 		} else {
 			setOpenKeys(menuKeyArray)
 		}
@@ -107,7 +107,7 @@ const LayoutMenu = ({
 
 		const { path, icon } = getMapMenu(Number(functionId))
 
-		const hasPermission = _.find(permission, {
+		const hasPermission = find(permission, {
 			name: 'View',
 		})?.canUse
 

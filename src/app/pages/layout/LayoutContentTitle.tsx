@@ -1,5 +1,5 @@
 import { Col, Row, Typography } from 'antd'
-import _ from 'lodash'
+import { toUpper } from 'lodash'
 
 const { Title, Text } = Typography
 
@@ -8,7 +8,7 @@ const LayoutContentTitle = ({ title }: { title: string }) => {
 		<Row style={{ margin: '16px' }} justify='space-between' align='middle'>
 			<Col>
 				<Title level={4}>
-					<Text strong> {_.toUpper(title)}</Text>
+					<Text strong> {toUpper(title)}</Text>
 				</Title>
 			</Col>
 		</Row>

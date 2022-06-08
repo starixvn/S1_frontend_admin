@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import _ from 'lodash'
+import { find, some } from 'lodash'
 import { Checkbox, Col, Divider, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { FormPermissionInterface, PermissionInterface } from 'type'
@@ -44,7 +44,7 @@ const PermissionForm: FC<PermissionFormProps> = ({
 
 		const isGroup = Boolean(moduleId)
 
-		const findPermissionByDisplayKey = _.find(permissionList, {
+		const findPermissionByDisplayKey = find(permissionList, {
 			displayKey: disPlayKey,
 		})
 
@@ -73,7 +73,7 @@ const PermissionForm: FC<PermissionFormProps> = ({
 				{isGroup
 					? renderPermissionGroupCheckBox(permission)
 					: settings.map((setting: PermissionInterface) => {
-							const isChecked = _.some(
+							const isChecked = some(
 								findPermissionByDisplayKey?.permissionIdList,
 								permissionId => permissionId === setting.permissionId
 							)

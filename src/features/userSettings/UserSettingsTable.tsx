@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import moment from 'moment'
-import _ from 'lodash'
+import { find } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import {
 	Popconfirm,
@@ -129,7 +129,7 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			align: 'center' as 'center',
 			render: (icurrencyList: number[] | null) => {
 				const currency = icurrencyList?.map(
-					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
+					currencyId => find(allCurrencyList, { currencyId })?.isoCode
 				)
 
 				return currency?.filter(Boolean).join('/')

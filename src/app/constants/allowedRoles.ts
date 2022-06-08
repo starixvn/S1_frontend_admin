@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { replace } from 'lodash'
 
 interface AllowedRoles {
 	[roleName: string]: any
@@ -80,7 +80,7 @@ const allowedRoles = [
 	'Admin/SpecialPasswordManagement',
 	'Finance/AdjustmentLogReport',
 ].reduce((obj: AllowedRoles, key: string) => {
-	const roleName = _.replace(key, '/', '')
+	const roleName = replace(key, '/', '')
 
 	obj[roleName] = key
 	return obj

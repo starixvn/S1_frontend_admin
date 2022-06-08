@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { find } from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from 'common/hooks'
 import paths from 'app/constants/paths'
@@ -14,7 +14,7 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 	const { auth, onCheckSignIn, userMenuFunctionData, setActionPermissions } =
 		useAuth()
 	const location = useLocation()
-	const menuFunctionData = _.find(userMenuFunctionData, { functionId })
+	const menuFunctionData = find(userMenuFunctionData, { functionId })
 
 	useEffect(() => {
 		onCheckSignIn()
@@ -28,7 +28,7 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 		setActionPermissions(newActionPermissions)
 	}, [menuFunctionData?.functionId])
 
-	const hasPermission = _.find(menuFunctionData?.permission, {
+	const hasPermission = find(menuFunctionData?.permission, {
 		name: 'View',
 	})?.canUse
 
