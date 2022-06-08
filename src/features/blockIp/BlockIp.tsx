@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
@@ -147,7 +147,7 @@ const BlockIp: FC<{
 		if (!userSite?.siteId) return
 
 		const init = () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
+			if (isEmpty(withOutSiteIdParams(queryParams))) return
 
 			const { startDate, endDate, ip = '', tz } = queryParams
 

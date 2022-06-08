@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
-import _ from 'lodash'
+import { filter, some } from 'lodash'
 import { RequestStatusType } from 'type'
 import { fetchAllEnumAsync } from './thunk'
 import {
@@ -66,8 +66,8 @@ export const selectCurrencyListBySite = (state: RootState) => {
 	if (userSite === undefined) return undefined
 
 	// Returns the currency of the site
-	return _.filter(allCurrencyList, currency =>
-		_.some(
+	return filter(allCurrencyList, currency =>
+		some(
 			userSite?.iCurrencyList,
 			iCurrency => iCurrency === currency.currencyId
 		)

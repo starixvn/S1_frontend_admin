@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
@@ -152,7 +152,7 @@ const AdjustmentLogReport: FC<{
 		if (!userSite?.siteId) return
 
 		const init = async () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) {
+			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				onChangeCurrency([0])
 				onChangeMenus([0])
 				onChangeActionTypes([0])
@@ -176,13 +176,13 @@ const AdjustmentLogReport: FC<{
 			onTimeZoneChange(Number(tz))
 
 			form.setFieldsValue({
-				actionTypes: _.isArray(actionTypes)
+				actionTypes: isArray(actionTypes)
 					? actionTypes.map((actionType: string) => Number(actionType))
 					: [],
-				currencyIds: _.isArray(currencyIds)
+				currencyIds: isArray(currencyIds)
 					? currencyIds.map((currencyId: string) => Number(currencyId))
 					: [],
-				menus: _.isArray(menus)
+				menus: isArray(menus)
 					? menus.map((currencyId: string) => Number(currencyId))
 					: [],
 				transId,

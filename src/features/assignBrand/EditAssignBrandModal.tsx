@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import _ from 'lodash'
+import { differenceBy } from 'lodash'
 import { Checkbox, message, Modal, Spin } from 'antd'
 import { ModalState } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
@@ -43,7 +43,7 @@ const EditAssignBrandModal: FC<EditAssignBrandModalProps> = ({
 	}
 
 	// user can not edit
-	const differenceBrands = _.differenceBy(
+	const differenceBrands = differenceBy(
 		editBrands,
 		userBrands,
 		item => item.siteId

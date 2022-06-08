@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { find } from 'lodash'
 import { useAuth } from 'common/hooks'
 import { useCheckBrandQuery } from 'common/service/homeApi/api'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -40,7 +40,7 @@ const useUserSiteEffect = () => {
 
 	useEffect(() => {
 		if (enumStatus === 'succeeded') {
-			const newUserSite = _.find(userSiteList, { siteId })
+			const newUserSite = find(userSiteList, { siteId })
 
 			dispatch(onChangeUserSite(newUserSite))
 		}

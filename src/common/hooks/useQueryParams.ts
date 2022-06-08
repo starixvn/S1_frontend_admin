@@ -1,6 +1,6 @@
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import _ from 'lodash'
+import { endsWith, replace } from 'lodash'
 import { useSearchParams } from 'react-router-dom'
 
 export const buildParams = (values: object) => {
@@ -30,8 +30,8 @@ const readParams = (searchParams: URLSearchParams) => {
 	Object.keys(originParams).forEach((key: string) => {
 		const value = originParams[key]
 
-		if (_.endsWith(value, '[]')) {
-			params[key] = _.replace(value, '[]', '').split(',').filter(Boolean)
+		if (endsWith(value, '[]')) {
+			params[key] = replace(value, '[]', '').split(',').filter(Boolean)
 		} else {
 			params[key] = value ?? ''
 		}

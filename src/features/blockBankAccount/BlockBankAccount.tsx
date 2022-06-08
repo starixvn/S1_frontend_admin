@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -207,7 +207,7 @@ const BlockBankAccount: FC<{
 		if (!userSite?.siteId) return
 
 		const init = async () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
+			if (isEmpty(withOutSiteIdParams(queryParams))) return
 
 			const {
 				startDate,

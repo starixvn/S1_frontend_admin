@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { FC } from 'react'
-import _ from 'lodash'
+import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { timeFormat } from 'common/utils/format'
@@ -41,7 +41,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (values: any) => {
-				const statusDisplayKey = _.find(BANK_BLOCK_STATUS, {
+				const statusDisplayKey = find(BANK_BLOCK_STATUS, {
 					value:
 						values.status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
 							? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK

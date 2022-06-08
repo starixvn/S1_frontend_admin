@@ -13,7 +13,7 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { PAGINATION } from 'common/hooks'
-import _ from 'lodash'
+import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PermissionInterface } from 'type'
@@ -125,7 +125,7 @@ const RoleManagementTable = ({
 			align: 'center' as 'center',
 			render: (icurrencyList: number[]) => {
 				const currency = icurrencyList.map(
-					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
+					currencyId => find(allCurrencyList, { currencyId })?.isoCode
 				)
 
 				return currency.filter(Boolean).join('/')

@@ -1,6 +1,7 @@
 build
 node_modules
 public
+config-overrides.js
 src/serviceWorker.ts
 src/setupProxy.js
 src/setupTests.ts

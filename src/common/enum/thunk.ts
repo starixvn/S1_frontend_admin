@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import _ from 'lodash'
+import { map } from 'lodash'
 import {
 	fetchActionTypeList,
 	fetchAdjustmentInfoLogMenu,
@@ -21,7 +21,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			fetchAdjustmentInfoLogMenu(),
 			fetchActionTypeList(),
 		]).then(results =>
-			_.map(results, result =>
+			map(results, result =>
 				result.status === 'fulfilled' ? result.value : []
 			)
 		)

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import _ from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -197,7 +197,7 @@ const DepositAccounting: FC<{
 		if (!userSite?.siteId) return
 
 		const init = () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) {
+			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				onChangeCurrency([0])
 
 				return
@@ -218,7 +218,7 @@ const DepositAccounting: FC<{
 
 			form.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
-				currencyIds: _.isArray(currencyIds)
+				currencyIds: isArray(currencyIds)
 					? currencyIds.map((currencyId: string) => Number(currencyId))
 					: [],
 				userName,
