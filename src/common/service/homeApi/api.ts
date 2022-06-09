@@ -5,6 +5,7 @@ import { axiosBaseQuery, IAxiosResponse } from '../axiosBaseQuery'
 export const homeApi = createApi({
 	reducerPath: 'homeApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
+	tagTypes: ['POST'],
 	endpoints: builder => ({
 		checkBrand: builder.query<IAxiosResponse<number>, void>({
 			query: data => ({
@@ -12,6 +13,7 @@ export const homeApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST'],
 		}),
 		changeBrand: builder.mutation<IAxiosResponse<number>, { siteId: number }>({
 			query: data => ({
@@ -19,6 +21,7 @@ export const homeApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 	}),
 })

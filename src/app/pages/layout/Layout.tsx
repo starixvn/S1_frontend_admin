@@ -1,6 +1,9 @@
 import { find } from 'lodash'
-import { useAuth } from 'common/hooks'
-import { useCheckBrandQuery } from 'common/service/homeApi/api'
+import { useAuth, useQueryParams } from 'common/hooks'
+import {
+	useCheckBrandQuery,
+	useChangeBrandMutation,
+} from 'common/service/homeApi/api'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import {
 	fetchAllEnumAsync,
@@ -33,9 +36,7 @@ const useMenuCollapsed = () => {
 const useUserSiteEffect = () => {
 	const dispatch = useAppDispatch()
 	const { data: { data: siteId } = {} } = useCheckBrandQuery()
-
 	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
-
 	const enumStatus = useAppSelector(selectEnumStatus)
 
 	useEffect(() => {
@@ -44,11 +45,13 @@ const useUserSiteEffect = () => {
 
 			dispatch(onChangeUserSite(newUserSite))
 		}
-	}, [enumStatus])
+	}, [enumStatus, siteId])
 }
 
 const BaseLayout: FC = () => {
 	const dispatch = useAppDispatch()
+	const [queryParams] = useQueryParams()
+	const [changeBrand] = useChangeBrandMutation()
 
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const auth = useAuth()
@@ -68,17 +71,16 @@ const BaseLayout: FC = () => {
 	useEffect(() => {
 		const init = async () => {
 			setRequestStatus('pending')
-
-			await Promise.all([
-				auth.onFetchUserMenuList({ lang: 'en', siteId: 1 }),
-				dispatch(fetchAllEnumAsync()),
-			])
+			if (Number(queryParams?.siteId)) {
+				await changeBrand({ siteId: Number(queryParams?.siteId) })
+			}
+			await Promise.all([dispatch(fetchAllEnumAsync())])
 
 			setRequestStatus('idle')
 		}
 
 		init()
-	}, [])
+	}, [queryParams?.siteId])
 
 	const loading = enumStatus === 'pending' || requestStatus === 'pending'
 
