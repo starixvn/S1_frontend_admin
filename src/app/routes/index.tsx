@@ -58,6 +58,13 @@ const EditReferralManagement = lazy(
 	() => import('features/referralManagement/EditReferralManagement')
 )
 
+const ReferralReport = lazy(
+	() => import('features/referralReport/ReferralReport')
+)
+
+const ReferralCustReport = lazy(
+	() => import('features/referralReport/ReferralCustReport')
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -239,6 +246,26 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.editReferralManagement.functionId}
 					>
 						<EditReferralManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralReport.functionId}
+					>
+						<ReferralReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralCustReport.root}/:custId`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralCustReport.functionId}
+					>
+						<ReferralCustReport />
 					</AuthRequire>
 				),
 			},

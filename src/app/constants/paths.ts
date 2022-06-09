@@ -205,6 +205,11 @@ const paths = {
 			},
 			referralReport: {
 				root: 'marketing/referralReport',
+				functionId: 77,
+			},
+			referralCustReport: {
+				root: 'marketing/referralReport/log',
+				functionId: 77,
 			},
 			verificationReward: {
 				root: 'marketing/verificationReward',
