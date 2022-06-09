@@ -7,6 +7,7 @@ import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
+import { referralReportApi } from 'features/referralReport/api'
 import { dashboardSlice } from 'features/dashboard'
 import { depositAccountingApi } from 'features/depositAccounting/api'
 import { referralManagementApi } from 'features/referralManagement/api'
@@ -28,6 +29,7 @@ export const store = configureStore({
 		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
 		[assignBrandApi.reducerPath]: assignBrandApi.reducer,
 		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
+		[referralReportApi.reducerPath]: referralReportApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -41,7 +43,8 @@ export const store = configureStore({
 			.concat(blockIpApi.middleware)
 			.concat(depositAccountingApi.middleware)
 			.concat(assignBrandApi.middleware)
-			.concat(referralManagementApi.middleware),
+			.concat(referralManagementApi.middleware)
+			.concat(referralReportApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

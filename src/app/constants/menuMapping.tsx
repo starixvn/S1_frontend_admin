@@ -547,11 +547,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 77,
+		functionId: paths.marketing.sub.referralReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingReferralReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/ReferralReport',
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.referralReport.root,
 	},
 	{
 		name: 'Draw Prize Report',

@@ -109,5 +109,18 @@
 	"Label_Description": "description",
 	"Label_Detail": "detail",
 	"Label_Required": "{{key}} is Required",
-	"Label_Permission": "Permission"
+	"Label_Permission": "Permission",
+	"Label_Invitation": "Invitation",
+	"Label_Complete": "Complete",
+	"Label_Achievements": "Achievements",
+	"Label_ReferralLog": "Referral Log",
+	"Label_ReferralRewards": "Referral Rewards",
+	"Label_Running": "Running",
+	"Label_Expired": "Expired",
+	"Label_Check": "Check",
+	"Label_RegTime": "Reg Time",
+	"Label_TotalDeposit": "TotalDeposit",
+	"Label_TotalBet": "TotalBet",
+	"Label_RewardAmount": "Reward Amount",
+	"Label_RewardTime": "Reward Time"
 }
