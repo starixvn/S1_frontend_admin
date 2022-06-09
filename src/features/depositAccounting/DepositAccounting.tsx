@@ -15,7 +15,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
+import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useEditDepositAccountMutation,
@@ -33,14 +33,12 @@ const DepositAccounting: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, exportExcelPermission } = {} } =
 		useAuth()
+	const userSite = useAppSelector(selectUserSite)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const userSite = useAppSelector(selectUserSite)
-
 	const editDepositAccountModal = useModal()
-
 	const [editTransId, setEditTransId] = useState<string>('')
 	const [editCurrencyId, setEditCurrencyId] = useState<number>()
 
@@ -181,7 +179,7 @@ const DepositAccounting: FC<{
 		})
 	}
 
-	const onChangeCurrency = (newCurrencyIds: number[]) => {
+	const handleChangeCurrency = (newCurrencyIds: number[]) => {
 		if (newCurrencyIds.includes(0)) {
 			form.setFieldsValue({
 				currencyIds: currencyListBySite?.map(item => item.currencyId),
@@ -197,12 +195,6 @@ const DepositAccounting: FC<{
 		if (!userSite?.siteId) return
 
 		const init = () => {
-			if (isEmpty(withOutSiteIdParams(queryParams))) {
-				onChangeCurrency([0])
-
-				return
-			}
-
 			const {
 				currencyIds,
 				userName,
@@ -220,16 +212,18 @@ const DepositAccounting: FC<{
 				dateRange: [moment(startDate), moment(endDate)],
 				currencyIds: isArray(currencyIds)
 					? currencyIds.map((currencyId: string) => Number(currencyId))
-					: [],
+					: currencyListBySite?.map(item => item.currencyId),
 				userName,
 				transId,
 			})
 
-			handleSearch({
-				current: Number(current),
-				pageSize: Number(pageSize),
-				currentTimeZoneUtcOffset: Number(tz),
-			})
+			if (!isEmpty(queryParams)) {
+				handleSearch({
+					current,
+					pageSize,
+					currentTimeZoneUtcOffset: Number(tz),
+				})
+			}
 		}
 
 		init()
@@ -247,10 +241,10 @@ const DepositAccounting: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
-				onChangeCurrency={onChangeCurrency}
+				onChangeCurrency={handleChangeCurrency}
 			/>
 
-			{depositAccounts !== undefined && (
+			{!isEmpty(queryParams) && (
 				<DepositAccountingTable
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
