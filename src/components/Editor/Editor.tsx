@@ -1,25 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { convertToRaw, EditorState, ContentState } from 'draft-js'
-import {
-	Editor,
-	EditorState as IEditorState,
-	EditorProps,
-} from 'react-draft-wysiwyg'
-import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
+import { EditorState as IEditorState, EditorProps } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
-const coverHtmlToEditorState = (html: string) => {
-	const blocksFromHtml = htmlToDraft(html)
-	const { contentBlocks } = blocksFromHtml
-	const contentState = ContentState.createFromBlockArray(contentBlocks)
-	const editorState = EditorState.createWithContent(contentState)
-
-	return editorState
-}
-
-const coverDraftToHtml = (editorState: IEditorState) =>
-	draftToHtml(convertToRaw(editorState.getCurrentContent()))
+import { useEditorModule } from './hooks/useEditorModule'
+import { coverDraftToHtml, coverHtmlToEditorState } from './utils'
 
 interface BaseEditorProps extends EditorProps {
 	defaultHtmlState?: string
@@ -30,28 +13,40 @@ const BaseEditor: FC<BaseEditorProps> = ({
 	defaultHtmlState,
 	onHtmlStateChange,
 }) => {
+	const Editor = useEditorModule()
 	const [isInit, setIsInit] = useState(false)
+	const [editorState, setEditorState] = useState<any>()
 
-	const [editorState, setEditorState] = useState(EditorState.createEmpty())
-
-	const onEditorStateChange = (newEditorState: IEditorState) => {
+	const onEditorStateChange = async (newEditorState: IEditorState) => {
 		setEditorState(newEditorState)
 
-		onHtmlStateChange(coverDraftToHtml(newEditorState))
+		const newHtml = await coverDraftToHtml(newEditorState)
+
+		onHtmlStateChange(newHtml)
 	}
 
 	useEffect(() => {
-		if (defaultHtmlState !== undefined && !isInit) {
-			onEditorStateChange(coverHtmlToEditorState(defaultHtmlState ?? ''))
-			setIsInit(true)
+		const init = async () => {
+			const { EditorState } = await import('draft-js')
+			if (defaultHtmlState !== undefined && !isInit) {
+				const newEditState = await coverHtmlToEditorState(
+					defaultHtmlState ?? ''
+				)
+				onEditorStateChange(newEditState ?? EditorState.createEmpty())
+				setIsInit(true)
+			}
 		}
+
+		init()
 	}, [defaultHtmlState])
 
 	return (
-		<Editor
-			editorState={editorState}
-			onEditorStateChange={onEditorStateChange}
-		/>
+		Editor && (
+			<Editor
+				editorState={editorState}
+				onEditorStateChange={onEditorStateChange}
+			/>
+		)
 	)
 }
 
