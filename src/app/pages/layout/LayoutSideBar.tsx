@@ -1,6 +1,11 @@
 import { Layout } from 'antd'
+import { SITE_LOGO_IMAGE } from 'app/constants/images'
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'usehooks-ts'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+
 import { LayoutMenu } from './LayoutMenu'
 
 const { Header, Sider } = Layout
@@ -15,6 +20,8 @@ const LayoutSideBar = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
+	const userSite = useAppSelector(selectUserSite)
+	const logoImage = userSite?.siteId && SITE_LOGO_IMAGE[userSite.siteId]
 
 	return (
 		<Sider
@@ -36,15 +43,16 @@ const LayoutSideBar = ({
 				className='header'
 				style={{ display: 'flex', justifyContent: 'center' }}
 			>
-				<Link to='/'>
-					<img
-						width={80}
-						height={24}
-						src='https://admin.n88dev.com/images/logo.png'
-						alt='logo'
-						loading='lazy'
-					/>
-				</Link>
+				{!collapsed && logoImage && (
+					<Link to='/'>
+						<LazyLoadImage
+							alt='site-logo'
+							src={logoImage.url}
+							width={logoImage.width}
+							height={logoImage.height}
+						/>
+					</Link>
+				)}
 			</Header>
 
 			<LayoutMenu collapsed={collapsed} onCloseCollapsed={onCloseCollapsed} />
