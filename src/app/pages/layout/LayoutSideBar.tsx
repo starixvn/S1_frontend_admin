@@ -39,8 +39,10 @@ const LayoutSideBar = ({
 				<Link to='/'>
 					<img
 						width={80}
-						src='http://admin.n88dev.com/images/logo.png'
+						height={24}
+						src='https://admin.n88dev.com/images/logo.png'
 						alt='logo'
+						loading='lazy'
 					/>
 				</Link>
 			</Header>

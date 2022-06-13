@@ -10,60 +10,114 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { InternalAuthRequire } from 'common/auth'
 import { AuthRequire } from '../../common/auth/AuthRequire'
 
-const Dashboard = lazy(() => import('features/dashboard'))
+const Dashboard = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Dashboard' */
+			'features/dashboard'
+		)
+)
 
 const RoleManagement = lazy(
-	() => import('features/roleManagement/RoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'RoleManagement' */ 'features/roleManagement/RoleManagement'
+		)
 )
 
 const AddRoleManagement = lazy(
-	() => import('features/roleManagement/AddRoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'AddRoleManagement' */ 'features/roleManagement/AddRoleManagement'
+		)
 )
 
 const EditRoleManagement = lazy(
-	() => import('features/roleManagement/EditRoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'EditRoleManagement' */ 'features/roleManagement/EditRoleManagement'
+		)
 )
 
-const UserSettings = lazy(() => import('features/userSettings/UserSettings'))
+const UserSettings = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UserSettings' */ 'features/userSettings/UserSettings'
+		)
+)
 
 const AddUserSettings = lazy(
-	() => import('features/userSettings/AddUserSettings')
+	() =>
+		import(
+			/* webpackChunkName: 'AddUserSettings' */ 'features/userSettings/AddUserSettings'
+		)
 )
 
 const EditUserSettings = lazy(
-	() => import('features/userSettings/EditUserSettings')
+	() =>
+		import(
+			/* webpackChunkName: 'EditUserSettings' */ 'features/userSettings/EditUserSettings'
+		)
 )
 
 const AdjustmentLogReport = lazy(
-	() => import('features/adjustmentLogReport/AdjustmentLogReport')
+	() =>
+		import(
+			/* webpackChunkName: 'AdjustmentLogReport' */ 'features/adjustmentLogReport/AdjustmentLogReport'
+		)
 )
 
 const BlockBankAccount = lazy(
-	() => import('features/blockBankAccount/BlockBankAccount')
+	() =>
+		import(
+			/* webpackChunkName: 'BlockBankAccount' */ 'features/blockBankAccount/BlockBankAccount'
+		)
 )
 
-const BlockIp = lazy(() => import('features/blockIp/BlockIp'))
+const BlockIp = lazy(
+	() => import(/* webpackChunkName: 'BlockIp' */ 'features/blockIp/BlockIp')
+)
 
 const DepositAccounting = lazy(
-	() => import('features/depositAccounting/DepositAccounting')
+	() =>
+		import(
+			/* webpackChunkName: 'DepositAccounting' */ 'features/depositAccounting/DepositAccounting'
+		)
 )
 
-const AssignBrand = lazy(() => import('features/assignBrand/AssignBrand'))
+const AssignBrand = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AssignBrand' */ 'features/assignBrand/AssignBrand'
+		)
+)
 
 const ReferralManagement = lazy(
-	() => import('features/referralManagement/ReferralManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralManagement' */ 'features/referralManagement/ReferralManagement'
+		)
 )
 
 const EditReferralManagement = lazy(
-	() => import('features/referralManagement/EditReferralManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'EditReferralManagement' */ 'features/referralManagement/EditReferralManagement'
+		)
 )
 
 const ReferralReport = lazy(
-	() => import('features/referralReport/ReferralReport')
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralReport' */ 'features/referralReport/ReferralReport'
+		)
 )
 
 const ReferralCustReport = lazy(
-	() => import('features/referralReport/ReferralCustReport')
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralCustReport' */ 'features/referralReport/ReferralCustReport'
+		)
 )
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -110,16 +164,6 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.dashboard.functionId}>
 						<Dashboard />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.administration.sub.roleManagement.functionId}
-					>
-						<RoleManagement />
 					</AuthRequire>
 				),
 			},

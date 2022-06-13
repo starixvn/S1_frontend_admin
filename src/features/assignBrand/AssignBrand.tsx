@@ -1,16 +1,14 @@
 import { FC, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { LayoutContent } from 'app/pages/layout'
-import { useForm } from 'antd/lib/form/Form'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
-import { message } from 'antd'
+import { Form, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectEnumStatus, selectUserSiteList } from 'common/enum'
 import { useGetUserBrandQuery, useLazyGetAssignBrandQuery } from './api'
 import { AssignBrandResponse } from './type'
-
 import AssignBrandTable from './AssignBrandTable'
 import AssignBrandFilter from './AssignBrandFilter'
 import EditAssignBrandModal from './EditAssignBrandModal'
@@ -18,13 +16,11 @@ import EditAssignBrandModal from './EditAssignBrandModal'
 const AssignBrand: FC = () => {
 	const { t } = useTranslation()
 	const { userData } = useAuth()
-	const [form] = useForm()
+	const [form] = Form.useForm()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { timeZoneUtcOffset } = useTimeZone()
-
 	const userSiteList = useAppSelector(selectUserSiteList)
 	const enumStatus = useAppSelector(selectEnumStatus)
-
 	const editAssignBrandModal = useModal()
 	const [editUserId, setEditUserId] = useState<number>()
 
