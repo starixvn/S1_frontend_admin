@@ -11,7 +11,8 @@ import {
 } from '@ant-design/icons'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
-import { RiUserSettingsLine } from 'react-icons/ri'
+import { RiUserSettingsLine } from '@react-icons/all-files/ri/RiUserSettingsLine'
+
 import allowedRoles from './allowedRoles'
 import paths from './paths'
 

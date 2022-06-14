@@ -1,4 +1,6 @@
 import { Button, Col, Dropdown, Layout, Menu, Row } from 'antd'
+import type { MenuProps } from 'antd'
+
 import {
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
@@ -40,40 +42,33 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 		Promise.allSettled([onInternalSignOut(), onSignOut()])
 	}
 
-	const menu = (
-		<Menu>
-			<Menu.Item
-				onClick={changePasswordModal.onOpen}
-				key={1}
-				icon={<FileProtectOutlined />}
-			>
-				{t('ChangePassword.Label_ChangePassword')}
-			</Menu.Item>
+	const items = [
+		{
+			key: 'item-1',
+			label: t('ChangePassword.Label_ChangePassword'),
+			icon: <FileProtectOutlined />,
+			onClick: changePasswordModal.onOpen,
+		},
+		userData?.isSuper
+			? {
+					key: 'item-2',
+					label: t('Label_AssignBrand'),
+					icon: <ApiOutlined />,
+					onClick: () =>
+						navigate(`/${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`),
+			  }
+			: undefined,
+		{ type: 'divider', key: 'item-3' },
+		{
+			key: 'item-4',
+			label: t('Label_SignOut'),
+			icon: <PoweroffOutlined />,
+			danger: true,
+			onClick: handleSignOut,
+		},
+	] as MenuProps['items']
 
-			{userData?.isSuper && (
-				<Menu.Item
-					key={4}
-					icon={<ApiOutlined />}
-					onClick={() =>
-						navigate(`/${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`)
-					}
-				>
-					{t('Label_AssignBrand')}
-				</Menu.Item>
-			)}
-
-			<Menu.Divider key={2} />
-
-			<Menu.Item
-				key={3}
-				onClick={handleSignOut}
-				icon={<PoweroffOutlined />}
-				danger
-			>
-				{t('Label_SignOut')}
-			</Menu.Item>
-		</Menu>
-	)
+	const menu = <Menu items={items} />
 
 	return (
 		<>
