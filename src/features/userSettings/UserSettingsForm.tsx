@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { intersection, some } from 'lodash'
+import { filter, includes, intersection, some, uniq } from 'lodash'
 import {
 	Col,
 	Divider,
@@ -59,8 +59,22 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	const dispatch = useAppDispatch()
 	const userSite = useAppSelector(selectUserSite)
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
+	const selectedCurrencyList: number[] =
+		form.getFieldValue('currencyList') ?? []
+
+	const userAllCurrencyList = uniq([
+		...selectedCurrencyList,
+		...roleCurrencyList,
+	])
+	const userAllCurrencyWithoutRoleCurrency = filter(
+		selectedCurrencyList,
+		currency => !includes(roleCurrencyList, currency)
+	)
 	const filteredAllCurrencyListByUser = allCurrencyList.filter(currency =>
-		some(roleCurrencyList, userCurrency => userCurrency === currency.currencyId)
+		some(
+			userAllCurrencyList,
+			userCurrency => userCurrency === currency.currencyId
+		)
 	)
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
@@ -72,13 +86,21 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 			return intersection(roleManagementData.icurrencyList, currencyList).length
 		}
 	)
-
 	const onChangeCurrency = (newCurrencyList: number[]) => {
-		const result = newCurrencyList.includes(0)
-			? filteredAllCurrencyListByUser.map(item => item.currencyId)
-			: newCurrencyList
+		let result = []
 
-		form.setFieldsValue({ currencyList: result, role: null })
+		if (newCurrencyList.length === 0) {
+			result = userAllCurrencyWithoutRoleCurrency
+		} else {
+			result = newCurrencyList.includes(0)
+				? userAllCurrencyList
+				: newCurrencyList
+		}
+
+		form.setFieldsValue({
+			currencyList: result,
+			role: null,
+		})
 		onRoleChange(null)
 	}
 
@@ -156,7 +178,12 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									)}
 
 									{filteredAllCurrencyListByUser.map(item => (
-										<Option key={item.currencyId} value={item.currencyId}>
+										<Option
+											key={item.currencyId}
+											// 只能異動該角色所能控制的權限
+											disabled={!includes(roleCurrencyList, item.currencyId)}
+											value={item.currencyId}
+										>
 											{item.isoCode}
 										</Option>
 									))}
