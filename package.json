@@ -50,6 +50,7 @@
 	},
 	"devDependencies": {
 		"@ant-design/icons": "^4.7.0",
+		"@react-icons/all-files": "^4.1.0",
 		"@types/downloadjs": "^1.4.3",
 		"@types/draftjs-to-html": "^0.8.1",
 		"@types/html-to-draftjs": "^1.4.0",
