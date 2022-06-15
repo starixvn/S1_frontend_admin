@@ -74,6 +74,7 @@
 	"Label_Status": "Status",
 	"Label_MemberId": "Member Id",
 	"Label_AccountNum": "Account Num",
+	"Label_Block": "Block",
 	"Label_Unlock": "Unlock",
 	"Label_Lock": "Lock",
 	"Label_Open": "Open",
@@ -122,5 +123,7 @@
 	"Label_TotalDeposit": "TotalDeposit",
 	"Label_TotalBet": "TotalBet",
 	"Label_RewardAmount": "Reward Amount",
-	"Label_RewardTime": "Reward Time"
+	"Label_RewardTime": "Reward Time",
+	"Label_BlockStatus": "Block Status",
+	"Label_Release": "Release"
 }
