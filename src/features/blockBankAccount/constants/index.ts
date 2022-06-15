@@ -22,4 +22,5 @@ export const BANK_BLOCK_STATUS = [
 export const RELEASE_STATUS_VALUE_OPTIONS = {
 	DELETE: 0,
 	OPEN: 1,
+	BO_DELETE: 2,
 }

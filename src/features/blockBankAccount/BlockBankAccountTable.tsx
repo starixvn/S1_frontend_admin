@@ -122,6 +122,9 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 							t('Label_Delete')}
 
 						{status === RELEASE_STATUS_VALUE_OPTIONS.OPEN && t('Label_Open')}
+
+						{status === RELEASE_STATUS_VALUE_OPTIONS.BO_DELETE &&
+							t('Label_BoDelete')}
 					</Typography.Text>
 				)
 			},
