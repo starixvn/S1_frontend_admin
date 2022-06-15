@@ -16,18 +16,22 @@ import {
 	useLazyGetBlockBankAccListQuery,
 	useLazyGetBlockBankAccQuery,
 	useSetBlockAccountMutation,
+	useSetReleaseAccountMutation,
 } from './api'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
-import { IBlockBankAccListResponse, IBlockBankAccState } from './type'
+import {
+	IBlockBankAccListResponse,
+	IBlockBankAccState,
+	ISetReleaseAccountArgs,
+} from './type'
 
 const BlockBankAccount: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
-
+	const { actionPermissions: { editPermission, deletePermission } = {} } =
+		useAuth()
 	const userSite = useAppSelector(selectUserSite)
-
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -46,6 +50,8 @@ const BlockBankAccount: FC<{
 		useLazyGetBlockBankAccListQuery()
 
 	const [setBlockAccount] = useSetBlockAccountMutation()
+
+	const [setReleaseAccount] = useSetReleaseAccountMutation()
 
 	const handleSearch = async ({
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
@@ -86,14 +92,34 @@ const BlockBankAccount: FC<{
 		}
 	}
 
+	const handleSetReleaseAccount = async ({
+		sysId,
+		accountNum,
+		ifscCode,
+		custId,
+	}: ISetReleaseAccountArgs) => {
+		try {
+			setReleaseAccount({
+				sysId,
+				accountNum,
+				ifscCode,
+				custId,
+			}).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const handleBlockBankAcc = async ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
+		blockStatus: number
 	}) => {
 		try {
 			const { data: blockBankAccListData } = await getBlockBankAccList({
@@ -104,7 +130,7 @@ const BlockBankAccount: FC<{
 			onOpenBlockBankAccInfo({
 				sysId,
 				accountNum,
-				status,
+				blockStatus,
 				blockBankAccListData,
 			})
 		} catch (error) {
@@ -117,21 +143,21 @@ const BlockBankAccount: FC<{
 	const onOpenBlockBankAccInfo = ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 		blockBankAccListData,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
+		blockStatus: number
 		blockBankAccListData: IBlockBankAccListResponse[] | null
 	}) => {
 		const okText =
-			status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
 				? t('Label_Unlock')
 				: t('Label_Lock')
 
 		const toggledStatus =
-			status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
 				? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
 				: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
 
@@ -253,7 +279,9 @@ const BlockBankAccount: FC<{
 				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				blockBankAccData={blockBankAccData ?? []}
+				deletePermission={deletePermission}
 				onBlockBankAcc={handleBlockBankAcc}
+				onSetReleaseAccount={handleSetReleaseAccount}
 			/>
 		</LayoutContent.Main>
 	)

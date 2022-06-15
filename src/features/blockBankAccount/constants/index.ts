@@ -18,3 +18,8 @@ export const BANK_BLOCK_STATUS = [
 		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK,
 	},
 ]
+
+export const RELEASE_STATUS_VALUE_OPTIONS = {
+	DELETE: 0,
+	OPEN: 1,
+}

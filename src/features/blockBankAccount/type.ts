@@ -7,6 +7,7 @@ export interface IBlockBankAccState {
 	sysId: number
 	updateOperator: null | string
 	updateTime: null | string
+	blockUpdateTime: null | string
 	userName: string
 }
 
@@ -36,4 +37,11 @@ export interface ISetBlockAccountArgs {
 	accountNum: string
 	status: number
 	memo: string
+}
+
+export interface ISetReleaseAccountArgs {
+	sysId: number
+	accountNum: string
+	custId: number
+	ifscCode: string
 }

@@ -7,6 +7,7 @@ import {
 	IGetBlockBankAccListArgs,
 	IBlockBankAccListResponse,
 	ISetBlockAccountArgs,
+	ISetReleaseAccountArgs,
 } from './type'
 
 export const blockBankAccountApi = createApi({
@@ -43,6 +44,14 @@ export const blockBankAccountApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		setReleaseAccount: builder.mutation<void, ISetReleaseAccountArgs>({
+			query: data => ({
+				url: `Block/ReleaseAccount`,
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
 	}),
 })
 
@@ -50,4 +59,5 @@ export const {
 	useLazyGetBlockBankAccQuery,
 	useLazyGetBlockBankAccListQuery,
 	useSetBlockAccountMutation,
+	useSetReleaseAccountMutation,
 } = blockBankAccountApi
