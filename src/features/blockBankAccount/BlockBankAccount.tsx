@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectUserSite } from 'common/enum'
-import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -31,7 +29,6 @@ const BlockBankAccount: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
-	const userSite = useAppSelector(selectUserSite)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -230,8 +227,6 @@ const BlockBankAccount: FC<{
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) return
 
@@ -259,7 +254,7 @@ const BlockBankAccount: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isBlockBankAccFetching || isGetBlockBankAccListFetching
 

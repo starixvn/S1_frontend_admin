@@ -24,7 +24,7 @@ const EditUserSettings = () => {
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { userId: editUserId } = useParams()
 	const [form] = Form.useForm()
 
@@ -62,7 +62,7 @@ const EditUserSettings = () => {
 
 		try {
 			await updateAdminUser({
-				siteId: userSite?.siteId,
+				siteId,
 				userId: Number(editUserId),
 				userName,
 				password,
@@ -97,7 +97,7 @@ const EditUserSettings = () => {
 			const { data: newOriginAdminPermissionList } =
 				await getOriginAdminPermissionListByRole({
 					role,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 
 			const newOriginPermissionList = getPermissionList(
@@ -119,7 +119,7 @@ const EditUserSettings = () => {
 				} = {} as IAxiosResponse<AdminUserInterface>,
 			} = await getUpdateAdminUser({
 				userId: Number(editUserId),
-				siteId: userSite?.siteId,
+				siteId,
 			})
 
 			const { userName, password, selectCurrencyList, role, permission } =

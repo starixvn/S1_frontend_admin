@@ -5,11 +5,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { selectUserSite } from 'common/enum'
 import { DashboardFilter } from './DashboardFilter'
 import { DashboardTable } from './DashboardTable'
-import {
-	onChangeDashBoardStatus,
-	selectDashboardData,
-	selectDashboardStatus,
-} from './slice'
+import { selectDashboardData, selectDashboardStatus } from './slice'
 import { fetchDashBoardGetDataAsync } from './thunk'
 
 const Dashboard: FC<{
@@ -18,7 +14,7 @@ const Dashboard: FC<{
 	const [form] = Form.useForm()
 	const dispatch = useAppDispatch()
 
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const dashboardStatus = useAppSelector(selectDashboardStatus)
 	const dashboardData = useAppSelector(selectDashboardData)
 
@@ -27,7 +23,7 @@ const Dashboard: FC<{
 
 		dispatch(
 			fetchDashBoardGetDataAsync({
-				siteId: userSite?.siteId,
+				siteId,
 				currencyId,
 				baseCurrencyId,
 			})
@@ -37,9 +33,7 @@ const Dashboard: FC<{
 	const loading = dashboardStatus === 'pending'
 
 	useEffect(() => {
-		return () => {
-			dispatch(onChangeDashBoardStatus('idle'))
-		}
+		handleSearch(form.getFieldsValue())
 	}, [])
 
 	return (

@@ -17,12 +17,12 @@ const ReferralManagement: FC<{
 	const { actionPermissions: { editPermission, setActivePermission } = {} } =
 		useAuth()
 	const { t } = useTranslation()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const {
 		data: { data: referrals } = {} as IGetReferralsResponse,
 		isFetching: isReferralsFetching,
-	} = useGetReferralsQuery(userSite?.siteId)
+	} = useGetReferralsQuery(siteId)
 
 	const [updateReferralStatus] = useUpdateReferralStatusMutation()
 
@@ -35,7 +35,7 @@ const ReferralManagement: FC<{
 	}) => {
 		try {
 			await updateReferralStatus({
-				siteId: userSite?.siteId,
+				siteId,
 				currencyId,
 				status,
 			}).unwrap()

@@ -29,7 +29,7 @@ const ReferralReport: FC<{
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -67,7 +67,6 @@ const ReferralReport: FC<{
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
-		const siteIds = userSite?.siteId ? [userSite?.siteId] : []
 		setRange({ startDate, endDate })
 		try {
 			await getReferralReport({
@@ -77,7 +76,7 @@ const ReferralReport: FC<{
 				endDate,
 				userName,
 				currencyId,
-				siteIds,
+				siteIds: siteId ? [siteId] : [],
 			}).unwrap()
 			setQueryParams({
 				pageNumber: current,
@@ -86,7 +85,7 @@ const ReferralReport: FC<{
 				endDate,
 				userName,
 				currencyId,
-				siteId: userSite?.siteId,
+				siteId,
 				timeZone: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -104,13 +103,12 @@ const ReferralReport: FC<{
 				dateRange,
 				timeZoneUtcOffset
 			)
-			const siteIds = userSite?.siteId ? [userSite?.siteId] : []
 			const blob = await exportReferralReportFile({
 				userName,
 				currencyId,
 				startDate,
 				endDate,
-				siteIds,
+				siteIds: siteId ? [siteId] : [],
 			}).unwrap()
 			download(
 				blob,
@@ -135,7 +133,6 @@ const ReferralReport: FC<{
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
 		const init = () => {
 			if (isEmpty(queryParams)) return
 			const {
@@ -162,7 +159,7 @@ const ReferralReport: FC<{
 			})
 		}
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isGetReferralReportFetching
 	return (

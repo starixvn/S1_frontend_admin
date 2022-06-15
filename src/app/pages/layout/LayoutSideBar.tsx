@@ -20,8 +20,8 @@ const LayoutSideBar = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const userSite = useAppSelector(selectUserSite)
-	const logoImage = userSite?.siteId && SITE_LOGO_IMAGE[userSite.siteId]
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const logoImage = siteId && SITE_LOGO_IMAGE[siteId]
 
 	return (
 		<Sider

@@ -23,7 +23,7 @@ const EditReferralManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const [form] = Form.useForm()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { editCurrencyId } = useParams()
 
 	const [getReferral, { isFetching: isGetReferralFetching }] =
@@ -32,7 +32,7 @@ const EditReferralManagement = () => {
 	const [setReferral] = useSetReferralMutation()
 
 	const { data: { data: languageList } = {} } = useGetLanguageListQuery({
-		siteId: userSite?.siteId,
+		siteId,
 		currencyId: Number(editCurrencyId),
 	})
 
@@ -56,7 +56,7 @@ const EditReferralManagement = () => {
 			const specificList = coverSpecificToSpecificList(specific)
 
 			await setReferral({
-				siteId: userSite?.siteId,
+				siteId,
 				currencyId,
 				bonusAmount,
 				invitationLimit,
@@ -83,10 +83,7 @@ const EditReferralManagement = () => {
 	useEffect(() => {
 		const handleGetReferral = async () => {
 			const { data: { data: referral } = {} as IGetReferralResponse } =
-				await getReferral({
-					siteId: userSite?.siteId,
-					currencyId: Number(editCurrencyId),
-				})
+				await getReferral({ siteId, currencyId: Number(editCurrencyId) })
 
 			const {
 				bonusAmount,

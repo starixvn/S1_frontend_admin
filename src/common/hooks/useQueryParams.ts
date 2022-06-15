@@ -47,12 +47,12 @@ const useQueryParams = (): [
 	(values: object) => void
 ] => {
 	const [searchParams, setSearchParams] = useSearchParams()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const queryParams = readParams(searchParams)
 
 	const setQueryParams = (values: object) => {
 		if (values) {
-			setSearchParams(buildParams({ ...values, siteId: userSite?.siteId }))
+			setSearchParams(buildParams({ ...values, siteId }))
 		}
 	}
 	return [queryParams, setQueryParams]

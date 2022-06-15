@@ -33,7 +33,7 @@ const DepositAccounting: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, exportExcelPermission } = {} } =
 		useAuth()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -75,7 +75,7 @@ const DepositAccounting: FC<{
 		)
 		try {
 			await getDepositAccounts({
-				siteIds: userSite?.siteId ? [userSite?.siteId] : [],
+				siteIds: siteId ? [siteId] : [],
 				startDate,
 				endDate,
 				currencyIds,
@@ -86,7 +86,7 @@ const DepositAccounting: FC<{
 			}).unwrap()
 
 			setQueryParams({
-				siteId: userSite?.siteId,
+				siteId,
 				startDate,
 				endDate,
 				currencyIds,
@@ -147,7 +147,7 @@ const DepositAccounting: FC<{
 			)
 
 			const blob = await exportDepositAccountsFile({
-				siteIds: userSite?.siteId ? [userSite?.siteId] : [],
+				siteIds: siteId ? [siteId] : [],
 				startDate,
 				endDate,
 				currencyIds,
@@ -192,8 +192,6 @@ const DepositAccounting: FC<{
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = () => {
 			const {
 				currencyIds,
@@ -227,7 +225,7 @@ const DepositAccounting: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isDepositAccountsFetching
 

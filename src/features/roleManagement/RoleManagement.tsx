@@ -27,7 +27,7 @@ const RoleManagement: FC<{
 
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 
 	const [form] = Form.useForm()
@@ -39,7 +39,7 @@ const RoleManagement: FC<{
 
 		try {
 			await dispatch(
-				fetchPermissionGetRoleListAsync({ roleName, siteId: userSite?.siteId })
+				fetchPermissionGetRoleListAsync({ roleName, siteId })
 			).unwrap()
 
 			setQueryParams({
@@ -57,7 +57,7 @@ const RoleManagement: FC<{
 			await dispatch(
 				fetchPermissionDeleteRolePermissionAsync({
 					role,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 			).unwrap()
 
@@ -74,15 +74,13 @@ const RoleManagement: FC<{
 	useEffect(() => {}, [])
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
 			const { roleName } = queryParams
 
 			await dispatch(
 				fetchPermissionGetRoleListAsync({
 					roleName: roleName ?? '',
-					siteId: userSite?.siteId,
+					siteId,
 				})
 			)
 
@@ -92,7 +90,7 @@ const RoleManagement: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	return (
 		<LayoutContent.Main>
