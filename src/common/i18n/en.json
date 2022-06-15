@@ -221,5 +221,16 @@
 	"Label_GiftManagement": "Gift Management",
 	"Label_AddGift": "Add Gift",
 	"Label_Uploading": "Uploading",
-	"Label_Reload": "Reload"
+	"Label_Reload": "Reload",
+	"Label_Product": "Product",
+	"Label_Provider": "Provider",
+	"Label_MatchId": "Match ID",
+	"Label_BetType": "Bet Type",
+	"Label_StakeRange": "Stake Range",
+	"Label_WinLoseRange": "Win / Loss Range",
+	"Label_ProviderId": "Provider ID",
+	"Label_SabeId": "Sabe ID",
+	"Label_RefNo": "Ref.No",
+	"LabeL_VipLevel": "VIP Level",
+	"Label_Tag": "Tag"
 }
