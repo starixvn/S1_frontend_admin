@@ -738,4 +738,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.memberList.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.betList.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.betList.root,
+	},
 ]
