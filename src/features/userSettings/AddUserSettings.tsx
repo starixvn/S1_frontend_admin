@@ -21,7 +21,7 @@ import UserSettingsForm from './UserSettingsForm'
 const AddUserSettings: FC = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const [form] = Form.useForm()
 
@@ -35,9 +35,7 @@ const AddUserSettings: FC = () => {
 	const {
 		data: { data: roleCurrencyList } = {} as IAxiosResponse<any[]>,
 		isFetching: isAddAdminUserCurrencyFetching,
-	} = useGetAddAdminUserCurrencyQuery({
-		siteId: userSite?.siteId,
-	})
+	} = useGetAddAdminUserCurrencyQuery({ siteId })
 
 	const [
 		getOriginAdminPermissionListByRole,
@@ -54,7 +52,7 @@ const AddUserSettings: FC = () => {
 
 		try {
 			await addAdminUser({
-				siteId: userSite?.siteId,
+				siteId,
 				userName,
 				password,
 				role,
@@ -80,7 +78,7 @@ const AddUserSettings: FC = () => {
 			const { data: newOriginAdminPermissionList } =
 				await getOriginAdminPermissionListByRole({
 					role,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 
 			const newOriginPermissionList = getPermissionList(

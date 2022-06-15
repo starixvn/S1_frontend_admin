@@ -38,13 +38,13 @@ const EditDepositAccountFormModal: FC<IEditDepositAccountFormModalProps> = ({
 	const { visible, onCancel } = modal
 	const [form] = Form.useForm()
 	const { t } = useTranslation()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const {
 		data: { data: bankInfoOffList } = {},
 		isFetching: isBankInfoOffListFetching,
 	} = useGetBankInfoOffListQuery({
-		siteId: userSite?.siteId,
+		siteId,
 		currencyId: editCurrencyId,
 		purpose: GET_BANK_INFO_OFF_LIST_ARGS.PURPOSE.DEPOSIT,
 	})

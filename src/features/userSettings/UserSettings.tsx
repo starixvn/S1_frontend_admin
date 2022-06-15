@@ -41,7 +41,7 @@ const UserSettings: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [form] = Form.useForm()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const [
 		getUserAdminListByUserName,
@@ -60,10 +60,7 @@ const UserSettings: FC<{
 		const { userName = '' } = form.getFieldsValue()
 
 		try {
-			await getUserAdminListByUserName({
-				userName,
-				siteId: userSite?.siteId,
-			}).unwrap()
+			await getUserAdminListByUserName({ userName, siteId }).unwrap()
 
 			setQueryParams({
 				userName,
@@ -79,7 +76,7 @@ const UserSettings: FC<{
 		try {
 			setAdminUserStatus({
 				userId,
-				siteId: userSite?.siteId,
+				siteId,
 				status:
 					status === ADMIN_USER_STATUS.OPEN
 						? ADMIN_USER_STATUS.CLOSE
@@ -99,7 +96,7 @@ const UserSettings: FC<{
 
 		try {
 			await setAdminUserPassword({
-				siteId: userSite?.siteId,
+				siteId,
 				password: newPassword,
 				userId,
 			})
@@ -114,8 +111,6 @@ const UserSettings: FC<{
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
 			const { userName = '' } = queryParams
 
@@ -127,7 +122,7 @@ const UserSettings: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isUserAdminListFetching
 

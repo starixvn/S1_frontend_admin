@@ -21,7 +21,7 @@ const AddRoleManagement = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
 
@@ -58,7 +58,7 @@ const AddRoleManagement = () => {
 					mark: remark,
 					currencyList,
 					permission: permissionList,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 			).unwrap()
 
@@ -69,12 +69,7 @@ const AddRoleManagement = () => {
 			})
 
 			setPermissionList([])
-			dispatch(
-				fetchPermissionGetRoleListAsync({
-					roleName: '',
-					siteId: userSite?.siteId,
-				})
-			)
+			dispatch(fetchPermissionGetRoleListAsync({ roleName: '', siteId }))
 			navigate(
 				`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.roleManagement.root}`
 			)
@@ -88,11 +83,7 @@ const AddRoleManagement = () => {
 	}
 
 	useEffect(() => {
-		dispatch(
-			fetchPermissionGetAddRolePermissionAsync({
-				siteId: userSite?.siteId,
-			})
-		)
+		dispatch(fetchPermissionGetAddRolePermissionAsync({ siteId }))
 	}, [])
 
 	const loading = roleManagementStatus === 'pending'

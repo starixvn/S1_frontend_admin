@@ -37,7 +37,7 @@ const AdjustmentLogReport: FC<{
 	const actionTypeList = useAppSelector(selectActionTypeList)
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const adjustmentLogReportStatus = useAppSelector(
 		selectAdjustmentLogReportStatus
@@ -90,7 +90,7 @@ const AdjustmentLogReport: FC<{
 					userName,
 					startDate,
 					endDate,
-					siteIds: userSite?.siteId ? [userSite?.siteId] : [],
+					siteIds: siteId ? [siteId] : [],
 				})
 			)
 
@@ -149,8 +149,6 @@ const AdjustmentLogReport: FC<{
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				onChangeCurrency([0])
@@ -198,7 +196,7 @@ const AdjustmentLogReport: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	useEffect(() => {
 		return () => {

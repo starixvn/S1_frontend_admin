@@ -77,7 +77,7 @@ const EditRoleManagement = () => {
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const params = useParams()
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
@@ -119,13 +119,13 @@ const EditRoleManagement = () => {
 				permission: permissionList.filter(
 					permission => permission.permissionIdList.length > 0
 				),
-				siteId: userSite?.siteId,
+				siteId,
 			})
 
 			await dispatch(
 				fetchPermissionGetRoleListAsync({
 					roleName: '',
-					siteId: userSite?.siteId,
+					siteId,
 				})
 			)
 			navigate(
@@ -143,7 +143,7 @@ const EditRoleManagement = () => {
 		dispatch(
 			fetchPermissionGetUpdateRolePermissionAsync({
 				role: Number(params?.roleId),
-				siteId: userSite?.siteId,
+				siteId,
 			})
 		)
 	}, [])

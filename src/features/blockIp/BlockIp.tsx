@@ -12,8 +12,6 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -36,7 +34,6 @@ const BlockIp: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const userSite = useAppSelector(selectUserSite)
 
 	const addBlockIpModal = useModal()
 
@@ -144,8 +141,6 @@ const BlockIp: FC<{
 	}, [pagination.current, pagination.pageSize])
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = () => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) return
 
@@ -164,7 +159,7 @@ const BlockIp: FC<{
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isGetBlockIPListFetching || isAddBlockIpLoading
 

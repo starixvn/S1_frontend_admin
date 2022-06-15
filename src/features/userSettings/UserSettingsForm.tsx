@@ -57,7 +57,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	const { t } = useTranslation()
 	const location = useLocation()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
 	const selectedCurrencyList: number[] =
 		form.getFieldValue('currencyList') ?? []
@@ -105,12 +105,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	}
 
 	useEffect(() => {
-		dispatch(
-			fetchPermissionGetRoleListAsync({
-				roleName: '',
-				siteId: userSite?.siteId,
-			})
-		)
+		dispatch(fetchPermissionGetRoleListAsync({ roleName: '', siteId }))
 	}, [])
 
 	const isPasswordEnable = form.getFieldValue('password') === null

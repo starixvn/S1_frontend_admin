@@ -56,17 +56,17 @@ const BaseLayout: FC = () => {
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const auth = useAuth()
 	const enumStatus = useAppSelector(selectEnumStatus)
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
 
 	useUserSiteEffect()
 
 	useEffect(() => {
-		if (userSite?.siteId) {
-			auth.onFetchUserMenuList({ lang: 'en', siteId: userSite.siteId })
-			auth.onGetUserData(userSite.siteId)
+		if (siteId) {
+			auth.onFetchUserMenuList({ lang: 'en', siteId })
+			auth.onGetUserData(siteId)
 		}
-	}, [userSite?.siteId])
+	}, [siteId])
 
 	useEffect(() => {
 		const init = async () => {
@@ -105,9 +105,11 @@ const BaseLayout: FC = () => {
 						</LayoutSuspense>
 					}
 				>
-					<Spin spinning={loading}>
-						<LayoutContent />
-					</Spin>
+					{siteId && (
+						<Spin spinning={loading}>
+							<LayoutContent />
+						</Spin>
+					)}
 				</Suspense>
 			</Layout>
 		</Layout>
