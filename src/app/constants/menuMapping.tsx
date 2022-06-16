@@ -6,6 +6,7 @@ import {
 	EditOutlined,
 	ExclamationCircleOutlined,
 	ShopOutlined,
+	ShoppingCartOutlined,
 	TransactionOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons'
@@ -33,6 +34,7 @@ export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	8: <TransactionOutlined style={iconStyle} />,
 	9: <RiUserSettingsLine style={iconStyle} />,
 	19: <ControlOutlined style={iconStyle} />,
+	102: <ShoppingCartOutlined style={iconStyle} />,
 }
 
 export const getMapMenu = (functionId: number) => {
@@ -692,5 +694,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
 		pathMode: 'Internal',
 		internalPath: allowedRoles.AdminUserAuthoritySetting,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.root,
 	},
 ]

@@ -13,6 +13,7 @@ import { depositAccountingApi } from 'features/depositAccounting/api'
 import { referralManagementApi } from 'features/referralManagement/api'
 import roleManagementReducer from 'features/roleManagement/slice'
 import { userSettingsApi } from 'features/userSettings/api'
+import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 
 export const store = configureStore({
 	reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
 		[assignBrandApi.reducerPath]: assignBrandApi.reducer,
 		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
 		[referralReportApi.reducerPath]: referralReportApi.reducer,
+		[inactivePointExpiryApi.reducerPath]: inactivePointExpiryApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -44,7 +46,8 @@ export const store = configureStore({
 			.concat(depositAccountingApi.middleware)
 			.concat(assignBrandApi.middleware)
 			.concat(referralManagementApi.middleware)
-			.concat(referralReportApi.middleware),
+			.concat(referralReportApi.middleware)
+			.concat(inactivePointExpiryApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
