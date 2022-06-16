@@ -269,6 +269,20 @@ const paths = {
 			},
 		},
 	},
+	rewardProgram: {
+		root: 'rewardProgram',
+		sub: {
+			pointSetting: {
+				root: 'rewardProgram/pointSetting',
+				sub: {
+					inactivePointExpiry: {
+						root: 'rewardProgram/pointSetting/inactivePointExpiry',
+						functionId: 110,
+					},
+				},
+			},
+		},
+	},
 	administration: {
 		root: 'Administration',
 		sub: {

@@ -119,6 +119,14 @@ const ReferralCustReport = lazy(
 			/* webpackChunkName: 'ReferralCustReport' */ 'features/referralReport/ReferralCustReport'
 		)
 )
+
+const InactivePointExpiry = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'InactivePointExpiry' */ 'features/inactivePointExpiry/InactivePointExpiry'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -310,6 +318,19 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.referralCustReport.functionId}
 					>
 						<ReferralCustReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry
+								.functionId
+						}
+					>
+						<InactivePointExpiry />
 					</AuthRequire>
 				),
 			},

@@ -126,5 +126,6 @@
 	"Label_RewardAmount": "Reward Amount",
 	"Label_RewardTime": "Reward Time",
 	"Label_BlockStatus": "Block Status",
-	"Label_Release": "Release"
+	"Label_Release": "Release",
+	"Label_PointExpiryDay": "Point Expiry Day"
 }
