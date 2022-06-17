@@ -105,11 +105,9 @@ const BaseLayout: FC = () => {
 						</LayoutSuspense>
 					}
 				>
-					{siteId && (
-						<Spin spinning={loading}>
-							<LayoutContent />
-						</Spin>
-					)}
+					<Spin spinning={loading}>
+						<LayoutContent />
+					</Spin>
 				</Suspense>
 			</Layout>
 		</Layout>
