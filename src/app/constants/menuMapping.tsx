@@ -317,11 +317,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 49,
+		functionId: paths.marketing.sub.vipRebateManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VipRebateMangetment',
 		internalFunctionKey: allowedRoles.MarketingVipRebateMangetment,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.vipRebateManagement.root,
 	},
 	{
 		icon: null,

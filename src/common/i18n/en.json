@@ -10,7 +10,8 @@
 		"Label_LoginSuccess": "Login Success",
 		"Label_LoginFailed": "Login Failed",
 		"Label_LogoutSuccess": "Logout Success",
-		"Label_ChangePasswordSuccess": "Change Password Success"
+		"Label_ChangePasswordSuccess": "Change Password Success",
+		"Label_SaveSuccess": "Save Success"
 	},
 	"Login": {
 		"Label_WelcomeBack": "Welcome Back!",
@@ -70,6 +71,7 @@
 	"Label_RoleRequire": "Role is required",
 	"Label_AreYouSure": "Are you sure?",
 	"Label_Submit": "Submit",
+	"Label_Save": "Save",
 	"Label_Cancel": "Cancel",
 	"Label_Status": "Status",
 	"Label_MemberId": "Member Id",
@@ -127,5 +129,43 @@
 	"Label_RewardTime": "Reward Time",
 	"Label_BlockStatus": "Block Status",
 	"Label_Release": "Release",
-	"Label_PointExpiryDay": "Point Expiry Day"
+	"Label_PointExpiryDay": "Point Expiry Day",
+	"Label_PeriodType": "Period Type",
+	"Label_Daily": "Daily",
+	"Label_Weekly": "Weekly",
+	"Label_Monthly": "Monthly",
+	"Label_PayTime": "Pay Time ",
+	"Label_WeekOption": "Week Option",
+	"Label_RedeemHours": "Redeem Hours ",
+	"Label_RedeemHoursRequired": "Redeem Hours is Required",
+	"Label_Select": "Select ",
+	"Label_SyncWithCurrency": "(Sync with currency)",
+	"WeekOption": {
+		"Label_Monday": "Monday",
+		"Label_Tuesday": "Tuesday",
+		"Label_Wednesday": "Wednesday",
+		"Label_Thursday": "Thursday",
+		"Label_Friday": "Friday",
+		"Label_Saturday": "Saturday",
+		"Label_Sunday": "Sunday"
+	},
+	"Label_Date": "Date",
+	"Label_DateRequired": "Date is Required",
+	"Label_GameType": "Game Type",
+	"GameLevel": {
+		"Label_VintageClub": "Vintage Club",
+		"Label_SilverClub": "Silver Club",
+		"Label_GoldClub": "Gold Club",
+		"Label_TitaniumClub": "Titanium Club",
+		"Label_DiamondClub": "Diamond Club",
+		"Label_NovaClub": "Nova Club"
+	},
+	"Label_MinPayout": "Min Payout",
+	"Label_MaxPayout": "Max Payout",
+	"Label_SetByProduct": "Set by Product",
+	"Label_PayoutLimit": "Payout Limit",
+	"Label_SetByProductPageTitle": "Set Rebate by Games ( Default Base on Category ) ",
+	"Label_Game": "Game",
+	"Label_Default": "Default",
+	"Label_MinMax" : "Value should be between {{min}} and {{max}}"
 }
