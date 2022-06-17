@@ -194,6 +194,7 @@ const paths = {
 			},
 			vipRebateManagement: {
 				root: 'marketing/vipRebateManagement',
+				functionId: 49,
 			},
 			referralManagement: {
 				root: 'marketing/referralManagement',

@@ -127,6 +127,12 @@ const InactivePointExpiry = lazy(
 		)
 )
 
+const VipRebateManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateManagement' */ 'features/vipRebateManagement/VipRebateManagement'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -331,6 +337,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<InactivePointExpiry />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipRebateManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.vipRebateManagement.functionId}
+					>
+						<VipRebateManagement />
 					</AuthRequire>
 				),
 			},
