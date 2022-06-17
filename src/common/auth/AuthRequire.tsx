@@ -4,6 +4,8 @@ import { useAuth } from 'common/hooks'
 import paths from 'app/constants/paths'
 import { cloneElement, useEffect } from 'react'
 import { getActionPermissions } from 'common/utils'
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
 
 interface RequireAuthProps {
 	functionId?: number
@@ -15,6 +17,7 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 		useAuth()
 	const location = useLocation()
 	const menuFunctionData = find(userMenuFunctionData, { functionId })
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	useEffect(() => {
 		onCheckSignIn()
@@ -44,6 +47,9 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 	if (hasPermission !== undefined && hasPermission === false) {
 		return <Navigate to='/403' state={{ from: location }} replace />
 	}
+
+	// 如果沒有選擇品牌，不顯示內容
+	if (!siteId) return null
 
 	return cloneElement(children, {
 		pageTitle: menuFunctionData?.name,
