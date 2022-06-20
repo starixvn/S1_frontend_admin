@@ -1,7 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
-import { IGetBetListArgs, IGetBetListResponse } from './type'
+import {
+	IGetBetListArgs,
+	IGetBetListResponse,
+	IGetCategoryResponse,
+	IGetProductsResponse,
+	IGetProvidersResponse,
+} from './type'
 
 export const betListApi = createApi({
 	reducerPath: 'betListApi',
@@ -15,6 +21,24 @@ export const betListApi = createApi({
 				data,
 			}),
 		}),
+		getCategory: builder.query<IGetCategoryResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpCategory',
+				method: 'POST',
+			}),
+		}),
+		getProviders: builder.query<IGetProvidersResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+			}),
+		}),
+		getProducts: builder.query<IGetProductsResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpGameType',
+				method: 'POST',
+			}),
+		}),
 		exportBetListFile: builder.mutation<Blob, IGetBetListArgs>({
 			query: data => ({
 				url: 'BetListReport/Export',
@@ -25,5 +49,10 @@ export const betListApi = createApi({
 		}),
 	}),
 })
-export const { useLazyGetBetListQuery, useExportBetListFileMutation } =
-	betListApi
+export const {
+	useLazyGetBetListQuery,
+	useGetCategoryQuery,
+	useGetProductsQuery,
+	useGetProvidersQuery,
+	useExportBetListFileMutation,
+} = betListApi

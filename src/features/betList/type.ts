@@ -61,3 +61,25 @@ export interface IGetBetListData {
 	levelName: string
 }
 export type IGetBetListResponse = IAxiosResponse<IGetBetListData[]>
+
+export interface IGetCategoryData {
+	categoryId: number
+	categoryName: string
+}
+export type IGetCategoryResponse = IAxiosResponse<IGetCategoryData[]>
+
+export interface IGetProvidersData {
+	id: number
+	tpName: string
+}
+
+export type IGetProvidersResponse = IAxiosResponse<IGetProvidersData[]>
+
+export interface IGetProductsData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+}
+
+export type IGetProductsResponse = IAxiosResponse<IGetProductsData[]>

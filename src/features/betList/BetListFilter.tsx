@@ -22,6 +22,16 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
+import {
+	IGetCategoryResponse,
+	IGetProductsResponse,
+	IGetProvidersResponse,
+} from './type'
+import {
+	useGetCategoryQuery,
+	useGetProductsQuery,
+	useGetProvidersQuery,
+} from './api'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -54,6 +64,24 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 }) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const {
+		data: { data: categories } = {} as IGetCategoryResponse,
+		isFetching: isGetCategoryFetching,
+	} = useGetCategoryQuery(null)
+	const {
+		data: { data: providers } = {} as IGetProvidersResponse,
+		isFetching: isGetProvidersFetching,
+	} = useGetProvidersQuery(null)
+	const {
+		data: { data: products } = {} as IGetProductsResponse,
+		isFetching: isGetProductsFetching,
+	} = useGetProductsQuery(null)
+
+	const isLoading =
+		loading ||
+		isGetCategoryFetching ||
+		isGetProvidersFetching ||
+		isGetProductsFetching
 
 	return (
 		<Collapse defaultActiveKey={1}>
@@ -256,7 +284,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 						<Row justify='end' align='middle'>
 							<Col>
 								<Button
-									loading={loading}
+									loading={isLoading}
 									icon={<SearchOutlined />}
 									htmlType='submit'
 									type='primary'
