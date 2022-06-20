@@ -282,6 +282,15 @@ const paths = {
 					},
 				},
 			},
+			giftManagement: {
+				root: 'rewardProgram/giftManagement',
+				sub: {
+					redemptionLimit: {
+						root: 'rewardProgram/giftManagement/redemptionLimit',
+						functionId: 113,
+					},
+				},
+			},
 		},
 	},
 	administration: {
