@@ -77,7 +77,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 
 					{isNewPathMode && <LayoutHeaderUserSite />}
 
-					<Col flex='120px'>
+					<Col flex='140px'>
 						<Dropdown
 							trigger={['click']}
 							overlay={menu}
@@ -85,7 +85,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 						>
 							<Button type='text' style={{ marginBottom: 16 }}>
 								<UserOutlined style={{ fontSize: '16px' }} />
-								{auth.user}
+								{auth?.user ?? ''}
 								<DownOutlined style={{ fontSize: '10px' }} />
 							</Button>
 						</Dropdown>
