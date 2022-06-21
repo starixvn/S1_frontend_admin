@@ -103,7 +103,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 							overlay={menu}
 							placement='bottomRight'
 						>
-							<Button type='text' style={{ marginBottom: 16 }}>
+							<Button type='text' style={{ width: '120px', marginBottom: 16 }}>
 								<UserOutlined style={{ fontSize: '16px' }} />
 								{userData?.userName ?? ''}
 								<DownOutlined style={{ fontSize: '10px' }} />
