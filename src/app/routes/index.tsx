@@ -133,6 +133,13 @@ const VipRebateManagement = lazy(
 			/* webpackChunkName: 'VipRebateManagement' */ 'features/vipRebateManagement/VipRebateManagement'
 		)
 )
+
+const RedemptionLimit = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/redemptionLimit/RedemptionLimit'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -347,6 +354,19 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.vipRebateManagement.functionId}
 					>
 						<VipRebateManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.redemptionLimit.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.redemptionLimit
+								.functionId
+						}
+					>
+						<RedemptionLimit />
 					</AuthRequire>
 				),
 			},

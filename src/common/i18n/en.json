@@ -167,5 +167,8 @@
 	"Label_SetByProductPageTitle": "Set Rebate by Games ( Default Base on Category ) ",
 	"Label_Game": "Game",
 	"Label_Default": "Default",
-	"Label_MinMax" : "Value should be between {{min}} and {{max}}"
+	"Label_MinMax" : "Value should be between {{min}} and {{max}}",
+	"Label_ByMonth": "By Month",
+	"Label_RedemptionLimitExtra" : "Limited how many item can be claim per month/per member",
+	"Label_RedemptionLimit" : "Redemption Limit"
 }
