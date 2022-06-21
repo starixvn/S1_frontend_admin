@@ -97,7 +97,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 
 					{isNewPathMode && <LayoutHeaderUserSite />}
 
-					<Col flex='120px'>
+					<Col flex='140px'>
 						<Dropdown
 							trigger={['click']}
 							overlay={menu}
