@@ -276,6 +276,10 @@ const paths = {
 			pointSetting: {
 				root: 'rewardProgram/pointSetting',
 				sub: {
+					depositPoint: {
+						root: 'rewardProgram/pointSetting/depositPoint',
+						functionId: 109,
+					},
 					inactivePointExpiry: {
 						root: 'rewardProgram/pointSetting/inactivePointExpiry',
 						functionId: 110,

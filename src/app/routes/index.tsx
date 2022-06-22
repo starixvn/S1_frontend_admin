@@ -120,6 +120,13 @@ const ReferralCustReport = lazy(
 		)
 )
 
+const DepositPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralCustReport' */ 'features/depositPoint/DepositPoint'
+		)
+)
+
 const InactivePointExpiry = lazy(
 	() =>
 		import(
@@ -331,6 +338,18 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.referralCustReport.functionId}
 					>
 						<ReferralCustReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.depositPoint.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.depositPoint.functionId
+						}
+					>
+						<DepositPoint />
 					</AuthRequire>
 				),
 			},

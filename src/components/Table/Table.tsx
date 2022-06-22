@@ -6,6 +6,7 @@ const BaseTable: FC<TableProps<{}>> = ({ children, ...props }) => {
 	return (
 		<Table
 			bordered
+			rowClassName='editable-row'
 			rowKey={() => uuidV4()}
 			size='small'
 			scroll={{ x: 240 }}

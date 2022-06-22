@@ -16,6 +16,7 @@ import roleManagementReducer from 'features/roleManagement/slice'
 import { userSettingsApi } from 'features/userSettings/api'
 import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 import { redemptionLimitApi } from 'features/redemptionLimit/api'
+import { depositPointApi } from 'features/depositPoint/api'
 
 export const store = configureStore({
 	reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
 		[inactivePointExpiryApi.reducerPath]: inactivePointExpiryApi.reducer,
 		[vipRebateManagementApi.reducerPath]: vipRebateManagementApi.reducer,
 		[redemptionLimitApi.reducerPath]: redemptionLimitApi.reducer,
+		[depositPointApi.reducerPath]: depositPointApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -53,7 +55,8 @@ export const store = configureStore({
 			.concat(referralReportApi.middleware)
 			.concat(inactivePointExpiryApi.middleware)
 			.concat(vipRebateManagementApi.middleware)
-			.concat(redemptionLimitApi.middleware),
+			.concat(redemptionLimitApi.middleware)
+			.concat(depositPointApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

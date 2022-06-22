@@ -31,6 +31,15 @@ const GlobalStyle = createGlobalStyle`
         cursor: auto;    
       }
     }    
+    
+    .editable-row .ant-form-item-explain {
+      position: absolute;
+      top: 90%;
+      font-size: 12px;
+      .ant-form-item-explain-error {
+        position:fixed;
+      }
+    }
 `
 
 export default GlobalStyle
