@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Menu, MenuProps } from 'antd'
 import { useMediaQuery } from 'usehooks-ts'
 import { MenuInterface } from 'type'
@@ -19,8 +19,6 @@ const LayoutMenu = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const navigate = useNavigate()
-	const { pathname } = useLocation()
 	const { userMenuList } = useAuth()
 	const { openKeys, handleClickMenuItem, handleToggleMenu } = useMenuAction({
 		mediaMdMatches,
@@ -43,21 +41,18 @@ const LayoutMenu = ({
 
 		if (!hasPermission) return null
 
-		const menuItme: MenuItem = {
+		const menuItem: MenuItem = {
 			style: { fontSize: '12px' },
 			key: name,
-			label: name,
 			icon,
-			onClick: () => {
-				handleClickMenuItem()
-
-				if (pathname !== path) {
-					navigate(path)
-				}
-			},
+			label: (
+				<Link to={path} onClick={handleClickMenuItem}>
+					{name}
+				</Link>
+			),
 		}
 
-		return menuItme
+		return menuItem
 	}
 
 	const renderSubMenuItem = (menu: MenuInterface) => {
