@@ -95,6 +95,8 @@
 	"Label_ApprovedTime": "Approved Time",
 	"Label_LatestUpdateOperator": "Latest Update Operator",
 	"Label_LatestUpdateTime": "Latest Update Time",
+	"Label_LastUpdateTime": "Last Update Time",
+	"Label_LastUpdateUser": "Last Update User",
 	"Label_DepositAmount": "Deposit Amount",
 	"Label_EditDepositAccount": "Edit Deposit Account",
 	"Label_LoginTime": "Login Time",
@@ -167,8 +169,11 @@
 	"Label_SetByProductPageTitle": "Set Rebate by Games ( Default Base on Category ) ",
 	"Label_Game": "Game",
 	"Label_Default": "Default",
-	"Label_MinMax" : "Value should be between {{min}} and {{max}}",
+	"Label_MinMax": "Value should be between {{min}} and {{max}}",
 	"Label_ByMonth": "By Month",
-	"Label_RedemptionLimitExtra" : "Limited how many item can be claim per month/per member",
-	"Label_RedemptionLimit" : "Redemption Limit"
+	"Label_RedemptionLimitExtra": "Limited how many item can be claim per month/per member",
+	"Label_RedemptionLimit": "Redemption Limit",
+	"Label_PointRate": "Point Rate",
+	"Label_ExpiryDate": "Expiry Date",
+	"Label_DepositGet1Point": "Deposit Get 1 Point"
 }
