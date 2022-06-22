@@ -5,6 +5,7 @@ import {
 	fetchAdjustmentInfoLogMenu,
 	fetchAdminUserSiteList,
 	fetchAllCurrencyList,
+	fetchAdminUserCurrencyList,
 } from './api'
 
 export const fetchAllEnumAsync = createAsyncThunk(
@@ -15,11 +16,13 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
+			adminUserCurrencyList,
 		] = await Promise.allSettled([
 			fetchAdminUserSiteList(),
 			fetchAllCurrencyList(),
 			fetchAdjustmentInfoLogMenu(),
 			fetchActionTypeList(),
+			fetchAdminUserCurrencyList(),
 		]).then(results =>
 			map(results, result =>
 				result.status === 'fulfilled' ? result.value : []
@@ -31,6 +34,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
+			adminUserCurrencyList,
 		}
 	}
 )

@@ -17,6 +17,7 @@ export interface IGetBlockBankAccArgs {
 	status: number
 	startDate: string
 	endDate: string
+	currencyId: number[]
 }
 
 export interface IBlockBankAccListResponse {

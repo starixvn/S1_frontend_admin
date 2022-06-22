@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import { Table } from 'components'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
 import { useIsMounted } from 'usehooks-ts'
@@ -48,6 +50,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const isMounted = useIsMounted()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const columns = [
 		{
@@ -102,6 +105,14 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 					</Space>
 				)
 			},
+		},
+		{
+			title: t('Label_Currency'),
+			dataIndex: 'currencyId',
+			width: 120,
+			align: 'center' as 'center',
+			render: (currencyId: number) =>
+				find(currencyListBySite, { currencyId })?.isoCode ?? 'N/A',
 		},
 		{
 			title: t('Label_MemberId'),

@@ -1,10 +1,12 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
+import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -32,7 +34,7 @@ const BlockBankAccount: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [
 		getBlockBankAcc,
 		{
@@ -42,13 +44,22 @@ const BlockBankAccount: FC<{
 			isFetching: isBlockBankAccFetching,
 		},
 	] = useLazyGetBlockBankAccQuery()
-
 	const [getBlockBankAccList, { isFetching: isGetBlockBankAccListFetching }] =
 		useLazyGetBlockBankAccListQuery()
-
 	const [setBlockAccount] = useSetBlockAccountMutation()
-
 	const [setReleaseAccount] = useSetReleaseAccountMutation()
+
+	const onChangeCurrency = (newCurrencyIds: number[]) => {
+		if (newCurrencyIds.includes(0)) {
+			form.setFieldsValue({
+				currencyIds: currencyListBySite?.map(item => item.currencyId),
+			})
+		} else {
+			form.setFieldsValue({
+				currencyIds: newCurrencyIds,
+			})
+		}
+	}
 
 	const handleSearch = async ({
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
@@ -58,6 +69,7 @@ const BlockBankAccount: FC<{
 			userName = '',
 			status,
 			dateRange,
+			currencyIds,
 		} = form.getFieldsValue()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -72,6 +84,7 @@ const BlockBankAccount: FC<{
 				accountNum,
 				userName,
 				status,
+				currencyId: currencyIds,
 			}).unwrap()
 
 			setQueryParams({
@@ -80,6 +93,7 @@ const BlockBankAccount: FC<{
 				accountNum,
 				userName,
 				status,
+				currencyIds,
 				tz: currentTimeZoneUtcOffset,
 			})
 		} catch (error) {
@@ -237,6 +251,7 @@ const BlockBankAccount: FC<{
 				accountNum = '',
 				status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 				tz,
+				currencyIds,
 			} = queryParams
 
 			onTimeZoneChange(Number(tz))
@@ -245,6 +260,8 @@ const BlockBankAccount: FC<{
 				status: Number(status),
 				userName,
 				accountNum,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				dateRange: [moment(startDate), moment(endDate)],
 			})
 
@@ -268,6 +285,7 @@ const BlockBankAccount: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				onChangeCurrency={onChangeCurrency}
 			/>
 
 			<BlockBankAccountTable

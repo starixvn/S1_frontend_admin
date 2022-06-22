@@ -31,3 +31,9 @@ export const fetchActionTypeList = async (): Promise<ActionType[]> => {
 
 	return response?.data?.data ?? []
 }
+
+export const fetchAdminUserCurrencyList = async (): Promise<number[]> => {
+	const response = await BoApi.post('Common/AdminUserCurrencyList')
+
+	return response?.data?.data ?? []
+}
