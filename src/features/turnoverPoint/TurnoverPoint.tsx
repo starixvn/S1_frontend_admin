@@ -18,8 +18,8 @@ import {
 	useSetTurnoverPointStatusSettingMutation,
 } from './api'
 import { useAuth, useModal, useQueryParams } from '../../common/hooks'
-import { TurnoverPointTable } from './TurnoverPointTable'
 import { TurnoverPointStatusModal } from './TurnoverPointStatusModal'
+import { TurnoverPointTable } from './TurnoverPointTable'
 
 const TurnoverPoint: FC<{
 	pageTitle?: string
@@ -130,7 +130,7 @@ const TurnoverPoint: FC<{
 				siteId,
 				currencyId: Number(tabActiveKey),
 				infos: statusInfo,
-			})
+			}).unwrap()
 			message.success(t('System.Label_SaveSuccess'))
 			turnoverPointStatusModal.onCancel()
 		} catch (error) {

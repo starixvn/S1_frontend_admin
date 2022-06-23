@@ -177,5 +177,8 @@
 	"Label_DepositGet1Point": "Deposit Get 1 Point",
 	"Label_VipLevel": "VIP Level",
 	"Label_TurnOver": "Turnover",
-	"Label_PointRate": "Point Rate"
+	"Label_PointRate": "Point Rate",
+	"Label_PromotionDate" : "Promotion Date",
+	"Label_PromotionPointRate" : "Promotion Point Rate",
+	"Label_GetPointMessage" : "Get {{point}} point"
 }

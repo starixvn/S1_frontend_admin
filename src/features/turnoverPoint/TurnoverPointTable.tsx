@@ -8,6 +8,7 @@ import { trimEnd, concat } from 'lodash'
 import { ColumnsType } from 'antd/lib/table'
 import { EditFilled } from '@ant-design/icons'
 import { createSearchParams, useNavigate } from 'react-router-dom'
+import moment from 'moment'
 import {
 	CategoryTurnoverPointSetting,
 	IGetTpCategoryData,
@@ -50,20 +51,18 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 				width: 60,
 				align: 'center' as 'center',
 				render: (values: IGetTurnoverPointSettingListData) => {
+					const { vipLevelName, vipLevel } = values
 					return (
 						<Typography.Link
 							disabled={!editPermission?.canUse}
 							onClick={() => {
 								const { currencyId } = queryParams
 								const searchParams = createSearchParams({
-									vipLevelName: trimEnd(
-										values.vipLevelName.toUpperCase(),
-										'CLUB'
-									),
+									vipLevelName: trimEnd(vipLevelName.toUpperCase(), 'CLUB'),
 									currencyId,
 								})
 								navigate(
-									`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting.root}/${values.vipLevel}?${searchParams}`
+									`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting.root}/${vipLevel}?${searchParams}`
 								)
 							}}
 						>
@@ -78,7 +77,8 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 				width: 100,
 				align: 'center' as 'center',
 				dataIndex: 'vipLevelName',
-				render: (value: string) => trimEnd(value.toUpperCase(), 'CLUB'),
+				render: (vipLevelName: string) =>
+					trimEnd(vipLevelName.toUpperCase(), 'CLUB'),
 			},
 			{
 				title: '',
@@ -87,32 +87,32 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 				align: 'center' as 'center',
 				render: () => (
 					<>
-						{t('Label_TurnOver')}
-						<Divider />
-						{t('Label_PointRate')}
+						<Typography.Text style={{ height: '30px' }}>
+							{t('Label_TurnOver')}
+						</Typography.Text>
+						<Divider style={{ margin: '15px 0' }} />
+						<Typography.Text style={{ height: '30px', whiteSpace: 'nowrap' }}>
+							{t('Label_PointRate')}
+						</Typography.Text>
 					</>
 				),
 			},
 		]
 		const subColumn: ColumnsType<IGetTurnoverPointSettingListData> = []
 		categoryList.forEach(categoryItem => {
+			const { categoryName, categoryId } = categoryItem
 			const columnItem = {
 				title: (
 					<Space>
-						{categoryItem.categoryName}
+						{categoryName}
 						<Typography.Link
-							onClick={() =>
-								handleCategoryClick(
-									categoryItem.categoryId,
-									categoryItem.categoryName
-								)
-							}
+							onClick={() => handleCategoryClick(categoryId, categoryName)}
 						>
 							<EditFilled />
 						</Typography.Link>
 					</Space>
 				),
-				key: categoryItem.categoryId.toString(),
+				key: categoryId.toString(),
 				dataIndex: 'tpCategoryTurnoverPointSetting',
 				width: 100,
 				align: 'center' as 'center',
@@ -120,17 +120,53 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 					const currentCategory = list.find(
 						item => item.tpCategoryId === categoryItem.categoryId
 					)
+					const currentPoint = () => {
+						const getTime = (time: string) => moment(time).format('YYYY/MM/DD')
+						if (currentCategory) {
+							const {
+								promotionStatus,
+								promotionPointRate,
+								promotionStartTime,
+								promotionEndTime,
+								pointRate,
+							} = currentCategory
+							return promotionStatus ? (
+								<Space
+									direction='vertical'
+									size={0}
+									style={{ maxHeight: '30px' }}
+								>
+									<Typography.Text>{promotionPointRate}</Typography.Text>
+									<Typography.Text
+										style={{
+											fontSize: '5px',
+											whiteSpace: 'nowrap',
+										}}
+									>
+										{getTime(promotionStartTime)} ~ {getTime(promotionEndTime)}
+									</Typography.Text>
+								</Space>
+							) : (
+								<Typography.Text style={{ height: '30px' }}>
+									{pointRate}
+								</Typography.Text>
+							)
+						}
+						return 'N/A'
+					}
 					return currentCategory ? (
 						<>
-							{currentCategory.turnover}
-							<Divider />
-							{currentCategory.pointRate}
+							<Typography.Text style={{ height: '30px' }}>
+								{currentCategory.turnover}
+							</Typography.Text>
+							<Divider style={{ margin: '15px 0' }} />
+							{currentPoint()}
 						</>
 					) : (
 						<>
-							N/A
-							<Divider />
-							N/A
+							<Typography.Text style={{ height: '30px' }}>N/A</Typography.Text>
+							<Divider style={{ margin: '15px 0' }} />
+							<Typography.Text style={{ height: '30px' }}>N/A</Typography.Text>
 						</>
 					)
 				},

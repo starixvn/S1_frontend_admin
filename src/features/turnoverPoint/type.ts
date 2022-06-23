@@ -62,6 +62,7 @@ export interface ISetTurnoverPointSettingInfo {
 	promotionPointRate: number
 	promotionStartTime: string
 	promotionEndTime: string
+	vipLevel: number
 }
 
 export interface IGetTurnoverPointStatusSettingArgs {
