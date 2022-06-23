@@ -1,86 +1,41 @@
-import { find } from 'lodash'
-import { useAuth, useQueryParams } from 'common/hooks'
-import {
-	useCheckBrandQuery,
-	useChangeBrandMutation,
-} from 'common/service/homeApi/api'
+import { useAuth } from 'common/hooks'
+import { Layout, Spin } from 'antd'
+import { useCheckBrandQuery } from 'common/service/homeApi/api'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import {
-	fetchAllEnumAsync,
-	onChangeUserSite,
-	selectEnumStatus,
-	selectUserSite,
-} from 'common/enum'
+import { fetchAllEnumAsync, selectEnumStatus } from 'common/enum'
 import { useState, FC, useEffect, Suspense } from 'react'
 import { RequestStatusType } from 'type'
-import { Layout, Spin } from 'antd'
+import { useMenuCollapsed, useUserSiteEffect } from './hooks'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
 import { LayoutContent } from './LayoutContent'
 import LayoutSuspense from './LayoutSuspense'
 
-const useMenuCollapsed = () => {
-	const [collapsed, setCollapsed] = useState<boolean>(true)
-
-	const onToggleCollapsed = () => {
-		setCollapsed(prev => !prev)
-	}
-
-	const onCloseCollapsed = () => {
-		setCollapsed(true)
-	}
-
-	return { collapsed, onToggleCollapsed, onCloseCollapsed }
-}
-
-const useUserSiteEffect = () => {
-	const dispatch = useAppDispatch()
-	const { data: { data: siteId } = {} } = useCheckBrandQuery()
-	const userSiteList = useAppSelector(state => state.allEnum.userSiteList)
-	const enumStatus = useAppSelector(selectEnumStatus)
-
-	useEffect(() => {
-		if (enumStatus === 'succeeded') {
-			const newUserSite = find(userSiteList, { siteId })
-
-			dispatch(onChangeUserSite(newUserSite))
-		}
-	}, [enumStatus, siteId])
-}
-
 const BaseLayout: FC = () => {
 	const dispatch = useAppDispatch()
-	const [queryParams] = useQueryParams()
-	const [changeBrand] = useChangeBrandMutation()
-
-	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
-	const auth = useAuth()
 	const enumStatus = useAppSelector(selectEnumStatus)
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const auth = useAuth()
+	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
+	const { data: { data: siteId } = {} } = useCheckBrandQuery()
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
 
+	//  選擇品牌
 	useUserSiteEffect()
 
-	useEffect(() => {
-		if (siteId) {
-			auth.onFetchUserMenuList({ lang: 'en', siteId })
-			auth.onGetUserData(siteId)
-		}
-	}, [siteId])
-
+	// 初始必要資訊
 	useEffect(() => {
 		const init = async () => {
-			setRequestStatus('pending')
-			if (Number(queryParams?.siteId)) {
-				await changeBrand({ siteId: Number(queryParams?.siteId) })
+			if (siteId) {
+				setRequestStatus('pending')
+				auth.onFetchUserMenuList({ lang: 'en', siteId })
+				auth.onGetUserData(siteId)
+				await dispatch(fetchAllEnumAsync())
+				setRequestStatus('idle')
 			}
-			await Promise.all([dispatch(fetchAllEnumAsync())])
-
-			setRequestStatus('idle')
 		}
 
 		init()
-	}, [queryParams?.siteId])
+	}, [siteId])
 
 	const loading = enumStatus === 'pending' || requestStatus === 'pending'
 
