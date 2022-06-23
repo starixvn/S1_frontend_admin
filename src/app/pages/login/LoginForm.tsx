@@ -24,7 +24,7 @@ const LoginForm: FC<ILoginProps> = ({ title, loading, onLogin }) => {
 	return (
 		<Card
 			title={title}
-			style={{ width: '400px', border: 'none', margin: 12 }}
+			style={{ width: '400px', border: 'none', margin: 12, zIndex: 2 }}
 			headStyle={{ background: geekblue.primary, color: gray[0] }}
 		>
 			<Form

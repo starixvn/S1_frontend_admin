@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import styled from 'styled-components'
+import ReactCanvasNest from 'react-canvas-nest'
 import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
@@ -43,8 +44,17 @@ const Login = () => {
 		return <Navigate to={`${dashboardPath}`} />
 	}
 
+	const floatColor = '24,144,255'
 	return (
 		<Wrapper>
+			<ReactCanvasNest
+				config={{
+					pointColor: floatColor,
+					lineColor: floatColor,
+					pointOpacity: 0.6,
+				}}
+				style={{ zIndex: 1 }}
+			/>
 			<LoginForm
 				title={t('Login.Label_WelcomeBack')}
 				loading={loading}
