@@ -288,6 +288,10 @@ const paths = {
 						root: 'rewardProgram/pointSetting/turnoverPoint',
 						functionId: 108,
 					},
+					turnoverPointSetting: {
+						root: 'rewardProgram/pointSetting/turnoverPoint/detail',
+						functionId: 108,
+					},
 				},
 			},
 			giftManagement: {

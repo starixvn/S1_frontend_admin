@@ -6,11 +6,19 @@ export interface IGetTurnoverPointSettingListArgs {
 }
 
 export interface IGetTurnoverPointSettingListData {
-	tpCategoryId: number
 	vipLevel: number
 	vipLevelName: string
+	tpCategoryTurnoverPointSetting: CategoryTurnoverPointSetting[]
+}
+
+export type CategoryTurnoverPointSetting = {
+	tpCategoryId: number
 	turnover: number
 	pointRate: number
+	promotionStatus: number
+	promotionPointRate: number
+	promotionStartTime: string
+	promotionEndTime: string
 }
 
 export type IGetTurnoverPointSettingListResponse = IAxiosResponse<
@@ -62,7 +70,7 @@ export interface IGetTurnoverPointStatusSettingArgs {
 	tpCategoryId: number
 }
 
-interface IGetTurnoverPointStatusSettingData {
+export interface IGetTurnoverPointStatusSettingData {
 	tpGameTypeId: number
 	tpGameTypeName: string
 	status: number

@@ -153,6 +153,13 @@ const TurnoverPoint = lazy(
 			/* webpackChunkName: 'TurnoverPoint' */ 'features/turnoverPoint/TurnoverPoint'
 		)
 )
+
+const TurnoverPointSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPointSetting' */ 'features/turnoverPoint/turnoverPointSetting/TurnoverPointSetting'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -404,6 +411,19 @@ const routes: RouteObject[] = [
 						}
 					>
 						<TurnoverPoint />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting.root}/:vipLevel`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting
+								.functionId
+						}
+					>
+						<TurnoverPointSetting />
 					</AuthRequire>
 				),
 			},

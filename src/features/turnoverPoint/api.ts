@@ -63,7 +63,7 @@ export const turnoverPointApi = createApi({
 			IGetTurnoverPointStatusSettingArgs
 		>({
 			query: data => ({
-				url: 'GetTurnoverPointStatusSetting',
+				url: 'PointSetting/GetTurnoverPointStatusSetting',
 				method: 'POST',
 				data,
 			}),
@@ -73,7 +73,7 @@ export const turnoverPointApi = createApi({
 			ISetTurnoverPointStatusSettingArgs
 		>({
 			query: data => ({
-				url: 'SetTurnoverPointStatusSetting',
+				url: 'PointSetting/SetTurnoverPointStatusSetting',
 				method: 'POST',
 				data,
 			}),
@@ -84,8 +84,8 @@ export const turnoverPointApi = createApi({
 export const {
 	useGetCategoryQuery,
 	useLazyGetTurnoverPointSettingListQuery,
-	useLazyGetTurnoverPointSettingQuery,
 	useSetTurnoverPointSettingMutation,
 	useLazyGetTurnoverPointStatusSettingQuery,
 	useSetTurnoverPointStatusSettingMutation,
+	useGetTurnoverPointSettingQuery,
 } = turnoverPointApi

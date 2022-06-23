@@ -173,7 +173,9 @@
 	"Label_ByMonth": "By Month",
 	"Label_RedemptionLimitExtra": "Limited how many item can be claim per month/per member",
 	"Label_RedemptionLimit": "Redemption Limit",
-	"Label_PointRate": "Point Rate",
 	"Label_ExpiryDate": "Expiry Date",
-	"Label_DepositGet1Point": "Deposit Get 1 Point"
+	"Label_DepositGet1Point": "Deposit Get 1 Point",
+	"Label_VipLevel": "VIP Level",
+	"Label_TurnOver": "Turnover",
+	"Label_PointRate": "Point Rate"
 }
