@@ -8,6 +8,8 @@ import { AffixButtons } from 'components/AffixButtons'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { forEach, isEmpty, isNumber } from 'lodash'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	IGetTurnoverPointSettingResponse,
 	ISetTurnoverPointSettingInfo,
@@ -17,8 +19,6 @@ import {
 	useSetTurnoverPointSettingMutation,
 } from '../api'
 import { TurnoverPointSettingForm } from './TurnoverPointSettingForm'
-import { dateRangeToUtcFormatter } from '../../../common/utils'
-import { useTimeZone } from '../../../components/TimeZoneSelect'
 
 const TurnoverPointSetting: FC<{
 	pageTitle?: string
@@ -71,7 +71,6 @@ const TurnoverPointSetting: FC<{
 					return
 				}
 				if (
-					// 小於 0 或空字串
 					promotionPointRate < 0 ||
 					(!isNumber(promotionPointRate) && isEmpty(promotionPointRate))
 				) {
@@ -82,7 +81,7 @@ const TurnoverPointSetting: FC<{
 					return
 				}
 			}
-			// 0001 那個時間資料是沒有選擇活動狀態,後端給的,到前端時我轉成 null , 回去時吐一樣的還他
+
 			settingInfos.push({
 				tpCategoryName,
 				tpCategoryId,
@@ -103,7 +102,6 @@ const TurnoverPointSetting: FC<{
 		})
 		return !hasError ? settingInfos : false
 	}
-	// 因為畫面結構關係, 這裡嘗試自己寫驗證 , 並改用 Message 方式呈現錯誤 , 驗證函數若回吐 false 則直接不去 set API
 	const handleSetTurnoverPointSetting = async () => {
 		const settingInfos = getApiInfosAndValidate()
 		if (!settingInfos) return

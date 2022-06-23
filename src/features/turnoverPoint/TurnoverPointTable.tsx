@@ -9,14 +9,14 @@ import { ColumnsType } from 'antd/lib/table'
 import { EditFilled } from '@ant-design/icons'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import moment from 'moment'
+import { useQueryParams } from 'common/hooks'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import {
 	CategoryTurnoverPointSetting,
 	IGetTpCategoryData,
 	IGetTurnoverPointSettingListData,
 } from './type'
-import { useQueryParams } from '../../common/hooks'
-import { NEW_SITE_PREFIX_URL } from '../../app/config'
-import paths from '../../app/constants/paths'
 
 interface TurnoverPointTableInterface {
 	loading: boolean

@@ -5,6 +5,7 @@ import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import {
 	IGetTpCategoryResponse,
 	IGetTurnoverPointSettingListResponse,
@@ -17,7 +18,6 @@ import {
 	useLazyGetTurnoverPointStatusSettingQuery,
 	useSetTurnoverPointStatusSettingMutation,
 } from './api'
-import { useAuth, useModal, useQueryParams } from '../../common/hooks'
 import { TurnoverPointStatusModal } from './TurnoverPointStatusModal'
 import { TurnoverPointTable } from './TurnoverPointTable'
 

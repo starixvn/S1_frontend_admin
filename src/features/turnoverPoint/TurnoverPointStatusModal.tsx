@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react'
 import { Form, FormInstance, Modal, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { MultipleSelect } from 'components/Select'
 import { IGetTurnoverPointStatusSettingData } from './type'
-import { MultipleSelect } from '../../components/Select'
 
 const { Option } = Select
 interface ITurnoverPointStatusModal {
