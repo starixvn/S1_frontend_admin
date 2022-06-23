@@ -5,7 +5,7 @@ import { MenuInterface } from 'type'
 import { getMapMenu, MODULE_ICON_MAPPING } from 'app/constants/menuMapping'
 import { find } from 'lodash'
 import { useAuth } from 'common/hooks'
-import { makeMenuKey, useMenuAction } from './hooks/useMenuAction'
+import { makeMenuKey, useMenuAction } from './hooks'
 
 // const { Search } = Input;
 
