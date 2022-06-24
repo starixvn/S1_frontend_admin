@@ -147,6 +147,19 @@ const RedemptionLimit = lazy(
 			/* webpackChunkName: 'RedemptionLimit' */ 'features/redemptionLimit/RedemptionLimit'
 		)
 )
+const TurnoverPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPoint' */ 'features/turnoverPoint/TurnoverPoint'
+		)
+)
+
+const TurnoverPointSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPointSetting' */ 'features/turnoverPoint/turnoverPointSetting/TurnoverPointSetting'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -386,6 +399,31 @@ const routes: RouteObject[] = [
 						}
 					>
 						<RedemptionLimit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.functionId
+						}
+					>
+						<TurnoverPoint />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting.root}/:vipLevel`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting
+								.functionId
+						}
+					>
+						<TurnoverPointSetting />
 					</AuthRequire>
 				),
 			},

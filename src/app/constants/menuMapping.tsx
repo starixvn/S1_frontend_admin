@@ -710,6 +710,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath:
 			paths.rewardProgram.sub.giftManagement.sub.redemptionLimit.root,
+		
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.root,
 	},
 	{
 		icon: null,
