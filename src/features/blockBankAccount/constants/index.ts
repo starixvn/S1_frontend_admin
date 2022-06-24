@@ -14,7 +14,7 @@ export const BANK_BLOCK_STATUS = [
 		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN,
 	},
 	{
-		displayKey: 'Label_BLOCK',
+		displayKey: 'Label_Block',
 		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
 	},
 ]
