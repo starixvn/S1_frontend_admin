@@ -178,7 +178,7 @@
 	"Label_VipLevel": "VIP Level",
 	"Label_TurnOver": "Turnover",
 	"Label_PointRate": "Point Rate",
-	"Label_PromotionDate" : "Promotion Date",
-	"Label_PromotionPointRate" : "Promotion Point Rate",
-	"Label_GetPointMessage" : "Get {{point}} point"
+	"Label_PromotionDate": "Promotion Date",
+	"Label_PromotionPointRate": "Promotion Point Rate",
+	"Label_GetPointMessage": "Get {{point}} point"
 }
