@@ -3,7 +3,7 @@ import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
-import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
+import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { selectCurrencyListBySite } from 'common/enum'
@@ -242,38 +242,38 @@ const BlockBankAccount: FC<{
 
 	useEffect(() => {
 		const init = async () => {
-			if (isEmpty(withOutSiteIdParams(queryParams))) return
+			if (isEmpty(queryParams)) {
+				const allCurrencyIds = currencyListBySite.map(item => item.currencyId)
 
-			const {
-				startDate,
-				endDate,
-				userName = '',
-				accountNum = '',
-				status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
-				tz,
-			} = queryParams
+				form.setFieldsValue({
+					currencyIds: allCurrencyIds,
+				})
+			} else {
+				const {
+					startDate,
+					endDate,
+					userName = '',
+					accountNum = '',
+					status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
+					currencyIds,
+					tz,
+				} = queryParams
 
-			onTimeZoneChange(Number(tz))
+				onTimeZoneChange(Number(tz))
 
-			const paramsCurrencyIds: number[] =
-				queryParams.currencyIds?.map((currencyId: string) =>
-					Number(currencyId)
-				) ?? []
-			const allCurrencyIds = currencyListBySite.map(item => item.currencyId)
-			const currencyIds =
-				paramsCurrencyIds.length > 0 ? paramsCurrencyIds : allCurrencyIds
+				form.setFieldsValue({
+					status: Number(status),
+					userName,
+					accountNum,
+					currencyIds:
+						currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+					dateRange: [moment(startDate), moment(endDate)],
+				})
 
-			form.setFieldsValue({
-				status: Number(status),
-				userName,
-				accountNum,
-				currencyIds,
-				dateRange: [moment(startDate), moment(endDate)],
-			})
-
-			handleSearch({
-				currentTimeZoneUtcOffset: Number(tz),
-			})
+				handleSearch({
+					currentTimeZoneUtcOffset: Number(tz),
+				})
+			}
 		}
 
 		init()
