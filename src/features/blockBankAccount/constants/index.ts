@@ -1,7 +1,7 @@
 export const BANK_BLOCK_STATUS_VALUE_OPTIONS = {
 	ALL: 0,
-	UNLOCK: 1,
-	LOCK: 2,
+	LOCK: 1,
+	UNLOCK: 2,
 }
 
 export const BANK_BLOCK_STATUS = [
