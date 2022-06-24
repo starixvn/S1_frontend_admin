@@ -5,6 +5,7 @@ import { useAppSelector } from 'app/store'
 import { Form, message } from 'antd'
 import { selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
+import { useAuth } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetDepositPointSettingQuery,
@@ -17,6 +18,8 @@ const DepositPoint: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
+
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
@@ -103,6 +106,7 @@ const DepositPoint: FC<{
 					<DepositPointTable
 						form={form}
 						loading={loading}
+						editPermission={editPermission}
 						editingKey={editingKey}
 						depositPointSettings={recordDepositPointSettings}
 						timeZoneUtcOffset={timeZoneUtcOffset}
