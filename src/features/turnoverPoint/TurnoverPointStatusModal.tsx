@@ -37,7 +37,7 @@ const TurnoverPointStatusModal: FC<ITurnoverPointStatusModal> = ({
 	}
 	useEffect(() => {
 		if (!loading && turnoverPointStatusData) {
-			let selectValue: Array<number | string> = []
+			const selectValue: Array<number | string> = []
 			turnoverPointStatusData.forEach(item => {
 				if (item.status) {
 					selectValue.push(item.tpGameTypeId)

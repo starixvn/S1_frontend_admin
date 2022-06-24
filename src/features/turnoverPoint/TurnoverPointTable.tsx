@@ -90,7 +90,7 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 						<Typography.Text style={{ height: '30px' }}>
 							{t('Label_TurnOver')}
 						</Typography.Text>
-						<Divider style={{ margin: '15px 0' }} />
+						<Divider style={{ margin: '16px 0' }} />
 						<Typography.Text style={{ height: '30px', whiteSpace: 'nowrap' }}>
 							{t('Label_PointRate')}
 						</Typography.Text>
@@ -131,25 +131,33 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 								pointRate,
 							} = currentCategory
 							return promotionStatus ? (
-								<Space
-									direction='vertical'
-									size={0}
-									style={{ maxHeight: '30px' }}
-								>
-									<Typography.Text>{promotionPointRate}</Typography.Text>
-									<Typography.Text
-										style={{
-											fontSize: '5px',
-											whiteSpace: 'nowrap',
-										}}
+								<>
+									<Divider style={{ margin: '16px 0 8px' }} />
+									<Space
+										direction='vertical'
+										align='center'
+										style={{ height: '30px' }}
+										size={0}
 									>
-										{getTime(promotionStartTime)} ~ {getTime(promotionEndTime)}
-									</Typography.Text>
-								</Space>
+										<Typography.Text>{promotionPointRate}</Typography.Text>
+										<Typography.Text
+											style={{
+												fontSize: '5px',
+												whiteSpace: 'nowrap',
+											}}
+										>
+											{getTime(promotionStartTime)} ~{' '}
+											{getTime(promotionEndTime)}
+										</Typography.Text>
+									</Space>
+								</>
 							) : (
-								<Typography.Text style={{ height: '30px' }}>
-									{pointRate}
-								</Typography.Text>
+								<>
+									<Divider style={{ margin: '16px 0' }} />
+									<Typography.Text style={{ height: '30px' }}>
+										{pointRate}
+									</Typography.Text>
+								</>
 							)
 						}
 						return 'N/A'
@@ -159,13 +167,12 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 							<Typography.Text style={{ height: '30px' }}>
 								{currentCategory.turnover}
 							</Typography.Text>
-							<Divider style={{ margin: '15px 0' }} />
 							{currentPoint()}
 						</>
 					) : (
 						<>
 							<Typography.Text style={{ height: '30px' }}>N/A</Typography.Text>
-							<Divider style={{ margin: '15px 0' }} />
+							<Divider style={{ margin: '16px 0' }} />
 							<Typography.Text style={{ height: '30px' }}>N/A</Typography.Text>
 						</>
 					)
