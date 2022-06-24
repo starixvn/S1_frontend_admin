@@ -113,6 +113,22 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='currencyIds' label={t('Label_Currency')}>
+									<MultipleSelect onChange={onChangeCurrency}>
+										{(currencyListBySite?.length as number) > 1 && (
+											<Option value={0}>{t('Label_SelectAll')}</Option>
+										)}
+
+										{currencyListBySite?.map(item => (
+											<Option key={item.currencyId} value={item.currencyId}>
+												{item.isoCode}
+											</Option>
+										))}
+									</MultipleSelect>
+								</Form.Item>
+							</Col>
+
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='status' label={t('Label_Status')}>
 									<Select placeholder='select'>
 										{BANK_BLOCK_STATUS.map(option => (
@@ -133,22 +149,6 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='accountNum' label={t('Label_AccountNum')}>
 									<Input allowClear />
-								</Form.Item>
-							</Col>
-
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									<MultipleSelect onChange={onChangeCurrency}>
-										{(currencyListBySite?.length as number) > 1 && (
-											<Option value={0}>{t('Label_SelectAll')}</Option>
-										)}
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</MultipleSelect>
 								</Form.Item>
 							</Col>
 						</Row>

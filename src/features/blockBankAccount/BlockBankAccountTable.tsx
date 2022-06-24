@@ -68,9 +68,9 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 
 				const blockStatusDisplayKey = find(BANK_BLOCK_STATUS, {
 					value:
-						blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
-							? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
-							: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK,
+						blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+							? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
+							: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
 				})?.displayKey
 
 				const blockStatusText = blockStatusDisplayKey
@@ -148,10 +148,10 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 				const { blockStatus } = values
 				return (
 					<Typography.Text>
-						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK &&
+						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK &&
 							t('Label_Block')}
 
-						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK &&
+						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN &&
 							t('Label_Open')}
 					</Typography.Text>
 				)

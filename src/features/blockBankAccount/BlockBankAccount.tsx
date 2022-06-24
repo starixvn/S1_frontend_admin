@@ -163,14 +163,14 @@ const BlockBankAccount: FC<{
 		blockBankAccListData: IBlockBankAccListResponse[] | null
 	}) => {
 		const okText =
-			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
 				? t('Label_Unlock')
 				: t('Label_Lock')
 
 		const toggledStatus =
-			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
-				? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
-				: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+				? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
+				: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
 
 		Modal.info({
 			title: t('Label_UserList'),
@@ -251,17 +251,23 @@ const BlockBankAccount: FC<{
 				accountNum = '',
 				status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 				tz,
-				currencyIds,
 			} = queryParams
 
 			onTimeZoneChange(Number(tz))
+
+			const paramsCurrencyIds: number[] =
+				queryParams.currencyIds?.map((currencyId: string) =>
+					Number(currencyId)
+				) ?? []
+			const allCurrencyIds = currencyListBySite.map(item => item.currencyId)
+			const currencyIds =
+				paramsCurrencyIds.length > 0 ? paramsCurrencyIds : allCurrencyIds
 
 			form.setFieldsValue({
 				status: Number(status),
 				userName,
 				accountNum,
-				currencyIds:
-					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				currencyIds,
 				dateRange: [moment(startDate), moment(endDate)],
 			})
 
