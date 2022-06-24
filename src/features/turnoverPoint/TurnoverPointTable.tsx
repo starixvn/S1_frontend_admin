@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Divider, Space, Table, Tabs, Typography } from 'antd'
+import { Divider, Space, Tabs, Typography } from 'antd'
+import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { PermissionInterface } from 'type'
@@ -182,7 +183,6 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 		})
 		return concat(initColumns, subColumn)
 	}
-
 	return (
 		<LayoutContent.Card>
 			<Tabs
@@ -198,9 +198,9 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 							<Table
 								loading={loading}
 								columns={getColumns()}
-								bordered
 								dataSource={turnoverTableData ?? []}
 								pagination={false}
+								size='large'
 							/>
 						)}
 					</TabPane>

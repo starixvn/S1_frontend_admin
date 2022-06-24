@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Table, TableProps } from 'antd'
 import { v4 as uuidV4 } from 'uuid'
 
-const BaseTable: FC<TableProps<{}>> = ({ children, ...props }) => {
+const BaseTable: FC<TableProps<any>> = ({ children, ...props }) => {
 	return (
 		<Table
 			bordered

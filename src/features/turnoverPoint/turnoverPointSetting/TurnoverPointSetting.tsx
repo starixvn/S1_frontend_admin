@@ -81,7 +81,8 @@ const TurnoverPointSetting: FC<{
 					return
 				}
 			}
-
+			// 後端傳來的資料裡，如果 !promotionStatus , 時間是 0001 那組 ,再前端轉成 null , 於 data picker 上會顯示 start date 字樣 ,
+			// 	回送 request 時一樣照 0001 那組還回去 。
 			settingInfos.push({
 				tpCategoryName,
 				tpCategoryId,

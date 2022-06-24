@@ -181,6 +181,7 @@ const TurnoverPoint: FC<{
 				categoryList={categoryList}
 				editPermission={editPermission}
 				handleCategoryClick={handleGetTurnoverPointStatusData}
+				tabActiveKey={tabActiveKey}
 			/>
 			<TurnoverPointStatusModal
 				loading={

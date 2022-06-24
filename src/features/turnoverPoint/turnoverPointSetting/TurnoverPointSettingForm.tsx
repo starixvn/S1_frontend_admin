@@ -1,13 +1,6 @@
 import { FC, useEffect, useState } from 'react'
-import {
-	DatePicker,
-	Form,
-	FormInstance,
-	Input,
-	Space,
-	Switch,
-	Table,
-} from 'antd'
+import { DatePicker, Form, FormInstance, Input, Space, Switch } from 'antd'
+import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import moment from 'moment'
@@ -192,7 +185,8 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 					columns={columns}
 					dataSource={turnoverSettingData ?? []}
 					pagination={false}
-					scroll={{ x: 500 }}
+					bordered={false}
+					scroll={{ x: 800 }}
 				/>
 			</Form>
 		</LayoutContent.Card>
