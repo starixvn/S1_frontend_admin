@@ -1,5 +1,6 @@
 import { Dispatch, FC, SetStateAction } from 'react'
 import moment from 'moment'
+import { PermissionInterface } from 'type'
 import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { Form, FormInstance, DatePicker, Space, Switch, Typography } from 'antd'
 import { EditableCellRows, Table } from 'components'
@@ -12,6 +13,7 @@ const { RangePicker } = DatePicker
 interface DepositPointTableProps {
 	form: FormInstance
 	loading: boolean
+	editPermission?: PermissionInterface
 	editingKey: string
 	depositPointSettings: IDepositPointSettingData[]
 	timeZoneUtcOffset: number
@@ -22,6 +24,7 @@ interface DepositPointTableProps {
 const DepositPointTable: FC<DepositPointTableProps> = ({
 	form,
 	loading,
+	editPermission,
 	editingKey,
 	depositPointSettings,
 	timeZoneUtcOffset,
@@ -61,7 +64,7 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 					</Space>
 				) : (
 					<Typography.Link
-						disabled={editingKey !== ''}
+						disabled={editingKey !== '' || !editPermission?.canUse}
 						onClick={() => onEdit(record)}
 					>
 						{t('Label_Edit')}

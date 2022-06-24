@@ -4,6 +4,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { isEqual } from 'lodash'
 import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
+import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { selectUserSite } from 'common/enum'
 import {
@@ -16,6 +17,7 @@ const InactivePointExpiry: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const [form] = Form.useForm()
 	const [componentDisabled, setComponentDisabled] = useState<boolean>(true)
 	const toggleDisabled = () => setComponentDisabled(prev => !prev)
@@ -90,7 +92,11 @@ const InactivePointExpiry: FC<{
 
 			<AffixButtons>
 				{componentDisabled ? (
-					<AffixButtons.Create loading={loading} onClick={toggleDisabled} />
+					<AffixButtons.Edit
+						disabled={!editPermission?.canUse}
+						loading={loading}
+						onClick={toggleDisabled}
+					/>
 				) : (
 					<AffixButtons.Saved
 						loading={loading}
