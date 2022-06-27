@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
-import { includes, isEmpty } from 'lodash'
+import { assign, findIndex, includes, isEmpty } from 'lodash'
 import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
@@ -9,11 +9,12 @@ import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import {
 	IGetTpCategoryResponse,
 	IGetTurnoverPointSettingListResponse,
-	IGetTurnoverPointStatusSettingResponse,
+	IGetTurnoverPointStatusSettingData,
 	ISetTurnoverPointStatusSettingInfo,
 } from './type'
 import {
 	useGetCategoryQuery,
+	useLazyGetTpGameTypeQuery,
 	useLazyGetTurnoverPointSettingListQuery,
 	useLazyGetTurnoverPointStatusSettingQuery,
 	useSetTurnoverPointStatusSettingMutation,
@@ -31,8 +32,15 @@ const TurnoverPoint: FC<{
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
 	const turnoverPointStatusModal = useModal()
 	const [modalTitle, setModalTitle] = useState('')
+	const [turnoverPointStatusData, setTurnoverPointStatusData] = useState<
+		IGetTurnoverPointStatusSettingData[]
+	>([])
+	// 此動作包含兩隻 api query 動作 ,用自己寫的 loading 避免動畫異常
+	const [modalLoading, setModalLoading] = useState(false)
+
 	const [
 		getTurnoverPointSettingList,
 		{
@@ -48,16 +56,9 @@ const TurnoverPoint: FC<{
 		isFetching: isGetCategoryLoading,
 	} = useGetCategoryQuery({ siteId })
 
-	const [
-		getTurnoverPointStatusSetting,
-		{
-			data: {
-				data: turnoverPointStatusData,
-			} = {} as IGetTurnoverPointStatusSettingResponse,
-			isFetching: isGetTurnoverPointStatusFetching,
-		},
-	] = useLazyGetTurnoverPointStatusSettingQuery()
-
+	const [getTurnoverPointStatusSetting] =
+		useLazyGetTurnoverPointStatusSettingQuery()
+	const [getTpGameType] = useLazyGetTpGameTypeQuery()
 	const [
 		setTurnoverPointStatusSetting,
 		{ isLoading: isSetTurnoverPointStatusSettingLoading },
@@ -81,19 +82,47 @@ const TurnoverPoint: FC<{
 		categoryName: string
 	) => {
 		setModalTitle(categoryName)
-
+		setModalLoading(true)
 		try {
-			await getTurnoverPointStatusSetting({
-				siteId,
-				currencyId: Number(tabActiveKey),
-				tpCategoryId: categoryId,
+			const { data: turnoverPointStatus } = await getTurnoverPointStatusSetting(
+				{
+					siteId,
+					currencyId: Number(tabActiveKey),
+					tpCategoryId: categoryId,
+				}
+			).unwrap()
+			const { data: tpGameType } = await getTpGameType({
+				categoryId,
 			}).unwrap()
+			const pointStatusData: IGetTurnoverPointStatusSettingData[] =
+				tpGameType.map(item => {
+					const statusItem: IGetTurnoverPointStatusSettingData = {
+						tpGameTypeId: item.type,
+						tpGameTypeName: item.typeName,
+						status: 0,
+					}
+					return statusItem
+				})
+			turnoverPointStatus.forEach(statusData => {
+				if (statusData.status === 1) {
+					assign(
+						pointStatusData[
+							findIndex(pointStatusData, {
+								tpGameTypeId: statusData.tpGameTypeId,
+							})
+						],
+						{ status: 1 }
+					)
+				}
+			})
+			setTurnoverPointStatusData(pointStatusData)
 			turnoverPointStatusModal.onOpen()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
+		setModalLoading(false)
 	}
 
 	const handleSetTurnoverPointStatusData = async () => {
@@ -133,6 +162,7 @@ const TurnoverPoint: FC<{
 			}).unwrap()
 			message.success(t('System.Label_SaveSuccess'))
 			turnoverPointStatusModal.onCancel()
+			setTurnoverPointStatusData([])
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -168,7 +198,7 @@ const TurnoverPoint: FC<{
 	const loading =
 		isGetTurnoverPointSettingListFetching ||
 		isGetCategoryLoading ||
-		isGetTurnoverPointStatusFetching
+		modalLoading
 
 	return (
 		<LayoutContent.Main>
@@ -184,10 +214,7 @@ const TurnoverPoint: FC<{
 				tabActiveKey={tabActiveKey}
 			/>
 			<TurnoverPointStatusModal
-				loading={
-					isGetTurnoverPointStatusFetching ||
-					isSetTurnoverPointStatusSettingLoading
-				}
+				loading={isSetTurnoverPointStatusSettingLoading || modalLoading}
 				visible={turnoverPointStatusModal.visible}
 				onFinish={handleSetTurnoverPointStatusData}
 				onCancel={turnoverPointStatusModal.onCancel}

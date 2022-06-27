@@ -4,6 +4,8 @@ import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
 import {
 	IGetTpCategoryArg,
 	IGetTpCategoryResponse,
+	IGetTpGameTypeArg,
+	IGetTpGameTypeResponse,
 	IGetTurnoverPointSettingArgs,
 	IGetTurnoverPointSettingListArgs,
 	IGetTurnoverPointSettingListResponse,
@@ -78,6 +80,13 @@ export const turnoverPointApi = createApi({
 				data,
 			}),
 		}),
+		getTpGameType: builder.query<IGetTpGameTypeResponse, IGetTpGameTypeArg>({
+			query: data => ({
+				url: 'BaseData/GetTpGameTypeList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -88,4 +97,5 @@ export const {
 	useLazyGetTurnoverPointStatusSettingQuery,
 	useSetTurnoverPointStatusSettingMutation,
 	useGetTurnoverPointSettingQuery,
+	useLazyGetTpGameTypeQuery,
 } = turnoverPointApi
