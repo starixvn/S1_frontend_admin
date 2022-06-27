@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Col, Form, FormInstance, Input, Row, Switch } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 
@@ -16,6 +16,13 @@ const RedemptionLimitForm: FC<RedemptionLimitFormProps> = ({
 	onSetRedemptionLimitSetting,
 }) => {
 	const { t } = useTranslation()
+	const [statusLoading, setStatusLoading] = useState(true)
+	const status = Form.useWatch('status', form)
+	useEffect(() => {
+		if (status !== undefined) {
+			setStatusLoading(false)
+		}
+	}, [status])
 	return (
 		<LayoutContent.Card>
 			<Form
@@ -45,7 +52,7 @@ const RedemptionLimitForm: FC<RedemptionLimitFormProps> = ({
 					</Col>
 					<Col lg={6} md={6} xs={6}>
 						<Form.Item name='status' label={t('Label_Status')}>
-							<Switch />
+							<Switch checked={status} loading={statusLoading} />
 						</Form.Item>
 					</Col>
 				</Row>

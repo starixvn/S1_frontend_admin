@@ -23,7 +23,7 @@ const RedemptionLimit: FC<{
 	const [componentDisabled, setComponentDisabled] = useState<boolean>(true)
 	const toggleDisabled = () => setComponentDisabled(prev => !prev)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-
+	const [formLoaded, setFormLoaded] = useState(false)
 	const {
 		data: { data: redemptionLimitSetting } = {} as IGetRedemptionLimitResponse,
 		isFetching: isGetRedemptionLimitSettingFetching,
@@ -72,6 +72,7 @@ const RedemptionLimit: FC<{
 				limit,
 				status: Boolean(status),
 			})
+			setFormLoaded(true)
 		}
 	}, [isGetRedemptionLimitSettingFetching])
 
@@ -81,11 +82,13 @@ const RedemptionLimit: FC<{
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-			<RedemptionLimitForm
-				form={form}
-				componentDisabled={componentDisabled}
-				onSetRedemptionLimitSetting={handleSetRedemptionLimitSetting}
-			/>
+			{formLoaded && (
+				<RedemptionLimitForm
+					form={form}
+					componentDisabled={componentDisabled}
+					onSetRedemptionLimitSetting={handleSetRedemptionLimitSetting}
+				/>
+			)}
 			<AffixButtons>
 				{componentDisabled ? (
 					<AffixButtons.Edit
