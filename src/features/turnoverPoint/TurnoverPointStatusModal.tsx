@@ -36,7 +36,7 @@ const TurnoverPointStatusModal: FC<ITurnoverPointStatusModal> = ({
 		}
 	}
 	useEffect(() => {
-		if (!loading && turnoverPointStatusData) {
+		if (!loading && turnoverPointStatusData.length !== 0) {
 			const selectValue: Array<number | string> = []
 			turnoverPointStatusData.forEach(item => {
 				if (item.status) {
@@ -68,6 +68,7 @@ const TurnoverPointStatusModal: FC<ITurnoverPointStatusModal> = ({
 			<Form form={form} layout='vertical'>
 				<Form.Item name='selectCategoryList'>
 					<MultipleSelect
+						placeholder={t('Label_Select')}
 						onChange={handleSelectOnChange}
 						style={{ width: '80%' }}
 					>

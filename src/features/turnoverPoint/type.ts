@@ -75,9 +75,23 @@ export interface IGetTurnoverPointStatusSettingData {
 	tpGameTypeId: number
 	tpGameTypeName: string
 	status: number
-	lastUpdater: string
-	lastUpdateTime: string
+	lastUpdater?: string
+	lastUpdateTime?: string
 }
+
+export interface IGetTpGameTypeArg {
+	categoryId: number
+}
+
+export interface IGetTpGameTypeData {
+	tpId: number
+	type: number
+	typeName: string
+	categoryId: number
+	categoryName: null
+}
+
+export type IGetTpGameTypeResponse = IAxiosResponse<IGetTpGameTypeData[]>
 
 export type IGetTurnoverPointStatusSettingResponse = IAxiosResponse<
 	IGetTurnoverPointStatusSettingData[]
