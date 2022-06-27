@@ -67,7 +67,7 @@ const BlockBankAccount: FC<{
 		const {
 			accountNum = '',
 			userName = '',
-			status,
+			blockStatus,
 			dateRange,
 			currencyIds,
 		} = form.getFieldsValue()
@@ -83,7 +83,7 @@ const BlockBankAccount: FC<{
 				endDate,
 				accountNum,
 				userName,
-				status,
+				blockStatus,
 				currencyId: currencyIds,
 			}).unwrap()
 
@@ -92,7 +92,7 @@ const BlockBankAccount: FC<{
 				endDate,
 				accountNum,
 				userName,
-				status,
+				blockStatus,
 				currencyIds,
 				tz: currentTimeZoneUtcOffset,
 			})
@@ -254,7 +254,7 @@ const BlockBankAccount: FC<{
 					endDate,
 					userName = '',
 					accountNum = '',
-					status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
+					blockStatus = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 					currencyIds,
 					tz,
 				} = queryParams
@@ -262,7 +262,7 @@ const BlockBankAccount: FC<{
 				onTimeZoneChange(Number(tz))
 
 				form.setFieldsValue({
-					status: Number(status),
+					blockStatus: Number(blockStatus),
 					userName,
 					accountNum,
 					currencyIds:

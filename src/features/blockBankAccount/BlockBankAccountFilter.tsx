@@ -129,7 +129,7 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 							</Col>
 
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='status' label={t('Label_Status')}>
+								<Form.Item name='blockStatus' label={t('Label_BlockStatus')}>
 									<Select placeholder='select'>
 										{BANK_BLOCK_STATUS.map(option => (
 											<Option key={option.value} value={option.value}>

@@ -152,7 +152,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 							t('Label_Block')}
 
 						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN &&
-							t('Label_Open')}
+							t('Label_Unlock')}
 					</Typography.Text>
 				)
 			},

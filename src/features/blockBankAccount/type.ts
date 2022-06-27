@@ -14,7 +14,7 @@ export interface IBlockBankAccState {
 export interface IGetBlockBankAccArgs {
 	accountNum: string
 	userName: string
-	status: number
+	blockStatus: number
 	startDate: string
 	endDate: string
 	currencyId: number[]
