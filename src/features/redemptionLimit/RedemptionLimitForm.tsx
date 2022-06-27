@@ -16,6 +16,7 @@ const RedemptionLimitForm: FC<RedemptionLimitFormProps> = ({
 	onSetRedemptionLimitSetting,
 }) => {
 	const { t } = useTranslation()
+	const status = Form.useWatch('status', form)
 	return (
 		<LayoutContent.Card>
 			<Form
@@ -45,7 +46,7 @@ const RedemptionLimitForm: FC<RedemptionLimitFormProps> = ({
 					</Col>
 					<Col lg={6} md={6} xs={6}>
 						<Form.Item name='status' label={t('Label_Status')}>
-							<Switch />
+							<Switch checked={status} />
 						</Form.Item>
 					</Col>
 				</Row>
