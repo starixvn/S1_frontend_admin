@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { isEqual } from 'lodash'
-import { Form, message } from 'antd'
+import { Form, message, Spin } from 'antd'
 import { useAppSelector } from 'app/store'
 import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
@@ -84,11 +84,13 @@ const InactivePointExpiry: FC<{
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
-			<InactivePointExpiryForm
-				form={form}
-				componentDisabled={componentDisabled}
-				onSetInactivePointExpirySetting={handleSetInactivePointExpirySetting}
-			/>
+			<Spin spinning={loading}>
+				<InactivePointExpiryForm
+					form={form}
+					componentDisabled={componentDisabled}
+					onSetInactivePointExpirySetting={handleSetInactivePointExpirySetting}
+				/>
+			</Spin>
 
 			<AffixButtons>
 				{componentDisabled ? (
