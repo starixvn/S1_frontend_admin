@@ -204,7 +204,9 @@ const DepositAccounting: FC<{
 				tz,
 			} = queryParams
 
-			onTimeZoneChange(Number(tz))
+			if (tz) {
+				onTimeZoneChange(Number(tz))
+			}
 
 			form.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
