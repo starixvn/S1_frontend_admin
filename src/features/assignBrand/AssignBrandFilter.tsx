@@ -42,7 +42,7 @@ const AssignBrandFilter: FC<AssignBrandFilterProps> = ({
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='Search Criteria' key={1}>
+			<Panel header='' key={1}>
 				<Form
 					layout='vertical'
 					size='middle'

@@ -50,7 +50,7 @@ const BlockIpFilter: FC<IBlockIpFilterProps> = ({
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='Search Criteria' key={1}>
+			<Panel header='' key={1}>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
 						layout='vertical'
