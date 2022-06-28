@@ -1,5 +1,5 @@
 import { Form } from 'antd'
-import _ from 'lodash'
+import { cloneDeep, filter, includes } from 'lodash'
 import { useState } from 'react'
 import { FormPermissionInterface } from '../type'
 
@@ -17,7 +17,7 @@ export const useRoleManagementForm = () => {
 		displayKey: number
 		permissionId: number
 	}) => {
-		const newPermissionList = _.cloneDeep(permissionList)
+		const newPermissionList = cloneDeep(permissionList)
 		const currentIndex = newPermissionList?.findIndex(
 			permission => permission.displayKey === displayKey
 		)
@@ -35,8 +35,8 @@ export const useRoleManagementForm = () => {
 				newPermissionList[currentIndex].permissionIdList
 			let newPermissionIdList = []
 
-			if (_.includes(originPermissionIdList, permissionId)) {
-				newPermissionIdList = _.filter(
+			if (includes(originPermissionIdList, permissionId)) {
+				newPermissionIdList = filter(
 					originPermissionIdList,
 					mapPermissionId => mapPermissionId !== permissionId
 				)
@@ -54,7 +54,7 @@ export const useRoleManagementForm = () => {
 	}
 
 	const handleCheckAllPermission = (displayKey: number, settings: any[]) => {
-		const newPermissionList = _.cloneDeep(permissionList)
+		const newPermissionList = cloneDeep(permissionList)
 		const currentIndex = newPermissionList?.findIndex(
 			permission => permission.displayKey === displayKey
 		)

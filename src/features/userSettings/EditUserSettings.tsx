@@ -1,28 +1,31 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { getPermissionList } from 'common/permissionForm/utils'
 import { Form, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import paths from 'app/constants/paths'
 import { AffixButtons } from 'components/AffixButtons'
 import { usePermissionForm } from 'common/permissionForm'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from 'common/hooks'
 import {
 	useLazyGetUpdateAdminUserQuery,
 	useLazyGetOriginAdminPermissionListByRoleQuery,
 	useUpdateAdminUserMutation,
 } from './api'
 import UserSettingsForm from './UserSettingsForm'
-import { AdminUserPermissionInterface } from './type'
+import { AdminUserInterface, AdminUserPermissionInterface } from './type'
 
 const EditUserSettings = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
-	const userSite = useAppSelector(selectUserSite)
-	const { userId } = useParams()
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { userId: editUserId } = useParams()
 	const [form] = Form.useForm()
 
 	const [adminPermissionList, setAdminPermissionList] = useState<
@@ -38,7 +41,12 @@ const EditUserSettings = () => {
 
 	const [
 		getUpdateAdminUser,
-		{ isLoading: isGetUpdateAdminUserLoading, data: updateAdminUserData },
+		{
+			data: {
+				data: updateAdminUserData,
+			} = {} as IAxiosResponse<AdminUserInterface>,
+			isLoading: isGetUpdateAdminUserLoading,
+		},
 	] = useLazyGetUpdateAdminUserQuery()
 
 	const [getOriginAdminPermissionListByRole] =
@@ -54,13 +62,15 @@ const EditUserSettings = () => {
 
 		try {
 			await updateAdminUser({
-				siteId: userSite?.siteId,
-				userId: Number(userId),
+				siteId,
+				userId: Number(editUserId),
 				userName,
 				password,
 				role,
 				currencyList,
-				permission: permissionList,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
 			}).unwrap()
 
 			navigate(
@@ -87,7 +97,7 @@ const EditUserSettings = () => {
 			const { data: newOriginAdminPermissionList } =
 				await getOriginAdminPermissionListByRole({
 					role,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 
 			const newOriginPermissionList = getPermissionList(
@@ -103,9 +113,13 @@ const EditUserSettings = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const { data: newUpdateAdminUserData } = await getUpdateAdminUser({
-				userId: Number(userId),
-				siteId: userSite?.siteId,
+			const {
+				data: {
+					data: newUpdateAdminUserData,
+				} = {} as IAxiosResponse<AdminUserInterface>,
+			} = await getUpdateAdminUser({
+				userId: Number(editUserId),
+				siteId,
 			})
 
 			const { userName, password, selectCurrencyList, role, permission } =
@@ -123,15 +137,25 @@ const EditUserSettings = () => {
 		}
 
 		init()
-	}, [userId])
+	}, [editUserId])
+
+	const editRole = {
+		role: updateAdminUserData?.role,
+		roleName: updateAdminUserData?.roleName,
+		userId: Number(editUserId),
+	}
+
+	if (editPermission?.canUse !== undefined && !editPermission?.canUse)
+		return <Navigate to='/403' />
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_EditUser')} />
 
 			<UserSettingsForm
 				loading={isGetUpdateAdminUserLoading}
 				form={form}
+				editRole={editRole}
 				permissionList={permissionList}
 				roleCurrencyList={updateAdminUserData?.currencyList ?? []}
 				originAdminPermissionList={adminPermissionList ?? []}
@@ -150,7 +174,7 @@ const EditUserSettings = () => {
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

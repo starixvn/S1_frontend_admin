@@ -1,14 +1,15 @@
-import _ from 'lodash'
+import { filter, map } from 'lodash'
 import { message } from 'antd'
 import { useEffect } from 'react'
 import { selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { useAuth } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { RoleManagementForm } from './RoleManagementForm'
 import { selectRoleManagementStatus, selectRolePermission } from './slice'
 import {
@@ -53,15 +54,17 @@ const getPermissionList = (
 			return
 		}
 
-		const permissionIdList: number[] = _.map(
-			_.filter(settings, { canUse: true }),
+		const permissionIdList: number[] = map(
+			filter(settings, { canUse: true }),
 			({ permissionId }) => permissionId
 		)
 
-		newPermissionList.push({
-			displayKey,
-			permissionIdList,
-		})
+		if (permissionIdList.length > 0) {
+			newPermissionList.push({
+				displayKey,
+				permissionIdList,
+			})
+		}
 	}
 
 	permissionList.forEach(permission => makePermission(permission))
@@ -71,9 +74,10 @@ const getPermissionList = (
 
 const EditRoleManagement = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const params = useParams()
 
 	const roleManagementStatus = useAppSelector(selectRoleManagementStatus)
@@ -95,6 +99,15 @@ const EditRoleManagement = () => {
 			return
 		}
 
+		if (permissionList.length <= 0) {
+			message.warning(
+				t('Label_Required', {
+					key: t('Label_Permission'),
+				})
+			)
+			return
+		}
+
 		const { roleName, remark, currencyList } = form.getFieldsValue()
 
 		try {
@@ -103,14 +116,16 @@ const EditRoleManagement = () => {
 				mark: remark,
 				role: Number(params.roleId),
 				currencyList,
-				permission: permissionList,
-				siteId: userSite?.siteId,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
+				siteId,
 			})
 
 			await dispatch(
 				fetchPermissionGetRoleListAsync({
 					roleName: '',
-					siteId: userSite?.siteId,
+					siteId,
 				})
 			)
 			navigate(
@@ -128,7 +143,7 @@ const EditRoleManagement = () => {
 		dispatch(
 			fetchPermissionGetUpdateRolePermissionAsync({
 				role: Number(params?.roleId),
-				siteId: userSite?.siteId,
+				siteId,
 			})
 		)
 	}, [])
@@ -150,8 +165,10 @@ const EditRoleManagement = () => {
 
 	const loading = roleManagementStatus === 'pending'
 
+	if (!editPermission?.canUse) return <Navigate to='/403' />
+
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_EditRoleManagement')} />
 
 			<RoleManagementForm
@@ -169,7 +186,7 @@ const EditRoleManagement = () => {
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

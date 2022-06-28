@@ -9,6 +9,8 @@ import {
 	DeleteButton,
 	SavedButton,
 	ReloadButton,
+	FileExportButton,
+	EditButton,
 } from './ActionButtons'
 import GoNextRouteButton from './GoNextRouteButton'
 import GoBackRouteButton from './GoBackRouteButton'
@@ -21,8 +23,10 @@ export const AFFIX_BUTTON_TYPE_ENUM = {
 	DELETE_BUTTON: 'DELETE_BUTTON',
 	SAVED_BUTTON: 'SAVED_BUTTON',
 	RELOAD_BUTTON: 'RELOAD_BUTTON',
+	FILE_EXPORT_BUTTON: 'FILE_EXPORT_BUTTON',
 	GO_BACK_ROUTE_BUTTON: 'GO_BACK_ROUTE_BUTTON',
 	GO_NEXT_ROUTE_BUTTON: 'GO_NEXT_ROUTE_BUTTON',
+	EDIT_BUTTON: 'EDIT_BUTTON',
 }
 
 const { GO_BACK_ROUTE_BUTTON, GO_NEXT_ROUTE_BUTTON } = AFFIX_BUTTON_TYPE_ENUM
@@ -63,8 +67,10 @@ interface AffixButtonsInterface extends FC<{ children: ReactNode }> {
 	Delete: typeof DeleteButton
 	Saved: typeof SavedButton
 	Reload: typeof ReloadButton
+	FileExport: typeof FileExportButton
 	GoBackRoute: typeof GoBackRouteButton
 	GoNextRoute: typeof GoNextRouteButton
+	Edit: typeof EditButton
 }
 
 const AffixButtons: AffixButtonsInterface = props => {
@@ -119,8 +125,10 @@ AffixButtons.Create = CreateButton
 AffixButtons.Delete = DeleteButton
 AffixButtons.Saved = SavedButton
 AffixButtons.Reload = ReloadButton
+AffixButtons.FileExport = FileExportButton
 AffixButtons.BackToTop = BackToTopButton
 AffixButtons.GoBackRoute = GoBackRouteButton
 AffixButtons.GoNextRoute = GoNextRouteButton
+AffixButtons.Edit = EditButton
 
 export { AffixButtons }

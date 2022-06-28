@@ -1,41 +1,65 @@
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { withOutSiteIdParams } from 'common/utils'
-import { useQueryParams } from 'common/hooks'
-import { dateRangeToUtcFormatter, useTimeZone } from 'components/TimeZoneSelect'
-import { selectUserSite } from 'common/enum'
 import { useAppSelector } from 'app/store'
+import { useTranslation } from 'react-i18next'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { useAuth, useQueryParams } from 'common/hooks'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import BlockBankAccountFilter from './BlockBankAccountFilter'
 import BlockBankAccountTable from './BlockBankAccountTable'
 import {
 	useLazyGetBlockBankAccListQuery,
 	useLazyGetBlockBankAccQuery,
 	useSetBlockAccountMutation,
+	useSetReleaseAccountMutation,
 } from './api'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
-import { IGetBlockBankAccListResponse } from './type'
+import {
+	IBlockBankAccListResponse,
+	IBlockBankAccState,
+	ISetReleaseAccountArgs,
+} from './type'
 
-const BlockBankAccount: FC = () => {
+const BlockBankAccount: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const userSite = useAppSelector(selectUserSite)
-
+	const { actionPermissions: { editPermission, deletePermission } = {} } =
+		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [
 		getBlockBankAcc,
-		{ data: blockBankAccData, isFetching: isBlockBankAccFetching },
+		{
+			data: { data: blockBankAccData } = {} as IAxiosResponse<
+				IBlockBankAccState[]
+			>,
+			isFetching: isBlockBankAccFetching,
+		},
 	] = useLazyGetBlockBankAccQuery()
-
 	const [getBlockBankAccList, { isFetching: isGetBlockBankAccListFetching }] =
 		useLazyGetBlockBankAccListQuery()
-
 	const [setBlockAccount] = useSetBlockAccountMutation()
+	const [setReleaseAccount] = useSetReleaseAccountMutation()
+
+	const onChangeCurrency = (newCurrencyIds: number[]) => {
+		if (newCurrencyIds.includes(0)) {
+			form.setFieldsValue({
+				currencyIds: currencyListBySite?.map(item => item.currencyId),
+			})
+		} else {
+			form.setFieldsValue({
+				currencyIds: newCurrencyIds,
+			})
+		}
+	}
 
 	const handleSearch = async ({
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
@@ -43,8 +67,9 @@ const BlockBankAccount: FC = () => {
 		const {
 			accountNum = '',
 			userName = '',
-			status,
+			blockStatus,
 			dateRange,
+			currencyIds,
 		} = form.getFieldsValue()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -58,7 +83,8 @@ const BlockBankAccount: FC = () => {
 				endDate,
 				accountNum,
 				userName,
-				status,
+				blockStatus,
+				currencyId: currencyIds,
 			}).unwrap()
 
 			setQueryParams({
@@ -66,9 +92,30 @@ const BlockBankAccount: FC = () => {
 				endDate,
 				accountNum,
 				userName,
-				status,
+				blockStatus,
+				currencyIds,
 				tz: currentTimeZoneUtcOffset,
 			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSetReleaseAccount = async ({
+		sysId,
+		accountNum,
+		ifscCode,
+		custId,
+	}: ISetReleaseAccountArgs) => {
+		try {
+			setReleaseAccount({
+				sysId,
+				accountNum,
+				ifscCode,
+				custId,
+			}).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -79,14 +126,14 @@ const BlockBankAccount: FC = () => {
 	const handleBlockBankAcc = async ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
+		blockStatus: number
 	}) => {
 		try {
-			const blockBankAccListData = await getBlockBankAccList({
+			const { data: blockBankAccListData } = await getBlockBankAccList({
 				sysId,
 				accountNum,
 			}).unwrap()
@@ -94,7 +141,7 @@ const BlockBankAccount: FC = () => {
 			onOpenBlockBankAccInfo({
 				sysId,
 				accountNum,
-				status,
+				blockStatus,
 				blockBankAccListData,
 			})
 		} catch (error) {
@@ -107,28 +154,31 @@ const BlockBankAccount: FC = () => {
 	const onOpenBlockBankAccInfo = ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 		blockBankAccListData,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
-		blockBankAccListData: IGetBlockBankAccListResponse[] | null
+		blockStatus: number
+		blockBankAccListData: IBlockBankAccListResponse[] | null
 	}) => {
 		const okText =
-			status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
 				? t('Label_Unlock')
 				: t('Label_Lock')
 
 		const toggledStatus =
-			status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
-				? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
-				: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+				? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
+				: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
 
 		Modal.info({
 			title: t('Label_UserList'),
 			closable: true,
 			okText,
+			okButtonProps: {
+				disabled: !editPermission?.canUse,
+			},
 			content: (
 				<>
 					<h5>{t('Label_BlockBankAccInfoDescribe1')}</h5>
@@ -191,42 +241,49 @@ const BlockBankAccount: FC = () => {
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) return
+			if (isEmpty(queryParams)) {
+				const allCurrencyIds = currencyListBySite.map(item => item.currencyId)
 
-			const {
-				startDate,
-				endDate,
-				userName = '',
-				accountNum = '',
-				status = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
-				tz,
-			} = queryParams
+				form.setFieldsValue({
+					currencyIds: allCurrencyIds,
+				})
+			} else {
+				const {
+					startDate,
+					endDate,
+					userName = '',
+					accountNum = '',
+					blockStatus = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
+					currencyIds,
+					tz,
+				} = queryParams
 
-			onTimeZoneChange(Number(tz))
+				onTimeZoneChange(Number(tz))
 
-			form.setFieldsValue({
-				status: Number(status),
-				userName,
-				accountNum,
-				dateRange: [moment(startDate), moment(endDate)],
-			})
+				form.setFieldsValue({
+					blockStatus: Number(blockStatus),
+					userName,
+					accountNum,
+					currencyIds:
+						currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+					dateRange: [moment(startDate), moment(endDate)],
+				})
 
-			handleSearch({
-				currentTimeZoneUtcOffset: Number(tz),
-			})
+				handleSearch({
+					currentTimeZoneUtcOffset: Number(tz),
+				})
+			}
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isBlockBankAccFetching || isGetBlockBankAccListFetching
 
 	return (
-		<main>
-			<LayoutContent.Title title='block bank account' />
+		<LayoutContent.Main>
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<BlockBankAccountFilter
 				loading={loading}
@@ -234,15 +291,18 @@ const BlockBankAccount: FC = () => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				onChangeCurrency={onChangeCurrency}
 			/>
 
 			<BlockBankAccountTable
 				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				blockBankAccData={blockBankAccData ?? []}
+				deletePermission={deletePermission}
 				onBlockBankAcc={handleBlockBankAcc}
+				onSetReleaseAccount={handleSetReleaseAccount}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

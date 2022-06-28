@@ -2,21 +2,33 @@ import BoApi from 'common/service/Api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createContext, ReactNode, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LocationState, MenuFunctionDatas, MenuInterface } from 'type'
+import {
+	ActionPermissions,
+	LocationState,
+	MenuFunctionData,
+	MenuInterface,
+	UserDataState,
+} from 'type'
 import { message } from 'antd'
 import paths from 'app/constants/paths'
 import { getMapMenu } from 'app/constants/menuMapping'
 
-interface UserMenuState {
-	childs: null | Array<UserMenuState>
-	funcKey: string
-}
-
 export interface AuthContextType {
+	internalAuth: AuthState
+	onInternalCheckSignIn: () => void
+	onInternalSignIn: (
+		userName: string,
+		userPassword: string,
+		redirectUrl: string
+	) => void
+	onInternalSignOut: () => void
+	userData?: UserDataState
 	auth: AuthState
 	userMenuList: MenuInterface[]
-	userMenuFunctionData: MenuFunctionDatas[]
-	internalPermissionFunctionKeys?: string[]
+	userMenuFunctionData: MenuFunctionData[]
+	actionPermissions?: ActionPermissions
+	setActionPermissions: (newActionPermission: ActionPermissions) => void
+	onGetUserData: (siteId: number) => void
 	onSignIn: (userName: string, userPassword: string) => void
 	onSignOut: () => void
 	onCheckSignIn: () => void
@@ -27,19 +39,22 @@ export interface AuthContextType {
 		oldPassword: string
 		newPassword: string
 	}) => void
-	onFetchUserMenuList: (lang: string) => void
-	onFetchInternalAllowRoles: () => void
+	onFetchUserMenuList: ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => void
 }
 
 const AuthContext = createContext<AuthContextType>(null!)
 
 export interface AuthState {
-	user: string
 	isLogin: boolean | undefined
 }
 
 const initialAuth = {
-	user: '',
 	isLogin: undefined,
 }
 
@@ -48,11 +63,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const navigate = useNavigate()
 	const location = useLocation()
 
+	const [userData, setUserData] = useState<UserDataState>()
+	const [actionPermissions, setActionPermissions] =
+		useState<ActionPermissions>()
+
 	const [auth, setAuth] = useState<AuthState>(initialAuth)
+	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
 
 	const [userMenuList, setUserMenuList] = useState<MenuInterface[]>([])
-	const [internalPermissionFunctionKeys, setInternalPermissionFunctionKeys] =
-		useState<string[]>()
+
+	const onGetUserData = async (siteId: number) => {
+		const newUserData = await BoApi.getUserData(siteId)
+
+		setUserData(newUserData)
+	}
 
 	const onCheckSignIn = async () => {
 		try {
@@ -60,7 +84,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setAuth(newAuth)
 		} catch (error) {
-			setAuth({ user: '', isLogin: false })
+			setAuth({ isLogin: false })
+		}
+	}
+
+	const onInternalCheckSignIn = async () => {
+		try {
+			const newInternalAuth: AuthState = await BoApi.onInternalCheckSignIn()
+			setInternalAuth(newInternalAuth)
+		} catch (error) {
+			setInternalAuth({ isLogin: false })
+		}
+	}
+
+	const onInternalSignIn = async (
+		userName: string,
+		userPassword: string,
+		redirectUrl: string
+	) => {
+		try {
+			const newAuth = await BoApi.onInternalSignIn(
+				userName,
+				userPassword,
+				redirectUrl
+			)
+
+			setInternalAuth(newAuth)
+		} catch (error) {
+			message.error(t((error as Error).message))
+		}
+	}
+
+	const onInternalSignOut = async () => {
+		try {
+			await BoApi.onInternalSignOut()
+
+			setInternalAuth(initialAuth)
+		} catch (error) {
+			message.error(t((error as Error).message))
 		}
 	}
 
@@ -118,40 +179,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}
 
-	const onFetchInternalAllowRoles = async () => {
-		const internalAllowRoles = await BoApi.getUserMenu(null)
-
-		const newInternalPermissionFunctionKeys: string[] = []
-
-		const mapping = (_menuList: UserMenuState[]) => {
-			_menuList.forEach(({ funcKey, childs }) => {
-				if (funcKey) {
-					newInternalPermissionFunctionKeys.push(funcKey)
-				}
-
-				if (childs?.length) {
-					mapping(childs)
-				}
-			})
-
-			return _menuList
-		}
-
-		if (internalAllowRoles.length > 0) {
-			mapping(internalAllowRoles)
-		}
-
-		setInternalPermissionFunctionKeys(newInternalPermissionFunctionKeys)
-	}
-
-	const onFetchUserMenuList = async (lang: string) => {
-		const originUserMenuList = await BoApi.getUserMenu(lang)
+	const onFetchUserMenuList = async ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => {
+		const originUserMenuList = await BoApi.getUserMenu({ lang, siteId })
 
 		setUserMenuList(originUserMenuList)
 	}
 
 	const getUserMenuFunctionData = () => {
-		const originAllMenuFunctionData: MenuFunctionDatas[] = []
+		const originAllMenuFunctionData: MenuFunctionData[] = []
 		const mapping = (list: MenuInterface[]) => {
 			list.forEach(menu => {
 				if (menu.functionId) {
@@ -163,7 +204,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				}
 
 				if (menu?.functionDatas ? menu?.functionDatas.length > 0 : 0) {
-					menu?.functionDatas?.forEach((functionData: MenuFunctionDatas) => {
+					menu?.functionDatas?.forEach((functionData: MenuFunctionData) => {
 						originAllMenuFunctionData.push(functionData)
 					})
 				}
@@ -179,19 +220,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return originAllMenuFunctionData
 	}
 
-	const userMenuFunctionData: MenuFunctionDatas[] = getUserMenuFunctionData()
+	const userMenuFunctionData: MenuFunctionData[] = getUserMenuFunctionData()
 
 	const value = {
+		internalAuth,
+		onInternalCheckSignIn,
+		onInternalSignIn,
+		onInternalSignOut,
+		userData,
 		auth,
 		userMenuList,
 		userMenuFunctionData,
-		internalPermissionFunctionKeys,
+		actionPermissions,
+		setActionPermissions,
+		onGetUserData,
 		onSignIn,
 		onSignOut,
 		onCheckSignIn,
 		onChangePassword,
 		onFetchUserMenuList,
-		onFetchInternalAllowRoles,
 	}
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

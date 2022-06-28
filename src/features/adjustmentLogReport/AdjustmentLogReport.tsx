@@ -1,13 +1,13 @@
-import _ from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { useTimeZone, dateRangeToUtcFormatter } from 'components/TimeZoneSelect'
+import { useTimeZone } from 'components/TimeZoneSelect'
 import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { withOutSiteIdParams } from 'common/utils'
+import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import {
 	selectActionTypeList,
 	selectAdjustmentInfoLogMenu,
@@ -23,8 +23,11 @@ import {
 	setAdjustmentLogReportStatus,
 } from './slice'
 
-const AdjustmentLogReport = () => {
+const AdjustmentLogReport: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+
 	const dispatch = useAppDispatch()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
@@ -34,7 +37,7 @@ const AdjustmentLogReport = () => {
 	const actionTypeList = useAppSelector(selectActionTypeList)
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const adjustmentLogReportStatus = useAppSelector(
 		selectAdjustmentLogReportStatus
@@ -87,7 +90,7 @@ const AdjustmentLogReport = () => {
 					userName,
 					startDate,
 					endDate,
-					siteIds: userSite?.siteId ? [userSite?.siteId] : [],
+					siteIds: siteId ? [siteId] : [],
 				})
 			)
 
@@ -146,10 +149,8 @@ const AdjustmentLogReport = () => {
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
-			if (_.isEmpty(withOutSiteIdParams(queryParams))) {
+			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				onChangeCurrency([0])
 				onChangeMenus([0])
 				onChangeActionTypes([0])
@@ -173,13 +174,13 @@ const AdjustmentLogReport = () => {
 			onTimeZoneChange(Number(tz))
 
 			form.setFieldsValue({
-				actionTypes: _.isArray(actionTypes)
+				actionTypes: isArray(actionTypes)
 					? actionTypes.map((actionType: string) => Number(actionType))
 					: [],
-				currencyIds: _.isArray(currencyIds)
+				currencyIds: isArray(currencyIds)
 					? currencyIds.map((currencyId: string) => Number(currencyId))
 					: [],
-				menus: _.isArray(menus)
+				menus: isArray(menus)
 					? menus.map((currencyId: string) => Number(currencyId))
 					: [],
 				transId,
@@ -195,7 +196,7 @@ const AdjustmentLogReport = () => {
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	useEffect(() => {
 		return () => {
@@ -206,8 +207,8 @@ const AdjustmentLogReport = () => {
 	const loading = adjustmentLogReportStatus === 'pending'
 
 	return (
-		<main>
-			<LayoutContent.Title title={t('Label_AdjustmentLogReport')} />
+		<LayoutContent.Main>
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<AdjustmentLogReportFilter
 				form={form}
@@ -232,7 +233,7 @@ const AdjustmentLogReport = () => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

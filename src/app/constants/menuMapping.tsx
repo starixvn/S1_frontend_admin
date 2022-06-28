@@ -6,14 +6,14 @@ import {
 	EditOutlined,
 	ExclamationCircleOutlined,
 	ShopOutlined,
+	ShoppingCartOutlined,
 	TransactionOutlined,
 	UserSwitchOutlined,
 } from '@ant-design/icons'
-import { Button, Result } from 'antd'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
-import { RiUserSettingsLine } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
+import { RiUserSettingsLine } from '@react-icons/all-files/ri/RiUserSettingsLine'
+
 import allowedRoles from './allowedRoles'
 import paths from './paths'
 
@@ -34,6 +34,7 @@ export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	8: <TransactionOutlined style={iconStyle} />,
 	9: <RiUserSettingsLine style={iconStyle} />,
 	19: <ControlOutlined style={iconStyle} />,
+	102: <ShoppingCartOutlined style={iconStyle} />,
 }
 
 export const getMapMenu = (functionId: number) => {
@@ -57,7 +58,6 @@ export const getMapMenu = (functionId: number) => {
 	return {
 		...(pathMode === 'Internal' && { internalFunctionKey }),
 		path: index || !path ? '/' : `/${pathMode}/${path}`,
-		pathMode,
 		icon,
 	}
 }
@@ -215,6 +215,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.finance.sub.accounting.sub.depositAccounting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.accounting.sub.depositAccounting.root,
+	},
+	{
+		icon: null,
 		functionId: 94,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalAccountingList',
@@ -303,19 +309,19 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 48,
+		functionId: paths.marketing.sub.referralManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/ReferralManagement',
 		internalFunctionKey: allowedRoles.MarketingReferralManagement,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.referralManagement.root,
 	},
 	{
 		icon: null,
-		functionId: 49,
+		functionId: paths.marketing.sub.vipRebateManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VipRebateMangetment',
 		internalFunctionKey: allowedRoles.MarketingVipRebateMangetment,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.vipRebateManagement.root,
 	},
 	{
 		icon: null,
@@ -491,27 +497,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 70,
-		pathMode: 'NewAdmin',
-		newAdminPath: 'Risk/BlockBankAccount',
+		pathMode: 'Internal',
+		newAdminPath: paths.risk.sub.blockBankAccount.root,
 	},
 	{
 		icon: null,
 		functionId: 71,
-		pathMode: 'NewAdmin',
-		newAdminPath: 'Risk/BlockIP',
-		element: (
-			<Result
-				status='warning'
-				title='Page Not Found: Risk/BlockIP'
-				extra={
-					<Link to='/Internal/Home/DashboardNew'>
-						<Button type='primary' key='console'>
-							Back Dashboard
-						</Button>
-					</Link>
-				}
-			/>
-		),
+		pathMode: 'Internal',
+		newAdminPath: paths.risk.sub.blockIp.root,
 	},
 	{
 		icon: null,
@@ -557,11 +550,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 77,
+		functionId: paths.marketing.sub.referralReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingReferralReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/ReferralReport',
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.referralReport.root,
 	},
 	{
 		name: 'Draw Prize Report',
@@ -665,17 +658,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.administration.sub.roleManagement.functionId,
-		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
-		pathMode: 'Internal',
-		internalPath: 'Admin/GroupAuthoritySetting',
+		pathMode: 'NewAdmin',
 		newAdminPath: `${paths.administration.sub.roleManagement.root}`,
 	},
 	{
 		icon: null,
 		functionId: paths.administration.sub.userSetting.functionId,
-		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
-		pathMode: 'Internal',
-		internalPath: 'Admin/UserAuthoritySetting',
+		pathMode: 'NewAdmin',
 		newAdminPath: `${paths.administration.sub.userSetting.root}`,
 	},
 	{
@@ -689,21 +678,51 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 93,
-		internalFunctionKey: allowedRoles.FinanceAdjustmentLogReport,
-		pathMode: 'Internal',
-		internalPath: 'Finance/AdjustmentLogReport',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.administration.sub.adjustmentLogReport.root,
 	},
 	{
 		icon: null,
-		functionId: paths.administration.sub.oldRoleManagement.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.administration.sub.oldRoleManagement.root,
+		functionId: 96,
+		internalFunctionKey: allowedRoles.AdminGroupAuthoritySetting,
+		pathMode: 'Internal',
+		internalPath: allowedRoles.AdminGroupAuthoritySetting,
 	},
 	{
 		icon: null,
-		functionId: paths.administration.sub.oldUserSetting.functionId,
+		functionId: 97,
+		internalFunctionKey: allowedRoles.AdminUserAuthoritySetting,
+		pathMode: 'Internal',
+		internalPath: allowedRoles.AdminUserAuthoritySetting,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.administration.sub.oldUserSetting.root,
+		newAdminPath:
+			paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.giftManagement.sub.redemptionLimit.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.rewardProgram.sub.giftManagement.sub.redemptionLimit.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.pointSetting.sub.depositPoint.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.pointSetting.sub.depositPoint.root,
 	},
 ]

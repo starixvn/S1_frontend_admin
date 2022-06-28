@@ -1,7 +1,7 @@
 export const BANK_BLOCK_STATUS_VALUE_OPTIONS = {
 	ALL: 0,
-	UNLOCK: 1,
-	LOCK: 2,
+	BLOCK: 1,
+	OPEN: 2,
 }
 
 export const BANK_BLOCK_STATUS = [
@@ -11,10 +11,16 @@ export const BANK_BLOCK_STATUS = [
 	},
 	{
 		displayKey: 'Label_Unlock',
-		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK,
+		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN,
 	},
 	{
-		displayKey: 'Label_Lock',
-		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK,
+		displayKey: 'Label_Block',
+		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
 	},
 ]
+
+export const RELEASE_STATUS_VALUE_OPTIONS = {
+	DELETE: 0,
+	OPEN: 1,
+	BO_DELETE: 2,
+}

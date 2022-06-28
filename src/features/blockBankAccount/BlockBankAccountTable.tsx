@@ -1,71 +1,118 @@
-import { FC } from 'react'
-import _ from 'lodash'
-import { useTranslation } from 'react-i18next'
-import { v4 as uuidV4 } from 'uuid'
 import moment from 'moment'
-import { Space, Table, TablePaginationConfig, Typography } from 'antd'
+import { FC } from 'react'
+import { find } from 'lodash'
+import { useTranslation } from 'react-i18next'
+import { timeFormat } from 'common/utils/format'
+import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
+import { Table } from 'components'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
 import { useIsMounted } from 'usehooks-ts'
-import { IBlockBankAccResponse } from './type'
-import { BANK_BLOCK_STATUS, BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
+import { PermissionInterface } from 'type'
+import { IBlockBankAccState, ISetReleaseAccountArgs } from './type'
+import {
+	BANK_BLOCK_STATUS,
+	BANK_BLOCK_STATUS_VALUE_OPTIONS,
+	RELEASE_STATUS_VALUE_OPTIONS,
+} from './constants'
 
 interface IBlockBankAccountTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
-	blockBankAccData: IBlockBankAccResponse[]
+	blockBankAccData: IBlockBankAccState[]
+	deletePermission?: PermissionInterface
 	onBlockBankAcc: ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
+		blockStatus: number
 	}) => void
+	onSetReleaseAccount: ({
+		sysId,
+		accountNum,
+		ifscCode,
+		custId,
+	}: ISetReleaseAccountArgs) => void
 }
 
 const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 	loading,
 	timeZoneUtcOffset,
 	blockBankAccData,
+	deletePermission,
 	onBlockBankAcc,
+	onSetReleaseAccount,
 }) => {
 	const { t } = useTranslation()
-
 	const isMounted = useIsMounted()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const columns = [
 		{
 			title: t('Label_Action'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: any) => {
-				const statusDisplayKey = _.find(BANK_BLOCK_STATUS, {
+			render: (values: {
+				blockStatus: number
+				sysId: number
+				accountNum: string
+				ifscCode: string
+				custId: number
+			}) => {
+				const { blockStatus, accountNum, sysId, ifscCode, custId } = values
+
+				const blockStatusDisplayKey = find(BANK_BLOCK_STATUS, {
 					value:
-						values.status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK
-							? BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK
-							: BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK,
+						blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+							? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
+							: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
 				})?.displayKey
 
-				const text = statusDisplayKey ? t(statusDisplayKey) : 'N/A'
+				const blockStatusText = blockStatusDisplayKey
+					? t(blockStatusDisplayKey)
+					: 'N/A'
 
 				return (
 					<Space>
 						<Typography.Link
 							onClick={() =>
 								onBlockBankAcc({
-									sysId: values.sysId,
-									accountNum: values.accountNum,
-									status: values.status,
+									sysId,
+									accountNum,
+									blockStatus,
 								})
 							}
 						>
-							{text}
+							{blockStatusText}
 						</Typography.Link>
+
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							disabled={!deletePermission?.canUse}
+							onConfirm={() =>
+								onSetReleaseAccount({ sysId, accountNum, ifscCode, custId })
+							}
+						>
+							<Typography.Link disabled={!deletePermission?.canUse}>
+								{t('Label_Release')}
+							</Typography.Link>
+						</Popconfirm>
 					</Space>
 				)
 			},
+		},
+		{
+			title: t('Label_Currency'),
+			dataIndex: 'currencyId',
+			width: 120,
+			align: 'center' as 'center',
+			render: (currencyId: number) =>
+				find(currencyListBySite, { currencyId })?.isoCode ?? 'N/A',
 		},
 		{
 			title: t('Label_MemberId'),
@@ -77,14 +124,35 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: any) => {
+			render: (values: { status: number }) => {
+				const { status } = values
+
 				return (
 					<Typography.Text>
-						{values.status === BANK_BLOCK_STATUS_VALUE_OPTIONS.LOCK &&
-							t('Label_Lock')}
+						{status === RELEASE_STATUS_VALUE_OPTIONS.DELETE &&
+							t('Label_Delete')}
 
-						{values.status === BANK_BLOCK_STATUS_VALUE_OPTIONS.UNLOCK &&
-							t('Label_Open')}
+						{status === RELEASE_STATUS_VALUE_OPTIONS.OPEN && t('Label_Open')}
+
+						{status === RELEASE_STATUS_VALUE_OPTIONS.BO_DELETE &&
+							t('Label_BoDelete')}
+					</Typography.Text>
+				)
+			},
+		},
+		{
+			title: t('Label_BlockStatus'),
+			width: 80,
+			align: 'center' as 'center',
+			render: (values: { blockStatus: number }) => {
+				const { blockStatus } = values
+				return (
+					<Typography.Text>
+						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK &&
+							t('Label_Block')}
+
+						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN &&
+							t('Label_Unlock')}
 					</Typography.Text>
 				)
 			},
@@ -112,9 +180,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  hh:mm:ss')
+					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -123,12 +189,17 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			dataIndex: 'updateTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: (updateTime: string) =>
-				updateTime
-					? moment(updateTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format('YYYY-MM-DD  hh:mm:ss')
-					: '',
+			render: (releaseUpdateTime: string | null, record = {}) => {
+				const { blockUpdateTime } = record as IBlockBankAccState
+
+				const updateTime = moment(blockUpdateTime).isAfter(releaseUpdateTime)
+					? blockUpdateTime
+					: releaseUpdateTime
+
+				return updateTime
+					? moment(updateTime).utcOffset(updateTime).format(timeFormat)
+					: ''
+			},
 		},
 		{
 			title: t('Label_Updater'),
@@ -145,10 +216,6 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 	return (
 		<LayoutContent.Card>
 			<Table
-				bordered
-				rowKey={() => uuidV4()}
-				size='small'
-				scroll={{ x: 240 }}
 				loading={loading}
 				columns={columns}
 				dataSource={blockBankAccData}

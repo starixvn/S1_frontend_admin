@@ -9,6 +9,7 @@ import { selectUserSite } from 'common/enum'
 import { usePermissionForm } from 'common/permissionForm'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { getPermissionList } from 'common/permissionForm/utils'
 import {
 	useAddAdminUserMutation,
@@ -20,7 +21,7 @@ import UserSettingsForm from './UserSettingsForm'
 const AddUserSettings: FC = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const [form] = Form.useForm()
 
@@ -31,10 +32,10 @@ const AddUserSettings: FC = () => {
 		handleCheckAllPermission,
 	} = usePermissionForm(form)
 
-	const { data: roleCurrencyList, isFetching: isAddAdminUserCurrencyFetching } =
-		useGetAddAdminUserCurrencyQuery({
-			siteId: userSite?.siteId,
-		})
+	const {
+		data: { data: roleCurrencyList } = {} as IAxiosResponse<any[]>,
+		isFetching: isAddAdminUserCurrencyFetching,
+	} = useGetAddAdminUserCurrencyQuery({ siteId })
 
 	const [
 		getOriginAdminPermissionListByRole,
@@ -51,12 +52,14 @@ const AddUserSettings: FC = () => {
 
 		try {
 			await addAdminUser({
-				siteId: userSite?.siteId,
+				siteId,
 				userName,
 				password,
 				role,
 				currencyList,
-				permission: permissionList,
+				permission: permissionList.filter(
+					permission => permission.permissionIdList.length > 0
+				),
 			})
 
 			navigate(
@@ -75,7 +78,7 @@ const AddUserSettings: FC = () => {
 			const { data: newOriginAdminPermissionList } =
 				await getOriginAdminPermissionListByRole({
 					role,
-					siteId: userSite?.siteId,
+					siteId,
 				})
 
 			const newOriginPermissionList = getPermissionList(
@@ -89,7 +92,7 @@ const AddUserSettings: FC = () => {
 	}
 
 	return (
-		<main>
+		<LayoutContent.Main>
 			<LayoutContent.Title title={t('Label_AddUser')} />
 
 			<UserSettingsForm
@@ -113,7 +116,7 @@ const AddUserSettings: FC = () => {
 
 				<AffixButtons.GoBackRoute />
 			</AffixButtons>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

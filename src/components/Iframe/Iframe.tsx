@@ -1,13 +1,13 @@
-import _ from 'lodash'
+import { replace } from 'lodash'
 
 const Iframe = ({ path }: { path: string }) => {
 	return (
 		<iframe
 			style={{ width: '100%', height: '100%', border: 'none' }}
-			title={_.replace(path || '', '/', ' ')}
+			title={replace(path || '', '/', ' ')}
 			src={`/${path}`}
 		/>
 	)
 }
 
-export default Iframe
+export { Iframe }

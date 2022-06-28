@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import _ from 'lodash'
+import { filter, includes, intersection, some, uniq } from 'lodash'
 import {
 	Col,
 	Divider,
@@ -20,6 +20,8 @@ import { selectAllCurrencyList, selectUserSite } from 'common/enum'
 import { LockOutlined } from '@ant-design/icons'
 import PermissionForm from 'common/permissionForm'
 import { FormPermissionInterface } from 'type'
+import { useLocation } from 'react-router-dom'
+import paths from 'app/constants/paths'
 
 const { Option } = Select
 
@@ -27,6 +29,7 @@ interface UserSettingsFormInterface {
 	loading: boolean
 	form: FormInstance
 	permissionList: FormPermissionInterface[]
+	editRole?: { role: number | null; roleName: null | string; userId: number }
 	roleCurrencyList: number[]
 	originAdminPermissionList: any[]
 	onRoleChange?: (role: number | null) => void
@@ -45,43 +48,71 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 	form,
 	permissionList,
 	originAdminPermissionList,
+	editRole,
 	roleCurrencyList,
 	onRoleChange = () => null,
 	onPermissionChange,
 	onCheckAllPermission,
 }) => {
 	const { t } = useTranslation()
+	const location = useLocation()
 	const dispatch = useAppDispatch()
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
+	const selectedCurrencyList: number[] =
+		form.getFieldValue('currencyList') ?? []
+
+	const userAllCurrencyList = uniq([
+		...selectedCurrencyList,
+		...roleCurrencyList,
+	])
+	const userAllCurrencyWithoutRoleCurrency = filter(
+		selectedCurrencyList,
+		currency => !includes(roleCurrencyList, currency)
+	)
 	const filteredAllCurrencyListByUser = allCurrencyList.filter(currency =>
-		_.some(
-			roleCurrencyList,
+		some(
+			userAllCurrencyList,
 			userCurrency => userCurrency === currency.currencyId
 		)
 	)
 
 	const roleManagementDataList = useAppSelector(selectRoleManagementDataList)
+	const currencyList: any[] = Form.useWatch('currencyList', form)
+	const role: number = Form.useWatch('role', form)
 
+	const filteredRoleBySelectedCurrencyList = roleManagementDataList.filter(
+		roleManagementData => {
+			return intersection(roleManagementData.icurrencyList, currencyList).length
+		}
+	)
 	const onChangeCurrency = (newCurrencyList: number[]) => {
-		const currencyList = newCurrencyList.includes(0)
-			? filteredAllCurrencyListByUser.map(item => item.currencyId)
-			: newCurrencyList
+		let result = []
 
-		form.setFieldsValue({ currencyList, role: null })
+		if (newCurrencyList.length === 0) {
+			result = userAllCurrencyWithoutRoleCurrency
+		} else {
+			result = newCurrencyList.includes(0)
+				? userAllCurrencyList
+				: newCurrencyList
+		}
+
+		form.setFieldsValue({
+			currencyList: result,
+			role: null,
+		})
 		onRoleChange(null)
 	}
 
 	useEffect(() => {
-		dispatch(
-			fetchPermissionGetRoleListAsync({
-				roleName: '',
-				siteId: userSite?.siteId,
-			})
-		)
+		dispatch(fetchPermissionGetRoleListAsync({ roleName: '', siteId }))
 	}, [])
 
 	const isPasswordEnable = form.getFieldValue('password') === null
+
+	const isEdit = Boolean(
+		location.pathname.match(paths.administration.sub.editUserSetting.root)
+	)
 
 	return (
 		<Spin spinning={loading}>
@@ -99,7 +130,7 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									},
 								]}
 							>
-								<Input allowClear />
+								<Input allowClear disabled={isEdit} />
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
@@ -142,7 +173,12 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 									)}
 
 									{filteredAllCurrencyListByUser.map(item => (
-										<Option key={item.currencyId} value={item.currencyId}>
+										<Option
+											key={item.currencyId}
+											// 只能異動該角色所能控制的權限
+											disabled={!includes(roleCurrencyList, item.currencyId)}
+											value={item.currencyId}
+										>
 											{item.isoCode}
 										</Option>
 									))}
@@ -151,21 +187,26 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 						</Col>
 
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item
-								name='role'
-								label='Role'
-								rules={[
-									{
-										required: true,
-										message: t('Label_RoleRequire'),
-									},
-								]}
-							>
+							<Form.Item name='role' label='Role'>
 								<Select
+									allowClear
 									placeholder='select'
-									onChange={role => onRoleChange(role)}
+									onChange={newRole => onRoleChange(newRole)}
 								>
-									{roleManagementDataList?.map(item => (
+									{isEdit &&
+										!filteredRoleBySelectedCurrencyList.some(
+											item => item.roleName === editRole?.roleName
+										) && (
+											<Option
+												key={editRole?.role}
+												value={editRole?.role}
+												disabled
+											>
+												{editRole?.roleName}
+											</Option>
+										)}
+
+									{filteredRoleBySelectedCurrencyList?.map(item => (
 										<Option key={item.role} value={item.role}>
 											{item.roleName}
 										</Option>
@@ -177,12 +218,14 @@ const UserSettingsForm: FC<UserSettingsFormInterface> = ({
 
 					<Divider />
 
-					<PermissionForm
-						originAdminPermissionList={originAdminPermissionList}
-						permissionList={permissionList}
-						onPermissionChange={onPermissionChange}
-						onCheckAllPermission={onCheckAllPermission}
-					/>
+					{currencyList?.length > 0 && role && (
+						<PermissionForm
+							originAdminPermissionList={originAdminPermissionList}
+							permissionList={permissionList}
+							onPermissionChange={onPermissionChange}
+							onCheckAllPermission={onCheckAllPermission}
+						/>
+					)}
 				</Form>
 			</LayoutContent.Card>
 		</Spin>

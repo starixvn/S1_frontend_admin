@@ -13,19 +13,24 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { PAGINATION } from 'common/hooks'
-import _ from 'lodash'
+import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { PermissionInterface } from 'type'
 import { selectRoleManagementDataList } from './slice'
 
 interface RoleManagementTableInterface {
 	loading: boolean
 	onDelete: (role: number) => void
+	deletePermission?: PermissionInterface
+	editPermission?: PermissionInterface
 }
 
 const RoleManagementTable = ({
 	loading,
 	onDelete,
+	deletePermission,
+	editPermission,
 }: RoleManagementTableInterface) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
@@ -78,13 +83,17 @@ const RoleManagementTable = ({
 			render: (values: any) => (
 				<Space>
 					<Popconfirm
+						disabled={!deletePermission?.canUse}
 						title={t('Label_SureToDelete')}
 						onConfirm={() => onDelete(values.role)}
 					>
-						<Typography.Link>{t('Label_Delete')}</Typography.Link>
+						<Typography.Link disabled={!deletePermission?.canUse}>
+							{t('Label_Delete')}
+						</Typography.Link>
 					</Popconfirm>
 
 					<Typography.Link
+						disabled={!editPermission?.canUse}
 						onClick={() =>
 							navigate(
 								`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editRoleManagement.root}/${values.role}`
@@ -116,7 +125,7 @@ const RoleManagementTable = ({
 			align: 'center' as 'center',
 			render: (icurrencyList: number[]) => {
 				const currency = icurrencyList.map(
-					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
+					currencyId => find(allCurrencyList, { currencyId })?.isoCode
 				)
 
 				return currency.filter(Boolean).join('/')

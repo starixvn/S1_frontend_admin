@@ -4,40 +4,52 @@ import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { useModal, useQueryParams } from 'common/hooks'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
-import { useEffect } from 'react'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {
-	useDeleteAdminUserByUserIdMutation,
 	useLazyGetUserAdminListByUserNameQuery,
 	useSetAdminUserPasswordMutation,
 	useSetAdminUserStatusMutation,
 } from './api'
 import { ADMIN_USER_STATUS } from './constants'
+import { UserAdminState } from './type'
 import { UpdateUserPasswordModal } from './UpdateUserPasswordModal'
 import { UserSettingsFilter } from './UserSettingsFilter'
 import { UserSettingsTable } from './UserSettingsTable'
 
-const UserSettings = () => {
+const UserSettings: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: {
+			addPermission,
+			changePasswordPermission,
+			editPermission,
+			setActivePermission,
+		} = {},
+	} = useAuth()
+
 	const navigate = useNavigate()
 
 	const updatePasswordModal = useModal()
-
 	const [queryParams, setQueryParams] = useQueryParams()
-
+	const { timeZoneUtcOffset } = useTimeZone()
 	const [form] = Form.useForm()
-
-	const userSite = useAppSelector(selectUserSite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const [
 		getUserAdminListByUserName,
-		{ data: userAdminList, isFetching: isUserAdminListFetching },
+		{
+			data: { data: userAdminList } = {} as IAxiosResponse<UserAdminState[]>,
+			isFetching: isUserAdminListFetching,
+		},
 	] = useLazyGetUserAdminListByUserNameQuery()
-
-	const [deleteAdminUserByUserId] = useDeleteAdminUserByUserIdMutation()
 
 	const [setAdminUserStatus] = useSetAdminUserStatusMutation()
 
@@ -48,10 +60,7 @@ const UserSettings = () => {
 		const { userName = '' } = form.getFieldsValue()
 
 		try {
-			await getUserAdminListByUserName({
-				userName,
-				siteId: userSite?.siteId,
-			}).unwrap()
+			await getUserAdminListByUserName({ userName, siteId }).unwrap()
 
 			setQueryParams({
 				userName,
@@ -63,26 +72,11 @@ const UserSettings = () => {
 		}
 	}
 
-	const handleDelete = async (userId: number) => {
-		try {
-			await deleteAdminUserByUserId({
-				userId,
-				siteId: userSite?.siteId,
-			})
-
-			message.success(t('System.Label_Success'))
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
-	}
-
 	const handleSetAdminUserStatus = async (userId: number, status: number) => {
 		try {
 			setAdminUserStatus({
 				userId,
-				siteId: userSite?.siteId,
+				siteId,
 				status:
 					status === ADMIN_USER_STATUS.OPEN
 						? ADMIN_USER_STATUS.CLOSE
@@ -102,7 +96,7 @@ const UserSettings = () => {
 
 		try {
 			await setAdminUserPassword({
-				siteId: userSite?.siteId,
+				siteId,
 				password: newPassword,
 				userId,
 			})
@@ -117,8 +111,6 @@ const UserSettings = () => {
 	}
 
 	useEffect(() => {
-		if (!userSite?.siteId) return
-
 		const init = async () => {
 			const { userName = '' } = queryParams
 
@@ -130,13 +122,13 @@ const UserSettings = () => {
 		}
 
 		init()
-	}, [userSite?.siteId])
+	}, [])
 
 	const loading = isUserAdminListFetching
 
 	return (
-		<main>
-			<LayoutContent.Title title={t('Label_UserSetting')} />
+		<LayoutContent.Main>
+			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<UserSettingsFilter
 				loading={loading}
@@ -149,14 +141,18 @@ const UserSettings = () => {
 				loading={loading}
 				userAdminList={userAdminList ?? []}
 				updatePasswordModal={updatePasswordModal}
+				changePasswordPermission={changePasswordPermission}
+				editPermission={editPermission}
+				setActivePermission={setActivePermission}
+				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSetAdminUserStatus={handleSetAdminUserStatus}
-				onDelete={handleDelete}
 			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.Create
+					disabled={!addPermission?.canUse}
 					onClick={() =>
 						navigate(
 							`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.addUserSetting.root}`
@@ -171,7 +167,7 @@ const UserSettings = () => {
 				onFinish={handleUpdatePassword}
 				onCancel={updatePasswordModal.onCancel}
 			/>
-		</main>
+		</LayoutContent.Main>
 	)
 }
 

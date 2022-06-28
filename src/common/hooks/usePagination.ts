@@ -32,7 +32,13 @@ const usePagination = ({
 	})
 
 	useEffect(() => {
-		setPagination(prev => ({ ...prev, total: paginationTotal }))
+		setPagination(prev => {
+			const { current, pageSize } = prev
+
+			const newCurrent = paginationTotal % pageSize ? current : 1
+
+			return { ...prev, total: paginationTotal, current: newCurrent }
+		})
 	}, [paginationTotal])
 
 	return [pagination, setPagination]

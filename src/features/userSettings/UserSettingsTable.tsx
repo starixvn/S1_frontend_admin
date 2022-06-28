@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import _ from 'lodash'
-import { useIsMounted } from 'usehooks-ts'
+import moment from 'moment'
+import { find } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import {
 	Popconfirm,
@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { GoKey } from 'react-icons/go'
+import { timeFormat } from 'common/utils/format'
 
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -20,14 +21,18 @@ import { ModalState, PAGINATION } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { PermissionInterface } from 'type'
 import { UserAdminState } from './type'
 
 interface UserSettingsTableProps {
 	form: FormInstance
 	loading: boolean
 	userAdminList: UserAdminState[]
+	timeZoneUtcOffset: number
 	updatePasswordModal: ModalState
-	onDelete: (userId: number) => void
+	changePasswordPermission?: PermissionInterface
+	editPermission?: PermissionInterface
+	setActivePermission?: PermissionInterface
 	onSetAdminUserStatus: (userId: number, status: number) => void
 }
 
@@ -35,15 +40,16 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 	form,
 	loading,
 	userAdminList,
+	timeZoneUtcOffset,
+	changePasswordPermission,
+	editPermission,
+	setActivePermission,
 	updatePasswordModal,
-	onDelete,
 	onSetAdminUserStatus,
 }) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const allCurrencyList = useAppSelector(selectAllCurrencyList)
-
-	const isMounted = useIsMounted()
 
 	const columns = [
 		{
@@ -53,31 +59,21 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			align: 'center' as 'center',
 			render: (values: any) => (
 				<Space>
-					{values.status === 1 ? (
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							onConfirm={() =>
-								onSetAdminUserStatus(values.userId, values.status)
-							}
+					<Popconfirm
+						disabled={!setActivePermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={() => onSetAdminUserStatus(values.userId, values.status)}
+					>
+						<Typography.Link
+							disabled={!setActivePermission?.canUse}
+							type={values.status === 1 ? 'success' : 'danger'}
 						>
-							<Typography.Link type='success'>
-								<CheckOutlined />
-							</Typography.Link>
-						</Popconfirm>
-					) : (
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							onConfirm={() =>
-								onSetAdminUserStatus(values.userId, values.status)
-							}
-						>
-							<Typography.Link type='danger'>
-								<CloseOutlined />
-							</Typography.Link>
-						</Popconfirm>
-					)}
+							{values.status === 1 ? <CheckOutlined /> : <CloseOutlined />}
+						</Typography.Link>
+					</Popconfirm>
 
 					<Typography.Link
+						disabled={!changePasswordPermission?.canUse}
 						type='secondary'
 						onClick={() => {
 							form.setFieldsValue({
@@ -90,14 +86,8 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 						<GoKey style={{ marginTop: '8px' }} />
 					</Typography.Link>
 
-					<Popconfirm
-						title={t('Label_SureToDelete')}
-						onConfirm={() => onDelete(values.userId)}
-					>
-						<Typography.Link>{t('Label_Delete')}</Typography.Link>
-					</Popconfirm>
-
 					<Typography.Link
+						disabled={!editPermission?.canUse}
 						onClick={() =>
 							navigate(
 								`/${NEW_SITE_PREFIX_URL}/${paths.administration.sub.editUserSetting.root}/${values.userId}`
@@ -137,19 +127,37 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			dataIndex: 'icurrencyList',
 			width: 120,
 			align: 'center' as 'center',
-			render: (icurrencyList: number[]) => {
-				const currency = icurrencyList.map(
-					currencyId => _.find(allCurrencyList, { currencyId })?.isoCode
+			render: (icurrencyList: number[] | null) => {
+				const currency = icurrencyList?.map(
+					currencyId => find(allCurrencyList, { currencyId })?.isoCode
 				)
 
-				return currency.filter(Boolean).join('/')
+				return currency?.filter(Boolean).join('/')
 			},
 		},
+		{
+			title: t('Label_LoginTime'),
+			key: 'loginTime',
+			dataIndex: 'loginTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (loginTime: string) =>
+				loginTime
+					? moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
+		},
+		{
+			title: t('Label_UpdateTime'),
+			key: 'updateTime',
+			dataIndex: 'updateTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (updateTime: string) =>
+				updateTime
+					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
+		},
 	]
-
-	if (!isMounted()) {
-		return null
-	}
 
 	return (
 		<LayoutContent.Card>

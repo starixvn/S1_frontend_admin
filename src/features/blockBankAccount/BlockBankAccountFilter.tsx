@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
+import moment from 'moment'
 import {
 	Col,
 	Collapse,
@@ -16,9 +17,11 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
 import { BANK_BLOCK_STATUS } from './constants'
 
 const { Panel } = Collapse
@@ -35,6 +38,7 @@ interface BlockBankAccountFilterInterface {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
+	onChangeCurrency: (newCurrencyIds: number[]) => void
 }
 
 const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
@@ -43,12 +47,14 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
+	onChangeCurrency,
 }) => {
 	const { t } = useTranslation()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='Search Criteria' key={1}>
+			<Panel header='' key={1}>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
 						layout='vertical'
@@ -107,7 +113,23 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='status' label={t('Label_Status')}>
+								<Form.Item name='currencyIds' label={t('Label_Currency')}>
+									<MultipleSelect onChange={onChangeCurrency}>
+										{(currencyListBySite?.length as number) > 1 && (
+											<Option value={0}>{t('Label_SelectAll')}</Option>
+										)}
+
+										{currencyListBySite?.map(item => (
+											<Option key={item.currencyId} value={item.currencyId}>
+												{item.isoCode}
+											</Option>
+										))}
+									</MultipleSelect>
+								</Form.Item>
+							</Col>
+
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='blockStatus' label={t('Label_BlockStatus')}>
 									<Select placeholder='select'>
 										{BANK_BLOCK_STATUS.map(option => (
 											<Option key={option.value} value={option.value}>

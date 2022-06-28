@@ -1,4 +1,4 @@
-export interface IBlockBankAccResponse {
+export interface IBlockBankAccState {
 	accountName: string
 	accountNum: string
 	bankName: string
@@ -7,18 +7,20 @@ export interface IBlockBankAccResponse {
 	sysId: number
 	updateOperator: null | string
 	updateTime: null | string
+	blockUpdateTime: null | string
 	userName: string
 }
 
-export interface IBlockBankAccArgs {
+export interface IGetBlockBankAccArgs {
 	accountNum: string
 	userName: string
-	status: number
+	blockStatus: number
 	startDate: string
 	endDate: string
+	currencyId: number[]
 }
 
-export interface IGetBlockBankAccListResponse {
+export interface IBlockBankAccListResponse {
 	accountName: string
 	custId: number
 	ifscCode: string
@@ -36,4 +38,11 @@ export interface ISetBlockAccountArgs {
 	accountNum: string
 	status: number
 	memo: string
+}
+
+export interface ISetReleaseAccountArgs {
+	sysId: number
+	accountNum: string
+	custId: number
+	ifscCode: string
 }

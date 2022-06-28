@@ -1,6 +1,12 @@
 import axios from 'axios'
+import { UserDataState } from 'type'
 
 export const baseUrl = '/apiV2/'
+
+export const ApiV1 = axios.create({
+	withCredentials: true,
+	baseURL: '/api/',
+})
 
 export const ApiV2 = axios.create({
 	withCredentials: true,
@@ -14,8 +20,8 @@ export default class BoApi {
 	static post = (url: string, data: Object | null = null) =>
 		ApiV2.post(url, data)
 
-	static onCheckSignIn = async () => {
-		const response = await BoApi.post('/home/CheckSignIn')
+	static onInternalCheckSignIn = async () => {
+		const response = await ApiV1.post('/Home/CheckSignIn')
 
 		if (response?.data?.errorCode !== 0) {
 			throw new Error(response?.data?.message)
@@ -27,8 +33,59 @@ export default class BoApi {
 		}
 	}
 
+	static onInternalSignIn = async (
+		userName: string,
+		userPassword: string,
+		redirectUrl: string
+	) => {
+		const response = await ApiV1.post('/Home/Signin', {
+			txtID: userName,
+			txtPW: userPassword,
+			redirectUrl,
+		})
+
+		if (response?.data.errorCode !== 0) {
+			switch (response?.data?.errorCode) {
+				case 1004:
+					throw new Error('System.Label_WrongPassword')
+
+				default:
+					throw new Error('System.Label_LoginFailed')
+			}
+		}
+
+		return {
+			user: response?.data.data,
+			isLogin: true,
+		}
+	}
+
+	static onInternalSignOut = async () => ApiV1.post('/Home/SignOut')
+
+	static getUserData = async (siteId: number) => {
+		const response = await BoApi.post('/Home/GetUserData', { siteId })
+
+		if (response?.data?.errorCode !== 0) {
+			throw new Error(response?.data?.message)
+		}
+
+		return response?.data?.data as UserDataState
+	}
+
+	static onCheckSignIn = async () => {
+		const response = await BoApi.post('/Home/CheckSignIn')
+
+		if (response?.data?.errorCode !== 0) {
+			throw new Error(response?.data?.message)
+		}
+
+		return { isLogin: true }
+	}
+
+	static onSignOut = async () => BoApi.post('/Home/SignOut')
+
 	static onSignIn = async (userName: string, userPassword: string) => {
-		const response = await BoApi.post('/home/Signin', {
+		const response = await BoApi.post('/Home/Signin', {
 			userName,
 			userPwd: userPassword,
 		})
@@ -49,8 +106,6 @@ export default class BoApi {
 		}
 	}
 
-	static onSignOut = async () => BoApi.post('/home/SignOut')
-
 	static onChangePassword = async ({
 		oldPassword,
 		newPassword,
@@ -68,8 +123,17 @@ export default class BoApi {
 		}
 	}
 
-	static getUserMenu = async (lang: string | null) => {
-		const response = await BoApi.post('/Permission/GetUserMenu', { lang })
+	static getUserMenu = async ({
+		lang,
+		siteId,
+	}: {
+		lang: string
+		siteId: number
+	}) => {
+		const response = await BoApi.post('/Permission/GetUserMenu', {
+			lang,
+			siteId,
+		})
 
 		const userMenuList = response?.data?.data ?? []
 

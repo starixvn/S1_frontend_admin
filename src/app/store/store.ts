@@ -1,10 +1,23 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
+import { baseDataApi } from 'common/service/baseDataApi'
+import { homeApi } from 'common/service/homeApi/api'
+import { permissionApi } from 'common/service/permissionApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
+import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
+import { blockIpApi } from 'features/blockIp/api'
+import { referralReportApi } from 'features/referralReport/api'
+import { vipRebateManagementApi } from 'features/vipRebateManagement/api'
 import { dashboardSlice } from 'features/dashboard'
+import { depositAccountingApi } from 'features/depositAccounting/api'
+import { referralManagementApi } from 'features/referralManagement/api'
 import roleManagementReducer from 'features/roleManagement/slice'
 import { userSettingsApi } from 'features/userSettings/api'
+import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
+import { redemptionLimitApi } from 'features/redemptionLimit/api'
+import { depositPointApi } from 'features/depositPoint/api'
+import { turnoverPointApi } from '../../features/turnoverPoint/api'
 
 export const store = configureStore({
 	reducer: {
@@ -12,13 +25,41 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
+		[homeApi.reducerPath]: homeApi.reducer,
+		[baseDataApi.reducerPath]: baseDataApi.reducer,
+		[permissionApi.reducerPath]: permissionApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
+		[blockIpApi.reducerPath]: blockIpApi.reducer,
+		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
+		[assignBrandApi.reducerPath]: assignBrandApi.reducer,
+		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
+		[referralReportApi.reducerPath]: referralReportApi.reducer,
+		[inactivePointExpiryApi.reducerPath]: inactivePointExpiryApi.reducer,
+		[vipRebateManagementApi.reducerPath]: vipRebateManagementApi.reducer,
+		[redemptionLimitApi.reducerPath]: redemptionLimitApi.reducer,
+		[depositPointApi.reducerPath]: depositPointApi.reducer,
+		[turnoverPointApi.reducerPath]: turnoverPointApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
-		getDefaultMiddleware()
+		getDefaultMiddleware({
+			serializableCheck: false,
+		})
+			.concat(homeApi.middleware)
+			.concat(baseDataApi.middleware)
+			.concat(permissionApi.middleware)
 			.concat(userSettingsApi.middleware)
-			.concat(blockBankAccountApi.middleware),
+			.concat(blockBankAccountApi.middleware)
+			.concat(blockIpApi.middleware)
+			.concat(depositAccountingApi.middleware)
+			.concat(assignBrandApi.middleware)
+			.concat(referralManagementApi.middleware)
+			.concat(referralReportApi.middleware)
+			.concat(inactivePointExpiryApi.middleware)
+			.concat(vipRebateManagementApi.middleware)
+			.concat(redemptionLimitApi.middleware)
+			.concat(depositPointApi.middleware)
+			.concat(turnoverPointApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

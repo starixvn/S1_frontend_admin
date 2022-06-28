@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { find, some } from 'lodash'
 import {
 	Divider,
 	Checkbox,
@@ -48,7 +48,7 @@ const RoleManagementForm = ({
 	const allCurrencyList = useSelector(selectAllCurrencyList)
 	const rolePermission = useAppSelector(selectRolePermission)
 	const filteredAllCurrencyListByRole = allCurrencyList.filter(currency =>
-		_.some(
+		some(
 			rolePermission?.currencyList,
 			roleCurrency => roleCurrency === currency.currencyId
 		)
@@ -85,7 +85,7 @@ const RoleManagementForm = ({
 
 		const isGroup = Boolean(moduleId)
 
-		const findPermissionByDisplayKey = _.find(permissionList, {
+		const findPermissionByDisplayKey = find(permissionList, {
 			displayKey: disPlayKey,
 		})
 
@@ -113,7 +113,7 @@ const RoleManagementForm = ({
 				{isGroup
 					? renderPermissionGroupCheckBox(permission)
 					: settings.map((setting: any) => {
-							const isChecked = _.some(
+							const isChecked = some(
 								findPermissionByDisplayKey?.permissionIdList,
 								permissionId => permissionId === setting.permissionId
 							)
@@ -194,12 +194,14 @@ const RoleManagementForm = ({
 
 					<Divider />
 
-					{rolePermission.permission.map((permission: any) => (
-						<div key={permission.name}>
-							{renderPermissionCheckBoxItem(permission)}
-							<Divider />
-						</div>
-					))}
+					<Form.Item label='Permission' required>
+						{rolePermission.permission.map((permission: any) => (
+							<div key={permission.name}>
+								{renderPermissionCheckBoxItem(permission)}
+								<Divider />
+							</div>
+						))}
+					</Form.Item>
 				</Form>
 			</LayoutContent.Card>
 		</Spin>

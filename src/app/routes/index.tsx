@@ -1,95 +1,185 @@
 import { lazy } from 'react'
 import { RouteObject } from 'react-router-dom'
 import paths from 'app/constants/paths'
-import { Iframe } from 'components/Iframe'
+import { Iframe } from 'components'
 import { Login } from 'app/pages/login'
 import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { InternalAuthRequire } from 'common/auth'
 import { AuthRequire } from '../../common/auth/AuthRequire'
 
-const Dashboard = lazy(() => import('features/dashboard'))
+const Dashboard = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Dashboard' */
+			'features/dashboard'
+		)
+)
 
 const RoleManagement = lazy(
-	() => import('features/roleManagement/RoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'RoleManagement' */ 'features/roleManagement/RoleManagement'
+		)
 )
 
 const AddRoleManagement = lazy(
-	() => import('features/roleManagement/AddRoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'AddRoleManagement' */ 'features/roleManagement/AddRoleManagement'
+		)
 )
 
 const EditRoleManagement = lazy(
-	() => import('features/roleManagement/EditRoleManagement')
+	() =>
+		import(
+			/* webpackChunkName: 'EditRoleManagement' */ 'features/roleManagement/EditRoleManagement'
+		)
 )
 
-const UserSettings = lazy(() => import('features/userSettings/UserSettings'))
+const UserSettings = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UserSettings' */ 'features/userSettings/UserSettings'
+		)
+)
 
 const AddUserSettings = lazy(
-	() => import('features/userSettings/AddUserSettings')
+	() =>
+		import(
+			/* webpackChunkName: 'AddUserSettings' */ 'features/userSettings/AddUserSettings'
+		)
 )
 
 const EditUserSettings = lazy(
-	() => import('features/userSettings/EditUserSettings')
+	() =>
+		import(
+			/* webpackChunkName: 'EditUserSettings' */ 'features/userSettings/EditUserSettings'
+		)
 )
 
 const AdjustmentLogReport = lazy(
-	() => import('features/adjustmentLogReport/AdjustmentLogReport')
+	() =>
+		import(
+			/* webpackChunkName: 'AdjustmentLogReport' */ 'features/adjustmentLogReport/AdjustmentLogReport'
+		)
 )
 
 const BlockBankAccount = lazy(
-	() => import('features/blockBankAccount/BlockBankAccount')
+	() =>
+		import(
+			/* webpackChunkName: 'BlockBankAccount' */ 'features/blockBankAccount/BlockBankAccount'
+		)
 )
 
+const BlockIp = lazy(
+	() => import(/* webpackChunkName: 'BlockIp' */ 'features/blockIp/BlockIp')
+)
+
+const DepositAccounting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositAccounting' */ 'features/depositAccounting/DepositAccounting'
+		)
+)
+
+const AssignBrand = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AssignBrand' */ 'features/assignBrand/AssignBrand'
+		)
+)
+
+const ReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralManagement' */ 'features/referralManagement/ReferralManagement'
+		)
+)
+
+const EditReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditReferralManagement' */ 'features/referralManagement/EditReferralManagement'
+		)
+)
+
+const ReferralReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralReport' */ 'features/referralReport/ReferralReport'
+		)
+)
+
+const ReferralCustReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralCustReport' */ 'features/referralReport/ReferralCustReport'
+		)
+)
+
+const DepositPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralCustReport' */ 'features/depositPoint/DepositPoint'
+		)
+)
+
+const InactivePointExpiry = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'InactivePointExpiry' */ 'features/inactivePointExpiry/InactivePointExpiry'
+		)
+)
+
+const VipRebateManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateManagement' */ 'features/vipRebateManagement/VipRebateManagement'
+		)
+)
+
+const RedemptionLimit = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/redemptionLimit/RedemptionLimit'
+		)
+)
+const TurnoverPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPoint' */ 'features/turnoverPoint/TurnoverPoint'
+		)
+)
+
+const TurnoverPointSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPointSetting' */ 'features/turnoverPoint/turnoverPointSetting/TurnoverPointSetting'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
 	({
 		internalPath,
-		newAdminPath,
-		functionId,
 		internalFunctionKey,
 		index,
 		pathMode,
-		element: originElement,
-	}: MenMappingInterface) => {
-		if (pathMode === 'Internal')
-			return {
-				...(index
-					? { index }
-					: {
-							path: `${pathMode}/${internalPath}`,
-					  }),
-				element: (
-					<AuthRequire
-						pathMode={pathMode}
-						functionId={Number(functionId)}
-						internalFunctionKey={internalFunctionKey}
-					>
-						<Iframe path={internalPath ?? ''} />
-					</AuthRequire>
-				),
-			}
-
-		const element = originElement as JSX.Element
-
-		return {
-			...(index
-				? { index }
-				: {
-						path: `${pathMode}/${newAdminPath}`,
-				  }),
-			element: (
-				<AuthRequire
-					pathMode={pathMode}
-					functionId={Number(functionId)}
-					internalFunctionKey={internalFunctionKey}
-				>
-					{element}
-				</AuthRequire>
-			),
-		}
-	}
+	}: MenMappingInterface) => ({
+		...(index
+			? { index }
+			: {
+					path: `${pathMode}/${internalPath}`,
+			  }),
+		element: (
+			<InternalAuthRequire internalFunctionKey={internalFunctionKey}>
+				<Iframe path={internalPath ?? ''} />
+			</InternalAuthRequire>
+		),
+	})
 )
 
 const routes: RouteObject[] = [
@@ -104,6 +194,14 @@ const routes: RouteObject[] = [
 			...routesWithMenu,
 			{
 				index: true,
+				element: (
+					<AuthRequire>
+						<div />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.dashboard.root}`,
 				element: (
 					<AuthRequire functionId={paths.dashboard.functionId}>
 						<Dashboard />
@@ -189,22 +287,143 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldRoleManagement.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.risk.sub.blockIp.root}`,
 				element: (
-					<AuthRequire
-						functionId={paths.administration.sub.oldRoleManagement.functionId}
-					>
-						<Iframe path={paths.administration.sub.oldRoleManagement.root} />
+					<AuthRequire functionId={paths.risk.sub.blockIp.functionId}>
+						<BlockIp />
 					</AuthRequire>
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.oldUserSetting.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.accounting.sub.depositAccounting.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.administration.sub.oldUserSetting.functionId}
+						functionId={
+							paths.finance.sub.accounting.sub.depositAccounting.functionId
+						}
 					>
-						<Iframe path={paths.administration.sub.oldUserSetting.root} />
+						<DepositAccounting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`,
+				element: (
+					<AuthRequire>
+						<AssignBrand />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralManagement.functionId}
+					>
+						<ReferralManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.editReferralManagement.root}/:editCurrencyId`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.editReferralManagement.functionId}
+					>
+						<EditReferralManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralReport.functionId}
+					>
+						<ReferralReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.referralCustReport.root}/:custId`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.referralCustReport.functionId}
+					>
+						<ReferralCustReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.depositPoint.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.depositPoint.functionId
+						}
+					>
+						<DepositPoint />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.inactivePointExpiry
+								.functionId
+						}
+					>
+						<InactivePointExpiry />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipRebateManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.vipRebateManagement.functionId}
+					>
+						<VipRebateManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.redemptionLimit.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.redemptionLimit
+								.functionId
+						}
+					>
+						<RedemptionLimit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.turnoverPoint.functionId
+						}
+					>
+						<TurnoverPoint />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting.root}/:vipLevel`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.pointSetting.sub.turnoverPointSetting
+								.functionId
+						}
+					>
+						<TurnoverPointSetting />
 					</AuthRequire>
 				),
 			},

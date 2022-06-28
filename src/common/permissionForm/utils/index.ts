@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { filter, map } from 'lodash'
 import { FormPermissionInterface } from 'type'
 
 export const getPermissionList = (
@@ -35,8 +35,8 @@ export const getPermissionList = (
 			return
 		}
 
-		const permissionIdList: number[] = _.map(
-			_.filter(settings, { canUse: true }),
+		const permissionIdList: number[] = map(
+			filter(settings, { canUse: true }),
 			({ permissionId }) => permissionId
 		)
 

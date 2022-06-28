@@ -1,10 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import _ from 'lodash'
+import { map } from 'lodash'
 import {
 	fetchActionTypeList,
 	fetchAdjustmentInfoLogMenu,
 	fetchAdminUserSiteList,
 	fetchAllCurrencyList,
+	fetchAdminUserCurrencyList,
 } from './api'
 
 export const fetchAllEnumAsync = createAsyncThunk(
@@ -15,13 +16,15 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
+			adminUserCurrencyList,
 		] = await Promise.allSettled([
 			fetchAdminUserSiteList(),
 			fetchAllCurrencyList(),
 			fetchAdjustmentInfoLogMenu(),
 			fetchActionTypeList(),
+			fetchAdminUserCurrencyList(),
 		]).then(results =>
-			_.map(results, result =>
+			map(results, result =>
 				result.status === 'fulfilled' ? result.value : []
 			)
 		)
@@ -31,6 +34,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
+			adminUserCurrencyList,
 		}
 	}
 )

@@ -9,14 +9,66 @@ export interface LocationState {
 	}
 }
 
+export interface UserDataState {
+	userId: number
+	userName: string
+	userpwd: null
+	isSuper: boolean
+	status: boolean
+	createTime: string
+	role: null
+	currencyList: string
+	siteId: number
+	loginTime: string
+}
+export interface ActionPermissions {
+	viewPermission: PermissionInterface
+	exportExcelPermission: PermissionInterface
+	editPermission: PermissionInterface
+	deletePermission: PermissionInterface
+	addPermission: PermissionInterface
+	rejectPermission: PermissionInterface
+	rickPermission: PermissionInterface
+	paymentPermission: PermissionInterface
+	executePermission: PermissionInterface
+	addBatchPermission: PermissionInterface
+	transferPermission: PermissionInterface
+	setActivePermission: PermissionInterface
+	appeovedPermission: PermissionInterface
+	changePasswordPermission: PermissionInterface
+	editInfoPermission: PermissionInterface
+	resetPasswordPermission: PermissionInterface
+	blockBankAccPermission: PermissionInterface
+	betLimitPermission: PermissionInterface
+	csdLogPermission: PermissionInterface
+	isKycPermission: PermissionInterface
+	lockAccountPermission: PermissionInterface
+	resetCryptoInfoPermission: PermissionInterface
+	gameExclusionPermission: PermissionInterface
+	financeLogPermission: PermissionInterface
+	isRickPermission: PermissionInterface
+	closeAccountPermission: PermissionInterface
+	verifiedRewardPermission: PermissionInterface
+	gameLogPermission: PermissionInterface
+	phoneVerifiedPermission: PermissionInterface
+	kickOutPermission: PermissionInterface
+	enablePromotionPermission: PermissionInterface
+	marketingLogPermission: PermissionInterface
+	emailVerifiedPermission: PermissionInterface
+	blockIPPermission: PermissionInterface
+	lockRebatePayoutPermission: PermissionInterface
+	settingPermission: PermissionInterface
+	adminUserLogPermission: PermissionInterface
+}
+
 export interface PermissionInterface {
 	permissionId: number
 	name: string
 	canUse: boolean
-	enable: boolean
+	enable?: boolean
 }
 
-export interface MenuFunctionDatas {
+export interface MenuFunctionData {
 	functionId: number
 	name: string
 	permission: PermissionInterface[]
@@ -27,7 +79,7 @@ export interface MenuInterface {
 	functionId: number | null
 	name: string
 	permission: PermissionInterface[]
-	functionDatas?: MenuFunctionDatas[]
+	functionDatas?: MenuFunctionData[]
 	subLayerDatas?: MenuInterface[]
 }
 

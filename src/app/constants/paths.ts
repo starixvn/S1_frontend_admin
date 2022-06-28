@@ -3,11 +3,14 @@ const paths = {
 		root: '/',
 	},
 	dashboard: {
-		root: '',
+		root: 'dashboard',
 		functionId: 1,
 	},
 	login: {
 		root: 'login',
+	},
+	assignBrand: {
+		root: 'AssignBrand',
 	},
 	csd: {
 		root: 'csd',
@@ -148,6 +151,15 @@ const paths = {
 			lineChannelManagement: {
 				root: 'finance/lineChannelManagement',
 			},
+			accounting: {
+				root: 'finance/accounting',
+				sub: {
+					depositAccounting: {
+						root: 'finance/accounting/depositAccounting',
+						functionId: 99,
+					},
+				},
+			},
 		},
 	},
 	marketing: {
@@ -182,12 +194,23 @@ const paths = {
 			},
 			vipRebateManagement: {
 				root: 'marketing/vipRebateManagement',
+				functionId: 49,
 			},
 			referralManagement: {
 				root: 'marketing/referralManagement',
+				functionId: 48,
+			},
+			editReferralManagement: {
+				root: 'marketing/referralManagement/edit',
+				functionId: 48,
 			},
 			referralReport: {
 				root: 'marketing/referralReport',
+				functionId: 77,
+			},
+			referralCustReport: {
+				root: 'marketing/referralReport/log',
+				functionId: 77,
 			},
 			verificationReward: {
 				root: 'marketing/verificationReward',
@@ -241,6 +264,45 @@ const paths = {
 				root: 'Risk/BlockBankAccount',
 				functionId: 70,
 			},
+			blockIp: {
+				root: 'Risk/BlockIp',
+				functionId: 71,
+			},
+		},
+	},
+	rewardProgram: {
+		root: 'rewardProgram',
+		sub: {
+			pointSetting: {
+				root: 'rewardProgram/pointSetting',
+				sub: {
+					depositPoint: {
+						root: 'rewardProgram/pointSetting/depositPoint',
+						functionId: 109,
+					},
+					inactivePointExpiry: {
+						root: 'rewardProgram/pointSetting/inactivePointExpiry',
+						functionId: 110,
+					},
+					turnoverPoint: {
+						root: 'rewardProgram/pointSetting/turnoverPoint',
+						functionId: 108,
+					},
+					turnoverPointSetting: {
+						root: 'rewardProgram/pointSetting/turnoverPoint/detail',
+						functionId: 108,
+					},
+				},
+			},
+			giftManagement: {
+				root: 'rewardProgram/giftManagement',
+				sub: {
+					redemptionLimit: {
+						root: 'rewardProgram/giftManagement/redemptionLimit',
+						functionId: 113,
+					},
+				},
+			},
 		},
 	},
 	administration: {
@@ -273,14 +335,6 @@ const paths = {
 			adjustmentLogReport: {
 				root: 'Administration/AdjustmentLogReport',
 				functionId: 93,
-			},
-			oldRoleManagement: {
-				root: 'Admin/GroupAuthoritySetting',
-				functionId: 96,
-			},
-			oldUserSetting: {
-				root: 'Admin/UserAuthoritySetting',
-				functionId: 97,
 			},
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',

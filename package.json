@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@ant-design/icons": "^4.7.0",
 		"@reduxjs/toolkit": "^1.8.0",
 		"@testing-library/jest-dom": "^4.2.4",
 		"@testing-library/react": "^9.5.0",
@@ -13,16 +12,13 @@
 		"@types/react": "^16.14.24",
 		"@types/react-dom": "^16.9.14",
 		"@types/react-redux": "^7.1.23",
-		"antd": "^4.19.2",
 		"axios": "^0.26.1",
 		"font-awesome": "^4.7.0",
 		"http-proxy-middleware": "^2.0.4",
 		"i18next": "^21.6.14",
-		"lodash": "^4.17.21",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^11.16.1",
-		"react-icons": "^4.3.1",
 		"react-redux": "^7.2.6",
 		"react-router-dom": "^6.2.2",
 		"react-scripts": "5.0.0",
@@ -31,10 +27,11 @@
 		"usehooks-ts": "^2.4.2"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"start": "react-app-rewired start",
+		"build": "react-app-rewired build",
+		"test": "react-app-rewired test",
+		"eject": "react-app-rewired eject",
+		"analyze": "react-app-rewired build --stats && webpack-bundle-analyzer build/bundle-stats.json"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
@@ -52,13 +49,24 @@
 		]
 	},
 	"devDependencies": {
+		"@ant-design/icons": "^4.7.0",
+		"@react-icons/all-files": "^4.1.0",
+		"@types/downloadjs": "^1.4.3",
+		"@types/draftjs-to-html": "^0.8.1",
+		"@types/html-to-draftjs": "^1.4.0",
 		"@types/lodash": "^4.14.180",
+		"@types/react-draft-wysiwyg": "^1.13.4",
+		"@types/react-lazy-load-image-component": "^1.5.2",
 		"@types/styled-components": "^5.1.24",
 		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^5.21.0",
 		"@typescript-eslint/parser": "^5.21.0",
-		"commitizen": "^4.2.4",
-		"cz-conventional-changelog": "^3.3.0",
+		"antd": "^4.21.0",
+		"babel-plugin-import": "^1.13.5",
+		"customize-cra": "^1.0.0",
+		"downloadjs": "^1.4.7",
+		"draft-js": "^0.11.7",
+		"draftjs-to-html": "^0.9.1",
 		"eslint": "^8.12.0",
 		"eslint-config-airbnb": "^19.0.4",
 		"eslint-config-airbnb-typescript": "^17.0.0",
@@ -68,15 +76,23 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.29.4",
 		"eslint-plugin-react-hooks": "^4.4.0",
+		"html-to-draftjs": "^1.5.0",
 		"husky": "^7.0.0",
 		"lint-staged": "^12.3.7",
+		"lodash": "^4.17.21",
 		"moment": "^2.29.3",
 		"prettier": "2.6.1",
 		"rc-util": "^5.21.0",
-		"uuid": "^8.3.2"
+		"react-app-rewired": "^2.2.1",
+		"react-canvas-nest": "^1.1.1",
+		"react-draft-wysiwyg": "^1.14.7",
+		"react-icons": "^4.4.0",
+		"react-lazy-load-image-component": "^1.5.4",
+		"uuid": "^8.3.2",
+		"webpack-bundle-analyzer": "^4.5.0"
 	},
 	"lint-staged": {
-		"*.{js,jsx,ts,tsx}": [
+		"!(config-overrides).{js,jsx,ts,tsx}": [
 			"eslint --fix --max-warnings=0",
 			"prettier --write",
 			"jest --bail --findRelatedTests"

@@ -1,6 +1,15 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
+export interface IAxiosResponse<T> {
+	data: T
+	totalPages?: number
+	pageNumber?: number
+	rowCount?: number
+	errorCode: number
+	message: string
+}
+
 export const axiosBaseQuery =
 	(
 		{ baseUrl }: { baseUrl: string } = { baseUrl: '' }
@@ -10,19 +19,28 @@ export const axiosBaseQuery =
 			method: AxiosRequestConfig['method']
 			data?: AxiosRequestConfig['data']
 			params?: AxiosRequestConfig['params']
+			headers?: AxiosRequestConfig['headers']
+			responseType?: AxiosRequestConfig['responseType']
 		},
 		unknown,
 		unknown
 	> =>
-	async ({ url, method, data, params }) => {
+	async ({ url, method, data, params, headers, responseType }) => {
 		try {
-			const result = await axios({ url: baseUrl + url, method, data, params })
+			const result = await axios({
+				url: baseUrl + url,
+				method,
+				data,
+				params,
+				headers,
+				responseType,
+			})
 
-			if (result?.data?.errorCode !== 0) {
+			if (result?.data?.errorCode && result?.data?.errorCode !== 0) {
 				throw new Error(result?.data?.message)
 			}
 
-			return { data: result.data?.data }
+			return { data: result.data }
 		} catch (axiosError) {
 			const error = axiosError as AxiosError
 

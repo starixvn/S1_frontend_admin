@@ -1,4 +1,6 @@
 import { Button, Col, Dropdown, Layout, Menu, Row } from 'antd'
+import type { MenuProps } from 'antd'
+
 import {
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
@@ -6,11 +8,14 @@ import {
 	FileProtectOutlined,
 	PoweroffOutlined,
 	DownOutlined,
+	ApiOutlined,
 } from '@ant-design/icons'
 import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { ChangePasswordModal } from 'app/pages/changePassword'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 
 import { LayoutHeaderUserSite } from './LayoutHeaderUserSite'
 
@@ -23,7 +28,8 @@ interface LayoutHeaderProps {
 
 const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 	const { t } = useTranslation()
-	const { auth, onSignOut } = useAuth()
+	const navigate = useNavigate()
+	const { onSignOut, onInternalSignOut, userData } = useAuth()
 
 	const location = useLocation()
 
@@ -32,23 +38,37 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 
 	const changePasswordModal = useModal()
 
-	const menu = (
-		<Menu>
-			<Menu.Item
-				onClick={changePasswordModal.onOpen}
-				key={1}
-				icon={<FileProtectOutlined />}
-			>
-				{t('ChangePassword.Label_ChangePassword')}
-			</Menu.Item>
+	const handleSignOut = () => {
+		Promise.allSettled([onInternalSignOut(), onSignOut()])
+	}
 
-			<Menu.Divider key={2} />
+	const items = [
+		{
+			key: 'item-1',
+			label: t('ChangePassword.Label_ChangePassword'),
+			icon: <FileProtectOutlined />,
+			onClick: changePasswordModal.onOpen,
+		},
+		userData?.isSuper
+			? {
+					key: 'item-2',
+					label: t('Label_AssignBrand'),
+					icon: <ApiOutlined />,
+					onClick: () =>
+						navigate(`/${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`),
+			  }
+			: undefined,
+		{ type: 'divider', key: 'item-3' },
+		{
+			key: 'item-4',
+			label: t('Label_SignOut'),
+			icon: <PoweroffOutlined />,
+			danger: true,
+			onClick: handleSignOut,
+		},
+	] as MenuProps['items']
 
-			<Menu.Item key={3} onClick={onSignOut} icon={<PoweroffOutlined />} danger>
-				{t('Label_SignOut')}
-			</Menu.Item>
-		</Menu>
-	)
+	const menu = <Menu items={items} />
 
 	return (
 		<>
@@ -85,7 +105,7 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 						>
 							<Button type='text' style={{ width: '120px', marginBottom: 16 }}>
 								<UserOutlined style={{ fontSize: '16px' }} />
-								{auth?.user ?? ''}
+								{userData?.userName ?? ''}
 								<DownOutlined style={{ fontSize: '10px' }} />
 							</Button>
 						</Dropdown>

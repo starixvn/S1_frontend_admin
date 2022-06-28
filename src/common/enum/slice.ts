@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
-import _ from 'lodash'
+import { filter, some } from 'lodash'
 import { RequestStatusType } from 'type'
 import { fetchAllEnumAsync } from './thunk'
 import {
@@ -17,6 +17,7 @@ export interface EnumState {
 	allCurrencyList: Currency[]
 	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
 	actionTypeList: ActionType[]
+	adminUserCurrencyList: number[]
 }
 
 const initialState: EnumState = {
@@ -26,6 +27,7 @@ const initialState: EnumState = {
 	allCurrencyList: [],
 	adjustmentInfoLogMenu: [],
 	actionTypeList: [],
+	adminUserCurrencyList: [],
 }
 
 const enumSlice = createSlice({
@@ -50,33 +52,33 @@ const enumSlice = createSlice({
 					allCurrencyList,
 					adjustmentInfoLogMenu,
 					actionTypeList,
+					adminUserCurrencyList,
 				} = action.payload as EnumState
 
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
 				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
 				state.actionTypeList = actionTypeList
+				state.adminUserCurrencyList = adminUserCurrencyList
 				state.status = 'succeeded'
 			}),
 })
 
 export const selectCurrencyListBySite = (state: RootState) => {
-	const { allCurrencyList, userSite } = state.allEnum
-
-	if (userSite === undefined) return undefined
+	const { allCurrencyList, adminUserCurrencyList } = state.allEnum
 
 	// Returns the currency of the site
-	return _.filter(allCurrencyList, currency =>
-		_.some(
-			userSite?.iCurrencyList,
-			iCurrency => iCurrency === currency.currencyId
-		)
+	return filter(allCurrencyList, currency =>
+		some(adminUserCurrencyList, iCurrency => iCurrency === currency.currencyId)
 	)
 }
 
 export const selectEnumStatus = (state: RootState) => state.allEnum.status
 
 export const selectUserSite = (state: RootState) => state.allEnum.userSite
+
+export const selectUserSiteList = (state: RootState) =>
+	state.allEnum.userSiteList
 
 export const selectAllCurrencyList = (state: RootState) =>
 	state.allEnum.allCurrencyList
