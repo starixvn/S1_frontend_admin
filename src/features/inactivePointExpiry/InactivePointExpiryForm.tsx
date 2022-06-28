@@ -16,6 +16,8 @@ const InactivePointExpiryForm: FC<InactivePointExpiryFormProps> = ({
 	onSetInactivePointExpirySetting,
 }) => {
 	const { t } = useTranslation()
+	const status = Form.useWatch('status', form)
+
 	return (
 		<LayoutContent.Card>
 			<Form
@@ -45,7 +47,7 @@ const InactivePointExpiryForm: FC<InactivePointExpiryFormProps> = ({
 					</Col>
 					<Col lg={3} md={6} xs={6}>
 						<Form.Item name='status' label={t('Label_Status')}>
-							<Switch />
+							<Switch checked={status} />
 						</Form.Item>
 					</Col>
 				</Row>

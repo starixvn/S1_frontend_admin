@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { isEqual } from 'lodash'
-import { Form, message } from 'antd'
+import { Form, message, Spin } from 'antd'
 import { useAuth } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
@@ -80,13 +80,13 @@ const RedemptionLimit: FC<{
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-			{redemptionLimitSetting && (
+			<Spin spinning={loading}>
 				<RedemptionLimitForm
 					form={form}
 					componentDisabled={componentDisabled}
 					onSetRedemptionLimitSetting={handleSetRedemptionLimitSetting}
 				/>
-			)}
+			</Spin>
 			<AffixButtons>
 				{componentDisabled ? (
 					<AffixButtons.Edit
