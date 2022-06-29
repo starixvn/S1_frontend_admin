@@ -50,6 +50,7 @@ const getAffixBottomToTopStyle = (index: number): CSSProperties => {
 		position: 'fixed',
 		bottom: 12,
 		right: (BUTTON_HEIGHT + 8) * (index + 1) + 12,
+		zIndex: 2,
 	}
 }
 
@@ -58,6 +59,7 @@ const getAffixButtonStyle = (index: number): CSSProperties => {
 		position: 'fixed',
 		bottom: (BUTTON_HEIGHT + 8) * index + 12,
 		right: 12,
+		zIndex: 2,
 	}
 }
 

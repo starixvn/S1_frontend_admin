@@ -1,0 +1,20 @@
+.editor-main {
+	border-radius: 2px;
+	border: 1px solid #f1f1f1;
+	height: 400px;
+}
+
+.editor-color-wrapper {
+	display: flex;
+	align-items: center;
+	margin-bottom: 6px;
+	position: relative;
+	cursor: pointer;
+}
+
+/* 修改並覆蓋 Editor/ColorPicker 元件的彈窗，以彈窗避免跑版 */
+.block-picker {
+	position: absolute !important;
+	left: -75px;
+	z-index: 2;
+}

@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import { EditorState as IEditorState, EditorProps } from 'react-draft-wysiwyg'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { useEditorModule } from './hooks/useEditorModule'
 import { coverDraftToHtml, coverHtmlToEditorState } from './utils'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import ColorPicker from './ColorPicker'
 
 interface BaseEditorProps extends EditorProps {
 	defaultHtmlState?: string
@@ -43,8 +44,33 @@ const BaseEditor: FC<BaseEditorProps> = ({
 	return (
 		Editor && (
 			<Editor
+				editorClassName='editor-main'
 				editorState={editorState}
 				onEditorStateChange={onEditorStateChange}
+				toolbar={{
+					options: [
+						'inline',
+						'blockType',
+						'fontSize',
+						'fontFamily',
+						'list',
+						'textAlign',
+						'colorPicker',
+						'link',
+						'emoji',
+						'image',
+						'remove',
+						'history',
+					],
+					colorPicker: { component: ColorPicker },
+					blockType: {
+						inDropdown: true,
+						options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+						className: undefined,
+						component: undefined,
+						dropdownClassName: undefined,
+					},
+				}}
 			/>
 		)
 	)
