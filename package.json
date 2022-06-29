@@ -88,6 +88,7 @@
 		"react-app-rewired": "^2.2.1",
 		"react-canvas-nest": "^1.1.1",
 		"react-color": "^2.19.3",
+		"react-device-detect": "^2.2.2",
 		"react-draft-wysiwyg": "^1.14.7",
 		"react-icons": "^4.4.0",
 		"react-lazy-load-image-component": "^1.5.4",
