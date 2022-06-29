@@ -42,13 +42,16 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 					'preview',
 					'table',
 					'code',
-					'hr',
 					'help',
 					'fullscreen',
+					'powerpaste',
 				],
 				toolbar: [
-					'undo redo bold italic underline strikethrough fontfamily fontsize forecolor backcolor alignleft aligncenter alignright alignjustify numlist bullist table link image hr code preview help fullscreen',
+					'undo redo bold italic underline strikethrough fontfamily fontsize forecolor backcolor alignleft aligncenter alignright alignjustify numlist bullist table link image code preview help fullscreen',
 				],
+				powerpaste_allow_local_images: true,
+				powerpaste_word_import: 'prompt',
+				powerpaste_html_import: 'prompt',
 			}}
 		/>
 	)
