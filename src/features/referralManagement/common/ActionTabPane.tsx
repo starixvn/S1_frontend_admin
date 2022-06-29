@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { FormInstance, Tabs, TabPaneProps, Form, Col, Row, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { Editor } from 'components'
+import { TinymceEditor } from 'components'
 
 const { TabPane } = Tabs
 
@@ -53,17 +53,17 @@ const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
 							<Input allowClear />
 						</Form.Item>
 					</Col>
-					<Col>
-						<Form.Item
-							name={['specific', lang, 'detail']}
-							label={t('Label_Detail')}
-						>
-							<Editor
-								defaultHtmlState={detail}
-								onHtmlStateChange={onHtmlStateChange}
-							/>
-						</Form.Item>
-					</Col>
+				</Row>
+				<Row>
+					<Form.Item
+						name={['specific', lang, 'detail']}
+						label={t('Label_Detail')}
+					>
+						<TinymceEditor
+							defaultHtmlState={detail}
+							onHtmlStateChange={onHtmlStateChange}
+						/>
+					</Form.Item>
 				</Row>
 			</Form>
 		</TabPane>
