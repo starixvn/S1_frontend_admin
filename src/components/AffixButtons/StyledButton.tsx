@@ -9,6 +9,7 @@ const StyledButton = styled(Button)`
 	height: ${BUTTON_HEIGHT}px;
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	margin: 8px 0px;
+	z-index: 2;
 `
 
 export default StyledButton
