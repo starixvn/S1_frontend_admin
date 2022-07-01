@@ -26,10 +26,11 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 	const { t } = useTranslation()
 	const [dataSource, setDataSource] = useState<IGameRebateTableData[]>([])
 	// 比對 gameTypeTableData 是否有改變
-	const isDataNeedRefresh = useMemo(
-		() => isEqual(dataSource, gameTypeTableData),
-		[gameTypeTableData]
-	)
+	// const isDataNeedRefresh = useMemo(
+	// 	() => isEqual(dataSource, gameTypeTableData),
+	// 	[gameTypeTableData]
+	// )
+
 	// useRef store editList
 	const editList = useRef<GameRebateEditData[]>([])
 
@@ -111,7 +112,6 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 	const handleEndEdit = (value: IGameRebateTableData) => {
 		const current = cloneDeep(dataSource)
 		const currentEditList = cloneDeep(editList.current)
-
 		assign(current[findIndex(current, { gameType: value.gameType })], value)
 		currentEditList.push(editCellValuesToEditList(value))
 		setDataSource(current)
@@ -140,7 +140,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 		if (gameTypeTableData) {
 			setDataSource(gameTypeTableData)
 		}
-	}, [isDataNeedRefresh])
+	}, [gameTypeTableData])
 
 	useEffect(() => {
 		if (!visible) {
