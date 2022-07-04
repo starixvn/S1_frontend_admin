@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { Form } from 'antd'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -31,10 +31,6 @@ const Dashboard: FC<{
 	}
 
 	const loading = dashboardStatus === 'pending'
-
-	useEffect(() => {
-		handleSearch(form.getFieldsValue())
-	}, [])
 
 	return (
 		<LayoutContent.Main>
