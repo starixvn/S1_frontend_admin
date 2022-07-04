@@ -6,7 +6,7 @@ export interface IGetBetListArgs {
 	siteIds: number[]
 	currencyIds: number[]
 	tags: number[]
-	viPlevel: number
+	vipLevel: number
 	tpId: number
 	userName: string
 	tpUserName: string
@@ -22,7 +22,7 @@ export interface IGetBetListArgs {
 	startTime: string
 	endTime: string
 	stake: number
-	winlostAmount: number
+	winLostAmount: number
 }
 
 export interface IGetBetListData {
@@ -57,6 +57,7 @@ export interface IGetBetListData {
 	live: string
 	ip: string
 	tagList: string
+	tags: number[]
 	vipLevel: number
 	levelName: string
 }
@@ -83,3 +84,27 @@ export interface IGetProductsData {
 }
 
 export type IGetProductsResponse = IAxiosResponse<IGetProductsData[]>
+
+export interface IGetVipLevels {
+	siteId: number
+	level: number
+	levelName: string
+	fixed: number
+	createTime: string
+	updateTime: string
+}
+
+export type IGetVipLevelsResponse = IAxiosResponse<IGetVipLevels[]>
+
+export interface IGetTagsData {
+	id: number
+	tagName: string
+	tagColour: string
+	status: number
+	description: string
+	creator: string
+	updateTime: string
+	updator: string
+}
+
+export type IGetTagsResponse = IAxiosResponse<IGetTagsData[]>

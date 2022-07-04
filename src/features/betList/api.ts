@@ -7,6 +7,8 @@ import {
 	IGetCategoryResponse,
 	IGetProductsResponse,
 	IGetProvidersResponse,
+	IGetTagsResponse,
+	IGetVipLevelsResponse,
 } from './type'
 
 export const betListApi = createApi({
@@ -39,6 +41,19 @@ export const betListApi = createApi({
 				method: 'POST',
 			}),
 		}),
+		getVipLevels: builder.query<IGetVipLevelsResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetAllSiteVipLevelList',
+				method: 'POST',
+			}),
+		}),
+		getTags: builder.query<IGetTagsResponse, null>({
+			query: () => ({
+				url: 'BaseData/GetTagByStatus',
+				method: 'POST',
+				data: { status: 0 },
+			}),
+		}),
 		exportBetListFile: builder.mutation<Blob, IGetBetListArgs>({
 			query: data => ({
 				url: 'BetListReport/Export',
@@ -51,6 +66,8 @@ export const betListApi = createApi({
 })
 export const {
 	useLazyGetBetListQuery,
+	useGetTagsQuery,
+	useGetVipLevelsQuery,
 	useGetCategoryQuery,
 	useGetProductsQuery,
 	useGetProvidersQuery,

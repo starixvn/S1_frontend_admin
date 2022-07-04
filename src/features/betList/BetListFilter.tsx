@@ -13,32 +13,25 @@ import {
 	Button,
 	Select,
 } from 'antd'
+import type { RangePickerProps } from 'antd/es/date-picker'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
+import { Currency } from 'common/enum/type'
 import {
-	IGetCategoryResponse,
-	IGetProductsResponse,
-	IGetProvidersResponse,
+	IGetCategoryData,
+	IGetProductsData,
+	IGetProvidersData,
+	IGetTagsData,
+	IGetVipLevels,
 } from './type'
-import {
-	useGetCategoryQuery,
-	useGetProductsQuery,
-	useGetProvidersQuery,
-} from './api'
-
-const { Panel } = Collapse
-const { RangePicker } = DatePicker
-const { Option } = Select
 
 interface BetListFilterInterface {
-	form: FormInstance<any>
+	form: FormInstance
 	loading: boolean
 	timeZoneUtcOffset?: number
 	onSearch: ({
@@ -52,7 +45,18 @@ interface BetListFilterInterface {
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onChangeCurrency: (newCurrencyIds: number[]) => void
+	currencyList: Currency[]
+	providers: IGetProvidersData[]
+	products: IGetProductsData[]
+	categories: IGetCategoryData[]
+	vipLevels: IGetVipLevels[]
+	tagList: IGetTagsData[]
+	siteId?: number
 }
+
+const { Panel } = Collapse
+const { RangePicker } = DatePicker
+const { Option } = Select
 
 const BetListFilter: FC<BetListFilterInterface> = ({
 	form,
@@ -61,27 +65,63 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	onSearch,
 	onTimeZoneChange,
 	onChangeCurrency,
+	currencyList,
+	providers,
+	products,
+	categories,
+	siteId,
+	vipLevels,
+	tagList,
 }) => {
 	const { t } = useTranslation()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const {
-		data: { data: categories } = {} as IGetCategoryResponse,
-		isFetching: isGetCategoryFetching,
-	} = useGetCategoryQuery(null)
-	const {
-		data: { data: providers } = {} as IGetProvidersResponse,
-		isFetching: isGetProvidersFetching,
-	} = useGetProvidersQuery(null)
-	const {
-		data: { data: products } = {} as IGetProductsResponse,
-		isFetching: isGetProductsFetching,
-	} = useGetProductsQuery(null)
 
-	const isLoading =
-		loading ||
-		isGetCategoryFetching ||
-		isGetProvidersFetching ||
-		isGetProductsFetching
+	const vipLevelSelect = () => (
+		<Form.Item name='vipLevel' label={t('Label_VipLevel')}>
+			<Select placeholder={t('Label_Select')} allowClear>
+				{vipLevels
+					?.filter(item => item.siteId === siteId)
+					.map(item => (
+						<Option key={item.level} value={item.level}>
+							{item.levelName}
+						</Option>
+					))}
+			</Select>
+		</Form.Item>
+	)
+
+	const tagListSelect = () => {
+		const onChangeTags = (newTags: number[]) => {
+			if (newTags.includes(0)) {
+				form.setFieldsValue({
+					tags: tagList?.map(tag => tag.id),
+				})
+			} else {
+				form.setFieldsValue({
+					tags: newTags,
+				})
+			}
+		}
+		return (
+			<Form.Item name='tags' label={t('Label_Tag')}>
+				<MultipleSelect onChange={onChangeTags} placeholder={t('Label_Select')}>
+					{tagList?.length > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+					{tagList?.map(tag => (
+						<Option key={tag.id} value={tag.id}>
+							{tag.tagName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		return (
+			current > moment().endOf('day') || current < moment().subtract(14, 'day')
+		)
+	}
 
 	return (
 		<Collapse defaultActiveKey={1}>
@@ -92,6 +132,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 						size='middle'
 						form={form}
 						onFinish={() => onSearch({})}
+						initialValues={{
+							currencyIds: currencyList?.map(item => item.currencyId),
+						}}
 					>
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
@@ -114,10 +157,10 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 											<RangePicker
 												style={{ width: '100%' }}
 												showTime
+												disabledDate={disabledDate}
 												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Last 7 Day',
-													'This Month',
 												])}
 												onChange={newDateRange =>
 													form.setFieldsValue({
@@ -141,12 +184,15 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 						<Row align='middle' gutter={16}>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									<MultipleSelect defaultValue={0} onChange={onChangeCurrency}>
-										{(currencyListBySite?.length as number) > 1 && (
+									<MultipleSelect
+										onChange={onChangeCurrency}
+										placeholder={t('Label_Select')}
+									>
+										{(currencyList?.length as number) > 1 && (
 											<Option value={0}>{t('Label_SelectAll')}</Option>
 										)}
 
-										{currencyListBySite?.map(item => (
+										{currencyList?.map(item => (
 											<Option key={item.currencyId} value={item.currencyId}>
 												{item.isoCode}
 											</Option>
@@ -155,26 +201,22 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='product' label={t('Label_Product')}>
-									<Select placeholder='Select' defaultValue={0}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
+								<Form.Item name='provider' label={t('Label_Provider')}>
+									<Select placeholder={t('Label_Select')} allowClear>
+										{providers?.map(item => (
+											<Option key={item.tpName} value={item.tpName}>
+												{item.tpName}
 											</Option>
 										))}
 									</Select>
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='provider' label={t('Label_Provider')}>
-									<Select placeholder='Select' defaultValue={0}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
+								<Form.Item name='product' label={t('Label_Product')}>
+									<Select placeholder={t('Label_Select')} allowClear>
+										{products?.map(item => (
+											<Option key={item.typeName} value={item.typeName}>
+												{item.typeName}
 											</Option>
 										))}
 									</Select>
@@ -182,109 +224,77 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='category' label={t('Label_Category')}>
-									<Select placeholder='Select' defaultValue={0}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
+									<Select placeholder={t('Label_Select')} allowClear>
+										{categories?.map(item => (
+											<Option key={item.categoryName} value={item.categoryName}>
+												{item.categoryName}
 											</Option>
 										))}
 									</Select>
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='category' label={t('Label_Game')}>
-									<Select placeholder='Select' defaultValue={0}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</Select>
+								<Form.Item name='game' label={t('Label_Game')}>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='title' label={t('Label_Title')}>
-									<Input allowClear placeholder={t('Label_Title')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='matchId' label={t('Label_MatchId')}>
-									<Input allowClear placeholder={t('Label_MatchId')} />
+								<Form.Item name='matchID' label={t('Label_MatchId')}>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='betType' label={t('Label_BetType')}>
-									<Input allowClear placeholder={t('Label_BetType')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='stake' label={t('Label_StakeRange')}>
-									<Input allowClear placeholder={t('Label_StakeRange')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='winlostAmount' label={t('Label_WinLoseRange')}>
-									<Input allowClear placeholder={t('Label_WinLoseRange')} />
+								<Form.Item name='winLostAmount' label={t('Label_WinLoseRange')}>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='tpId' label={t('Label_ProviderId')}>
-									<Input allowClear placeholder={t('Label_ProviderId')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
-									<Input allowClear placeholder={t('Label_MemberId')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='sabaId' label={t('Label_SabeId')}>
-									<Input allowClear placeholder={t('Label_SabeId')} />
+								<Form.Item name='sabaId' label={t('Label_SabaId')}>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='refNo' label={t('Label_RefNo')}>
-									<Input allowClear placeholder={t('Label_RefNo')} />
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='viPlevel' label={t('LabeL_VipLevel')}>
-									<Select placeholder='Select' defaultValue={0}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
+								{vipLevelSelect()}
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='tags' label={t('Label_Tag')}>
-									<MultipleSelect defaultValue={0} onChange={onChangeCurrency}>
-										{(currencyListBySite?.length as number) > 1 && (
-											<Option value={0}>{t('Label_SelectAll')}</Option>
-										)}
-
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</MultipleSelect>
-								</Form.Item>
+								{tagListSelect()}
 							</Col>
 						</Row>
 						<br />
 						<Row justify='end' align='middle'>
 							<Col>
 								<Button
-									loading={isLoading}
+									loading={loading}
 									icon={<SearchOutlined />}
 									htmlType='submit'
 									type='primary'
