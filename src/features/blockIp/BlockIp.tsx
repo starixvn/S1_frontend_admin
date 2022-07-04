@@ -144,7 +144,7 @@ const BlockIp: FC<{
 		const init = () => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) return
 
-			const { startDate, endDate, ip = '', tz } = queryParams
+			const { startDate, endDate, ip = '', tz, pageNumber } = queryParams
 
 			onTimeZoneChange(Number(tz))
 
@@ -155,6 +155,7 @@ const BlockIp: FC<{
 
 			handleSearch({
 				currentTimeZoneUtcOffset: Number(tz),
+				current: Number(pageNumber),
 			})
 		}
 

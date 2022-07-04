@@ -303,6 +303,16 @@ const paths = {
 					},
 				},
 			},
+			memberList: {
+				root: 'rewardProgram/memberList',
+				functionId: 104,
+				sub: {
+					memberListLog: {
+						root: 'rewardProgram/memberList/log',
+						functionId: 104,
+					},
+				},
+			},
 		},
 	},
 	administration: {

@@ -219,8 +219,8 @@ const DepositAccounting: FC<{
 
 			if (!isEmpty(queryParams)) {
 				handleSearch({
-					current,
-					pageSize,
+					current: Number(current),
+					pageSize: Number(pageSize),
 					currentTimeZoneUtcOffset: Number(tz),
 				})
 			}
