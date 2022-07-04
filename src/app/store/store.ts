@@ -18,6 +18,7 @@ import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 import { redemptionLimitApi } from 'features/redemptionLimit/api'
 import { depositPointApi } from 'features/depositPoint/api'
 import { turnoverPointApi } from '../../features/turnoverPoint/api'
+import { memberListApi } from '../../features/memberList/api'
 
 export const store = configureStore({
 	reducer: {
@@ -40,6 +41,7 @@ export const store = configureStore({
 		[redemptionLimitApi.reducerPath]: redemptionLimitApi.reducer,
 		[depositPointApi.reducerPath]: depositPointApi.reducer,
 		[turnoverPointApi.reducerPath]: turnoverPointApi.reducer,
+		[memberListApi.reducerPath]: memberListApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -59,7 +61,8 @@ export const store = configureStore({
 			.concat(vipRebateManagementApi.middleware)
 			.concat(redemptionLimitApi.middleware)
 			.concat(depositPointApi.middleware)
-			.concat(turnoverPointApi.middleware),
+			.concat(turnoverPointApi.middleware)
+			.concat(memberListApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

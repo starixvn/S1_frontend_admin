@@ -153,8 +153,8 @@ const ReferralReport: FC<{
 			})
 
 			handleSearch({
-				current: pageNumber,
-				pageSize,
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
 				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		}

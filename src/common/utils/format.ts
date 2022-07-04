@@ -7,3 +7,5 @@ export const percentageFormatter = (percentage: number, point = 2): string => {
 	return `${percentage.toFixed(point)}% `
 }
 export const timeFormat = 'YYYY-MM-DD  HH:mm:ss'
+
+export const dateFormat = 'YYYY/MM/DD'

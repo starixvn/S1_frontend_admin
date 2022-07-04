@@ -59,6 +59,7 @@ export interface ActionPermissions {
 	lockRebatePayoutPermission: PermissionInterface
 	settingPermission: PermissionInterface
 	adminUserLogPermission: PermissionInterface
+	addPointBatchPermission: PermissionInterface
 }
 
 export interface PermissionInterface {

@@ -6,7 +6,7 @@ import {
 	SyncOutlined,
 } from '@ant-design/icons'
 import { ButtonProps } from 'antd'
-import { BiExport } from 'react-icons/bi'
+import { BiExport, BiAddToQueue } from 'react-icons/bi'
 import StyledButton from './StyledButton'
 
 const CreateButton = (props: ButtonProps) => {
@@ -61,12 +61,21 @@ const EditButton = (props: ButtonProps) => (
 	/>
 )
 
+const AddBatchButton = (props: ButtonProps) => (
+	<StyledButton
+		icon={<BiAddToQueue />}
+		type='primary'
+		shape='circle'
+		{...props}
+	/>
+)
 CreateButton.AFFIX_BUTTON_TYPE = 'CREATE_BUTTON'
 DeleteButton.AFFIX_BUTTON_TYPE = 'DELETE_BUTTON'
 SavedButton.AFFIX_BUTTON_TYPE = 'SAVED_BUTTON'
 ReloadButton.AFFIX_BUTTON_TYPE = 'RELOAD_BUTTON'
 FileExportButton.AFFIX_BUTTON_TYPE = 'FILE_EXPORT_BUTTON'
 EditButton.AFFIX_BUTTON_TYPE = 'EDIT_BUTTON'
+AddBatchButton.AFFIX_BUTTON_TYPE = 'ADD_BATCH_BUTTON'
 
 export {
 	CreateButton,
@@ -75,4 +84,5 @@ export {
 	ReloadButton,
 	FileExportButton,
 	EditButton,
+	AddBatchButton,
 }

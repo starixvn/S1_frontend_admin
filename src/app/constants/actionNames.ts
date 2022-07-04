@@ -38,4 +38,5 @@ export const ACTION_NAMES: {
 	35: 'lockRebatePayoutPermission',
 	36: 'settingPermission',
 	37: 'adminUserLogPermission',
+	38: 'addPointBatchPermission',
 }
