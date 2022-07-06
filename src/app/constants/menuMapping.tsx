@@ -318,7 +318,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.vipRebateManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateMangetment',
 		internalFunctionKey: allowedRoles.MarketingVipRebateMangetment,
 		newAdminPath: paths.marketing.sub.vipRebateManagement.root,
