@@ -255,6 +255,10 @@ const paths = {
 			bankFinancialReport: {
 				root: 'report/bankFinancialReport',
 			},
+			betList: {
+				root: 'report/betList',
+				functionId: 100,
+			},
 		},
 	},
 	risk: {

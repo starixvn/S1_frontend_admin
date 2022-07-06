@@ -174,6 +174,9 @@ const MemberListLog = lazy(
 			/* webpackChunkName: 'MemberListLog' */ 'features/memberList/memberListLog/MemberListLog'
 		)
 )
+const BetList = lazy(
+	() => import(/* webpackChunkName: 'BetList' */ 'features/betList/BetList')
+)
 
 const GiftListing = lazy(
 	() =>
@@ -518,6 +521,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<EditGiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.betList.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.betList.functionId}>
+						<BetList />
 					</AuthRequire>
 				),
 			},
