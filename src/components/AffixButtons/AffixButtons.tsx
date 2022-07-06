@@ -12,6 +12,8 @@ import {
 	FileExportButton,
 	EditButton,
 	AddBatchButton,
+	DragButton,
+	CloseButton,
 } from './ActionButtons'
 import GoNextRouteButton from './GoNextRouteButton'
 import GoBackRouteButton from './GoBackRouteButton'
@@ -29,6 +31,8 @@ export const AFFIX_BUTTON_TYPE_ENUM = {
 	GO_NEXT_ROUTE_BUTTON: 'GO_NEXT_ROUTE_BUTTON',
 	EDIT_BUTTON: 'EDIT_BUTTON',
 	ADD_BATCH_BUTTON: 'ADD_BATCH_BUTTON',
+	DRAG_BUTTON: 'DRAG_BUTTON',
+	CLOSE_BUTTON: 'CLOSE_BUTTON',
 }
 
 const { GO_BACK_ROUTE_BUTTON, GO_NEXT_ROUTE_BUTTON } = AFFIX_BUTTON_TYPE_ENUM
@@ -76,6 +80,8 @@ interface AffixButtonsInterface extends FC<{ children: ReactNode }> {
 	GoNextRoute: typeof GoNextRouteButton
 	Edit: typeof EditButton
 	AddBatch: typeof AddBatchButton
+	Drag: typeof DragButton
+	Close: typeof CloseButton
 }
 
 const AffixButtons: AffixButtonsInterface = props => {
@@ -136,5 +142,7 @@ AffixButtons.GoBackRoute = GoBackRouteButton
 AffixButtons.GoNextRoute = GoNextRouteButton
 AffixButtons.Edit = EditButton
 AffixButtons.AddBatch = AddBatchButton
+AffixButtons.Drag = DragButton
+AffixButtons.Close = CloseButton
 
 export { AffixButtons }

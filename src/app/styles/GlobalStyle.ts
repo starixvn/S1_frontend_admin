@@ -38,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
       top: 90%;
       font-size: 12px;
       .ant-form-item-explain-error {
-        position:fixed;
+        word-break: white-space:nowrap;
       }
     }
 `

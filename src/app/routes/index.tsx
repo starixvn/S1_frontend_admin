@@ -175,6 +175,27 @@ const MemberListLog = lazy(
 		)
 )
 
+const GiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/GiftListing'
+		)
+)
+
+const AddGiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/AddGiftListing'
+		)
+)
+
+const EditGiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/EditGiftListing'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -461,6 +482,42 @@ const routes: RouteObject[] = [
 						}
 					>
 						<MemberListLog />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.giftListing.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<GiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.addGiftListing.root}/:currencyId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<AddGiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.editGiftListing.root}/:currencyId/:editGiftId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<EditGiftListing />
 					</AuthRequire>
 				),
 			},
