@@ -42,7 +42,7 @@ const MemberListLogTable: FC<IMemberListLogTableProps> = ({
 			title: t('Label_ReferId'),
 			key: 'refTransId',
 			dataIndex: 'refTransId',
-			width: 80,
+			width: 100,
 			align: 'center' as 'center',
 		},
 		{
@@ -64,16 +64,9 @@ const MemberListLogTable: FC<IMemberListLogTableProps> = ({
 			title: t('Label_PointBalance'),
 			key: 'afterPoint',
 			dataIndex: 'afterPoint',
-			width: 80,
-			align: 'center' as 'center',
-			render: (afterPoint: number) => numberFormatter.format(afterPoint),
-		},
-		{
-			title: t('Label_Memo'),
-			key: 'memo',
-			dataIndex: 'memo',
 			width: 120,
 			align: 'center' as 'center',
+			render: (afterPoint: number) => numberFormatter.format(afterPoint),
 		},
 		{
 			title: t('Label_Operator'),
@@ -81,6 +74,12 @@ const MemberListLogTable: FC<IMemberListLogTableProps> = ({
 			dataIndex: 'operator',
 			width: 120,
 			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Memo'),
+			key: 'memo',
+			dataIndex: 'memo',
+			width: 400,
 		},
 	]
 
