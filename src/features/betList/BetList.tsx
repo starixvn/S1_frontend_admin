@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { assign, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -166,15 +166,11 @@ const BetList: FC<{
 				endTime,
 				winLostAmount,
 			}
-			await getBetList(
-				assign(
-					{
-						siteIds: [siteId],
-					},
-					args
-				)
-			).unwrap()
-			setQueryParams(assign({ timeZone: currentTimeZoneUtcOffset }, args))
+			await getBetList({
+				siteIds: [siteId],
+				...args,
+			}).unwrap()
+			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
