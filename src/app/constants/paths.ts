@@ -297,6 +297,18 @@ const paths = {
 			giftManagement: {
 				root: 'rewardProgram/giftManagement',
 				sub: {
+					giftListing: {
+						root: 'rewardProgram/giftManagement/giftListing',
+						functionId: 106,
+					},
+					addGiftListing: {
+						root: 'rewardProgram/giftManagement/addGiftListing',
+						functionId: 106,
+					},
+					editGiftListing: {
+						root: 'rewardProgram/giftManagement/GiftListing/Edit',
+						functionId: 106,
+					},
 					redemptionLimit: {
 						root: 'rewardProgram/giftManagement/redemptionLimit',
 						functionId: 113,

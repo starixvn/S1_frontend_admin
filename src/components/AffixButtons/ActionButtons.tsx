@@ -1,12 +1,13 @@
 import {
 	CheckOutlined,
+	CloseOutlined,
 	DeleteOutlined,
 	EditOutlined,
 	PlusOutlined,
 	SyncOutlined,
 } from '@ant-design/icons'
 import { ButtonProps } from 'antd'
-import { BiExport, BiAddToQueue } from 'react-icons/bi'
+import { BiExport, BiAddToQueue, BiSortAlt2 } from 'react-icons/bi'
 import StyledButton from './StyledButton'
 
 const CreateButton = (props: ButtonProps) => {
@@ -69,6 +70,26 @@ const AddBatchButton = (props: ButtonProps) => (
 		{...props}
 	/>
 )
+
+const DragButton = (props: ButtonProps) => (
+	<StyledButton
+		icon={<BiSortAlt2 style={{ marginTop: '8px' }} />}
+		type='primary'
+		shape='circle'
+		{...props}
+	/>
+)
+
+const CloseButton = (props: ButtonProps) => (
+	<StyledButton
+		icon={<CloseOutlined />}
+		type='primary'
+		danger
+		shape='circle'
+		{...props}
+	/>
+)
+
 CreateButton.AFFIX_BUTTON_TYPE = 'CREATE_BUTTON'
 DeleteButton.AFFIX_BUTTON_TYPE = 'DELETE_BUTTON'
 SavedButton.AFFIX_BUTTON_TYPE = 'SAVED_BUTTON'
@@ -76,6 +97,8 @@ ReloadButton.AFFIX_BUTTON_TYPE = 'RELOAD_BUTTON'
 FileExportButton.AFFIX_BUTTON_TYPE = 'FILE_EXPORT_BUTTON'
 EditButton.AFFIX_BUTTON_TYPE = 'EDIT_BUTTON'
 AddBatchButton.AFFIX_BUTTON_TYPE = 'ADD_BATCH_BUTTON'
+DragButton.AFFIX_BUTTON_TYPE = 'DRAG_BUTTON'
+CloseButton.AFFIX_BUTTON_TYPE = 'CLOSE_BUTTON'
 
 export {
 	CreateButton,
@@ -85,4 +108,6 @@ export {
 	FileExportButton,
 	EditButton,
 	AddBatchButton,
+	DragButton,
+	CloseButton,
 }

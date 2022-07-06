@@ -8,6 +8,8 @@ export interface IAxiosResponse<T> {
 	rowCount?: number
 	errorCode: number
 	message: string
+	rawErrorCode?: string
+	rawMessage?: string
 }
 
 export const axiosBaseQuery =

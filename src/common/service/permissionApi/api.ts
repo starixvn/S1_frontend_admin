@@ -19,4 +19,5 @@ export const permissionApi = createApi({
 	}),
 })
 
-export const { useGetLanguageListQuery } = permissionApi
+export const { useGetLanguageListQuery, useLazyGetLanguageListQuery } =
+	permissionApi
