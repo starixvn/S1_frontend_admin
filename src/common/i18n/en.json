@@ -245,5 +245,15 @@
 	"Label_Platform": "Platform",
 	"Label_Live": "Live",
 	"Label_Enable": "Enable",
-	"Label_Disable": "Disable"
+	"Label_Disable": "Disable",
+	"Label_Teams": "Teams",
+	"Label_PredictUsers": "Predict Users",
+	"Label_Export": "Export",
+	"Label_Winners": "Winners",
+	"Label_Process": "Process",
+	"Label_TicketType": "Ticket Type",
+	"Label_Ticket": "Ticket {{key}}",
+	"Label_Team": "Team",
+	"Label_Selected": "Selected",
+	"Label_UnSelected": "UnSelected"
 }
