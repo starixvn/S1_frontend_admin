@@ -318,7 +318,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.vipRebateManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateMangetment',
 		internalFunctionKey: allowedRoles.MarketingVipRebateMangetment,
 		newAdminPath: paths.marketing.sub.vipRebateManagement.root,
@@ -724,5 +724,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 			paths.rewardProgram.sub.pointSetting.sub.depositPoint.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.pointSetting.sub.depositPoint.root,
+	},
+	{
+		icon: null,
+		functionId: paths.rewardProgram.sub.memberList.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.memberList.root,
 	},
 ]

@@ -160,6 +160,21 @@ const TurnoverPointSetting = lazy(
 			/* webpackChunkName: 'TurnoverPointSetting' */ 'features/turnoverPoint/turnoverPointSetting/TurnoverPointSetting'
 		)
 )
+
+const MemberList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberList' */ 'features/memberList/MemberList'
+		)
+)
+
+const MemberListLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberListLog' */ 'features/memberList/memberListLog/MemberListLog'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -424,6 +439,28 @@ const routes: RouteObject[] = [
 						}
 					>
 						<TurnoverPointSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.memberList.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.rewardProgram.sub.memberList.functionId}
+					>
+						<MemberList />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.memberList.sub.memberListLog.root}/:custId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.memberList.sub.memberListLog.functionId
+						}
+					>
+						<MemberListLog />
 					</AuthRequire>
 				),
 			},
