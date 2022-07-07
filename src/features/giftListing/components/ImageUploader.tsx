@@ -9,9 +9,8 @@ import {
 	Row,
 	Space,
 	Upload,
-	UploadFile,
 } from 'antd'
-import type { RcFile } from 'antd/es/upload'
+import { UploadFile, RcFile } from 'antd/es/upload/interface'
 import type { UploadProps } from 'antd/es/upload/interface'
 import { head } from 'lodash'
 import { useTranslation } from 'react-i18next'

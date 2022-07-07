@@ -1,4 +1,4 @@
-import { UploadFile } from 'antd'
+import { UploadFile } from 'antd/es/upload/interface'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetCategoriesArgs {
