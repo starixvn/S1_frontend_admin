@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { Form, message } from 'antd'
-import { selectUserSite } from 'common/enum'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth } from 'common/hooks'
+import { find } from 'lodash'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetDepositPointSettingQuery,
@@ -21,6 +22,8 @@ const DepositPoint: FC<{
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 
 	const { timeZoneUtcOffset } = useTimeZone()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
 	const [recordDepositPointSettings, setRecordDepositPointSettings] = useState<
@@ -61,10 +64,16 @@ const DepositPoint: FC<{
 				promotionDateRange,
 				promotionPointRate,
 			} = (await form.validateFields()) as IDepositPointSettingData
+
+			const currency = find(currencyListBySite, { isoCode: editingKey })
+
+			if (!currency?.timeZone) return
+			// * 轉成幣別所預設的時區
 			const [promotionStartTime, promotionEndTime] = dateRangeToUtcFormatter(
 				promotionDateRange,
-				timeZoneUtcOffset
+				currency?.timeZone
 			)
+
 			const newData = [...recordDepositPointSettings]
 			const index = newData.findIndex(item => editingKey === item.isoCode)
 			const item = {
