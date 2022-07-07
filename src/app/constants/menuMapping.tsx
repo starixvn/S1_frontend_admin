@@ -497,7 +497,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 70,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		newAdminPath: paths.risk.sub.blockBankAccount.root,
 	},
 	{
