@@ -199,6 +199,20 @@ const EditGiftListing = lazy(
 		)
 )
 
+const WorldCupTeamReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupTeamReport' */ 'features/worldCupTeamReport/WorldCupTeamReport'
+		)
+)
+
+const WorldCupMemberReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupMemberReport' */ 'features/worldCupMemberReport/WorldCupMemberReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -529,6 +543,26 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.betList.functionId}>
 						<BetList />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupTeamReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.worldCupTeamReport.functionId}
+					>
+						<WorldCupTeamReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupMemberReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.worldCupMemberReport.functionId}
+					>
+						<WorldCupMemberReport />
 					</AuthRequire>
 				),
 			},

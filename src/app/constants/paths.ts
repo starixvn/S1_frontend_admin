@@ -259,6 +259,14 @@ const paths = {
 				root: 'report/betList',
 				functionId: 100,
 			},
+			worldCupTeamReport: {
+				root: 'report/worldCupTeamReport',
+				functionId: 116,
+			},
+			worldCupMemberReport: {
+				root: 'report/worldCupMemberReport',
+				functionId: 115,
+			},
 		},
 	},
 	risk: {

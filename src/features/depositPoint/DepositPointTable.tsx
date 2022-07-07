@@ -48,7 +48,7 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 	const columns = [
 		{
 			title: t('Label_Action'),
-			width: 80,
+			width: 140,
 			align: 'center' as 'center',
 			render: (record: IDepositPointSettingData) => {
 				const editable = isEditing(record)
@@ -101,15 +101,35 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 
 				return (
 					<Space align='center'>
-						<Form.Item noStyle name='promotionStatus'>
-							<Switch defaultChecked={promotionStatus} disabled={!editable} />
-						</Form.Item>
+						{editable ? (
+							<Form.Item
+								name='promotionStatus'
+								style={{ margin: 0 }}
+								valuePropName='checked'
+							>
+								<Switch disabled={!editable} />
+							</Form.Item>
+						) : (
+							<Switch checked={promotionStatus} disabled={!editable} />
+						)}
 
-						<Form.Item
-							name='promotionDateRange'
-							style={{ margin: 0 }}
-							rules={[{ required: true }]}
-						>
+						{editable ? (
+							<Form.Item name='promotionDateRange' style={{ margin: 0 }}>
+								<RangePicker
+									disabled={!editable}
+									format={time =>
+										moment(time)
+											.utcOffset(timeZoneUtcOffset)
+											.format('YYYY-MM-DD')
+									}
+									ranges={MOMENT_RANGE_PICKER_RANGES([
+										'Today',
+										'Last 7 Day',
+										'This Month',
+									])}
+								/>
+							</Form.Item>
+						) : (
 							<RangePicker
 								disabled={!editable}
 								format={time =>
@@ -120,12 +140,9 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 									'Last 7 Day',
 									'This Month',
 								])}
-								defaultValue={[
-									moment(promotionStartTime),
-									moment(promotionEndTime),
-								]}
+								value={[moment(promotionStartTime), moment(promotionEndTime)]}
 							/>
-						</Form.Item>
+						)}
 					</Space>
 				)
 			},
