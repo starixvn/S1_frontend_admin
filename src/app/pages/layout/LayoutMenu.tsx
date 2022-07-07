@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Menu, MenuProps } from 'antd'
+import { Menu, MenuProps, Typography } from 'antd'
 import { useMediaQuery } from 'usehooks-ts'
 import { MenuInterface } from 'type'
 import { getMapMenu, MODULE_ICON_MAPPING } from 'app/constants/menuMapping'
@@ -60,6 +60,28 @@ const LayoutMenu = ({
 		const menuKey = makeMenuKey(name, moduleId)
 		const moduleIcon = moduleId ? MODULE_ICON_MAPPING?.[moduleId] : null
 
+		const labelItem: MenuItem = {
+			style: { fontSize: '12px' },
+			key: name,
+			disabled: true,
+			label: (
+				<div
+					style={{
+						position: 'absolute',
+						top: 0,
+						bottom: 0,
+						right: 0,
+						left: 0,
+						cursor: 'default',
+					}}
+				>
+					<Typography.Text style={{ marginLeft: 15 }} type='secondary'>
+						{name}
+					</Typography.Text>
+				</div>
+			),
+		}
+
 		const renderFunctionDatas =
 			menu.functionDatas
 				?.map(functionData => renderMenuItem(functionData))
@@ -84,7 +106,9 @@ const LayoutMenu = ({
 			label: name,
 			icon: moduleIcon,
 			theme: collapsed ? 'light' : 'dark',
-			children: [...renderFunctionDatas, ...renderSubLayerDatas],
+			children: collapsed
+				? [labelItem, ...renderFunctionDatas, ...renderSubLayerDatas]
+				: [...renderFunctionDatas, ...renderSubLayerDatas],
 		}
 		return subMenuItem
 	}

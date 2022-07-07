@@ -32,7 +32,7 @@ const LayoutSideBar = ({
 			collapsedWidth={mediaMdMatches ? '80' : '0'}
 			collapsible={false}
 			collapsed={collapsed}
-			onCollapse={onToggleCollapsed}
+			// onCollapse={onToggleCollapsed}
 			style={{
 				overflow: 'auto',
 				height: '100vh',
