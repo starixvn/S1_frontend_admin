@@ -12,6 +12,7 @@ export interface Currency {
 	currencyId: number
 	isoCode: string
 	note: string
+	timeZone: string
 }
 
 export interface AdjustmentInfoLogMenuItem {
