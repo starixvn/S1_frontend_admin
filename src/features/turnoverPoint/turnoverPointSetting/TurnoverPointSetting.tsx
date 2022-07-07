@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useQueryParams } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Form, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -28,6 +28,7 @@ const TurnoverPointSetting: FC<{
 	const { vipLevelName, currencyId } = queryParams
 	const { vipLevel } = useParams()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const navigate = useNavigate()
 	const [form] = Form.useForm()
 	const {
 		data: {
@@ -133,7 +134,12 @@ const TurnoverPointSetting: FC<{
 					onClick={handleSetTurnoverPointSetting}
 					loading={isSetTurnoverPointSettingLoading}
 				/>
-				<AffixButtons.GoBackRoute onClick={() => form.resetFields()} />
+				<AffixButtons.GoBackRoute
+					onClick={() => {
+						navigate(-1)
+						form.resetFields()
+					}}
+				/>
 			</AffixButtons>
 		</LayoutContent.Main>
 	)

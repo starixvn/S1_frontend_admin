@@ -17,3 +17,5 @@ export const SITE_LOGO_IMAGE: {
 		width: 90,
 	},
 }
+
+export const cloudImgURL = 'https://store.0814media.net'

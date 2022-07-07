@@ -497,7 +497,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 70,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.risk.sub.blockBankAccount.root,
 	},
 	{
@@ -721,6 +721,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId:
+			paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.giftManagement.sub.giftListing.root,
+	},
+	{
+		icon: null,
+		functionId:
 			paths.rewardProgram.sub.pointSetting.sub.depositPoint.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.pointSetting.sub.depositPoint.root,
@@ -730,5 +737,23 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.rewardProgram.sub.memberList.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.memberList.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.betList.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.betList.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.worldCupTeamReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.worldCupTeamReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.worldCupMemberReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.worldCupMemberReport.root,
 	},
 ]

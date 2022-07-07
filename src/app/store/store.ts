@@ -17,8 +17,12 @@ import { userSettingsApi } from 'features/userSettings/api'
 import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 import { redemptionLimitApi } from 'features/redemptionLimit/api'
 import { depositPointApi } from 'features/depositPoint/api'
-import { turnoverPointApi } from '../../features/turnoverPoint/api'
-import { memberListApi } from '../../features/memberList/api'
+import { giftListingApi } from 'features/giftListing/api'
+import { memberListApi } from 'features/memberList/api'
+import { betListApi } from 'features/betList/api'
+import { turnoverPointApi } from 'features/turnoverPoint/api'
+import { worldCupTeamReportApi } from 'features/worldCupTeamReport/api'
+import { worldCupMemberReportApi } from 'features/worldCupMemberReport/api'
 
 export const store = configureStore({
 	reducer: {
@@ -42,6 +46,10 @@ export const store = configureStore({
 		[depositPointApi.reducerPath]: depositPointApi.reducer,
 		[turnoverPointApi.reducerPath]: turnoverPointApi.reducer,
 		[memberListApi.reducerPath]: memberListApi.reducer,
+		[giftListingApi.reducerPath]: giftListingApi.reducer,
+		[betListApi.reducerPath]: betListApi.reducer,
+		[worldCupTeamReportApi.reducerPath]: worldCupTeamReportApi.reducer,
+		[worldCupMemberReportApi.reducerPath]: worldCupMemberReportApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -62,7 +70,12 @@ export const store = configureStore({
 			.concat(redemptionLimitApi.middleware)
 			.concat(depositPointApi.middleware)
 			.concat(turnoverPointApi.middleware)
-			.concat(memberListApi.middleware),
+			.concat(memberListApi.middleware)
+			.concat(giftListingApi.middleware)
+			.concat(betListApi.middleware)
+			.concat(worldCupTeamReportApi.middleware)
+			.concat(worldCupTeamReportApi.middleware)
+			.concat(worldCupMemberReportApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

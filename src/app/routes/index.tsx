@@ -174,6 +174,44 @@ const MemberListLog = lazy(
 			/* webpackChunkName: 'MemberListLog' */ 'features/memberList/memberListLog/MemberListLog'
 		)
 )
+const BetList = lazy(
+	() => import(/* webpackChunkName: 'BetList' */ 'features/betList/BetList')
+)
+
+const GiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/GiftListing'
+		)
+)
+
+const AddGiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/AddGiftListing'
+		)
+)
+
+const EditGiftListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/EditGiftListing'
+		)
+)
+
+const WorldCupTeamReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupTeamReport' */ 'features/worldCupTeamReport/WorldCupTeamReport'
+		)
+)
+
+const WorldCupMemberReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupMemberReport' */ 'features/worldCupMemberReport/WorldCupMemberReport'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -461,6 +499,70 @@ const routes: RouteObject[] = [
 						}
 					>
 						<MemberListLog />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.giftListing.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<GiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.addGiftListing.root}/:currencyId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<AddGiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.editGiftListing.root}/:currencyId/:editGiftId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.giftManagement.sub.giftListing.functionId
+						}
+					>
+						<EditGiftListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.betList.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.betList.functionId}>
+						<BetList />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupTeamReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.worldCupTeamReport.functionId}
+					>
+						<WorldCupTeamReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupMemberReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.worldCupMemberReport.functionId}
+					>
+						<WorldCupMemberReport />
 					</AuthRequire>
 				),
 			},

@@ -11,8 +11,8 @@ const GoBackRouteButton = (props: ButtonProps) => {
 			icon={<LeftOutlined />}
 			type='default'
 			shape='circle'
-			{...props}
 			onClick={() => navigate(-1)}
+			{...props}
 		/>
 	)
 }

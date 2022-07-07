@@ -255,6 +255,18 @@ const paths = {
 			bankFinancialReport: {
 				root: 'report/bankFinancialReport',
 			},
+			betList: {
+				root: 'report/betList',
+				functionId: 100,
+			},
+			worldCupTeamReport: {
+				root: 'report/worldCupTeamReport',
+				functionId: 116,
+			},
+			worldCupMemberReport: {
+				root: 'report/worldCupMemberReport',
+				functionId: 115,
+			},
 		},
 	},
 	risk: {
@@ -297,6 +309,18 @@ const paths = {
 			giftManagement: {
 				root: 'rewardProgram/giftManagement',
 				sub: {
+					giftListing: {
+						root: 'rewardProgram/giftManagement/giftListing',
+						functionId: 106,
+					},
+					addGiftListing: {
+						root: 'rewardProgram/giftManagement/addGiftListing',
+						functionId: 106,
+					},
+					editGiftListing: {
+						root: 'rewardProgram/giftManagement/GiftListing/Edit',
+						functionId: 106,
+					},
 					redemptionLimit: {
 						root: 'rewardProgram/giftManagement/redemptionLimit',
 						functionId: 113,
