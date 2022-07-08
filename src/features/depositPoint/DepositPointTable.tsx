@@ -6,7 +6,7 @@ import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { Form, FormInstance, DatePicker, Space, Switch, Typography } from 'antd'
 import { EditableCellRows, Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { dateFormat, numberFormatter, timeFormat } from 'common/utils/format'
 import { selectCurrencyListBySite } from 'common/enum'
 import { useAppSelector } from 'app/store'
 import { IDepositPointSettingData } from './type'
@@ -71,9 +71,8 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 					<Form.Item name='promotionDateRange' style={{ margin: 0 }}>
 						<RangePicker
 							disabled={!editable}
-							showTime
 							format={time =>
-								moment(time).utcOffset(timeZoneUtcOffset).format(timeFormat)
+								moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
 							}
 							ranges={MOMENT_RANGE_PICKER_RANGES([
 								'Today',
@@ -86,7 +85,7 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 					<RangePicker
 						disabled={!editable}
 						format={time =>
-							moment(time).utcOffset(timeZoneUtcOffset).format(timeFormat)
+							moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
 						}
 						value={[moment(promotionStartTime), moment(promotionEndTime)]}
 					/>
