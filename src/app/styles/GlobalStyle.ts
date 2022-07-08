@@ -41,6 +41,12 @@ const GlobalStyle = createGlobalStyle`
         word-break: white-space:nowrap;
       }
     }
+
+    // * 隱藏 antd image preview 多餘的區塊
+    // * https://ant.design/components/image/#components-image-demo-controlled-preview
+    .ant-image-mask {
+      display: none;
+    }
 `
 
 export default GlobalStyle

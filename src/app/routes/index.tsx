@@ -213,6 +213,13 @@ const WorldCupMemberReport = lazy(
 		)
 )
 
+const WorldCupMemberSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupMemberSetting' */ 'features/worldCupSetting/WorldCupSetting'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -563,6 +570,14 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.worldCupMemberReport.functionId}
 					>
 						<WorldCupMemberReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.worldCupSetting.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.worldCupSetting.functionId}>
+						<WorldCupMemberSetting />
 					</AuthRequire>
 				),
 			},

@@ -756,4 +756,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.worldCupMemberReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.worldCupSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.worldCupSetting.root,
+	},
 ]

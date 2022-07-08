@@ -23,6 +23,7 @@ import { betListApi } from 'features/betList/api'
 import { turnoverPointApi } from 'features/turnoverPoint/api'
 import { worldCupTeamReportApi } from 'features/worldCupTeamReport/api'
 import { worldCupMemberReportApi } from 'features/worldCupMemberReport/api'
+import { worldCupSettingApi } from 'features/worldCupSetting/api'
 
 export const store = configureStore({
 	reducer: {
@@ -50,6 +51,7 @@ export const store = configureStore({
 		[betListApi.reducerPath]: betListApi.reducer,
 		[worldCupTeamReportApi.reducerPath]: worldCupTeamReportApi.reducer,
 		[worldCupMemberReportApi.reducerPath]: worldCupMemberReportApi.reducer,
+		[worldCupSettingApi.reducerPath]: worldCupSettingApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -75,7 +77,8 @@ export const store = configureStore({
 			.concat(betListApi.middleware)
 			.concat(worldCupTeamReportApi.middleware)
 			.concat(worldCupTeamReportApi.middleware)
-			.concat(worldCupMemberReportApi.middleware),
+			.concat(worldCupMemberReportApi.middleware)
+			.concat(worldCupSettingApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
