@@ -12,6 +12,7 @@ const { Header, Sider } = Layout
 
 const LayoutSideBar = ({
 	collapsed,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onToggleCollapsed,
 	onCloseCollapsed,
 }: {

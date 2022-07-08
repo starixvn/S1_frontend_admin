@@ -12,8 +12,8 @@ import {
 	useGetDepositPointSettingQuery,
 	useSetDepositPointSettingMutation,
 } from './api'
-import DepositPointTable from './DepositPointTable'
 import { IDepositPointSettingData, ISetDepositPointSettingArgs } from './type'
+import DepositPointTable from './DepositPointTable'
 
 const DepositPoint: FC<{
 	pageTitle?: string
@@ -68,9 +68,12 @@ const DepositPoint: FC<{
 			const currency = find(currencyListBySite, { isoCode: editingKey })
 
 			if (!currency?.timeZone) return
-			// * 轉成幣別所預設的時區
+			// * 轉成幣別所預設的時區，且結束時間需為 23:59:59
 			const [promotionStartTime, promotionEndTime] = dateRangeToUtcFormatter(
-				promotionDateRange,
+				[
+					promotionDateRange[0].startOf('day'),
+					promotionDateRange[1].endOf('day'),
+				],
 				currency?.timeZone
 			)
 
