@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
 import 'antd/dist/antd.css'
-import './editor.css'
 
 const GlobalStyle = createGlobalStyle`
   
