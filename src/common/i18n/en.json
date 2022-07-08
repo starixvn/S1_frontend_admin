@@ -255,5 +255,6 @@
 	"Label_Ticket": "Ticket {{key}}",
 	"Label_Team": "Team",
 	"Label_Selected": "Selected",
-	"Label_UnSelected": "UnSelected"
+	"Label_UnSelected": "UnSelected",
+	"Label_ShowImagePreview": "Show Image Preview"
 }

@@ -375,6 +375,15 @@ const paths = {
 			},
 		},
 	},
+	cms: {
+		root: 'cms',
+		sub: {
+			worldCupSetting: {
+				root: 'cms/worldCupSetting',
+				functionId: 114,
+			},
+		},
+	},
 }
 
 export default paths
