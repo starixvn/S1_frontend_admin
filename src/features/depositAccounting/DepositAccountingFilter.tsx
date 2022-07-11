@@ -66,7 +66,7 @@ const DepositAccountingFilter: FC<IDepositAccountingFilterProps> = ({
 						onFinish={() => onSearch({})}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={10} md={24} xs={24}>
+							<Col lg={8} md={24} xs={24}>
 								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
 										compact
