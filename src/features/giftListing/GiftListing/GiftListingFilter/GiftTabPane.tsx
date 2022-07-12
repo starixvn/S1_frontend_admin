@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react'
 import { Form, TabPaneProps, Tabs } from 'antd'
 import { take, uniq } from 'lodash'
+import { useQueryParams } from 'common/hooks'
 import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
@@ -27,6 +28,7 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 }) => {
 	const [form] = Form.useForm()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const [queryParams] = useQueryParams()
 
 	const {
 		data: { data: languageList = [] } = {},
@@ -82,8 +84,8 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 		await onSearch({ ...values, currencyId })
 	}
 
-	// * 獲取下拉選單資料
 	useEffect(() => {
+		// * 獲取下拉選單資料
 		if (!isGetLanguageListFetching) {
 			getGiftTags({ siteId, currencyId, langCodes: languageList })
 			getCategories({
@@ -92,6 +94,20 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 				langCodes: languageList,
 			})
 		}
+
+		// * 初始搜尋條件
+		const {
+			categoryIds = [],
+			currencyId: paramsCurrencyId = '',
+			tags = [],
+			status = [],
+		} = queryParams
+		form.setFieldsValue({
+			categoryIds: categoryIds?.map((value: string) => Number(value)),
+			currencyId: paramsCurrencyId,
+			tags: tags?.map((value: string) => Number(value)),
+			status: status?.map((value: string) => Number(value)),
+		})
 	}, [isGetLanguageListFetching])
 
 	// * 當 categoryIds、tags 資料回來後再設定 form 初始值並 first feting
