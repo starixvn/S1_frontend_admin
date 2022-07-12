@@ -15,7 +15,7 @@ import paths from 'app/constants/paths'
 import { IGetRedemptionListData } from './type'
 import { statusesList } from './constants'
 
-interface IWorldCupMemberReportProps {
+interface IRedemptionListingTableProps {
 	loading: boolean
 	redemptionListData: IGetRedemptionListData[]
 	pagination: PaginationInterface
@@ -24,7 +24,7 @@ interface IWorldCupMemberReportProps {
 	timeZoneUtcOffset: number
 }
 
-const RedemptionListingTable: FC<IWorldCupMemberReportProps> = ({
+const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 	loading,
 	timeZoneUtcOffset,
 	redemptionListData,
