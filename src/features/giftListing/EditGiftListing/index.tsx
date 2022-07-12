@@ -45,6 +45,7 @@ const EditGiftListing = () => {
 			const {
 				fileList: [file],
 				infos: originInfos,
+				stock,
 				...values
 			} = await form.validateFields()
 
@@ -74,6 +75,7 @@ const EditGiftListing = () => {
 				infos,
 				status: Boolean(status),
 				giftId: Number(editGiftId),
+				stock: stock || undefined,
 			}).unwrap()
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(backPath)

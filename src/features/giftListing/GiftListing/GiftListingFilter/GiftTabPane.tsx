@@ -7,7 +7,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useLazyGetCategoriesQuery, useLazyGetGiftTagsQuery } from '../../api'
 import GiftListingForm from './GiftListingForm'
-import { GIFT_LIST_STATUS } from '../../constants'
+import { allStatuses, GIFT_LIST_STATUS } from '../../constants'
 
 const { TabPane } = Tabs
 
@@ -123,6 +123,7 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 			form.setFieldsValue({
 				categoryIds: uniq(categoryIds),
 				tags: take(tagIds),
+				status: allStatuses,
 			})
 
 			handleSearch(form.getFieldsValue())

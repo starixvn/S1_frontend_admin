@@ -105,7 +105,7 @@ export interface IGiftForm {
 	priceWorth: number
 	sort: number
 	showStock: number | boolean
-	stock: number
+	stock: any
 	fileList: UploadFile[]
 	infos: IInfos
 }
@@ -130,7 +130,7 @@ export interface IGiftInfoData {
 	tagIds: number[]
 	point: number
 	priceWorth: number
-	stock: number
+	stock: number | null
 	sort: number
 	status: number
 }
@@ -145,7 +145,7 @@ export interface IUpdateGiftArgs {
 	point: number
 	priceWorth: number
 	showStock: number | boolean
-	stock: number
+	stock: any
 	sort: number
 	infos: {
 		lang: string

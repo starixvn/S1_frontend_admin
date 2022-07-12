@@ -115,6 +115,14 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 						// * 當該語系的 'categories' 長度為零則不給值
 						name={categories.length > 0 ? 'categoryId' : ''}
 						label={t('Label_Category')}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_Category'),
+								}),
+							},
+						]}
 					>
 						<Select placeholder={t('Label_Select')}>
 							{categories?.map(category => (
@@ -196,18 +204,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 									<Checkbox />
 								</Form.Item>
 							</Button>
-							<Form.Item
-								name='stock'
-								noStyle
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_Stock'),
-										}),
-									},
-								]}
-							>
+							<Form.Item name='stock' noStyle>
 								<InputNumber
 									type='number'
 									style={{ width: 'calc(100% - 48px)' }}
