@@ -337,6 +337,14 @@ const paths = {
 					},
 				},
 			},
+			redemptionListing: {
+				root: 'rewardProgram/redemptionListing',
+				functionId: 103,
+			},
+			redemptionDetail: {
+				root: 'rewardProgram/redemptionDetail',
+				functionId: 103,
+			},
 		},
 	},
 	administration: {

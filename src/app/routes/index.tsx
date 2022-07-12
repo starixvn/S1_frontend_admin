@@ -219,6 +219,19 @@ const WorldCupMemberSetting = lazy(
 			/* webpackChunkName: 'WorldCupMemberSetting' */ 'features/worldCupSetting/WorldCupSetting'
 		)
 )
+const RedemptionListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionListing' */ 'features/redemptionListing/RedemptionListing'
+		)
+)
+
+const RedemptionDetail = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionDetail' */ 'features/redemptionListing/redemptionDetail/RedemptionDetail'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -578,6 +591,26 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.worldCupSetting.functionId}>
 						<WorldCupMemberSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.redemptionListing.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.rewardProgram.sub.redemptionListing.functionId}
+					>
+						<RedemptionListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.redemptionDetail.root}/:redemptionId`,
+				element: (
+					<AuthRequire
+						functionId={paths.rewardProgram.sub.redemptionDetail.functionId}
+					>
+						<RedemptionDetail />
 					</AuthRequire>
 				),
 			},
