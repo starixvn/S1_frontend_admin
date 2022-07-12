@@ -13,3 +13,5 @@ export const GIFT_LIST_STATUS = [
 		value: GIFT_LIST_STATUS_OPTIONS.OPEN,
 	},
 ]
+
+export const allStatuses = Object.values(GIFT_LIST_STATUS_OPTIONS)

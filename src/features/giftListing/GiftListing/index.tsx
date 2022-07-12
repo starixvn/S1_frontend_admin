@@ -13,7 +13,7 @@ import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { arrayMoveImmutable } from 'array-move'
 import type { SortEnd } from 'react-sortable-hoc'
-import { GIFT_LIST_STATUS_OPTIONS } from '../constants'
+import { allStatuses } from '../constants'
 import {
 	useLazyGetGiftListQuery,
 	useUpdateGiftMutation,
@@ -22,8 +22,6 @@ import {
 import GiftListingFilter from './GiftListingFilter'
 import GiftListingTable from './GiftListingTable'
 import { IGiftData } from '../type'
-
-const allStatuses = Object.values(GIFT_LIST_STATUS_OPTIONS)
 
 const GiftListing: FC<{
 	pageTitle?: string

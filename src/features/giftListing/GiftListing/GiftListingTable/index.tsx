@@ -79,7 +79,7 @@ const GiftListingTable: FC<IGiftListingTableProps> = ({
 						disabled={!editPermission?.canUse}
 						onClick={() =>
 							navigate(
-								`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.editGiftListing.root}/${currencyId}/${record.giftId}?defaultEditLang=${record.lang}}`
+								`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.editGiftListing.root}/${currencyId}/${record.giftId}?defaultEditLang=${record.lang}`
 							)
 						}
 					>
