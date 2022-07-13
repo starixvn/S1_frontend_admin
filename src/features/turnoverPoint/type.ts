@@ -60,8 +60,8 @@ export interface ISetTurnoverPointSettingInfo {
 	pointRate: number
 	promotionStatus: number
 	promotionPointRate: number
-	promotionStartTime: string
-	promotionEndTime: string
+	promotionStartTime: string | null
+	promotionEndTime: string | null
 	vipLevel: number
 }
 
@@ -100,6 +100,7 @@ export type IGetTurnoverPointStatusSettingResponse = IAxiosResponse<
 export interface ISetTurnoverPointStatusSettingArgs {
 	siteId?: number
 	currencyId?: number
+	tpCategoryId?: number
 	infos: ISetTurnoverPointStatusSettingInfo[]
 }
 
