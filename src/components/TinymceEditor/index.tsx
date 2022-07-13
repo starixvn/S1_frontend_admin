@@ -44,7 +44,8 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 					'code',
 					'help',
 					'fullscreen',
-					'powerpaste',
+					// * 先註解掉此付費功能
+					// 'powerpaste',
 				],
 				toolbar: [
 					'undo redo bold italic underline strikethrough fontfamily fontsize forecolor backcolor alignleft aligncenter alignright alignjustify numlist bullist table link image code preview help fullscreen',
