@@ -61,7 +61,10 @@ const TurnoverPointSetting: FC<{
 				promotionDateRange,
 			} = item
 			const [promotionStartTime, promotionEndTime] = dateRangeToUtcFormatter(
-				promotionDateRange,
+				[
+					promotionDateRange[0] ? promotionDateRange[0].startOf('day') : null,
+					promotionDateRange[1] ? promotionDateRange[1].endOf('day') : null,
+				],
 				timeZoneUtcOffset
 			)
 
