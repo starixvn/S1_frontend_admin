@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { assign, findIndex, includes, isEmpty } from 'lodash'
 import { Form, message } from 'antd'
@@ -35,6 +35,8 @@ const TurnoverPoint: FC<{
 
 	const turnoverPointStatusModal = useModal()
 	const [modalTitle, setModalTitle] = useState('')
+	// 用來儲存當前瀏覽的 categoryId
+	const categoryIdRef: MutableRefObject<number | undefined> = useRef()
 	const [turnoverPointStatusData, setTurnoverPointStatusData] = useState<
 		IGetTurnoverPointStatusSettingData[]
 	>([])
@@ -82,6 +84,7 @@ const TurnoverPoint: FC<{
 		categoryName: string
 	) => {
 		setModalTitle(categoryName)
+		categoryIdRef.current = categoryId
 		setModalLoading(true)
 		try {
 			const { data: turnoverPointStatus } = await getTurnoverPointStatusSetting(
@@ -159,9 +162,11 @@ const TurnoverPoint: FC<{
 				siteId,
 				currencyId: Number(tabActiveKey),
 				infos: statusInfo,
+				tpCategoryId: categoryIdRef.current,
 			}).unwrap()
 			message.success(t('System.Label_SaveSuccess'))
 			turnoverPointStatusModal.onCancel()
+			categoryIdRef.current = undefined
 			setTurnoverPointStatusData([])
 		} catch (error) {
 			message.error(
