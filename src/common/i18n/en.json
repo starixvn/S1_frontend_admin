@@ -279,5 +279,8 @@
 	"Label_Note": "Note",
 	"Label_Comment": "Comment",
 	"Label_ApproveCheckOut": "Approve Check Out",
-	"Label_Reject": "Reject"
+	"Label_Reject": "Reject",
+	"Label_UnderMaintenance" : "Under Maintenance",
+	"Label_SiteMaintenanceMessage" : "Effect Maintenance Time Display Only",
+	"Label_InformationValidateMessage" : "The information is being validated..."
 }

@@ -768,4 +768,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.redemptionListing.root,
 	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.siteMaintenance.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.siteMaintenance.root,
+	},
 ]

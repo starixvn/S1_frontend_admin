@@ -390,6 +390,10 @@ const paths = {
 				root: 'cms/worldCupSetting',
 				functionId: 114,
 			},
+			siteMaintenance: {
+				root: 'cms/siteMaintenance',
+				functionId: 117,
+			},
 		},
 	},
 }

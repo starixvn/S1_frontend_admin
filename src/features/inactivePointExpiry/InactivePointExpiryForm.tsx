@@ -32,7 +32,7 @@ const InactivePointExpiryForm: FC<InactivePointExpiryFormProps> = ({
 						<Form.Item
 							name='days'
 							label={t('Label_PointExpiryDay')}
-							extra='The information is being validated...'
+							extra={t('Label_InformationValidateMessage')}
 							rules={[
 								{
 									required: true,

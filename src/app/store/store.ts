@@ -25,6 +25,7 @@ import { worldCupTeamReportApi } from 'features/worldCupTeamReport/api'
 import { worldCupMemberReportApi } from 'features/worldCupMemberReport/api'
 import { worldCupSettingApi } from 'features/worldCupSetting/api'
 import { redemptionListingApi } from 'features/redemptionListing/api'
+import { siteMaintenanceApi } from 'features/siteMaintenance/api'
 
 export const store = configureStore({
 	reducer: {
@@ -54,6 +55,7 @@ export const store = configureStore({
 		[worldCupMemberReportApi.reducerPath]: worldCupMemberReportApi.reducer,
 		[worldCupSettingApi.reducerPath]: worldCupSettingApi.reducer,
 		[redemptionListingApi.reducerPath]: redemptionListingApi.reducer,
+		[siteMaintenanceApi.reducerPath]: siteMaintenanceApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -81,7 +83,8 @@ export const store = configureStore({
 			.concat(worldCupTeamReportApi.middleware)
 			.concat(worldCupMemberReportApi.middleware)
 			.concat(worldCupSettingApi.middleware)
-			.concat(redemptionListingApi.middleware),
+			.concat(redemptionListingApi.middleware)
+			.concat(siteMaintenanceApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
