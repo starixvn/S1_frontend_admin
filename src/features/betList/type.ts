@@ -11,8 +11,7 @@ export interface IGetBetListArgs {
 	userName: string
 	tpUserName: string
 	refNo: string
-	provider: string
-	product: string
+	gameType: number
 	category: string
 	game: string
 	title: string
@@ -22,6 +21,7 @@ export interface IGetBetListArgs {
 	startTime: string
 	endTime: string
 	stake: number
+	transId: string
 	winLostAmount: number
 }
 
