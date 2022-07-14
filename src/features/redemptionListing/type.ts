@@ -44,9 +44,25 @@ export interface IGetRedemptionListData {
 	operator: string | null
 }
 
-export type IGetRedemptionListResponse = IAxiosResponse<
-	IGetRedemptionListData[]
->
+export interface IGetRedemptionOverviewData {
+	currencyId: number
+	isoCode: string
+	totalPoint: number
+	totalCost: number
+	totalRecord: number
+}
+
+type IRedemptionListData = {
+	overview: IGetRedemptionOverviewData[]
+	list: {
+		pageNumber: number
+		totalPages: number
+		rowCount: number
+		datas: IGetRedemptionListData[]
+	}
+}
+
+export type IGetRedemptionListResponse = IAxiosResponse<IRedemptionListData>
 
 export interface IGetRedemptionDetailArg {
 	redemptionId: number
