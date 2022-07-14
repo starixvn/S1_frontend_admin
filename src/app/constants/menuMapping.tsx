@@ -503,7 +503,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 71,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.risk.sub.blockIp.root,
 	},
 	{
