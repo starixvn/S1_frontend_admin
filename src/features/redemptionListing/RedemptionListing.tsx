@@ -24,6 +24,7 @@ import {
 } from './api'
 import { IGetRedemptionListResponse, IGetVipLevelsResponse } from './type'
 import { RedemptionListingTable } from './RedemptionListingTable'
+import { RedemptionOverviewTable } from './RedemptionOverviewTable'
 
 const RedemptionListing: FC<{
 	pageTitle?: string
@@ -40,18 +41,23 @@ const RedemptionListing: FC<{
 	const [
 		getRedemptionList,
 		{
-			data: {
-				data: redemptionListData,
-				rowCount: redemptionListTotal = 0,
-			} = {} as IGetRedemptionListResponse,
+			data: { data: redemptionData } = {} as IGetRedemptionListResponse,
 			isFetching: isGetRedemptionListLoading,
 		},
 	] = useLazyGetRedemptionListQuery()
 
+	const {
+		list: {
+			rowCount: redemptionTotal = 0,
+			datas: redemptionListData = [],
+		} = {},
+		overview: redemptionOverviewData = [],
+	} = redemptionData ?? {}
+
 	const [exportRedemptionList, { isLoading: isExportRedemptionListLoading }] =
 		useExportRedemptionListMutation()
 	const [pagination, setPagination] = usePagination({
-		paginationTotal: redemptionListTotal,
+		paginationTotal: redemptionTotal,
 	})
 
 	const {
@@ -215,6 +221,12 @@ const RedemptionListing: FC<{
 					editPermission={editPermission}
 					onTableChange={handleTableChange}
 					timeZoneUtcOffset={timeZoneUtcOffset}
+				/>
+			)}
+			{redemptionOverviewData.length > 0 && (
+				<RedemptionOverviewTable
+					redemptionOverviewData={redemptionOverviewData}
+					loading={loading}
 				/>
 			)}
 			<AffixButtons>

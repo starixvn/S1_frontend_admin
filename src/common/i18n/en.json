@@ -280,7 +280,11 @@
 	"Label_Comment": "Comment",
 	"Label_ApproveCheckOut": "Approve Check Out",
 	"Label_Reject": "Reject",
-	"Label_UnderMaintenance" : "Under Maintenance",
-	"Label_SiteMaintenanceMessage" : "Effect Maintenance Time Display Only",
-	"Label_InformationValidateMessage" : "The information is being validated..."
+	"Label_UnderMaintenance": "Under Maintenance",
+	"Label_SiteMaintenanceMessage": "Effect Maintenance Time Display Only",
+	"Label_InformationValidateMessage": "The information is being validated...",
+	"Label_Record": "Record",
+	"Label_TotalPoint": "Total Point",
+	"Label_TotalCost": "Total Cost",
+	"Label_Total": "Total"
 }
