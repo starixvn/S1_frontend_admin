@@ -70,19 +70,6 @@ const BetListTable: FC<IBetListTableProps> = ({
 			),
 		},
 		{
-			title: t('Label_SabaId'),
-			key: 'tpId',
-			dataIndex: 'tpId',
-			align: 'center' as 'center',
-			render: (tpId: string) => (
-				<div style={{ minWidth: '80px' }}>
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{tpId ?? ''}
-					</Typography.Text>
-				</div>
-			),
-		},
-		{
 			title: t('Label_TpUserName'),
 			key: 'tpUserName',
 			dataIndex: 'tpUserName',
@@ -254,6 +241,15 @@ const BetListTable: FC<IBetListTableProps> = ({
 			),
 		},
 		{
+			title: t('Label_TransId'),
+			key: 'transId',
+			dataIndex: 'transId',
+			align: 'center' as 'center',
+			render: (transId: string) => (
+				<div style={{ width: '120px' }}>{transId ?? ''}</div>
+			),
+		},
+		{
 			title: t('Label_BetType'),
 			key: 'betType',
 			dataIndex: 'betType',
@@ -281,6 +277,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			title: t('Label_Result'),
 			key: 'result',
 			dataIndex: 'result',
+			align: 'center' as 'center',
 			render: (result: string) => {
 				if (isJSON(result)) {
 					return renderJsonValue(result)
