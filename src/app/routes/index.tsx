@@ -233,6 +233,13 @@ const RedemptionDetail = lazy(
 		)
 )
 
+const SiteMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SiteMaintenance' */ 'features/siteMaintenance/SiteMaintenance'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -611,6 +618,14 @@ const routes: RouteObject[] = [
 						functionId={paths.rewardProgram.sub.redemptionDetail.functionId}
 					>
 						<RedemptionDetail />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.siteMaintenance.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.siteMaintenance.functionId}>
+						<SiteMaintenance />
 					</AuthRequire>
 				),
 			},
