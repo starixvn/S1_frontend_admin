@@ -12,7 +12,7 @@ interface IRedemptionOverviewProps {
 	loading: boolean
 }
 
-const CustomDivider = styled.div`
+export const CustomDivider = styled.div`
 	height: 0.5px;
 	width: 100%;
 	background-color: rgba(192, 192, 192, 0.29);
@@ -30,7 +30,7 @@ const itemRenderer = (
 			textAlign: 'center',
 			paddingLeft: 0,
 			paddingRight: 0,
-			minWidth: '80px',
+			minWidth: '100px',
 		}}
 		span={1}
 	>
@@ -101,7 +101,7 @@ const RedemptionOverviewTable: FC<IRedemptionOverviewProps> = ({
 					style={{
 						marginTop: '10px',
 						marginBottom: '10px',
-						overflow: 'scroll',
+						overflowX: 'auto',
 					}}
 				>
 					{titleElement()}

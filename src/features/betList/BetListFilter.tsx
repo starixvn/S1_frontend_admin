@@ -200,11 +200,12 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 									</MultipleSelect>
 								</Form.Item>
 							</Col>
+
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='provider' label={t('Label_Provider')}>
+								<Form.Item name='tpId' label={t('Label_Provider')}>
 									<Select placeholder={t('Label_Select')} allowClear>
 										{providers?.map(item => (
-											<Option key={item.tpName} value={item.tpName}>
+											<Option key={item.tpName} value={item.id}>
 												{item.tpName}
 											</Option>
 										))}
@@ -212,10 +213,10 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='product' label={t('Label_Product')}>
+								<Form.Item name='gameType' label={t('Label_Product')}>
 									<Select placeholder={t('Label_Select')} allowClear>
 										{products?.map(item => (
-											<Option key={item.typeName} value={item.typeName}>
+											<Option key={item.typeName} value={item.tpId}>
 												{item.typeName}
 											</Option>
 										))}
@@ -264,7 +265,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='tpId' label={t('Label_ProviderId')}>
+								<Form.Item name='transId' label={t('Label_TransId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
@@ -274,7 +275,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='sabaId' label={t('Label_SabaId')}>
+								<Form.Item name='tpUserName' label={t('Label_TpUserName')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>

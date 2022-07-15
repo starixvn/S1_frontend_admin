@@ -26,6 +26,8 @@ import { worldCupMemberReportApi } from 'features/worldCupMemberReport/api'
 import { worldCupSettingApi } from 'features/worldCupSetting/api'
 import { redemptionListingApi } from 'features/redemptionListing/api'
 import { siteMaintenanceApi } from 'features/siteMaintenance/api'
+import { adjustmentPointReportApi } from 'features/adjustmentPointReport/api'
+import { depositPointReportApi } from 'features/depositPointReport/api'
 import { blockEWalletApi } from 'features/blockEWallet/api'
 
 export const store = configureStore({
@@ -57,6 +59,8 @@ export const store = configureStore({
 		[worldCupSettingApi.reducerPath]: worldCupSettingApi.reducer,
 		[redemptionListingApi.reducerPath]: redemptionListingApi.reducer,
 		[siteMaintenanceApi.reducerPath]: siteMaintenanceApi.reducer,
+		[adjustmentPointReportApi.reducerPath]: adjustmentPointReportApi.reducer,
+		[depositPointReportApi.reducerPath]: depositPointReportApi.reducer,
 		[blockEWalletApi.reducerPath]: blockEWalletApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
@@ -87,6 +91,8 @@ export const store = configureStore({
 			.concat(worldCupSettingApi.middleware)
 			.concat(redemptionListingApi.middleware)
 			.concat(siteMaintenanceApi.middleware)
+			.concat(adjustmentPointReportApi.middleware)
+			.concat(depositPointReportApi.middleware)
 			.concat(blockEWalletApi.middleware),
 })
 

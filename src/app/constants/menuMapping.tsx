@@ -503,7 +503,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: 71,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.risk.sub.blockIp.root,
 	},
 	{
@@ -779,5 +779,19 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.cms.sub.siteMaintenance.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.siteMaintenance.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.report.sub.adjustmentPointReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.report.sub.adjustmentPointReport.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.report.sub.depositPointReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.report.sub.depositPointReport.root,
 	},
 ]

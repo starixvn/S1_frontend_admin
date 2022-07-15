@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { isEmpty, isNumber } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -17,6 +17,7 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import download from 'downloadjs'
 import { BetListFilter } from './BetListFilter'
 import {
+	IGetBetListArgs,
 	IGetBetListResponse,
 	IGetCategoryResponse,
 	IGetProductsResponse,
@@ -119,8 +120,7 @@ const BetList: FC<{
 			userName = '',
 			tpUserName = '',
 			refNo = '',
-			provider = '',
-			product = '',
+			gameType = 0,
 			category = '',
 			game = '',
 			title = '',
@@ -129,6 +129,7 @@ const BetList: FC<{
 			ip = '',
 			stake = 0,
 			winLostAmount = 0,
+			transId = '',
 		} = form.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
 			dateRange,
@@ -143,7 +144,8 @@ const BetList: FC<{
 			})
 		}
 		try {
-			const args = {
+			const args: IGetBetListArgs = {
+				siteIds: [siteId],
 				currencyIds,
 				tags,
 				vipLevel,
@@ -151,8 +153,7 @@ const BetList: FC<{
 				userName,
 				tpUserName,
 				refNo,
-				provider,
-				product,
+				gameType,
 				category,
 				game,
 				title,
@@ -165,11 +166,9 @@ const BetList: FC<{
 				startTime,
 				endTime,
 				winLostAmount,
+				transId,
 			}
-			await getBetList({
-				siteIds: [siteId],
-				...args,
-			}).unwrap()
+			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -193,29 +192,30 @@ const BetList: FC<{
 		if (isEmpty(queryParams) || !siteId) return
 		const {
 			currencyIds,
-			tags,
-			vipLevel,
-			tpId,
-			userName,
-			tpUserName,
-			refNo,
-			provider,
-			product,
-			category,
-			game,
-			title,
-			matchID,
-			betType,
-			ip,
-			stake,
+			tags = [],
+			vipLevel = 0,
+			tpId = 0,
+			userName = '',
+			tpUserName = '',
+			refNo = '',
+			gameType = 0,
+			category = '',
+			game = '',
+			title = '',
+			matchID = '',
+			betType = '',
+			ip = '',
+			stake = 0,
+			winLostAmount = 0,
+			transId = '',
 			pageNumber,
 			pageSize,
 			startTime,
 			endTime,
-			winLostAmount,
 		} = queryParams
 		try {
-			const blob = await exportBetListFile({
+			const args: IGetBetListArgs = {
+				siteIds: [siteId],
 				currencyIds,
 				tags,
 				vipLevel,
@@ -223,8 +223,7 @@ const BetList: FC<{
 				userName,
 				tpUserName,
 				refNo,
-				provider,
-				product,
+				gameType,
 				category,
 				game,
 				title,
@@ -237,8 +236,10 @@ const BetList: FC<{
 				startTime,
 				endTime,
 				winLostAmount,
-				siteIds: [siteId],
-			}).unwrap()
+				transId,
+			}
+
+			const blob = await exportBetListFile(args).unwrap()
 
 			download(blob, `BetListReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`)
 		} catch (error) {
@@ -259,8 +260,7 @@ const BetList: FC<{
 				userName,
 				tpUserName,
 				refNo,
-				provider,
-				product,
+				gameType,
 				category,
 				game,
 				title,
@@ -272,6 +272,7 @@ const BetList: FC<{
 				pageSize,
 				startTime,
 				endTime,
+				transId,
 				winLostAmount,
 				timeZone,
 			} = queryParams
@@ -282,11 +283,10 @@ const BetList: FC<{
 				userName,
 				tags,
 				vipLevel: vipLevel ? Number(vipLevel) : vipLevel,
-				tpId,
+				tpId: isNumber(tpId) ? Number(tpId) : undefined,
+				gameType: isNumber(gameType) ? Number(gameType) : undefined,
 				tpUserName,
 				refNo,
-				provider,
-				product,
 				category,
 				game,
 				title,
@@ -294,6 +294,7 @@ const BetList: FC<{
 				betType,
 				ip,
 				stake,
+				transId,
 				winLostAmount,
 			})
 			handleSearch({
