@@ -240,6 +240,13 @@ const SiteMaintenance = lazy(
 		)
 )
 
+const BlockEWallet = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BlockEWallet' */ 'features/blockEWallet/BlockEWallet'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -626,6 +633,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.siteMaintenance.functionId}>
 						<SiteMaintenance />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.blockEWallet.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.blockEWallet.functionId}>
+						<BlockEWallet />
 					</AuthRequire>
 				),
 			},

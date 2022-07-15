@@ -26,6 +26,7 @@ import { worldCupMemberReportApi } from 'features/worldCupMemberReport/api'
 import { worldCupSettingApi } from 'features/worldCupSetting/api'
 import { redemptionListingApi } from 'features/redemptionListing/api'
 import { siteMaintenanceApi } from 'features/siteMaintenance/api'
+import { blockEWalletApi } from 'features/blockEWallet/api'
 
 export const store = configureStore({
 	reducer: {
@@ -56,6 +57,7 @@ export const store = configureStore({
 		[worldCupSettingApi.reducerPath]: worldCupSettingApi.reducer,
 		[redemptionListingApi.reducerPath]: redemptionListingApi.reducer,
 		[siteMaintenanceApi.reducerPath]: siteMaintenanceApi.reducer,
+		[blockEWalletApi.reducerPath]: blockEWalletApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -84,7 +86,8 @@ export const store = configureStore({
 			.concat(worldCupMemberReportApi.middleware)
 			.concat(worldCupSettingApi.middleware)
 			.concat(redemptionListingApi.middleware)
-			.concat(siteMaintenanceApi.middleware),
+			.concat(siteMaintenanceApi.middleware)
+			.concat(blockEWalletApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

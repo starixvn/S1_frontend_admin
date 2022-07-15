@@ -269,6 +269,15 @@ const paths = {
 			},
 		},
 	},
+	member: {
+		root: 'member',
+		sub: {
+			blockEWallet: {
+				root: 'member/blockewallet',
+				functionId: 118,
+			},
+		},
+	},
 	risk: {
 		root: 'risk',
 		sub: {

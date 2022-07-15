@@ -1,0 +1,313 @@
+import { FC, useEffect } from 'react'
+import { Form, List, message, Modal, Typography } from 'antd'
+import moment from 'moment'
+import { isEmpty } from 'lodash'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { useTranslation } from 'react-i18next'
+import { useAppSelector } from 'app/store'
+import { useAuth, useQueryParams } from 'common/hooks'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { selectCurrencyListBySite } from 'common/enum'
+import { LayoutContent } from 'app/pages/layout'
+import {
+	useLazyGetBlockEWalletAccQuery,
+	useLazyGetBlockEWalletListQuery,
+	useSetBlockEWalletMutation,
+	useSetReleaseEWalletMutation,
+} from './api'
+import BlockEWalletFilter from './BlockEWalletFilter'
+import BlockEWalletTable from './BlockEWalletTable'
+import { IBlockEWalletData, IBlockEWalletForm } from './type'
+import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
+
+const BlockEWallet: FC<{
+	pageTitle?: string
+}> = ({ pageTitle }) => {
+	const { t } = useTranslation()
+	const { actionPermissions: { editPermission, deletePermission } = {} } =
+		useAuth()
+	const [queryParams, setQueryParams] = useQueryParams()
+	const [form] = Form.useForm<IBlockEWalletForm>()
+	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
+	const [
+		getBlockEWalletAcc,
+		{
+			data: { data: blockEWalletAccounts = [] } = {},
+			isFetching: isGetBlockEWalletAccFetching,
+		},
+	] = useLazyGetBlockEWalletAccQuery()
+
+	const [getBlockEWalletList, { isFetching: isGetBlockEWalletListFetching }] =
+		useLazyGetBlockEWalletListQuery()
+
+	const [setBlockEWallet, { isLoading: isSetBlockEWalletLoading }] =
+		useSetBlockEWalletMutation()
+
+	const [setReleaseEWallet, { isLoading: isSetReleaseEWalletLoading }] =
+		useSetReleaseEWalletMutation()
+
+	const handleChangeCurrency = (newCurrencyIds: number[]) => {
+		if (newCurrencyIds.includes(0)) {
+			form.setFieldsValue({
+				currencyIds: currencyListBySite?.map(item => item.currencyId),
+			})
+		} else {
+			form.setFieldsValue({
+				currencyIds: newCurrencyIds,
+			})
+		}
+	}
+
+	const handleSearch = async ({
+		currentTimeZoneUtcOffset = timeZoneUtcOffset,
+	}) => {
+		const { dateRange, currencyIds, blockStatus, accountNum, userName } =
+			(await form.validateFields()) as IBlockEWalletForm
+
+		const [startDate, endDate] = dateRangeToUtcFormatter(
+			dateRange,
+			currentTimeZoneUtcOffset
+		)
+
+		try {
+			await getBlockEWalletAcc({
+				accountNum,
+				userName,
+				blockStatus,
+				startDate,
+				endDate,
+				currencyId: currencyIds,
+				eWalletId: [1],
+			}).unwrap()
+
+			setQueryParams({
+				startDate,
+				endDate,
+				accountNum,
+				userName,
+				blockStatus,
+				currencyIds,
+				tz: currentTimeZoneUtcOffset,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// * Block E-Wallet step1: 撈出會受影響的用戶列表
+	const handleBlockEWallet = async ({
+		sysId,
+		accountNum,
+		blockStatus,
+	}: {
+		sysId: number
+		accountNum: string
+		blockStatus: number
+	}) => {
+		try {
+			const { data: blockEWalletList } = await getBlockEWalletList({
+				sysId,
+				accountNum,
+			}).unwrap()
+
+			onOpenBlockEWalletInfo({
+				sysId,
+				accountNum,
+				blockStatus,
+				blockEWalletList,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// * Block E-wallet step2: 顯示會受影響的用戶列表彈窗
+	const onOpenBlockEWalletInfo = ({
+		sysId,
+		accountNum,
+		blockStatus,
+		blockEWalletList,
+	}: {
+		sysId: number
+		accountNum: string
+		blockStatus: number
+		blockEWalletList: IBlockEWalletData[] | null
+	}) => {
+		// * okText 顯示當前 blockStatus 的反義詞
+		const okText =
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+				? t('Label_Unlock')
+				: t('Label_Block')
+
+		// * status 傳入 blockStatus 的反義狀態
+		const toggledStatus =
+			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+				? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
+				: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+
+		Modal.info({
+			title: t('Label_UserList'),
+			closable: true,
+			okText,
+			okButtonProps: {
+				disabled: !editPermission?.canUse,
+			},
+			content: (
+				<>
+					<h5>{t('Label_BlockBankInfoDescribe1')}</h5>
+
+					<div
+						style={{
+							maxHeight: 400,
+							overflow: 'auto',
+						}}
+					>
+						<List
+							size='small'
+							itemLayout='horizontal'
+							bordered
+							dataSource={blockEWalletList ?? []}
+							renderItem={blockEWalletListItem => (
+								<List.Item>
+									<Typography.Text>
+										{blockEWalletListItem.userName}
+									</Typography.Text>
+								</List.Item>
+							)}
+						/>
+					</div>
+				</>
+			),
+			onOk() {
+				handleSetBlockEWallet({
+					sysId,
+					accountNum,
+					status: toggledStatus,
+				})
+			},
+		})
+	}
+
+	// * Block E-Wallet step3: 實際執行 block e-wallet
+	const handleSetBlockEWallet = async ({
+		sysId,
+		accountNum,
+		status,
+	}: {
+		sysId: number
+		accountNum: string
+		status: number
+	}) => {
+		try {
+			await setBlockEWallet({
+				sysId,
+				accountNum,
+				status,
+				memo: '',
+			}).unwrap()
+
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	//  * Release E-Wallet
+	const handleSetReleaseEWallet = async ({
+		sysId,
+		accountNum,
+		custId,
+	}: {
+		sysId: number
+		accountNum: string
+		custId: number
+	}) => {
+		try {
+			setReleaseEWallet({
+				sysId,
+				accountNum,
+				custId,
+				ifscCode: '', // * E-Wallet 沒有 `ifscCode` 故帶空值
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// * 初始 Filter 資訊
+	useEffect(() => {
+		if (!isEmpty(queryParams)) {
+			const {
+				startDate,
+				endDate,
+				accountNum = '',
+				userName = '',
+				blockStatus = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
+				currencyIds,
+				tz,
+			} = queryParams
+
+			onTimeZoneChange(Number(tz))
+
+			form.setFieldsValue({
+				blockStatus: Number(blockStatus),
+				userName,
+				accountNum,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				dateRange: [moment(startDate), moment(endDate)],
+			})
+
+			handleSearch({
+				currentTimeZoneUtcOffset: Number(tz),
+			})
+		} else {
+			handleSearch({})
+		}
+	}, [])
+
+	const loading =
+		isGetBlockEWalletAccFetching ||
+		isGetBlockEWalletListFetching ||
+		isSetBlockEWalletLoading ||
+		isSetReleaseEWalletLoading
+
+	return (
+		<LayoutContent.Main>
+			<LayoutContent.Title title={pageTitle ?? ''} />
+
+			<BlockEWalletFilter
+				loading={loading}
+				form={form}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				onTimeZoneChange={onTimeZoneChange}
+				onChangeCurrency={handleChangeCurrency}
+				onSearch={handleSearch}
+			/>
+
+			{!isEmpty(queryParams) && (
+				<BlockEWalletTable
+					loading={loading}
+					timeZoneUtcOffset={timeZoneUtcOffset}
+					blockEWalletAccounts={blockEWalletAccounts}
+					deletePermission={deletePermission}
+					onBlockEWallet={handleBlockEWallet}
+					onSetReleaseEWallet={handleSetReleaseEWallet}
+				/>
+			)}
+		</LayoutContent.Main>
+	)
+}
+
+export default BlockEWallet
