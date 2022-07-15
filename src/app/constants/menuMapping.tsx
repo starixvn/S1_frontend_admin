@@ -508,6 +508,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.member.sub.blockEWallet.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.blockEWallet.root,
+	},
+	{
+		icon: null,
 		functionId: 72,
 		internalFunctionKey: allowedRoles.MarketingRebateInfoReport,
 		pathMode: 'Internal',

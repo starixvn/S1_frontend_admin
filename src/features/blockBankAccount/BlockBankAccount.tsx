@@ -181,7 +181,7 @@ const BlockBankAccount: FC<{
 			},
 			content: (
 				<>
-					<h5>{t('Label_BlockBankAccInfoDescribe1')}</h5>
+					<h5>{t('Label_BlockBankInfoDescribe1')}</h5>
 
 					<div
 						style={{
