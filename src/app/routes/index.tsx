@@ -240,6 +240,19 @@ const SiteMaintenance = lazy(
 		)
 )
 
+const AdjustmentPointReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'adjustmentPointReport' */ 'features/adjustmentPointReport/AdjustmentPointReport'
+		)
+)
+
+const DepositPointReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'depositPointReport' */ 'features/depositPointReport/DepositPointReport'
+		)
+)
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -626,6 +639,31 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.siteMaintenance.functionId}>
 						<SiteMaintenance />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.adjustmentPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.adjustmentPointReport
+								.functionId
+						}
+					>
+						<AdjustmentPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.depositPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.depositPointReport.functionId
+						}
+					>
+						<DepositPointReport />
 					</AuthRequire>
 				),
 			},

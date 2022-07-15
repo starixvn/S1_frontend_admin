@@ -345,6 +345,19 @@ const paths = {
 				root: 'rewardProgram/redemptionDetail',
 				functionId: 103,
 			},
+			report: {
+				root: 'rewardProgram/report',
+				sub: {
+					adjustmentPointReport: {
+						root: 'rewardProgram/report/adjustmentPointReport',
+						functionId: 119,
+					},
+					depositPointReport: {
+						root: 'rewardProgram/report/depositPointReport',
+						functionId: 120,
+					},
+				},
+			},
 		},
 	},
 	administration: {
