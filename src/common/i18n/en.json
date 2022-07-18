@@ -161,7 +161,10 @@
 		"Label_GoldClub": "Gold Club",
 		"Label_TitaniumClub": "Titanium Club",
 		"Label_DiamondClub": "Diamond Club",
-		"Label_NovaClub": "Nova Club"
+		"Label_NovaClub": "Nova Club",
+		"Label_Goal123Club" : "GOAL123 Club",
+		"Label_BwingVVIP" : "Bwing VVIP",
+		"Label_BronzeClub" : "Bronze Club"
 	},
 	"Label_MinPayout": "Min Payout",
 	"Label_MaxPayout": "Max Payout",

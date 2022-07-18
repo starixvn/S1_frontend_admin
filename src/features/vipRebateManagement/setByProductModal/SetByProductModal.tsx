@@ -1,8 +1,9 @@
-import { FC, useEffect, useRef, useState, useMemo } from 'react'
-import { findIndex, assign, cloneDeep, isNumber, isEqual } from 'lodash'
+import { FC, useEffect, useRef, useState } from 'react'
+import { findIndex, assign, cloneDeep, isNumber } from 'lodash'
 import { Form, Modal, Table } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { percentageFormatter } from 'common/utils/format'
+import { SiteIds } from 'app/constants/siteIds'
 import { GameRebateEditData, IGameRebateTableData } from '../type'
 import { SetByProductCell } from './SetByProductCell'
 import { editCellValuesToEditList } from '../utils/converters'
@@ -13,6 +14,7 @@ interface ISetByProductModal {
 	onFinish: (values: GameRebateEditData[]) => void
 	onCancel: () => void
 	gameTypeTableData: IGameRebateTableData[]
+	siteId?: number
 }
 
 const SetByProductModal: FC<ISetByProductModal> = ({
@@ -21,6 +23,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 	onFinish,
 	onCancel,
 	gameTypeTableData,
+	siteId,
 }) => {
 	const [form] = Form.useForm()
 	const { t } = useTranslation()
@@ -42,72 +45,90 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 		return t('Label_Default')
 	}
 
-	const columns = [
-		{
-			title: t('Label_Game'),
-			key: 'gameType',
-			dataIndex: 'gameTypeName',
-			width: 100,
-			align: 'center' as 'center',
-		},
-		{
-			title: t('GameLevel.Label_VintageClub'),
-			key: 'vintageClub',
-			dataIndex: 'vintageClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (vintageClub: number | null | string) =>
-				columnRender(vintageClub),
-		},
-		{
-			title: t('GameLevel.Label_SilverClub'),
-			key: 'silverClub',
-			dataIndex: 'silverClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (silverClub: number | null | string) => columnRender(silverClub),
-		},
-		{
-			title: t('GameLevel.Label_GoldClub'),
-			key: 'goldClub',
-			dataIndex: 'goldClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (goldClub: number | null | string) => columnRender(goldClub),
-		},
-		{
-			title: t('GameLevel.Label_TitaniumClub'),
-			key: 'titaniumClub',
-			dataIndex: 'titaniumClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (titaniumClub: number | null | string) =>
-				columnRender(titaniumClub),
-		},
-		{
-			title: t('GameLevel.Label_DiamondClub'),
-			key: 'diamondClub',
-			dataIndex: 'diamondClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (diamondClub: number | null | string) =>
-				columnRender(diamondClub),
-		},
-		{
-			title: t('GameLevel.Label_NovaClub'),
-			key: 'novaClub',
-			dataIndex: 'novaClub',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (novaClub: number | null | string) => columnRender(novaClub),
-		},
-	]
+	const columns = () => {
+		const novaClubTitle = () => {
+			if (siteId === SiteIds.Goal123) {
+				return t('GameLevel.Label_Goal123Club')
+			}
+			if (siteId === SiteIds.Bwing) {
+				return t('GameLevel.Label_BwingVVIP')
+			}
+			return t('GameLevel.Label_NovaClub')
+		}
+		const vintageClubTitle = () => {
+			if (siteId === SiteIds.Goal123 || siteId === SiteIds.Bwing) {
+				return t('GameLevel.Label_BronzeClub')
+			}
+			return t('GameLevel.Label_VintageClub')
+		}
+		return [
+			{
+				title: t('Label_Game'),
+				key: 'gameType',
+				dataIndex: 'gameTypeName',
+				width: 100,
+				align: 'center' as 'center',
+			},
+			{
+				title: vintageClubTitle(),
+				key: 'vintageClub',
+				dataIndex: 'vintageClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (vintageClub: number | null | string) =>
+					columnRender(vintageClub),
+			},
+			{
+				title: t('GameLevel.Label_SilverClub'),
+				key: 'silverClub',
+				dataIndex: 'silverClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (silverClub: number | null | string) =>
+					columnRender(silverClub),
+			},
+			{
+				title: t('GameLevel.Label_GoldClub'),
+				key: 'goldClub',
+				dataIndex: 'goldClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (goldClub: number | null | string) => columnRender(goldClub),
+			},
+			{
+				title: t('GameLevel.Label_TitaniumClub'),
+				key: 'titaniumClub',
+				dataIndex: 'titaniumClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (titaniumClub: number | null | string) =>
+					columnRender(titaniumClub),
+			},
+			{
+				title: t('GameLevel.Label_DiamondClub'),
+				key: 'diamondClub',
+				dataIndex: 'diamondClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (diamondClub: number | null | string) =>
+					columnRender(diamondClub),
+			},
+			{
+				title: novaClubTitle(),
+				key: 'novaClub',
+				dataIndex: 'novaClub',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (novaClub: number | null | string) => columnRender(novaClub),
+			},
+		]
+	}
 
 	const handleEndEdit = (value: IGameRebateTableData) => {
 		const current = cloneDeep(dataSource)
@@ -118,7 +139,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 		editList.current = cloneDeep(currentEditList)
 	}
 
-	const mergedColumns = columns.map(col => {
+	const mergedColumns = columns().map(col => {
 		if (!col.editable) {
 			return col
 		}
