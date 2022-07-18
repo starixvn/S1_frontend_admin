@@ -22,7 +22,7 @@ interface VipRebateTableInterface {
 	onSaved: () => void
 	tabActiveKey?: string
 	onSetByProduct: (categoryId: number) => void
-	siteId?: number
+	siteId: number
 }
 
 const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
@@ -50,20 +50,23 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 		record.categoryId === editingKey
 
 	const columns = () => {
-		const novaClubTitle = () => {
-			if (siteId === SiteIds.Goal123) {
-				return t('GameLevel.Label_Goal123Club')
-			}
-			if (siteId === SiteIds.Bwing) {
-				return t('GameLevel.Label_BwingVVIP')
-			}
-			return t('GameLevel.Label_NovaClub')
+		const vipClubTitle = () => {
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
+				}[siteId] ?? ''
+			)
 		}
 		const vintageClubTitle = () => {
-			if (siteId === SiteIds.Goal123 || siteId === SiteIds.Bwing) {
-				return t('GameLevel.Label_BronzeClub')
-			}
-			return t('GameLevel.Label_VintageClub')
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
+				}[siteId] ?? ''
+			)
 		}
 		return [
 			{
@@ -158,7 +161,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: novaClubTitle(),
+				title: vipClubTitle(),
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				width: 120,

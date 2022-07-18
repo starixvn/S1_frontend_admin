@@ -269,7 +269,7 @@ const VipRebateManagement: FC<{
 				onSaved={handleTableSaved}
 				tabActiveKey={tabActiveKey}
 				onSetByProduct={handleSetByProductClicked}
-				siteId={siteId}
+				siteId={siteId ?? 0}
 			/>
 			{setByProductModal.visible && (
 				<SetByProductModal
@@ -281,7 +281,7 @@ const VipRebateManagement: FC<{
 						setByProductModal.onCancel()
 					}}
 					gameTypeTableData={gameTypeTableData}
-					siteId={siteId}
+					siteId={siteId ?? 0}
 				/>
 			)}
 			<AffixButtons>
