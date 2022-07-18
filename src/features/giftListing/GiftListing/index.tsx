@@ -13,6 +13,7 @@ import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { arrayMoveImmutable } from 'array-move'
 import type { SortEnd } from 'react-sortable-hoc'
+import { allStatuses } from '../constants'
 import {
 	useLazyGetGiftListQuery,
 	useUpdateGiftMutation,
@@ -53,6 +54,9 @@ const GiftListing: FC<{
 	const [updateGiftSort, { isLoading: isUpdateGiftSortLoading }] =
 		useUpdateGiftSortMutation()
 
+	//  * status 全選時，才可以編輯排序
+	const sortDisabled = queryParams?.status?.length !== allStatuses.length
+
 	// *  初始資料
 	const restoreDataSource = () => {
 		setDataSource(giftList)
@@ -74,7 +78,8 @@ const GiftListing: FC<{
 				siteId,
 				...values,
 			}).unwrap()
-			setQueryParams({ currencyId: values.currencyId })
+
+			setQueryParams({ ...values })
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -197,7 +202,7 @@ const GiftListing: FC<{
 						/>
 					</>
 				) : (
-					<AffixButtons.Drag onClick={toggleSortMode} />
+					<AffixButtons.Drag disabled={sortDisabled} onClick={toggleSortMode} />
 				)}
 
 				<AffixButtons.Create

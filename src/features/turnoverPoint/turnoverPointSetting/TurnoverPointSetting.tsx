@@ -61,7 +61,10 @@ const TurnoverPointSetting: FC<{
 				promotionDateRange,
 			} = item
 			const [promotionStartTime, promotionEndTime] = dateRangeToUtcFormatter(
-				promotionDateRange,
+				[
+					promotionDateRange[0] ? promotionDateRange[0].startOf('day') : null,
+					promotionDateRange[1] ? promotionDateRange[1].endOf('day') : null,
+				],
 				timeZoneUtcOffset
 			)
 
@@ -82,8 +85,7 @@ const TurnoverPointSetting: FC<{
 					return
 				}
 			}
-			// 後端傳來的資料裡，如果 !promotionStatus , 時間是 0001 那組 ,再前端轉成 null , 於 data picker 上會顯示 start date 字樣 ,
-			// 	回送 request 時一樣照 0001 那組還回去 。
+			// 若沒設定時間送出 null
 			settingInfos.push({
 				tpCategoryName,
 				tpCategoryId,
@@ -92,13 +94,9 @@ const TurnoverPointSetting: FC<{
 				promotionStatus: Number(promotionStatus),
 				promotionPointRate,
 				promotionStartTime:
-					promotionStartTime !== 'Invalid date'
-						? promotionStartTime
-						: '0001-01-01T00:00:00+00:00',
+					promotionStartTime !== 'Invalid date' ? promotionStartTime : null,
 				promotionEndTime:
-					promotionEndTime !== 'Invalid date'
-						? promotionEndTime
-						: '0001-01-01T00:00:00+00:00',
+					promotionEndTime !== 'Invalid date' ? promotionEndTime : null,
 				vipLevel: Number(vipLevel),
 			})
 		})

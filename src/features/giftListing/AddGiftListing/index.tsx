@@ -31,6 +31,7 @@ const AddGiftListing = () => {
 			const {
 				fileList: [file],
 				infos: originInfos,
+				stock,
 				...rest
 			} = (await form.validateFields()) as IGiftForm
 
@@ -51,6 +52,7 @@ const AddGiftListing = () => {
 			await createGift({
 				siteId,
 				currencyId: Number(currencyId),
+				stock: stock ?? undefined,
 				...rest,
 				infos,
 			}).unwrap()

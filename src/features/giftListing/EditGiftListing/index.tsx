@@ -7,7 +7,8 @@ import { LayoutContent } from 'app/pages/layout'
 import { assign } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from 'common/hooks'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import {
 	useGetGiftInfoQuery,
 	useUpdateGiftMutation,
@@ -21,6 +22,7 @@ const backPath = `/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManageme
 const EditGiftListing = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const { editGiftId, currencyId } = useParams()
 
 	const [form]: [FormInstance<IEditGiftForm>] = Form.useForm()
@@ -43,6 +45,7 @@ const EditGiftListing = () => {
 			const {
 				fileList: [file],
 				infos: originInfos,
+				stock,
 				...values
 			} = await form.validateFields()
 
@@ -72,6 +75,7 @@ const EditGiftListing = () => {
 				infos,
 				status: Boolean(status),
 				giftId: Number(editGiftId),
+				stock: stock || undefined,
 			}).unwrap()
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(backPath)
@@ -89,6 +93,8 @@ const EditGiftListing = () => {
 	}, [isGetGiftInfoFetching])
 
 	const loading = isUpdateGiftLoading || isUploadGiftImageLoading
+
+	if (!editPermission?.canUse) return <Navigate to='/403' />
 
 	return (
 		<LayoutContent.Main>

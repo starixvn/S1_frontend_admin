@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 
 type RangesTypes = 'Today' | 'Last 7 Day' | 'This Month'
 
@@ -7,7 +7,9 @@ type RangesType = Record<
 	[moment.Moment, moment.Moment] | (() => [moment.Moment, moment.Moment])
 >
 
-export const MOMENT_DATE_RANGES: RangesType = {
+export const MOMENT_DATE_RANGES: {
+	[key in RangesTypes]: [Moment, Moment]
+} = {
 	Today: [moment().startOf('day'), moment().endOf('day')],
 	'Last 7 Day': [
 		moment().subtract(7, 'day').startOf('day'),

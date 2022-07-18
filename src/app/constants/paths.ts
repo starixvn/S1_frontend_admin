@@ -269,6 +269,15 @@ const paths = {
 			},
 		},
 	},
+	member: {
+		root: 'member',
+		sub: {
+			blockEWallet: {
+				root: 'member/blockewallet',
+				functionId: 118,
+			},
+		},
+	},
 	risk: {
 		root: 'risk',
 		sub: {
@@ -337,6 +346,27 @@ const paths = {
 					},
 				},
 			},
+			redemptionListing: {
+				root: 'rewardProgram/redemptionListing',
+				functionId: 103,
+			},
+			redemptionDetail: {
+				root: 'rewardProgram/redemptionDetail',
+				functionId: 103,
+			},
+			report: {
+				root: 'rewardProgram/report',
+				sub: {
+					adjustmentPointReport: {
+						root: 'rewardProgram/report/adjustmentPointReport',
+						functionId: 119,
+					},
+					depositPointReport: {
+						root: 'rewardProgram/report/depositPointReport',
+						functionId: 120,
+					},
+				},
+			},
 		},
 	},
 	administration: {
@@ -372,6 +402,19 @@ const paths = {
 			},
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',
+			},
+		},
+	},
+	cms: {
+		root: 'cms',
+		sub: {
+			worldCupSetting: {
+				root: 'cms/worldCupSetting',
+				functionId: 114,
+			},
+			siteMaintenance: {
+				root: 'cms/siteMaintenance',
+				functionId: 117,
 			},
 		},
 	},

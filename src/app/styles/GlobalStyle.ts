@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
 import 'antd/dist/antd.css'
-import './editor.css'
 
 const GlobalStyle = createGlobalStyle`
   
@@ -40,6 +39,12 @@ const GlobalStyle = createGlobalStyle`
       .ant-form-item-explain-error {
         word-break: white-space:nowrap;
       }
+    }
+
+    // * 隱藏 antd image preview 多餘的區塊
+    // * https://ant.design/components/image/#components-image-demo-controlled-preview
+    .ant-image-mask {
+      display: none;
     }
 `
 

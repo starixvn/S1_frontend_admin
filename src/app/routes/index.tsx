@@ -213,6 +213,54 @@ const WorldCupMemberReport = lazy(
 		)
 )
 
+const WorldCupMemberSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WorldCupMemberSetting' */ 'features/worldCupSetting/WorldCupSetting'
+		)
+)
+const RedemptionListing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionListing' */ 'features/redemptionListing/RedemptionListing'
+		)
+)
+
+const RedemptionDetail = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RedemptionDetail' */ 'features/redemptionListing/redemptionDetail/RedemptionDetail'
+		)
+)
+
+const SiteMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SiteMaintenance' */ 'features/siteMaintenance/SiteMaintenance'
+		)
+)
+
+const AdjustmentPointReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'adjustmentPointReport' */ 'features/adjustmentPointReport/AdjustmentPointReport'
+		)
+)
+
+const DepositPointReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'depositPointReport' */ 'features/depositPointReport/DepositPointReport'
+		)
+)
+
+const BlockEWallet = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BlockEWallet' */ 'features/blockEWallet/BlockEWallet'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -563,6 +611,75 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.worldCupMemberReport.functionId}
 					>
 						<WorldCupMemberReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.worldCupSetting.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.worldCupSetting.functionId}>
+						<WorldCupMemberSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.redemptionListing.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.rewardProgram.sub.redemptionListing.functionId}
+					>
+						<RedemptionListing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.redemptionDetail.root}/:redemptionId`,
+				element: (
+					<AuthRequire
+						functionId={paths.rewardProgram.sub.redemptionDetail.functionId}
+					>
+						<RedemptionDetail />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.siteMaintenance.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.siteMaintenance.functionId}>
+						<SiteMaintenance />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.adjustmentPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.adjustmentPointReport
+								.functionId
+						}
+					>
+						<AdjustmentPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.depositPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.depositPointReport.functionId
+						}
+					>
+						<DepositPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.blockEWallet.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.blockEWallet.functionId}>
+						<BlockEWallet />
 					</AuthRequire>
 				),
 			},

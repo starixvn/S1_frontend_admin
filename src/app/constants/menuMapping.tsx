@@ -508,6 +508,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.member.sub.blockEWallet.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.blockEWallet.root,
+	},
+	{
+		icon: null,
 		functionId: 72,
 		internalFunctionKey: allowedRoles.MarketingRebateInfoReport,
 		pathMode: 'Internal',
@@ -755,5 +761,37 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.worldCupMemberReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.worldCupMemberReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.worldCupSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.worldCupSetting.root,
+	},
+	{
+		icon: null,
+		functionId: paths.rewardProgram.sub.redemptionListing.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.redemptionListing.root,
+	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.siteMaintenance.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.siteMaintenance.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.report.sub.adjustmentPointReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.report.sub.adjustmentPointReport.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.report.sub.depositPointReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.report.sub.depositPointReport.root,
 	},
 ]

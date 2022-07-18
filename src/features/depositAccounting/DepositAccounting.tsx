@@ -192,6 +192,8 @@ const DepositAccounting: FC<{
 	}
 
 	useEffect(() => {
+		if (isEmpty(queryParams)) return
+
 		const init = () => {
 			const {
 				currencyIds,

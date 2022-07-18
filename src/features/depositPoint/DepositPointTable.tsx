@@ -1,11 +1,14 @@
 import { Dispatch, FC, SetStateAction } from 'react'
 import moment from 'moment'
+import { find } from 'lodash'
 import { PermissionInterface } from 'type'
 import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { Form, FormInstance, DatePicker, Space, Switch, Typography } from 'antd'
 import { EditableCellRows, Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { dateFormat, numberFormatter, timeFormat } from 'common/utils/format'
+import { selectCurrencyListBySite } from 'common/enum'
+import { useAppSelector } from 'app/store'
 import { IDepositPointSettingData } from './type'
 
 const { RangePicker } = DatePicker
@@ -32,6 +35,7 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 	onTableRowSave,
 }) => {
 	const { t } = useTranslation()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const onEdit = (record: IDepositPointSettingData) => {
 		form.setFieldsValue({ ...record })
@@ -43,6 +47,51 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 
 	const onCancel = () => {
 		setEditingKey('')
+	}
+
+	const renderExpiryDate = (record: IDepositPointSettingData) => {
+		const editable = isEditing(record)
+		const { promotionStatus, promotionStartTime, promotionEndTime } = record
+
+		return (
+			<Space align='center'>
+				{editable ? (
+					<Form.Item
+						name='promotionStatus'
+						style={{ margin: 0 }}
+						valuePropName='checked'
+					>
+						<Switch disabled={!editable} />
+					</Form.Item>
+				) : (
+					<Switch checked={promotionStatus} disabled={!editable} />
+				)}
+
+				{editable ? (
+					<Form.Item name='promotionDateRange' style={{ margin: 0 }}>
+						<RangePicker
+							disabled={!editable}
+							format={time =>
+								moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
+							}
+							ranges={MOMENT_RANGE_PICKER_RANGES([
+								'Today',
+								'Last 7 Day',
+								'This Month',
+							])}
+						/>
+					</Form.Item>
+				) : (
+					<RangePicker
+						disabled={!editable}
+						format={time =>
+							moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
+						}
+						value={[moment(promotionStartTime), moment(promotionEndTime)]}
+					/>
+				)}
+			</Space>
+		)
 	}
 
 	const columns = [
@@ -74,11 +123,15 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 		},
 		{
 			title: t('Label_Currency'),
-			width: 80,
-			dataIndex: 'isoCode',
+			width: '140px',
 			align: 'center' as 'center',
 			editable: false,
-			render: (isoCode: string) => isoCode || 'N/A',
+			render: (record: IDepositPointSettingData) => {
+				const { currencyId, isoCode } = record
+				const currency = find(currencyListBySite, { currencyId })
+
+				return `${isoCode} (${currency?.timeZone})` || 'N/A'
+			},
 		},
 		{
 			title: t('Label_DepositGet1Point'),
@@ -95,57 +148,8 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 			width: '240px',
 			align: 'center' as 'center',
 			editable: false,
-			render: (record: IDepositPointSettingData) => {
-				const editable = isEditing(record)
-				const { promotionStatus, promotionStartTime, promotionEndTime } = record
-
-				return (
-					<Space align='center'>
-						{editable ? (
-							<Form.Item
-								name='promotionStatus'
-								style={{ margin: 0 }}
-								valuePropName='checked'
-							>
-								<Switch disabled={!editable} />
-							</Form.Item>
-						) : (
-							<Switch checked={promotionStatus} disabled={!editable} />
-						)}
-
-						{editable ? (
-							<Form.Item name='promotionDateRange' style={{ margin: 0 }}>
-								<RangePicker
-									disabled={!editable}
-									format={time =>
-										moment(time)
-											.utcOffset(timeZoneUtcOffset)
-											.format('YYYY-MM-DD')
-									}
-									ranges={MOMENT_RANGE_PICKER_RANGES([
-										'Today',
-										'Last 7 Day',
-										'This Month',
-									])}
-								/>
-							</Form.Item>
-						) : (
-							<RangePicker
-								disabled={!editable}
-								format={time =>
-									moment(time).utcOffset(timeZoneUtcOffset).format('YYYY-MM-DD')
-								}
-								ranges={MOMENT_RANGE_PICKER_RANGES([
-									'Today',
-									'Last 7 Day',
-									'This Month',
-								])}
-								value={[moment(promotionStartTime), moment(promotionEndTime)]}
-							/>
-						)}
-					</Space>
-				)
-			},
+			// *  ExpiryDate 的時區以自己幣別所預設的時區為主
+			render: (record: IDepositPointSettingData) => renderExpiryDate(record),
 		},
 		{
 			title: t('Label_PointRate'),
