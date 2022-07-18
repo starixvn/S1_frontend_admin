@@ -1,18 +1,12 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-	Form,
-	FormInstance,
-	Space,
-	Table,
-	Tabs,
-	Typography,
-} from 'antd'
+import { Form, FormInstance, Space, Table, Tabs, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { PermissionInterface } from 'type'
 import { numberFormatter, percentageFormatter } from 'common/utils/format'
 import { BsFillPencilFill } from 'react-icons/bs'
+import { SiteIds } from 'app/constants/siteIds'
 import { IRebateTableData } from '../type'
 import { EditableTableCell } from './EditableTableCell'
 
@@ -22,12 +16,13 @@ interface VipRebateTableInterface {
 	currencyList: Currency[] | undefined
 	editPermission?: PermissionInterface
 	rebateTableData: IRebateTableData[]
-	form: FormInstance<any>
+	form: FormInstance
 	editingKey: number | undefined
 	setEditingKey: React.Dispatch<React.SetStateAction<number | undefined>>
 	onSaved: () => void
 	tabActiveKey?: string
 	onSetByProduct: (categoryId: number) => void
+	siteId: number
 }
 
 const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
@@ -42,6 +37,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 	onSaved,
 	tabActiveKey,
 	onSetByProduct,
+	siteId,
 }) => {
 	const { t } = useTranslation()
 	const { TabPane } = Tabs
@@ -53,147 +49,169 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 	const isEditing = (record: IRebateTableData) =>
 		record.categoryId === editingKey
 
-	const columns = [
-		{
-			title: t('Label_Action'),
-			key: 'operation',
-			width: 80,
-			align: 'center' as 'center',
-			render: (record: IRebateTableData) => {
-				const editable = isEditing(record)
+	const columns = () => {
+		const vipClubTitle = () => {
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
+				}[siteId] ?? ''
+			)
+		}
+		const vintageClubTitle = () => {
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
+				}[siteId] ?? ''
+			)
+		}
+		return [
+			{
+				title: t('Label_Action'),
+				key: 'operation',
+				width: 80,
+				align: 'center' as 'center',
+				render: (record: IRebateTableData) => {
+					const editable = isEditing(record)
 
-				return editable ? (
-					<Space>
-						<Typography.Link onClick={onSaved} style={{ marginRight: 8 }}>
-							{t('Label_Save')}
+					return editable ? (
+						<Space>
+							<Typography.Link onClick={onSaved} style={{ marginRight: 8 }}>
+								{t('Label_Save')}
+							</Typography.Link>
+							<Typography.Link onClick={() => setEditingKey(undefined)}>
+								{t('Label_Cancel')}
+							</Typography.Link>
+						</Space>
+					) : (
+						<Typography.Link
+							disabled={!editPermission?.canUse}
+							onClick={() => onEdit(record)}
+						>
+							{t('Label_Edit')}
 						</Typography.Link>
-						<Typography.Link onClick={() => setEditingKey(undefined)}>
-							{t('Label_Cancel')}
-						</Typography.Link>
-					</Space>
-				) : (
+					)
+				},
+			},
+			{
+				title: t('Label_GameType'),
+				key: 'categoryName',
+				dataIndex: 'categoryName',
+				width: 100,
+				align: 'center' as 'center',
+			},
+			{
+				title: vintageClubTitle(),
+				key: 'vintageClub',
+				dataIndex: 'vintageClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (vintageClub: number | null) => {
+					return vintageClub !== null ? percentageFormatter(vintageClub) : 'N/A'
+				},
+			},
+			{
+				title: t('GameLevel.Label_SilverClub'),
+				key: 'silverClub',
+				dataIndex: 'silverClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (silverClub: number | null) => {
+					return silverClub !== null ? percentageFormatter(silverClub) : 'N/A'
+				},
+			},
+			{
+				title: t('GameLevel.Label_GoldClub'),
+				key: 'goldClub',
+				dataIndex: 'goldClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (goldClub: number | null) => {
+					return goldClub !== null ? percentageFormatter(goldClub) : 'N/A'
+				},
+			},
+			{
+				title: t('GameLevel.Label_TitaniumClub'),
+				key: 'titaniumClub',
+				dataIndex: 'titaniumClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (titaniumClub: number | null) => {
+					return titaniumClub !== null
+						? percentageFormatter(titaniumClub)
+						: 'N/A'
+				},
+			},
+			{
+				title: t('GameLevel.Label_DiamondClub'),
+				key: 'diamondClub',
+				dataIndex: 'diamondClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (diamondClub: number | null) => {
+					return diamondClub !== null ? percentageFormatter(diamondClub) : 'N/A'
+				},
+			},
+			{
+				title: vipClubTitle(),
+				key: 'novaClub',
+				dataIndex: 'novaClub',
+				width: 120,
+				align: 'center' as 'center',
+				editable: true,
+				render: (novaClub: number | null) => {
+					return novaClub !== null ? percentageFormatter(novaClub) : 'N/A'
+				},
+			},
+			{
+				title: t('Label_MinPayout'),
+				key: 'minPayout',
+				dataIndex: 'minPayout',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (minPayout: number | null) =>
+					minPayout !== null ? numberFormatter.format(minPayout) : 'N/A',
+			},
+			{
+				title: t('Label_MaxPayout'),
+				key: 'maxPayout',
+				dataIndex: 'maxPayout',
+				width: 100,
+				align: 'center' as 'center',
+				editable: true,
+				render: (maxPayout: number | null) =>
+					maxPayout !== null ? numberFormatter.format(maxPayout) : 'N/A',
+			},
+			{
+				title: t('Label_SetByProduct'),
+				key: 'setByProduct',
+				width: 100,
+				align: 'center' as 'center',
+				render: (values: IRebateTableData) => (
 					<Typography.Link
 						disabled={!editPermission?.canUse}
-						onClick={() => onEdit(record)}
+						type='secondary'
+						onClick={() => {
+							onSetByProduct(values.categoryId)
+						}}
 					>
-						{t('Label_Edit')}
+						<BsFillPencilFill />
 					</Typography.Link>
-				)
+				),
 			},
-		},
-		{
-			title: t('Label_GameType'),
-			key: 'categoryName',
-			dataIndex: 'categoryName',
-			width: 100,
-			align: 'center' as 'center',
-		},
-		{
-			title: t('GameLevel.Label_VintageClub'),
-			key: 'vintageClub',
-			dataIndex: 'vintageClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (vintageClub: number | null) => {
-				return vintageClub !== null ? percentageFormatter(vintageClub) : 'N/A'
-			},
-		},
-		{
-			title: t('GameLevel.Label_SilverClub'),
-			key: 'silverClub',
-			dataIndex: 'silverClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (silverClub: number | null) => {
-				return silverClub !== null ? percentageFormatter(silverClub) : 'N/A'
-			},
-		},
-		{
-			title: t('GameLevel.Label_GoldClub'),
-			key: 'goldClub',
-			dataIndex: 'goldClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (goldClub: number | null) => {
-				return goldClub !== null ? percentageFormatter(goldClub) : 'N/A'
-			},
-		},
-		{
-			title: t('GameLevel.Label_TitaniumClub'),
-			key: 'titaniumClub',
-			dataIndex: 'titaniumClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (titaniumClub: number | null) => {
-				return titaniumClub !== null ? percentageFormatter(titaniumClub) : 'N/A'
-			},
-		},
-		{
-			title: t('GameLevel.Label_DiamondClub'),
-			key: 'diamondClub',
-			dataIndex: 'diamondClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (diamondClub: number | null) => {
-				return diamondClub !== null ? percentageFormatter(diamondClub) : 'N/A'
-			},
-		},
-		{
-			title: t('GameLevel.Label_NovaClub'),
-			key: 'novaClub',
-			dataIndex: 'novaClub',
-			width: 120,
-			align: 'center' as 'center',
-			editable: true,
-			render: (novaClub: number | null) => {
-				return novaClub !== null ? percentageFormatter(novaClub) : 'N/A'
-			},
-		},
-		{
-			title: t('Label_MinPayout'),
-			key: 'minPayout',
-			dataIndex: 'minPayout',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (minPayout: number | null) =>
-				minPayout !== null ? numberFormatter.format(minPayout) : 'N/A',
-		},
-		{
-			title: t('Label_MaxPayout'),
-			key: 'maxPayout',
-			dataIndex: 'maxPayout',
-			width: 100,
-			align: 'center' as 'center',
-			editable: true,
-			render: (maxPayout: number | null) =>
-				maxPayout !== null ? numberFormatter.format(maxPayout) : 'N/A',
-		},
-		{
-			title: t('Label_SetByProduct'),
-			key: 'setByProduct',
-			width: 100,
-			align: 'center' as 'center',
-			render: (values: IRebateTableData) => (
-				<Typography.Link
-					disabled={!editPermission?.canUse}
-					type='secondary'
-					onClick={() => {
-						onSetByProduct(values.categoryId)
-					}}
-				>
-					<BsFillPencilFill />
-				</Typography.Link>
-			),
-		},
-	]
+		]
+	}
 
-	const mergedColumns = columns.map(col => {
+	const mergedColumns = columns().map(col => {
 		if (!col.editable) {
 			return col
 		}
