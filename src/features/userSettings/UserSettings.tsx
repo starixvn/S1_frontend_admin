@@ -74,13 +74,21 @@ const UserSettings: FC<{
 
 	const handleSetAdminUserStatus = async (userId: number, status: number) => {
 		try {
-			setAdminUserStatus({
-				userId,
+			const afterStatus =
+				status === ADMIN_USER_STATUS.OPEN
+					? ADMIN_USER_STATUS.CLOSE
+					: ADMIN_USER_STATUS.OPEN
+
+			await setAdminUserStatus({
 				siteId,
-				status:
-					status === ADMIN_USER_STATUS.OPEN
-						? ADMIN_USER_STATUS.CLOSE
-						: ADMIN_USER_STATUS.OPEN,
+				before: {
+					userId,
+					status: !afterStatus,
+				},
+				after: {
+					userId,
+					status: Boolean(afterStatus),
+				},
 			})
 
 			message.success(t('System.Label_Success'))
@@ -97,8 +105,10 @@ const UserSettings: FC<{
 		try {
 			await setAdminUserPassword({
 				siteId,
-				password: newPassword,
-				userId,
+				after: {
+					userId,
+					password: newPassword,
+				},
 			})
 
 			updatePasswordModal.onCancel()
