@@ -67,3 +67,22 @@ export interface AddAdminUserArgs {
 		permissionIdList: number[]
 	}[]
 }
+
+export interface ISetAdminUserStatusArgs {
+	siteId?: number
+	before: {
+		userId: number
+		status: boolean
+	}
+	after: {
+		userId: number
+		status: boolean
+	}
+}
+export interface ISetAdminUserPasswordArgs {
+	siteId?: number
+	after: {
+		userId: number
+		password: string
+	}
+}
