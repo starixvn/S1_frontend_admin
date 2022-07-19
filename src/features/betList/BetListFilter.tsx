@@ -216,7 +216,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								<Form.Item name='gameType' label={t('Label_Product')}>
 									<Select placeholder={t('Label_Select')} allowClear>
 										{products?.map(item => (
-											<Option key={item.typeName} value={item.tpId}>
+											<Option key={item.typeName} value={item.type}>
 												{item.typeName}
 											</Option>
 										))}
