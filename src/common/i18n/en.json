@@ -294,5 +294,7 @@
 	"Label_AdjustTypes": "Adjust Types",
 	"Label_AdjustType": "Adjust Type",
 	"Label_DepositId": "Deposit ID",
-	"Label_EWalletName": "E-Wallet Name"
+	"Label_EWalletName": "E-Wallet Name",
+	"Label_WithdrawalMin" : "Withdrawal Min",
+	"Label_WithdrawalMax" : "Withdrawal Max"
 }
