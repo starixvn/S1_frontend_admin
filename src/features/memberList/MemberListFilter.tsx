@@ -19,11 +19,9 @@ import {
 } from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
+import { Currency } from 'common/enum/type'
 import { IVipLevelData } from './type'
-import { Currency } from '../../common/enum/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
