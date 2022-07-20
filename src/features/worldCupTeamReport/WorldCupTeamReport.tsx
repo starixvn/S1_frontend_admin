@@ -40,7 +40,11 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 
 	const handleExport = async (teamId: number) => {
 		try {
-			const blob = await exportWorldCupTeamReport({ siteId, teamId }).unwrap()
+			const blob = await exportWorldCupTeamReport({
+				siteId,
+				teamId,
+				timezone: timeZoneUtcOffset,
+			}).unwrap()
 			download(
 				blob,
 				`ExportWorldCupTeamReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
