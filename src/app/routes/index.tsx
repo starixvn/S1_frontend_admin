@@ -261,6 +261,13 @@ const BlockEWallet = lazy(
 		)
 )
 
+const SpecialPasswordManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SpecialPasswordManagement' */ 'features/specialPasswordManagement/SpecialPasswordManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -680,6 +687,18 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.blockEWallet.functionId}>
 						<BlockEWallet />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.administration.sub.specialPasswordManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.administration.sub.specialPasswordManagement.functionId
+						}
+					>
+						<SpecialPasswordManagement />
 					</AuthRequire>
 				),
 			},
