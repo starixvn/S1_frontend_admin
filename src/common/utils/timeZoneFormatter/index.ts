@@ -6,6 +6,12 @@ import { find, isString } from 'lodash'
 // * ct.getAllTimezones() 會拿到所有國家的時區資訊
 const allTimezones = ct.getAllTimezones()
 
+// * 透過 utcOffset 拿到該國家的時區資訊
+export const getTimezoneInfo = (utcOffset: number) =>
+	find(allTimezones, {
+		utcOffset: utcOffset * 60,
+	}) ?? ({} as ct.Timezone)
+
 export const timeZoneLocalOffset = moment.parseZone(moment()).utcOffset() / 60
 
 // * 轉成指定時區的格式
