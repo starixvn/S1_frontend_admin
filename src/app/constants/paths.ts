@@ -402,6 +402,7 @@ const paths = {
 			},
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',
+				functionId: 92,
 			},
 		},
 	},
