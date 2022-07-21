@@ -51,15 +51,26 @@ export interface IBlockEWalletForm {
 }
 
 export interface ISetBlockEWalletArgs {
-	sysId: number
-	accountNum: string
-	status: number
-	memo: string
+	siteId?: number
+	before: {
+		sysId: number
+		accountNum: string
+		status: number
+	}
+	after: {
+		sysId: number
+		accountNum: string
+		status: number
+		memo: string
+	}
 }
 
 export interface ISetReleaseEWalletArgs {
-	sysId: number
-	accountNum: string
-	custId: number
-	ifscCode: string
+	siteId?: number
+	before: {
+		sysId: number
+		accountNum: string
+		custId: number
+		ifscCode: string
+	}
 }
