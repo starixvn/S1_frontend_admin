@@ -23,6 +23,7 @@ import { MultipleSelect } from 'components/Select'
 import { selectCurrencyListBySite } from 'common/enum'
 import { useAppSelector } from 'app/store'
 import { BANK_BLOCK_STATUS } from './constants'
+import { IEWalletType } from './type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -31,9 +32,11 @@ const { Option } = Select
 interface IBlockEWalletFilterProps {
 	loading: boolean
 	form: FormInstance
+	eWalletTypes: IEWalletType[]
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onChangeCurrency: (newCurrencyIds: number[]) => void
+	onChangeEWalletTypes: (newEWalletIds: number[]) => void
 	onSearch: ({
 		currentTimeZoneUtcOffset,
 	}: {
@@ -44,9 +47,11 @@ interface IBlockEWalletFilterProps {
 const BlockEWalletFilter: FC<IBlockEWalletFilterProps> = ({
 	loading,
 	form,
+	eWalletTypes,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onChangeCurrency,
+	onChangeEWalletTypes,
 	onSearch,
 }) => {
 	const { t } = useTranslation()
@@ -71,6 +76,7 @@ const BlockEWalletFilter: FC<IBlockEWalletFilterProps> = ({
 							blockStatus: BANK_BLOCK_STATUS[0].value,
 							accountNum: '',
 							userName: '',
+							eWalletIds: [],
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -129,6 +135,22 @@ const BlockEWalletFilter: FC<IBlockEWalletFilterProps> = ({
 										{currencyListBySite?.map(item => (
 											<Option key={item.currencyId} value={item.currencyId}>
 												{item.isoCode}
+											</Option>
+										))}
+									</MultipleSelect>
+								</Form.Item>
+							</Col>
+
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='eWalletIds' label={t('Label_EWalletName')}>
+									<MultipleSelect onChange={onChangeEWalletTypes}>
+										{(eWalletTypes?.length as number) > 1 && (
+											<Option value={0}>{t('Label_SelectAll')}</Option>
+										)}
+
+										{eWalletTypes?.map(item => (
+											<Option key={item.sysId} value={item.sysId}>
+												{item.eWalletName}
 											</Option>
 										))}
 									</MultipleSelect>

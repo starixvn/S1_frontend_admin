@@ -10,6 +10,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	useGetEWalletTypesQuery,
 	useLazyGetBlockEWalletAccQuery,
 	useLazyGetBlockEWalletListQuery,
 	useSetBlockEWalletMutation,
@@ -47,6 +48,11 @@ const BlockEWallet: FC<{
 	const [getBlockEWalletList, { isFetching: isGetBlockEWalletListFetching }] =
 		useLazyGetBlockEWalletListQuery()
 
+	const {
+		data: { data: eWalletTypes = [] } = {},
+		isFetching: isGetEWalletTypesFetching,
+	} = useGetEWalletTypesQuery(null)
+
 	const [setBlockEWallet, { isLoading: isSetBlockEWalletLoading }] =
 		useSetBlockEWalletMutation()
 
@@ -65,11 +71,29 @@ const BlockEWallet: FC<{
 		}
 	}
 
+	const handleChangeEWalletTypes = (newEWalletIds: number[]) => {
+		if (newEWalletIds.includes(0)) {
+			form.setFieldsValue({
+				eWalletIds: eWalletTypes?.map(item => item.sysId),
+			})
+		} else {
+			form.setFieldsValue({
+				eWalletIds: newEWalletIds,
+			})
+		}
+	}
+
 	const handleSearch = async ({
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}) => {
-		const { dateRange, currencyIds, blockStatus, accountNum, userName } =
-			(await form.validateFields()) as IBlockEWalletForm
+		const {
+			dateRange,
+			currencyIds,
+			blockStatus,
+			accountNum,
+			userName,
+			eWalletIds,
+		} = (await form.validateFields()) as IBlockEWalletForm
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
@@ -84,7 +108,7 @@ const BlockEWallet: FC<{
 				startDate,
 				endDate,
 				currencyId: currencyIds,
-				eWalletId: [1],
+				eWalletId: eWalletIds,
 			}).unwrap()
 
 			setQueryParams({
@@ -94,6 +118,7 @@ const BlockEWallet: FC<{
 				userName,
 				blockStatus,
 				currencyIds,
+				eWalletIds,
 				tz: currentTimeZoneUtcOffset,
 			})
 		} catch (error) {
@@ -271,6 +296,7 @@ const BlockEWallet: FC<{
 				userName = '',
 				blockStatus = BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 				currencyIds,
+				eWalletIds,
 				tz,
 			} = queryParams
 
@@ -282,6 +308,8 @@ const BlockEWallet: FC<{
 				accountNum,
 				currencyIds:
 					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				eWalletIds:
+					eWalletIds?.map((eWalletId: string) => Number(eWalletId)) ?? [],
 				dateRange: [moment(startDate), moment(endDate)],
 			})
 
@@ -289,9 +317,13 @@ const BlockEWallet: FC<{
 				currentTimeZoneUtcOffset: Number(tz),
 			})
 		} else {
+			form.setFieldsValue({
+				eWalletIds: eWalletTypes?.map(eWalletType => eWalletType.sysId),
+			})
+
 			handleSearch({})
 		}
-	}, [])
+	}, [isGetEWalletTypesFetching])
 
 	const loading =
 		isGetBlockEWalletAccFetching ||
@@ -306,9 +338,11 @@ const BlockEWallet: FC<{
 			<BlockEWalletFilter
 				loading={loading}
 				form={form}
+				eWalletTypes={eWalletTypes}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onChangeCurrency={handleChangeCurrency}
+				onChangeEWalletTypes={handleChangeEWalletTypes}
 				onSearch={handleSearch}
 			/>
 

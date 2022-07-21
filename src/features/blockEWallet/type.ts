@@ -48,6 +48,7 @@ export interface IBlockEWalletForm {
 	blockStatus: number
 	accountNum: string
 	userName: string
+	eWalletIds: number[]
 }
 
 export interface ISetBlockEWalletArgs {
@@ -74,3 +75,11 @@ export interface ISetReleaseEWalletArgs {
 		ifscCode: string
 	}
 }
+
+export interface IEWalletType {
+	sysId: number
+	eWalletName: string
+	currencyId: number
+}
+
+export type IEWalletTypesResponse = IAxiosResponse<IEWalletType[]>
