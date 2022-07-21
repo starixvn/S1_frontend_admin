@@ -64,5 +64,4 @@ export interface IExportReferralReportArgs {
 	currencyId: number
 	startDate: string
 	endDate: string
-	timezone: number
 }

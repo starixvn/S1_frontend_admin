@@ -133,7 +133,6 @@ const WorldCupMemberReport: FC<{
 				selected,
 				startTime,
 				endTime,
-				timezone: timeZoneUtcOffset,
 			}).unwrap()
 			download(
 				blob,
