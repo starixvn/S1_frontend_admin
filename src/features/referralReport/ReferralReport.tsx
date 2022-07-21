@@ -109,7 +109,6 @@ const ReferralReport: FC<{
 				startDate,
 				endDate,
 				siteIds: siteId ? [siteId] : [],
-				timezone: timeZoneUtcOffset,
 			}).unwrap()
 			download(
 				blob,
