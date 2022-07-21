@@ -268,6 +268,13 @@ const SpecialPasswordManagement = lazy(
 		)
 )
 
+const EWalletSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EWalletSetting' */ 'features/eWalletSetting/EWalletSetting'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -699,6 +706,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SpecialPasswordManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.eWalletSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.finance.sub.setting.sub.eWalletSetting.functionId}
+					>
+						<EWalletSetting />
 					</AuthRequire>
 				),
 			},

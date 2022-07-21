@@ -160,6 +160,15 @@ const paths = {
 					},
 				},
 			},
+			setting: {
+				root: 'finance/setting',
+				sub: {
+					eWalletSetting: {
+						root: 'finance/setting/eWalletSetting',
+						functionId: 122,
+					},
+				},
+			},
 		},
 	},
 	marketing: {

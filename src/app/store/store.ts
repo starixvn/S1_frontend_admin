@@ -30,6 +30,7 @@ import { adjustmentPointReportApi } from 'features/adjustmentPointReport/api'
 import { depositPointReportApi } from 'features/depositPointReport/api'
 import { blockEWalletApi } from 'features/blockEWallet/api'
 import { specialPasswordApi } from 'features/specialPasswordManagement/api'
+import { eWalletSettingApi } from 'features/eWalletSetting/api'
 
 export const store = configureStore({
 	reducer: {
@@ -64,6 +65,7 @@ export const store = configureStore({
 		[depositPointReportApi.reducerPath]: depositPointReportApi.reducer,
 		[blockEWalletApi.reducerPath]: blockEWalletApi.reducer,
 		[specialPasswordApi.reducerPath]: specialPasswordApi.reducer,
+		[eWalletSettingApi.reducerPath]: eWalletSettingApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -96,7 +98,8 @@ export const store = configureStore({
 			.concat(adjustmentPointReportApi.middleware)
 			.concat(depositPointReportApi.middleware)
 			.concat(blockEWalletApi.middleware)
-			.concat(specialPasswordApi.middleware),
+			.concat(specialPasswordApi.middleware)
+			.concat(eWalletSettingApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
