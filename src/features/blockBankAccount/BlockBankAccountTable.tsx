@@ -11,7 +11,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
 import { useIsMounted } from 'usehooks-ts'
 import { PermissionInterface } from 'type'
-import { IBlockBankAccState, ISetReleaseAccountArgs } from './type'
+import { IBlockBankAccState } from './type'
 import {
 	BANK_BLOCK_STATUS,
 	BANK_BLOCK_STATUS_VALUE_OPTIONS,
@@ -37,7 +37,12 @@ interface IBlockBankAccountTableProps {
 		accountNum,
 		ifscCode,
 		custId,
-	}: ISetReleaseAccountArgs) => void
+	}: {
+		sysId: number
+		accountNum: string
+		custId: number
+		ifscCode: string
+	}) => void
 }
 
 const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({

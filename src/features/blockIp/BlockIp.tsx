@@ -1,6 +1,8 @@
 import { FC, useEffect } from 'react'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
+import { selectUserSite } from 'common/enum'
+import { useAppSelector } from 'app/store'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import { LayoutContent } from 'app/pages/layout'
@@ -19,6 +21,7 @@ import {
 	useLazyGetBlockIpListQuery,
 	useAddBlockIpMutation,
 } from './api'
+
 import BlockIpFilter from './BlockIpFilter'
 import BlockIpTable from './BlockIpTable'
 import AddBlockIpFormModal from './AddBlockIpFormModal'
@@ -31,6 +34,7 @@ const BlockIp: FC<{
 	const { actionPermissions: { addPermission, deletePermission } = {} } =
 		useAuth()
 
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -98,7 +102,7 @@ const BlockIp: FC<{
 
 	const handleDeleteBlockIp = async (ip: string) => {
 		try {
-			await deleteBlockIp({ ip }).unwrap()
+			await deleteBlockIp({ siteId, before: { ip } }).unwrap()
 
 			message.success(t('System.Label_Success'))
 		} catch (error) {
@@ -110,7 +114,10 @@ const BlockIp: FC<{
 
 	const handleAddBlockIp = async (ip: string, memo: string) => {
 		try {
-			await addBlockIp({ ip, memo }).unwrap()
+			await addBlockIp({
+				siteId,
+				after: { ip, memo },
+			}).unwrap()
 
 			addBlockIpModal.onCancel()
 			message.success(t('System.Label_Success'))

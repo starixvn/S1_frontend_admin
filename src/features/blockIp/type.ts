@@ -6,6 +6,13 @@ export interface IBlockIPListArgs {
 	pageSize: number
 }
 
+export interface IDeleteBlockIpArgs {
+	siteId: number | undefined
+	before: {
+		ip: string
+	}
+}
+
 export interface IBlockIpState {
 	ip: string
 	memo: string
@@ -17,4 +24,12 @@ export interface IBlockIpState {
 export interface IBlockIpResponse {
 	data: IBlockIpState[]
 	rowCount: number
+}
+
+export interface IAddBlockIpArgs {
+	siteId?: number
+	after: {
+		ip: string
+		memo: string
+	}
 }
