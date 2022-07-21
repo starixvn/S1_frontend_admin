@@ -4,11 +4,15 @@ export interface IBlockBankAccState {
 	bankName: string
 	createTime: string
 	status: number
+	blockStatus: number
 	sysId: number
 	updateOperator: null | string
 	updateTime: null | string
 	blockUpdateTime: null | string
 	userName: string
+	currencyId: number
+	custId: number
+	ifscCode: null | string
 }
 
 export interface IGetBlockBankAccArgs {
@@ -33,6 +37,7 @@ export interface IGetBlockBankAccListArgs {
 	accountNum: string
 }
 
+// ! ISetBlockAccountArgs 的 status 是更動 IBlockBankAccState 的 blockStatus 的值
 export interface ISetBlockAccountArgs {
 	siteId?: number
 	before: {

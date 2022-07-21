@@ -172,7 +172,7 @@ const BlockBankAccount: FC<{
 				? t('Label_Unlock')
 				: t('Label_Lock')
 
-		const toggledStatus =
+		const toggledBlockStatus =
 			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
 				? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
 				: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
@@ -214,7 +214,7 @@ const BlockBankAccount: FC<{
 				handleSetBlockAccount({
 					sysId,
 					accountNum,
-					status: toggledStatus,
+					blockStatus: toggledBlockStatus,
 				})
 			},
 		})
@@ -223,22 +223,28 @@ const BlockBankAccount: FC<{
 	const handleSetBlockAccount = async ({
 		sysId,
 		accountNum,
-		status,
+		blockStatus,
 	}: {
 		sysId: number
 		accountNum: string
-		status: number
+		blockStatus: number
 	}) => {
 		try {
-			const before = find(blockBankAccData, { sysId }) as IBlockBankAccState
-
+			const originBlockAcc = find(blockBankAccData, {
+				sysId,
+			}) as IBlockBankAccState
+			const before = {
+				sysId: originBlockAcc.sysId,
+				accountNum: originBlockAcc.accountNum,
+				status: originBlockAcc.blockStatus,
+			}
 			await setBlockAccount({
 				siteId,
 				before,
 				after: {
 					sysId,
 					accountNum,
-					status,
+					status: blockStatus,
 					memo: '',
 				},
 			}).unwrap()
