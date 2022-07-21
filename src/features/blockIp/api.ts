@@ -1,7 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
-import { IBlockIPListArgs, IBlockIpResponse } from './type'
+import {
+	IAddBlockIpArgs,
+	IBlockIPListArgs,
+	IBlockIpResponse,
+	IDeleteBlockIpArgs,
+} from './type'
 
 export const blockIpApi = createApi({
 	reducerPath: 'blockIpApi',
@@ -16,7 +21,7 @@ export const blockIpApi = createApi({
 			}),
 			providesTags: ['POST'],
 		}),
-		deleteBlockIp: builder.mutation<void, { ip: string }>({
+		deleteBlockIp: builder.mutation<void, IDeleteBlockIpArgs>({
 			query: data => ({
 				url: 'Block/DeleteBlockIP',
 				method: 'POST',
@@ -24,7 +29,7 @@ export const blockIpApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		addBlockIp: builder.mutation<void, { ip: string; memo: string }>({
+		addBlockIp: builder.mutation<void, IAddBlockIpArgs>({
 			query: data => ({
 				url: 'Block/SetBlockIP',
 				method: 'POST',
