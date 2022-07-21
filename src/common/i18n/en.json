@@ -162,9 +162,9 @@
 		"Label_TitaniumClub": "Titanium Club",
 		"Label_DiamondClub": "Diamond Club",
 		"Label_NovaClub": "Nova Club",
-		"Label_Goal123Club" : "GOAL123 Club",
-		"Label_BwingVVIP" : "Bwing VVIP",
-		"Label_BronzeClub" : "Bronze Club"
+		"Label_Goal123Club": "GOAL123 Club",
+		"Label_BwingVVIP": "Bwing VVIP",
+		"Label_BronzeClub": "Bronze Club"
 	},
 	"Label_MinPayout": "Min Payout",
 	"Label_MaxPayout": "Max Payout",
@@ -295,6 +295,6 @@
 	"Label_AdjustType": "Adjust Type",
 	"Label_DepositId": "Deposit ID",
 	"Label_EWalletName": "E-Wallet Name",
-	"Label_WithdrawalMin" : "Withdrawal Min",
-	"Label_WithdrawalMax" : "Withdrawal Max"
+	"Label_WithdrawalMin": "Withdrawal Min",
+	"Label_WithdrawalMax": "Withdrawal Max"
 }

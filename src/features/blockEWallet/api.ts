@@ -4,6 +4,7 @@ import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IBlockEWalletAccResponse,
 	IBlockEWalletResponse,
+	IEWalletTypesResponse,
 	IGetBlockEWalletAccArgs,
 	IGetBlockEWalletListArgs,
 	ISetBlockEWalletArgs,
@@ -34,6 +35,15 @@ export const blockEWalletApi = createApi({
 		>({
 			query: body => ({
 				url: `EWallet/GetBlockEWalletList`,
+				method: 'POST',
+				data: body,
+			}),
+			providesTags: ['POST'],
+		}),
+		// * E-Wallet 類別清單
+		GetEWalletTypes: builder.query<IEWalletTypesResponse, null>({
+			query: body => ({
+				url: `EWallet/GetEWalletInfo`,
 				method: 'POST',
 				data: body,
 			}),
@@ -70,6 +80,7 @@ export const blockEWalletApi = createApi({
 export const {
 	useLazyGetBlockEWalletAccQuery,
 	useLazyGetBlockEWalletListQuery,
+	useGetEWalletTypesQuery,
 	useSetBlockEWalletMutation,
 	useSetReleaseEWalletMutation,
 } = blockEWalletApi
