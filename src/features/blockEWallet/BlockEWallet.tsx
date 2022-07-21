@@ -1,13 +1,13 @@
 import { FC, useEffect } from 'react'
 import { Form, List, message, Modal, Typography } from 'antd'
 import moment from 'moment'
-import { isEmpty } from 'lodash'
+import { find, isEmpty } from 'lodash'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite } from 'common/enum'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	useLazyGetBlockEWalletAccQuery,
@@ -17,7 +17,11 @@ import {
 } from './api'
 import BlockEWalletFilter from './BlockEWalletFilter'
 import BlockEWalletTable from './BlockEWalletTable'
-import { IBlockEWalletData, IBlockEWalletForm } from './type'
+import {
+	IBlockEWalletAccData,
+	IBlockEWalletData,
+	IBlockEWalletForm,
+} from './type'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
 
 const BlockEWallet: FC<{
@@ -27,6 +31,7 @@ const BlockEWallet: FC<{
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm<IBlockEWalletForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
@@ -205,11 +210,19 @@ const BlockEWallet: FC<{
 		status: number
 	}) => {
 		try {
-			await setBlockEWallet({
+			const before = find(blockEWalletAccounts, {
 				sysId,
-				accountNum,
-				status,
-				memo: '',
+			}) as IBlockEWalletAccData
+
+			await setBlockEWallet({
+				siteId,
+				before,
+				after: {
+					sysId,
+					accountNum,
+					status,
+					memo: '', // * 不需要 memo 故帶空值
+				},
 			}).unwrap()
 
 			message.success(t('System.Label_Success'))
@@ -232,10 +245,13 @@ const BlockEWallet: FC<{
 	}) => {
 		try {
 			setReleaseEWallet({
-				sysId,
-				accountNum,
-				custId,
-				ifscCode: '', // * E-Wallet 沒有 `ifscCode` 故帶空值
+				siteId,
+				before: {
+					sysId,
+					accountNum,
+					custId,
+					ifscCode: '', // * E-Wallet 沒有 `ifscCode` 故帶空值
+				},
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
