@@ -310,7 +310,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.referralManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/ReferralManagement',
 		internalFunctionKey: allowedRoles.MarketingReferralManagement,
 		newAdminPath: paths.marketing.sub.referralManagement.root,
@@ -558,7 +558,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.referralReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingReferralReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/ReferralReport',
 		newAdminPath: paths.marketing.sub.referralReport.root,
 	},
