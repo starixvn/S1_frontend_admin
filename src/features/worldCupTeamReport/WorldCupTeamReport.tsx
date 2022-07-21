@@ -8,6 +8,7 @@ import { selectUserSite } from 'common/enum'
 import moment from 'moment'
 import { message } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
+import { getTimezoneInfo } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { WorldCupTeamReportTable } from './WorldCupTeamReportTable'
 import {
@@ -40,10 +41,12 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 
 	const handleExport = async (teamId: number) => {
 		try {
+			const { utcOffsetStr } = getTimezoneInfo(timeZoneUtcOffset)
+
 			const blob = await exportWorldCupTeamReport({
 				siteId,
 				teamId,
-				timezone: timeZoneUtcOffset,
+				timezone: utcOffsetStr,
 			}).unwrap()
 			download(
 				blob,
