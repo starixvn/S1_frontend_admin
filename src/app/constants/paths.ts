@@ -160,6 +160,15 @@ const paths = {
 					},
 				},
 			},
+			setting: {
+				root: 'finance/setting',
+				sub: {
+					eWalletSetting: {
+						root: 'finance/setting/eWalletSetting',
+						functionId: 122,
+					},
+				},
+			},
 		},
 	},
 	marketing: {
@@ -402,6 +411,7 @@ const paths = {
 			},
 			specialPasswordManagement: {
 				root: 'administration/specialPasswordManagement',
+				functionId: 92,
 			},
 		},
 	},

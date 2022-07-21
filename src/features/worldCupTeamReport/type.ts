@@ -20,6 +20,10 @@ export type IGetWorldCupReportResponse = IAxiosResponse<
 export interface IExportWorldCupReportArgs {
 	siteId?: number
 	teamId: number
+	timezone: number | string
 }
 
-export type ISetPayoutArgs = IExportWorldCupReportArgs
+export interface ISetPayoutArgs {
+	siteId?: number
+	teamId: number
+}

@@ -32,7 +32,6 @@ export interface IExportMemberReportArgs {
 	userName: string
 	startTime: string
 	endTime: string
-	timezone: number
 }
 
 export interface IWorldCupTeams {

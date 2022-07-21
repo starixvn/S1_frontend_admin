@@ -310,7 +310,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.referralManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/ReferralManagement',
 		internalFunctionKey: allowedRoles.MarketingReferralManagement,
 		newAdminPath: paths.marketing.sub.referralManagement.root,
@@ -558,7 +558,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.referralReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingReferralReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/ReferralReport',
 		newAdminPath: paths.marketing.sub.referralReport.root,
 	},
@@ -675,11 +675,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 92,
+		functionId: paths.administration.sub.specialPasswordManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminSpecialPasswordManagement,
 		pathMode: 'Internal',
 		internalPath: 'Admin/SpecialPasswordManagement',
-		newAdminPath: '',
+		newAdminPath: paths.administration.sub.specialPasswordManagement.root,
 	},
 	{
 		icon: null,
@@ -793,5 +793,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 			paths.rewardProgram.sub.report.sub.depositPointReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.report.sub.depositPointReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.finance.sub.setting.sub.eWalletSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.setting.sub.eWalletSetting.root,
 	},
 ]

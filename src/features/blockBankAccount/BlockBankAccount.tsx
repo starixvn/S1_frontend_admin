@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { find, isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite } from 'common/enum'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -19,11 +19,7 @@ import {
 	useSetReleaseAccountMutation,
 } from './api'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
-import {
-	IBlockBankAccListResponse,
-	IBlockBankAccState,
-	ISetReleaseAccountArgs,
-} from './type'
+import { IBlockBankAccListResponse, IBlockBankAccState } from './type'
 
 const BlockBankAccount: FC<{
 	pageTitle?: string
@@ -31,6 +27,7 @@ const BlockBankAccount: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -108,13 +105,21 @@ const BlockBankAccount: FC<{
 		accountNum,
 		ifscCode,
 		custId,
-	}: ISetReleaseAccountArgs) => {
+	}: {
+		sysId: number
+		accountNum: string
+		custId: number
+		ifscCode: string
+	}) => {
 		try {
 			setReleaseAccount({
-				sysId,
-				accountNum,
-				ifscCode,
-				custId,
+				siteId,
+				before: {
+					sysId,
+					accountNum,
+					custId,
+					ifscCode,
+				},
 			}).unwrap()
 		} catch (error) {
 			message.error(
@@ -225,11 +230,17 @@ const BlockBankAccount: FC<{
 		status: number
 	}) => {
 		try {
+			const before = find(blockBankAccData, { sysId }) as IBlockBankAccState
+
 			await setBlockAccount({
-				sysId,
-				accountNum,
-				status,
-				memo: '',
+				siteId,
+				before,
+				after: {
+					sysId,
+					accountNum,
+					status,
+					memo: '',
+				},
 			}).unwrap()
 
 			message.success(t('System.Label_Success'))

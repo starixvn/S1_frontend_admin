@@ -5,6 +5,8 @@ import {
 	AddAdminUserArgs,
 	AdminUserInterface,
 	AdminUserPermissionInterface,
+	ISetAdminUserPasswordArgs,
+	ISetAdminUserStatusArgs,
 	UpdateAdminUserArgs,
 	UserAdminState,
 } from './type'
@@ -91,10 +93,7 @@ export const userSettingsApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		setAdminUserStatus: builder.mutation<
-			void,
-			{ userId: number; siteId?: number; status: number }
-		>({
+		setAdminUserStatus: builder.mutation<void, ISetAdminUserStatusArgs>({
 			query: data => ({
 				url: `Permission/SetAdminUserStatus`,
 				method: 'POST',
@@ -102,10 +101,7 @@ export const userSettingsApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		setAdminUserPassword: builder.mutation<
-			void,
-			{ userId: number; siteId?: number; password: any }
-		>({
+		setAdminUserPassword: builder.mutation<void, ISetAdminUserPasswordArgs>({
 			query: data => ({
 				url: `Permission/SetAdminUserPassword`,
 				method: 'POST',
