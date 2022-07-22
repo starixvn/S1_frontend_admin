@@ -293,11 +293,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 47,
+		functionId: paths.marketing.sub.verificationRewardManagement.functionId,
 		pathMode: 'Internal',
-		internalPath: 'Marketing/VerificationReward',
+		internalPath: 'Marketing/VerificationManagement',
 		internalFunctionKey: allowedRoles.MarketingVerificationReward,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.verificationRewardManagement.root,
 	},
 	{
 		icon: null,
