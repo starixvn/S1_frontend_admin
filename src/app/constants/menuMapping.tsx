@@ -175,19 +175,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 31,
+		functionId: paths.finance.sub.adjustment.sub.balanceAdjustment.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentAdjustment',
 		internalFunctionKey: allowedRoles.FinancePaymentAdjustment,
-		newAdminPath: '',
-	},
-	{
-		icon: null,
-		functionId: 32,
-		pathMode: 'Internal',
-		internalPath: 'Finance/ThirdPartyAdjustment',
-		internalFunctionKey: allowedRoles.FinanceThirdPartyAdjustment,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.adjustment.sub.balanceAdjustment.root,
 	},
 	{
 		icon: null,

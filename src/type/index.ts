@@ -60,6 +60,7 @@ export interface ActionPermissions {
 	settingPermission: PermissionInterface
 	adminUserLogPermission: PermissionInterface
 	addPointBatchPermission: PermissionInterface
+	add3RDPermission: PermissionInterface
 }
 
 export interface PermissionInterface {

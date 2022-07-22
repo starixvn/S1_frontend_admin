@@ -39,4 +39,5 @@ export const ACTION_NAMES: {
 	36: 'settingPermission',
 	37: 'adminUserLogPermission',
 	38: 'addPointBatchPermission',
+	60: 'add3RDPermission',
 }
