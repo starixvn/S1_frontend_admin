@@ -275,6 +275,13 @@ const EWalletSetting = lazy(
 		)
 )
 
+const BalanceAdjustment = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BalanceAdjustment' */ 'features/balanceAdjustment'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -716,6 +723,30 @@ const routes: RouteObject[] = [
 						functionId={paths.finance.sub.setting.sub.eWalletSetting.functionId}
 					>
 						<EWalletSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.depositPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.depositPointReport.functionId
+						}
+					>
+						<DepositPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.adjustment.sub.balanceAdjustment.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.adjustment.sub.balanceAdjustment.functionId
+						}
+					>
+						<BalanceAdjustment />
 					</AuthRequire>
 				),
 			},

@@ -120,6 +120,12 @@ const paths = {
 			},
 			adjustment: {
 				root: 'finance/adjustment',
+				sub: {
+					balanceAdjustment: {
+						root: 'finance/adjustment/balanceAdjustment',
+						functionId: 31,
+					},
+				},
 			},
 			bankInfoList: {
 				root: 'finance/bankInfoList',

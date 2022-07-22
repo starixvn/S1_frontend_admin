@@ -29,7 +29,9 @@ import { siteMaintenanceApi } from 'features/siteMaintenance/api'
 import { adjustmentPointReportApi } from 'features/adjustmentPointReport/api'
 import { depositPointReportApi } from 'features/depositPointReport/api'
 import { blockEWalletApi } from 'features/blockEWallet/api'
+import { thirdPartyAdjustmentApi } from 'features/balanceAdjustment/thirdPartyAdjustment/api'
 import { specialPasswordApi } from 'features/specialPasswordManagement/api'
+import { balanceAdjustmentApi } from 'features/balanceAdjustment/balanceAdjustment/api'
 import { eWalletSettingApi } from 'features/eWalletSetting/api'
 
 export const store = configureStore({
@@ -66,6 +68,8 @@ export const store = configureStore({
 		[blockEWalletApi.reducerPath]: blockEWalletApi.reducer,
 		[specialPasswordApi.reducerPath]: specialPasswordApi.reducer,
 		[eWalletSettingApi.reducerPath]: eWalletSettingApi.reducer,
+		[balanceAdjustmentApi.reducerPath]: balanceAdjustmentApi.reducer,
+		[thirdPartyAdjustmentApi.reducerPath]: thirdPartyAdjustmentApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -99,7 +103,9 @@ export const store = configureStore({
 			.concat(depositPointReportApi.middleware)
 			.concat(blockEWalletApi.middleware)
 			.concat(specialPasswordApi.middleware)
-			.concat(eWalletSettingApi.middleware),
+			.concat(eWalletSettingApi.middleware)
+			.concat(balanceAdjustmentApi.middleware)
+			.concat(thirdPartyAdjustmentApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
