@@ -227,14 +227,9 @@ const paths = {
 				root: 'marketing/referralReport/log',
 				functionId: 77,
 			},
-			verificationReward: {
-				root: 'marketing/verificationReward',
-			},
 			verificationRewardManagement: {
 				root: 'marketing/verificationRewardManagement',
-			},
-			pointLevelManagement: {
-				root: 'marketing/pointLevelManagement',
+				functionId: 47,
 			},
 		},
 	},

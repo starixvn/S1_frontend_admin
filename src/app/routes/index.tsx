@@ -282,6 +282,13 @@ const BalanceAdjustment = lazy(
 		)
 )
 
+const VerificationReward = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VerificationManagement' */ 'features/verificationManagement/VerificationManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -747,6 +754,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<BalanceAdjustment />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.verificationRewardManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.marketing.sub.verificationRewardManagement.functionId
+						}
+					>
+						<VerificationReward />
 					</AuthRequire>
 				),
 			},
