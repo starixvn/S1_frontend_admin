@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { Typography } from 'antd'
+import { Popconfirm, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment'
@@ -77,12 +77,15 @@ const WorldCupTeamReportTable: FC<IWorldCupTeamReportProps> = ({
 						{t('Label_Process')}
 					</Typography.Text>
 				) : (
-					<Typography.Link
+					<Popconfirm
+						title={t('Label_AreYouSure')}
 						disabled={!editPermission?.canUse}
-						onClick={() => onSetPayout(teamId)}
+						onConfirm={() => onSetPayout(teamId)}
 					>
-						N/A
-					</Typography.Link>
+						<Typography.Link disabled={!editPermission?.canUse}>
+							N/A
+						</Typography.Link>
+					</Popconfirm>
 				)
 			},
 		},
