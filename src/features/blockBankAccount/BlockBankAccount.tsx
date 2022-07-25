@@ -1,4 +1,4 @@
-import { find, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -27,7 +27,7 @@ const BlockBankAccount: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	// const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -113,13 +113,10 @@ const BlockBankAccount: FC<{
 	}) => {
 		try {
 			setReleaseAccount({
-				siteId,
-				before: {
-					sysId,
-					accountNum,
-					custId,
-					ifscCode,
-				},
+				sysId,
+				accountNum,
+				ifscCode,
+				custId,
 			}).unwrap()
 		} catch (error) {
 			message.error(
@@ -230,23 +227,30 @@ const BlockBankAccount: FC<{
 		blockStatus: number
 	}) => {
 		try {
-			const originBlockAcc = find(blockBankAccData, {
-				sysId,
-			}) as IBlockBankAccState
-			const before = {
-				sysId: originBlockAcc.sysId,
-				accountNum: originBlockAcc.accountNum,
-				status: originBlockAcc.blockStatus,
-			}
+			// const originBlockAcc = find(blockBankAccData, {
+			// 	sysId,
+			// }) as IBlockBankAccState
+			// const before = {
+			// 	sysId: originBlockAcc.sysId,
+			// 	accountNum: originBlockAcc.accountNum,
+			// 	status: originBlockAcc.blockStatus,
+			// }
+			// await setBlockAccount({
+			// 	siteId,
+			// 	before,
+			// 	after: {
+			// 		sysId,
+			// 		accountNum,
+			// 		status: blockStatus,
+			// 		memo: '',
+			// 	},
+			// }).unwrap()
+
 			await setBlockAccount({
-				siteId,
-				before,
-				after: {
-					sysId,
-					accountNum,
-					status: blockStatus,
-					memo: '',
-				},
+				sysId,
+				accountNum,
+				status: blockStatus,
+				memo: '',
 			}).unwrap()
 
 			message.success(t('System.Label_Success'))
