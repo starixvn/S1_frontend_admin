@@ -15,6 +15,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import download from 'downloadjs'
+import { dateRangeToUtcFormatter } from 'common/utils'
 import { BetListFilter } from './BetListFilter'
 import {
 	IGetBetListArgs,
@@ -35,7 +36,6 @@ import {
 	useLazyGetBetListQuery,
 } from './api'
 import { BetListTable } from './BetListTable'
-import { dateRangeToUtcFormatter } from '../../common/utils'
 
 const BetList: FC<{
 	pageTitle?: string

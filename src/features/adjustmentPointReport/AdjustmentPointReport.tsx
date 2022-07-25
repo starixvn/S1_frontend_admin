@@ -65,9 +65,13 @@ const AdjustmentPointReport: FC<{
 		{ isLoading: isExportAdjustmentPointReportLoading },
 	] = useExportAdjustmentPointReportMutation()
 	const {
-		data: { data: vipLevelsList } = {} as IGetVipLevelsResponse,
+		data: { data: vipLevelsList = [] } = {} as IGetVipLevelsResponse,
 		isLoading: isGetVipLevelLoading,
 	} = useGetVipLevelQuery(null)
+
+	const filteredVipLevelsList = vipLevelsList?.filter(
+		item => item.siteId === siteId
+	)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -164,8 +168,14 @@ const AdjustmentPointReport: FC<{
 		})
 	}
 
+	const loading = isGetVipLevelLoading || isGetAdjustmentPointLoading
+
 	useEffect(() => {
+		if (isGetVipLevelLoading) return
 		const init = () => {
+			form.setFieldsValue({
+				vipLevels: filteredVipLevelsList.map(item => item.level),
+			})
 			if (isEmpty(queryParams)) return
 			const {
 				timeZone,
@@ -200,9 +210,7 @@ const AdjustmentPointReport: FC<{
 			})
 		}
 		init()
-	}, [])
-
-	const loading = isGetVipLevelLoading || isGetAdjustmentPointLoading
+	}, [isGetVipLevelLoading])
 
 	return (
 		<LayoutContent.Main>
@@ -213,9 +221,8 @@ const AdjustmentPointReport: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
-				vipLevelsList={vipLevelsList}
+				vipLevelsList={filteredVipLevelsList}
 				onTimeZoneChange={onTimeZoneChange}
-				siteId={siteId}
 			/>
 			{!isEmpty(queryParams) && (
 				<AdjustmentPointReportTable
