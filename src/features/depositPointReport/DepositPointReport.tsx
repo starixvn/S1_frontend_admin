@@ -37,7 +37,6 @@ const DepositPointReport: FC<{
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-
 	const [
 		getDepositPointReport,
 		{
@@ -53,6 +52,7 @@ const DepositPointReport: FC<{
 		} = {},
 		overview: depositReportOverviewData = [],
 	} = depositPointData ?? {}
+
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: depositPointReportTotal,
 	})
@@ -61,10 +61,15 @@ const DepositPointReport: FC<{
 		exportDepositPointReport,
 		{ isLoading: isExportDepositReportLoading },
 	] = useExportDepositPointReportMutation()
+
 	const {
 		data: { data: vipLevelsList } = {} as IGetVipLevelsResponse,
 		isLoading: isGetVipLevelLoading,
 	} = useGetVipLevelQuery(null)
+
+	const filteredVipLevelsList = vipLevelsList?.filter(
+		item => item.siteId === siteId
+	)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -158,7 +163,11 @@ const DepositPointReport: FC<{
 	}
 
 	useEffect(() => {
+		if (isGetVipLevelLoading) return
 		const init = () => {
+			form.setFieldsValue({
+				vipLevels: filteredVipLevelsList.map(item => item.level),
+			})
 			if (isEmpty(queryParams)) return
 			const {
 				timeZone,
@@ -191,7 +200,7 @@ const DepositPointReport: FC<{
 			})
 		}
 		init()
-	}, [])
+	}, [isGetVipLevelLoading])
 
 	const loading = isGetVipLevelLoading || isGetDepositPointReportLoading
 
@@ -204,9 +213,8 @@ const DepositPointReport: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
-				vipLevelsList={vipLevelsList}
+				vipLevelsList={filteredVipLevelsList}
 				onTimeZoneChange={onTimeZoneChange}
-				siteId={siteId}
 			/>
 			{!isEmpty(queryParams) && (
 				<DepositPointReportTable
