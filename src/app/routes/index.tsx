@@ -288,6 +288,12 @@ const VerificationReward = lazy(
 			/* webpackChunkName: 'VerificationManagement' */ 'features/verificationManagement/VerificationManagement'
 		)
 )
+const TurnoverPointReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TurnoverPointReport' */ 'features/turnoverPointReport/TurnoverPointReport'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -766,6 +772,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<VerificationReward />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.report.sub.turnoverPointReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.rewardProgram.sub.report.sub.turnoverPointReport.functionId
+						}
+					>
+						<TurnoverPointReport />
 					</AuthRequire>
 				),
 			},

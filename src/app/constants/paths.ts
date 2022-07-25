@@ -375,6 +375,10 @@ const paths = {
 						root: 'rewardProgram/report/depositPointReport',
 						functionId: 120,
 					},
+					turnoverPointReport: {
+						root: 'rewardProgram/report/turnoverPointReport',
+						functionId: 121,
+					},
 				},
 			},
 		},

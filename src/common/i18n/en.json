@@ -311,11 +311,13 @@
 	"Label_ThirdPartyWallet": "3RD Wallet",
 	"Label_MethodType": "Method Type",
 	"Label_WithdrawConditionMessage": "Withdraw Condition ( Balance Amount X Times ): ",
+	"Label_VerificationType": "Verification Type",
+	"Label_PhoneReward": "Phone Reward",
+	"Label_EmailReward": "Email Reward",
+	"Label_EitherOf": "Either Of",
+	"Label_BothOf": "Both Of",
 	"Label_WithdrawalMin": "Withdrawal Min",
 	"Label_WithdrawalMax": "Withdrawal Max",
-	"Label_VerificationType" : "Verification Type",
-	"Label_PhoneReward" : "Phone Reward",
-	"Label_EmailReward" : "Email Reward",
-	"Label_EitherOf" : "Either Of",
-	"Label_BothOf" : "Both Of"
+	"Label_RefId": "Ref ID",
+	"Label_SettledDate": "Settled Date"
 }

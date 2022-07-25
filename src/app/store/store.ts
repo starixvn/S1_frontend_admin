@@ -34,6 +34,7 @@ import { specialPasswordApi } from 'features/specialPasswordManagement/api'
 import { balanceAdjustmentApi } from 'features/balanceAdjustment/balanceAdjustment/api'
 import { eWalletSettingApi } from 'features/eWalletSetting/api'
 import { verificationManagementApi } from 'features/verificationManagement/api'
+import { turnoverPointReportApi } from 'features/turnoverPointReport/api'
 
 export const store = configureStore({
 	reducer: {
@@ -72,6 +73,7 @@ export const store = configureStore({
 		[balanceAdjustmentApi.reducerPath]: balanceAdjustmentApi.reducer,
 		[thirdPartyAdjustmentApi.reducerPath]: thirdPartyAdjustmentApi.reducer,
 		[verificationManagementApi.reducerPath]: verificationManagementApi.reducer,
+		[turnoverPointReportApi.reducerPath]: turnoverPointReportApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -108,7 +110,8 @@ export const store = configureStore({
 			.concat(eWalletSettingApi.middleware)
 			.concat(balanceAdjustmentApi.middleware)
 			.concat(thirdPartyAdjustmentApi.middleware)
-			.concat(verificationManagementApi.middleware),
+			.concat(verificationManagementApi.middleware)
+			.concat(turnoverPointReportApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
