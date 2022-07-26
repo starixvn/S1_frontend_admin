@@ -792,4 +792,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.finance.sub.setting.sub.eWalletSetting.root,
 	},
+	{
+		icon: null,
+		functionId:
+			paths.rewardProgram.sub.report.sub.turnoverPointReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.rewardProgram.sub.report.sub.turnoverPointReport.root,
+	},
 ]
