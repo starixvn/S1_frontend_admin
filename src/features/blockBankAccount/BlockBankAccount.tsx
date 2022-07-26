@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite } from 'common/enum'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -27,7 +27,7 @@ const BlockBankAccount: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
-	// const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -113,10 +113,13 @@ const BlockBankAccount: FC<{
 	}) => {
 		try {
 			setReleaseAccount({
-				sysId,
-				accountNum,
-				ifscCode,
-				custId,
+				siteId,
+				before: {
+					sysId,
+					accountNum,
+					custId,
+					ifscCode,
+				},
 			}).unwrap()
 		} catch (error) {
 			message.error(
@@ -169,11 +172,6 @@ const BlockBankAccount: FC<{
 				? t('Label_Unlock')
 				: t('Label_Lock')
 
-		const toggledBlockStatus =
-			blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
-				? BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN
-				: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
-
 		Modal.info({
 			title: t('Label_UserList'),
 			closable: true,
@@ -211,7 +209,7 @@ const BlockBankAccount: FC<{
 				handleSetBlockAccount({
 					sysId,
 					accountNum,
-					blockStatus: toggledBlockStatus,
+					blockStatus,
 				})
 			},
 		})
@@ -226,31 +224,24 @@ const BlockBankAccount: FC<{
 		accountNum: string
 		blockStatus: number
 	}) => {
+		const { BLOCK, OPEN } = BANK_BLOCK_STATUS_VALUE_OPTIONS
 		try {
-			// const originBlockAcc = find(blockBankAccData, {
-			// 	sysId,
-			// }) as IBlockBankAccState
-			// const before = {
-			// 	sysId: originBlockAcc.sysId,
-			// 	accountNum: originBlockAcc.accountNum,
-			// 	status: originBlockAcc.blockStatus,
-			// }
-			// await setBlockAccount({
-			// 	siteId,
-			// 	before,
-			// 	after: {
-			// 		sysId,
-			// 		accountNum,
-			// 		status: blockStatus,
-			// 		memo: '',
-			// 	},
-			// }).unwrap()
-
-			await setBlockAccount({
+			const before = {
 				sysId,
 				accountNum,
 				status: blockStatus,
+			}
+			const after = {
+				sysId,
+				accountNum,
+				status: blockStatus === BLOCK ? OPEN : BLOCK,
 				memo: '',
+			}
+
+			await setBlockAccount({
+				siteId,
+				before,
+				after,
 			}).unwrap()
 
 			message.success(t('System.Label_Success'))

@@ -37,42 +37,28 @@ export interface IGetBlockBankAccListArgs {
 	accountNum: string
 }
 
-// // ! ISetBlockAccountArgs 的 status 是更動 IBlockBankAccState 的 blockStatus 的值
-// export interface ISetBlockAccountArgs {
-// 	siteId?: number
-// 	before: {
-// 		sysId: number
-// 		accountNum: string
-// 		status: number
-// 	}
-// 	after: {
-// 		sysId: number
-// 		accountNum: string
-// 		status: number
-// 		memo: string
-// 	}
-// }
-
-// export interface ISetReleaseAccountArgs {
-// 	siteId?: number
-// 	before: {
-// 		sysId: number
-// 		accountNum: string
-// 		custId: number
-// 		ifscCode: string
-// 	}
-// }
-
+// ! ISetBlockAccountArgs 的 status 是更動 IBlockBankAccState 的 blockStatus 的值
 export interface ISetBlockAccountArgs {
-	sysId: number
-	accountNum: string
-	status: number
-	memo: string
+	siteId?: number
+	before: {
+		sysId: number
+		accountNum: string
+		status: number
+	}
+	after: {
+		sysId: number
+		accountNum: string
+		status: number
+		memo: string
+	}
 }
 
 export interface ISetReleaseAccountArgs {
-	sysId: number
-	accountNum: string
-	custId: number
-	ifscCode: string
+	siteId?: number
+	before: {
+		sysId: number
+		accountNum: string
+		custId: number
+		ifscCode: string
+	}
 }
