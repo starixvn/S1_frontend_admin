@@ -74,8 +74,8 @@ const VerificationManagementTable: FC<IVerificationManagementTableProps> = ({
 		},
 		{
 			title: t('Label_Currency'),
-			key: 'currencyId',
-			dataIndex: 'currencyId',
+			key: 'isoCode',
+			dataIndex: 'isoCode',
 			width: 80,
 			align: 'center' as 'center',
 		},
