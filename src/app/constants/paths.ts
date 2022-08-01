@@ -301,6 +301,15 @@ const paths = {
 			},
 		},
 	},
+	bankTransfer: {
+		root: 'bankTransfer',
+		sub: {
+			transferAccountManagement: {
+				root: 'BankTransfer/TransferAccountManagement',
+				functionId: 86,
+			},
+		},
+	},
 	rewardProgram: {
 		root: 'rewardProgram',
 		sub: {
@@ -420,6 +429,7 @@ const paths = {
 			},
 		},
 	},
+
 	cms: {
 		root: 'cms',
 		sub: {

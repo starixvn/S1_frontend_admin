@@ -623,11 +623,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 86,
+		functionId: paths.bankTransfer.sub.transferAccountManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferAccountManage,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/TransferAccountManage',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.transferAccountManagement.root,
 	},
 	{
 		icon: null,

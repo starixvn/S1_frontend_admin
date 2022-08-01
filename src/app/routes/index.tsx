@@ -295,6 +295,20 @@ const TurnoverPointReport = lazy(
 		)
 )
 
+const TransferAccountManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TransferAccountManagement' */ 'features/transferAccountManagement/TransferAccountManagement'
+		)
+)
+
+const UpdateTransferAccountManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UpdateTransferAccountManagement' */ 'features/transferAccountManagement/UpdateTransferAccountManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -784,6 +798,30 @@ const routes: RouteObject[] = [
 						}
 					>
 						<TurnoverPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferAccountManagement.functionId
+						}
+					>
+						<TransferAccountManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}/Update/:editId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferAccountManagement.functionId
+						}
+					>
+						<UpdateTransferAccountManagement />
 					</AuthRequire>
 				),
 			},
