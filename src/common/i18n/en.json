@@ -319,5 +319,18 @@
 	"Label_WithdrawalMin": "Withdrawal Min",
 	"Label_WithdrawalMax": "Withdrawal Max",
 	"Label_RefId": "Ref ID",
-	"Label_SettledDate": "Settled Date"
+	"Label_SettledDate": "Settled Date",
+	"Label_Channel": "Channel",
+	"Label_Purposes": "Purposes",
+	"Label_Bank": "Bank",
+	"Label_Agent": "Agent",
+	"Label_Pay": "Pay",
+	"Label_DisplayName": "Display Name",
+	"Label_Creator": "Creator",
+	"Label_Update": "Updater",
+	"Label_InitialAmount": "Initial Amount",
+	"Label_MaxBalanceAlertAmount": "Max Balance Alert Amount",
+	"Label_Reason": "Reason",
+	"Label_IFSC": "IFSC",
+	"Label_EditTransferAccountManagementDescribe1": "If edit Currency, Bank Code, Channel, Pay, Agent, AccountNo, AccountName, AccountDisplayName, will update transfer data & Offline Bank Setting too.Please be carful and double check."
 }

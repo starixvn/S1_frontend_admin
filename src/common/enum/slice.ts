@@ -89,6 +89,12 @@ export const selectAdjustmentInfoLogMenu = (state: RootState) =>
 export const selectActionTypeList = (state: RootState) =>
 	state.allEnum.actionTypeList
 
+/**
+ * 回傳當前品牌的所有幣別 id
+ */
+export const selectAdminUserCurrencyList = (state: RootState) =>
+	state.allEnum.adminUserCurrencyList
+
 export const { onChangeUserSite } = enumSlice.actions
 
 export default enumSlice.reducer
