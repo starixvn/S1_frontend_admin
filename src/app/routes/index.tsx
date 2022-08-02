@@ -309,6 +309,13 @@ const UpdateTransferAccountManagement = lazy(
 		)
 )
 
+const SnsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SnsManagement' */ 'features/snsManagement/SnsManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -822,6 +829,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<UpdateTransferAccountManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.snsManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.snsManagement.functionId
+						}
+					>
+						<SnsManagement />
 					</AuthRequire>
 				),
 			},

@@ -799,4 +799,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.report.sub.turnoverPointReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.urlManagement.sub.snsManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.urlManagement.sub.snsManagement.root,
+	},
 ]
