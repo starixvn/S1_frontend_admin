@@ -441,6 +441,15 @@ const paths = {
 				root: 'cms/siteMaintenance',
 				functionId: 117,
 			},
+			urlManagement: {
+				root: 'cms/urlManagement',
+				sub: {
+					snsManagement: {
+						root: 'cms/urlManagement/snsManagement',
+						functionId: 123,
+					},
+				},
+			},
 		},
 	},
 }

@@ -332,5 +332,12 @@
 	"Label_MaxBalanceAlertAmount": "Max Balance Alert Amount",
 	"Label_Reason": "Reason",
 	"Label_IFSC": "IFSC",
-	"Label_EditTransferAccountManagementDescribe1": "If edit Currency, Bank Code, Channel, Pay, Agent, AccountNo, AccountName, AccountDisplayName, will update transfer data & Offline Bank Setting too.Please be carful and double check."
+	"Label_EditTransferAccountManagementDescribe1": "If edit Currency, Bank Code, Channel, Pay, Agent, AccountNo, AccountName, AccountDisplayName, will update transfer data & Offline Bank Setting too.Please be carful and double check.",
+	"Label_Main": "Main",
+	"Label_Contact": "Contact",
+	"Label_FooterText": "Footer",
+	"Label_AppText": "APP",
+	"Label_ContentDeepLink": "Content DeepLink",
+	"Label_IOSLink": "IOS Link",
+	"Label_AndroidLink": "Android Link"
 }
