@@ -42,7 +42,7 @@ const VerificationManagement: FC<{
 		useSetVerificationRewardMutation()
 
 	const handleSaved = async (record: IGetVerificationRewardData) => {
-		const { phoneReward, emailReward, verificationType } =
+		const { phoneReward, emailReward, verificationType, minDeposit } =
 			await form.validateFields()
 
 		const {
@@ -50,17 +50,20 @@ const VerificationManagement: FC<{
 			phoneReward: phoneRewardBefore,
 			emailReward: emailRewardBefore,
 			verificationType: verificationTypeBefore,
+			minDeposit: minDepositBefore,
 		} = record
 
 		const after: IVerificationRewardSettingArgs = {
 			phoneReward,
 			emailReward,
 			verificationType,
+			minDeposit,
 		}
 		const before: IVerificationRewardSettingArgs = {
 			phoneReward: phoneRewardBefore,
 			emailReward: emailRewardBefore,
 			verificationType: verificationTypeBefore,
+			minDeposit: minDepositBefore,
 		}
 
 		try {

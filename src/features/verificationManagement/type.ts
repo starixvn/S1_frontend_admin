@@ -15,6 +15,7 @@ export interface IGetVerificationRewardData {
 	createTime: string
 	lastUpdateUser: string
 	lastUpdateTime: string
+	minDeposit: number
 }
 
 export type IGetVerificationRewardResponse = IAxiosResponse<
@@ -36,6 +37,7 @@ export type IVerificationRewardSettingArgs = {
 	verificationType: number
 	phoneReward: number
 	emailReward: number
+	minDeposit: number
 }
 
 export interface ISetVerificationRewardArgs {

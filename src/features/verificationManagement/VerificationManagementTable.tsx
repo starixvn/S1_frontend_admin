@@ -80,6 +80,15 @@ const VerificationManagementTable: FC<IVerificationManagementTableProps> = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_DepositAmount'),
+			key: 'minDeposit',
+			dataIndex: 'minDeposit',
+			width: 80,
+			align: 'center' as 'center',
+			editable: true,
+			render: (minDeposit: number) => numberFormatter.format(minDeposit) ?? '',
+		},
+		{
 			title: t('Label_VerificationType'),
 			key: 'verificationType',
 			width: 80,
