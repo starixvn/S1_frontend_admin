@@ -4,13 +4,36 @@ import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetTpListBySiteIdArgs,
 	ITpListBySiteResponse,
-	ITpCustInfoArgs,
-	ITpCustInfoResponse,
 	IAdjustmentReasonResponse,
 	ISetTpFundsAdjustmentArgs,
 	ITpLogResponse,
 	IGetTpLogArgs,
 } from './type'
+
+interface IGetCustInfoWithTpBalanceArgs {
+	siteId?: number
+	userName: string
+	sabaId: string
+}
+
+interface ICustInfoWithTpBalanceData {
+	tpWalletList: {
+		tpId: number
+		tpName: string
+		tpUserName: string
+		balance: number
+		walletType: number
+	}[]
+	siteId: number
+	siteName: string
+	custId: number
+	userName: string
+	currencyId: number
+	status: number
+	balance: number
+}
+
+type ICustInfoWithTpBalanceResponse = IAxiosResponse<ICustInfoWithTpBalanceData>
 
 export const thirdPartyAdjustmentApi = createApi({
 	reducerPath: 'thirdPartyAdjustmentApi',
@@ -36,10 +59,13 @@ export const thirdPartyAdjustmentApi = createApi({
 				data,
 			}),
 		}),
-		// * 取得指定第三方客戶資料
-		getTpCustInfo: builder.query<ITpCustInfoResponse, ITpCustInfoArgs>({
+		// * 取得客戶資料、主錢包餘額及三方錢包餘額
+		getCustInfoWithTpBalance: builder.query<
+			ICustInfoWithTpBalanceResponse,
+			IGetCustInfoWithTpBalanceArgs
+		>({
 			query: data => ({
-				url: 'TpFundsAdjustment/GetTpCustInfo',
+				url: 'CustomerManage/GetCustInfoWithTpBalance',
 				method: 'POST',
 				data,
 			}),
@@ -72,7 +98,7 @@ export const thirdPartyAdjustmentApi = createApi({
 export const {
 	useGetTpListBySiteIdQuery,
 	useGetAdjustmentReasonListQuery,
-	useLazyGetTpCustInfoQuery,
+	useLazyGetCustInfoWithTpBalanceQuery,
 	useLazyGetTpLogQuery,
 	useSetTpFundsAdjustmentMutation,
 } = thirdPartyAdjustmentApi

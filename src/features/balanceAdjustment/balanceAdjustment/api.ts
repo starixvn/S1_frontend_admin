@@ -2,9 +2,9 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
+	ICustInfoWithBalanceResponse,
 	IGetAdjustmentTypeResponse,
-	IGetCustDetailArgs,
-	IGetCustDetailResponse,
+	IGetCustInfoWithBalanceArgs,
 	IGetReasonListResponse,
 	ISubmitAdjustmentArgs,
 } from './type'
@@ -28,9 +28,13 @@ export const balanceAdjustmentApi = createApi({
 				data,
 			}),
 		}),
-		getCustDetail: builder.query<IGetCustDetailResponse, IGetCustDetailArgs>({
+		// * # 取得客戶資料及主錢包餘額
+		getCustInfoWithBalance: builder.query<
+			ICustInfoWithBalanceResponse,
+			IGetCustInfoWithBalanceArgs
+		>({
 			query: data => ({
-				url: 'CustomerManage/GetCustDetail',
+				url: 'CustomerManage/GetCustInfoWithBalance',
 				method: 'POST',
 				data,
 			}),
@@ -65,6 +69,6 @@ export const {
 	useGetAdjustmentTypeQuery,
 	useGetReasonListQuery,
 	useSetBalanceAdjustmentMutation,
-	useLazyGetCustDetailQuery,
+	useLazyGetCustInfoWithBalanceQuery,
 	useSetBatchBalanceAdjustmentMutation,
 } = balanceAdjustmentApi

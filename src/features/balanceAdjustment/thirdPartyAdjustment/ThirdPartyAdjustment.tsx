@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { head } from 'lodash'
+import { find, head } from 'lodash'
 import { Collapse, Divider, Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { PAGINATION, useAuth, usePagination } from 'common/hooks'
@@ -10,16 +10,19 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetAdjustmentReasonListQuery,
 	useGetTpListBySiteIdQuery,
-	useLazyGetTpCustInfoQuery,
+	useLazyGetCustInfoWithTpBalanceQuery,
 	useLazyGetTpLogQuery,
 	useSetTpFundsAdjustmentMutation,
 } from './api'
 import ThirdPartyAdjustmentSearchForm from './ThirdPartyAdjustmentSearchForm'
-import { ITpCustInfoResponse } from './type'
 import ThirdPartyAdjustmentInfoForm from './ThirdPartyAdjustmentInfoForm'
 import ThirdPartyAdjustmentTable from './ThirdPartyAdjustmentTable'
 import { MethodTypeEnum } from '../constants'
 import { IMethodType } from '../type'
+import {
+	ICustInfoWithTpBalanceResponse,
+	ISetTpFundsAdjustmentArgs,
+} from './type'
 
 const ThirdPartyAdjustment: FC<{
 	methodType: MethodTypeEnum
@@ -34,7 +37,7 @@ const ThirdPartyAdjustment: FC<{
 	const [searchForm] = Form.useForm<{
 		tpId: number
 		userName: string
-		userTpId: string
+		sabaId: string
 	}>()
 
 	const [infoForm] = Form.useForm<{
@@ -42,6 +45,7 @@ const ThirdPartyAdjustment: FC<{
 		reasonId: number
 		amount: number
 		memo: string
+		transId: string
 	}>()
 
 	const {
@@ -59,12 +63,14 @@ const ThirdPartyAdjustment: FC<{
 	} = useGetAdjustmentReasonListQuery(null)
 
 	const [
-		getTpCustInfo,
+		getCustInfoWithTpBalance,
 		{
-			data: { data: tpCustInfo } = {} as ITpCustInfoResponse,
-			isFetching: isGetTpCustInfoFetching,
+			data: {
+				data: custInfoWithTpBalance,
+			} = {} as ICustInfoWithTpBalanceResponse,
+			isFetching: isFetCustInfoWithTpBalanceFetching,
 		},
-	] = useLazyGetTpCustInfoQuery()
+	] = useLazyGetCustInfoWithTpBalanceQuery()
 
 	const [
 		getTpLog,
@@ -90,15 +96,14 @@ const ThirdPartyAdjustment: FC<{
 		pageSize?: number | undefined
 	}) => {
 		if (!siteId) return
-		const { tpId, userName, userTpId } = await searchForm.validateFields()
+		const { tpId, userName, sabaId } = await searchForm.validateFields()
 
 		try {
-			// * 取得指定第三方客戶資料
-			const { data: { custId } = {} } = await getTpCustInfo({
+			// * 取得客戶資料、主錢包餘額及三方錢包餘額
+			const { data: { custId } = {} } = await getCustInfoWithTpBalance({
 				siteId,
-				tpId,
 				userName,
-				userTpId,
+				sabaId,
 			}).unwrap()
 
 			// * 取得第三方調帳紀錄
@@ -120,19 +125,24 @@ const ThirdPartyAdjustment: FC<{
 
 	// * 送出調整餘額資訊
 	const handleSetTpFundsAdjustment = async () => {
-		const { tpId, userName, userTpId } = await searchForm.validateFields()
-		const { adjustmentType, reasonId, amount, memo } =
+		const { tpId, userName } = await searchForm.validateFields()
+		const { tpName = '' } = find(tpListBySiteId, { tpId }) ?? {}
+		const { currencyId, custId } = custInfoWithTpBalance
+		const { adjustmentType, reasonId, amount, memo, transId } =
 			await infoForm.validateFields()
 
-		const args = {
+		const args: ISetTpFundsAdjustmentArgs = {
 			siteId,
+			currencyId,
+			custId,
 			tpId,
+			tpName,
 			userName,
-			userTpId,
-			opt: adjustmentType,
-			category: reasonId,
+			option: adjustmentType,
 			amount,
 			memo,
+			reasonId,
+			transId,
 		}
 
 		try {
@@ -172,7 +182,9 @@ const ThirdPartyAdjustment: FC<{
 	}, [isGetAdjustmentReasonListFetching])
 
 	const loading =
-		isGetTpListBySiteIdFetching || isGetTpCustInfoFetching || isGetTpLogFetching
+		isGetTpListBySiteIdFetching ||
+		isFetCustInfoWithTpBalanceFetching ||
+		isGetTpLogFetching
 
 	return (
 		<>
@@ -188,13 +200,13 @@ const ThirdPartyAdjustment: FC<{
 						onSearch={handleSearch}
 					/>
 
-					{tpCustInfo && (
+					{custInfoWithTpBalance && (
 						<>
 							<Divider />
 							<ThirdPartyAdjustmentInfoForm
 								form={infoForm}
 								loading={loading}
-								balance={tpCustInfo?.balance ?? 0}
+								balance={custInfoWithTpBalance?.balance ?? 0}
 								adjustmentReasonList={adjustmentReasonList}
 							/>
 						</>

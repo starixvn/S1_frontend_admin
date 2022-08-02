@@ -9,13 +9,13 @@ import { selectUserSite } from 'common/enum'
 import {
 	useGetAdjustmentTypeQuery,
 	useGetReasonListQuery,
-	useLazyGetCustDetailQuery,
+	useLazyGetCustInfoWithBalanceQuery,
 	useSetBalanceAdjustmentMutation,
 	useSetBatchBalanceAdjustmentMutation,
 } from 'features/balanceAdjustment/balanceAdjustment/api'
 import {
+	ICustInfoWithBalanceResponse,
 	IGetAdjustmentTypeResponse,
-	IGetCustDetailResponse,
 	IGetReasonListResponse,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
 import { BalanceAdjustmentFilter } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentFilter'
@@ -34,7 +34,20 @@ const BalanceAdjustment: FC<{
 		useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<{
+		//  * Filter Form
+		userName: string
+		sabaId: string
+		// * Submit Form
+		adjustmentType: number | null
+		reasonId: number | null
+		transId: string
+		amount: number | null
+		withdrawalLimitOption: boolean
+		withdrawalLimitAmount: number | null
+		memo: string
+		fileList: RcFile[]
+	}>()
 
 	const {
 		data: { data: adjustmentTypeList } = {} as IGetAdjustmentTypeResponse,
@@ -47,12 +60,12 @@ const BalanceAdjustment: FC<{
 	} = useGetReasonListQuery(null)
 
 	const [
-		getCustDetail,
+		getCustInfoWithBalance,
 		{
-			data: { data: custDetailData } = {} as IGetCustDetailResponse,
-			isFetching: isGetCustDetailDataLoading,
+			data: { data: custInfoWithBalance } = {} as ICustInfoWithBalanceResponse,
+			isFetching: isGetCustInfoWithBalanceLoading,
 		},
-	] = useLazyGetCustDetailQuery()
+	] = useLazyGetCustInfoWithBalanceQuery()
 
 	const [setBalanceAdjustment, { isLoading: isSetBalanceAdjustmentLoading }] =
 		useSetBalanceAdjustmentMutation()
@@ -64,7 +77,7 @@ const BalanceAdjustment: FC<{
 	const handleGetBalance = async () => {
 		const { userName = '', sabaId = '' } = form.getFieldsValue()
 		try {
-			await getCustDetail({
+			await getCustInfoWithBalance({
 				siteId,
 				userName,
 				sabaId,
@@ -95,15 +108,19 @@ const BalanceAdjustment: FC<{
 				message.error(t('Label_Required', { key: t('Label_File') }))
 			} else {
 				const formData = new FormData()
-				formData.append('excelUpload', fileList[0] as RcFile)
 				formData.append('siteId', siteId.toString())
-				formData.append('option', adjustmentType.toString())
-				formData.append('category', reasonId.toString())
-				formData.append('withdrawal', Number(withdrawalLimitAmount).toString())
+				formData.append('excelUpload', fileList[0] as RcFile)
+				formData.append('adjustmentType', String(adjustmentType ?? ''))
+				formData.append(
+					'withdrawalLimitAmount',
+					Number(withdrawalLimitAmount).toString()
+				)
 				formData.append(
 					'withdrawalLimitOption',
 					Number(withdrawalLimitOption).toString()
 				)
+				formData.append('reasonId', String(reasonId ?? ''))
+
 				try {
 					const response = await setBatchBalanceAdjustment(formData).unwrap()
 					// 這隻的 api 的 response 是陣列 可能有成功或錯誤的訊息
@@ -133,7 +150,7 @@ const BalanceAdjustment: FC<{
 				}
 			}
 		} else if (methodType === MethodTypeEnum.mainWallet) {
-			if (!custDetailData?.custId) return
+			if (!custInfoWithBalance?.custId) return
 			const {
 				adjustmentType,
 				reasonId,
@@ -141,18 +158,22 @@ const BalanceAdjustment: FC<{
 				withdrawalLimitOption,
 				withdrawalLimitAmount = 0,
 				memo = '',
+				transId,
 			} = await form.validateFields()
+			const { custId } = custInfoWithBalance
 			try {
 				const response = await setBalanceAdjustment({
+					custId,
 					adjustmentType,
-					reasonId,
 					amount,
-					memo,
-					withdrawalLimitOption: Number(withdrawalLimitOption),
-					// 有可能是 null 所以要轉成 Number
+					// *  有可能是 null 所以要轉成 Number
 					withdrawalLimitAmount: Number(withdrawalLimitAmount),
-					custId: custDetailData?.custId,
+					withdrawalLimitOption: Number(withdrawalLimitOption),
+					reasonId,
+					transId,
+					memo,
 				}).unwrap()
+
 				form.setFieldsValue({
 					adjustmentType: null,
 					reasonId: null,
@@ -192,7 +213,7 @@ const BalanceAdjustment: FC<{
 	const loading =
 		isGetAdjustmentTypeLoading ||
 		isGetReasonListLoading ||
-		isGetCustDetailDataLoading
+		isGetCustInfoWithBalanceLoading
 
 	return (
 		<>
@@ -207,7 +228,7 @@ const BalanceAdjustment: FC<{
 						onGetBalance={handleGetBalance}
 						addBatchPermission={addBatchPermission}
 					/>
-					{(custDetailData ||
+					{(custInfoWithBalance ||
 						methodType === MethodTypeEnum.mainWalletBatch) && (
 						<>
 							<Divider />
@@ -215,7 +236,7 @@ const BalanceAdjustment: FC<{
 								loading={loading}
 								adjustmentTypeList={adjustmentTypeList}
 								reasonList={reasonList}
-								custDetailData={custDetailData}
+								custInfoWithBalance={custInfoWithBalance}
 								form={form}
 								methodType={methodType}
 							/>

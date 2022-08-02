@@ -11,29 +11,38 @@ export interface IGetTpListBySiteIdArgs {
 	siteId: number | undefined
 }
 
+export interface IGetCustInfoWithTpBalanceArgs {
+	siteId?: number
+	userName: string
+	sabaId: string
+}
+
+export interface ICustInfoWithTpBalanceData {
+	tpWalletList: {
+		tpId: number
+		tpName: string
+		tpUserName: string
+		balance: number
+		walletType: number
+	}[]
+	siteId: number
+	siteName: string
+	custId: number
+	userName: string
+	currencyId: number
+	status: number
+	balance: number
+}
+
+export type ICustInfoWithTpBalanceResponse =
+	IAxiosResponse<ICustInfoWithTpBalanceData>
+
 export interface IAdjustmentData {
 	id: number
 	name: string
 }
 
 export type IAdjustmentReasonResponse = IAxiosResponse<IAdjustmentData[]>
-
-export interface ITpCustInfoData {
-	custId: number
-	siteName: string
-	userName: string
-	currency: number
-	balance: number
-}
-
-export type ITpCustInfoResponse = IAxiosResponse<ITpCustInfoData>
-
-export interface ITpCustInfoArgs {
-	siteId: number
-	tpId: number
-	userName: string
-	userTpId: string
-}
 
 enum StatusEnum {
 	Success = 0, // * PendingD 狀態成功後就轉為 Success
@@ -74,11 +83,14 @@ export interface IGetTpLogArgs {
 
 export interface ISetTpFundsAdjustmentArgs {
 	siteId?: number
+	currencyId: number
+	custId: number
 	tpId: number
+	tpName: string
 	userName: string
-	userTpId: string
-	opt: number
+	option: number // * 1: Add, 2: Minus
 	amount: number
 	memo: string
-	category: number // * 即 reasonList 的 id
+	reasonId: number
+	transId: string // * transId(DepositId)，reasonId=9 才需要帶
 }
