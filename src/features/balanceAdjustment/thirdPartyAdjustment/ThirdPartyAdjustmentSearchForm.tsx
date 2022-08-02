@@ -38,9 +38,9 @@ const ThirdPartyAdjustmentSearchForm: FC<
 }) => {
 	const { t } = useTranslation()
 	const userName = Form.useWatch('userName', form)
-	const userTpId = Form.useWatch('userTpId', form)
+	const sabaId = Form.useWatch('sabaId', form)
 
-	const isButtonAble = userName || userTpId
+	const isButtonAble = userName || sabaId
 
 	return (
 		<LayoutContent.Card>
@@ -51,7 +51,6 @@ const ThirdPartyAdjustmentSearchForm: FC<
 				initialValues={{
 					tpId: undefined,
 					userName: '',
-					userTpId: '',
 				}}
 				onFinish={() => onSearch({})}
 			>
@@ -87,8 +86,8 @@ const ThirdPartyAdjustmentSearchForm: FC<
 					</Col>
 
 					<Col lg={6} md={12} xs={12}>
-						<Form.Item name='userTpId' label={t('Label_User3rdID')}>
-							<Input allowClear placeholder={t('Label_User3rdID')} />
+						<Form.Item name='sabaId' label={t('Label_SabaId')}>
+							<Input allowClear placeholder={t('Label_SabaId')} />
 						</Form.Item>
 					</Col>
 				</Row>

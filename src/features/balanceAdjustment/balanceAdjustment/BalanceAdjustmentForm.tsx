@@ -28,7 +28,7 @@ interface IBalanceAdjustmentFormProps {
 	loading: boolean
 	adjustmentTypeList: IGetAdjustmentTypeData[]
 	reasonList: IGetAdjustmentTypeData[]
-	custDetailData: IGetCustDetailData
+	custInfoWithBalance: IGetCustDetailData
 	form: FormInstance
 	methodType: MethodTypeEnum
 }
@@ -40,13 +40,14 @@ const xlsxMimeType =
 const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 	loading,
 	adjustmentTypeList,
-	custDetailData,
+	custInfoWithBalance,
 	reasonList,
 	form,
 	methodType,
 }) => {
 	const { t } = useTranslation()
 	const conditionAvailable = Form.useWatch('withdrawalLimitOption', form)
+	const reasonId = Form.useWatch('reasonId', form)
 	const fileList = Form.useWatch('fileList', form)
 	const props: UploadProps = {
 		onRemove: () => {
@@ -76,8 +77,8 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 						<Typography.Title level={4}>
 							{`${t('Label_BalanceAmount')} :
 						${
-							custDetailData?.balance
-								? numberFormatter.format(custDetailData?.balance)
+							custInfoWithBalance?.balance
+								? numberFormatter.format(custInfoWithBalance?.balance)
 								: '0'
 						}`}
 						</Typography.Title>
@@ -90,6 +91,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 					form={form}
 					initialValues={{
 						withdrawalLimitOption: false,
+						transId: '',
 					}}
 					style={{ marginTop: '10px' }}
 				>
@@ -141,6 +143,27 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
+					{reasonId === 9 && (
+						<Row align='middle' gutter={16}>
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='transId'
+									label={t('Label_DepositId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_DepositId'),
+											}),
+										},
+									]}
+								>
+									<Input allowClear placeholder={t('Label_DepositId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+
 					{methodType !== MethodTypeEnum.mainWalletBatch && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>

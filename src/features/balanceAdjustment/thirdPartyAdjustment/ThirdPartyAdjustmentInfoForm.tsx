@@ -13,6 +13,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { FormInstance } from 'antd/es/form/Form'
+import { numberFormatter } from 'common/utils/format'
 import { IAdjustmentData } from './type'
 import { adjustmentTypeList } from './constants'
 
@@ -32,12 +33,15 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 	adjustmentReasonList,
 }) => {
 	const { t } = useTranslation()
+	const reasonId = Form.useWatch('reasonId', form)
 
 	return (
 		<LayoutContent.Card>
 			<Spin spinning={loading}>
 				<Typography.Title level={4}>
-					{`${t('Label_BalanceAmount')}: ${balance}`}
+					{`${t('Label_BalanceAmount')}: ${
+						balance ? numberFormatter.format(balance) : ''
+					}`}
 				</Typography.Title>
 				<Form
 					form={form}
@@ -48,6 +52,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 						reasonId: null,
 						amount: null,
 						memo: '',
+						transId: '',
 					}}
 				>
 					<Row align='middle' gutter={16}>
@@ -79,6 +84,15 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
+					{reasonId === 9 && (
+						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='transId' label={t('Label_DepositId')}>
+									<Input allowClear placeholder={t('Label_DepositId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
