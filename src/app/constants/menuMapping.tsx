@@ -127,6 +127,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: 32,
+		pathMode: 'Internal',
+		internalPath: 'Finance/ThirdPartyAdjustment',
+		internalFunctionKey: allowedRoles.FinanceThirdPartyAdjustment,
+		newAdminPath: '',
+	},
+	{
+		icon: null,
 		functionId: 33,
 		pathMode: 'Internal',
 		internalPath: 'Finance/BonusPayout',
@@ -189,6 +197,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalFunctionKey: allowedRoles.FinanceDepositTimeReport,
 		newAdminPath: '',
 	},
+
 	{
 		icon: null,
 		functionId: 35,
@@ -543,7 +552,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: 76,
 		internalFunctionKey: allowedRoles.MarketingVerificationRewardReport,
 		pathMode: 'Internal',
-		internalPath: 'Marketing/VerificationRewardReport',
+		internalPath: 'Marketing/VerificationReward',
 		newAdminPath: '',
 	},
 	{
