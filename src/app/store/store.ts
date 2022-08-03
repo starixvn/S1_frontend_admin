@@ -39,6 +39,7 @@ import { verificationManagementApi } from 'features/verificationManagement/api'
 import { turnoverPointReportApi } from 'features/turnoverPointReport/api'
 import { transferAccountManagementApi } from 'features/transferAccountManagement/api'
 import { snsManagementApi } from 'features/snsManagement/api'
+import { bonusExportApi } from 'features/bonusExport/api'
 
 export const store = configureStore({
 	reducer: {
@@ -83,6 +84,7 @@ export const store = configureStore({
 		[transferAccountManagementApi.reducerPath]:
 			transferAccountManagementApi.reducer,
 		[snsManagementApi.reducerPath]: snsManagementApi.reducer,
+		[bonusExportApi.reducerPath]: bonusExportApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -124,7 +126,8 @@ export const store = configureStore({
 			.concat(verificationManagementApi.middleware)
 			.concat(turnoverPointReportApi.middleware)
 			.concat(transferAccountManagementApi.middleware)
-			.concat(snsManagementApi.middleware),
+			.concat(snsManagementApi.middleware)
+			.concat(bonusExportApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -21,3 +21,9 @@ export interface IBankInfoSysData {
 }
 
 export type IBankInfoSysResponse = IAxiosResponse<IBankInfoSysData[]>
+
+export interface IGetCategoryData {
+	categoryId: number
+	categoryName: string
+}
+export type IGetCategoryResponse = IAxiosResponse<IGetCategoryData[]>
