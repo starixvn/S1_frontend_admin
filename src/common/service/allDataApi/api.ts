@@ -5,6 +5,7 @@ import { axiosBaseQuery } from '../axiosBaseQuery'
 import {
 	IBankInfoSysData,
 	IBankInfoSysResponse,
+	IGetCategoryResponse,
 	IVipLevelsResponse,
 } from './type'
 
@@ -35,6 +36,12 @@ export const allDataApi = createApi({
 				return newReturnResponse
 			},
 		}),
+		getCategory: builder.query<IGetCategoryResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpCategory',
+				method: 'POST',
+			}),
+		}),
 		getBankInfoSys: builder.query<IBankInfoSysResponse, null>({
 			query: () => ({
 				url: 'GetAllData/GetBankInfoSys',
@@ -53,4 +60,8 @@ export const selectBankInfoSysByCurrencyIds =
 		return { bankInfoSys: newBankInfoSys, isFetching }
 	}
 
-export const { useGetVipLevelQuery, useGetBankInfoSysQuery } = allDataApi
+export const {
+	useGetVipLevelQuery,
+	useGetBankInfoSysQuery,
+	useGetCategoryQuery,
+} = allDataApi

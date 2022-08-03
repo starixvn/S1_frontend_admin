@@ -805,4 +805,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.urlManagement.sub.snsManagement.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.reward_bonusExport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.reward_bonusExport.root,
+	},
 ]

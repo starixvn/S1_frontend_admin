@@ -315,6 +315,12 @@ const SnsManagement = lazy(
 			/* webpackChunkName: 'SnsManagement' */ 'features/snsManagement/SnsManagement'
 		)
 )
+const BonusExport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusExport' */ 'features/bonusExport/BonusExport'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -841,6 +847,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SnsManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.reward_bonusExport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.reward_bonusExport.functionId}
+					>
+						<BonusExport />
 					</AuthRequire>
 				),
 			},
