@@ -452,6 +452,10 @@ const paths = {
 						root: 'cms/urlManagement/snsManagement',
 						functionId: 123,
 					},
+					lineDepositChannel: {
+						root: 'cms/urlManagement/lineDepositChannel',
+						functionId: 67,
+					},
 				},
 			},
 		},

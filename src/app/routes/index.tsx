@@ -322,6 +322,13 @@ const BonusExport = lazy(
 		)
 )
 
+const LineDepositChannel = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LineDepositChannel' */ 'features/lineDepositChannel/LineDepositChannel'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -857,6 +864,18 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.reward_bonusExport.functionId}
 					>
 						<BonusExport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.lineDepositChannel.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.lineDepositChannel.functionId
+						}
+					>
+						<LineDepositChannel />
 					</AuthRequire>
 				),
 			},
