@@ -480,11 +480,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 67,
-		pathMode: 'Internal',
+		functionId: paths.cms.sub.urlManagement.sub.lineDepositChannel.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/LineChannel',
 		internalFunctionKey: allowedRoles.FinanceLineChannel,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.lineDepositChannel.root,
 	},
 	{
 		icon: null,
