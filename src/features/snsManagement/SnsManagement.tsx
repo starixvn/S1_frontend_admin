@@ -31,7 +31,7 @@ const SnsManagement: FC<{
 	const currencyId = Form.useWatch('currencyId', filterForm)
 
 	// 用來記錄當前 所選的語系給 setSort 使用
-	const [currentLang, setCurrentLang] = useState<string>('')
+	const [currentLang, setCurrentLang] = useState<string | undefined>(undefined)
 	// 當前所顯示的table 資料，因為setSort需要使用，所以寫在這
 	const [tableSource, setTableSource] = useState<ISNSData[]>([])
 	const [editingKey, setEditingKey] = useState<undefined | number>(undefined)
@@ -177,6 +177,7 @@ const SnsManagement: FC<{
 					snsManagementData={snsManagementData}
 					form={tableForm}
 					setCurrentLang={setCurrentLang}
+					currentLang={currentLang}
 				/>
 			</tableContext.Provider>
 

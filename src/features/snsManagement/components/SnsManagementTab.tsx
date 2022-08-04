@@ -9,7 +9,8 @@ interface ISnsManagementTabProps {
 	langCode: string[]
 	snsManagementData: {}
 	form: FormInstance
-	setCurrentLang: Dispatch<SetStateAction<string>>
+	setCurrentLang: Dispatch<SetStateAction<string | undefined>>
+	currentLang: string | undefined
 }
 
 const { TabPane } = Tabs
@@ -19,6 +20,7 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 	snsManagementData,
 	form,
 	setCurrentLang,
+	currentLang,
 }) => {
 	const { loading, disabled } = useContext(tableContext)
 	const getTableValues = (lang: string) => {
@@ -33,7 +35,7 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 
 	//  init lang
 	useEffect(() => {
-		if (!loading) {
+		if (!loading && !currentLang) {
 			setCurrentLang(head(langCode) ?? '')
 		}
 	}, [loading])
