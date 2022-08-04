@@ -304,7 +304,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.verificationRewardManagement.functionId,
 		pathMode: 'Internal',
-		internalPath: 'Marketing/VerificationManagement',
+		internalPath: 'Marketing/VerificationReward',
 		internalFunctionKey: allowedRoles.MarketingVerificationReward,
 		newAdminPath: paths.marketing.sub.verificationRewardManagement.root,
 	},
@@ -552,7 +552,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: 76,
 		internalFunctionKey: allowedRoles.MarketingVerificationRewardReport,
 		pathMode: 'Internal',
-		internalPath: 'Marketing/VerificationReward',
+		internalPath: 'Marketing/VerificationRewardReport',
 		newAdminPath: '',
 	},
 	{
