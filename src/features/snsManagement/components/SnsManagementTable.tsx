@@ -114,6 +114,31 @@ const SnsManagementTable: FC<ISnsManagementTableProps> = ({
 			editable: true,
 		},
 		{
+			title: t('Label_QRCode'),
+			key: 'linkType',
+			width: 60,
+			align: 'center' as 'center',
+			render: (record: ISNSData) => {
+				const editable = isEditing(record)
+				const { linkType } = record
+				return (
+					<Space align='center'>
+						{editable ? (
+							<Form.Item
+								name='linkType'
+								style={{ margin: 0 }}
+								valuePropName='checked'
+							>
+								<Switch disabled={!editable} />
+							</Form.Item>
+						) : (
+							<Switch checked={linkType} disabled />
+						)}
+					</Space>
+				)
+			},
+		},
+		{
 			title: t('Label_Main'),
 			key: 'mainPageStatus',
 			width: 60,
