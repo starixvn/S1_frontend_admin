@@ -13,6 +13,7 @@ export interface ISNSData {
 	contactPageStatus: boolean
 	footerStatus: boolean
 	appPageStatus: boolean
+	linkType: boolean
 	link: string
 	androidLink: string
 	iosLink: string
@@ -33,10 +34,11 @@ export interface ISetDataArgs {
 	id: number
 	channelName: string
 	title: string
-	mainPageStatus: number
-	contactPageStatus: number
-	footerStatus: number
-	appPageStatus: number
+	mainPageStatus: boolean
+	contactPageStatus: boolean
+	footerStatus: boolean
+	appPageStatus: boolean
+	linkType: boolean
 	link: string
 	androidLink: string
 	iosLink: string

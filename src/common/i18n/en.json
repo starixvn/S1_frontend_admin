@@ -356,5 +356,6 @@
 	"Label_EventName": "Event Name",
 	"Label_SelectEventType": "Select Event Type",
 	"Label_SiteName": "Site Name",
-	"Label_AddLineChannel" : "Add Line Channel"
+	"Label_AddLineChannel" : "Add Line Channel",
+	"Label_QRCode" : "QR Code"
 }

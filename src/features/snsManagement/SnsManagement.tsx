@@ -77,6 +77,7 @@ const SnsManagement: FC<{
 			contactPageStatus,
 			footerStatus,
 			appPageStatus,
+			linkType,
 			link,
 			iosLink = '',
 			androidLink,
@@ -93,6 +94,7 @@ const SnsManagement: FC<{
 				iosLink,
 				androidLink,
 				channelName,
+				linkType,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setEditingKey(undefined)
