@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { useAuth, useQueryParams } from 'common/hooks'
-import { includes, isEmpty } from 'lodash'
+import { includes } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
 import BalanceAdjustment from './balanceAdjustment/BalanceAdjustment'
 import ThirdPartyAdjustment from './thirdPartyAdjustment/ThirdPartyAdjustment'
@@ -34,21 +34,17 @@ const Page: FC<{
 	const filteredMethodTypes = getFilteredMethodType()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [methodType, setMethodType] = useState<MethodTypeEnum>(
-		filteredMethodTypes[0]?.value
+		queryParams?.methodType
+			? Number(queryParams?.methodType)
+			: filteredMethodTypes[0]?.value
 	)
 
 	const handleMethodTypeChange = (type: MethodTypeEnum) => {
 		setMethodType(type)
+		setQueryParams({
+			methodType: type,
+		})
 	}
-
-	useEffect(() => {
-		if (
-			methodType === MethodTypeEnum.thirdPartyWallet &&
-			!isEmpty(queryParams)
-		) {
-			setQueryParams({})
-		}
-	}, [methodType])
 
 	return (
 		<LayoutContent.Main>

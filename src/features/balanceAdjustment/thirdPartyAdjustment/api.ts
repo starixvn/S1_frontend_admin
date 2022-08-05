@@ -72,6 +72,7 @@ export const thirdPartyAdjustmentApi = createApi({
 			providesTags: ['POST'],
 		}),
 		// * 取得第三方調帳紀錄
+		// TODO: 目前沒用到，準備移出去做
 		getTpLog: builder.query<ITpLogResponse, IGetTpLogArgs>({
 			query: data => ({
 				url: 'TpFundsAdjustment/GetLog',

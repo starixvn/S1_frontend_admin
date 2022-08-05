@@ -10,6 +10,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	InputNumber,
 	Row,
 	Select,
 	Spin,
@@ -92,6 +93,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 					initialValues={{
 						withdrawalLimitOption: false,
 						transId: '',
+						amount: 0,
 					}}
 					style={{ marginTop: '10px' }}
 				>
@@ -179,9 +181,9 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 										},
 									]}
 								>
-									<Input
+									<InputNumber
+										style={{ width: '100%' }}
 										type='number'
-										allowClear
 										placeholder={t('Label_Amount')}
 									/>
 								</Form.Item>

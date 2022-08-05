@@ -1,5 +1,5 @@
 import { BaseQueryFn } from '@reduxjs/toolkit/query'
-import axios, { AxiosRequestConfig, AxiosError } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 export interface IAxiosResponse<T> {
 	data: T
@@ -10,6 +10,12 @@ export interface IAxiosResponse<T> {
 	message: string
 	rawErrorCode?: string
 	rawMessage?: string
+}
+
+export interface IAxiosError extends globalThis.Error {
+	status?: number
+	statusText?: string
+	errorCode?: number
 }
 
 export const axiosBaseQuery =
@@ -25,11 +31,15 @@ export const axiosBaseQuery =
 			responseType?: AxiosRequestConfig['responseType']
 		},
 		unknown,
-		unknown
+		{ status?: number; statusText?: string; errorCode?: number }
 	> =>
 	async ({ url, method, data, params, headers, responseType }) => {
 		try {
-			const result = await axios({
+			const {
+				data: axiosData,
+				status,
+				statusText,
+			} = await axios({
 				url: baseUrl + url,
 				method,
 				data,
@@ -38,18 +48,24 @@ export const axiosBaseQuery =
 				responseType,
 			})
 
-			if (result?.data?.errorCode && result?.data?.errorCode !== 0) {
-				throw new Error(result?.data?.message)
+			if (axiosData?.errorCode && axiosData?.errorCode !== 0) {
+				const error: IAxiosError = new Error()
+				error.message = axiosData?.message
+				error.status = status
+				error.statusText = statusText
+				error.errorCode = axiosData?.errorCode
+				throw error
 			}
 
-			return { data: result.data }
+			return { data: axiosData }
 		} catch (axiosError) {
-			const error = axiosError as AxiosError
+			const error = axiosError as IAxiosError
 
 			return {
 				error: {
-					status: error.response?.status,
-					message: error?.message || error.response?.statusText,
+					status: error.status,
+					message: error?.message,
+					errorCode: error?.errorCode,
 				},
 			}
 		}

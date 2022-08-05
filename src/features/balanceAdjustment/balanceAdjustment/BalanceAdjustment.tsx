@@ -3,26 +3,31 @@ import { isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { Collapse, Divider, Form, message } from 'antd'
-import { useQueryParams, useAuth } from 'common/hooks'
+import { useQueryParams, useAuth, useModal } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import {
 	useGetAdjustmentTypeQuery,
 	useGetReasonListQuery,
+	useGetAdjustmentLimitInfoQuery,
 	useLazyGetCustInfoWithBalanceQuery,
 	useSetBalanceAdjustmentMutation,
 	useSetBatchBalanceAdjustmentMutation,
+	useCheckPasswordMutation,
 } from 'features/balanceAdjustment/balanceAdjustment/api'
 import {
+	IAdjustmentLimitResponse,
 	ICustInfoWithBalanceResponse,
 	IGetAdjustmentTypeResponse,
 	IGetReasonListResponse,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
+import { IAxiosError } from 'common/service/axiosBaseQuery'
 import { BalanceAdjustmentFilter } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentFilter'
 import { BalanceAdjustmentForm } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
 import { MethodTypeEnum } from 'features/balanceAdjustment/constants'
 import { RcFile } from 'antd/es/upload/interface'
 import { IMethodType } from '../type'
+import ConfirmPasswordModal from './ConfirmPasswordModal'
 
 const BalanceAdjustment: FC<{
 	methodType: MethodTypeEnum
@@ -49,6 +54,8 @@ const BalanceAdjustment: FC<{
 		fileList: RcFile[]
 	}>()
 
+	const checkPasswordModal = useModal()
+
 	const {
 		data: { data: adjustmentTypeList } = {} as IGetAdjustmentTypeResponse,
 		isLoading: isGetAdjustmentTypeLoading,
@@ -67,6 +74,16 @@ const BalanceAdjustment: FC<{
 		},
 	] = useLazyGetCustInfoWithBalanceQuery()
 
+	const {
+		data: { data: adjustmentLimitInfo } = {} as IAdjustmentLimitResponse,
+	} = useGetAdjustmentLimitInfoQuery({
+		siteId,
+		currencyId: custInfoWithBalance?.currencyId,
+	})
+
+	const [checkPassword, { isLoading: isCheckPasswordLoading }] =
+		useCheckPasswordMutation()
+
 	const [setBalanceAdjustment, { isLoading: isSetBalanceAdjustmentLoading }] =
 		useSetBalanceAdjustmentMutation()
 
@@ -74,6 +91,7 @@ const BalanceAdjustment: FC<{
 		setBatchBalanceAdjustment,
 		{ isLoading: isSetBatchBalanceAdjustmentLoading },
 	] = useSetBatchBalanceAdjustmentMutation()
+
 	const handleGetBalance = async () => {
 		const { userName = '', sabaId = '' } = form.getFieldsValue()
 		try {
@@ -86,6 +104,7 @@ const BalanceAdjustment: FC<{
 			setQueryParams({
 				userName,
 				sabaId,
+				methodType,
 			})
 		} catch (error) {
 			message.error(
@@ -150,45 +169,79 @@ const BalanceAdjustment: FC<{
 				}
 			}
 		} else if (methodType === MethodTypeEnum.mainWallet) {
-			if (!custInfoWithBalance?.custId) return
-			const {
-				adjustmentType,
-				reasonId,
-				amount = 0,
-				withdrawalLimitOption,
-				withdrawalLimitAmount = 0,
-				memo = '',
-				transId,
-			} = await form.validateFields()
-			const { custId } = custInfoWithBalance
-			try {
-				const response = await setBalanceAdjustment({
-					custId,
-					adjustmentType,
-					amount,
-					// *  有可能是 null 所以要轉成 Number
-					withdrawalLimitAmount: Number(withdrawalLimitAmount),
-					withdrawalLimitOption: Number(withdrawalLimitOption),
-					reasonId,
-					transId,
-					memo,
-				}).unwrap()
+			if (!custInfoWithBalance?.custId || !adjustmentLimitInfo?.adjustmentMax)
+				return
 
-				form.setFieldsValue({
-					adjustmentType: null,
-					reasonId: null,
-					withdrawalLimitOption: false,
-					withdrawalLimitAmount: null,
-					amount: null,
-					fileList: [],
-					memo: '',
-				})
-				message.success(response?.message || t('System.Label_Success'))
-			} catch (error) {
+			const { amount = 0 } = await form.validateFields()
+
+			// * 如果調帳金額大於 adjustmentMax，需要做一次密碼確認
+			if ((amount as Number) > adjustmentLimitInfo?.adjustmentMax) {
+				checkPasswordModal.onOpen()
+			} else {
+				handleSetBalanceAdjustment()
+			}
+		}
+	}
+
+	const handleCheckPassword = async (password: string) => {
+		if (!siteId) return
+
+		try {
+			await checkPassword({ siteId, password }).unwrap()
+			await handleSetBalanceAdjustment()
+			checkPasswordModal.onCancel()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			if ((error as IAxiosError)?.errorCode === 1004) {
+				message.error(t('System.Label_WrongPassword'))
+			} else {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
 			}
+		}
+	}
+
+	const handleSetBalanceAdjustment = async () => {
+		const {
+			adjustmentType,
+			reasonId,
+			amount = 0,
+			withdrawalLimitOption,
+			withdrawalLimitAmount = 0,
+			memo = '',
+			transId,
+		} = await form.validateFields()
+		const { custId } = custInfoWithBalance
+
+		try {
+			const response = await setBalanceAdjustment({
+				custId,
+				adjustmentType,
+				amount,
+				// *  有可能是 null 所以要轉成 Number
+				withdrawalLimitAmount: Number(withdrawalLimitAmount),
+				withdrawalLimitOption: Number(withdrawalLimitOption),
+				reasonId,
+				transId,
+				memo,
+			}).unwrap()
+
+			form.setFieldsValue({
+				adjustmentType: null,
+				reasonId: null,
+				withdrawalLimitOption: false,
+				withdrawalLimitAmount: null,
+				amount: null,
+				fileList: [],
+				memo: '',
+			})
+
+			message.success(response?.message || t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
 		}
 	}
 
@@ -247,14 +300,23 @@ const BalanceAdjustment: FC<{
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
-				<AffixButtons.Saved
-					loading={
-						isSetBalanceAdjustmentLoading || isSetBatchBalanceAdjustmentLoading
-					}
-					disabled={!addPermission?.canUse}
-					onClick={handleSubmit}
-				/>
+				{custInfoWithBalance && (
+					<AffixButtons.Saved
+						loading={
+							isSetBalanceAdjustmentLoading ||
+							isSetBatchBalanceAdjustmentLoading
+						}
+						disabled={!addPermission?.canUse}
+						onClick={handleSubmit}
+					/>
+				)}
 			</AffixButtons>
+
+			<ConfirmPasswordModal
+				{...checkPasswordModal}
+				loading={isCheckPasswordLoading}
+				onFinish={handleCheckPassword}
+			/>
 		</>
 	)
 }
