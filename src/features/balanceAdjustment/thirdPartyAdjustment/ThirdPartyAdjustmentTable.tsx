@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { adjustmentTypeList, TP_LOG_STATUSES } from './constants'
 import { ITpLogData } from './type'
 
+// TODO: 目前沒用到，準備移出去做
 interface IThirdPartyAdjustmentTableProps {
 	tpLog: ITpLogData[]
 	loading: boolean

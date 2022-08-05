@@ -49,3 +49,25 @@ export interface ISubmitAdjustmentArgs {
 	reasonId: number | null
 	transId: string
 }
+
+export interface IAdjustmentLimitInfo {
+	adjustmentMax: number
+	currencyId: number
+	siteId: number
+	updateOperator: string
+	updateTime: string
+}
+
+export type IAdjustmentLimitResponse = IAxiosResponse<
+	IAdjustmentLimitInfo | undefined
+>
+
+export interface IGetAdjustmentLimitInfoArgs {
+	siteId?: number
+	currencyId?: number
+}
+
+export interface ICheckPasswordArgs {
+	siteId: number
+	password: string
+}

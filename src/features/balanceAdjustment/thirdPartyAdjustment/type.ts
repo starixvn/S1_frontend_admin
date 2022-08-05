@@ -17,14 +17,16 @@ export interface IGetCustInfoWithTpBalanceArgs {
 	sabaId: string
 }
 
+export interface ITpWalletData {
+	tpId: number
+	tpName: string
+	tpUserName: string
+	balance: number
+	walletType: number
+}
+
 export interface ICustInfoWithTpBalanceData {
-	tpWalletList: {
-		tpId: number
-		tpName: string
-		tpUserName: string
-		balance: number
-		walletType: number
-	}[]
+	tpWalletList: ITpWalletData[]
 	siteId: number
 	siteName: string
 	custId: number

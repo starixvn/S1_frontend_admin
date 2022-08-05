@@ -2,7 +2,10 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
+	IAdjustmentLimitResponse,
+	ICheckPasswordArgs,
 	ICustInfoWithBalanceResponse,
+	IGetAdjustmentLimitInfoArgs,
 	IGetAdjustmentTypeResponse,
 	IGetCustInfoWithBalanceArgs,
 	IGetReasonListResponse,
@@ -40,6 +43,18 @@ export const balanceAdjustmentApi = createApi({
 			}),
 			providesTags: ['POST'],
 		}),
+		// * 取得調整限額資訊
+		getAdjustmentLimitInfo: builder.query<
+			IAdjustmentLimitResponse,
+			IGetAdjustmentLimitInfoArgs
+		>({
+			query: data => ({
+				url: 'BalanceAdjustment/GetAdjustmentLimitInfo',
+				method: 'POST',
+				data,
+			}),
+		}),
+
 		setBalanceAdjustment: builder.mutation<
 			IAxiosResponse<null>,
 			ISubmitAdjustmentArgs
@@ -62,6 +77,14 @@ export const balanceAdjustmentApi = createApi({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		// * 確認密碼，如果調漲金額大於 adjustmentMax 就需再確認一次密碼
+		checkPassword: builder.mutation<IAxiosResponse<void>, ICheckPasswordArgs>({
+			query: data => ({
+				url: 'BalanceAdjustment/CheckPassWord',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -70,5 +93,7 @@ export const {
 	useGetReasonListQuery,
 	useSetBalanceAdjustmentMutation,
 	useLazyGetCustInfoWithBalanceQuery,
+	useGetAdjustmentLimitInfoQuery,
 	useSetBatchBalanceAdjustmentMutation,
+	useCheckPasswordMutation,
 } = balanceAdjustmentApi
