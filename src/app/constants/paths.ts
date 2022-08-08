@@ -318,7 +318,7 @@ const paths = {
 		root: 'bankTransfer',
 		sub: {
 			transferAccountManagement: {
-				root: 'BankTransfer/TransferAccountManagement',
+				root: 'bankTransfer/transferAccountManagement',
 				functionId: 86,
 			},
 		},

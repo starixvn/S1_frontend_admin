@@ -208,6 +208,7 @@ const TransferAccountManagement: FC<{
 				/>
 				<AffixButtons.Create
 					onClick={() =>
+						// * 後端表示新增時 id帶0
 						navigate(
 							`/${NEW_SITE_PREFIX_URL}/${
 								paths.bankTransfer.sub.transferAccountManagement.root
