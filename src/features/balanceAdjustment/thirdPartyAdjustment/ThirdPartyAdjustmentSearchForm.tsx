@@ -3,7 +3,6 @@ import { Button, Col, Form, FormInstance, Input, Row, Select } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import { ITpBySiteData } from './type'
 import { MethodTypeEnum } from '../constants'
 import { IMethodType } from '../type'
 
@@ -12,17 +11,10 @@ const { Option } = Select
 interface IThirdPartyAdjustmentSearchFormProps {
 	form: FormInstance
 	loading: boolean
-	tpListBySiteId: ITpBySiteData[]
 	methodType: MethodTypeEnum
 	filteredMethodTypes: IMethodType[]
 	onMethodTypeChange: (type: MethodTypeEnum) => void
-	onSearch: ({
-		current,
-		pageSize,
-	}: {
-		current?: number | undefined
-		pageSize?: number | undefined
-	}) => void
+	onSearch: () => void
 }
 
 const ThirdPartyAdjustmentSearchForm: FC<
@@ -30,7 +22,6 @@ const ThirdPartyAdjustmentSearchForm: FC<
 > = ({
 	form,
 	loading,
-	tpListBySiteId,
 	methodType,
 	filteredMethodTypes,
 	onMethodTypeChange,
@@ -38,9 +29,9 @@ const ThirdPartyAdjustmentSearchForm: FC<
 }) => {
 	const { t } = useTranslation()
 	const userName = Form.useWatch('userName', form)
-	const userTpId = Form.useWatch('userTpId', form)
+	const sabaId = Form.useWatch('sabaId', form)
 
-	const isButtonAble = userName || userTpId
+	const isButtonAble = userName || sabaId
 
 	return (
 		<LayoutContent.Card>
@@ -49,11 +40,9 @@ const ThirdPartyAdjustmentSearchForm: FC<
 				layout='vertical'
 				size='middle'
 				initialValues={{
-					tpId: undefined,
 					userName: '',
-					userTpId: '',
 				}}
-				onFinish={() => onSearch({})}
+				onFinish={() => onSearch()}
 			>
 				<Row align='top' gutter={16}>
 					<Col lg={6} md={24} xs={24}>
@@ -69,26 +58,14 @@ const ThirdPartyAdjustmentSearchForm: FC<
 					</Col>
 
 					<Col lg={6} md={12} xs={12}>
-						<Form.Item name='tpId' label={t('Label_3RDParty')}>
-							<Select placeholder='select'>
-								{tpListBySiteId?.map(item => (
-									<Option key={item.tpId} value={item.tpId}>
-										{item.tpName}
-									</Option>
-								))}
-							</Select>
-						</Form.Item>
-					</Col>
-
-					<Col lg={6} md={12} xs={12}>
 						<Form.Item name='userName' label={t('Label_MemberId')}>
 							<Input allowClear placeholder={t('Label_MemberId')} />
 						</Form.Item>
 					</Col>
 
 					<Col lg={6} md={12} xs={12}>
-						<Form.Item name='userTpId' label={t('Label_User3rdID')}>
-							<Input allowClear placeholder={t('Label_User3rdID')} />
+						<Form.Item name='sabaId' label={t('Label_SabaId')}>
+							<Input allowClear placeholder={t('Label_SabaId')} />
 						</Form.Item>
 					</Col>
 				</Row>

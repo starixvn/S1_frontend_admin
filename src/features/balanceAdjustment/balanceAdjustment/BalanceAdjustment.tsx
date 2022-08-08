@@ -3,26 +3,31 @@ import { isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { Collapse, Divider, Form, message } from 'antd'
-import { useQueryParams, useAuth } from 'common/hooks'
+import { useQueryParams, useAuth, useModal } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import {
 	useGetAdjustmentTypeQuery,
 	useGetReasonListQuery,
-	useLazyGetCustDetailQuery,
+	useGetAdjustmentLimitInfoQuery,
+	useLazyGetCustInfoWithBalanceQuery,
 	useSetBalanceAdjustmentMutation,
 	useSetBatchBalanceAdjustmentMutation,
+	useCheckPasswordMutation,
 } from 'features/balanceAdjustment/balanceAdjustment/api'
 import {
+	IAdjustmentLimitResponse,
+	ICustInfoWithBalanceResponse,
 	IGetAdjustmentTypeResponse,
-	IGetCustDetailResponse,
 	IGetReasonListResponse,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
+import { IAxiosError } from 'common/service/axiosBaseQuery'
 import { BalanceAdjustmentFilter } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentFilter'
 import { BalanceAdjustmentForm } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
 import { MethodTypeEnum } from 'features/balanceAdjustment/constants'
 import { RcFile } from 'antd/es/upload/interface'
 import { IMethodType } from '../type'
+import ConfirmPasswordModal from './ConfirmPasswordModal'
 
 const BalanceAdjustment: FC<{
 	methodType: MethodTypeEnum
@@ -34,7 +39,22 @@ const BalanceAdjustment: FC<{
 		useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<{
+		//  * Filter Form
+		userName: string
+		sabaId: string
+		// * Submit Form
+		adjustmentType: number | null
+		reasonId: number | null
+		transId: string
+		amount: number | null
+		withdrawalLimitOption: boolean
+		withdrawalLimitAmount: number | null
+		memo: string
+		fileList: RcFile[]
+	}>()
+
+	const checkPasswordModal = useModal()
 
 	const {
 		data: { data: adjustmentTypeList } = {} as IGetAdjustmentTypeResponse,
@@ -47,12 +67,22 @@ const BalanceAdjustment: FC<{
 	} = useGetReasonListQuery(null)
 
 	const [
-		getCustDetail,
+		getCustInfoWithBalance,
 		{
-			data: { data: custDetailData } = {} as IGetCustDetailResponse,
-			isFetching: isGetCustDetailDataLoading,
+			data: { data: custInfoWithBalance } = {} as ICustInfoWithBalanceResponse,
+			isFetching: isGetCustInfoWithBalanceLoading,
 		},
-	] = useLazyGetCustDetailQuery()
+	] = useLazyGetCustInfoWithBalanceQuery()
+
+	const {
+		data: { data: adjustmentLimitInfo } = {} as IAdjustmentLimitResponse,
+	} = useGetAdjustmentLimitInfoQuery({
+		siteId,
+		currencyId: custInfoWithBalance?.currencyId,
+	})
+
+	const [checkPassword, { isLoading: isCheckPasswordLoading }] =
+		useCheckPasswordMutation()
 
 	const [setBalanceAdjustment, { isLoading: isSetBalanceAdjustmentLoading }] =
 		useSetBalanceAdjustmentMutation()
@@ -61,10 +91,11 @@ const BalanceAdjustment: FC<{
 		setBatchBalanceAdjustment,
 		{ isLoading: isSetBatchBalanceAdjustmentLoading },
 	] = useSetBatchBalanceAdjustmentMutation()
+
 	const handleGetBalance = async () => {
 		const { userName = '', sabaId = '' } = form.getFieldsValue()
 		try {
-			await getCustDetail({
+			await getCustInfoWithBalance({
 				siteId,
 				userName,
 				sabaId,
@@ -73,6 +104,7 @@ const BalanceAdjustment: FC<{
 			setQueryParams({
 				userName,
 				sabaId,
+				methodType,
 			})
 		} catch (error) {
 			message.error(
@@ -95,15 +127,19 @@ const BalanceAdjustment: FC<{
 				message.error(t('Label_Required', { key: t('Label_File') }))
 			} else {
 				const formData = new FormData()
-				formData.append('excelUpload', fileList[0] as RcFile)
 				formData.append('siteId', siteId.toString())
-				formData.append('option', adjustmentType.toString())
-				formData.append('category', reasonId.toString())
-				formData.append('withdrawal', Number(withdrawalLimitAmount).toString())
+				formData.append('excelUpload', fileList[0] as RcFile)
+				formData.append('adjustmentType', String(adjustmentType ?? ''))
+				formData.append(
+					'withdrawalLimitAmount',
+					Number(withdrawalLimitAmount).toString()
+				)
 				formData.append(
 					'withdrawalLimitOption',
 					Number(withdrawalLimitOption).toString()
 				)
+				formData.append('reasonId', String(reasonId ?? ''))
+
 				try {
 					const response = await setBatchBalanceAdjustment(formData).unwrap()
 					// 這隻的 api 的 response 是陣列 可能有成功或錯誤的訊息
@@ -133,41 +169,79 @@ const BalanceAdjustment: FC<{
 				}
 			}
 		} else if (methodType === MethodTypeEnum.mainWallet) {
-			if (!custDetailData?.custId) return
-			const {
-				adjustmentType,
-				reasonId,
-				amount = 0,
-				withdrawalLimitOption,
-				withdrawalLimitAmount = 0,
-				memo = '',
-			} = await form.validateFields()
-			try {
-				const response = await setBalanceAdjustment({
-					adjustmentType,
-					reasonId,
-					amount,
-					memo,
-					withdrawalLimitOption: Number(withdrawalLimitOption),
-					// 有可能是 null 所以要轉成 Number
-					withdrawalLimitAmount: Number(withdrawalLimitAmount),
-					custId: custDetailData?.custId,
-				}).unwrap()
-				form.setFieldsValue({
-					adjustmentType: null,
-					reasonId: null,
-					withdrawalLimitOption: false,
-					withdrawalLimitAmount: null,
-					amount: null,
-					fileList: [],
-					memo: '',
-				})
-				message.success(response?.message || t('System.Label_Success'))
-			} catch (error) {
+			if (!custInfoWithBalance?.custId || !adjustmentLimitInfo?.adjustmentMax)
+				return
+
+			const { amount = 0 } = await form.validateFields()
+
+			// * 如果調帳金額大於 adjustmentMax，需要做一次密碼確認
+			if ((amount as Number) > adjustmentLimitInfo?.adjustmentMax) {
+				checkPasswordModal.onOpen()
+			} else {
+				handleSetBalanceAdjustment()
+			}
+		}
+	}
+
+	const handleCheckPassword = async (password: string) => {
+		if (!siteId) return
+
+		try {
+			await checkPassword({ siteId, password }).unwrap()
+			await handleSetBalanceAdjustment()
+			checkPasswordModal.onCancel()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			if ((error as IAxiosError)?.errorCode === 1004) {
+				message.error(t('System.Label_WrongPassword'))
+			} else {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
 			}
+		}
+	}
+
+	const handleSetBalanceAdjustment = async () => {
+		const {
+			adjustmentType,
+			reasonId,
+			amount = 0,
+			withdrawalLimitOption,
+			withdrawalLimitAmount = 0,
+			memo = '',
+			transId,
+		} = await form.validateFields()
+		const { custId } = custInfoWithBalance
+
+		try {
+			const response = await setBalanceAdjustment({
+				custId,
+				adjustmentType,
+				amount,
+				// *  有可能是 null 所以要轉成 Number
+				withdrawalLimitAmount: Number(withdrawalLimitAmount),
+				withdrawalLimitOption: Number(withdrawalLimitOption),
+				reasonId,
+				transId,
+				memo,
+			}).unwrap()
+
+			form.setFieldsValue({
+				adjustmentType: null,
+				reasonId: null,
+				withdrawalLimitOption: false,
+				withdrawalLimitAmount: null,
+				amount: null,
+				fileList: [],
+				memo: '',
+			})
+
+			message.success(response?.message || t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
 		}
 	}
 
@@ -192,7 +266,7 @@ const BalanceAdjustment: FC<{
 	const loading =
 		isGetAdjustmentTypeLoading ||
 		isGetReasonListLoading ||
-		isGetCustDetailDataLoading
+		isGetCustInfoWithBalanceLoading
 
 	return (
 		<>
@@ -207,7 +281,7 @@ const BalanceAdjustment: FC<{
 						onGetBalance={handleGetBalance}
 						addBatchPermission={addBatchPermission}
 					/>
-					{(custDetailData ||
+					{(custInfoWithBalance ||
 						methodType === MethodTypeEnum.mainWalletBatch) && (
 						<>
 							<Divider />
@@ -215,7 +289,7 @@ const BalanceAdjustment: FC<{
 								loading={loading}
 								adjustmentTypeList={adjustmentTypeList}
 								reasonList={reasonList}
-								custDetailData={custDetailData}
+								custInfoWithBalance={custInfoWithBalance}
 								form={form}
 								methodType={methodType}
 							/>
@@ -226,14 +300,23 @@ const BalanceAdjustment: FC<{
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
-				<AffixButtons.Saved
-					loading={
-						isSetBalanceAdjustmentLoading || isSetBatchBalanceAdjustmentLoading
-					}
-					disabled={!addPermission?.canUse}
-					onClick={handleSubmit}
-				/>
+				{custInfoWithBalance && (
+					<AffixButtons.Saved
+						loading={
+							isSetBalanceAdjustmentLoading ||
+							isSetBatchBalanceAdjustmentLoading
+						}
+						disabled={!addPermission?.canUse}
+						onClick={handleSubmit}
+					/>
+				)}
 			</AffixButtons>
+
+			<ConfirmPasswordModal
+				{...checkPasswordModal}
+				loading={isCheckPasswordLoading}
+				onFinish={handleCheckPassword}
+			/>
 		</>
 	)
 }

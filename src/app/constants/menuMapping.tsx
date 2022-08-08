@@ -303,7 +303,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.verificationRewardManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VerificationReward',
 		internalFunctionKey: allowedRoles.MarketingVerificationReward,
 		newAdminPath: paths.marketing.sub.verificationRewardManagement.root,
@@ -480,11 +480,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 67,
-		pathMode: 'Internal',
+		functionId: paths.cms.sub.urlManagement.sub.lineDepositChannel.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/LineChannel',
 		internalFunctionKey: allowedRoles.FinanceLineChannel,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.lineDepositChannel.root,
 	},
 	{
 		icon: null,
@@ -632,11 +632,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 86,
+		functionId: paths.bankTransfer.sub.transferAccountManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferAccountManage,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/TransferAccountManage',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.transferAccountManagement.root,
 	},
 	{
 		icon: null,
@@ -807,5 +807,17 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 			paths.rewardProgram.sub.report.sub.turnoverPointReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.rewardProgram.sub.report.sub.turnoverPointReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.urlManagement.sub.snsManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.urlManagement.sub.snsManagement.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.reward_bonusExport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.reward_bonusExport.root,
 	},
 ]

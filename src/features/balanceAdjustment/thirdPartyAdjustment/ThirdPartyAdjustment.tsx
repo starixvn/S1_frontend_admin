@@ -1,25 +1,26 @@
 import { FC, useEffect } from 'react'
-import { head } from 'lodash'
-import { Collapse, Divider, Form, message, TablePaginationConfig } from 'antd'
+import { find, head } from 'lodash'
+import { Collapse, Divider, Form, message } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { PAGINATION, useAuth, usePagination } from 'common/hooks'
+import { useAuth, useQueryParams } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
-import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetAdjustmentReasonListQuery,
 	useGetTpListBySiteIdQuery,
-	useLazyGetTpCustInfoQuery,
-	useLazyGetTpLogQuery,
+	useLazyGetCustInfoWithTpBalanceQuery,
 	useSetTpFundsAdjustmentMutation,
 } from './api'
 import ThirdPartyAdjustmentSearchForm from './ThirdPartyAdjustmentSearchForm'
-import { ITpCustInfoResponse } from './type'
 import ThirdPartyAdjustmentInfoForm from './ThirdPartyAdjustmentInfoForm'
-import ThirdPartyAdjustmentTable from './ThirdPartyAdjustmentTable'
 import { MethodTypeEnum } from '../constants'
 import { IMethodType } from '../type'
+import {
+	ICustInfoWithTpBalanceResponse,
+	ISetTpFundsAdjustmentArgs,
+} from './type'
+import { adjustmentTypeList } from './constants'
 
 const ThirdPartyAdjustment: FC<{
 	methodType: MethodTypeEnum
@@ -29,19 +30,19 @@ const ThirdPartyAdjustment: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { add3RDPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { timeZoneUtcOffset } = useTimeZone()
-
+	const [queryParams, setQueryParams] = useQueryParams()
 	const [searchForm] = Form.useForm<{
-		tpId: number
 		userName: string
-		userTpId: string
+		sabaId: string
 	}>()
 
 	const [infoForm] = Form.useForm<{
+		tpId: number
 		adjustmentType: number
 		reasonId: number
 		amount: number
 		memo: string
+		transId: string
 	}>()
 
 	const {
@@ -59,58 +60,35 @@ const ThirdPartyAdjustment: FC<{
 	} = useGetAdjustmentReasonListQuery(null)
 
 	const [
-		getTpCustInfo,
+		getCustInfoWithTpBalance,
 		{
-			data: { data: tpCustInfo } = {} as ITpCustInfoResponse,
-			isFetching: isGetTpCustInfoFetching,
+			data: {
+				data: custInfoWithTpBalance,
+			} = {} as ICustInfoWithTpBalanceResponse,
+			isFetching: isFetCustInfoWithTpBalanceFetching,
 		},
-	] = useLazyGetTpCustInfoQuery()
-
-	const [
-		getTpLog,
-		{
-			data: { data: tpLog = [], rowCount: tpLogTotal = 0 } = {},
-			isFetching: isGetTpLogFetching,
-			isSuccess: isGetTpLogSuccess,
-		},
-	] = useLazyGetTpLogQuery()
-
-	const [pagination, setPagination] = usePagination({
-		paginationTotal: tpLogTotal,
-	})
+	] = useLazyGetCustInfoWithTpBalanceQuery()
 
 	const [setTpFundsAdjustment, { isLoading: isSetAdjustmentBalanceLoading }] =
 		useSetTpFundsAdjustmentMutation()
 
-	const handleSearch = async ({
-		current = PAGINATION.defaultCurrent,
-		pageSize = PAGINATION.defaultPageSize,
-	}: {
-		current?: number | undefined
-		pageSize?: number | undefined
-	}) => {
+	const handleSearch = async () => {
 		if (!siteId) return
-		const { tpId, userName, userTpId } = await searchForm.validateFields()
+		const { userName, sabaId } = await searchForm.validateFields()
 
 		try {
-			// * 取得指定第三方客戶資料
-			const { data: { custId } = {} } = await getTpCustInfo({
+			// * 取得客戶資料、主錢包餘額及三方錢包餘額
+			await getCustInfoWithTpBalance({
 				siteId,
-				tpId,
 				userName,
-				userTpId,
+				sabaId,
 			}).unwrap()
 
-			// * 取得第三方調帳紀錄
-			await getTpLog({
-				siteId,
-				tpId,
+			setQueryParams({
 				userName,
-				custId: custId as number,
-				pageSize,
-				pageNumber: current,
-			}).unwrap()
-			setPagination(prev => ({ ...prev, current, pageSize }))
+				sabaId,
+				methodType,
+			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -120,23 +98,36 @@ const ThirdPartyAdjustment: FC<{
 
 	// * 送出調整餘額資訊
 	const handleSetTpFundsAdjustment = async () => {
-		const { tpId, userName, userTpId } = await searchForm.validateFields()
-		const { adjustmentType, reasonId, amount, memo } =
+		const { userName } = await searchForm.validateFields()
+		const { currencyId, custId } = custInfoWithTpBalance
+		const { tpId, adjustmentType, reasonId, amount, memo, transId } =
 			await infoForm.validateFields()
+		const { tpName = '' } = find(tpListBySiteId, { tpId }) ?? {}
 
-		const args = {
+		const args: ISetTpFundsAdjustmentArgs = {
 			siteId,
+			currencyId,
+			custId,
 			tpId,
+			tpName,
 			userName,
-			userTpId,
-			opt: adjustmentType,
-			category: reasonId,
+			option: adjustmentType,
 			amount,
 			memo,
+			reasonId,
+			transId,
 		}
 
 		try {
 			await setTpFundsAdjustment(args).unwrap()
+			infoForm.setFieldsValue({
+				tpId: undefined,
+				adjustmentType: head(adjustmentTypeList)?.id,
+				reasonId: undefined,
+				amount: undefined,
+				memo: '',
+				transId: '',
+			})
 			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
@@ -145,18 +136,10 @@ const ThirdPartyAdjustment: FC<{
 		}
 	}
 
-	const handleTableChange = async (newPagination: TablePaginationConfig) => {
-		const { current, pageSize } = newPagination
-		handleSearch({
-			current,
-			pageSize,
-		})
-	}
-
 	// * 等待 fetch 完成並初始 searchForm 搜尋條件
 	useEffect(() => {
 		if (!isGetTpListBySiteIdLoading && tpListBySiteId.length > 0) {
-			searchForm.setFieldsValue({
+			infoForm.setFieldsValue({
 				tpId: head(tpListBySiteId)?.tpId,
 			})
 		}
@@ -171,8 +154,20 @@ const ThirdPartyAdjustment: FC<{
 		}
 	}, [isGetAdjustmentReasonListFetching])
 
+	useEffect(() => {
+		const { userName = '', sabaId = '' } = queryParams
+
+		if (userName || sabaId) {
+			searchForm.setFieldsValue({
+				userName,
+				sabaId,
+			})
+			handleSearch()
+		}
+	}, [])
+
 	const loading =
-		isGetTpListBySiteIdFetching || isGetTpCustInfoFetching || isGetTpLogFetching
+		isGetTpListBySiteIdFetching || isFetCustInfoWithTpBalanceFetching
 
 	return (
 		<>
@@ -181,45 +176,38 @@ const ThirdPartyAdjustment: FC<{
 					<ThirdPartyAdjustmentSearchForm
 						form={searchForm}
 						loading={loading}
-						tpListBySiteId={tpListBySiteId}
 						methodType={methodType}
 						filteredMethodTypes={filteredMethodTypes}
 						onMethodTypeChange={onMethodTypeChange}
 						onSearch={handleSearch}
 					/>
 
-					{tpCustInfo && (
+					{custInfoWithTpBalance && (
 						<>
 							<Divider />
 							<ThirdPartyAdjustmentInfoForm
 								form={infoForm}
 								loading={loading}
-								balance={tpCustInfo?.balance ?? 0}
+								balance={custInfoWithTpBalance?.balance ?? 0}
+								tpWalletList={custInfoWithTpBalance?.tpWalletList ?? []}
 								adjustmentReasonList={adjustmentReasonList}
+								tpListBySiteId={tpListBySiteId}
 							/>
 						</>
 					)}
 				</Collapse.Panel>
 			</Collapse>
 
-			{isGetTpLogSuccess && (
-				<ThirdPartyAdjustmentTable
-					tpLog={tpLog}
-					loading={loading}
-					pagination={pagination}
-					timeZoneUtcOffset={timeZoneUtcOffset}
-					onTableChange={handleTableChange}
-				/>
-			)}
-
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 
-				<AffixButtons.Saved
-					disabled={!add3RDPermission?.canUse}
-					loading={isSetAdjustmentBalanceLoading}
-					onClick={handleSetTpFundsAdjustment}
-				/>
+				{custInfoWithTpBalance && (
+					<AffixButtons.Saved
+						disabled={!add3RDPermission?.canUse}
+						loading={isSetAdjustmentBalanceLoading}
+						onClick={handleSetTpFundsAdjustment}
+					/>
+				)}
 			</AffixButtons>
 		</>
 	)

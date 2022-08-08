@@ -277,6 +277,10 @@ const paths = {
 				root: 'report/worldCupMemberReport',
 				functionId: 115,
 			},
+			reward_bonusExport: {
+				root: 'report/rewardBonusExport',
+				functionId: 124,
+			},
 		},
 	},
 	member: {
@@ -298,6 +302,15 @@ const paths = {
 			blockIp: {
 				root: 'Risk/BlockIp',
 				functionId: 71,
+			},
+		},
+	},
+	bankTransfer: {
+		root: 'bankTransfer',
+		sub: {
+			transferAccountManagement: {
+				root: 'BankTransfer/TransferAccountManagement',
+				functionId: 86,
 			},
 		},
 	},
@@ -420,6 +433,7 @@ const paths = {
 			},
 		},
 	},
+
 	cms: {
 		root: 'cms',
 		sub: {
@@ -430,6 +444,19 @@ const paths = {
 			siteMaintenance: {
 				root: 'cms/siteMaintenance',
 				functionId: 117,
+			},
+			urlManagement: {
+				root: 'cms/urlManagement',
+				sub: {
+					snsManagement: {
+						root: 'cms/urlManagement/snsManagement',
+						functionId: 123,
+					},
+					lineDepositChannel: {
+						root: 'cms/urlManagement/lineDepositChannel',
+						functionId: 67,
+					},
+				},
 			},
 		},
 	},

@@ -295,6 +295,40 @@ const TurnoverPointReport = lazy(
 		)
 )
 
+const TransferAccountManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TransferAccountManagement' */ 'features/transferAccountManagement/TransferAccountManagement'
+		)
+)
+
+const UpdateTransferAccountManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UpdateTransferAccountManagement' */ 'features/transferAccountManagement/UpdateTransferAccountManagement'
+		)
+)
+
+const SnsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SnsManagement' */ 'features/snsManagement/SnsManagement'
+		)
+)
+const BonusExport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusExport' */ 'features/bonusExport/BonusExport'
+		)
+)
+
+const LineDepositChannel = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LineDepositChannel' */ 'features/lineDepositChannel/LineDepositChannel'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -784,6 +818,64 @@ const routes: RouteObject[] = [
 						}
 					>
 						<TurnoverPointReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferAccountManagement.functionId
+						}
+					>
+						<TransferAccountManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}/Update/:editId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferAccountManagement.functionId
+						}
+					>
+						<UpdateTransferAccountManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.snsManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.snsManagement.functionId
+						}
+					>
+						<SnsManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.reward_bonusExport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.reward_bonusExport.functionId}
+					>
+						<BonusExport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.lineDepositChannel.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.lineDepositChannel.functionId
+						}
+					>
+						<LineDepositChannel />
 					</AuthRequire>
 				),
 			},

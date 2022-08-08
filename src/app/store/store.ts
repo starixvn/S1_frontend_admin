@@ -1,6 +1,8 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
 import { baseDataApi } from 'common/service/baseDataApi'
+import { allDataApi } from 'common/service/allDataApi'
+import { enumApi } from 'common/service/enumApi'
 import { homeApi } from 'common/service/homeApi/api'
 import { permissionApi } from 'common/service/permissionApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
@@ -35,6 +37,10 @@ import { balanceAdjustmentApi } from 'features/balanceAdjustment/balanceAdjustme
 import { eWalletSettingApi } from 'features/eWalletSetting/api'
 import { verificationManagementApi } from 'features/verificationManagement/api'
 import { turnoverPointReportApi } from 'features/turnoverPointReport/api'
+import { transferAccountManagementApi } from 'features/transferAccountManagement/api'
+import { snsManagementApi } from 'features/snsManagement/api'
+import { bonusExportApi } from 'features/bonusExport/api'
+import { lineDepositChannelApi } from 'features/lineDepositChannel/api'
 
 export const store = configureStore({
 	reducer: {
@@ -42,8 +48,10 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
+		[enumApi.reducerPath]: enumApi.reducer,
 		[homeApi.reducerPath]: homeApi.reducer,
 		[baseDataApi.reducerPath]: baseDataApi.reducer,
+		[allDataApi.reducerPath]: allDataApi.reducer,
 		[permissionApi.reducerPath]: permissionApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
@@ -74,13 +82,20 @@ export const store = configureStore({
 		[thirdPartyAdjustmentApi.reducerPath]: thirdPartyAdjustmentApi.reducer,
 		[verificationManagementApi.reducerPath]: verificationManagementApi.reducer,
 		[turnoverPointReportApi.reducerPath]: turnoverPointReportApi.reducer,
+		[transferAccountManagementApi.reducerPath]:
+			transferAccountManagementApi.reducer,
+		[snsManagementApi.reducerPath]: snsManagementApi.reducer,
+		[bonusExportApi.reducerPath]: bonusExportApi.reducer,
+		[lineDepositChannelApi.reducerPath]: lineDepositChannelApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
 			serializableCheck: false,
 		})
+			.concat(enumApi.middleware)
 			.concat(homeApi.middleware)
 			.concat(baseDataApi.middleware)
+			.concat(allDataApi.middleware)
 			.concat(permissionApi.middleware)
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
@@ -111,7 +126,11 @@ export const store = configureStore({
 			.concat(balanceAdjustmentApi.middleware)
 			.concat(thirdPartyAdjustmentApi.middleware)
 			.concat(verificationManagementApi.middleware)
-			.concat(turnoverPointReportApi.middleware),
+			.concat(turnoverPointReportApi.middleware)
+			.concat(transferAccountManagementApi.middleware)
+			.concat(snsManagementApi.middleware)
+			.concat(bonusExportApi.middleware)
+			.concat(lineDepositChannelApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch
