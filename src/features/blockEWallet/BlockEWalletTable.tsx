@@ -201,7 +201,6 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 	return (
 		<LayoutContent.Card>
 			<Table
-				rowKey={record => record.custId}
 				loading={loading}
 				columns={columns}
 				dataSource={blockEWalletAccounts}
