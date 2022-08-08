@@ -820,4 +820,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.reward_bonusExport.root,
 	},
+	{
+		icon: null,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission
+				.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission.root,
+	},
 ]

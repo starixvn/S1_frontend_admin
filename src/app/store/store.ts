@@ -41,6 +41,7 @@ import { transferAccountManagementApi } from 'features/transferAccountManagement
 import { snsManagementApi } from 'features/snsManagement/api'
 import { bonusExportApi } from 'features/bonusExport/api'
 import { lineDepositChannelApi } from 'features/lineDepositChannel/api'
+import { withdrawalSubmissionApi } from 'features/withdrawalSubmission/api'
 
 export const store = configureStore({
 	reducer: {
@@ -87,6 +88,7 @@ export const store = configureStore({
 		[snsManagementApi.reducerPath]: snsManagementApi.reducer,
 		[bonusExportApi.reducerPath]: bonusExportApi.reducer,
 		[lineDepositChannelApi.reducerPath]: lineDepositChannelApi.reducer,
+		[withdrawalSubmissionApi.reducerPath]: withdrawalSubmissionApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -130,7 +132,8 @@ export const store = configureStore({
 			.concat(transferAccountManagementApi.middleware)
 			.concat(snsManagementApi.middleware)
 			.concat(bonusExportApi.middleware)
-			.concat(lineDepositChannelApi.middleware),
+			.concat(lineDepositChannelApi.middleware)
+			.concat(withdrawalSubmissionApi.middleware),
 })
 
 export type AppDispatch = typeof store.dispatch

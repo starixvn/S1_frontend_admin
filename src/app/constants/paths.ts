@@ -175,6 +175,15 @@ const paths = {
 					},
 				},
 			},
+			depositWithdrawalSector: {
+				root: 'finance/depositWithdrawalSector',
+				sub: {
+					withdrawalSubmission: {
+						root: 'finance/depositWithdrawalSector/withdrawalSubmission',
+						functionId: 125,
+					},
+				},
+			},
 		},
 	},
 	marketing: {

@@ -329,6 +329,13 @@ const LineDepositChannel = lazy(
 		)
 )
 
+const WithdrawalSubmission = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -876,6 +883,19 @@ const routes: RouteObject[] = [
 						}
 					>
 						<LineDepositChannel />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission
+								.functionId
+						}
+					>
+						<WithdrawalSubmission />
 					</AuthRequire>
 				),
 			},
