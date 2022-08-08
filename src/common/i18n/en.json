@@ -356,7 +356,14 @@
 	"Label_EventName": "Event Name",
 	"Label_SelectEventType": "Select Event Type",
 	"Label_SiteName": "Site Name",
-	"Label_AddLineChannel": "Add Line Channel",
 	"Label_QRCode": "QR Code",
-	"Label_ConfirmPassword": "Confirm Password"
+	"Label_ConfirmPassword": "Confirm Password",
+	"Label_AddLineChannel": "Add Line Channel",
+	"Label_GetBankList": "Get Bank List",
+	"Label_Payment": "Payment",
+	"Label_UsedCard": "Used Card",
+	"Label_MemberCard": "Member Card",
+	"Label_ManualCard": "Manual Card",
+	"Label_AccountHolderName": "Account Holder Name",
+	"Label_EligibleWithdrawal": "Eligible Withdrawal"
 }
