@@ -865,10 +865,10 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.reward_bonusExport.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.rewardBonusExport.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.report.sub.reward_bonusExport.functionId}
+						functionId={paths.report.sub.rewardBonusExport.functionId}
 					>
 						<BonusExport />
 					</AuthRequire>

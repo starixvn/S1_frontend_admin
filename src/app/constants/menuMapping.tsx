@@ -816,9 +816,9 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.report.sub.reward_bonusExport.functionId,
+		functionId: paths.report.sub.rewardBonusExport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.report.sub.reward_bonusExport.root,
+		newAdminPath: paths.report.sub.rewardBonusExport.root,
 	},
 	{
 		icon: null,

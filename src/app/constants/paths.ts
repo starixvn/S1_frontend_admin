@@ -286,7 +286,7 @@ const paths = {
 				root: 'report/worldCupMemberReport',
 				functionId: 115,
 			},
-			reward_bonusExport: {
+			rewardBonusExport: {
 				root: 'report/rewardBonusExport',
 				functionId: 124,
 			},
