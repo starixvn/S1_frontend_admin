@@ -365,5 +365,8 @@
 	"Label_MemberCard": "Member Card",
 	"Label_ManualCard": "Manual Card",
 	"Label_AccountHolderName": "Account Holder Name",
-	"Label_EligibleWithdrawal": "Eligible Withdrawal"
+	"Label_EligibleWithdrawal": "Eligible Withdrawal",
+	"Label_BankLoginUrl": "Bank Login Url",
+	"Label_BankLoginAccount": "bank Login Account",
+	"Label_BankLoginPassword": "bank Login Password"
 }

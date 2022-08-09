@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
 import {
+	IBankTransferAccountAgentListResponse,
 	IBankTransferAccountByIdResponse,
 	IBankTransferAccountPayListResponse,
 	IBankTransferAccountResponse,
@@ -62,6 +63,17 @@ export const transferAccountManagementApi = createApi({
 				data,
 			}),
 		}),
+		// * 取得 Agent 列表
+		getBankTransferAccountAgentList: builder.query<
+			IBankTransferAccountAgentListResponse,
+			{ siteId?: number }
+		>({
+			query: data => ({
+				url: 'BankTransferAccount/GetAgentList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// * 新增(Id=0)/更新轉帳帳戶資訊
 		setBankTransferAccount: builder.mutation<
 			ISetBankTransferAccountResponse,
@@ -94,6 +106,7 @@ export const {
 	useGetBankTransferAccountByIdQuery,
 	useGetBankTransferAccountReasonsQuery,
 	useGetBankTransferAccountPayListQuery,
+	useGetBankTransferAccountAgentListQuery,
 	useSetBankTransferAccountMutation,
 	useExportBankTransferAccountMutation,
 } = transferAccountManagementApi

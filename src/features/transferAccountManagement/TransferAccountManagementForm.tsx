@@ -31,11 +31,12 @@ const { Option } = Select
 interface ITransferAccountManagementFormProps {
 	form: FormInstance<IAddEditForm>
 	loading: boolean
+	agentList: string[]
 }
 
 const TransferAccountManagementForm: FC<
 	ITransferAccountManagementFormProps
-> = ({ form, loading }) => {
+> = ({ form, loading, agentList }) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const formCurrencyId = Form.useWatch('currencyId', form)
@@ -95,6 +96,9 @@ const TransferAccountManagementForm: FC<
 						reason: null,
 						remark: '',
 						payId: null,
+						bankLoginUrl: '',
+						bankLoginAccount: '',
+						bankLoginPassword: '',
 					}}
 				>
 					<Row align='middle' gutter={16}>
@@ -179,7 +183,33 @@ const TransferAccountManagementForm: FC<
 						) : (
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Input allowClear />
+									<Select
+										showSearch
+										allowClear
+										style={{ width: '100%' }}
+										placeholder='Select a person'
+										filterOption={(input, option) => {
+											const isIncludes: boolean = (
+												option!.children as unknown as string
+											)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+
+											if (!isIncludes) {
+												form.setFieldsValue({
+													agent: input,
+												})
+											}
+
+											return isIncludes
+										}}
+									>
+										{agentList?.map(value => (
+											<Option key={value} value={value}>
+												{value}
+											</Option>
+										))}
+									</Select>
 								</Form.Item>
 							</Col>
 						)}
@@ -341,6 +371,27 @@ const TransferAccountManagementForm: FC<
 						</Col>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item name='remark' label={t('Label_Remark')}>
+								<Input allowClear />
+							</Form.Item>
+						</Col>
+						<Col lg={6} md={12} xs={12}>
+							<Form.Item name='bankLoginUrl' label={t('Label_BankLoginUrl')}>
+								<Input allowClear />
+							</Form.Item>
+						</Col>
+						<Col lg={6} md={12} xs={12}>
+							<Form.Item
+								name='bankLoginAccount'
+								label={t('Label_BankLoginAccount')}
+							>
+								<Input allowClear />
+							</Form.Item>
+						</Col>
+						<Col lg={6} md={12} xs={12}>
+							<Form.Item
+								name='bankLoginPassword'
+								label={t('Label_BankLoginPassword')}
+							>
 								<Input allowClear />
 							</Form.Item>
 						</Col>

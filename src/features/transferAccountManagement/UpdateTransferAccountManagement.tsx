@@ -11,10 +11,15 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import TransferAccountManagementForm from './TransferAccountManagementForm'
 import {
+	useGetBankTransferAccountAgentListQuery,
 	useGetBankTransferAccountByIdQuery,
 	useSetBankTransferAccountMutation,
 } from './api'
-import { IAddEditForm, IBankTransferAccountData } from './type'
+import {
+	IAddEditForm,
+	IBankTransferAccountAgentListResponse,
+	IBankTransferAccountData,
+} from './type'
 
 const UpdateTransferAccountManagement: FC = () => {
 	const { t } = useTranslation()
@@ -35,8 +40,15 @@ const UpdateTransferAccountManagement: FC = () => {
 		{ isLoading: isSetBankTransferAccountLoading },
 	] = useSetBankTransferAccountMutation()
 
+	const {
+		data: {
+			data: agentList = [],
+		} = {} as IBankTransferAccountAgentListResponse,
+	} = useGetBankTransferAccountAgentListQuery({ siteId })
+
 	const handleSubmit = async () => {
 		const values = await form.validateFields()
+
 		try {
 			const response = await setBankTransferAccount({
 				id: Number(editId),
@@ -81,6 +93,7 @@ const UpdateTransferAccountManagement: FC = () => {
 			<TransferAccountManagementForm
 				form={form}
 				loading={isSetBankTransferAccountLoading}
+				agentList={agentList}
 			/>
 
 			<AffixButtons>
