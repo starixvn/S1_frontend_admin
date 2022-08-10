@@ -230,11 +230,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 38,
-		pathMode: 'Internal',
+		functionId: paths.finance.sub.setting.sub.bankAccManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/BankInfoList',
 		internalFunctionKey: allowedRoles.FinanceBankInfoList,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.bankAccManagement.root,
 	},
 	{
 		icon: null,
