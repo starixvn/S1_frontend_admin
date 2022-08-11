@@ -187,7 +187,6 @@ const TransferAccountManagementForm: FC<
 										showSearch
 										allowClear
 										style={{ width: '100%' }}
-										placeholder='Select a person'
 										filterOption={(input, option) => {
 											const isIncludes: boolean = (
 												option!.children as unknown as string
