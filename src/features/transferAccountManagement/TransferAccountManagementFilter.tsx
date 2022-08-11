@@ -52,6 +52,35 @@ const TransferAccountManagementFilter: FC<
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
+	// * 後端表示全選送空陣列，所以這裡給 all 在送args的時候在轉成空陣列
+	// *  selectAll = 全選 , matchAll = 全部匹配
+	const onChangePurpose = (newPurposes: Array<number | string>) => {
+		if (newPurposes.includes('matchAll')) {
+			// 匹配全部
+			form.setFieldsValue({
+				purposes: transferAccountPurposeEnum.map(purpose => purpose.value),
+			})
+		} else if (newPurposes.length > 1) {
+			if (newPurposes[0] === 'all') {
+				// 先選 selectAll 再選其他選項 , 代表不要全選 , 移除 'all'
+				newPurposes.splice(0, 1)
+				form.setFieldsValue({
+					purposes: newPurposes,
+				})
+			} else if (newPurposes.includes('all')) {
+				// 先選其他選項才按 selectAll = 全選 移除其他選項
+				form.setFieldsValue({
+					purposes: ['all'],
+				})
+			}
+		} else {
+			// firstPick , Array.length === 1
+			form.setFieldsValue({
+				purposes: newPurposes,
+			})
+		}
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -168,17 +197,13 @@ const TransferAccountManagementFilter: FC<
 								<Form.Item name='purposes' label={t('Label_Purposes')}>
 									<MultipleSelect
 										optionFilterProp='children'
-										onChange={newValues =>
-											onEnumApiMultipleSelectChange(
-												newValues,
-												transferChannelEnum,
-												form,
-												'purposes'
-											)
-										}
+										onChange={onChangePurpose}
+										placeholder={t('Label_Select')}
 									>
+										{/* 為保留 selectAll 的選項 , 不管有沒有 > 1 都渲染出來 */}
+										<Option value='all'>{t('Label_SelectAll')}</Option>
 										{(transferAccountPurposeEnum?.length as number) > 1 && (
-											<Option value='all'>{t('Label_SelectAll')}</Option>
+											<Option value='matchAll'>{t('Label_MatchAll')}</Option>
 										)}
 
 										{transferAccountPurposeEnum?.map(item => (
@@ -216,6 +241,8 @@ const TransferAccountManagementFilter: FC<
 											return isIncludes
 										}}
 									>
+										{/* 後端表示全選帶空字串  */}
+										<Option value=''>{t('Label_SelectAll')}</Option>
 										{agentList?.map(value => (
 											<Option key={value} value={value}>
 												{value}

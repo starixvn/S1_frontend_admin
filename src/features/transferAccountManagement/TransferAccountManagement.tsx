@@ -146,11 +146,14 @@ const TransferAccountManagement: FC<{
 	}
 
 	const handleSearch = async () => {
-		const values = await form.validateFields()
+		const { purposes, ...values } = await form.validateFields()
 
 		try {
 			await getBankTransferAccounts({
 				siteId,
+				purposes: (purposes as (string | number)[]).includes('all')
+					? []
+					: purposes,
 				...values,
 			}).unwrap()
 		} catch (error) {
