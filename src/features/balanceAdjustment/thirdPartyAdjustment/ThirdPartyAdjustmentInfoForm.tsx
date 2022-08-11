@@ -122,7 +122,18 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 					{reasonId === 9 && (
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='transId' label={t('Label_DepositId')}>
+								<Form.Item
+									name='transId'
+									label={t('Label_DepositId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_DepositId'),
+											}),
+										},
+									]}
+								>
 									<Input allowClear placeholder={t('Label_DepositId')} />
 								</Form.Item>
 							</Col>
