@@ -60,18 +60,7 @@ export interface IGetPointLevelListArgs {
 	currencyId: number
 }
 
-export interface IGetPointLevelListData {
-	siteId: number
-	currencyId: number
-	pointLevel: number
-	depositCnt: number
-	withdrawalCnt: number
-	isKyc: number
-}
-
-export type IGetPointLevelListResponse = IAxiosResponse<
-	IGetPointLevelListData[]
->
+export type IGetPointLevelListResponse = IAxiosResponse<number[]>
 
 export interface IGetBankInfoArgs {
 	currencyId: number
