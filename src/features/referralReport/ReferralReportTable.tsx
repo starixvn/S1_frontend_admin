@@ -8,6 +8,7 @@ import { PaginationInterface } from 'common/hooks'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { numberFormatter } from 'common/utils/format'
+import { ColumnsType } from 'antd/es/table'
 import { IReferralReportData } from './type'
 
 interface IReferralReportTableProps {
@@ -30,7 +31,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 
-	const columns = [
+	const columns: ColumnsType<IReferralReportData> = [
 		{
 			title: t('Label_Currency'),
 			key: 'currency',
@@ -49,6 +50,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Invitation'),
 			key: 'referralCount',
 			dataIndex: 'referralCount',
+			sorter: (rowA, rowB) => rowA.referralCount - rowB.referralCount,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -56,6 +58,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Complete'),
 			key: 'conditionCount',
 			dataIndex: 'conditionCount',
+			sorter: (rowA, rowB) => rowA.conditionCount - rowB.conditionCount,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -63,6 +66,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Achievements'),
 			key: 'amountCount',
 			dataIndex: 'amountCount',
+			sorter: (rowA, rowB) => rowA.amountCount - rowB.amountCount,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -95,6 +99,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_ReferralRewards'),
 			key: 'amountSum',
 			dataIndex: 'amountSum',
+			sorter: (rowA, rowB) => rowA.amountSum - rowB.amountSum,
 			width: 120,
 			align: 'center' as 'center',
 			render: (amountSum: number) => numberFormatter.format(amountSum),
@@ -103,6 +108,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_ReferralFreeCredit'),
 			key: 'freeCreditSum',
 			dataIndex: 'freeCreditSum',
+			sorter: (rowA, rowB) => rowA.freeCreditSum - rowB.freeCreditSum,
 			width: 120,
 			align: 'center' as 'center',
 			render: (freeCreditSum: number) => numberFormatter.format(freeCreditSum),
@@ -111,6 +117,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Running'),
 			key: 'pendingCount',
 			dataIndex: 'pendingCount',
+			sorter: (rowA, rowB) => rowA.pendingCount - rowB.pendingCount,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -118,6 +125,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Expired'),
 			key: 'expiredCount',
 			dataIndex: 'expiredCount',
+			sorter: (rowA, rowB) => rowA.expiredCount - rowB.expiredCount,
 			width: 80,
 			align: 'center' as 'center',
 		},
