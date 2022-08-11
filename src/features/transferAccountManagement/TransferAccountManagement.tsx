@@ -19,10 +19,15 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAuth } from 'common/hooks'
 import {
 	useExportBankTransferAccountMutation,
+	useGetBankTransferAccountAgentListQuery,
 	useLazyGetBankTransferAccountsQuery,
 	useSetBankTransferAccountMutation,
 } from './api'
-import { IBankTransferAccountData, IForm } from './type'
+import {
+	IBankTransferAccountAgentListResponse,
+	IBankTransferAccountData,
+	IForm,
+} from './type'
 import TransferAccountManagementFilter from './TransferAccountManagementFilter'
 import TransferAccountManagementTable from './TransferAccountManagementTable'
 
@@ -77,6 +82,12 @@ const TransferAccountManagement: FC<{
 		exportBankTransferAccount,
 		{ isLoading: isExportBankTransferAccountLoading },
 	] = useExportBankTransferAccountMutation()
+
+	const {
+		data: {
+			data: agentList = [],
+		} = {} as IBankTransferAccountAgentListResponse,
+	} = useGetBankTransferAccountAgentListQuery({ siteId })
 
 	const handleChangeCurrency = (newCurrencyIds: number[]) => {
 		if (newCurrencyIds.includes(0)) {
@@ -182,6 +193,7 @@ const TransferAccountManagement: FC<{
 				transferAccountStatusEnum={transferAccountStatusEnum}
 				transferAccountPurposeEnum={transferAccountPurposeEnum}
 				bankInfoSys={bankInfoSys}
+				agentList={agentList}
 				onChangeCurrency={handleChangeCurrency}
 				onChangeSysIds={handleChangeSysIds}
 				onSearch={handleSearch}
@@ -208,6 +220,7 @@ const TransferAccountManagement: FC<{
 				/>
 				<AffixButtons.Create
 					onClick={() =>
+						// * 後端表示新增時 id帶0
 						navigate(
 							`/${NEW_SITE_PREFIX_URL}/${
 								paths.bankTransfer.sub.transferAccountManagement.root

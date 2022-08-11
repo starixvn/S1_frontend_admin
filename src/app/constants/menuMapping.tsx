@@ -230,11 +230,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 38,
-		pathMode: 'Internal',
+		functionId: paths.finance.sub.setting.sub.bankAccManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/BankInfoList',
 		internalFunctionKey: allowedRoles.FinanceBankInfoList,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.bankAccManagement.root,
 	},
 	{
 		icon: null,
@@ -816,8 +816,17 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.report.sub.reward_bonusExport.functionId,
+		functionId: paths.report.sub.rewardBonusExport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.report.sub.reward_bonusExport.root,
+		newAdminPath: paths.report.sub.rewardBonusExport.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission
+				.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission.root,
 	},
 ]

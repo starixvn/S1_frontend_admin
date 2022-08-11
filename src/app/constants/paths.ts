@@ -173,6 +173,19 @@ const paths = {
 						root: 'finance/setting/eWalletSetting',
 						functionId: 122,
 					},
+					bankAccManagement: {
+						root: 'finance/setting/bankAccManagement',
+						functionId: 38,
+					},
+				},
+			},
+			depositWithdrawalSector: {
+				root: 'finance/depositWithdrawalSector',
+				sub: {
+					withdrawalSubmission: {
+						root: 'finance/depositWithdrawalSector/withdrawalSubmission',
+						functionId: 125,
+					},
 				},
 			},
 		},
@@ -277,7 +290,7 @@ const paths = {
 				root: 'report/worldCupMemberReport',
 				functionId: 115,
 			},
-			reward_bonusExport: {
+			rewardBonusExport: {
 				root: 'report/rewardBonusExport',
 				functionId: 124,
 			},
@@ -309,7 +322,7 @@ const paths = {
 		root: 'bankTransfer',
 		sub: {
 			transferAccountManagement: {
-				root: 'BankTransfer/TransferAccountManagement',
+				root: 'bankTransfer/transferAccountManagement',
 				functionId: 86,
 			},
 		},

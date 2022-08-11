@@ -29,6 +29,7 @@ interface TransferAccountManagementFilterProps {
 	transferAccountStatusEnum: IEnumTypeData[]
 	transferAccountPurposeEnum: IEnumTypeData[]
 	bankInfoSys: IBankInfoSysData[]
+	agentList: string[]
 	onChangeCurrency: (newCurrencyIds: number[]) => void
 	onChangeSysIds: (newSysIds: number[]) => void
 	onSearch: () => void
@@ -43,6 +44,7 @@ const TransferAccountManagementFilter: FC<
 	transferAccountStatusEnum,
 	transferAccountPurposeEnum,
 	bankInfoSys,
+	agentList,
 	onChangeCurrency,
 	onChangeSysIds,
 	onSearch,
@@ -194,7 +196,32 @@ const TransferAccountManagementFilter: FC<
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Input allowClear />
+									<Select
+										showSearch
+										allowClear
+										style={{ width: '100%' }}
+										filterOption={(input, option) => {
+											const isIncludes: boolean = (
+												option!.children as unknown as string
+											)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+
+											if (!isIncludes) {
+												form.setFieldsValue({
+													agent: input,
+												})
+											}
+
+											return isIncludes
+										}}
+									>
+										{agentList?.map(value => (
+											<Option key={value} value={value}>
+												{value}
+											</Option>
+										))}
+									</Select>
 								</Form.Item>
 							</Col>
 						</Row>

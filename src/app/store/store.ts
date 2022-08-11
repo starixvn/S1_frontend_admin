@@ -41,6 +41,8 @@ import { transferAccountManagementApi } from 'features/transferAccountManagement
 import { snsManagementApi } from 'features/snsManagement/api'
 import { bonusExportApi } from 'features/bonusExport/api'
 import { lineDepositChannelApi } from 'features/lineDepositChannel/api'
+import { withdrawalSubmissionApi } from 'features/withdrawalSubmission/api'
+import { bankCardManagementApi } from 'features/bankCardManagement/api'
 
 export const store = configureStore({
 	reducer: {
@@ -87,6 +89,8 @@ export const store = configureStore({
 		[snsManagementApi.reducerPath]: snsManagementApi.reducer,
 		[bonusExportApi.reducerPath]: bonusExportApi.reducer,
 		[lineDepositChannelApi.reducerPath]: lineDepositChannelApi.reducer,
+		[withdrawalSubmissionApi.reducerPath]: withdrawalSubmissionApi.reducer,
+		[bankCardManagementApi.reducerPath]: bankCardManagementApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -130,9 +134,13 @@ export const store = configureStore({
 			.concat(transferAccountManagementApi.middleware)
 			.concat(snsManagementApi.middleware)
 			.concat(bonusExportApi.middleware)
-			.concat(lineDepositChannelApi.middleware),
+			.concat(lineDepositChannelApi.middleware)
+			.concat(withdrawalSubmissionApi.middleware)
+			.concat(bankCardManagementApi.middleware),
 })
 
+// to ignore : TS2589: Type instantiation is excessively deep and possibly infinite.
+// @ts-ignore
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
 export type AppThunk<ReturnType = void> = ThunkAction<

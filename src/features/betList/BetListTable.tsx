@@ -8,6 +8,7 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment'
 import { find, isNumber, isObject, isString } from 'lodash'
 import { isJSON } from 'common/utils'
+import { ColumnsType } from 'antd/es/table'
 import { IGetBetListData, IGetTagsData } from './type'
 
 interface IBetListTableProps {
@@ -57,7 +58,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 }) => {
 	const { t } = useTranslation()
 
-	const columns = [
+	const columns: ColumnsType<IGetBetListData> = [
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
@@ -129,6 +130,8 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'transTime',
 			dataIndex: 'transTime',
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) =>
+				moment(rowA.transTime).unix() - moment(rowB.transTime).unix(),
 			render: (transTime: string) => (
 				<div style={{ width: '180px' }}>
 					{transTime ? (
@@ -148,6 +151,8 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'settledTime',
 			dataIndex: 'settledTime',
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) =>
+				moment(rowA.settledTime).unix() - moment(rowB.settledTime).unix(),
 			render: (settledTime: string) => (
 				<div style={{ width: '180px' }}>
 					{settledTime ? (
@@ -293,6 +298,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'odds',
 			dataIndex: 'odds',
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) => rowA.odds - rowB.odds,
 			render: (odds: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(odds)}</div>
 			),
@@ -312,6 +318,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			dataIndex: 'stake',
 			width: 100,
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) => rowA.stake - rowB.stake,
 			render: (stake: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(stake)}</div>
 			),
@@ -321,6 +328,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'validBet',
 			dataIndex: 'validBet',
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) => rowA.validBet - rowB.validBet,
 			render: (validBet: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(validBet)}</div>
 			),
@@ -330,6 +338,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'winlostAmount',
 			dataIndex: 'winlostAmount',
 			align: 'center' as 'center',
+			sorter: (rowA, rowB) => rowA.winlostAmount - rowB.winlostAmount,
 			render: (winlostAmount: number) => (
 				<div style={{ width: '60px' }}>
 					{numberFormatter.format(winlostAmount)}

@@ -27,6 +27,9 @@ export interface IAddEditForm {
 	reason: number
 	remark: string | null
 	payId: number
+	bankLoginUrl: string | null
+	bankLoginAccount: string | null
+	bankLoginPassword: string | null
 }
 
 export interface IBankTransferAccountsArgs {
@@ -69,6 +72,9 @@ export interface IBankTransferAccountData {
 	updateTime: string | null
 	updator: number
 	updatorName: string | null
+	bankLoginUrl: string | null
+	bankLoginAccount: string | null
+	bankLoginPassword: string | null
 }
 
 export type IBankTransferAccountResponse = IAxiosResponse<
@@ -146,3 +152,5 @@ export interface IBankTransferAccountByIdData {
 
 export type IBankTransferAccountByIdResponse =
 	IAxiosResponse<IBankTransferAccountByIdData>
+
+export type IBankTransferAccountAgentListResponse = IAxiosResponse<string[]>

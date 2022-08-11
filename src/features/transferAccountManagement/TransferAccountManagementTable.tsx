@@ -162,6 +162,34 @@ const TransferAccountManagementTable: FC<
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_BankLoginUrl'),
+			key: 'bankLoginUrl',
+			dataIndex: 'bankLoginUrl',
+			align: 'center' as 'center',
+			render: (bankLoginUrl: string) => (
+				<div style={{ width: '120px' }}>{bankLoginUrl}</div>
+			),
+		},
+		{
+			title: t('Label_BankLoginAccount'),
+			key: 'bankLoginAccount',
+			dataIndex: 'bankLoginAccount',
+			align: 'center' as 'center',
+			render: (bankLoginAccount: string) => (
+				<div style={{ width: '120px' }}>{bankLoginAccount}</div>
+			),
+		},
+		{
+			title: t('Label_BankLoginPassword'),
+			key: 'bankLoginPassword',
+			dataIndex: 'bankLoginPassword',
+			align: 'center' as 'center',
+			render: (bankLoginPassword: string) => (
+				<div style={{ width: '120px' }}>{bankLoginPassword}</div>
+			),
+		},
+
+		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
