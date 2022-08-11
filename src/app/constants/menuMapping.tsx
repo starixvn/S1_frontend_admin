@@ -184,7 +184,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.adjustment.sub.balanceAdjustment.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentAdjustment',
 		internalFunctionKey: allowedRoles.FinancePaymentAdjustment,
 		newAdminPath: paths.finance.sub.adjustment.sub.balanceAdjustment.root,
@@ -678,7 +678,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.administration.sub.specialPasswordManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminSpecialPasswordManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Admin/SpecialPasswordManagement',
 		newAdminPath: paths.administration.sub.specialPasswordManagement.root,
 	},
