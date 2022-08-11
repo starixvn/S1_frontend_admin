@@ -2,7 +2,6 @@ import { createContext } from 'react'
 import {
 	IGetBankInfoData,
 	IGetEnumData,
-	IGetPointLevelListData,
 } from 'features/bankCardManagement/type'
 import { IVipLevelsData } from 'common/service/allDataApi'
 
@@ -21,7 +20,7 @@ interface IFilterContextProps {
 	vipLevelList: IVipLevelsData[]
 	statusEnumList: IGetEnumData[]
 	bankInfoList: IGetBankInfoData[]
-	pointLevelList: IGetPointLevelListData[]
+	pointLevelList: number[]
 }
 
 const onSearch = () => {}
