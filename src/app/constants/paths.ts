@@ -173,6 +173,10 @@ const paths = {
 						root: 'finance/setting/eWalletSetting',
 						functionId: 122,
 					},
+					bankAccManagement: {
+						root: 'finance/setting/bankAccManagement',
+						functionId: 38,
+					},
 				},
 			},
 			depositWithdrawalSector: {

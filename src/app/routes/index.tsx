@@ -335,6 +335,12 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
+const BankCardManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BankCardManagement' */ 'features/bankCardManagement/BankCardManagement'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -896,6 +902,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalSubmission />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.bankAccManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.bankAccManagement.functionId
+						}
+					>
+						<BankCardManagement />
 					</AuthRequire>
 				),
 			},

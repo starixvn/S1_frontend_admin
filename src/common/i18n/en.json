@@ -368,5 +368,14 @@
 	"Label_EligibleWithdrawal": "Eligible Withdrawal",
 	"Label_BankLoginUrl": "Bank Login Url",
 	"Label_BankLoginAccount": "bank Login Account",
-	"Label_BankLoginPassword": "bank Login Password"
+	"Label_BankLoginPassword": "bank Login Password",
+	"Label_BankCode": "Bank Code",
+	"Label_PointLevel": "Point Level",
+	"Label_MinAmount": "Min Amount",
+	"Label_MaxAmount": "Max Amount",
+	"Label_DailyLimitAmount": "Daily Limit Amount",
+	"Label_Dummy": "Dummy",
+	"Label_EditBankCard": "Edit Bank Card",
+	"Label_ZeroIsNotChecked": " ( 0 is not checked )",
+	"Label_MatchAll": "Match All"
 }
