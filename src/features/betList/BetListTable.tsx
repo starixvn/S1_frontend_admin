@@ -9,12 +9,17 @@ import moment from 'moment'
 import { find, isNumber, isObject, isString } from 'lodash'
 import { isJSON } from 'common/utils'
 import { ColumnsType } from 'antd/es/table'
+import type { SorterResult } from 'antd/es/table/interface'
 import { IGetBetListData, IGetTagsData } from './type'
 
 interface IBetListTableProps {
 	loading: boolean
 	pagination: PaginationInterface
-	onTableChange: (newPagination: TablePaginationConfig) => void
+	onTableChange: (
+		newPagination: TablePaginationConfig,
+		_: any,
+		sorter: SorterResult<IGetBetListData>
+	) => void
 	betListData: IGetBetListData[]
 	timeZoneUtcOffset: number
 	tagList: IGetTagsData[]
@@ -130,8 +135,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'transTime',
 			dataIndex: 'transTime',
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) =>
-				moment(rowA.transTime).unix() - moment(rowB.transTime).unix(),
+			sorter: true,
 			render: (transTime: string) => (
 				<div style={{ width: '180px' }}>
 					{transTime ? (
@@ -151,8 +155,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'settledTime',
 			dataIndex: 'settledTime',
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) =>
-				moment(rowA.settledTime).unix() - moment(rowB.settledTime).unix(),
+			sorter: true,
 			render: (settledTime: string) => (
 				<div style={{ width: '180px' }}>
 					{settledTime ? (
@@ -298,7 +301,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'odds',
 			dataIndex: 'odds',
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) => rowA.odds - rowB.odds,
+			sorter: true,
 			render: (odds: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(odds)}</div>
 			),
@@ -318,7 +321,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			dataIndex: 'stake',
 			width: 100,
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) => rowA.stake - rowB.stake,
+			sorter: true,
 			render: (stake: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(stake)}</div>
 			),
@@ -328,7 +331,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'validBet',
 			dataIndex: 'validBet',
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) => rowA.validBet - rowB.validBet,
+			sorter: true,
 			render: (validBet: number) => (
 				<div style={{ width: '60px' }}>{numberFormatter.format(validBet)}</div>
 			),
@@ -338,7 +341,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			key: 'winlostAmount',
 			dataIndex: 'winlostAmount',
 			align: 'center' as 'center',
-			sorter: (rowA, rowB) => rowA.winlostAmount - rowB.winlostAmount,
+			sorter: true,
 			render: (winlostAmount: number) => (
 				<div style={{ width: '60px' }}>
 					{numberFormatter.format(winlostAmount)}
@@ -379,6 +382,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 				columns={columns}
 				dataSource={betListData ?? []}
 				pagination={pagination as TablePaginationConfig}
+				// @ts-ignore
 				onChange={onTableChange}
 				scroll={{ x: 500 }}
 				size='middle'

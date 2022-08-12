@@ -23,6 +23,9 @@ export interface IGetBetListArgs {
 	stake: number
 	transId: string
 	winLostAmount: number
+	orderBy?: boolean
+	orderByProperty?: string
+	orderByDirection?: number
 }
 
 export interface IGetBetListData {
@@ -108,3 +111,8 @@ export interface IGetTagsData {
 }
 
 export type IGetTagsResponse = IAxiosResponse<IGetTagsData[]>
+
+export enum OrderByTypeEnum {
+	ascend, // 升序
+	descend,
+}

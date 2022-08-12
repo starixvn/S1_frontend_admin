@@ -16,15 +16,19 @@ import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import download from 'downloadjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
+import type { SorterResult } from 'antd/es/table/interface'
+import { orderDirectionConverter } from 'features/betList/converter'
 import { BetListFilter } from './BetListFilter'
 import {
 	IGetBetListArgs,
+	IGetBetListData,
 	IGetBetListResponse,
 	IGetCategoryResponse,
 	IGetProductsResponse,
 	IGetProvidersResponse,
 	IGetTagsResponse,
 	IGetVipLevelsResponse,
+	OrderByTypeEnum,
 } from './type'
 import {
 	useExportBetListFileMutation,
@@ -102,14 +106,22 @@ const BetList: FC<{
 			})
 		}
 	}
+
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
+		// 預設用結算時間降序排
+		orderBy = true,
+		orderByProperty = 'settledTime',
+		orderByDirection = OrderByTypeEnum.descend as number,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
+		orderBy?: boolean
+		orderByProperty?: string
+		orderByDirection?: number
 	}) => {
 		if (!siteId) return
 		const {
@@ -167,6 +179,9 @@ const BetList: FC<{
 				endTime,
 				winLostAmount,
 				transId,
+				orderBy,
+				orderByProperty,
+				orderByDirection,
 			}
 			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
@@ -177,17 +192,38 @@ const BetList: FC<{
 			)
 		}
 	}
-	const handleTableChange = async (newPagination: TablePaginationConfig) => {
+	const handleTableChange = async (
+		newPagination: TablePaginationConfig,
+		_: any,
+		sorter: SorterResult<IGetBetListData>
+	) => {
 		const {
 			current = PAGINATION.defaultCurrent,
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
-		await handleSearch({
-			current,
-			pageSize,
-			currentTimeZoneUtcOffset: timeZoneUtcOffset,
-		})
+		// 檢查是否有開啟 sorter功能
+		if (sorter.order) {
+			const orderBy = true
+			const orderByProperty = sorter.field as string
+			const orderByDirection = orderDirectionConverter(sorter.order as string)
+			await handleSearch({
+				current,
+				pageSize,
+				currentTimeZoneUtcOffset: timeZoneUtcOffset,
+				orderBy,
+				orderByProperty,
+				orderByDirection,
+			})
+		} else {
+			// 取消排序使用預設
+			await handleSearch({
+				current,
+				pageSize,
+				currentTimeZoneUtcOffset: timeZoneUtcOffset,
+			})
+		}
 	}
+
 	const handleExport = async () => {
 		if (isEmpty(queryParams) || !siteId) return
 		const {
