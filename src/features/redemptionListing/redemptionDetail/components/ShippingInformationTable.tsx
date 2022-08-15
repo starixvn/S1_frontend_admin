@@ -3,7 +3,8 @@ import { message, Space, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { CopyOutlined } from '@ant-design/icons'
-import { IGetRedemptionDetailData } from '../../type'
+import { IGetRedemptionDetailData } from 'features/redemptionListing/type'
+import copy from 'copy-to-clipboard'
 
 interface ShippingInformationTableInterface {
 	redemptionDetail: IGetRedemptionDetailData
@@ -33,10 +34,9 @@ const ShippingInformationTable: FC<ShippingInformationTableInterface> = ({
 
 	const address = `${lineFirst},${lineSecond},${city},${postCode},${country},${state}`
 	const handleCopy = async () => {
-		try {
-			await navigator.clipboard.writeText(address)
+		if (copy(address)) {
 			message.success(`${t('Label_MemberAddress')}  ${t('Label_Copied')}`)
-		} catch (error) {
+		} else {
 			message.error(t('Label_TryAgain'))
 		}
 	}
