@@ -16,7 +16,10 @@ import {
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectUserSite } from 'common/enum'
-import { IGetReferralReportResponse } from './type'
+import { SorterResult } from 'antd/es/table/interface'
+import { orderDirectionConverter } from 'features/betList/converter'
+import { OrderByTypeEnum } from 'features/betList/type'
+import { IGetReferralReportResponse, IReferralReportData } from './type'
 import {
 	useLazyGetReferralReportQuery,
 	useExportReferralReportFileMutation,
@@ -57,10 +60,17 @@ const ReferralReport: FC<{
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
+		// 預設用結算時間降序排
+		orderBy = true,
+		orderByProperty = 'referralCount',
+		orderByDirection = OrderByTypeEnum.descend as number,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
+		orderBy?: boolean
+		orderByProperty?: string
+		orderByDirection?: number
 	}) => {
 		const { userName = '', currencyId = 0, dateRange } = form.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -77,6 +87,9 @@ const ReferralReport: FC<{
 				userName,
 				currencyId,
 				siteIds: siteId ? [siteId] : [],
+				orderBy,
+				orderByProperty,
+				orderByDirection,
 			}).unwrap()
 			setQueryParams({
 				pageNumber: current,
@@ -120,16 +133,35 @@ const ReferralReport: FC<{
 			)
 		}
 	}
-	const handleTableChange = async (newPagination: TablePaginationConfig) => {
+	const handleTableChange = async (
+		newPagination: TablePaginationConfig,
+		_: any,
+		sorter: SorterResult<IReferralReportData>
+	) => {
 		const {
 			current = PAGINATION.defaultCurrent,
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
-		handleSearch({
-			current,
-			pageSize,
-			currentTimeZoneUtcOffset: timeZoneUtcOffset,
-		})
+		if (sorter.order) {
+			const orderBy = true
+			const orderByProperty = sorter.field as string
+			const orderByDirection = orderDirectionConverter(sorter.order as string)
+			await handleSearch({
+				current,
+				pageSize,
+				currentTimeZoneUtcOffset: timeZoneUtcOffset,
+				orderBy,
+				orderByProperty,
+				orderByDirection,
+			})
+		} else {
+			// 取消排序使用預設
+			await handleSearch({
+				current,
+				pageSize,
+				currentTimeZoneUtcOffset: timeZoneUtcOffset,
+			})
+		}
 	}
 
 	useEffect(() => {
