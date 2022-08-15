@@ -8,6 +8,9 @@ export interface IReferralReportArgs {
 	currencyId: number
 	startDate: string
 	endDate: string
+	orderBy: boolean
+	orderByProperty: string
+	orderByDirection: number
 }
 
 export interface IReferralReportData {

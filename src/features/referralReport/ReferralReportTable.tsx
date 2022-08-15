@@ -9,12 +9,17 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { numberFormatter } from 'common/utils/format'
 import { ColumnsType } from 'antd/es/table'
+import type { SorterResult } from 'antd/es/table/interface'
 import { IReferralReportData } from './type'
 
 interface IReferralReportTableProps {
 	loading: boolean
 	pagination: PaginationInterface
-	onTableChange: (newPagination: TablePaginationConfig) => void
+	onTableChange: (
+		newPagination: TablePaginationConfig,
+		_: any,
+		sorter: SorterResult<IReferralReportData>
+	) => void
 	referralReportData: IReferralReportData[]
 	dateRange: { startDate: string; endDate: string }
 	timeZoneUtcOffset: number
@@ -50,7 +55,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Invitation'),
 			key: 'referralCount',
 			dataIndex: 'referralCount',
-			sorter: (rowA, rowB) => rowA.referralCount - rowB.referralCount,
+			sorter: true,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -58,7 +63,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Complete'),
 			key: 'conditionCount',
 			dataIndex: 'conditionCount',
-			sorter: (rowA, rowB) => rowA.conditionCount - rowB.conditionCount,
+			sorter: true,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -66,7 +71,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Achievements'),
 			key: 'amountCount',
 			dataIndex: 'amountCount',
-			sorter: (rowA, rowB) => rowA.amountCount - rowB.amountCount,
+			sorter: true,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -99,7 +104,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_ReferralRewards'),
 			key: 'amountSum',
 			dataIndex: 'amountSum',
-			sorter: (rowA, rowB) => rowA.amountSum - rowB.amountSum,
+			sorter: true,
 			width: 120,
 			align: 'center' as 'center',
 			render: (amountSum: number) => numberFormatter.format(amountSum),
@@ -108,7 +113,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_ReferralFreeCredit'),
 			key: 'freeCreditSum',
 			dataIndex: 'freeCreditSum',
-			sorter: (rowA, rowB) => rowA.freeCreditSum - rowB.freeCreditSum,
+			sorter: true,
 			width: 120,
 			align: 'center' as 'center',
 			render: (freeCreditSum: number) => numberFormatter.format(freeCreditSum),
@@ -117,7 +122,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Running'),
 			key: 'pendingCount',
 			dataIndex: 'pendingCount',
-			sorter: (rowA, rowB) => rowA.pendingCount - rowB.pendingCount,
+			sorter: true,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -125,7 +130,7 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 			title: t('Label_Expired'),
 			key: 'expiredCount',
 			dataIndex: 'expiredCount',
-			sorter: (rowA, rowB) => rowA.expiredCount - rowB.expiredCount,
+			sorter: true,
 			width: 80,
 			align: 'center' as 'center',
 		},
@@ -138,6 +143,8 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 				columns={columns}
 				dataSource={referralReportData ?? []}
 				pagination={pagination as TablePaginationConfig}
+				// 因為 沒有用到 filter , 宣告為 any 的情況下會報錯 , 這裡忽略 ts 檢查
+				// @ts-ignore
 				onChange={onTableChange}
 			/>
 		</LayoutContent.Card>
