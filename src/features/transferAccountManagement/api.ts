@@ -103,7 +103,7 @@ export const transferAccountManagementApi = createApi({
 
 export const {
 	useLazyGetBankTransferAccountsQuery,
-	useGetBankTransferAccountByIdQuery,
+	useLazyGetBankTransferAccountByIdQuery,
 	useGetBankTransferAccountReasonsQuery,
 	useGetBankTransferAccountPayListQuery,
 	useGetBankTransferAccountAgentListQuery,

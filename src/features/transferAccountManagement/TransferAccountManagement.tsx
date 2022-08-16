@@ -1,22 +1,22 @@
 import moment from 'moment'
-import paths from 'app/constants/paths'
 import download from 'downloadjs'
 import { FC, useEffect } from 'react'
 import { Form, message } from 'antd'
-import { NEW_SITE_PREFIX_URL } from 'app/config'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useAppSelector } from 'app/store'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
+import { useNavigate } from 'react-router-dom'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import {
 	selectBankInfoSysByCurrencyIds,
 	useGetBankInfoSysQuery,
 } from 'common/service/allDataApi'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { useAuth } from 'common/hooks'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import {
 	useExportBankTransferAccountMutation,
 	useGetBankTransferAccountAgentListQuery,
@@ -30,19 +30,24 @@ import {
 } from './type'
 import TransferAccountManagementFilter from './TransferAccountManagementFilter'
 import TransferAccountManagementTable from './TransferAccountManagementTable'
+import TransferAccountManagementModal from './TransferAccountManagementModal'
 
 const TransferAccountManagement: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const navigate = useNavigate()
 	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
 		useAuth()
 	const [form] = Form.useForm<IForm>()
+	const navigate = useNavigate()
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const currencyIds = Form.useWatch('currencyIds', form)
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
+	const updateModal = useModal()
 
 	const {
 		data: { data: transferChannelEnum = [] } = {},
@@ -127,10 +132,13 @@ const TransferAccountManagement: FC<{
 
 	const handleExportBankTransferAccount = async () => {
 		try {
-			const values = await form.validateFields()
+			const { purposes, ...values } = await form.validateFields()
 
 			const blob = await exportBankTransferAccount({
 				siteId,
+				purposes: (purposes as (string | number)[]).includes('all')
+					? []
+					: purposes,
 				...values,
 			}).unwrap()
 
@@ -211,6 +219,7 @@ const TransferAccountManagement: FC<{
 				transferAccountStatusEnum={transferAccountStatusEnum}
 				transferAccountPurposeEnum={transferAccountPurposeEnum}
 				onStatusChange={handleStatusChange}
+				updateModal={updateModal}
 			/>
 
 			<AffixButtons>
@@ -222,16 +231,24 @@ const TransferAccountManagement: FC<{
 					loading={isExportBankTransferAccountLoading}
 				/>
 				<AffixButtons.Create
-					onClick={() =>
-						// * 後端表示新增時 id帶0
-						navigate(
-							`/${NEW_SITE_PREFIX_URL}/${
-								paths.bankTransfer.sub.transferAccountManagement.root
-							}/Update/${0}`
-						)
-					}
+					onClick={() => {
+						updateModal.onOpen()
+						// * 後端定義新增時 id帶0
+						setQueryParams({ editId: '0' })
+					}}
 				/>
 			</AffixButtons>
+
+			<TransferAccountManagementModal
+				loading={false}
+				visible={updateModal.visible}
+				onCancel={() => {
+					updateModal.onCancel()
+					navigate(
+						`/${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}`
+					)
+				}}
+			/>
 		</LayoutContent.Main>
 	)
 }
