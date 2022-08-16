@@ -302,13 +302,6 @@ const TransferAccountManagement = lazy(
 		)
 )
 
-const UpdateTransferAccountManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'UpdateTransferAccountManagement' */ 'features/transferAccountManagement/UpdateTransferAccountManagement'
-		)
-)
-
 const SnsManagement = lazy(
 	() =>
 		import(
@@ -843,18 +836,6 @@ const routes: RouteObject[] = [
 						}
 					>
 						<TransferAccountManagement />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}/Update/:editId`,
-				element: (
-					<AuthRequire
-						functionId={
-							paths.bankTransfer.sub.transferAccountManagement.functionId
-						}
-					>
-						<UpdateTransferAccountManagement />
 					</AuthRequire>
 				),
 			},
