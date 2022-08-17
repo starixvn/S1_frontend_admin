@@ -4,7 +4,7 @@ import { assign, findIndex, includes, isEmpty } from 'lodash'
 import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import {
 	IGetTpCategoryResponse,
@@ -31,8 +31,7 @@ const TurnoverPoint: FC<{
 	const [tabActiveKey, setActiveKey] = useState<string | undefined>()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 	const turnoverPointStatusModal = useModal()
 	const [modalTitle, setModalTitle] = useState('')
 	// 用來儲存當前瀏覽的 categoryId

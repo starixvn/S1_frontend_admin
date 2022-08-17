@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Tabs } from 'antd'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
+import { selectRewardsCurrencyListBySite } from 'common/enum'
 import GiftTabPane from './GiftTabPane'
 
 interface IGiftTabsProps {
@@ -17,7 +17,7 @@ const GiftTabs: FC<IGiftTabsProps> = ({
 	onTabsChange,
 	onSearch,
 }) => {
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 
 	return (
 		<Tabs onChange={onTabsChange} type='card' activeKey={tabActiveKey}>

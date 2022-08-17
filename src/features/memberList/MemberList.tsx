@@ -5,7 +5,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { isEmpty } from 'lodash'
 import {
@@ -44,7 +44,7 @@ const MemberList: FC<{
 	const {
 		actionPermissions: { editPermission, addPointBatchPermission } = {},
 	} = useAuth()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
