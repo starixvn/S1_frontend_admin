@@ -78,7 +78,7 @@ const EditGiftListing = () => {
 				stock: stock || undefined,
 			}).unwrap()
 			message.success(t('System.Label_LoginSuccess'))
-			navigate(backPath)
+			navigate(-1)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
