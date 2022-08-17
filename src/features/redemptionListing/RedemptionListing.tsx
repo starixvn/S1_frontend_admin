@@ -15,7 +15,7 @@ import {
 } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
 import { RedemptionListingFilter } from './RedemptionListingFilter'
 import {
 	useExportRedemptionListMutation,
@@ -36,7 +36,7 @@ const RedemptionListing: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 
 	const [
 		getRedemptionList,
