@@ -24,3 +24,8 @@ export interface ActionType {
 	name: string
 	value: number
 }
+
+export interface IAdminUserCurrency {
+	siteCurrencyList: number[]
+	rewardsCurrencyList: number[]
+}

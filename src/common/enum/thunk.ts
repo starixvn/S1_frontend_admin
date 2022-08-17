@@ -1,12 +1,29 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { map } from 'lodash'
+
 import {
 	fetchActionTypeList,
 	fetchAdjustmentInfoLogMenu,
 	fetchAdminUserSiteList,
 	fetchAllCurrencyList,
-	fetchAdminUserCurrencyList,
+	fetchAdminUserCurrency,
 } from './api'
+import {
+	ActionType,
+	AdjustmentInfoLogMenuItem,
+	Currency,
+	IAdminUserCurrency,
+	UserSite,
+} from './type'
+
+export interface IAllEnumState {
+	userSiteList: UserSite[]
+	allCurrencyList: Currency[]
+	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
+	actionTypeList: ActionType[]
+	siteCurrencyList: number[]
+	rewardsCurrencyList: number[]
+}
 
 export const fetchAllEnumAsync = createAsyncThunk(
 	'enum/fetchAllEnum',
@@ -16,25 +33,29 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
-			adminUserCurrencyList,
+			adminUserCurrency,
 		] = await Promise.allSettled([
 			fetchAdminUserSiteList(),
 			fetchAllCurrencyList(),
 			fetchAdjustmentInfoLogMenu(),
 			fetchActionTypeList(),
-			fetchAdminUserCurrencyList(),
+			fetchAdminUserCurrency(),
 		]).then(results =>
 			map(results, result =>
 				result.status === 'fulfilled' ? result.value : []
 			)
 		)
 
+		const { siteCurrencyList = [], rewardsCurrencyList = [] } =
+			(adminUserCurrency as IAdminUserCurrency) ?? {}
+
 		return {
 			userSiteList,
 			allCurrencyList,
 			adjustmentInfoLogMenu,
 			actionTypeList,
-			adminUserCurrencyList,
+			siteCurrencyList,
+			rewardsCurrencyList,
 		}
 	}
 )
