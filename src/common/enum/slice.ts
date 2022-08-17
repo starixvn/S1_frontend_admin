@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
 import { filter, some } from 'lodash'
 import { RequestStatusType } from 'type'
-import { fetchAllEnumAsync } from './thunk'
+import { fetchAllEnumAsync, IAllEnumState } from './thunk'
 import {
 	ActionType,
 	AdjustmentInfoLogMenuItem,
@@ -18,6 +18,7 @@ export interface EnumState {
 	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
 	actionTypeList: ActionType[]
 	adminUserCurrencyList: number[]
+	rewardsCurrencyList: number[]
 }
 
 const initialState: EnumState = {
@@ -28,6 +29,7 @@ const initialState: EnumState = {
 	adjustmentInfoLogMenu: [],
 	actionTypeList: [],
 	adminUserCurrencyList: [],
+	rewardsCurrencyList: [],
 }
 
 const enumSlice = createSlice({
@@ -52,14 +54,16 @@ const enumSlice = createSlice({
 					allCurrencyList,
 					adjustmentInfoLogMenu,
 					actionTypeList,
-					adminUserCurrencyList,
-				} = action.payload as EnumState
+					siteCurrencyList,
+					rewardsCurrencyList,
+				} = action.payload as IAllEnumState
 
 				state.userSiteList = userSiteList
 				state.allCurrencyList = allCurrencyList
 				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
 				state.actionTypeList = actionTypeList
-				state.adminUserCurrencyList = adminUserCurrencyList
+				state.adminUserCurrencyList = siteCurrencyList
+				state.rewardsCurrencyList = rewardsCurrencyList
 				state.status = 'succeeded'
 			}),
 })
@@ -67,9 +71,18 @@ const enumSlice = createSlice({
 export const selectCurrencyListBySite = (state: RootState) => {
 	const { allCurrencyList, adminUserCurrencyList } = state.allEnum
 
-	// Returns the currency of the site
+	// returns the currency of the site
 	return filter(allCurrencyList, currency =>
 		some(adminUserCurrencyList, iCurrency => iCurrency === currency.currencyId)
+	)
+}
+
+// * 回傳商城功能頁支援的幣別
+export const selectRewardsCurrencyListBySite = (state: RootState) => {
+	const { allCurrencyList, rewardsCurrencyList } = state.allEnum
+
+	return filter(allCurrencyList, currency =>
+		some(rewardsCurrencyList, iCurrency => iCurrency === currency.currencyId)
 	)
 }
 
