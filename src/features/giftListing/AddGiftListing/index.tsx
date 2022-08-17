@@ -1,5 +1,3 @@
-import paths from 'app/constants/paths'
-import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
 import { RcFile } from 'antd/es/upload'
 import { useTranslation } from 'react-i18next'
@@ -57,9 +55,7 @@ const AddGiftListing = () => {
 				infos,
 			}).unwrap()
 			message.success(t('System.Label_LoginSuccess'))
-			navigate(
-				`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.giftListing.root}`
-			)
+			navigate(-1)
 		} catch (error: any) {
 			// * 提示各元件錯誤提示
 			if (error?.errorFields[0]?.errors[0]) {
