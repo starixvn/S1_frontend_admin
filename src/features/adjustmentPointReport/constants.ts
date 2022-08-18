@@ -10,5 +10,5 @@ export const adjustTypeList: Array<{
 }> = [
 	{ type: AdjustTypeEnum.Default, displayKey: 'Label_Default' },
 	{ type: AdjustTypeEnum.BirthReward, displayKey: 'Label_BirthdayReward' },
-	{ type: AdjustTypeEnum.SpecialReward, displayKey: 'Label_Approve' },
+	{ type: AdjustTypeEnum.SpecialReward, displayKey: 'Label_SpecialReward' },
 ]
