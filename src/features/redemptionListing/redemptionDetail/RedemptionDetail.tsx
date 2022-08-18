@@ -107,9 +107,7 @@ const RedemptionDetail = () => {
 
 	const renderActualCost = () => {
 		const { actualCost, status } = redemptionDetail
-		form.setFieldsValue({
-			actualCost,
-		})
+
 		if (status === StatusEnum.Rejected || status === StatusEnum.Approve) {
 			return (
 				<div style={{ marginBottom: '15px' }}>
@@ -166,11 +164,11 @@ const RedemptionDetail = () => {
 
 	useEffect(() => {
 		if (redemptionDetail) {
+			const { actualCost, receiptUrls } = redemptionDetail
+
 			form.setFieldsValue({
-				actualCost: redemptionDetail.actualCost,
-				receiptUrls: redemptionDetail.receiptUrls
-					? [...redemptionDetail.receiptUrls]
-					: [],
+				actualCost: actualCost || '',
+				receiptUrls: receiptUrls ? [...receiptUrls] : [],
 			})
 		}
 	}, [isGetRedemptionDetailLoading])
