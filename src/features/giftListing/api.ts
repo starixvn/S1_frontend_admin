@@ -106,10 +106,12 @@ export const giftListingApi = createApi({
 				transformResponse: (returnResponse: IGiftInfoResponse) => {
 					const infos: IInfos = {}
 					const newData = returnResponse.data.reduce((acc, cur) => {
-						const { giftName, description, lang, tagIds, ...rest } = cur
+						const { giftName, description, lang, tagIds, pictureUrl, ...rest } =
+							cur
 						infos[lang] = {
 							name: giftName,
 							description,
+							pictureUrl,
 						}
 						return { ...acc, ...rest, tags: tagIds }
 					}, {})

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { Form, FormInstance, message } from 'antd'
 import { RcFile } from 'antd/es/upload'
 import { LayoutContent } from 'app/pages/layout'
-import { assign } from 'lodash'
+import { find } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from 'common/hooks'
@@ -32,7 +32,7 @@ const EditGiftListing = () => {
 			giftId: Number(editGiftId),
 		})
 
-	const { pictureUrl, status } = giftInfo ?? {}
+	const { status, infos = {} } = giftInfo ?? {}
 
 	const [uploadGiftImage, { isLoading: isUploadGiftImageLoading }] =
 		useUploadGiftImageMutation()
@@ -43,36 +43,40 @@ const EditGiftListing = () => {
 	const handleUpdateGift = async () => {
 		try {
 			const {
-				fileList: [file],
 				infos: originInfos,
 				stock,
 				...values
 			} = await form.validateFields()
 
-			// * 這邊需要使用 `assign`的原因是
-			// * Tabs 只會回傳 mounted 的 `Form.Item` 的語系，編輯 Infos 需要上傳所有語系的資料
-			const newInfos = assign({ ...giftInfo?.infos }, originInfos)
+			const pictureUrls = await Promise.all(
+				Object.keys(originInfos).map(async lang => {
+					const { fileList } = originInfos[lang]
+					const originPictureUrl = infos[lang].pictureUrl
+					if (fileList) {
+						const formData = new FormData()
+						formData.append('File', fileList[0].originFileObj as RcFile)
+						const {
+							data: { pictureUrl: newPictureUrl },
+						} = await uploadGiftImage(formData).unwrap()
 
-			// * 上傳商品圖片
-			let newPictureUrl: string
-			if (file) {
-				const formData = new FormData()
-				formData.append('File', file.originFileObj as RcFile)
-				const { data } = await uploadGiftImage(formData).unwrap()
-				newPictureUrl = data.pictureUrl
-			}
+						return { lang, pictureUrl: newPictureUrl }
+					}
+
+					return { lang, pictureUrl: originPictureUrl }
+				})
+			)
 
 			// * 修改商品
-			const infos = Object.keys(newInfos).map(lang => ({
+			const newInfos = Object.keys(originInfos).map(lang => ({
 				lang,
-				name: newInfos[lang].name,
-				description: newInfos[lang].description,
-				pictureUrl: newPictureUrl ?? pictureUrl,
+				name: originInfos[lang].name,
+				description: originInfos[lang].description,
+				pictureUrl: find(pictureUrls, { lang })?.pictureUrl ?? '',
 			}))
 
 			await updateGift({
 				...values,
-				infos,
+				infos: newInfos,
 				status: Boolean(status),
 				giftId: Number(editGiftId),
 				stock: stock || undefined,
@@ -104,8 +108,8 @@ const EditGiftListing = () => {
 			<LayoutContent.Card>
 				<GiftFormTabs
 					form={form}
+					infos={giftInfo?.infos ?? {}}
 					currencyId={Number(currencyId)}
-					pictureUrl={pictureUrl}
 				/>
 			</LayoutContent.Card>
 			<AffixButtons>

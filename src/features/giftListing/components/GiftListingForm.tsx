@@ -21,17 +21,17 @@ const { Option } = Select
 interface IAddGiftListingFormProps {
 	form: FormInstance
 	lang: string
+	pictureUrl: string | undefined
 	categories: ICategoriesData[]
 	giftTags: IGiftTagsData[]
-	pictureUrl?: string | undefined
 }
 
 const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 	form,
 	lang,
+	pictureUrl,
 	categories: originCategories,
 	giftTags: originGiftTags,
-	pictureUrl,
 }) => {
 	const { t } = useTranslation()
 	const showStock = Form.useWatch<boolean>('showStock', form)
@@ -215,7 +215,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 				</Col>
 			</Row>
 
-			<ImageUploader form={form} pictureUrl={pictureUrl} />
+			<ImageUploader form={form} lang={lang} pictureUrl={pictureUrl} />
 		</Form>
 	)
 }
