@@ -2,6 +2,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { RcFile } from 'antd/es/upload'
 import { useTranslation } from 'react-i18next'
 import { AffixButtons } from 'components/AffixButtons'
+import { find } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { Form, message } from 'antd'
@@ -27,32 +28,41 @@ const AddGiftListing = () => {
 		if (!siteId || !currencyId) return
 		try {
 			const {
-				fileList: [file],
 				infos: originInfos,
 				stock,
 				...rest
 			} = (await form.validateFields()) as IGiftForm
-
 			// * 上傳商品圖片
-			const formData = new FormData()
-			formData.append('File', file.originFileObj as RcFile)
-			const {
-				data: { pictureUrl },
-			} = await uploadGiftImage(formData).unwrap()
+			const pictureUrls = await Promise.all(
+				Object.keys(originInfos).map(async lang => {
+					const { fileList } = originInfos[lang]
 
+					if (fileList) {
+						const formData = new FormData()
+						formData.append('File', fileList[0].originFileObj as RcFile)
+						const {
+							data: { pictureUrl: newPictureUrl },
+						} = await uploadGiftImage(formData).unwrap()
+
+						return { lang, pictureUrl: newPictureUrl }
+					}
+
+					return { lang, pictureUrl: '' }
+				})
+			)
 			// * 新增商品
-			const infos = Object.keys(originInfos).map(lang => ({
+			const newInfos = Object.keys(originInfos).map(lang => ({
 				lang,
 				name: originInfos[lang].name,
 				description: originInfos[lang].description,
-				pictureUrl,
+				pictureUrl: find(pictureUrls, { lang })?.pictureUrl ?? '',
 			}))
 			await createGift({
 				siteId,
 				currencyId: Number(currencyId),
+				infos: newInfos,
 				stock: stock ?? undefined,
 				...rest,
-				infos,
 			}).unwrap()
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(-1)

@@ -70,6 +70,8 @@ export interface IInfos {
 	[lang: string]: {
 		name: string
 		description: string
+		pictureUrl: string
+		fileList?: UploadFile[]
 	}
 }
 
@@ -106,7 +108,6 @@ export interface IGiftForm {
 	sort: number
 	showStock: number | boolean
 	stock: any
-	fileList: UploadFile[]
 	infos: IInfos
 }
 
