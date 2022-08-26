@@ -51,7 +51,7 @@ const EditGiftListing = () => {
 			const pictureUrls = await Promise.all(
 				Object.keys(originInfos).map(async lang => {
 					const { fileList } = originInfos[lang]
-					const originPictureUrl = infos[lang].pictureUrl
+					const originPictureUrl = infos[lang]?.pictureUrl ?? ''
 					if (fileList) {
 						const formData = new FormData()
 						formData.append('File', fileList[0].originFileObj as RcFile)
