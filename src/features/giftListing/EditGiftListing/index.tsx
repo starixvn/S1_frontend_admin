@@ -1,5 +1,3 @@
-import paths from 'app/constants/paths'
-import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { useEffect } from 'react'
 import { Form, FormInstance, message } from 'antd'
 import { RcFile } from 'antd/es/upload'
@@ -16,8 +14,6 @@ import {
 } from '../api'
 import { IEditGiftForm } from '../type'
 import GiftFormTabs from '../components/GiftFormTabs'
-
-const backPath = `/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.giftManagement.sub.giftListing.root}`
 
 const EditGiftListing = () => {
 	const { t } = useTranslation()
@@ -114,7 +110,7 @@ const EditGiftListing = () => {
 			</LayoutContent.Card>
 			<AffixButtons>
 				<AffixButtons.Saved loading={loading} onClick={handleUpdateGift} />
-				<AffixButtons.GoBackRoute onClick={() => navigate(backPath)} />
+				<AffixButtons.GoBackRoute />
 			</AffixButtons>
 		</LayoutContent.Main>
 	)
