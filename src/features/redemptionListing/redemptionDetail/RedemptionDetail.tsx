@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
@@ -37,6 +37,8 @@ const RedemptionDetail = () => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const [checkActualCost, setCheckActualCost] = useState(false)
+
 	const [
 		getRedemptionDetail,
 		{
@@ -76,11 +78,20 @@ const RedemptionDetail = () => {
 
 	const handleSetRedemptionInfo = async (action: number) => {
 		if (!redemptionDetail) return
+
+		// * Reject的時候Actual Cost非必填
+		if (action === StatusEnum.Rejected) {
+			setCheckActualCost(false)
+		} else {
+			setCheckActualCost(true)
+		}
+
 		const {
 			actualCost,
 			comment = '',
 			receiptUrls,
 		} = await form.validateFields()
+
 		const request: ISetRedemptionInfoArgs = {
 			siteId,
 			transId,
@@ -126,7 +137,7 @@ const RedemptionDetail = () => {
 					name='actualCost'
 					rules={[
 						{
-							required: true,
+							required: checkActualCost,
 							message: t('Label_Required', {
 								key: t('Label_ActualCost'),
 							}),
