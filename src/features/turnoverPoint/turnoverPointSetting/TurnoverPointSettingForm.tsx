@@ -45,7 +45,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 			render: (tpCategoryName: string) => `${tpCategoryName} : `,
 		},
 		{
-			title: t('Label_PointRate'),
+			title: t('Label_Turnover'),
 			width: 100,
 			align: 'center' as 'center',
 			key: 'turnover',
