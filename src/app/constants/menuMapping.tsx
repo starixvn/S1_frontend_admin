@@ -102,12 +102,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 23,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
+				.functionId,
 		name: 'Live Registration Statistics',
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/RegistrationManagement',
 		internalFunctionKey: allowedRoles.CustManageRegistrationManagement,
-		newAdminPath: '',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
+				.root,
 	},
 	{
 		icon: null,
