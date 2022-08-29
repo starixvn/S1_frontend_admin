@@ -39,23 +39,6 @@ const LiveRegistrationStatisticsTable: FC<{
 }) => {
 	const { t } = useTranslation()
 
-	/*
-accountName: "rdtest02"
-affiliatesCode: ""
-agent: "BwinVND"
-currency: "VND"
-custId: 1380
-depositStatus: 1
-phoneNo: null
-phoneVerified: 0
-regTime: "2020-11-19T12:51:47+00:00"
-siteId: 3
-status: 1
-updateRemark: null
-
-
-    */
-
 	const columns = [
 		{
 			title: t('Label_Currency'),

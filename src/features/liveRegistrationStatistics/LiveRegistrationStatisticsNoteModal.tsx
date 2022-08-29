@@ -149,17 +149,19 @@ const LiveRegistrationStatisticsNoteModal: FC<{
 								</Typography.Link>
 							</>
 						) : (
-							<Typography.Link onClick={() => onEdit(record)}>
-								{t('Label_Edit')}
-							</Typography.Link>
-						)}
+							<>
+								<Typography.Link onClick={() => onEdit(record)}>
+									{t('Label_Edit')}
+								</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_SureToDelete')}
-							onConfirm={() => handleDeleteNote(record.id)}
-						>
-							<Typography.Link>{t('Label_Delete')}</Typography.Link>
-						</Popconfirm>
+								<Popconfirm
+									title={t('Label_SureToDelete')}
+									onConfirm={() => handleDeleteNote(record.id)}
+								>
+									<Typography.Link>{t('Label_Delete')}</Typography.Link>
+								</Popconfirm>
+							</>
+						)}
 					</Space>
 				)
 			},
