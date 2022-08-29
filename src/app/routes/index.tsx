@@ -328,10 +328,18 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
+
 const BankCardManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BankCardManagement' */ 'features/bankCardManagement/BankCardManagement'
+		)
+)
+
+const LiveRegistrationStatistics = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LiveRegistrationStatistics' */ 'features/liveRegistrationStatistics/LiveRegistrationStatistics'
 		)
 )
 
@@ -895,6 +903,19 @@ const routes: RouteObject[] = [
 						}
 					>
 						<BankCardManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.operatorService.sub
+								.liveRegistrationStatistics.functionId
+						}
+					>
+						<LiveRegistrationStatistics />
 					</AuthRequire>
 				),
 			},

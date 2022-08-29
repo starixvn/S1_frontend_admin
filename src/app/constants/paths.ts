@@ -12,6 +12,20 @@ const paths = {
 	assignBrand: {
 		root: 'AssignBrand',
 	},
+	customerSupport: {
+		root: 'customerSupport',
+		sub: {
+			operatorService: {
+				root: 'customerSupport/operatorService',
+				sub: {
+					liveRegistrationStatistics: {
+						root: 'customerSupport/operatorService/liveRegistrationStatistics',
+						functionId: 23,
+					},
+				},
+			},
+		},
+	},
 	csd: {
 		root: 'csd',
 		sub: {
