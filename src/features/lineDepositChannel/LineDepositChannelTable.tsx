@@ -16,8 +16,6 @@ import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
 import moment from 'moment/moment'
 import { timeFormat } from 'common/utils/format'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
-import { FaCheck, FaTimes } from 'react-icons/fa'
 
 interface ILineDepositChannelTableProps {
 	form: FormInstance
@@ -68,14 +66,11 @@ const LineDepositChannelTable: FC<ILineDepositChannelTableProps> = ({
 				return editable ? (
 					<Space size='middle'>
 						<Typography.Link onClick={() => onRowSaved(record)}>
-							<FaCheck />
+							{t('Label_Save')}
 						</Typography.Link>
 
-						<Typography.Link
-							type='danger'
-							onClick={() => setEditingKey(undefined)}
-						>
-							<FaTimes />
+						<Typography.Link onClick={() => setEditingKey(undefined)}>
+							{t('Label_Cancel')}
 						</Typography.Link>
 					</Space>
 				) : (
@@ -84,18 +79,15 @@ const LineDepositChannelTable: FC<ILineDepositChannelTableProps> = ({
 							disabled={!editPermission?.canUse}
 							onClick={() => onEdit(record)}
 						>
-							<EditFilled />
+							{t('Label_Edit')}
 						</Typography.Link>
 						<Popconfirm
 							disabled={!deletePermission?.canUse}
 							title={t('Label_SureToDelete')}
 							onConfirm={() => onDeleteChannel(record)}
 						>
-							<Typography.Link
-								type='danger'
-								disabled={!deletePermission?.canUse}
-							>
-								<DeleteFilled />
+							<Typography.Link disabled={!deletePermission?.canUse}>
+								{t('Label_Delete')}
 							</Typography.Link>
 						</Popconfirm>
 					</Space>
