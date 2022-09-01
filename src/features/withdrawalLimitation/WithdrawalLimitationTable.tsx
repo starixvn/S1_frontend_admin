@@ -6,6 +6,7 @@ import { PermissionInterface } from 'type'
 import { numberFormatter } from 'common/utils/format'
 import { IWithdrawalLimitationTableData } from 'features/withdrawalLimitation/type'
 import { Form, FormInstance, Space, Typography } from 'antd'
+import { isNumber } from 'lodash'
 
 interface IWithdrawalLimitationTableProps {
 	loading: boolean
@@ -86,7 +87,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (times: number) =>
-				times ? numberFormatter.format(times) : 'N/A',
+				isNumber(times) ? numberFormatter.format(times) : 'N/A',
 		},
 		{
 			title: t('Label_WithdrawalMax'),
@@ -106,7 +107,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (withdrawalMin: number) =>
-				withdrawalMin ? numberFormatter.format(withdrawalMin) : 'N/A',
+				isNumber(withdrawalMin) ? numberFormatter.format(withdrawalMin) : 'N/A',
 		},
 		{
 			title: t('Label_USDT_ERCMin'),
@@ -116,7 +117,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (UsdtErcMin: number) =>
-				UsdtErcMin ? numberFormatter.format(UsdtErcMin) : 'N/A',
+				isNumber(UsdtErcMin) ? numberFormatter.format(UsdtErcMin) : 'N/A',
 		},
 		{
 			title: t('Label_USDT_TRCMin'),
@@ -126,7 +127,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (UsdtTrcMin: number) =>
-				UsdtTrcMin ? numberFormatter.format(UsdtTrcMin) : 'N/A',
+				isNumber(UsdtTrcMin) ? numberFormatter.format(UsdtTrcMin) : 'N/A',
 		},
 		{
 			title: t('Label_USDC_ERCMin'),
@@ -136,7 +137,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (UsdcErcMin: number) =>
-				UsdcErcMin ? numberFormatter.format(UsdcErcMin) : 'N/A',
+				isNumber(UsdcErcMin) ? numberFormatter.format(UsdcErcMin) : 'N/A',
 		},
 		{
 			title: t('Label_USDC_TRCMin'),
@@ -146,7 +147,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (UsdcTrcMin: number) =>
-				UsdcTrcMin ? numberFormatter.format(UsdcTrcMin) : 'N/A',
+				isNumber(UsdcTrcMin) ? numberFormatter.format(UsdcTrcMin) : 'N/A',
 		},
 		{
 			title: t('Label_ETHMin'),
@@ -156,7 +157,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (EthMin: number) =>
-				EthMin ? numberFormatter.format(EthMin) : 'N/A',
+				isNumber(EthMin) ? numberFormatter.format(EthMin) : 'N/A',
 		},
 		{
 			title: t('Label_BTCMin'),
@@ -166,7 +167,7 @@ const WithdrawalLimitationTable: FC<IWithdrawalLimitationTableProps> = ({
 			innerWidth: 200,
 			editable: true,
 			render: (BtcMin: number) =>
-				BtcMin ? numberFormatter.format(BtcMin) : 'N/A',
+				isNumber(BtcMin) ? numberFormatter.format(BtcMin) : 'N/A',
 		},
 	]
 
