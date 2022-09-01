@@ -191,6 +191,10 @@ const paths = {
 						root: 'finance/setting/bankAccManagement',
 						functionId: 38,
 					},
+					withdrawalLimitation: {
+						root: 'finance/setting/withdrawalLimitation',
+						functionId: 41,
+					},
 				},
 			},
 			depositWithdrawalSector: {

@@ -405,5 +405,12 @@
 	"Label_3DaysInactive": "3 Days Inactive",
 	"Label_5DaysInactive": "5 Days Inactive",
 	"Label_1WeekInactive": "1 Week Inactive",
-	"Label_CompleteOnce": "Complete Once"
+	"Label_CompleteOnce": "Complete Once",
+	"Label_WithdrawalFrequency" : "Withdrawal Frequency",
+	"Label_USDT_ERCMin" : "USDT-ERC20 Min",
+	"Label_USDT_TRCMin" : "USDT-TRC20 Min",
+	"Label_USDC_ERCMin" : "USDC-ERC20 Min",
+	"Label_USDC_TRCMin" : "USDC-TRC20 Min",
+	"Label_ETHMin" : "ETH Min",
+	"Label_BTCMin" : "BTC Min"
 }

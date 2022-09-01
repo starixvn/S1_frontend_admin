@@ -343,6 +343,13 @@ const LiveRegistrationStatistics = lazy(
 		)
 )
 
+const WithdrawalLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalLimitation' */ 'features/withdrawalLimitation/WithdrawalLimitation'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -916,6 +923,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<LiveRegistrationStatistics />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.withdrawalLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.withdrawalLimitation.functionId
+						}
+					>
+						<WithdrawalLimitation />
 					</AuthRequire>
 				),
 			},
