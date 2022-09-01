@@ -258,11 +258,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 41,
-		pathMode: 'Internal',
+		functionId: paths.finance.sub.setting.sub.withdrawalLimitation.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitManagement,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.withdrawalLimitation.root,
 	},
 	{
 		icon: null,
