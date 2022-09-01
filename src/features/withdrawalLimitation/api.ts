@@ -12,7 +12,6 @@ import {
 export const withdrawalLimitationApi = createApi({
 	reducerPath: 'withdrawalLimitationApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
 	endpoints: builder => ({
 		getWithdrawalLimitList: builder.query<
 			IGetWithdrawalLimitResponse,

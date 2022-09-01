@@ -1,7 +1,5 @@
 import { Dispatch, FC, SetStateAction } from 'react'
 import { FormInstance, Tabs } from 'antd'
-import { isEmpty } from 'lodash'
-import { useQueryParams } from 'common/hooks'
 import { Currency } from 'common/enum/type'
 import { WithdrawalLimitationTable } from 'features/withdrawalLimitation/WithdrawalLimitationTable'
 import { PermissionInterface } from 'type'
@@ -34,11 +32,7 @@ const WithdrawalLimitationTab: FC<IWithdrawalLimitationTabProps> = ({
 	onTableRowSave,
 	withdrawalTableData,
 }) => {
-	const [queryParams, setQueryParams] = useQueryParams()
 	const handleTabsChange = (currency: string) => {
-		if (!isEmpty(queryParams)) {
-			setQueryParams({})
-		}
 		form.resetFields()
 		setEditingKey(undefined)
 		setCurrentCurrency(Number(currency))
