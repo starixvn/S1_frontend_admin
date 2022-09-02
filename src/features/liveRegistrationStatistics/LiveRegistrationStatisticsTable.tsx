@@ -14,7 +14,7 @@ import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { IRegistrationManagementData } from './type'
-import { DEPOSIT_STATUS_OPTIONS, STATUS_OPTIONS } from './constants'
+import { DEPOSIT_STATUS_OPTIONS, StatusEnum, STATUS_OPTIONS } from './constants'
 
 const { Option } = Select
 
@@ -119,11 +119,13 @@ const LiveRegistrationStatisticsTable: FC<{
 					defaultValue={record.status}
 					onChange={() => onStatusChange(record)}
 				>
-					{STATUS_OPTIONS.map(option => (
-						<Option value={option.value} key={option.value}>
-							{t(option.displayKey)}
-						</Option>
-					))}
+					{STATUS_OPTIONS.filter(option => option.value !== StatusEnum.All).map(
+						option => (
+							<Option value={option.value} key={option.value}>
+								{t(option.displayKey)}
+							</Option>
+						)
+					)}
 				</Select>
 			),
 		},
