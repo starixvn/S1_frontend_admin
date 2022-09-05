@@ -350,6 +350,13 @@ const WithdrawalLimitation = lazy(
 		)
 )
 
+const DepositLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositLimitation' */ 'features/depositLimitation/DepositLimitation'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -935,6 +942,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.depositLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.depositLimitation.functionId
+						}
+					>
+						<DepositLimitation />
 					</AuthRequire>
 				),
 			},

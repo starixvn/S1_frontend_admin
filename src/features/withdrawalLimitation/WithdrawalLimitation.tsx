@@ -134,7 +134,7 @@ const WithdrawalLimitation: FC<{
 				}).unwrap(),
 			])
 
-			message.success(t('System.Label_LoginSuccess'))
+			message.success(t('System.Label_Success'))
 
 			// 因為這頁 是由兩隻 api 組合起來 , 所以沒有使用 tags 去觸發 reFetch , 在成功後手動reFetch 可確保 table 畫面正確顯示
 			// refetch 完成後才關閉 editing 狀態 確保table 不會顯示到舊資料

@@ -22,7 +22,7 @@ const EditableCellRows: <T>(props: EditableCellProps<T>) => any = ({
 }) => {
 	const inputNode =
 		inputType === 'number' ? (
-			<InputNumber style={{ width: '100%' }} />
+			<InputNumber style={{ width: '100%' }} controls={false} type='number' />
 		) : (
 			<Input />
 		)

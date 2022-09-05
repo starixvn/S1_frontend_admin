@@ -195,6 +195,10 @@ const paths = {
 						root: 'finance/setting/withdrawalLimitation',
 						functionId: 41,
 					},
+					depositLimitation: {
+						root: 'finance/setting/depositLimitation',
+						functionId: 40,
+					},
 				},
 			},
 			depositWithdrawalSector: {
