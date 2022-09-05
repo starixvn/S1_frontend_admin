@@ -142,7 +142,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 						name={giftTags.length > 0 ? 'tags' : ''}
 						label={t('Label_Tags')}
 					>
-						<MultipleSelect onChange={onTagsChange} maxTagCount={0}>
+						<MultipleSelect onChange={onTagsChange}>
 							{giftTags.length > 1 && (
 								<Option value={0}>{t('Label_SelectAll')}</Option>
 							)}
