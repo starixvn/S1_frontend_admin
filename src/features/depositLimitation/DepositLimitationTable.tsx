@@ -191,6 +191,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											required: true,
 											message: '',
 										},
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
 									]}
 								>
 									<InputNumber
@@ -223,6 +228,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 									rules={[
 										{
 											required: true,
+											message: '',
+										},
+										{
+											type: 'number',
+											min: 0,
 											message: '',
 										},
 									]}
@@ -312,6 +322,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											required: true,
 											message: '',
 										},
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
 									]}
 								>
 									<InputNumber
@@ -344,6 +359,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 									rules={[
 										{
 											required: true,
+											message: '',
+										},
+										{
+											type: 'number',
+											min: 0,
 											message: '',
 										},
 									]}
@@ -434,6 +454,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											required: true,
 											message: '',
 										},
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
 									]}
 								>
 									<InputNumber
@@ -466,6 +491,11 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 									rules={[
 										{
 											required: true,
+											message: '',
+										},
+										{
+											type: 'number',
+											min: 0,
 											message: '',
 										},
 									]}
