@@ -101,7 +101,8 @@ const LiveRegistrationStatistics: FC<{
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		const { dateRange, ...values } = await searchForm.validateFields()
+		const { dateRange, affiliatesCode, ...values } =
+			await searchForm.validateFields()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
@@ -112,6 +113,7 @@ const LiveRegistrationStatistics: FC<{
 			await getRegistrationManagementList({
 				siteId,
 				...values,
+				affiliatesCode: affiliatesCode || null,
 				pageNumber: current,
 				pageSize,
 				sort: 0,
@@ -209,7 +211,10 @@ const LiveRegistrationStatistics: FC<{
 	const handleStatusChange = async ({
 		custId,
 		status,
-	}: IRegistrationManagementData) => {
+	}: {
+		custId: number
+		status: number
+	}) => {
 		try {
 			await setRegistrationManagement({ siteId, custId, status }).unwrap()
 			message.success(t('System.Label_Success'))

@@ -66,7 +66,7 @@ const LiveRegistrationStatisticsFilter: FC<
 						onFinish={() => onSearch({})}
 						initialValues={{
 							currencyId: currencyListBySite[0]?.currencyId,
-							dateType: DateTypeEnum.LastActiveDate,
+							dateType: DateTypeEnum.RegisterDate,
 							depositStatus: DepositStatusEnum.All,
 							status: StatusEnum.All,
 							agentCodeType: AgentCodeEnum.All,

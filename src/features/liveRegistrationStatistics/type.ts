@@ -31,6 +31,7 @@ export type IRegistrationManagementData = {
 	phoneNo: null | number
 	phoneVerified: number
 	regTime: string
+	lastActiveTime: null | string
 	depositStatus: number
 	status: number
 	updateRemark: null | string[]

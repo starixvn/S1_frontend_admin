@@ -77,11 +77,11 @@ export enum DormantMemberEnum {
 
 export const DATE_TYPE_OPTIONS = [
 	{
-		displayKey: 'LastActiveDate',
+		displayKey: 'Label_LastActiveDate',
 		value: DateTypeEnum.LastActiveDate,
 	},
 	{
-		displayKey: 'RegisterDate',
+		displayKey: 'Label_RegisterDate',
 		value: DateTypeEnum.RegisterDate,
 	},
 ]
@@ -115,7 +115,7 @@ export const DEPOSIT_STATUS_OPTIONS = [
 		value: DepositStatusEnum.Deposited,
 	},
 	{
-		displayKey: 'NonDeposit',
+		displayKey: 'Label_NonDeposit',
 		value: DepositStatusEnum.NonDeposit,
 	},
 ]
@@ -180,19 +180,19 @@ export const DORMANT_MEMBER_OPTIONS = [
 		value: DormantMemberEnum.OneWeekInactive,
 	},
 	{
-		displayKey: '2 Week Inactive',
+		displayKey: 'Label_2WeekInactive',
 		value: DormantMemberEnum.TwoWeekInactive,
 	},
 	{
-		displayKey: '1 Month Inactive',
+		displayKey: 'Label_1MonthInactive',
 		value: DormantMemberEnum.OneMonthsInactive,
 	},
 	{
-		displayKey: '2 Month Inactive',
+		displayKey: 'Label_2MonthInactive',
 		value: DormantMemberEnum.TwoMonthInactive,
 	},
 	{
-		displayKey: '3 Month Inactive',
+		displayKey: 'Label_3MonthInactive',
 		value: DormantMemberEnum.ThreeMonthInactive,
 	},
 ]
