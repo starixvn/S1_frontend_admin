@@ -36,6 +36,11 @@ const EditableCellRows: <T>(props: EditableCellProps<T>) => any = ({
 							required: true,
 							message: '',
 						},
+						{
+							type: 'number',
+							min: 0,
+							message: '',
+						},
 					]}
 					name={dataIndex}
 					style={{ margin: 0, minWidth: 60 }}
