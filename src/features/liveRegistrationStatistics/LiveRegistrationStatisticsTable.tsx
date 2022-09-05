@@ -24,7 +24,13 @@ const LiveRegistrationStatisticsTable: FC<{
 	pagination: PaginationInterface
 	registrationManagementList: IRegistrationManagementData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
-	onStatusChange: (record: IRegistrationManagementData) => void
+	onStatusChange: ({
+		custId,
+		status,
+	}: {
+		custId: number
+		status: number
+	}) => void
 	onOpenNoteLogModal: (record: IRegistrationManagementData) => void
 	onCallingRecord: (custId: number) => void
 }> = ({
@@ -83,17 +89,30 @@ const LiveRegistrationStatisticsTable: FC<{
 			width: 80,
 			align: 'center' as 'center',
 			render: (phoneVerified: number) =>
-				phoneVerified === 1 ? t('Verified') : 'No',
+				phoneVerified === 1 ? t('Label_Verified') : 'No',
 		},
 		{
 			title: t('Label_RegTimeDate'),
 			key: 'regTime',
 			dataIndex: 'regTime',
-			width: 80,
+			width: '200px',
 			align: 'center' as 'center',
 			render: (regTime: string) =>
 				regTime
 					? moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
+		},
+		{
+			title: t('Label_LastActiveTime'),
+			key: 'lastActiveTime',
+			dataIndex: 'lastActiveTime',
+			width: '200px',
+			align: 'center' as 'center',
+			render: (lastActiveTime: string) =>
+				lastActiveTime
+					? moment(lastActiveTime)
+							.utcOffset(timeZoneUtcOffset)
+							.format(timeFormat)
 					: '',
 		},
 		{
@@ -117,7 +136,7 @@ const LiveRegistrationStatisticsTable: FC<{
 				<Select
 					style={{ width: '140px' }}
 					defaultValue={record.status}
-					onChange={() => onStatusChange(record)}
+					onChange={status => onStatusChange({ custId: record.custId, status })}
 				>
 					{STATUS_OPTIONS.filter(option => option.value !== StatusEnum.All).map(
 						option => (
