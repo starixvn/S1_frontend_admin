@@ -412,5 +412,12 @@
 	"Label_USDC_ERCMin" : "USDC-ERC20 Min",
 	"Label_USDC_TRCMin" : "USDC-TRC20 Min",
 	"Label_ETHMin" : "ETH Min",
-	"Label_BTCMin" : "BTC Min"
+	"Label_BTCMin" : "BTC Min",
+	"Label_OnlineBanking" : "Online Banking",
+	"Label_MobilePay" : "Mobile Pay",
+	"Label_LocalBanking" : "Local Banking",
+	"Label_Min" : "Min",
+	"Label_Max" : "Max",
+	"Label_CreateDepositLimit" : "Create Deposit Limit",
+	"Label_PointLevelDuplicated" : "Point level duplicated. Please Check."
 }
