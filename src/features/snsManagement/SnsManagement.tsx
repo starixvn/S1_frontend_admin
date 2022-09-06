@@ -6,7 +6,6 @@ import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { SnsManagementTab } from 'features/snsManagement/components/SnsManagementTab'
 import {
 	useLazyGetDataListQuery,
@@ -43,11 +42,7 @@ const SnsManagement: FC<{
 	const toggleSortMode = () => {
 		setIsSortMode(prev => !prev)
 	}
-
-	const {
-		data: { data: langCodes = [] } = {},
-		isFetching: isGetLanguageListFetching,
-	} = useGetLanguageListQuery({ siteId, currencyId })
+	const [langCodes, setLangCodes] = useState<string[]>([])
 
 	const [
 		getDataList,
@@ -63,7 +58,12 @@ const SnsManagement: FC<{
 
 	const handleSearch = async () => {
 		try {
-			await getDataList({ siteId, currencyId }).unwrap()
+			const { data: rawData } = await getDataList({
+				siteId,
+				currencyId,
+			}).unwrap()
+			// 透過 api data 先把 keys map 出來當作 langCodes 做使用
+			setLangCodes(Object.keys(rawData))
 		} catch (error) {
 			message.error(t((error as Error).message))
 		}
@@ -140,11 +140,7 @@ const SnsManagement: FC<{
 		}
 	}, [currencyId])
 
-	const loading =
-		isGetLanguageListFetching ||
-		isGetDataListLoading ||
-		isSetDataLoading ||
-		isSetSortLoading
+	const loading = isGetDataListLoading || isSetDataLoading || isSetSortLoading
 
 	// editing or sorting disabled components
 	const disabled = isEditMode || isSortMode
