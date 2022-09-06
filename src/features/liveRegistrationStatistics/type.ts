@@ -58,6 +58,9 @@ export interface IExportRegistrationManagementArgs {
 	endDate: string
 	affiliatesCode: null | string
 	agentCodeType: number
+	callOutStatus: number
+	dormantUser: number
+	dateType: number
 }
 
 export interface IRegistrationManagementNoteData {
