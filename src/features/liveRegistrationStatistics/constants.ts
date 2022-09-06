@@ -44,8 +44,8 @@ export enum StatusEnum {
 
 export enum DepositStatusEnum {
 	All = 0,
-	Deposited,
 	NonDeposit,
+	Deposited,
 }
 
 export enum AgentCodeEnum {
@@ -111,12 +111,12 @@ export const DEPOSIT_STATUS_OPTIONS = [
 		value: DepositStatusEnum.All,
 	},
 	{
-		displayKey: 'Label_Deposited',
-		value: DepositStatusEnum.Deposited,
-	},
-	{
 		displayKey: 'Label_NonDeposit',
 		value: DepositStatusEnum.NonDeposit,
+	},
+	{
+		displayKey: 'Label_Deposited',
+		value: DepositStatusEnum.Deposited,
 	},
 ]
 
