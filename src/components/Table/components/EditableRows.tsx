@@ -31,17 +31,26 @@ const EditableCellRows: <T>(props: EditableCellProps<T>) => any = ({
 		<td {...restProps}>
 			{editing ? (
 				<Form.Item
-					rules={[
-						{
-							required: true,
-							message: '',
-						},
-						{
-							type: 'number',
-							min: 0,
-							message: '',
-						},
-					]}
+					rules={
+						inputType === 'number'
+							? [
+									{
+										required: true,
+										message: '',
+									},
+									{
+										type: 'number',
+										min: 0,
+										message: '',
+									},
+							  ]
+							: [
+									{
+										required: true,
+										message: '',
+									},
+							  ]
+					}
 					name={dataIndex}
 					style={{ margin: 0, minWidth: 60 }}
 				>
