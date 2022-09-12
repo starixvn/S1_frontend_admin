@@ -357,6 +357,20 @@ const DepositLimitation = lazy(
 		)
 )
 
+const HotEventManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotEventManagement' */ 'features/hotEventManagement/HotEventManagement'
+		)
+)
+
+const HotEventEdit = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotEventEdit' */ 'features/hotEventManagement/editHotEvent/EditHotEvent'
+		)
+)
+
 const IssueBonusManagement = lazy(
 	() =>
 		import(
@@ -971,6 +985,22 @@ const routes: RouteObject[] = [
 						functionId={paths.finance.sub.issueBonusManagement.functionId}
 					>
 						<IssueBonusManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotEventManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
+						<HotEventManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotEventManagement.root}/:id`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
+						<HotEventEdit />
 					</AuthRequire>
 				),
 			},
