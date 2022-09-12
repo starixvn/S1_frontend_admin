@@ -357,6 +357,13 @@ const DepositLimitation = lazy(
 		)
 )
 
+const SlotGameCategory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SlotGameCategory' */ 'features/slotGameCategory/SlotGameCategory'
+		)
+)
+
 const HotEventManagement = lazy(
 	() =>
 		import(
@@ -975,6 +982,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<DepositLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.slotGameCategory.functionId}
+					>
+						<SlotGameCategory />
 					</AuthRequire>
 				),
 			},

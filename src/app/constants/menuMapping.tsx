@@ -419,11 +419,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 59,
+		functionId: paths.productManagement.sub.slotGameCategory.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/CategoryManagement',
 		internalFunctionKey: allowedRoles.CMSCategoryManagement,
-		newAdminPath: '',
+		newAdminPath: paths.productManagement.sub.slotGameCategory.root,
 	},
 	{
 		icon: null,
