@@ -31,7 +31,8 @@
 */
 
 export enum DateTypeEnum {
-	RegisterDate = 1,
+	All = 0,
+	RegisterDate,
 	LastActiveDate,
 }
 

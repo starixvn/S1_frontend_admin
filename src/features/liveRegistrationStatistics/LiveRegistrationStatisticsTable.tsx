@@ -11,6 +11,7 @@ import {
 	Typography,
 } from 'antd'
 import { PaginationInterface } from 'common/hooks'
+import { SorterResult } from 'antd/es/table/interface'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { IRegistrationManagementData } from './type'
@@ -23,7 +24,11 @@ const LiveRegistrationStatisticsTable: FC<{
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
 	registrationManagementList: IRegistrationManagementData[]
-	onTableChange: (newPagination: TablePaginationConfig) => void
+	onTableChange: (
+		newPagination: TablePaginationConfig,
+		_: any,
+		sorter: SorterResult<IRegistrationManagementData>
+	) => void
 	onStatusChange: ({
 		custId,
 		status,
@@ -97,6 +102,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'regTime',
 			width: '200px',
 			align: 'center' as 'center',
+			sorter: true,
 			render: (regTime: string) =>
 				regTime
 					? moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
@@ -108,6 +114,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'lastActiveTime',
 			width: '200px',
 			align: 'center' as 'center',
+			sorter: true,
 			render: (lastActiveTime: string) =>
 				lastActiveTime
 					? moment(lastActiveTime)
@@ -186,6 +193,7 @@ const LiveRegistrationStatisticsTable: FC<{
 				columns={columns}
 				dataSource={registrationManagementList}
 				pagination={pagination as TablePaginationConfig}
+				// @ts-ignore
 				onChange={onTableChange}
 			/>
 		</LayoutContent.Card>
