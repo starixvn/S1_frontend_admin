@@ -353,6 +353,15 @@ const paths = {
 			},
 		},
 	},
+	productManagement: {
+		root: 'productManagement',
+		sub: {
+			slotGameCategory: {
+				root: 'productManagement/slotGameCategory',
+				functionId: 59,
+			},
+		},
+	},
 	rewardProgram: {
 		root: 'rewardProgram',
 		sub: {
