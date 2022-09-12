@@ -1,36 +1,18 @@
 import { Button, Col, Dropdown, Menu, Row } from 'antd'
 import { useMediaQuery } from 'usehooks-ts'
-
 import { useAppSelector } from 'app/store'
-import { UserSite } from 'common/enum/type'
-import { useChangeBrandMutation } from 'common/service/homeApi/api'
-
-const useUserSiteAction = () => {
-	const [changeBrand] = useChangeBrandMutation()
-	const { userSite, userSiteList } = useAppSelector(state => state.allEnum)
-
-	const handleSelectUserSite = async (newUserSite: UserSite) => {
-		await changeBrand({ siteId: newUserSite.siteId })
-
-		window.location.href = `/`
-	}
-
-	return { userSite, userSiteList, handleSelectUserSite }
-}
+import { Link } from 'react-router-dom'
+import paths from 'app/constants/paths'
 
 const LayoutHeaderUserSite = () => {
 	const maxWidthMediaMatches = useMediaQuery('(max-width: 768px)')
 
-	const { userSite, userSiteList, handleSelectUserSite } = useUserSiteAction()
-
+	const { userSite, userSiteList } = useAppSelector(state => state.allEnum)
 	const siteMenu = (
 		<Menu>
-			{userSiteList.map(_userSite => (
-				<Menu.Item
-					key={_userSite.siteId}
-					onClick={() => handleSelectUserSite(_userSite)}
-				>
-					{_userSite.siteName}
+			{userSiteList.map(({ siteId, siteName }) => (
+				<Menu.Item key={siteId}>
+					<Link to={`${paths.layout.root}?siteId=${siteId}`}>{siteName}</Link>
 				</Menu.Item>
 			))}
 		</Menu>
@@ -49,18 +31,17 @@ const LayoutHeaderUserSite = () => {
 	) : (
 		<Col flex='400px'>
 			<Row justify='end' gutter={8}>
-				{userSiteList.map(_userSite => (
-					<Col flex='96px' key={_userSite.siteName}>
-						<Button
-							block
-							key={_userSite.siteName}
-							onClick={() => handleSelectUserSite(_userSite)}
-							type={
-								_userSite.siteName === userSite?.siteName ? 'primary' : 'text'
-							}
-						>
-							{_userSite.siteName ?? 'site'}
-						</Button>
+				{userSiteList.map(({ siteId, siteName }) => (
+					<Col flex='96px' key={siteName}>
+						<Link to={`${paths.layout.root}?siteId=${siteId}`}>
+							<Button
+								block
+								key={siteName}
+								type={siteName === userSite?.siteName ? 'primary' : 'text'}
+							>
+								{siteName ?? 'site'}
+							</Button>
+						</Link>
 					</Col>
 				))}
 			</Row>
