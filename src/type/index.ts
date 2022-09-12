@@ -97,3 +97,9 @@ export interface FormPermissionInterface {
 	displayKey: number
 	permissionIdList: number[]
 }
+
+// * 升序及降序
+export enum OrderEnum {
+	descend = 0,
+	ascend = 1,
+}

@@ -15,9 +15,10 @@ export interface IGetRegistrationManagementListArgs {
 	callOutStatus: number
 	dormantUser: number
 	dateType: number
-	sort: number
 	pageSize: number
 	pageNumber: number
+	orderByProperty?: 'RegTime' | 'LastActiveTime'
+	orderByDirection?: 0 | 1 | null
 }
 
 export type IRegistrationManagementData = {
@@ -53,7 +54,6 @@ export interface IExportRegistrationManagementArgs {
 	depositStatus: number
 	status: number
 	userName: string
-	sort: number
 	startDate: string
 	endDate: string
 	affiliatesCode: null | string

@@ -17,6 +17,8 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { LayoutContent } from 'app/pages/layout'
+import { OrderEnum } from 'type'
+import { SorterResult } from 'antd/es/table/interface'
 import LiveRegistrationStatisticsFilter from './LiveRegistrationStatisticsFilter'
 import {
 	useCallingRecordRegistrationManagementMutation,
@@ -28,6 +30,7 @@ import {
 	IRegistrationManagementData,
 	IRegistrationManagementResponse,
 } from './type'
+
 import {
 	DormantMemberEnum,
 	AgentCodeEnum,
@@ -96,10 +99,14 @@ const LiveRegistrationStatistics: FC<{
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
+		orderByProperty = undefined,
+		orderByDirection = undefined,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
+		orderByProperty?: 'RegTime' | 'LastActiveTime'
+		orderByDirection?: 0 | 1 | null
 	}) => {
 		const { dateRange, affiliatesCode, ...values } =
 			await searchForm.validateFields()
@@ -116,13 +123,17 @@ const LiveRegistrationStatistics: FC<{
 				affiliatesCode: affiliatesCode || null,
 				pageNumber: current,
 				pageSize,
-				sort: 0,
 				startDate,
 				endDate,
+				orderByProperty,
+				orderByDirection,
 			}).unwrap()
 
 			setQueryParams({
 				...values,
+				affiliatesCode: affiliatesCode || null,
+				orderByProperty,
+				orderByDirection,
 				pageNumber: current,
 				pageSize,
 				startDate,
@@ -139,11 +150,11 @@ const LiveRegistrationStatistics: FC<{
 		try {
 			const {
 				currencyId = currencyListBySite[0]?.currencyId,
-				depositStatus = DateTypeEnum.LastActiveDate,
+				depositStatus = DateTypeEnum.All,
 				status = StatusEnum.All,
-				affiliatesCode = '',
+				affiliatesCode = null,
 				agentCodeType = AgentCodeEnum.All,
-				callOutStatus,
+				callOutStatus = 0,
 				dormantUser,
 				dateType,
 				userName = '',
@@ -152,14 +163,13 @@ const LiveRegistrationStatistics: FC<{
 			} = queryParams
 			const blob = await exportRegistrationManagement({
 				siteId,
-				currencyId,
-				depositStatus,
+				currencyId: Number(currencyId),
+				depositStatus: Number(depositStatus),
 				status,
 				callOutStatus,
-				dormantUser,
-				dateType,
+				dormantUser: Number(dormantUser),
+				dateType: Number(dateType),
 				userName,
-				sort: 0,
 				startDate,
 				endDate,
 				affiliatesCode,
@@ -202,15 +212,23 @@ const LiveRegistrationStatistics: FC<{
 		}
 	}
 
-	const handleTableChange = async (newPagination: TablePaginationConfig) => {
+	const handleTableChange = async (
+		newPagination: TablePaginationConfig,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_: any,
+		sorter: SorterResult<IRegistrationManagementData>
+	) => {
 		const {
 			current = PAGINATION.defaultCurrent,
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
+		const { columnKey, order } = sorter
 		await handleSearch({
 			current,
 			pageSize,
 			currentTimeZoneUtcOffset: timeZoneUtcOffset,
+			orderByProperty: columnKey as 'RegTime' | 'LastActiveTime',
+			orderByDirection: order && OrderEnum[order],
 		})
 	}
 
@@ -240,6 +258,7 @@ const LiveRegistrationStatistics: FC<{
 					status = StatusEnum.All,
 					affiliatesCode = '',
 					agentCodeType = AgentCodeEnum.All,
+
 					callOutStatus = CallOutStatusEnum.All,
 					dormantUser = DormantMemberEnum.ThreeDaysInactive,
 					dateType = DateTypeEnum.LastActiveDate,
@@ -248,6 +267,8 @@ const LiveRegistrationStatistics: FC<{
 					pageSize = PAGINATION.defaultPageSize,
 					startDate,
 					endDate,
+					orderByProperty,
+					orderByDirection,
 				} = queryParams
 				searchForm.setFieldsValue({
 					currencyId: Number(currencyId),
@@ -265,6 +286,8 @@ const LiveRegistrationStatistics: FC<{
 				handleSearch({
 					current: pageNumber,
 					pageSize,
+					orderByProperty,
+					orderByDirection,
 				})
 			}
 		}
