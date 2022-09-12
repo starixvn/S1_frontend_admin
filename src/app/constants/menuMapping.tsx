@@ -139,11 +139,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 33,
-		pathMode: 'Internal',
+		functionId: paths.finance.sub.issueBonusManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/BonusPayout',
 		internalFunctionKey: allowedRoles.FinanceBonusPayout,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.issueBonusManagement.root,
 	},
 	{
 		icon: null,

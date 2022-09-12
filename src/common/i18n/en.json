@@ -426,5 +426,16 @@
 	"Label_Max": "Max",
 	"Label_CreateDepositLimit": "Create Deposit Limit",
 	"Label_PointLevelDuplicated": "Point level duplicated. Please Check.",
-	"Label_LastActiveTime": "Last Active Time"
+	"Label_LastActiveTime": "Last Active Time",
+	"Label_GetInfo": "Get Info",
+	"Label_CheckBonusCode": "Check Bonus Code",
+	"Label_Rollover": "Rollover",
+	"Label_Transfer": "Transfer",
+	"Label_Seamless": "Seamless",
+	"Label_RequiredAmount": "Required Amount",
+	"Label_Winover": "Winover",
+	"Label_MaxBonus": "Max Bonus",
+	"Label_DPTrxnID": "DP Trxn.ID",
+	"Label_CheckDpId": "Check DP ID",
+	"Label_Clear": "Clear"
 }
