@@ -378,11 +378,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 56,
+		functionId: paths.cms.sub.hotEventManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/HotEventManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.hotEventManagement.root,
 	},
 	{
 		icon: null,

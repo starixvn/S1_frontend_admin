@@ -497,6 +497,10 @@ const paths = {
 					},
 				},
 			},
+			hotEventManagement: {
+				root: 'cms/hotEventManagement',
+				functionId: 56,
+			},
 		},
 	},
 }

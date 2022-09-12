@@ -46,6 +46,7 @@ import { bankCardManagementApi } from 'features/bankCardManagement/api'
 import { liveRegistrationStatisticsApi } from 'features/liveRegistrationStatistics/api'
 import { withdrawalLimitationApi } from 'features/withdrawalLimitation/api'
 import { depositLimitationApi } from 'features/depositLimitation/api'
+import { hotEventManagementApi } from 'features/hotEventManagement/api'
 import { issueBonusManagementApi } from 'features/issueBonusManagement/api'
 
 export const store = configureStore({
@@ -100,6 +101,7 @@ export const store = configureStore({
 		[withdrawalLimitationApi.reducerPath]: withdrawalLimitationApi.reducer,
 		[depositLimitationApi.reducerPath]: depositLimitationApi.reducer,
 		[issueBonusManagementApi.reducerPath]: issueBonusManagementApi.reducer,
+		[hotEventManagementApi.reducerPath]: hotEventManagementApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -149,7 +151,8 @@ export const store = configureStore({
 			.concat(issueBonusManagementApi.middleware)
 			.concat(liveRegistrationStatisticsApi.middleware)
 			.concat(withdrawalLimitationApi.middleware)
-			.concat(depositLimitationApi.middleware),
+			.concat(depositLimitationApi.middleware)
+			.concat(hotEventManagementApi.middleware),
 })
 
 // to ignore : TS2589: Type instantiation is excessively deep and possibly infinite.
