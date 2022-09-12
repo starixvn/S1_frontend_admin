@@ -46,6 +46,7 @@ import { bankCardManagementApi } from 'features/bankCardManagement/api'
 import { liveRegistrationStatisticsApi } from 'features/liveRegistrationStatistics/api'
 import { withdrawalLimitationApi } from 'features/withdrawalLimitation/api'
 import { depositLimitationApi } from 'features/depositLimitation/api'
+import { issueBonusManagementApi } from 'features/issueBonusManagement/api'
 
 export const store = configureStore({
 	reducer: {
@@ -98,6 +99,7 @@ export const store = configureStore({
 			liveRegistrationStatisticsApi.reducer,
 		[withdrawalLimitationApi.reducerPath]: withdrawalLimitationApi.reducer,
 		[depositLimitationApi.reducerPath]: depositLimitationApi.reducer,
+		[issueBonusManagementApi.reducerPath]: issueBonusManagementApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -144,6 +146,7 @@ export const store = configureStore({
 			.concat(lineDepositChannelApi.middleware)
 			.concat(withdrawalSubmissionApi.middleware)
 			.concat(bankCardManagementApi.middleware)
+			.concat(issueBonusManagementApi.middleware)
 			.concat(liveRegistrationStatisticsApi.middleware)
 			.concat(withdrawalLimitationApi.middleware)
 			.concat(depositLimitationApi.middleware),

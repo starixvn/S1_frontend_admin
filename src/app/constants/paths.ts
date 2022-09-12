@@ -210,6 +210,10 @@ const paths = {
 					},
 				},
 			},
+			issueBonusManagement: {
+				root: 'finance/issueBonusManagement',
+				functionId: 33,
+			},
 		},
 	},
 	marketing: {

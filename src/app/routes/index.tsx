@@ -357,6 +357,13 @@ const DepositLimitation = lazy(
 		)
 )
 
+const IssueBonusManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'IssueBonusManagement' */ 'features/issueBonusManagement/IssueBonusManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -954,6 +961,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<DepositLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.issueBonusManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.finance.sub.issueBonusManagement.functionId}
+					>
+						<IssueBonusManagement />
 					</AuthRequire>
 				),
 			},
