@@ -290,11 +290,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 45,
+		functionId: paths.marketing.sub.bonusManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BonusManage',
 		internalFunctionKey: allowedRoles.MarketingBonusManage,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.bonusManagement.root,
 	},
 	{
 		icon: null,

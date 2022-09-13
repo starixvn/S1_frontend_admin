@@ -230,6 +230,7 @@ const paths = {
 			},
 			bonusManagement: {
 				root: 'marketing/bonusManagement',
+				functionId: 45,
 			},
 			appliedBonus: {
 				root: 'marketing/appliedBonus',
