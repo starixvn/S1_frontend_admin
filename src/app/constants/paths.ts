@@ -359,7 +359,7 @@ const paths = {
 		sub: {
 			slotGameCategory: {
 				root: 'productManagement/slotGameCategory',
-				functionId: 59,
+				functionId: 126,
 			},
 		},
 	},
