@@ -516,5 +516,9 @@
 	"Label_TableAndCards" : "Table & Cards",
 	"Label_BuyFeaturesGame" : "Buy Features Game",
 	"Label_Megaways" : "MegaWays",
-	"Label_SetCategory" : "Set Category"
+	"Label_SetCategory" : "Set Category",
+	"Label_SupportChannels" : "Support Channels",
+	"Label_BankQR" : "BankQR",
+	"Label_QrCodeUrl" : "QR Code Url",
+	"Label_QrCodeErrorMsg" : "The uploaded image is not a QR code image, please re-upload"
 }

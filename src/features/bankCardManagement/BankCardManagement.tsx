@@ -11,6 +11,7 @@ import {
 	IGetBankInfoResponse,
 	IGetPointLevelListResponse,
 	IGetPurposeEnumResponse,
+	IGetSupportChannelEnumResponse,
 	IGetStatusEnumResponse,
 } from 'features/bankCardManagement/type'
 import {
@@ -19,6 +20,7 @@ import {
 	useGetPointLevelListQuery,
 	useGetPurposeEnumQuery,
 	useGetStatusEnumQuery,
+	useGetSupportChannelEnumQuery,
 	useLazyGetBankCardListQuery,
 	useSetBankCardMutation,
 } from 'features/bankCardManagement/api'
@@ -59,6 +61,7 @@ const BankCardManagement: FC<{
 		sysIds: number[]
 		vipLevels: Array<number | string>
 		pointLevels: Array<number | string>
+		supportChannels: Array<number | string>
 		agent: string
 		accountNo: string
 	}>()
@@ -75,6 +78,8 @@ const BankCardManagement: FC<{
 		vipLevels: number[]
 		status: number
 		pointLevels: number[]
+		supportChannels: number[]
+		qrCodeUrl: string | null
 		sort: number
 		memo: string
 	}>()
@@ -102,6 +107,11 @@ const BankCardManagement: FC<{
 		data: { data: statusEnumList } = {} as IGetStatusEnumResponse,
 		isLoading: isGetStatusEnumLoading,
 	} = useGetStatusEnumQuery(null)
+
+	const {
+		data: { data: supportChannelList } = {} as IGetSupportChannelEnumResponse,
+		isLoading: isGetSupportChannelLoading,
+	} = useGetSupportChannelEnumQuery(null)
 
 	const {
 		data: { data: bankInfoList } = {} as IGetBankInfoResponse,
@@ -148,10 +158,11 @@ const BankCardManagement: FC<{
 			purposes: rawPurposes,
 			pointLevels: rawPointLevels,
 			vipLevels: rawVipLevels,
+			supportChannels: rawSupportChannels,
 			...args
 		} = filterForm.getFieldsValue()
 
-		// 後端希望這三個 args 若是全選則送 [] 給他 , 所以這樣設計
+		// 後端希望這四個 args 若是全選則送 [] 給他 , 所以這樣設計
 		const purposes = rawPurposes.includes('all')
 			? []
 			: rawPurposes.map(purpose => Number(purpose))
@@ -164,6 +175,10 @@ const BankCardManagement: FC<{
 			? []
 			: rawPointLevels.map(pointLevel => Number(pointLevel))
 
+		const supportChannels = rawSupportChannels.includes('all')
+			? []
+			: rawSupportChannels.map(channel => Number(channel))
+
 		try {
 			await getBankCardList({
 				siteId,
@@ -171,6 +186,7 @@ const BankCardManagement: FC<{
 				purposes,
 				vipLevels,
 				pointLevels,
+				supportChannels,
 				pageNumber: current,
 				pageSize,
 				...args,
@@ -181,6 +197,7 @@ const BankCardManagement: FC<{
 				purposes,
 				vipLevels,
 				pointLevels,
+				supportChannels,
 				pageNumber: current,
 				pageSize,
 				...args,
@@ -220,6 +237,8 @@ const BankCardManagement: FC<{
 			pointLevels,
 			sort,
 			memo,
+			supportChannels,
+			qrCodeUrl,
 		} = record
 		const purposeText = concatStrings(purposes)
 
@@ -237,6 +256,8 @@ const BankCardManagement: FC<{
 			pointLevels,
 			sort,
 			memo: memo || '',
+			supportChannels,
+			qrCodeUrl,
 		})
 		editBankModal.onOpen()
 	}
@@ -253,6 +274,8 @@ const BankCardManagement: FC<{
 			sort = 0,
 			status,
 			memo,
+			supportChannels,
+			qrCodeUrl,
 		} = await modalForm.validateFields()
 		const { financialAccountId } = modalRecord
 		try {
@@ -268,6 +291,8 @@ const BankCardManagement: FC<{
 				memo,
 				status,
 				sort,
+				supportChannels,
+				qrCodeUrl,
 			}).unwrap()
 
 			message.success(response.message ?? t('System.Label_Success'))
@@ -291,6 +316,7 @@ const BankCardManagement: FC<{
 				sysIds,
 				vipLevels,
 				pointLevels,
+				supportChannels,
 				agent = '',
 				accountNo = '',
 			} = queryParams
@@ -309,6 +335,9 @@ const BankCardManagement: FC<{
 					: ['all'],
 				pointLevels: pointLevels
 					? pointLevels.map((pointLevel: string) => Number(pointLevel))
+					: ['all'],
+				supportChannels: supportChannels
+					? supportChannels.map((channel: string) => Number(channel))
 					: ['all'],
 			})
 
@@ -329,6 +358,7 @@ const BankCardManagement: FC<{
 				statuses: statusEnumList?.map(status => status.value),
 				vipLevels: ['all'],
 				pointLevels: ['all'],
+				supportChannels: ['all'],
 			})
 		}
 	}, [isGetPointLevelLoading, isGetBankInfoLoading])
@@ -339,7 +369,8 @@ const BankCardManagement: FC<{
 		isGetVipLevelSettingLoading ||
 		isGetStatusEnumLoading ||
 		isGetBankInfoLoading ||
-		isGetPointLevelLoading
+		isGetPointLevelLoading ||
+		isGetSupportChannelLoading
 
 	return (
 		<LayoutContent.Main>
@@ -355,6 +386,7 @@ const BankCardManagement: FC<{
 					statusEnumList,
 					pointLevelList,
 					bankInfoList,
+					supportChannelList,
 				}}
 			>
 				<BankCardManagementFilterTab
@@ -384,6 +416,7 @@ const BankCardManagement: FC<{
 				currencyListBySite={currencyListBySite}
 				vipLevelList={vipLevelList}
 				statusEnumList={statusEnumList}
+				supportChannelsList={supportChannelList}
 				pointLevelList={pointLevelList}
 			/>
 		</LayoutContent.Main>
