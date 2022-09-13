@@ -11,8 +11,10 @@ import {
 	IGetPointLevelListArgs,
 	IGetPointLevelListResponse,
 	IGetPurposeEnumResponse,
+	IGetSupportChannelEnumResponse,
 	IGetStatusEnumResponse,
 	ISetBankCardArgs,
+	IGetQrCodeUrlResponse,
 } from 'features/bankCardManagement/type'
 
 export const bankCardManagementApi = createApi({
@@ -87,6 +89,24 @@ export const bankCardManagementApi = createApi({
 				data,
 			}),
 		}),
+		// 獲得渠道列表
+		getSupportChannelEnum: builder.query<IGetSupportChannelEnumResponse, null>({
+			query: () => ({
+				url: 'Enum/GetEnumType',
+				method: 'POST',
+				data: {
+					enumName: 'BankCardManagementSupportChannelEnum',
+				},
+			}),
+		}),
+		// 獲得 qrCodeUrl
+		getQrCodeUrl: builder.mutation<IGetQrCodeUrlResponse, FormData>({
+			query: data => ({
+				url: 'BankCardManagement/GetQrCodeUrl',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -98,4 +118,6 @@ export const {
 	useGetStatusEnumQuery,
 	useGetPurposeEnumQuery,
 	useGetAgentListQuery,
+	useGetSupportChannelEnumQuery,
+	useGetQrCodeUrlMutation,
 } = bankCardManagementApi
