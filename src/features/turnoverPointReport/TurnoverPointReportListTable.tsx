@@ -60,11 +60,11 @@ const TurnoverPointReportListTable: FC<ITurnoverPointReportTableProps> = ({
 		},
 		{
 			title: t('Label_Category'),
-			key: 'categoryName',
-			dataIndex: 'categoryName',
+			key: 'tpCategoryName',
+			dataIndex: 'tpCategoryName',
 			width: 100,
 			align: 'center' as 'center',
-			render: categoryName => categoryName ?? 'N/A',
+			render: tpCategoryName => tpCategoryName ?? 'N/A',
 		},
 		{
 			title: t('Label_PointEarned'),
