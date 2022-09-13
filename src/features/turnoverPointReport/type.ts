@@ -35,6 +35,7 @@ export type ITurnoverPointListData = {
 	vipLevelName: string
 	tpCategoryId: number
 	categoryName: string | null
+	tpCategoryName: string | null
 	pointEarned: number
 	settleDate: string
 	createTime: string
