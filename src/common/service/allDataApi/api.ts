@@ -6,6 +6,7 @@ import {
 	IBankInfoSysData,
 	IBankInfoSysResponse,
 	IGetCategoryResponse,
+	IGetProductsResponse,
 	IVipLevelsResponse,
 } from './type'
 
@@ -48,6 +49,12 @@ export const allDataApi = createApi({
 				method: 'POST',
 			}),
 		}),
+		getProducts: builder.query<IGetProductsResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpGameType',
+				method: 'POST',
+			}),
+		}),
 	}),
 })
 
@@ -64,4 +71,5 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
+	useGetProductsQuery,
 } = allDataApi

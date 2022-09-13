@@ -328,7 +328,6 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
-
 const BankCardManagement = lazy(
 	() =>
 		import(
@@ -354,6 +353,27 @@ const DepositLimitation = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'DepositLimitation' */ 'features/depositLimitation/DepositLimitation'
+		)
+)
+
+const BonusManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusManagement' */ 'features/bonusManagement/BonusManagement'
+		)
+)
+
+const BonusManagementUpdateBonus = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UpdateBonus' */ 'features/bonusManagement/editBonusDetail/UpdateBonus'
+		)
+)
+
+const BonusManagementScratchCardList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ScratchCardList' */ 'features/bonusManagement/scratchCardList/ScratchCardList'
 		)
 )
 
@@ -970,6 +990,36 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/:bonusCode`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagementUpdateBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/scratchCard/:specialCode`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagementScratchCardList />
 					</AuthRequire>
 				),
 			},

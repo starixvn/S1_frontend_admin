@@ -27,3 +27,12 @@ export interface IGetCategoryData {
 	categoryName: string
 }
 export type IGetCategoryResponse = IAxiosResponse<IGetCategoryData[]>
+
+export interface IGetProductsData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+}
+
+export type IGetProductsResponse = IAxiosResponse<IGetProductsData[]>
