@@ -23,7 +23,9 @@ const useUserSiteEffect = () => {
 	useEffect(() => {
 		if (!Number(queryParams?.siteId)) return
 
-		changeBrand({ siteId: Number(queryParams?.siteId) })
+		if (siteId !== Number(queryParams?.siteId)) {
+			changeBrand({ siteId: Number(queryParams?.siteId) })
+		}
 	}, [queryParams?.siteId])
 
 	useEffect(() => {

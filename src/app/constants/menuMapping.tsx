@@ -102,12 +102,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 23,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
+				.functionId,
 		name: 'Live Registration Statistics',
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/RegistrationManagement',
 		internalFunctionKey: allowedRoles.CustManageRegistrationManagement,
-		newAdminPath: '',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
+				.root,
 	},
 	{
 		icon: null,
@@ -135,11 +139,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 33,
+		functionId: paths.finance.sub.issueBonusManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/BonusPayout',
 		internalFunctionKey: allowedRoles.FinanceBonusPayout,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.issueBonusManagement.root,
 	},
 	{
 		icon: null,
@@ -246,19 +250,19 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 40,
+		functionId: paths.finance.sub.setting.sub.depositLimitation.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceDepositLimitManage,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.depositLimitation.root,
 	},
 	{
 		icon: null,
-		functionId: 41,
+		functionId: paths.finance.sub.setting.sub.withdrawalLimitation.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitManagement,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.withdrawalLimitation.root,
 	},
 	{
 		icon: null,
@@ -374,11 +378,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 56,
+		functionId: paths.cms.sub.hotEventManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/HotEventManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.hotEventManagement.root,
 	},
 	{
 		icon: null,
@@ -415,11 +419,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 59,
+		functionId: paths.productManagement.sub.slotGameCategory.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/CategoryManagement',
 		internalFunctionKey: allowedRoles.CMSCategoryManagement,
-		newAdminPath: '',
+		newAdminPath: paths.productManagement.sub.slotGameCategory.root,
 	},
 	{
 		icon: null,

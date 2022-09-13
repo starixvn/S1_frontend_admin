@@ -302,13 +302,6 @@ const TransferAccountManagement = lazy(
 		)
 )
 
-const UpdateTransferAccountManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'UpdateTransferAccountManagement' */ 'features/transferAccountManagement/UpdateTransferAccountManagement'
-		)
-)
-
 const SnsManagement = lazy(
 	() =>
 		import(
@@ -335,10 +328,60 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
+
 const BankCardManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BankCardManagement' */ 'features/bankCardManagement/BankCardManagement'
+		)
+)
+
+const LiveRegistrationStatistics = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LiveRegistrationStatistics' */ 'features/liveRegistrationStatistics/LiveRegistrationStatistics'
+		)
+)
+
+const WithdrawalLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalLimitation' */ 'features/withdrawalLimitation/WithdrawalLimitation'
+		)
+)
+
+const DepositLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositLimitation' */ 'features/depositLimitation/DepositLimitation'
+		)
+)
+
+const SlotGameCategory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SlotGameCategory' */ 'features/slotGameCategory/SlotGameCategory'
+		)
+)
+
+const HotEventManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotEventManagement' */ 'features/hotEventManagement/HotEventManagement'
+		)
+)
+
+const HotEventEdit = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotEventEdit' */ 'features/hotEventManagement/editHotEvent/EditHotEvent'
+		)
+)
+
+const IssueBonusManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'IssueBonusManagement' */ 'features/issueBonusManagement/IssueBonusManagement'
 		)
 )
 
@@ -847,18 +890,6 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}/Update/:editId`,
-				element: (
-					<AuthRequire
-						functionId={
-							paths.bankTransfer.sub.transferAccountManagement.functionId
-						}
-					>
-						<UpdateTransferAccountManagement />
-					</AuthRequire>
-				),
-			},
-			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.snsManagement.root}`,
 				element: (
 					<AuthRequire
@@ -914,6 +945,79 @@ const routes: RouteObject[] = [
 						}
 					>
 						<BankCardManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.operatorService.sub
+								.liveRegistrationStatistics.functionId
+						}
+					>
+						<LiveRegistrationStatistics />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.withdrawalLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.withdrawalLimitation.functionId
+						}
+					>
+						<WithdrawalLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.depositLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.depositLimitation.functionId
+						}
+					>
+						<DepositLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.slotGameCategory.functionId}
+					>
+						<SlotGameCategory />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.issueBonusManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.finance.sub.issueBonusManagement.functionId}
+					>
+						<IssueBonusManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotEventManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
+						<HotEventManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotEventManagement.root}/:id`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
+						<HotEventEdit />
 					</AuthRequire>
 				),
 			},

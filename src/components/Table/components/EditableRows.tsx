@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd'
+import { Form, Input, InputNumber } from 'antd'
 
 interface EditableCellProps<T> extends React.HTMLAttributes<HTMLElement> {
 	editing: boolean
@@ -20,17 +20,37 @@ const EditableCellRows: <T>(props: EditableCellProps<T>) => any = ({
 	children,
 	...restProps
 }) => {
-	const inputNode = inputType === 'number' ? <Input type='number' /> : <Input />
+	const inputNode =
+		inputType === 'number' ? (
+			<InputNumber style={{ width: '100%' }} controls={false} type='number' />
+		) : (
+			<Input />
+		)
 
 	return (
 		<td {...restProps}>
 			{editing ? (
 				<Form.Item
-					rules={[
-						{
-							required: true,
-						},
-					]}
+					rules={
+						inputType === 'number'
+							? [
+									{
+										required: true,
+										message: '',
+									},
+									{
+										type: 'number',
+										min: 0,
+										message: '',
+									},
+							  ]
+							: [
+									{
+										required: true,
+										message: '',
+									},
+							  ]
+					}
 					name={dataIndex}
 					style={{ margin: 0, minWidth: 60 }}
 				>

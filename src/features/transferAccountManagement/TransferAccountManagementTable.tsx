@@ -1,16 +1,13 @@
 import { FC } from 'react'
 import moment from 'moment'
 import { filter, find, includes } from 'lodash'
-import { useNavigate } from 'react-router-dom'
-import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Select, TablePaginationConfig, Typography } from 'antd'
-import { PAGINATION } from 'common/hooks'
+import { ModalState, PAGINATION, useQueryParams } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { IEnumTypeData } from 'common/service/enumApi/type'
-import paths from 'app/constants/paths'
 import { PermissionInterface } from 'type'
 import { IBankTransferAccountData } from './type'
 
@@ -25,6 +22,7 @@ interface TransferAccountManagementTableProps {
 	transferAccountPurposeEnum: IEnumTypeData[]
 	timeZoneUtcOffset: number
 	onStatusChange: (record: IBankTransferAccountData) => void
+	updateModal: ModalState
 }
 
 const TransferAccountManagementTable: FC<
@@ -38,9 +36,12 @@ const TransferAccountManagementTable: FC<
 	transferAccountPurposeEnum,
 	timeZoneUtcOffset,
 	onStatusChange,
+	updateModal,
 }) => {
 	const { t } = useTranslation()
-	const navigate = useNavigate()
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [queryParams, setQueryParams] = useQueryParams()
 
 	const columns = [
 		{
@@ -59,11 +60,10 @@ const TransferAccountManagementTable: FC<
 				return (
 					<Typography.Link
 						disabled={!editPermission?.canUse}
-						onClick={() =>
-							navigate(
-								`/${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferAccountManagement.root}/Update/${editId}`
-							)
-						}
+						onClick={() => {
+							setQueryParams({ editId })
+							updateModal.onOpen()
+						}}
 					>
 						{t('Label_Edit')}
 					</Typography.Link>

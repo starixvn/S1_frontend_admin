@@ -1,0 +1,67 @@
+import { createApi } from '@reduxjs/toolkit/dist/query/react'
+import { baseUrl } from 'common/service/Api'
+import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import {
+	IGetSlotGameCategoryListArgs,
+	IGetSlotGameCategoryListResponse,
+	IGetSlotGamesListArgs,
+	IGetSlotGamesListResponse,
+	IGetTpListResponse,
+	ISetGameCategoryArgs,
+	ISetSlotGameArgs,
+} from 'features/slotGameCategory/type'
+
+export const slotGameCategoryApi = createApi({
+	reducerPath: 'slotGameCategoryApi',
+	baseQuery: axiosBaseQuery({ baseUrl }),
+	endpoints: builder => ({
+		getTpList: builder.query<IGetTpListResponse, null>({
+			query: () => ({
+				url: 'slotGamesManagement/GetTpList',
+				method: 'POST',
+			}),
+		}),
+		getSlotGameList: builder.query<
+			IGetSlotGamesListResponse,
+			IGetSlotGamesListArgs
+		>({
+			query: data => ({
+				url: 'SlotGamesManagement/GetSlotGameList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		setSlotGame: builder.mutation<void, ISetSlotGameArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/SetSlotGame',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getSlotGameCategoryList: builder.query<
+			IGetSlotGameCategoryListResponse,
+			IGetSlotGameCategoryListArgs
+		>({
+			query: data => ({
+				url: 'SlotGamesManagement/GetSlotGameCategoryList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		setSlotGameCategory: builder.mutation<void, ISetGameCategoryArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/SetSlotGameCategory',
+				method: 'POST',
+				data,
+			}),
+		}),
+	}),
+})
+
+export const {
+	useGetTpListQuery,
+	useLazyGetSlotGameListQuery,
+	useLazyGetSlotGameCategoryListQuery,
+	useSetSlotGameMutation,
+	useSetSlotGameCategoryMutation,
+} = slotGameCategoryApi

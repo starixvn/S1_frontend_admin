@@ -21,17 +21,17 @@ const { Option } = Select
 interface IAddGiftListingFormProps {
 	form: FormInstance
 	lang: string
+	pictureUrl: string | undefined
 	categories: ICategoriesData[]
 	giftTags: IGiftTagsData[]
-	pictureUrl?: string | undefined
 }
 
 const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 	form,
 	lang,
+	pictureUrl,
 	categories: originCategories,
 	giftTags: originGiftTags,
-	pictureUrl,
 }) => {
 	const { t } = useTranslation()
 	const showStock = Form.useWatch<boolean>('showStock', form)
@@ -142,7 +142,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 						name={giftTags.length > 0 ? 'tags' : ''}
 						label={t('Label_Tags')}
 					>
-						<MultipleSelect onChange={onTagsChange} maxTagCount={0}>
+						<MultipleSelect onChange={onTagsChange}>
 							{giftTags.length > 1 && (
 								<Option value={0}>{t('Label_SelectAll')}</Option>
 							)}
@@ -215,7 +215,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 				</Col>
 			</Row>
 
-			<ImageUploader form={form} pictureUrl={pictureUrl} />
+			<ImageUploader form={form} lang={lang} pictureUrl={pictureUrl} />
 		</Form>
 	)
 }

@@ -1,8 +1,5 @@
 import React, { FC } from 'react'
-import {
-	IGetEnumData,
-	IGetPointLevelListData,
-} from 'features/bankCardManagement/type'
+import { IGetEnumData } from 'features/bankCardManagement/type'
 import {
 	Col,
 	Form,
@@ -27,7 +24,7 @@ interface IEditBankCardModal {
 	currencyListBySite: Currency[]
 	vipLevelList: IVipLevelsData[]
 	statusEnumList: IGetEnumData[]
-	pointLevelList: IGetPointLevelListData[]
+	pointLevelList: number[]
 }
 
 const { Option } = Select
@@ -93,7 +90,7 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 		const handleChangePointLevel = (newPointLevels: Array<number | string>) => {
 			if (newPointLevels.includes('all')) {
 				form.setFieldsValue({
-					pointLevels: pointLevelList?.map(pointLevel => pointLevel.pointLevel),
+					pointLevels: pointLevelList?.map(pointLevel => pointLevel),
 				})
 			} else {
 				form.setFieldsValue({
@@ -124,8 +121,8 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 					)}
 
 					{pointLevelList?.map(pointLevel => (
-						<Option key={pointLevel.pointLevel} value={pointLevel.pointLevel}>
-							{pointLevel.pointLevel}
+						<Option key={pointLevel} value={pointLevel}>
+							{pointLevel}
 						</Option>
 					))}
 				</MultipleSelect>

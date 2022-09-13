@@ -43,6 +43,12 @@ import { bonusExportApi } from 'features/bonusExport/api'
 import { lineDepositChannelApi } from 'features/lineDepositChannel/api'
 import { withdrawalSubmissionApi } from 'features/withdrawalSubmission/api'
 import { bankCardManagementApi } from 'features/bankCardManagement/api'
+import { liveRegistrationStatisticsApi } from 'features/liveRegistrationStatistics/api'
+import { withdrawalLimitationApi } from 'features/withdrawalLimitation/api'
+import { depositLimitationApi } from 'features/depositLimitation/api'
+import { slotGameCategoryApi } from 'features/slotGameCategory/api'
+import { hotEventManagementApi } from 'features/hotEventManagement/api'
+import { issueBonusManagementApi } from 'features/issueBonusManagement/api'
 
 export const store = configureStore({
 	reducer: {
@@ -91,6 +97,13 @@ export const store = configureStore({
 		[lineDepositChannelApi.reducerPath]: lineDepositChannelApi.reducer,
 		[withdrawalSubmissionApi.reducerPath]: withdrawalSubmissionApi.reducer,
 		[bankCardManagementApi.reducerPath]: bankCardManagementApi.reducer,
+		[liveRegistrationStatisticsApi.reducerPath]:
+			liveRegistrationStatisticsApi.reducer,
+		[withdrawalLimitationApi.reducerPath]: withdrawalLimitationApi.reducer,
+		[depositLimitationApi.reducerPath]: depositLimitationApi.reducer,
+		[issueBonusManagementApi.reducerPath]: issueBonusManagementApi.reducer,
+		[hotEventManagementApi.reducerPath]: hotEventManagementApi.reducer,
+		[slotGameCategoryApi.reducerPath]: slotGameCategoryApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -136,7 +149,14 @@ export const store = configureStore({
 			.concat(bonusExportApi.middleware)
 			.concat(lineDepositChannelApi.middleware)
 			.concat(withdrawalSubmissionApi.middleware)
-			.concat(bankCardManagementApi.middleware),
+			.concat(bankCardManagementApi.middleware)
+			.concat(issueBonusManagementApi.middleware)
+			.concat(liveRegistrationStatisticsApi.middleware)
+			.concat(withdrawalLimitationApi.middleware)
+			.concat(depositLimitationApi.middleware)
+			.concat(hotEventManagementApi.middleware)
+			.concat(depositLimitationApi.middleware)
+			.concat(slotGameCategoryApi.middleware),
 })
 
 // to ignore : TS2589: Type instantiation is excessively deep and possibly infinite.

@@ -3,7 +3,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
 import { IGetVipLevelsResponse } from 'features/redemptionListing/type'
 import { useGetVipLevelQuery } from 'features/redemptionListing/api'
 import { IGetCategoryResponse } from 'features/betList/type'
@@ -34,7 +34,7 @@ const TurnoverPointReport: FC<{
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [form] = Form.useForm()

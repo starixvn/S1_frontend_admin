@@ -21,7 +21,14 @@ export enum AddOrDeduct {
 	Deduct,
 }
 
-const birthdayPoints = [88, 188, 288, 388, 688, 888]
+const birthdayPoints: Array<{ value: number; displayName: string }> = [
+	{ value: 88, displayName: 'GameLevel.Label_VintageClub' },
+	{ value: 188, displayName: 'GameLevel.Label_SilverClub' },
+	{ value: 288, displayName: 'GameLevel.Label_GoldClub' },
+	{ value: 388, displayName: 'GameLevel.Label_TitaniumClub' },
+	{ value: 688, displayName: 'GameLevel.Label_DiamondClub' },
+	{ value: 888, displayName: 'GameLevel.Label_NovaClub' },
+]
 
 const AddPointModalFilter: FC<AddModalFilterInterface> = ({
 	form,
@@ -37,7 +44,9 @@ const AddPointModalFilter: FC<AddModalFilterInterface> = ({
 				<Form.Item name='point' label={t('Label_AddPoint')}>
 					<Select placeholder={t('Label_Select') + t('Label_Point')}>
 						{birthdayPoints?.map(point => (
-							<Option value={point}>{point + t('Label_Point')}</Option>
+							<Option key={point.value} value={point.value}>{`${
+								point.value
+							} ${t('Label_Point')} - ${t(point.displayName)}`}</Option>
 						))}
 					</Select>
 				</Form.Item>

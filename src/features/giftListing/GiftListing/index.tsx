@@ -4,7 +4,7 @@ import { head, includes, isEqual, uniq } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useAuth, useQueryParams } from 'common/hooks'
@@ -30,7 +30,7 @@ const GiftListing: FC<{
 	const navigate = useNavigate()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const paramCurrencyId: number = Number(queryParams?.currencyId)

@@ -4,6 +4,7 @@ import {
 	Currency,
 	AdjustmentInfoLogMenuItem,
 	ActionType,
+	IAdminUserCurrency,
 } from './type'
 
 export const fetchAdminUserSiteList = async (): Promise<Array<UserSite>> => {
@@ -32,8 +33,8 @@ export const fetchActionTypeList = async (): Promise<ActionType[]> => {
 	return response?.data?.data ?? []
 }
 
-export const fetchAdminUserCurrencyList = async (): Promise<number[]> => {
+export const fetchAdminUserCurrency = async (): Promise<IAdminUserCurrency> => {
 	const response = await BoApi.post('Common/AdminUserCurrencyList')
 
-	return response?.data?.data ?? []
+	return response?.data?.data ?? {}
 }

@@ -122,7 +122,20 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 							</Col>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item name='menus' label={t('Label_Function')}>
-									<MultipleSelect onChange={onChangeMenus}>
+									<MultipleSelect
+										onChange={onChangeMenus}
+										showSearch
+										allowClear
+										filterOption={(input, option) => {
+											const isIncludes: boolean = (
+												option!.children as unknown as string
+											)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+
+											return isIncludes
+										}}
+									>
 										{(adjustmentInfoLogMenu?.length as number) > 1 && (
 											<Option value={0}>{t('Label_SelectAll')}</Option>
 										)}

@@ -16,7 +16,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import { useTimeZone } from 'components/TimeZoneSelect'
 import { IGetTurnoverPointSettingData } from '../type'
 
 interface TurnoverPointSettingFormInterface {
@@ -33,7 +32,6 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 	form,
 }) => {
 	const { t } = useTranslation()
-	const { timeZoneUtcOffset } = useTimeZone()
 	const [statuses, setStatus] = useState({})
 	const columns = [
 		{
@@ -45,7 +43,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 			render: (tpCategoryName: string) => `${tpCategoryName} : `,
 		},
 		{
-			title: t('Label_PointRate'),
+			title: t('Label_TurnOver'),
 			width: 100,
 			align: 'center' as 'center',
 			key: 'turnover',
@@ -107,9 +105,6 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 						>
 							<RangePicker
 								disabled={!status}
-								format={time =>
-									moment(time).utcOffset(timeZoneUtcOffset).format('YYYY-MM-DD')
-								}
 								ranges={MOMENT_RANGE_PICKER_RANGES([
 									'Today',
 									'Last 7 Day',

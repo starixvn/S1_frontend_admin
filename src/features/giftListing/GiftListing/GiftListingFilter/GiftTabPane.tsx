@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react'
 import { Form, TabPaneProps, Tabs } from 'antd'
-import { take, uniq } from 'lodash'
+import { filter, uniq } from 'lodash'
+import { useTranslation } from 'react-i18next'
 import { useQueryParams } from 'common/hooks'
 import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { useAppSelector } from 'app/store'
@@ -26,6 +27,8 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 	tabActiveKey,
 	...tabPaneProps
 }) => {
+	const { i18n } = useTranslation()
+
 	const [form] = Form.useForm()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams] = useQueryParams()
@@ -41,15 +44,26 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 	const [
 		getCategories,
 		{
-			data: { data: categories = [] } = {},
+			data: { data: originCategories = [] } = {},
 			isFetching: isGetCategoriesFetching,
 		},
 	] = useLazyGetCategoriesQuery()
 
 	const [
 		getGiftTags,
-		{ data: { data: giftTags = [] } = {}, isFetching: isGetGiftTagsFetching },
+		{
+			data: { data: originGiftTags = [] } = {},
+			isFetching: isGetGiftTagsFetching,
+		},
 	] = useLazyGetGiftTagsQuery()
+
+	const categories = filter(originCategories, {
+		lang: i18n.language,
+	})
+
+	const giftTags = filter(originGiftTags, {
+		lang: i18n.language,
+	})
 
 	const handleCategoryIdsChange = (newCategoryIds: number[]) => {
 		const categoryIds = newCategoryIds.includes(0)
@@ -118,11 +132,9 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 			!isGetGiftTagsFetching
 		) {
 			const categoryIds = categories.map(category => category.categoryId)
-			const tagIds = giftTags.map(giftTag => giftTag.tagId)
 
 			form.setFieldsValue({
 				categoryIds: uniq(categoryIds),
-				tags: take(tagIds),
 				status: allStatuses,
 			})
 

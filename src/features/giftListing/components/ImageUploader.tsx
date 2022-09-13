@@ -23,16 +23,22 @@ import { cloudImgURL } from 'app/constants/images'
 
 interface IGiftListingImageUploaderProps {
 	form: FormInstance
-	pictureUrl?: string | undefined
+	lang: string
+	pictureUrl: string | undefined
 }
 
 const ImageUploader: FC<IGiftListingImageUploaderProps> = ({
 	form,
+	lang,
 	pictureUrl,
 }) => {
 	const { t } = useTranslation()
 	const [uploading, setUploading] = useState<boolean>()
-	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
+	const formFileList = Form.useWatch<UploadFile[]>(
+		['infos', lang, 'fileList'],
+		form
+	)
+
 	const imageFile = head(formFileList)
 
 	const onLoadPreviewImage = async (file: UploadFile<any> | undefined) => {
@@ -99,7 +105,7 @@ const ImageUploader: FC<IGiftListingImageUploaderProps> = ({
 					</Button>
 
 					<Form.Item
-						name='fileList'
+						name={['infos', lang, 'fileList']}
 						// * valuePropName 告訴 form 表單這是 fileList 的資料格式
 						valuePropName='fileList'
 						getValueFromEvent={normFileForFormImageItem}

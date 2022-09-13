@@ -209,7 +209,7 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 			if (newPointLevels.includes('matchAll')) {
 				// 匹配全部
 				form.setFieldsValue({
-					pointLevels: pointLevelList.map(pointLevel => pointLevel.pointLevel),
+					pointLevels: pointLevelList.map(pointLevel => pointLevel),
 				})
 			} else if ((newPointLevels.length as number) > 1) {
 				if (newPointLevels[0] === 'all') {
@@ -244,8 +244,8 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 						<Option value='matchAll'>{t('Label_MatchAll')}</Option>
 					)}
 					{pointLevelList?.map(pointLevel => (
-						<Option key={pointLevel.pointLevel} value={pointLevel.pointLevel}>
-							{pointLevel.pointLevel}
+						<Option key={pointLevel} value={pointLevel}>
+							{pointLevel}
 						</Option>
 					))}
 				</MultipleSelect>

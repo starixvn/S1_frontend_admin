@@ -12,6 +12,20 @@ const paths = {
 	assignBrand: {
 		root: 'AssignBrand',
 	},
+	customerSupport: {
+		root: 'customerSupport',
+		sub: {
+			operatorService: {
+				root: 'customerSupport/operatorService',
+				sub: {
+					liveRegistrationStatistics: {
+						root: 'customerSupport/operatorService/liveRegistrationStatistics',
+						functionId: 23,
+					},
+				},
+			},
+		},
+	},
 	csd: {
 		root: 'csd',
 		sub: {
@@ -177,6 +191,14 @@ const paths = {
 						root: 'finance/setting/bankAccManagement',
 						functionId: 38,
 					},
+					withdrawalLimitation: {
+						root: 'finance/setting/withdrawalLimitation',
+						functionId: 41,
+					},
+					depositLimitation: {
+						root: 'finance/setting/depositLimitation',
+						functionId: 40,
+					},
 				},
 			},
 			depositWithdrawalSector: {
@@ -187,6 +209,10 @@ const paths = {
 						functionId: 125,
 					},
 				},
+			},
+			issueBonusManagement: {
+				root: 'finance/issueBonusManagement',
+				functionId: 33,
 			},
 		},
 	},
@@ -324,6 +350,15 @@ const paths = {
 			transferAccountManagement: {
 				root: 'bankTransfer/transferAccountManagement',
 				functionId: 86,
+			},
+		},
+	},
+	productManagement: {
+		root: 'productManagement',
+		sub: {
+			slotGameCategory: {
+				root: 'productManagement/slotGameCategory',
+				functionId: 59,
 			},
 		},
 	},
@@ -470,6 +505,10 @@ const paths = {
 						functionId: 67,
 					},
 				},
+			},
+			hotEventManagement: {
+				root: 'cms/hotEventManagement',
+				functionId: 56,
 			},
 		},
 	},

@@ -5,7 +5,7 @@ import { Space, Switch, Tag, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
-import { timeFormat } from 'common/utils/format'
+import { numberFormatter, timeFormat } from 'common/utils/format'
 import {
 	DraggableBodyRow,
 	DraggableContainer,
@@ -117,12 +117,14 @@ const GiftListingTable: FC<IGiftListingTableProps> = ({
 			dataIndex: 'point',
 			width: 80,
 			align: 'center' as 'center',
+			render: (point: number) => numberFormatter.format(point),
 		},
 		{
 			title: t('Label_PriceWorth'),
 			width: 140,
 			align: 'center' as 'center',
-			render: (record: IGiftData) => `${record.isoCode} ${record.priceWorth}`,
+			render: (record: IGiftData) =>
+				`${record.isoCode} ${numberFormatter.format(record.priceWorth)}`,
 		},
 		{
 			title: t('Label_Stock'),

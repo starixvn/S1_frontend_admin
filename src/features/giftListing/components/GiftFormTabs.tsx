@@ -6,19 +6,20 @@ import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { useQueryParams } from 'common/hooks'
 import { useLazyGetCategoriesQuery, useLazyGetGiftTagsQuery } from '../api'
 import GiftListingForm from './GiftListingForm'
+import { IInfos } from '../type'
 
 const { TabPane } = Tabs
 
 interface GiftFormTabsProps {
 	form: FormInstance
 	currencyId: number
-	pictureUrl?: string | undefined
+	infos?: IInfos
 }
 
 const GiftFormTabs: FC<GiftFormTabsProps> = ({
 	form,
 	currencyId,
-	pictureUrl,
+	infos = {},
 }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [{ defaultEditLang }] = useQueryParams()
@@ -43,13 +44,13 @@ const GiftFormTabs: FC<GiftFormTabsProps> = ({
 	return (
 		<Tabs type='card' defaultActiveKey={defaultEditLang}>
 			{langCodes.map(lang => (
-				<TabPane tab={lang} key={lang}>
+				<TabPane tab={lang} key={lang} forceRender>
 					<GiftListingForm
 						form={form}
 						lang={lang}
+						pictureUrl={infos[lang]?.pictureUrl}
 						categories={categories}
 						giftTags={giftTags}
-						pictureUrl={pictureUrl}
 					/>
 				</TabPane>
 			))}

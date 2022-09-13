@@ -15,6 +15,7 @@ const ButtonGroup: FC<IButtonGroup> = ({
 	loading,
 }) => {
 	const { t } = useTranslation()
+
 	return (
 		<>
 			<Col span={6}>
