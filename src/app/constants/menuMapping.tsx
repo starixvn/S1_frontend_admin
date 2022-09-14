@@ -106,7 +106,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
 				.functionId,
 		name: 'Live Registration Statistics',
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/RegistrationManagement',
 		internalFunctionKey: allowedRoles.CustManageRegistrationManagement,
 		newAdminPath:
