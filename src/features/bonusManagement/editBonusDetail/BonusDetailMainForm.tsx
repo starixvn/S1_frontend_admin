@@ -289,6 +289,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 												'Last 7 Day',
 												'This Month',
 											])}
+											showTime
 											onChange={newDateRange =>
 												form?.setFieldsValue({
 													startDate: moment(newDateRange?.[0]),
@@ -345,6 +346,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 												'Last 7 Day',
 												'This Month',
 											])}
+											showTime
 											onChange={newDateRange =>
 												form?.setFieldsValue({
 													startDate: moment(newDateRange?.[0]),

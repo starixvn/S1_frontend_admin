@@ -20,8 +20,6 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import moment from 'moment/moment'
-import { dateFormat } from 'common/utils/format'
-import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
 	DevicesEnum,
 	devicesList,
@@ -45,8 +43,6 @@ interface IBonusManagementFilterProps {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => void
-	onTimeZoneChange: (newUtcOffset: number) => void
-	timeZoneUtcOffset: number
 }
 
 const { Panel } = Collapse
@@ -58,8 +54,6 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 	form,
 	currencyListBySite,
 	onSearch,
-	onTimeZoneChange,
-	timeZoneUtcOffset,
 	promotionList,
 }) => {
 	const { t } = useTranslation()
@@ -175,11 +169,6 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												format={time =>
-													moment(time)
-														.utcOffset(timeZoneUtcOffset)
-														.format(dateFormat)
-												}
 												onChange={newDateRange =>
 													form.setFieldsValue({
 														startDate: moment(newDateRange?.[0]),
@@ -188,12 +177,6 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 												}
 											/>
 										</Form.Item>
-										<div>
-											<TimeZoneSelect
-												value={timeZoneUtcOffset}
-												onChange={onTimeZoneChange}
-											/>
-										</div>
 									</Input.Group>
 								</Form.Item>
 							</Col>

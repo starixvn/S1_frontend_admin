@@ -40,8 +40,8 @@ export const utcFormatter = ({
 	const formatDate = moment(date)
 		.utcOffset(0, true)
 		.subtract(timezone.utcOffset / 60, 'hour')
-
-	return mt.tz(formatDate, timezone.name).format()
+	// return sample : 2022-09-14T00:00:00+00:00
+	return mt.tz(formatDate, timezone.name).format('YYYY-MM-DDTHH:mm:ssZ')
 }
 
 // * 用於處理 RangePicker 元件的時間格式

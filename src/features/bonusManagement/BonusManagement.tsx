@@ -43,7 +43,7 @@ const BonusManagement: FC<{
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const navigate = useNavigate()
-	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const { timeZoneUtcOffset } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<{
 		dateRange: [moment.Moment, moment.Moment]
@@ -94,17 +94,16 @@ const BonusManagement: FC<{
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
-		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
-		currentTimeZoneUtcOffset?: number
 	}) => {
 		const { dateRange, bonusCode, ...args } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			currentTimeZoneUtcOffset
+			0
 		)
+
 		try {
 			await getBonusList({
 				startDate,
@@ -120,7 +119,6 @@ const BonusManagement: FC<{
 				endDate,
 				pageNumber: current,
 				pageSize,
-				timeZone: currentTimeZoneUtcOffset,
 				// 測試時複製貼上若有複製到空白就會無法正確搜尋 , 故在送出時先把前後空白區塊清除
 				bonusCode: isEmpty(bonusCode) ? null : trim(bonusCode),
 				...args,
@@ -141,7 +139,6 @@ const BonusManagement: FC<{
 		await handleSearch({
 			current,
 			pageSize,
-			currentTimeZoneUtcOffset: timeZoneUtcOffset,
 		})
 	}
 
@@ -210,7 +207,6 @@ const BonusManagement: FC<{
 				endDate,
 				pageNumber,
 				pageSize,
-				timeZone,
 				currencyIds,
 				promotionTypes,
 				bonusCode = '',
@@ -218,7 +214,6 @@ const BonusManagement: FC<{
 				status = 0,
 				device = 0,
 			} = queryParams
-			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
 				bonusCode,
@@ -234,7 +229,6 @@ const BonusManagement: FC<{
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
-				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		}
 		init()
@@ -253,8 +247,6 @@ const BonusManagement: FC<{
 				form={filterForm}
 				currencyListBySite={currencyListBySite}
 				onSearch={handleSearch}
-				onTimeZoneChange={onTimeZoneChange}
-				timeZoneUtcOffset={timeZoneUtcOffset}
 				promotionList={promotionListData}
 			/>
 			{!isEmpty(queryParams) && (
