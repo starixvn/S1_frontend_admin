@@ -108,6 +108,10 @@ const paths = {
 			depositListing: {
 				root: 'finance/depositListing',
 			},
+			withdrawalKycControl: {
+				root: 'finance/withdrawalKycControl',
+				functionId: 37,
+			},
 			withdrawalListing: {
 				root: 'finance/withdrawalListing',
 			},

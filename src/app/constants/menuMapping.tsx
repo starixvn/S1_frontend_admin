@@ -147,11 +147,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 37,
+		functionId: paths.finance.sub.withdrawalKycControl.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Message/WithdrawalKYCControl',
 		internalFunctionKey: allowedRoles.MessageWithdrawalKYCControl,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.withdrawalKycControl.root,
 	},
 	{
 		icon: null,
