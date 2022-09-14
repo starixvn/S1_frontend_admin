@@ -405,6 +405,13 @@ const IssueBonusManagement = lazy(
 		)
 )
 
+const WithdrawalKycControl = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalKycControl' */ 'features/withdrawalKycControl/WithdrawalKycControl'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1068,6 +1075,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
 						<HotEventEdit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.withdrawalKycControl.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.finance.sub.withdrawalKycControl.functionId}
+					>
+						<WithdrawalKycControl />
 					</AuthRequire>
 				),
 			},
