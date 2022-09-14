@@ -4,6 +4,9 @@
 </br>
 [Bonus List 文件](https://q2qqjr.axshare.com/#id=45cyh6&p=bouns_managment&g=1)
 
+### About Timezone 
+- 此頁面為避免市場混淆 , 除了 updateTime 以外其餘時間處理一率使用 +0 處理
+
 ### 主表單頁面
 - Table 可直接切換該 Bonus 的 status
 - 複製功能在複製時僅可設定新的 BonusCode , 其餘需在複製後手動進入編輯頁面做修改

@@ -149,12 +149,11 @@ const UpdateBonus: FC<{
 
 			// 時區一律設定成 +0
 			const [periodFromTime, periodToTime] = dateRangeToUtcFormatter(
-				[activeDate[0].startOf('day'), activeDate[1].endOf('day')],
+				[activeDate[0], activeDate[1]],
 				0
 			)
-
 			const [displayFromTime, displayToTime] = dateRangeToUtcFormatter(
-				[displayDate[0].startOf('day'), displayDate[1].endOf('day')],
+				[displayDate[0], displayDate[1]],
 				0
 			)
 
@@ -265,8 +264,14 @@ const UpdateBonus: FC<{
 				bonusCode: currentBonusCode,
 				bonusType: promotionType,
 				description,
-				activeDate: [moment(periodFrom), moment(periodTo)],
-				displayDate: [moment(displayFrom), moment(displayTo)],
+				activeDate: [
+					moment(periodFrom).utcOffset(0),
+					moment(periodTo).utcOffset(0),
+				],
+				displayDate: [
+					moment(displayFrom).utcOffset(0),
+					moment(displayTo).utcOffset(0),
+				],
 				isSpecial,
 				onlyRegistered,
 				specialCode,

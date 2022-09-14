@@ -266,9 +266,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (activeFrom: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{activeFrom
-						? moment(activeFrom)
-								.utcOffset(timeZoneUtcOffset)
-								.format('YYYY-MM-DD  HH:mm:ss')
+						? moment(activeFrom).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
 						: 'N/A'}
 				</Typography.Text>
 			),
@@ -282,9 +280,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (activeTo: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{activeTo
-						? moment(activeTo)
-								.utcOffset(timeZoneUtcOffset)
-								.format('YYYY-MM-DD  HH:mm:ss')
+						? moment(activeTo).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
 						: 'N/A'}
 				</Typography.Text>
 			),
