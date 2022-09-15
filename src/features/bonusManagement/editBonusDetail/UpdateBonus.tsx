@@ -168,7 +168,7 @@ const UpdateBonus: FC<{
 						promotionType,
 						expiryDays,
 						isSpecial,
-						status: Number(status),
+						status: status ? 1 : 2,
 						onlyRegistered,
 						periodType,
 						promotionDeviceType,
@@ -260,7 +260,7 @@ const UpdateBonus: FC<{
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
 			form.setFieldsValue({
-				mainFormActive: Boolean(status),
+				mainFormActive: status === 1,
 				bonusCode: currentBonusCode,
 				bonusType: promotionType,
 				description,

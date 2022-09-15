@@ -153,7 +153,7 @@ const BonusManagement: FC<{
 			const response = await updateStatus({
 				siteId,
 				bonusCode,
-				status: Number(status),
+				status: status ? 1 : 2,
 			}).unwrap()
 			message.success(response?.message || t('System.Label_Success'))
 		} catch (error) {
