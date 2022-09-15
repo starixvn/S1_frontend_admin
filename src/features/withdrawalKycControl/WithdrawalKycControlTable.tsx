@@ -37,7 +37,7 @@ const WithdrawalKycControlTable = ({
 		{
 			title: t('Label_Action'),
 			key: 'operation',
-			width: 80,
+			width: '30%',
 			align: 'center' as 'center',
 			render: (record: IGetWithdrawalKycListData) => {
 				const editable = isEditing(record)
@@ -68,14 +68,13 @@ const WithdrawalKycControlTable = ({
 			title: t('Label_Currency'),
 			key: 'isoCode',
 			dataIndex: 'isoCode',
-			width: 80,
+			width: '10%',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Amount'),
 			key: 'amount',
 			dataIndex: 'amount',
-			width: 80,
 			align: 'center' as 'center',
 			editable: true,
 			render: (amount: number) => numberFormatter.format(amount) ?? '-',

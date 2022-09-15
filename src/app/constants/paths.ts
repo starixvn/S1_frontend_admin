@@ -203,6 +203,10 @@ const paths = {
 						root: 'finance/setting/depositLimitation',
 						functionId: 40,
 					},
+					adjustmentLimitation: {
+						root: 'finance/setting/adjustmentLimitation',
+						functionId: 43,
+					},
 				},
 			},
 			depositWithdrawalSector: {

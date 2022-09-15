@@ -412,6 +412,13 @@ const WithdrawalKycControl = lazy(
 		)
 )
 
+const AdjustmentLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AdjustmentLimitation' */ 'features/adjustmentLimitation/AdjustmentLimitation'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1085,6 +1092,18 @@ const routes: RouteObject[] = [
 						functionId={paths.finance.sub.withdrawalKycControl.functionId}
 					>
 						<WithdrawalKycControl />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.adjustmentLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.adjustmentLimitation.functionId
+						}
+					>
+						<AdjustmentLimitation />
 					</AuthRequire>
 				),
 			},
