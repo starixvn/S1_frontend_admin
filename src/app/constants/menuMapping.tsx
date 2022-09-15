@@ -274,11 +274,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 43,
+		functionId: paths.finance.sub.setting.sub.adjustmentLimitation.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/AdjustmentLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentLimitManagement,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.adjustmentLimitation.root,
 	},
 	{
 		icon: null,
