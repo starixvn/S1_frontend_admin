@@ -62,7 +62,8 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetBonusListData) => {
-				const { status, bonusCode } = record
+				const { status: rawStatus, bonusCode } = record
+				const status = rawStatus === 1
 				return (
 					<Space>
 						<Popconfirm
@@ -73,7 +74,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 							}}
 						>
 							<Switch
-								checked={Boolean(status)}
+								checked={status}
 								size='small'
 								disabled={!editPermission?.canUse}
 							/>
