@@ -7,7 +7,7 @@ export interface IGetAdjustmentListArgs {
 export interface IGetAdjustmentListData {
 	siteId: number
 	currencyId: number
-	isoCode: string
+	currencyName: string
 	adjustmentMax: number
 }
 

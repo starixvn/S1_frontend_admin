@@ -68,8 +68,8 @@ const AdjustmentLimitationTable = ({
 		},
 		{
 			title: t('Label_Currency'),
-			key: 'isoCode',
-			dataIndex: 'isoCode',
+			key: 'currencyName',
+			dataIndex: 'currencyName',
 			width: '10%',
 			align: 'center' as 'center',
 		},
