@@ -42,6 +42,7 @@ import { SetGroupModal } from 'features/bonusManagement/editBonusDetail/SetGroup
 import { dateRangeToUtcFormatter } from 'common/utils'
 import {
 	BonusTypeEnum,
+	StatusEnum,
 	WalletTypeEnum,
 } from 'features/bonusManagement/constants'
 
@@ -168,7 +169,7 @@ const UpdateBonus: FC<{
 						promotionType,
 						expiryDays,
 						isSpecial,
-						status: status ? 1 : 2,
+						status: status ? StatusEnum.Active : StatusEnum.InActive,
 						onlyRegistered,
 						periodType,
 						promotionDeviceType,
@@ -260,7 +261,7 @@ const UpdateBonus: FC<{
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
 			form.setFieldsValue({
-				mainFormActive: status === 1,
+				mainFormActive: status === StatusEnum.Active,
 				bonusCode: currentBonusCode,
 				bonusType: promotionType,
 				description,
@@ -302,6 +303,7 @@ const UpdateBonus: FC<{
 					details,
 					totalUsageLimit,
 					usage,
+					status: subFormStatus,
 					// 後端的命名方式會導致 ts 報錯 , 故此處 ignore 該規則
 					// eslint-disable-next-line @typescript-eslint/naming-convention
 					vN_AffCodes,
@@ -315,8 +317,7 @@ const UpdateBonus: FC<{
 						specific: {
 							[isoCode]: {
 								currencyId,
-								// 有資料就代表 active
-								active: true,
+								active: subFormStatus === StatusEnum.Active,
 								bonus,
 								minPayout,
 								maxBonus,
