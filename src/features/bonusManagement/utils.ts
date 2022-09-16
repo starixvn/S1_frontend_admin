@@ -7,7 +7,7 @@ import {
 } from 'features/bonusManagement/type'
 import { Currency } from 'common/enum/type'
 import { assign, cloneDeep, find, includes, omit } from 'lodash'
-import { WalletTypeEnum } from 'features/bonusManagement/constants'
+import { StatusEnum, WalletTypeEnum } from 'features/bonusManagement/constants'
 
 // 多重比對 , 可用在條件渲染時  A = B | C | D 時顯示
 // 第一個參數放 value 第二個放 條件 使用 Array 把所有該條件的參數放進 Array
@@ -96,17 +96,13 @@ export const specificRequestDataConverter = ({
 			),
 		}
 
-		if (active) {
-			// 替換參數名稱 , 新增 bonusCode
-			// 僅紀錄 active 的資料
-			rawSpecificData.push(
-				assign(omit(data as object, ['minLoss', 'products', 'active']), {
-					bonusCode,
-					status: Number(active),
-					cashBackSetting,
-				})
-			)
-		}
+		rawSpecificData.push(
+			assign(omit(data as object, ['minLoss', 'products', 'active']), {
+				bonusCode,
+				status: active ? StatusEnum.Active : StatusEnum.InActive,
+				cashBackSetting,
+			})
+		)
 	})
 
 	Object.keys(details).forEach(key => {

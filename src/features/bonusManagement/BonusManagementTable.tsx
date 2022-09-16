@@ -15,7 +15,11 @@ import {
 } from 'features/bonusManagement/type'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment/moment'
-import { devicesList, walletTypeList } from 'features/bonusManagement/constants'
+import {
+	devicesList,
+	StatusEnum,
+	walletTypeList,
+} from 'features/bonusManagement/constants'
 import { find } from 'lodash'
 import { PermissionInterface } from 'type'
 import { CopyOutlined, EditFilled } from '@ant-design/icons'
@@ -63,7 +67,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			align: 'center' as 'center',
 			render: (record: IGetBonusListData) => {
 				const { status: rawStatus, bonusCode } = record
-				const status = rawStatus === 1
+				const status = rawStatus === StatusEnum.Active
 				return (
 					<Space>
 						<Popconfirm

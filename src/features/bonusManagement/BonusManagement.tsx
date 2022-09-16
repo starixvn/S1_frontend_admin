@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { DuplicateBonusModal } from 'features/bonusManagement/dupblicateBonusModal/DuplicateBonusModal'
+import { StatusEnum } from 'features/bonusManagement/constants'
 
 const BonusManagement: FC<{
 	pageTitle?: string
@@ -153,7 +154,7 @@ const BonusManagement: FC<{
 			const response = await updateStatus({
 				siteId,
 				bonusCode,
-				status: status ? 1 : 2,
+				status: status ? StatusEnum.Active : StatusEnum.InActive,
 			}).unwrap()
 			message.success(response?.message || t('System.Label_Success'))
 		} catch (error) {
