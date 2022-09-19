@@ -26,7 +26,7 @@ import { slotGameResponseConverter } from 'features/slotGameCategory/utils'
 import { SlotGameCategoryTable } from 'features/slotGameCategory/SlotGameCategoryTable'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
-import { isEmpty } from 'lodash'
+import { assign, cloneDeep, findIndex, isEmpty } from 'lodash'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
@@ -164,13 +164,13 @@ const SlotGameCategory: FC<{
 		currencyId,
 		slotGameId,
 		status,
+		dataIndex,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
+		dataIndex: string
 	}) => {
-		const { pageSize, pageNumber } = queryParams
-
 		try {
 			if (
 				currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
@@ -193,11 +193,17 @@ const SlotGameCategory: FC<{
 					categoryId: currentCategoryId,
 				}).unwrap()
 			}
-			// 需取 當前 pagination 帶入 , 否則頁數會不對
-			await handleSearch({
-				current: pageNumber ? Number(pageNumber) : PAGINATION.defaultCurrent,
-				pageSize: pageSize ? Number(pageSize) : PAGINATION.defaultPageSize,
+
+			// 更動儲存在前端的資料
+			const rawSource = cloneDeep(tableDataSource)
+			const sourceIndex = findIndex(
+				rawSource,
+				source => source.id === slotGameId
+			)
+			const mutationData = assign(rawSource[sourceIndex], {
+				[dataIndex]: Number(status),
 			})
+			setTableDataSource(assign(rawSource, mutationData))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
