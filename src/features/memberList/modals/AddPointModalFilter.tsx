@@ -85,7 +85,7 @@ const AddPointModalFilter: FC<AddModalFilterInterface> = ({
 			})
 		} else {
 			form.setFieldsValue({
-				point: birthdayPoints[0],
+				point: birthdayPoints[0]?.value,
 			})
 		}
 	}, [categoryId])
