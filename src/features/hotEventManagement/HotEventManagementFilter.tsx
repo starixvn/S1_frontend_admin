@@ -2,8 +2,13 @@ import { FC } from 'react'
 import { Button, Col, Collapse, Form, FormInstance, Row, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { StatusEnum, statusList } from 'features/hotEventManagement/constants'
+import {
+	SportLeagueEnum,
+	StatusEnum,
+	statusList,
+} from 'features/hotEventManagement/constants'
 import { SearchOutlined } from '@ant-design/icons'
+import { IGetSportLeaguesTitleData } from 'features/hotEventManagement/type'
 
 interface IHotEventManagementFilterProps {
 	loading: boolean
@@ -15,6 +20,7 @@ interface IHotEventManagementFilterProps {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => void
+	sportLeagueTitleList: IGetSportLeaguesTitleData[]
 }
 
 const { Panel } = Collapse
@@ -24,6 +30,7 @@ const HotEventManagementFilter: FC<IHotEventManagementFilterProps> = ({
 	loading,
 	form,
 	onSearch,
+	sportLeagueTitleList,
 }) => {
 	const { t } = useTranslation()
 
@@ -38,6 +45,7 @@ const HotEventManagementFilter: FC<IHotEventManagementFilterProps> = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							status: StatusEnum.All,
+							sportLeaguesTitleId: SportLeagueEnum.All,
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -47,6 +55,30 @@ const HotEventManagementFilter: FC<IHotEventManagementFilterProps> = ({
 										{statusList?.map(status => (
 											<Option key={status.value} value={status.value}>
 												{t(status.displayName)}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='sportLeaguesTitleId'
+									label={t('Label_SportLeaguesTitle')}
+								>
+									<Select
+										placeholder={
+											t('Label_Select') + t('Label_SportLeaguesTitle')
+										}
+									>
+										<Option value={SportLeagueEnum.All}>
+											{t('Label_All')}
+										</Option>
+										{sportLeagueTitleList?.map(title => (
+											<Option
+												key={title.sportLeaguesTitleId}
+												value={title.sportLeaguesTitleId}
+											>
+												{title.sportLeaguesTitle}
 											</Option>
 										))}
 									</Select>
