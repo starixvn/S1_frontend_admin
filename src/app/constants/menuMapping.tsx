@@ -251,7 +251,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.depositLimitation.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceDepositLimitManage,
 		newAdminPath: paths.finance.sub.setting.sub.depositLimitation.root,
@@ -259,7 +259,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.withdrawalLimitation.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitManagement,
 		newAdminPath: paths.finance.sub.setting.sub.withdrawalLimitation.root,
