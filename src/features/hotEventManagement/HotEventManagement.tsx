@@ -13,12 +13,14 @@ import { HotEventManagementFilter } from 'features/hotEventManagement/HotEventMa
 import { Form, message, TablePaginationConfig } from 'antd'
 import {
 	useDeleteHotEventMutation,
+	useGetSportLeagueTitleQuery,
 	useLazyGetHotEventListQuery,
 	useSetHotEventStatusMutation,
 } from 'features/hotEventManagement/api'
 import {
 	HotEventMethodEnum,
 	IGetHotEventListResponse,
+	IGetSportLeaguesTitleResponse,
 } from 'features/hotEventManagement/type'
 import { AffixButtons } from 'components/AffixButtons'
 import { HotEventManagementTable } from 'features/hotEventManagement/HotEventManagementTable'
@@ -37,6 +39,7 @@ const HotEventManagement: FC<{
 		useAuth()
 	const [filterForm] = Form.useForm<{
 		status: number
+		sportLeaguesTitleId: number
 	}>()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -59,6 +62,13 @@ const HotEventManagement: FC<{
 	const [deleteHotEvent, { isLoading: isDeleteHotEventLoading }] =
 		useDeleteHotEventMutation()
 
+	const {
+		data: {
+			data: sportLeagueTitleList = [],
+		} = {} as IGetSportLeaguesTitleResponse,
+		isLoading: isGetSportLeagueTitleLoading,
+	} = useGetSportLeagueTitleQuery(null)
+
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: hotEventListTotal,
 	})
@@ -70,19 +80,21 @@ const HotEventManagement: FC<{
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		const { status } = filterForm.getFieldsValue()
+		const { status, sportLeaguesTitleId } = filterForm.getFieldsValue()
 		try {
 			await getHotEventList({
 				siteId,
 				pageNumber: current,
 				pageSize,
 				status,
+				sportLeaguesTitleId,
 			}).unwrap()
 
 			setQueryParams({
 				pageNumber: current,
 				pageSize,
 				status,
+				sportLeaguesTitleId,
 			})
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -135,9 +147,13 @@ const HotEventManagement: FC<{
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
-				const { pageNumber, pageSize, status } = queryParams
+				const { pageNumber, pageSize, status, sportLeaguesTitleId } =
+					queryParams
 				filterForm.setFieldsValue({
 					status: status ? Number(status) : 0,
+					sportLeaguesTitleId: sportLeaguesTitleId
+						? Number(sportLeaguesTitleId)
+						: 0,
 				})
 
 				handleSearch({
@@ -152,7 +168,8 @@ const HotEventManagement: FC<{
 	const loading =
 		isGetHotEventListLoading ||
 		isSetHotEventStatusLoading ||
-		isDeleteHotEventLoading
+		isDeleteHotEventLoading ||
+		isGetSportLeagueTitleLoading
 
 	return (
 		<LayoutContent.Main>
@@ -161,6 +178,7 @@ const HotEventManagement: FC<{
 				loading={loading}
 				form={filterForm}
 				onSearch={handleSearch}
+				sportLeagueTitleList={sportLeagueTitleList}
 			/>
 			{!isEmpty(queryParams) && (
 				<HotEventManagementTable
