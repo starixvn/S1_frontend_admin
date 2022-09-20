@@ -109,6 +109,21 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 			),
 		},
 		{
+			title: t('Label_BattleTime'),
+			key: 'battleTime',
+			dataIndex: 'battleTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (battleTime: string) =>
+				battleTime ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{moment(battleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
+				) : (
+					''
+				),
+		},
+		{
 			title: t('Label_HomeTeam'),
 			dataIndex: `homeTeamName`,
 			width: 100,
@@ -140,21 +155,6 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 				startTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
-					</Typography.Text>
-				) : (
-					''
-				),
-		},
-		{
-			title: t('Label_BattleTime'),
-			key: 'battleTime',
-			dataIndex: 'battleTime',
-			width: 120,
-			align: 'center' as 'center',
-			render: (battleTime: string) =>
-				battleTime ? (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(battleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
