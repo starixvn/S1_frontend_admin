@@ -7,8 +7,8 @@ export enum SlotGameStatusEnum {
 export const slotGameStatusList: Array<{ value: number; displayName: string }> =
 	[
 		{ value: SlotGameStatusEnum.ALL, displayName: 'Label_All' },
-		{ value: SlotGameStatusEnum.Open, displayName: 'Label_Open' },
-		{ value: SlotGameStatusEnum.Closed, displayName: 'Label_Closed' },
+		{ value: SlotGameStatusEnum.Open, displayName: 'Label_On' },
+		{ value: SlotGameStatusEnum.Closed, displayName: 'Label_Off' },
 	]
 
 export enum SlotCategoryEnum {

@@ -522,5 +522,7 @@
 	"Label_QrCodeUrl": "QR Code Url",
 	"Label_QrCodeErrorMsg": "The uploaded image is not a QR code image, please re-upload",
 	"Label_AdjustMax" : "Adjust Max",
-	"Label_ZeroIsUnLimited" : "( 0 = Unlimited )"
+	"Label_ZeroIsUnLimited" : "( 0 = Unlimited )",
+	"Label_On" : "On",
+	"Label_Off" : "Off"
 }
