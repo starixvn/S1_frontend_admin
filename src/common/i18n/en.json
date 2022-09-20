@@ -191,6 +191,7 @@
 	"Label_FieldsOneTime": "You can only fill in either {{FieldA}} or {{FieldB}} at one time",
 	"Label_PointBalance": "Point Balance",
 	"Label_PointEarned": "Point Earned",
+	"Label_TotalPointEarned" : "Total Point Earned",
 	"Label_PointUsed": "Point Used",
 	"Label_PointLog": "Point Log",
 	"Label_LastRedemption": "Last Redemption",
