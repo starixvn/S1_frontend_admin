@@ -191,7 +191,7 @@
 	"Label_FieldsOneTime": "You can only fill in either {{FieldA}} or {{FieldB}} at one time",
 	"Label_PointBalance": "Point Balance",
 	"Label_PointEarned": "Point Earned",
-	"Label_TotalPointEarned" : "Total Point Earned",
+	"Label_TotalPointEarned": "Total Point Earned",
 	"Label_PointUsed": "Point Used",
 	"Label_PointLog": "Point Log",
 	"Label_LastRedemption": "Last Redemption",
@@ -522,8 +522,31 @@
 	"Label_BankQR": "BankQR",
 	"Label_QrCodeUrl": "QR Code Url",
 	"Label_QrCodeErrorMsg": "The uploaded image is not a QR code image, please re-upload",
-	"Label_AdjustMax" : "Adjust Max",
-	"Label_ZeroIsUnLimited" : "( 0 = Unlimited )",
-	"Label_On" : "On",
-	"Label_Off" : "Off"
+	"Label_AdjustMax": "Adjust Max",
+	"Label_ZeroIsUnLimited": "( 0 = Unlimited )",
+	"Label_On": "On",
+	"Label_Off": "Off",
+	"BonusType": {
+		"Label_FirstDeposit": "First Deposit",
+		"Label_ReDeposit": "Re-Deposit",
+		"Label_FreeBet": "Free Bet",
+		"Label_CashBack": "Cash Back",
+		"Label_Rebate:": "Rebate",
+		"Label_RetentionBonus:": "Retention Bonus",
+		"Label_SpecialBonus": "Special Bonus"
+	},
+	"BonusReportStatuses": {
+		"Label_Running": "Running",
+		"Label_Canceled": "Canceled",
+		"Label_Expiry": "Expiry",
+		"Label_Fulfill": "Fulfill",
+		"Label_TransferOut": "Transfer Out"
+	},
+	"Label_BaseCurrencyShow": "Base Currency Show",
+	"Label_ReferenceId": "Reference ID",
+	"Label_LockedAmount": "Locked Amount",
+	"Label_CancelBonusAmount": "Cancel Bonus Amount",
+	"Label_ExpiryTime": "Expiry Time",
+	"Label_ExpiredCancel": "Expired Cancel",
+	"Label_ColumnVisibility": "Column Visibility"
 }
