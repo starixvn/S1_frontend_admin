@@ -419,6 +419,13 @@ const AdjustmentLimitation = lazy(
 		)
 )
 
+const BonusReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusReport' */ 'features/bonusReport/BonusReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1104,6 +1111,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<AdjustmentLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusReport.functionId}>
+						<BonusReport />
 					</AuthRequire>
 				),
 			},

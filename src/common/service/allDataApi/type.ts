@@ -36,3 +36,10 @@ export interface IGetProductsData {
 }
 
 export type IGetProductsResponse = IAxiosResponse<IGetProductsData[]>
+
+export interface IGetPromotionTypeData {
+	type: number
+	promotionTypeName: string
+}
+
+export type IGetPromotionTypeResponse = IAxiosResponse<IGetPromotionTypeData[]>

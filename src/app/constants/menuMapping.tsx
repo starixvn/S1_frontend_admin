@@ -528,11 +528,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Bonus Report',
 		icon: null,
-		functionId: 73,
+		functionId: paths.report.sub.bonusReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingBonusInfoReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BonusInfoReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.bonusReport.root,
 	},
 	{
 		icon: null,

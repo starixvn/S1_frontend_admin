@@ -329,6 +329,10 @@ const paths = {
 				root: 'report/rewardBonusExport',
 				functionId: 124,
 			},
+			bonusReport: {
+				root: 'report/bonusReport',
+				functionId: 73,
+			},
 		},
 	},
 	member: {

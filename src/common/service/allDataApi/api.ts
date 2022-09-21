@@ -7,6 +7,7 @@ import {
 	IBankInfoSysResponse,
 	IGetCategoryResponse,
 	IGetProductsResponse,
+	IGetPromotionTypeResponse,
 	IVipLevelsResponse,
 } from './type'
 
@@ -55,6 +56,20 @@ export const allDataApi = createApi({
 				method: 'POST',
 			}),
 		}),
+		getPromotionList: builder.query<
+			IGetPromotionTypeResponse,
+			// * Bonus Report: {isPayout: false, isNew: true}
+			{
+				isPayout: boolean
+				isNew: boolean
+			}
+		>({
+			query: data => ({
+				url: 'GetAllData/GetPromotionType',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -72,4 +87,5 @@ export const {
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
 	useGetProductsQuery,
+	useGetPromotionListQuery,
 } = allDataApi
