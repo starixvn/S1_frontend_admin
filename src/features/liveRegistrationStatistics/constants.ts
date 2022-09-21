@@ -67,6 +67,7 @@ export enum CallOutStatusEnum {
 
 // *  最後活躍日(登入)
 export enum DormantMemberEnum {
+	All = 0,
 	ThreeDaysInactive = 3, // * 3天內
 	FiveDaysInactive = 5, // * 5天內
 	OneWeekInactive = 21, // * 1周內
@@ -197,3 +198,5 @@ export const DORMANT_MEMBER_OPTIONS = [
 		value: DormantMemberEnum.ThreeMonthInactive,
 	},
 ]
+
+export const REFRESH_DATA_COUNT = 20
