@@ -43,6 +43,7 @@ const { Option } = Select
 
 interface ILiveRegistrationStatisticsFilterProps {
 	loading: boolean
+	refreshCount: number
 	form: FormInstance
 	timeZoneUtcOffset: number
 	onSearch: (values: any) => void
@@ -51,7 +52,14 @@ interface ILiveRegistrationStatisticsFilterProps {
 
 const LiveRegistrationStatisticsFilter: FC<
 	ILiveRegistrationStatisticsFilterProps
-> = ({ loading, form, timeZoneUtcOffset, onSearch, onTimeZoneChange }) => {
+> = ({
+	loading,
+	refreshCount,
+	form,
+	timeZoneUtcOffset,
+	onSearch,
+	onTimeZoneChange,
+}) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
@@ -71,7 +79,7 @@ const LiveRegistrationStatisticsFilter: FC<
 							status: StatusEnum.All,
 							agentCodeType: AgentCodeEnum.All,
 							callOutStatus: CallOutStatusEnum.All,
-							dormantUser: DormantMemberEnum.ThreeDaysInactive,
+							dormantUser: DormantMemberEnum.All,
 							userName: '',
 							affiliatesCode: '',
 						}}
@@ -225,7 +233,7 @@ const LiveRegistrationStatisticsFilter: FC<
 
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='dormantUser' label={t('Label_DormantUser')}>
-									<Select placeholder='select'>
+									<Select placeholder='select' allowClear>
 										{DORMANT_MEMBER_OPTIONS.map(option => (
 											<Option key={option.value} value={option.value}>
 												{t(option.displayKey)}
@@ -236,7 +244,7 @@ const LiveRegistrationStatisticsFilter: FC<
 							</Col>
 						</Row>
 						<br />
-						<Row justify='end' align='middle'>
+						<Row justify='end' align='middle' gutter={16}>
 							<Col>
 								<Button
 									loading={loading}
@@ -244,7 +252,7 @@ const LiveRegistrationStatisticsFilter: FC<
 									htmlType='submit'
 									type='primary'
 								>
-									{t('Label_Search')}
+									{`${t('Label_Search')} (${refreshCount})`}
 								</Button>
 							</Col>
 						</Row>
