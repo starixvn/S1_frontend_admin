@@ -35,6 +35,7 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 		purposeList,
 		agentList,
 		vipLevelList,
+		supportChannelList,
 		statusEnumList,
 		onSearch,
 	} = useContext(FilterContext)
@@ -253,6 +254,58 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 		)
 	}
 
+	const supportChannelSelector = () => {
+		// 後端表示全選送空陣列，所以這裡給 all 在送args的時候在轉成空陣列
+		const handleChangeSupportChannel = (
+			newChannels: Array<number | string>
+		) => {
+			if (newChannels.includes('matchAll')) {
+				// 匹配全部
+				form.setFieldsValue({
+					supportChannels: supportChannelList.map(channel => channel.value),
+				})
+			} else if ((newChannels.length as number) > 1) {
+				if (newChannels[0] === 'all') {
+					// 先選 selectAll 再選其他選項 , 代表不要全選 , 移除 'all'
+					newChannels.splice(0, 1)
+					form.setFieldsValue({
+						supportChannels: newChannels,
+					})
+				} else if (newChannels.includes('all')) {
+					// 先選其他選項才按 selectAll = 全選 移除其他選項
+					form.setFieldsValue({
+						supportChannels: ['all'],
+					})
+				}
+			} else {
+				// firstPick , Array.length === 1
+				form.setFieldsValue({
+					supportChannels: newChannels,
+				})
+			}
+		}
+
+		return (
+			<Form.Item name='supportChannels' label={t('Label_SupportChannels')}>
+				<MultipleSelect
+					onChange={handleChangeSupportChannel}
+					placeholder={t('Label_Select') + t('Label_SupportChannels')}
+				>
+					{/* 為保留 selectAll 的選項 , 不管有沒有 > 1 都渲染出來 */}
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+					{supportChannelList?.length > 1 && (
+						<Option value='matchAll'>{t('Label_MatchAll')}</Option>
+					)}
+					{supportChannelList?.map(item => (
+						<Option key={item.value} value={item.value}>
+							{item.name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -271,6 +324,7 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 								statuses: [],
 								vipLevels: [],
 								pointLevels: [],
+								supportChannels: [],
 							}}
 						>
 							<Row align='middle' gutter={16}>
@@ -308,6 +362,9 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 								</Col>
 								<Col lg={6} md={12} xs={12}>
 									{pointLevelSelector()}
+								</Col>
+								<Col lg={6} md={12} xs={12}>
+									{supportChannelSelector()}
 								</Col>
 							</Row>
 							<br />

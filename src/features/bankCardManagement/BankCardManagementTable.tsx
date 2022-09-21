@@ -116,6 +116,31 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 			},
 		},
 		{
+			title: t('Label_SupportChannels'),
+			key: 'supportChannelNames',
+			dataIndex: 'supportChannelNames',
+			width: 60,
+			align: 'center' as 'center',
+			render: (supportChannelNames: string[]) => {
+				return supportChannelNames.length > 0 ? (
+					<Space style={{ padding: '10px' }}>
+						{supportChannelNames.map((channelName, index) => {
+							return index === supportChannelNames.length - 1 ? (
+								<Typography.Text>{channelName}</Typography.Text>
+							) : (
+								<>
+									<Typography.Text>{channelName}</Typography.Text>
+									<Typography.Text>&</Typography.Text>
+								</>
+							)
+						})}
+					</Space>
+				) : (
+					'-'
+				)
+			},
+		},
+		{
 			title: t('Label_Purposes'),
 			key: 'purposes',
 			dataIndex: 'purposes',
@@ -161,7 +186,7 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 						})}
 					</Space>
 				) : (
-					'N/A'
+					'-'
 				)
 			},
 		},
@@ -181,7 +206,7 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 						))}
 					</Space>
 				) : (
-					'N/A'
+					'-'
 				)
 			},
 		},

@@ -6,7 +6,15 @@ import {
 	IUpdateDepositLimitData,
 } from 'features/depositLimitation/type'
 import { multiEqual } from 'common/utils'
-import { assign, clone, cloneDeep, find, includes, isNull } from 'lodash'
+import {
+	assign,
+	clone,
+	cloneDeep,
+	find,
+	includes,
+	isNull,
+	isNumber,
+} from 'lodash'
 
 // S2C response converter
 export const depositLimitationResponseConverter = (
@@ -207,11 +215,13 @@ export class DepositLimitationC2S {
 			const beforeDepositTypes = beforeData.map(before => before.depositType)
 			return includes(beforeDepositTypes, raw.depositType)
 		})
-
-		const createData = rawAfterData.filter(raw => {
-			const beforeDepositTypes = beforeData.map(before => before.depositType)
-			return !includes(beforeDepositTypes, raw.depositType)
-		})
+		// 如果沒有資料則不做新增
+		const createData = rawAfterData
+			.filter(raw => {
+				const beforeDepositTypes = beforeData.map(before => before.depositType)
+				return !includes(beforeDepositTypes, raw.depositType)
+			})
+			.filter(data => isNumber(data.depositMin) && isNumber(data.depositMax))
 
 		return {
 			before: beforeData,
@@ -234,7 +244,7 @@ export class DepositLimitationC2S {
 			localBankingMin,
 		} = formData
 
-		return cloneDeep(this.exampleData).map(example => {
+		const result = cloneDeep(this.exampleData).map(example => {
 			example.vipLevel = vipLevel
 			switch (example.depositType) {
 				case DepositTypeEnum.OnlineBanking:
@@ -257,6 +267,10 @@ export class DepositLimitationC2S {
 			}
 			return example
 		})
+		// 將沒有填入資料的欄位篩掉
+		return result.filter(
+			obj => isNumber(obj.depositMax) && isNumber(obj.depositMin)
+		)
 	}
 
 	static updateStatus({

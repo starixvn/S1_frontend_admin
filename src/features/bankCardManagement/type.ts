@@ -8,6 +8,7 @@ export interface IGetBankCardListArgs {
 	sysIds: number[]
 	vipLevels: number[]
 	pointLevels: number[]
+	supportChannels: number[]
 	agent: string
 	accountNo: string
 	pageNumber: number
@@ -32,6 +33,9 @@ export interface IGetBankCardListData {
 	pointLevels: number[]
 	vipLevels: number[]
 	vipLevelNames: string[]
+	supportChannels: number[]
+	supportChannelNames: string[]
+	qrCodeUrl: string | null
 	dummy: number
 	memo: null | string
 	sort: number
@@ -53,6 +57,8 @@ export interface ISetBankCardArgs {
 	memo: string
 	sort: number
 	status: number
+	supportChannels: number[]
+	qrCodeUrl: string | null
 }
 
 export interface IGetPointLevelListArgs {
@@ -91,3 +97,12 @@ export interface IGetAgentListArgs {
 }
 
 export type IGetAgentListResponse = IAxiosResponse<string[]>
+
+export type IGetSupportChannelEnumResponse = IAxiosResponse<IGetEnumData[]>
+
+export type IGetQrCodeUrlResponse = IAxiosResponse<{ qrCodeUrl: string }>
+
+export enum SupportChannelEnum {
+	LocalBank,
+	EWallet,
+}

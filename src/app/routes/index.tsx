@@ -328,7 +328,6 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
-
 const BankCardManagement = lazy(
 	() =>
 		import(
@@ -357,6 +356,27 @@ const DepositLimitation = lazy(
 		)
 )
 
+const BonusManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusManagement' */ 'features/bonusManagement/BonusManagement'
+		)
+)
+
+const BonusManagementUpdateBonus = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UpdateBonus' */ 'features/bonusManagement/editBonusDetail/UpdateBonus'
+		)
+)
+
+const BonusManagementScratchCardList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ScratchCardList' */ 'features/bonusManagement/scratchCardList/ScratchCardList'
+		)
+)
+
 const SlotGameCategory = lazy(
 	() =>
 		import(
@@ -382,6 +402,27 @@ const IssueBonusManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'IssueBonusManagement' */ 'features/issueBonusManagement/IssueBonusManagement'
+		)
+)
+
+const WithdrawalKycControl = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalKycControl' */ 'features/withdrawalKycControl/WithdrawalKycControl'
+		)
+)
+
+const AdjustmentLimitation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AdjustmentLimitation' */ 'features/adjustmentLimitation/AdjustmentLimitation'
+		)
+)
+
+const BonusReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusReport' */ 'features/bonusReport/BonusReport'
 		)
 )
 
@@ -974,6 +1015,36 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/:bonusCode`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagementUpdateBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/scratchCard/:specialCode`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonusManagement.functionId}
+					>
+						<BonusManagementScratchCardList />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.depositLimitation.root}`,
 				element: (
 					<AuthRequire
@@ -1018,6 +1089,36 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.hotEventManagement.functionId}>
 						<HotEventEdit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.withdrawalKycControl.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.finance.sub.withdrawalKycControl.functionId}
+					>
+						<WithdrawalKycControl />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.adjustmentLimitation.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.adjustmentLimitation.functionId
+						}
+					>
+						<AdjustmentLimitation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusReport.functionId}>
+						<BonusReport />
 					</AuthRequire>
 				),
 			},

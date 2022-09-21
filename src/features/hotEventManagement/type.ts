@@ -3,6 +3,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 export interface IGetHotEventListArgs {
 	siteId?: number
 	status: number
+	sportLeaguesTitleId: number
 	pageSize: number
 	pageNumber: number
 }

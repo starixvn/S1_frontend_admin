@@ -9,3 +9,7 @@ export const statusList: Array<{ value: number; displayName: string }> = [
 	{ value: StatusEnum.Active, displayName: 'Label_Active' },
 	{ value: StatusEnum.Inactive, displayName: 'Label_Inactive' },
 ]
+
+export enum SportLeagueEnum {
+	All,
+}

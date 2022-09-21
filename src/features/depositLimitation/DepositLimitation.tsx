@@ -168,22 +168,28 @@ const DepositLimitation: FC<{
 
 	const handleCreateDepositLimit = async () => {
 		const formData = await createForm.validateFields()
-		try {
-			await createDepositLimit({
-				siteId,
-				currencyId: currentCurrency,
-				after: DepositLimitationC2S.create(formData),
-			}).unwrap()
-			message.success(t('System.Label_Success'))
-			createForm.resetFields()
-		} catch (error) {
-			if ((error as any)?.errorCode === ErrorCodeEnum.DuplicatePointLevel) {
-				// point Level 重複獨立檢查並顯示 message
-				message.error(t('Label_PointLevelDuplicated'))
-			} else {
-				message.error(
-					(error as Error)?.message || t('System.Label_NotExpectedServerError')
-				)
+		const result = DepositLimitationC2S.create(formData)
+		if (result.length === 0) {
+			message.error(t('Label_EmptyError'))
+		} else {
+			try {
+				await createDepositLimit({
+					siteId,
+					currencyId: currentCurrency,
+					after: DepositLimitationC2S.create(formData),
+				}).unwrap()
+				message.success(t('System.Label_Success'))
+				createForm.resetFields()
+			} catch (error) {
+				if ((error as any)?.errorCode === ErrorCodeEnum.DuplicatePointLevel) {
+					// point Level 重複獨立檢查並顯示 message
+					message.error(t('Label_PointLevelDuplicated'))
+				} else {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
 			}
 		}
 	}

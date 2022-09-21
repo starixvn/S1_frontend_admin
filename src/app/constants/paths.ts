@@ -108,6 +108,10 @@ const paths = {
 			depositListing: {
 				root: 'finance/depositListing',
 			},
+			withdrawalKycControl: {
+				root: 'finance/withdrawalKycControl',
+				functionId: 37,
+			},
 			withdrawalListing: {
 				root: 'finance/withdrawalListing',
 			},
@@ -199,6 +203,10 @@ const paths = {
 						root: 'finance/setting/depositLimitation',
 						functionId: 40,
 					},
+					adjustmentLimitation: {
+						root: 'finance/setting/adjustmentLimitation',
+						functionId: 43,
+					},
 				},
 			},
 			depositWithdrawalSector: {
@@ -230,6 +238,7 @@ const paths = {
 			},
 			bonusManagement: {
 				root: 'marketing/bonusManagement',
+				functionId: 45,
 			},
 			appliedBonus: {
 				root: 'marketing/appliedBonus',
@@ -320,6 +329,10 @@ const paths = {
 				root: 'report/rewardBonusExport',
 				functionId: 124,
 			},
+			bonusReport: {
+				root: 'report/bonusReport',
+				functionId: 73,
+			},
 		},
 	},
 	member: {
@@ -358,7 +371,7 @@ const paths = {
 		sub: {
 			slotGameCategory: {
 				root: 'productManagement/slotGameCategory',
-				functionId: 59,
+				functionId: 126,
 			},
 		},
 	},

@@ -185,7 +185,7 @@ const TransferAccountManagement: FC<{
 			form.setFieldsValue({
 				channels: transferChannelEnum.map(({ value }) => value),
 				status: transferAccountStatusEnum.map(({ value }) => value),
-				purposes: transferAccountPurposeEnum.map(({ value }) => value),
+				purposes: ['all'],
 				sysIds: bankInfoSys.map(({ sysId }) => sysId),
 			})
 

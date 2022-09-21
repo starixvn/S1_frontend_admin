@@ -20,6 +20,7 @@ interface IFilterContextProps {
 	vipLevelList: IVipLevelsData[]
 	statusEnumList: IGetEnumData[]
 	bankInfoList: IGetBankInfoData[]
+	supportChannelList: IGetEnumData[]
 	pointLevelList: number[]
 }
 
@@ -35,6 +36,7 @@ const initValue = {
 	statusEnumList: [],
 	bankInfoList: [],
 	pointLevelList: [],
+	supportChannelList: [],
 }
 
 export const FilterContext = createContext<IFilterContextProps>(initValue)

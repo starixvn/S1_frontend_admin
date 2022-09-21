@@ -61,15 +61,7 @@ const MemberListTable: FC<IMemberListTableProps> = ({
 			align: 'center' as 'center',
 		},
 		{
-			title: t('Label_PointBalance'),
-			key: 'pointBalance',
-			dataIndex: 'pointBalance',
-			width: 80,
-			align: 'center' as 'center',
-			render: (pointBalance: number) => numberFormatter.format(pointBalance),
-		},
-		{
-			title: t('Label_PointEarned'),
+			title: t('Label_TotalPointEarned'),
 			key: 'pointEarned',
 			dataIndex: 'pointEarned',
 			width: 80,
@@ -83,6 +75,14 @@ const MemberListTable: FC<IMemberListTableProps> = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (pointUsed: number) => numberFormatter.format(pointUsed),
+		},
+		{
+			title: t('Label_PointBalance'),
+			key: 'pointBalance',
+			dataIndex: 'pointBalance',
+			width: 80,
+			align: 'center' as 'center',
+			render: (pointBalance: number) => numberFormatter.format(pointBalance),
 		},
 		{
 			title: t('Label_PointLog'),

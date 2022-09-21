@@ -10,6 +10,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
+import { useCountdown } from 'usehooks-ts'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -37,6 +38,7 @@ import {
 	CallOutStatusEnum,
 	DateTypeEnum,
 	StatusEnum,
+	REFRESH_DATA_COUNT,
 } from './constants'
 import LiveRegistrationStatisticsTable from './LiveRegistrationStatisticsTable'
 import LiveRegistrationStatisticsNoteModal from './LiveRegistrationStatisticsNoteModal'
@@ -64,7 +66,10 @@ const LiveRegistrationStatistics: FC<{
 	}>()
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
+	const [refreshCount, { startCountdown, stopCountdown, resetCountdown }] =
+		useCountdown({
+			countStart: REFRESH_DATA_COUNT,
+		})
 	const noteModal = useModal()
 	const [noteCustId, setNoteCustId] = useState<number>()
 
@@ -108,7 +113,7 @@ const LiveRegistrationStatistics: FC<{
 		orderByProperty?: 'RegTime' | 'LastActiveTime'
 		orderByDirection?: 0 | 1 | null
 	}) => {
-		const { dateRange, affiliatesCode, ...values } =
+		const { dateRange, affiliatesCode, dormantUser, ...values } =
 			await searchForm.validateFields()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -121,6 +126,7 @@ const LiveRegistrationStatistics: FC<{
 				siteId,
 				...values,
 				affiliatesCode: affiliatesCode || null,
+				dormantUser: dormantUser ?? DormantMemberEnum.All,
 				pageNumber: current,
 				pageSize,
 				startDate,
@@ -132,6 +138,7 @@ const LiveRegistrationStatistics: FC<{
 			setQueryParams({
 				...values,
 				affiliatesCode: affiliatesCode || null,
+				dormantUser: dormantUser ?? DormantMemberEnum.All,
 				orderByProperty,
 				orderByDirection,
 				pageNumber: current,
@@ -144,6 +151,8 @@ const LiveRegistrationStatistics: FC<{
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
+
+		handleResetCount()
 	}
 
 	const handleExport = async () => {
@@ -155,7 +164,7 @@ const LiveRegistrationStatistics: FC<{
 				affiliatesCode = null,
 				agentCodeType = AgentCodeEnum.All,
 				callOutStatus = 0,
-				dormantUser,
+				dormantUser = 0,
 				dateType,
 				userName = '',
 				startDate,
@@ -249,6 +258,17 @@ const LiveRegistrationStatistics: FC<{
 		}
 	}
 
+	const handleResetCount = () => {
+		resetCountdown()
+		startCountdown()
+	}
+
+	// * 實作倒數邏輯
+	useEffect(() => {
+		return () => stopCountdown()
+	}, [])
+
+	// * 倒數重置後重撈資料
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -258,9 +278,8 @@ const LiveRegistrationStatistics: FC<{
 					status = StatusEnum.All,
 					affiliatesCode = '',
 					agentCodeType = AgentCodeEnum.All,
-
 					callOutStatus = CallOutStatusEnum.All,
-					dormantUser = DormantMemberEnum.ThreeDaysInactive,
+					dormantUser = DormantMemberEnum.All,
 					dateType = DateTypeEnum.LastActiveDate,
 					userName = '',
 					pageNumber = PAGINATION.defaultCurrent,
@@ -291,8 +310,15 @@ const LiveRegistrationStatistics: FC<{
 				})
 			}
 		}
-		init()
-	}, [])
+
+		if (refreshCount === REFRESH_DATA_COUNT) {
+			init()
+		}
+
+		if (refreshCount === 0) {
+			handleResetCount()
+		}
+	}, [refreshCount])
 
 	const loading =
 		isGetRegistrationManagementListFetching ||
@@ -304,6 +330,7 @@ const LiveRegistrationStatistics: FC<{
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<LiveRegistrationStatisticsFilter
+				refreshCount={refreshCount}
 				loading={loading}
 				form={searchForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}

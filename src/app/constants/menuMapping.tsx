@@ -147,11 +147,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 37,
+		functionId: paths.finance.sub.withdrawalKycControl.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Message/WithdrawalKYCControl',
 		internalFunctionKey: allowedRoles.MessageWithdrawalKYCControl,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.withdrawalKycControl.root,
 	},
 	{
 		icon: null,
@@ -251,7 +251,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.depositLimitation.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceDepositLimitManage,
 		newAdminPath: paths.finance.sub.setting.sub.depositLimitation.root,
@@ -259,7 +259,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.withdrawalLimitation.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitManagement,
 		newAdminPath: paths.finance.sub.setting.sub.withdrawalLimitation.root,
@@ -274,11 +274,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 43,
+		functionId: paths.finance.sub.setting.sub.adjustmentLimitation.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/AdjustmentLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentLimitManagement,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.setting.sub.adjustmentLimitation.root,
 	},
 	{
 		icon: null,
@@ -290,11 +290,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 45,
+		functionId: paths.marketing.sub.bonusManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BonusManage',
 		internalFunctionKey: allowedRoles.MarketingBonusManage,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.bonusManagement.root,
 	},
 	{
 		icon: null,
@@ -528,11 +528,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Bonus Report',
 		icon: null,
-		functionId: 73,
+		functionId: paths.report.sub.bonusReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingBonusInfoReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BonusInfoReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.bonusReport.root,
 	},
 	{
 		icon: null,

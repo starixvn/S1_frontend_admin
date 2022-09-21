@@ -35,10 +35,12 @@ interface ISlotGameCategoryTableProps {
 		currencyId,
 		slotGameId,
 		status,
+		dataIndex,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
+		dataIndex: string
 	}) => void
 	categoryForm: FormInstance
 }
@@ -80,6 +82,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									currencyId,
 									slotGameId,
 									status: !currentStatus,
+									dataIndex,
 								})
 							}}
 						>

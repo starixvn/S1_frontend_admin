@@ -67,6 +67,7 @@ export enum CallOutStatusEnum {
 
 // *  最後活躍日(登入)
 export enum DormantMemberEnum {
+	All = 0,
 	ThreeDaysInactive = 3, // * 3天內
 	FiveDaysInactive = 5, // * 5天內
 	OneWeekInactive = 21, // * 1周內
@@ -142,27 +143,27 @@ export const CALL_OUT_STATUS_OPTIONS = [
 		value: CallOutStatusEnum.All,
 	},
 	{
-		displayKey: 'Label_Panding1stCall',
+		displayKey: 'Label_Pending1stCall',
 		value: CallOutStatusEnum.Panding1stCall,
 	},
 	{
-		displayKey: 'Label_Panding2stCall',
+		displayKey: 'Label_Pending2stCall',
 		value: CallOutStatusEnum.Panding2stCall,
 	},
 	{
-		displayKey: 'Label_Panding3stCall',
+		displayKey: 'Label_Pending3stCall',
 		value: CallOutStatusEnum.Panding3stCall,
 	},
 	{
-		displayKey: 'Label_Panding4stCall',
+		displayKey: 'Label_Pending4stCall',
 		value: CallOutStatusEnum.Panding4stCall,
 	},
 	{
-		displayKey: 'Label_Panding5stCall',
+		displayKey: 'Label_Pending5stCall',
 		value: CallOutStatusEnum.Panding5stCall,
 	},
 	{
-		displayKey: 'Label_Panding6stCall',
+		displayKey: 'Label_Pending6stCall',
 		value: CallOutStatusEnum.Panding6stCall,
 	},
 ]
@@ -197,3 +198,5 @@ export const DORMANT_MEMBER_OPTIONS = [
 		value: DormantMemberEnum.ThreeMonthInactive,
 	},
 ]
+
+export const REFRESH_DATA_COUNT = 20

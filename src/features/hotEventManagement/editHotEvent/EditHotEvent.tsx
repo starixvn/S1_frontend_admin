@@ -1,5 +1,5 @@
 import { LayoutContent } from 'app/pages/layout'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
 	HotEventMethodEnum,
@@ -29,6 +29,7 @@ const EditHotEvent = () => {
 	const { id } = useParams()
 	const isEditing = id !== HotEventMethodEnum.Create
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const navigate = useNavigate()
 	const [form] = Form.useForm<{
 		tpId: number
 		gameId: number
@@ -139,7 +140,7 @@ const EditHotEvent = () => {
 				endTime,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
-			await handleGetHotEventDetail()
+			navigate(-1)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -176,6 +177,7 @@ const EditHotEvent = () => {
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			form.resetFields()
+			navigate(-1)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')

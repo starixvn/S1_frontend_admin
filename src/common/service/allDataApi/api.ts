@@ -6,6 +6,8 @@ import {
 	IBankInfoSysData,
 	IBankInfoSysResponse,
 	IGetCategoryResponse,
+	IGetProductsResponse,
+	IGetPromotionTypeResponse,
 	IVipLevelsResponse,
 } from './type'
 
@@ -48,6 +50,26 @@ export const allDataApi = createApi({
 				method: 'POST',
 			}),
 		}),
+		getProducts: builder.query<IGetProductsResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpGameType',
+				method: 'POST',
+			}),
+		}),
+		getPromotionList: builder.query<
+			IGetPromotionTypeResponse,
+			// * Bonus Report: {isPayout: false, isNew: true}
+			{
+				isPayout: boolean
+				isNew: boolean
+			}
+		>({
+			query: data => ({
+				url: 'GetAllData/GetPromotionType',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -64,4 +86,6 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
+	useGetProductsQuery,
+	useGetPromotionListQuery,
 } = allDataApi
