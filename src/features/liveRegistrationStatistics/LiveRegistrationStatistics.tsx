@@ -151,8 +151,6 @@ const LiveRegistrationStatistics: FC<{
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
-
-		handleResetCount()
 	}
 
 	const handleExport = async () => {
@@ -263,62 +261,66 @@ const LiveRegistrationStatistics: FC<{
 		startCountdown()
 	}
 
-	// * 實作倒數邏輯
-	useEffect(() => {
-		return () => stopCountdown()
-	}, [])
+	const init = () => {
+		const {
+			currencyId = currencyListBySite[0]?.currencyId,
+			depositStatus = DateTypeEnum.LastActiveDate,
+			status = StatusEnum.All,
+			affiliatesCode = '',
+			agentCodeType = AgentCodeEnum.All,
+			callOutStatus = CallOutStatusEnum.All,
+			dormantUser = DormantMemberEnum.All,
+			dateType = DateTypeEnum.LastActiveDate,
+			userName = '',
+			pageNumber = PAGINATION.defaultCurrent,
+			pageSize = PAGINATION.defaultPageSize,
+			startDate,
+			endDate,
+			orderByProperty,
+			orderByDirection,
+		} = queryParams
+		searchForm.setFieldsValue({
+			currencyId: Number(currencyId),
+			depositStatus: Number(depositStatus),
+			status: Number(status),
+			affiliatesCode,
+			agentCodeType: Number(agentCodeType),
+			callOutStatus: Number(callOutStatus),
+			dormantUser: Number(dormantUser),
+			dateType: Number(dateType),
+			userName,
+			dateRange: [moment(startDate), moment(endDate)],
+		})
+		setPagination(prev => ({ ...prev, current: pageNumber, pageSize }))
+		handleSearch({
+			current: pageNumber,
+			pageSize,
+			orderByProperty,
+			orderByDirection,
+		})
+	}
 
-	// * 倒數重置後重撈資料
+	// * 重置計數計
 	useEffect(() => {
-		const init = () => {
-			if (!isEmpty(queryParams)) {
-				const {
-					currencyId = currencyListBySite[0]?.currencyId,
-					depositStatus = DateTypeEnum.LastActiveDate,
-					status = StatusEnum.All,
-					affiliatesCode = '',
-					agentCodeType = AgentCodeEnum.All,
-					callOutStatus = CallOutStatusEnum.All,
-					dormantUser = DormantMemberEnum.All,
-					dateType = DateTypeEnum.LastActiveDate,
-					userName = '',
-					pageNumber = PAGINATION.defaultCurrent,
-					pageSize = PAGINATION.defaultPageSize,
-					startDate,
-					endDate,
-					orderByProperty,
-					orderByDirection,
-				} = queryParams
-				searchForm.setFieldsValue({
-					currencyId: Number(currencyId),
-					depositStatus: Number(depositStatus),
-					status: Number(status),
-					affiliatesCode,
-					agentCodeType: Number(agentCodeType),
-					callOutStatus: Number(callOutStatus),
-					dormantUser: Number(dormantUser),
-					dateType: Number(dateType),
-					userName,
-					dateRange: [moment(startDate), moment(endDate)],
-				})
-				setPagination(prev => ({ ...prev, current: pageNumber, pageSize }))
-				handleSearch({
-					current: pageNumber,
-					pageSize,
-					orderByProperty,
-					orderByDirection,
-				})
-			}
+		if (!isGetRegistrationManagementListFetching) {
+			handleResetCount()
 		}
+	}, [isGetRegistrationManagementListFetching])
 
-		if (refreshCount === REFRESH_DATA_COUNT) {
+	// * 計時器倒數完重撈資料
+	useEffect(() => {
+		if (refreshCount === 0) {
+			init()
+		}
+	}, [refreshCount])
+
+	useEffect(() => {
+		if (!isEmpty(queryParams)) {
 			init()
 		}
 
-		if (refreshCount === 0) {
-			handleResetCount()
-		}
-	}, [refreshCount])
+		return () => stopCountdown()
+	}, [])
 
 	const loading =
 		isGetRegistrationManagementListFetching ||
