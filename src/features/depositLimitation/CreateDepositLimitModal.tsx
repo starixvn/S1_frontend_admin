@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { Form, FormInstance, InputNumber, Modal, Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
+import { isNumber } from 'lodash'
 
 interface ICreateDepositLimitProps {
 	form: FormInstance
@@ -42,6 +43,11 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 									required: true,
 									message: '',
 								},
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
 							]}
 						>
 							<InputNumber
@@ -78,24 +84,38 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 					align: 'center' as 'center',
 					key: 'onlineBankingMin',
 					innerWidth: 200,
-					render: () => (
-						<Form.Item
-							name='onlineBankingMin'
-							style={{ margin: 0 }}
-							rules={[
-								{
-									required: true,
-									message: '',
-								},
-							]}
-						>
-							<InputNumber
-								style={{ width: '100%' }}
-								controls={false}
-								type='number'
-							/>
-						</Form.Item>
-					),
+					render: () => {
+						return (
+							<Form.Item
+								name='onlineBankingMin'
+								style={{ margin: 0 }}
+								rules={[
+									({ getFieldValue }) => ({
+										validator(_, value) {
+											// getFieldValue('password')
+											if (!isNumber(getFieldValue('onlineBankingMax')))
+												return Promise.resolve()
+											if (value && isNumber(getFieldValue('onlineBankingMax')))
+												return Promise.resolve()
+
+											return Promise.reject(new Error(''))
+										},
+									}),
+									{
+										type: 'number',
+										min: 0,
+										message: '',
+									},
+								]}
+							>
+								<InputNumber
+									style={{ width: '100%' }}
+									controls={false}
+									type='number'
+								/>
+							</Form.Item>
+						)
+					},
 				},
 				{
 					title: t('Label_Max'),
@@ -108,8 +128,19 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 							name='onlineBankingMax'
 							style={{ margin: 0 }}
 							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('onlineBankingMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('onlineBankingMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
 								{
-									required: true,
+									type: 'number',
+									min: 0,
 									message: '',
 								},
 							]}
@@ -153,8 +184,19 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 							name='mobilePayMin'
 							style={{ margin: 0 }}
 							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('mobilePayMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('mobilePayMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
 								{
-									required: true,
+									type: 'number',
+									min: 0,
 									message: '',
 								},
 							]}
@@ -178,8 +220,19 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 							name='mobilePayMax'
 							style={{ margin: 0 }}
 							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('mobilePayMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('mobilePayMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
 								{
-									required: true,
+									type: 'number',
+									min: 0,
 									message: '',
 								},
 							]}
@@ -223,8 +276,19 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 							name='localBankingMin'
 							style={{ margin: 0 }}
 							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('localBankingMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('localBankingMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
 								{
-									required: true,
+									type: 'number',
+									min: 0,
 									message: '',
 								},
 							]}
@@ -248,8 +312,19 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 							name='localBankingMax'
 							style={{ margin: 0 }}
 							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('localBankingMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('localBankingMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
 								{
-									required: true,
+									type: 'number',
+									min: 0,
 									message: '',
 								},
 							]}
@@ -274,7 +349,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>
 					{t('Label_CreateDepositLimit')}

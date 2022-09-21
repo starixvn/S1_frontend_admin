@@ -181,16 +181,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { onlineBankingMin } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(onlineBankingMin)
 						if (editable) {
 							return (
 								<Form.Item
 									name='onlineBankingMin'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('onlineBankingMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('onlineBankingMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
@@ -220,16 +236,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { onlineBankingMax } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(onlineBankingMax)
 						if (editable) {
 							return (
 								<Form.Item
 									name='onlineBankingMax'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('onlineBankingMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('onlineBankingMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
@@ -312,16 +344,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { mobilePayMin } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(mobilePayMin)
 						if (editable) {
 							return (
 								<Form.Item
 									name='mobilePayMin'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('mobilePayMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('mobilePayMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
@@ -351,16 +399,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { mobilePayMax } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(mobilePayMax)
 						if (editable) {
 							return (
 								<Form.Item
 									name='mobilePayMax'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('mobilePayMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('mobilePayMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
@@ -444,16 +508,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { localBankingMin } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(localBankingMin)
 						if (editable) {
 							return (
 								<Form.Item
 									name='localBankingMin'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('localBankingMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('localBankingMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
@@ -483,16 +563,32 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					render: (record: IDepositTableData) => {
 						const { localBankingMax } = record
 						const editable = isEditing(record)
+						const isRequired = isNumber(localBankingMax)
 						if (editable) {
 							return (
 								<Form.Item
 									name='localBankingMax'
 									style={{ margin: 0 }}
 									rules={[
-										{
-											required: true,
-											message: '',
-										},
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('localBankingMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('localBankingMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
 										{
 											type: 'number',
 											min: 0,
