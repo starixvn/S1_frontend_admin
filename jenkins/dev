@@ -10,12 +10,12 @@ pipeline {
         stage('Install dependencies') {   
             when {
                 anyOf {
-                    changeset "package.json"
+                    changeset "package-lock.json"
                     expression { node_modules_exists == 'false' }
                 }
             }
             steps {
-                sh 'npm install'
+                sh 'npm ci'
             }
         }
         stage('Build') {
