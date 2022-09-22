@@ -28,10 +28,6 @@ const ThirdPartyAdjustmentSearchForm: FC<
 	onSearch,
 }) => {
 	const { t } = useTranslation()
-	const userName = Form.useWatch('userName', form)
-	const sabaId = Form.useWatch('sabaId', form)
-
-	const isButtonAble = userName || sabaId
 
 	return (
 		<LayoutContent.Card>
@@ -73,7 +69,6 @@ const ThirdPartyAdjustmentSearchForm: FC<
 				<Row justify='end' align='middle'>
 					<Col>
 						<Button
-							disabled={!isButtonAble}
 							loading={loading}
 							icon={<SearchOutlined />}
 							htmlType='submit'

@@ -30,10 +30,6 @@ const BalanceAdjustmentFilter: FC<IBalanceAdjustmentFilterProps> = ({
 	addBatchPermission,
 }) => {
 	const { t } = useTranslation()
-	const userName = Form.useWatch('userName', form)
-	const sabaId = Form.useWatch('sabaId', form)
-
-	const isButtonAble = userName || sabaId
 
 	return (
 		<LayoutContent.Card>
@@ -74,7 +70,6 @@ const BalanceAdjustmentFilter: FC<IBalanceAdjustmentFilterProps> = ({
 					{(methodType === MethodTypeEnum.mainWallet || !methodType) && (
 						<Col>
 							<Button
-								disabled={!isButtonAble}
 								loading={loading}
 								icon={<SearchOutlined />}
 								onClick={onGetBalance}

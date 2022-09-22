@@ -94,22 +94,31 @@ const BalanceAdjustment: FC<{
 
 	const handleGetBalance = async () => {
 		const { userName = '', sabaId = '' } = form.getFieldsValue()
-		try {
-			await getCustInfoWithBalance({
-				siteId,
-				userName,
-				sabaId,
-			}).unwrap()
-
-			setQueryParams({
-				userName,
-				sabaId,
-				methodType,
-			})
-		} catch (error) {
+		if (!isEmpty(userName) && !isEmpty(sabaId)) {
 			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				t('Label_FieldsOneTime', {
+					FieldA: t('Label_MemberId'),
+					FieldB: t('Label_SabaId'),
+				})
 			)
+		} else {
+			try {
+				await getCustInfoWithBalance({
+					siteId,
+					userName,
+					sabaId,
+				}).unwrap()
+
+				setQueryParams({
+					userName,
+					sabaId,
+					methodType,
+				})
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
 		}
 	}
 	const handleSubmit = async () => {
