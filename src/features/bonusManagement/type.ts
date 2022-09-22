@@ -23,6 +23,8 @@ export type ITierAmountListData = {
 	bonus: number
 	maxBonus?: number
 	requiredAmount: number
+	winOver: number
+	rollOver: number
 }
 
 export type ISpecificData = {

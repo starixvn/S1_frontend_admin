@@ -1,9 +1,10 @@
-import { FC, useContext, useEffect } from 'react'
-import { Button, Form, Input, Modal, Space } from 'antd'
+import React, { FC, useContext, useEffect } from 'react'
+import { Button, Form, InputNumber, message, Modal, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { AmountTypeEnum } from 'features/bonusManagement/constants'
+import { isEmpty, trim } from 'lodash'
 
 interface ISetGroupModalProps {
 	visible: boolean
@@ -20,15 +21,29 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const [modalForm] = Form.useForm()
 
 	const handleFinished = async () => {
-		const { tierAmountList } = await modalForm.validateFields()
-		form?.setFieldsValue({
-			specific: {
-				[isoCode]: {
-					tierAmountList,
+		try {
+			const { tierAmountList } = await modalForm.validateFields()
+			form?.setFieldsValue({
+				specific: {
+					[isoCode]: {
+						tierAmountList,
+					},
 				},
-			},
-		})
-		onFinish()
+			})
+			onFinish()
+		} catch (error) {
+			const { errorFields } = error
+			const { errors } = errorFields[0]
+			if (isEmpty(trim(errors[0]))) {
+				// winOver 和 rollOver 的message 沒有秀在 form 上面 , 僅展示紅匡 , 透過 message.error 推播
+				message.error(
+					t('Label_FieldsOneTime', {
+						FieldA: t('Label_WinOver'),
+						FieldB: t('Label_Rollover'),
+					})
+				)
+			}
+		}
 	}
 
 	useEffect(() => {
@@ -47,11 +62,12 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={onFinish}
 			onOk={handleFinished}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
+			width='60vw'
 		>
 			<Form form={modalForm} layout='vertical' style={{ marginTop: 8 }}>
 				<Form.List name='tierAmountList'>
@@ -72,9 +88,18 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												required: true,
 												message: t('Label_RequiredText'),
 											},
+											{
+												type: 'number',
+												min: 0,
+												message: t('Label_GreaterThanZero'),
+											},
 										]}
 									>
-										<Input type='number' />
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+										/>
 									</Form.Item>
 									{type === AmountTypeEnum.Percentage && (
 										<>
@@ -87,10 +112,17 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 														required: true,
 														message: t('Label_RequiredText'),
 													},
+													{
+														type: 'number',
+														min: 0,
+														message: t('Label_GreaterThanZero'),
+													},
 												]}
 											>
-												<Input
+												<InputNumber
 													type='number'
+													controls={false}
+													style={{ width: '100%' }}
 													placeholder={t('Label_Percentage')}
 												/>
 											</Form.Item>
@@ -103,10 +135,17 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 														required: true,
 														message: t('Label_RequiredText'),
 													},
+													{
+														type: 'number',
+														min: 0,
+														message: t('Label_GreaterThanZero'),
+													},
 												]}
 											>
-												<Input
+												<InputNumber
 													type='number'
+													controls={false}
+													style={{ width: '100%' }}
 													placeholder={t('Label_MaxBonus')}
 												/>
 											</Form.Item>
@@ -122,11 +161,84 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 													required: true,
 													message: t('Label_RequiredText'),
 												},
+												{
+													type: 'number',
+													min: 0,
+													message: t('Label_GreaterThanZero'),
+												},
 											]}
 										>
-											<Input type='number' placeholder={t('Label_Bonus')} />
+											<InputNumber
+												type='number'
+												controls={false}
+												placeholder={t('Label_Bonus')}
+												style={{ width: '100%' }}
+											/>
 										</Form.Item>
 									)}
+									<Form.Item
+										{...restField}
+										name={[name, 'rollOver']}
+										label={key === 0 ? t('Label_Rollover') : null}
+										rules={[
+											{
+												validator: (_, value) => {
+													const winOver = modalForm.getFieldValue([
+														'tierAmountList',
+														name,
+														'winOver',
+													])
+													return value > 0 && winOver > 0
+														? Promise.reject()
+														: Promise.resolve()
+												},
+												message: '',
+											},
+											{
+												type: 'number',
+												min: 0,
+												message: t('Label_GreaterThanZero'),
+											},
+										]}
+										initialValue={0}
+									>
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+										/>
+									</Form.Item>
+									<Form.Item
+										{...restField}
+										name={[name, 'winOver']}
+										label={key === 0 ? t('Label_WinOver') : null}
+										rules={[
+											{
+												validator: (_, value) => {
+													const rollOver = modalForm.getFieldValue([
+														'tierAmountList',
+														name,
+														'rollOver',
+													])
+													return value > 0 && rollOver > 0
+														? Promise.reject()
+														: Promise.resolve()
+												},
+											},
+											{
+												type: 'number',
+												min: 0,
+												message: t('Label_GreaterThanZero'),
+											},
+										]}
+										initialValue={0}
+									>
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+										/>
+									</Form.Item>
 									<Form.Item label={key === 0 ? ' ' : null}>
 										{/* 為了讓第一筆 的刪除符號可以在正確位置 , 所以在 label 動了手腳  */}
 										<MinusCircleOutlined onClick={() => remove(name)} />
