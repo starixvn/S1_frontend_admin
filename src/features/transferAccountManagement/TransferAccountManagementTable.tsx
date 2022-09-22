@@ -188,17 +188,51 @@ const TransferAccountManagementTable: FC<
 				<div style={{ width: '120px' }}>{bankLoginPassword}</div>
 			),
 		},
+		{
+			title: t('Label_InitialTime'),
+			key: 'initialTime',
+			dataIndex: 'initialTime',
+			align: 'center' as 'center',
 
+			render: (initialTime: string) =>
+				initialTime ? (
+					<div style={{ width: '120px' }}>
+						{moment(initialTime)
+							.utcOffset(timeZoneUtcOffset)
+							.format(timeFormat)}
+					</div>
+				) : (
+					''
+				),
+		},
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
-			width: 120,
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+				createTime ? (
+					<div style={{ width: '120px' }}>
+						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</div>
+				) : (
+					''
+				),
+		},
+
+		{
+			title: t('Label_LastUpdateTime'),
+			dataIndex: 'updateTime',
+			align: 'center' as 'center',
+			editable: false,
+			render: (updateTime: string) =>
+				updateTime ? (
+					<div style={{ width: '120px' }}>
+						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</div>
+				) : (
+					''
+				),
 		},
 		{
 			title: t('Label_Creator'),
@@ -206,17 +240,6 @@ const TransferAccountManagementTable: FC<
 			dataIndex: 'creatorName',
 			width: 80,
 			align: 'center' as 'center',
-		},
-		{
-			title: t('Label_LastUpdateTime'),
-			dataIndex: 'updateTime',
-			width: 140,
-			align: 'center' as 'center',
-			editable: false,
-			render: (updateTime: string) =>
-				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
 		},
 		{
 			title: t('Label_Update'),

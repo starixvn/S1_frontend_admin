@@ -1,3 +1,4 @@
+import moment, { Moment } from 'moment'
 import { FC, useEffect } from 'react'
 import { Form, message, Modal, Space, Typography } from 'antd'
 import { isNaN } from 'lodash'
@@ -5,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { useQueryParams } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { utcFormatter } from 'common/utils'
 import {
 	IAddEditForm,
 	IBankTransferAccountAgentListResponse,
@@ -28,6 +31,7 @@ const TransferAccountManagementModal: FC<
 > = ({ loading, visible, onCancel }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { timeZoneUtcOffset } = useTimeZone()
 	const [form] = Form.useForm<IAddEditForm>()
 	// * editId:0 時為新增，其它為編輯
 
@@ -54,12 +58,16 @@ const TransferAccountManagementModal: FC<
 	} = useGetBankTransferAccountAgentListQuery({ siteId })
 
 	const handleSubmit = async () => {
-		const values = await form.validateFields()
+		const { initialTime, ...values } = await form.validateFields()
 
 		try {
 			const response = await setBankTransferAccount({
 				id: Number(editId),
 				siteId,
+				initialTime: utcFormatter({
+					date: initialTime as Moment,
+					utcOffset: timeZoneUtcOffset,
+				}),
 				...values,
 			}).unwrap()
 
@@ -72,9 +80,10 @@ const TransferAccountManagementModal: FC<
 	}
 
 	useEffect(() => {
-		const { reason, payId, ...rest } = bankTransferAccount
+		const { reason, payId, initialTime, ...rest } = bankTransferAccount
 		form.setFieldsValue({
 			...rest,
+			initialTime: moment(initialTime),
 			reason: reason === 0 ? undefined : reason,
 			payId: payId === 0 ? undefined : payId,
 		})
@@ -90,6 +99,7 @@ const TransferAccountManagementModal: FC<
 				status: undefined,
 				purposes: [],
 				accountNo: '',
+				initialTime: '',
 				agent: '',
 				accountCode: '',
 				displayName: '',

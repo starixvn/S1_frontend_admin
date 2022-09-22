@@ -4,6 +4,7 @@ import { selectCurrencyListBySite } from 'common/enum'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import {
 	Col,
+	DatePicker,
 	Form,
 	FormInstance,
 	Input,
@@ -24,6 +25,7 @@ import {
 	useGetBankTransferAccountReasonsQuery,
 } from './api'
 import { IAddEditForm } from './type'
+import { ChannelEnum } from './constants'
 
 const { Option } = Select
 
@@ -40,6 +42,8 @@ const TransferAccountManagementForm: FC<
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formChannel = Form.useWatch('channel', form)
+
+	const isNeedRequired = formChannel === ChannelEnum.LocalBank
 
 	const {
 		data: { data: transferAccountStatusEnum = [] } = {},
@@ -86,10 +90,12 @@ const TransferAccountManagementForm: FC<
 					status: null,
 					purposes: [],
 					accountNo: '',
+					accountName: '',
 					agent: '',
 					accountCode: '',
 					displayName: '',
 					initialAmount: null,
+					initialTime: '',
 					maxBalanceAlertAmount: null,
 					reason: null,
 					remark: '',
@@ -166,7 +172,7 @@ const TransferAccountManagementForm: FC<
 							</Select>
 						</Form.Item>
 					</Col>
-					{formChannel === 3 ? (
+					{formChannel === ChannelEnum.Psp ? (
 						<Col lg={8} md={12} xs={24}>
 							<Form.Item name='payId' label={t('Label_Pay')}>
 								<Select placeholder={t('Label_Pay')}>
@@ -274,7 +280,7 @@ const TransferAccountManagementForm: FC<
 							label={t('Label_AccountNo')}
 							rules={[
 								{
-									required: true,
+									required: isNeedRequired,
 									message: t('Label_Required', {
 										key: t('Label_AccountNo'),
 									}),
@@ -290,7 +296,7 @@ const TransferAccountManagementForm: FC<
 							label={t('Label_AccountName')}
 							rules={[
 								{
-									required: true,
+									required: isNeedRequired,
 									message: t('Label_Required', {
 										key: t('Label_AccountName'),
 									}),
@@ -353,6 +359,22 @@ const TransferAccountManagementForm: FC<
 							]}
 						>
 							<InputNumber style={{ width: '100%' }} type='number' />
+						</Form.Item>
+					</Col>
+					<Col lg={8} md={12} xs={24}>
+						<Form.Item
+							name='initialTime'
+							label={t('Label_InitialTime')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_InitialAmount'),
+									}),
+								},
+							]}
+						>
+							<DatePicker showTime />
 						</Form.Item>
 					</Col>
 					<Col lg={8} md={12} xs={24}>
