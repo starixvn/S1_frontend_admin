@@ -126,7 +126,7 @@ const LiveRegistrationStatistics: FC<{
 				siteId,
 				...values,
 				affiliatesCode: affiliatesCode || null,
-				dormantUser: dormantUser ?? DormantMemberEnum.All,
+				dormantUser: dormantUser || DormantMemberEnum.All,
 				pageNumber: current,
 				pageSize,
 				startDate,
@@ -138,7 +138,7 @@ const LiveRegistrationStatistics: FC<{
 			setQueryParams({
 				...values,
 				affiliatesCode: affiliatesCode || null,
-				dormantUser: dormantUser ?? DormantMemberEnum.All,
+				dormantUser: dormantUser || DormantMemberEnum.All,
 				orderByProperty,
 				orderByDirection,
 				pageNumber: current,
@@ -269,7 +269,7 @@ const LiveRegistrationStatistics: FC<{
 			affiliatesCode = '',
 			agentCodeType = AgentCodeEnum.All,
 			callOutStatus = CallOutStatusEnum.All,
-			dormantUser = DormantMemberEnum.All,
+			dormantUser,
 			dateType = DateTypeEnum.LastActiveDate,
 			userName = '',
 			pageNumber = PAGINATION.defaultCurrent,
@@ -286,15 +286,15 @@ const LiveRegistrationStatistics: FC<{
 			affiliatesCode,
 			agentCodeType: Number(agentCodeType),
 			callOutStatus: Number(callOutStatus),
-			dormantUser: Number(dormantUser),
+			dormantUser,
 			dateType: Number(dateType),
 			userName,
 			dateRange: [moment(startDate), moment(endDate)],
 		})
 		setPagination(prev => ({ ...prev, current: pageNumber, pageSize }))
 		handleSearch({
-			current: pageNumber,
-			pageSize,
+			current: Number(pageNumber),
+			pageSize: Number(pageSize),
 			orderByProperty,
 			orderByDirection,
 		})
