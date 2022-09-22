@@ -179,11 +179,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 30,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment
+				.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalLimitAdjust',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitAdjust,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment.root,
 	},
 	{
 		icon: null,

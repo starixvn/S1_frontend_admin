@@ -51,6 +51,7 @@ import { slotGameCategoryApi } from 'features/slotGameCategory/api'
 import { hotEventManagementApi } from 'features/hotEventManagement/api'
 import { issueBonusManagementApi } from 'features/issueBonusManagement/api'
 import { withdrawalKycControlApi } from 'features/withdrawalKycControl/api'
+import { withdrawalAdjustmentApi } from 'features/withdrawalAdjustment/api'
 import { adjustmentLimitationApi } from 'features/adjustmentLimitation/api'
 import { bonusReportApi } from 'features/bonusReport/api'
 
@@ -112,6 +113,7 @@ export const store = configureStore({
 		[withdrawalKycControlApi.reducerPath]: withdrawalKycControlApi.reducer,
 		[adjustmentLimitationApi.reducerPath]: adjustmentLimitationApi.reducer,
 		[bonusReportApi.reducerPath]: bonusReportApi.reducer,
+		[withdrawalAdjustmentApi.reducerPath]: withdrawalAdjustmentApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -167,7 +169,10 @@ export const store = configureStore({
 			.concat(bonusManagementApi.middleware)
 			.concat(withdrawalKycControlApi.middleware)
 			.concat(adjustmentLimitationApi.middleware)
-			.concat(bonusReportApi.middleware),
+			.concat(bonusReportApi.middleware)
+			.concat(adjustmentLimitationApi.middleware)
+			.concat(withdrawalKycControlApi.middleware)
+			.concat(withdrawalAdjustmentApi.middleware),
 })
 
 // to ignore : TS2589: Type instantiation is excessively deep and possibly infinite.
