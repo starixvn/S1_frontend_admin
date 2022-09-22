@@ -521,6 +521,11 @@
 	"Label_SupportChannels": "Support Channels",
 	"Label_BankQR": "BankQR",
 	"Label_QrCodeUrl": "QR Code Url",
+	"Label_Debit" : "Debit",
+	"Label_Credit" : "Credit",
+	"Label_DifferenceAmount" : "Difference Amount",
+	"Label_EligibleWithdrawalAmount": "Eligible Withdrawal Amount",
+	"Label_None" : "None - (Default)",
 	"Label_QrCodeErrorMsg": "The uploaded image is not a QR code image, please re-upload",
 	"BonusType": {
 		"Label_FirstDeposit": "First Deposit",
