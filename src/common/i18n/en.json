@@ -545,9 +545,10 @@
 	"Label_ExpiryTime": "Expiry Time",
 	"Label_ExpiredCancel": "Expired Cancel",
 	"Label_ColumnVisibility": "Column Visibility",
-	"Label_AdjustMax" : "Adjust Max",
-	"Label_ZeroIsUnLimited" : "( 0 = Unlimited )",
-	"Label_On" : "On",
-	"Label_Off" : "Off",
-	"Label_EmptyError" : "Create Value Can't Be Empty !"
+	"Label_AdjustMax": "Adjust Max",
+	"Label_ZeroIsUnLimited": "( 0 = Unlimited )",
+	"Label_On": "On",
+	"Label_Off": "Off",
+	"Label_EmptyError": "Create Value Can't Be Empty !",
+	"Label_InitialTime": "Initial Time"
 }

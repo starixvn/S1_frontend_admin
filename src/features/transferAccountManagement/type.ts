@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment'
 
 export interface IForm {
 	currencyIds: number[]
@@ -23,6 +24,7 @@ export interface IAddEditForm {
 	accountCode: string | null
 	displayName: string | null
 	initialAmount: number
+	initialTime: Moment | string
 	maxBalanceAlertAmount: number
 	reason: number
 	remark: string | null
@@ -62,6 +64,7 @@ export interface IBankTransferAccountData {
 	accountCode: string | null
 	displayName: string | null
 	initialAmount: number
+	initialTime: string
 	maxBalanceAlertAmount: number
 	reason: number
 	remark: string | null
@@ -133,6 +136,7 @@ export interface IBankTransferAccountByIdData {
 	displayName: string | null
 	id: number
 	initialAmount: number
+	initialTime: string
 	isoCode: string | null
 	maxBalanceAlertAmount: number
 	payId: number
