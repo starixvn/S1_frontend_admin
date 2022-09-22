@@ -10,9 +10,6 @@ import {
 	IGetBankInfoResponse,
 	IGetPointLevelListArgs,
 	IGetPointLevelListResponse,
-	IGetPurposeEnumResponse,
-	IGetSupportChannelEnumResponse,
-	IGetStatusEnumResponse,
 	ISetBankCardArgs,
 	IGetQrCodeUrlResponse,
 } from 'features/bankCardManagement/type'
@@ -61,42 +58,11 @@ export const bankCardManagementApi = createApi({
 				data,
 			}),
 		}),
-		// 狀態列表
-		getStatusEnum: builder.query<IGetStatusEnumResponse, null>({
-			query: () => ({
-				url: 'Enum/GetEnumType',
-				method: 'POST',
-				data: {
-					enumName: 'BankCardManagementStatusEnum',
-				},
-			}),
-		}),
-		// 取得目的列表
-		getPurposeEnum: builder.query<IGetPurposeEnumResponse, null>({
-			query: () => ({
-				url: 'Enum/GetEnumType',
-				method: 'POST',
-				data: {
-					enumName: 'BankCardManagementPurposeEnum',
-				},
-			}),
-		}),
-
 		getAgentList: builder.query<IGetAgentListResponse, IGetAgentListArgs>({
 			query: data => ({
 				url: 'BankTransferAccount/GetAgentList',
 				method: 'POST',
 				data,
-			}),
-		}),
-		// 獲得渠道列表
-		getSupportChannelEnum: builder.query<IGetSupportChannelEnumResponse, null>({
-			query: () => ({
-				url: 'Enum/GetEnumType',
-				method: 'POST',
-				data: {
-					enumName: 'BankCardManagementSupportChannelEnum',
-				},
 			}),
 		}),
 		// 獲得 qrCodeUrl
@@ -115,9 +81,6 @@ export const {
 	useSetBankCardMutation,
 	useGetPointLevelListQuery,
 	useGetBankInfoQuery,
-	useGetStatusEnumQuery,
-	useGetPurposeEnumQuery,
 	useGetAgentListQuery,
-	useGetSupportChannelEnumQuery,
 	useGetQrCodeUrlMutation,
 } = bankCardManagementApi

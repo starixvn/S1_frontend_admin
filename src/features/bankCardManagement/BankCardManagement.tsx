@@ -10,17 +10,11 @@ import {
 	IGetBankCardListResponse,
 	IGetBankInfoResponse,
 	IGetPointLevelListResponse,
-	IGetPurposeEnumResponse,
-	IGetSupportChannelEnumResponse,
-	IGetStatusEnumResponse,
 } from 'features/bankCardManagement/type'
 import {
 	useGetAgentListQuery,
 	useGetBankInfoQuery,
 	useGetPointLevelListQuery,
-	useGetPurposeEnumQuery,
-	useGetStatusEnumQuery,
-	useGetSupportChannelEnumQuery,
 	useLazyGetBankCardListQuery,
 	useSetBankCardMutation,
 } from 'features/bankCardManagement/api'
@@ -42,6 +36,7 @@ import { FilterContext } from 'features/bankCardManagement/filterContext'
 import { BankCardManagementTable } from 'features/bankCardManagement/BankCardManagementTable'
 import { EditBankCardModal } from 'features/bankCardManagement/EditBankCardModal'
 import { concatStrings } from 'features/bankCardManagement/utils'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const BankCardManagement: FC<{
 	pageTitle?: string
@@ -89,9 +84,9 @@ const BankCardManagement: FC<{
 	>(undefined)
 
 	const {
-		data: { data: purposeList } = {} as IGetPurposeEnumResponse,
+		data: { data: purposeList } = {} as IEnumTypeResponse,
 		isLoading: isGetPurposeListLoading,
-	} = useGetPurposeEnumQuery(null)
+	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementPurposeEnum' })
 
 	const {
 		data: { data: agentList } = {} as IGetAgentListResponse,
@@ -104,14 +99,14 @@ const BankCardManagement: FC<{
 	} = useGetVipLevelQuery({ siteIdForFilter: siteId })
 
 	const {
-		data: { data: statusEnumList } = {} as IGetStatusEnumResponse,
+		data: { data: statusEnumList } = {} as IEnumTypeResponse,
 		isLoading: isGetStatusEnumLoading,
-	} = useGetStatusEnumQuery(null)
+	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementStatusEnum' })
 
 	const {
-		data: { data: supportChannelList } = {} as IGetSupportChannelEnumResponse,
+		data: { data: supportChannelList } = {} as IEnumTypeResponse,
 		isLoading: isGetSupportChannelLoading,
-	} = useGetSupportChannelEnumQuery(null)
+	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementSupportChannelEnum' })
 
 	const {
 		data: { data: bankInfoList } = {} as IGetBankInfoResponse,

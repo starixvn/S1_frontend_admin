@@ -83,22 +83,11 @@ export interface IGetBankInfoData {
 
 export type IGetBankInfoResponse = IAxiosResponse<IGetBankInfoData[]>
 
-export interface IGetEnumData {
-	name: string
-	value: number
-}
-
-export type IGetPurposeEnumResponse = IAxiosResponse<IGetEnumData[]>
-
-export type IGetStatusEnumResponse = IGetPurposeEnumResponse
-
 export interface IGetAgentListArgs {
 	siteId?: number
 }
 
 export type IGetAgentListResponse = IAxiosResponse<string[]>
-
-export type IGetSupportChannelEnumResponse = IAxiosResponse<IGetEnumData[]>
 
 export type IGetQrCodeUrlResponse = IAxiosResponse<{ qrCodeUrl: string }>
 
