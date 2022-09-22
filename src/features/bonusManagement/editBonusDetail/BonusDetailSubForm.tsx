@@ -605,64 +605,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 							<Row gutter={16}>
 								<Col span={6}>
 									<Form.Item
-										name={['specific', isoCode, 'rollOver']}
-										label={t('Label_Rollover')}
-										help={t('Label_Default')}
-										rules={[
-											{
-												validator: (_, value) => {
-													const winOver = form?.getFieldValue([
-														'specific',
-														isoCode,
-														'winOver',
-													])
-													return value > 0 && winOver > 0
-														? Promise.reject()
-														: Promise.resolve()
-												},
-												message: '',
-											},
-											{ type: 'number', min: 0 },
-										]}
-									>
-										<InputNumber
-											type='number'
-											controls={false}
-											style={{ width: '100%' }}
-											disabled={!active}
-										/>
-									</Form.Item>
-								</Col>
-								<Col span={6}>
-									<Form.Item
-										name={['specific', isoCode, 'winOver']}
-										label={t('Label_WinOver')}
-										rules={[
-											{
-												validator: (_, value) => {
-													const rollOver = form?.getFieldValue([
-														'specific',
-														isoCode,
-														'rollOver',
-													])
-													return value > 0 && rollOver > 0
-														? Promise.reject()
-														: Promise.resolve()
-												},
-											},
-											{ type: 'number', min: 0 },
-										]}
-									>
-										<InputNumber
-											type='number'
-											controls={false}
-											style={{ width: '100%' }}
-											disabled={!active}
-										/>
-									</Form.Item>
-								</Col>
-								<Col span={6}>
-									<Form.Item
 										name={['specific', isoCode, 'usage']}
 										label={t('Label_DailyLimit')}
 										rules={[
