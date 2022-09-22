@@ -11,6 +11,8 @@ export interface ITierAmountData {
 	bonus: number
 	maxBonus: number
 	requiredAmount: number
+	rollOver: number
+	winOver: number
 }
 
 export interface ICheckBonusCodeData {

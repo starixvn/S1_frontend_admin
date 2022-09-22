@@ -10,6 +10,6 @@ export enum BonusTypeEnum {
 }
 
 export enum WalletTypeEnum {
-	Transfer = 0,
 	Seamless = 1,
+	Transfer = 2,
 }
