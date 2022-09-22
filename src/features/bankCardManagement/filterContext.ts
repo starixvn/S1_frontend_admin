@@ -1,9 +1,7 @@
 import { createContext } from 'react'
-import {
-	IGetBankInfoData,
-	IGetEnumData,
-} from 'features/bankCardManagement/type'
+import { IGetBankInfoData } from 'features/bankCardManagement/type'
 import { IVipLevelsData } from 'common/service/allDataApi'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IFilterContextProps {
 	loading: boolean
@@ -15,12 +13,12 @@ interface IFilterContextProps {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => void
-	purposeList: IGetEnumData[]
+	purposeList: IEnumTypeData[]
 	agentList: string[]
 	vipLevelList: IVipLevelsData[]
-	statusEnumList: IGetEnumData[]
+	statusEnumList: IEnumTypeData[]
 	bankInfoList: IGetBankInfoData[]
-	supportChannelList: IGetEnumData[]
+	supportChannelList: IEnumTypeData[]
 	pointLevelList: number[]
 }
 

@@ -3,15 +3,13 @@ import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { Space, TablePaginationConfig, Typography } from 'antd'
-import {
-	IGetBankCardListData,
-	IGetEnumData,
-} from 'features/bankCardManagement/type'
+import { IGetBankCardListData } from 'features/bankCardManagement/type'
 import { useTranslation } from 'react-i18next'
 import { EditFilled } from '@ant-design/icons'
 import { PermissionInterface } from 'type'
 import { find } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IBankCardManagementTableProps {
 	loading: boolean
@@ -19,7 +17,7 @@ interface IBankCardManagementTableProps {
 	bankCardList: IGetBankCardListData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	editPermission?: PermissionInterface
-	statusEnumList: IGetEnumData[]
+	statusEnumList: IEnumTypeData[]
 	onEditClick: (record: IGetBankCardListData) => void
 }
 

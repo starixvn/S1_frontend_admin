@@ -12,8 +12,6 @@ interface IBankCardManagementFilterProps {
 	currentCurrency: number
 }
 
-const { TabPane } = Tabs
-
 const BankCardManagementFilterTab: FC<IBankCardManagementFilterProps> = ({
 	currencyListBySite,
 	form,
@@ -29,6 +27,15 @@ const BankCardManagementFilterTab: FC<IBankCardManagementFilterProps> = ({
 		setCurrentCurrency(Number(currency))
 	}
 
+	const items = currencyListBySite?.map(currency => {
+		const { isoCode, currencyId } = currency
+		return {
+			label: isoCode,
+			key: String(currencyId),
+			children: <BankCardManagementFilterCell form={form} />,
+		}
+	})
+
 	return (
 		<Tabs
 			type='card'
@@ -36,16 +43,8 @@ const BankCardManagementFilterTab: FC<IBankCardManagementFilterProps> = ({
 			destroyInactiveTabPane
 			tabBarStyle={{ margin: 0 }}
 			onChange={(value: string) => handleTabsChange(value)}
-		>
-			{currencyListBySite?.map(currency => {
-				const { isoCode, currencyId } = currency
-				return (
-					<TabPane tab={isoCode} key={currencyId}>
-						<BankCardManagementFilterCell form={form} />
-					</TabPane>
-				)
-			})}
-		</Tabs>
+			items={items}
+		/>
 	)
 }
 
