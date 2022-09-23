@@ -19,6 +19,7 @@ export interface EnumState {
 	actionTypeList: ActionType[]
 	adminUserCurrencyList: number[]
 	rewardsCurrencyList: number[]
+	vipCurrencyList: number[]
 }
 
 const initialState: EnumState = {
@@ -30,6 +31,7 @@ const initialState: EnumState = {
 	actionTypeList: [],
 	adminUserCurrencyList: [],
 	rewardsCurrencyList: [],
+	vipCurrencyList: [],
 }
 
 const enumSlice = createSlice({
@@ -56,6 +58,7 @@ const enumSlice = createSlice({
 					actionTypeList,
 					siteCurrencyList,
 					rewardsCurrencyList,
+					vipCurrencyList,
 				} = action.payload as IAllEnumState
 
 				state.userSiteList = userSiteList
@@ -64,6 +67,7 @@ const enumSlice = createSlice({
 				state.actionTypeList = actionTypeList
 				state.adminUserCurrencyList = siteCurrencyList
 				state.rewardsCurrencyList = rewardsCurrencyList
+				state.vipCurrencyList = vipCurrencyList
 				state.status = 'succeeded'
 			}),
 })
@@ -83,6 +87,15 @@ export const selectRewardsCurrencyListBySite = (state: RootState) => {
 
 	return filter(allCurrencyList, currency =>
 		some(rewardsCurrencyList, iCurrency => iCurrency === currency.currencyId)
+	)
+}
+
+// * 回傳 vip rebate 功能頁支援的幣別
+export const selectVipCurrencyListBySite = (state: RootState) => {
+	const { allCurrencyList, vipCurrencyList } = state.allEnum
+
+	return filter(allCurrencyList, currency =>
+		some(vipCurrencyList, iCurrency => iCurrency === currency.currencyId)
 	)
 }
 

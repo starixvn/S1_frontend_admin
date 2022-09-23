@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectUserSite, selectVipCurrencyListBySite } from 'common/enum'
 import { VipRebateManagementFilter } from './VipRebateManagementFilter'
 import { VipRebateManagementTable } from './vipRebateManagementTable/VipRebateManagementTable'
 import { SetByProductModal } from './setByProductModal/SetByProductModal'
@@ -52,7 +52,10 @@ const VipRebateManagement: FC<{
 	// 給 promise.all 使用的 loadingState
 	const [isMainPageLoading, setMainPageLoading] = useState(false)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
+	// * 這邊所使用的是 vip rebate 限定的幣別
+	const vipCurrencyListBySite = useAppSelector(selectVipCurrencyListBySite)
+
 	const [form] = Form.useForm()
 
 	const setByProductModal = useModal()
@@ -82,7 +85,7 @@ const VipRebateManagement: FC<{
 	const [setBatchGameType, { isLoading: isSetBatchGameTypeLoading }] =
 		useSetBatchGameTypeMutation()
 	const setMainDatas = async () => {
-		if (!currencyListBySite || !editingCategoryId) return
+		if (!vipCurrencyListBySite || !editingCategoryId) return
 
 		const {
 			vintageClub,
@@ -230,11 +233,11 @@ const VipRebateManagement: FC<{
 		})
 		if (isEmpty(queryParams)) {
 			// queryString is empty , init fetch and setQueryParams
-			if (!currencyListBySite) return
+			if (!vipCurrencyListBySite) return
 			setQueryParams({
-				currencyId: currencyListBySite[0].currencyId,
+				currencyId: vipCurrencyListBySite[0].currencyId,
 			})
-			handleGetRebateInfo(currencyListBySite[0].currencyId)
+			handleGetRebateInfo(vipCurrencyListBySite[0].currencyId)
 		} else {
 			const { currencyId } = queryParams
 			setActiveKey(currencyId)
@@ -260,7 +263,7 @@ const VipRebateManagement: FC<{
 			<VipRebateManagementTable
 				loading={loading}
 				onTabsChange={handleTabsChange}
-				currencyList={currencyListBySite}
+				currencyList={vipCurrencyListBySite}
 				editPermission={editPermission}
 				rebateTableData={rebateTableData}
 				form={form}
