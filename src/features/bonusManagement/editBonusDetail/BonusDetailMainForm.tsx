@@ -130,7 +130,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 					initialValues={{
 						bonusType: BonusTypeEnum.Null,
 						sameByActive: false,
-						mainFormActive: true,
+						mainFormActive: false,
 						promotionDeviceType: DevicesEnum.All,
 						walletType: WalletTypeEnum?.Transfer,
 						selectedVipLevel: ['all'],
