@@ -28,4 +28,5 @@ export interface ActionType {
 export interface IAdminUserCurrency {
 	siteCurrencyList: number[]
 	rewardsCurrencyList: number[]
+	vipCurrencyList: number[]
 }
