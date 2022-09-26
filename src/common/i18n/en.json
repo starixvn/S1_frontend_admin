@@ -521,11 +521,11 @@
 	"Label_SupportChannels": "Support Channels",
 	"Label_BankQR": "BankQR",
 	"Label_QrCodeUrl": "QR Code Url",
-	"Label_Debit" : "Debit",
-	"Label_Credit" : "Credit",
-	"Label_DifferenceAmount" : "Difference Amount",
+	"Label_Debit": "Debit",
+	"Label_Credit": "Credit",
+	"Label_DifferenceAmount": "Difference Amount",
 	"Label_EligibleWithdrawalAmount": "Eligible Withdrawal Amount",
-	"Label_None" : "None - (Default)",
+	"Label_None": "None - (Default)",
 	"Label_QrCodeErrorMsg": "The uploaded image is not a QR code image, please re-upload",
 	"BonusType": {
 		"Label_FirstDeposit": "First Deposit",
@@ -555,5 +555,47 @@
 	"Label_On": "On",
 	"Label_Off": "Off",
 	"Label_EmptyError": "Create Value Can't Be Empty !",
-	"Label_InitialTime": "Initial Time"
+	"Label_InitialTime": "Initial Time",
+	"MemberProfile": {
+		"Menu": {
+			"CustomerInfo": {
+				"Label_MemberFlowLog": "Member Flow Log",
+				"Label_VIPLevel": "VIP Level",
+				"Label_ReferralHistory": "Referral History",
+				"Label_Notes": "Notes",
+				"Label_SMSInfo": "SMS Info",
+				"Label_LoginLog": "Login Log",
+				"Label_IPLog": "IP Log"
+			},
+			"Finance": {
+				"Label_DepositInfo": "Deposit Info",
+				"Label_WithdrawalInfo": "Withdrawal Info",
+				"Label_AdjustmentInfo": "Adjustment Info",
+				"Label_3RDPartyAdjustmentInfo": "3RD Party Adjustment Info",
+				"Label_WithdrawalLimitLog": "Withdrawal Limit Log",
+				"Label_TransferInfo": "Transfer Info",
+				"Label_FinancialLog": "Financial Log",
+				"Label_BankInfoLog": "Bank Info Log",
+				"Label_EWalletInfoLog": "E-Wallet Info Log",
+				"Label_CryptoInfoLog": "Crypto Info Log",
+				"Label_BankList": "Bank List",
+				"Label_EWalletList": "E-Wallet List"
+			},
+			"Game": {
+				"Label_Statement": "Statement",
+				"Label_Turnover": "Turnover",
+				"Label_3RDPartyAccount": "3RD Party Account",
+				"Label_WinLoseSummary": "WinLoseSummary"
+			},
+			"Marketing": {
+				"Label_BonusWallet": "Bonus Wallet",
+				"Label_BonusLog": "Bonus Log",
+				"Label_VipRebateLog": "Vip Rebate Log",
+				"Label_Label_PromotionReport": "Promotion Report",
+				"Label_RewardsPointLog": "Rewards Point Log",
+				"Label_CashBackReport": "Cash Back Report",
+				"Label_VipRebateMenu": "Vip Rebate Menu"
+			}
+		}
+	}
 }
