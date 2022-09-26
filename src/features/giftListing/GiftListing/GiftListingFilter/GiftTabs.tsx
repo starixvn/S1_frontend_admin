@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Tabs } from 'antd'
 import { useAppSelector } from 'app/store'
 import { selectRewardsCurrencyListBySite } from 'common/enum'
-import GiftTabPane from './GiftTabPane'
+import { GiftTabPane } from 'features/giftListing/GiftListing/GiftListingFilter/GiftTabPane'
 
 interface IGiftTabsProps {
 	loading: boolean
@@ -19,19 +19,28 @@ const GiftTabs: FC<IGiftTabsProps> = ({
 }) => {
 	const currencyListBySite = useAppSelector(selectRewardsCurrencyListBySite)
 
-	return (
-		<Tabs onChange={onTabsChange} type='card' activeKey={tabActiveKey}>
-			{currencyListBySite.map(({ currencyId, isoCode }) => (
+	const items = currencyListBySite?.map(({ currencyId, isoCode }) => {
+		return {
+			label: isoCode,
+			key: String(currencyId),
+			children: (
 				<GiftTabPane
-					key={currencyId}
 					loading={loading}
 					tab={isoCode}
 					currencyId={currencyId}
 					tabActiveKey={tabActiveKey}
 					onSearch={onSearch}
 				/>
-			))}
-		</Tabs>
+			),
+		}
+	})
+	return (
+		<Tabs
+			onChange={onTabsChange}
+			type='card'
+			activeKey={tabActiveKey}
+			items={items}
+		/>
 	)
 }
 
