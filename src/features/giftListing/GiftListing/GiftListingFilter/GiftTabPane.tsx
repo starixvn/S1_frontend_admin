@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { Form, TabPaneProps, Tabs } from 'antd'
+import { Form, TabPaneProps } from 'antd'
 import { filter, uniq } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useQueryParams } from 'common/hooks'
@@ -10,8 +10,6 @@ import { useLazyGetCategoriesQuery, useLazyGetGiftTagsQuery } from '../../api'
 import GiftListingForm from './GiftListingForm'
 import { allStatuses, GIFT_LIST_STATUS } from '../../constants'
 
-const { TabPane } = Tabs
-
 interface IGiftTabPaneProps extends TabPaneProps {
 	loading: boolean
 	currencyId: number
@@ -20,19 +18,16 @@ interface IGiftTabPaneProps extends TabPaneProps {
 }
 
 const GiftTabPane: FC<IGiftTabPaneProps> = ({
-	tab,
 	loading,
 	onSearch,
 	currencyId,
 	tabActiveKey,
-	...tabPaneProps
 }) => {
 	const { i18n } = useTranslation()
 
 	const [form] = Form.useForm()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams] = useQueryParams()
-
 	const {
 		data: { data: languageList = [] } = {},
 		isFetching: isGetLanguageListFetching,
@@ -40,7 +35,6 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 		siteId,
 		currencyId,
 	})
-
 	const [
 		getCategories,
 		{
@@ -143,19 +137,17 @@ const GiftTabPane: FC<IGiftTabPaneProps> = ({
 	}, [tabActiveKey, isGetCategoriesFetching, isGetGiftTagsFetching])
 
 	return (
-		<TabPane tab={tab} {...tabPaneProps}>
-			<GiftListingForm
-				form={form}
-				loading={loading}
-				categories={categories}
-				giftTags={giftTags}
-				onCategoryIdsChange={handleCategoryIdsChange}
-				onTagsChange={handleTagsChange}
-				onStatusChange={handleStatusChange}
-				onSearch={handleSearch}
-			/>
-		</TabPane>
+		<GiftListingForm
+			form={form}
+			loading={loading}
+			categories={categories}
+			giftTags={giftTags}
+			onCategoryIdsChange={handleCategoryIdsChange}
+			onTagsChange={handleTagsChange}
+			onStatusChange={handleStatusChange}
+			onSearch={handleSearch}
+		/>
 	)
 }
 
-export default GiftTabPane
+export { GiftTabPane }
