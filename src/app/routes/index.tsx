@@ -433,6 +433,69 @@ const BonusReport = lazy(
 		)
 )
 
+const MemberProfile = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/MemberProfile'
+		)
+)
+
+// *  MemberProfile > Dashboard
+const MemberProfileDashboard = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/dashboard/Dashboard'
+		)
+)
+
+// *  MemberProfile > CustomerInfo 類別
+const MemberProfileCustomerInfoMemberFlowLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/customerInfo/memberFlowLog/MemberFlowLog'
+		)
+)
+
+// *  MemberProfile > Finance 類別
+const MemberProfileFinanceDepositInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/depositInfo/DepositInfo'
+		)
+)
+
+// *  MemberProfile > Game 類別
+const MemberProfileGameStatement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/game/statement/Statement'
+		)
+)
+
+// *  MemberProfile > Marketing 類別
+const MemberProfileMarketingBonusWallet = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/marketing/bonusWallet/BonusWallet'
+		)
+)
+
+// *  MemberProfile > Setting
+const MemberProfileSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/setting/Setting'
+		)
+)
+
+// *  MemberProfile > AdminUserLog
+const MemberProfileAdminUserLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/adminUserLog/AdminUserLog'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1141,6 +1204,143 @@ const routes: RouteObject[] = [
 						<WithdrawalAdjustment />
 					</AuthRequire>
 				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.memberAdministration.functionId
+						}
+					>
+						<MemberProfile />
+					</AuthRequire>
+				),
+				children: [
+					{
+						index: true,
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+
+								<MemberProfileDashboard />
+							</AuthRequire>
+						),
+					},
+					// * CustomerInfo 類別
+					{
+						path: 'customerInfo/memberFlowLog',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileCustomerInfoMemberFlowLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/vipLevel',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>Vip Level</div>
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/referralHistory',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>Referral History</div>
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/notes',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>Notes</div>
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/SMSInfo',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>SMS Info</div>
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/loginLog',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>Login Log</div>
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/ipLog',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<div>IP Log</div>
+							</AuthRequire>
+						),
+					},
+
+					// * Finance 類別
+					{
+						path: 'finance/depositInfo',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileFinanceDepositInfo />
+							</AuthRequire>
+						),
+					},
+					// * Game 類別
+					{
+						path: 'game/statement',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileGameStatement />
+							</AuthRequire>
+						),
+					},
+					// * marketing 類別
+					{
+						path: 'marketing/bonusWallet',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileMarketingBonusWallet />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'setting',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileSetting />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'adminUserLog',
+						element: (
+							<AuthRequire>
+								{/* TODO: */}
+								<MemberProfileAdminUserLog />
+							</AuthRequire>
+						),
+					},
+				],
 			},
 		],
 	},
