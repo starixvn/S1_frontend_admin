@@ -14,8 +14,6 @@ const IssueBonusManagementBonusDescription = ({
 	const { t } = useTranslation()
 
 	const {
-		rollOver,
-		winOver,
 		promotionType,
 		bonusCode,
 		bonusType,
@@ -40,7 +38,7 @@ const IssueBonusManagementBonusDescription = ({
 		promotionType === PromotionTypeEnum.ReDeposit &&
 		bonusType === BonusTypeEnum.Percentage
 
-	const column = isPercentage ? 3 : 2
+	const column = isPercentage ? 5 : 4
 	return (
 		<>
 			<Descriptions bordered column={column}>
@@ -54,9 +52,9 @@ const IssueBonusManagementBonusDescription = ({
 					{productCategory}
 				</Descriptions.Item>
 
-				{isAmount && (
-					<>
-						{tierAmountList?.map(({ requiredAmount, bonus }) => (
+				{isAmount &&
+					tierAmountList?.map(
+						({ requiredAmount, bonus, rollOver, winOver }) => (
 							<Fragment key={uniqueId()}>
 								<Descriptions.Item label={t('Label_RequiredAmount')}>
 									{numberFormatter.format(requiredAmount)}
@@ -64,20 +62,25 @@ const IssueBonusManagementBonusDescription = ({
 								<Descriptions.Item label={t('Label_Bonus')}>
 									{numberFormatter.format(bonus)}
 								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_Rollover')}>
+									{rollOver}
+								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_Winover')}>
+									{winOver}
+								</Descriptions.Item>
 							</Fragment>
-						))}
-						<Descriptions.Item label={t('Label_Rollover')}>
-							{rollOver}
-						</Descriptions.Item>
-						<Descriptions.Item label={t('Label_Winover')}>
-							{winOver}
-						</Descriptions.Item>
-					</>
-				)}
+						)
+					)}
 
-				{isPercentage && (
-					<>
-						{tierAmountList?.map(({ requiredAmount, bonus, maxBonus }) => (
+				{isPercentage &&
+					tierAmountList?.map(
+						({
+							requiredAmount,
+							bonus,
+							maxBonus,
+							rollOver: percentageRollover,
+							winOver: percentageWinOver,
+						}) => (
 							<Fragment key={uniqueId()}>
 								<Descriptions.Item label={t('Label_Bonus')}>
 									{numberFormatter.format(bonus)}
@@ -88,17 +91,15 @@ const IssueBonusManagementBonusDescription = ({
 								<Descriptions.Item label={t('Label_RequiredAmount')}>
 									{numberFormatter.format(requiredAmount)}
 								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_Rollover')}>
+									{percentageRollover}
+								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_Winover')}>
+									{percentageWinOver}
+								</Descriptions.Item>
 							</Fragment>
-						))}
-						<Descriptions.Item label={t('Label_Rollover')}>
-							{rollOver}
-						</Descriptions.Item>
-						<Descriptions.Item label={t('Label_Winover')}>
-							{winOver}
-						</Descriptions.Item>
-						<Descriptions.Item label=''>{` `}</Descriptions.Item>
-					</>
-				)}
+						)
+					)}
 			</Descriptions>
 
 			<br />

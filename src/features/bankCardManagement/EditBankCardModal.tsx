@@ -1,8 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import {
-	IGetEnumData,
-	SupportChannelEnum,
-} from 'features/bankCardManagement/type'
+import { SupportChannelEnum } from 'features/bankCardManagement/type'
 import {
 	Button,
 	Col,
@@ -25,6 +22,7 @@ import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
 import { includes, isNull } from 'lodash'
 import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IEditBankCardModal {
 	loading: boolean
@@ -34,8 +32,8 @@ interface IEditBankCardModal {
 	onCancel: () => void
 	currencyListBySite: Currency[]
 	vipLevelList: IVipLevelsData[]
-	statusEnumList: IGetEnumData[]
-	supportChannelsList: IGetEnumData[]
+	statusEnumList: IEnumTypeData[]
+	supportChannelsList: IEnumTypeData[]
 	pointLevelList: number[]
 }
 
@@ -251,7 +249,7 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>{t('Label_EditBankCard')}</div>
 			}

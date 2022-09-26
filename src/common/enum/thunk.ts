@@ -23,6 +23,7 @@ export interface IAllEnumState {
 	actionTypeList: ActionType[]
 	siteCurrencyList: number[]
 	rewardsCurrencyList: number[]
+	vipCurrencyList: number[]
 }
 
 export const fetchAllEnumAsync = createAsyncThunk(
@@ -46,8 +47,11 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			)
 		)
 
-		const { siteCurrencyList = [], rewardsCurrencyList = [] } =
-			(adminUserCurrency as IAdminUserCurrency) ?? {}
+		const {
+			siteCurrencyList = [],
+			rewardsCurrencyList = [],
+			vipCurrencyList = [],
+		} = (adminUserCurrency as IAdminUserCurrency) ?? {}
 
 		return {
 			userSiteList,
@@ -56,6 +60,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			actionTypeList,
 			siteCurrencyList,
 			rewardsCurrencyList,
+			vipCurrencyList,
 		}
 	}
 )

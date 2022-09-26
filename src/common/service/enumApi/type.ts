@@ -11,12 +11,18 @@ export type EnumNameType =
 	| 'TransferChannelEnum'
 	| 'TransferAccountStatusEnum'
 	| 'TransferAccountPurposeEnum'
+	| 'BankCardManagementStatusEnum'
+	| 'BankCardManagementPurposeEnum'
+	| 'BankCardManagementSupportChannelEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
 	 * @argument {string}  TransferChannelEnum - 取得渠道列表
 	 * @argument {string}  TransferAccountStatusEnum - 取得帳號狀態列表
 	 * @argument {string}  TransferAccountPurposeEnum - 取得目的列表
+	 * @argument {string}  BankCardManagementSupportChannelEnum - 獲得渠道列表
+	 * @argument {string}  BankCardManagementStatusEnum - 取得狀態列表
+	 * @argument {string}  BankCardManagementPurposeEnum - 取得目的列表
 	 */
 	enumName: EnumNameType
 }

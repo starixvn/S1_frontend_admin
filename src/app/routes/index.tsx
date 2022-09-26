@@ -412,6 +412,13 @@ const WithdrawalKycControl = lazy(
 		)
 )
 
+const WithdrawalAdjustment = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalAdjustment' */ 'features/withdrawalAdjustment/WithdrawalAdjustment'
+		)
+)
+
 const AdjustmentLimitation = lazy(
 	() =>
 		import(
@@ -1119,6 +1126,19 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusReport.functionId}>
 						<BonusReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment
+								.functionId
+						}
+					>
+						<WithdrawalAdjustment />
 					</AuthRequire>
 				),
 			},

@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { find, head } from 'lodash'
+import { find, head, isEmpty } from 'lodash'
 import { Collapse, Divider, Form, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAuth, useQueryParams } from 'common/hooks'
@@ -76,23 +76,32 @@ const ThirdPartyAdjustment: FC<{
 		if (!siteId) return
 		const { userName, sabaId } = await searchForm.validateFields()
 
-		try {
-			// * 取得客戶資料、主錢包餘額及三方錢包餘額
-			await getCustInfoWithTpBalance({
-				siteId,
-				userName,
-				sabaId,
-			}).unwrap()
-
-			setQueryParams({
-				userName,
-				sabaId,
-				methodType,
-			})
-		} catch (error) {
+		if (!isEmpty(userName) && !isEmpty(sabaId)) {
 			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				t('Label_FieldsOneTime', {
+					FieldA: t('Label_MemberId'),
+					FieldB: t('Label_SabaId'),
+				})
 			)
+		} else {
+			try {
+				// * 取得客戶資料、主錢包餘額及三方錢包餘額
+				await getCustInfoWithTpBalance({
+					siteId,
+					userName,
+					sabaId,
+				}).unwrap()
+
+				setQueryParams({
+					userName,
+					sabaId,
+					methodType,
+				})
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
 		}
 	}
 

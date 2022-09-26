@@ -174,7 +174,7 @@ const UpdateBonus: FC<{
 						periodType,
 						promotionDeviceType,
 						sort,
-						specialCode,
+						specialCode: isSpecial ? specialCode : null,
 						categoryId: promotionType === BonusTypeEnum.Rebate ? 0 : categoryId,
 						walletType:
 							promotionType === BonusTypeEnum.Rebate ? null : walletType,

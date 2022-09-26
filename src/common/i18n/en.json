@@ -521,6 +521,11 @@
 	"Label_SupportChannels": "Support Channels",
 	"Label_BankQR": "BankQR",
 	"Label_QrCodeUrl": "QR Code Url",
+	"Label_Debit" : "Debit",
+	"Label_Credit" : "Credit",
+	"Label_DifferenceAmount" : "Difference Amount",
+	"Label_EligibleWithdrawalAmount": "Eligible Withdrawal Amount",
+	"Label_None" : "None - (Default)",
 	"Label_QrCodeErrorMsg": "The uploaded image is not a QR code image, please re-upload",
 	"BonusType": {
 		"Label_FirstDeposit": "First Deposit",
@@ -545,9 +550,10 @@
 	"Label_ExpiryTime": "Expiry Time",
 	"Label_ExpiredCancel": "Expired Cancel",
 	"Label_ColumnVisibility": "Column Visibility",
-	"Label_AdjustMax" : "Adjust Max",
-	"Label_ZeroIsUnLimited" : "( 0 = Unlimited )",
-	"Label_On" : "On",
-	"Label_Off" : "Off",
-	"Label_EmptyError" : "Create Value Can't Be Empty !"
+	"Label_AdjustMax": "Adjust Max",
+	"Label_ZeroIsUnLimited": "( 0 = Unlimited )",
+	"Label_On": "On",
+	"Label_Off": "Off",
+	"Label_EmptyError": "Create Value Can't Be Empty !",
+	"Label_InitialTime": "Initial Time"
 }

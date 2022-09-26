@@ -31,7 +31,6 @@ import {
 	DATE_TYPE_OPTIONS,
 	DepositStatusEnum,
 	DEPOSIT_STATUS_OPTIONS,
-	DormantMemberEnum,
 	DORMANT_MEMBER_OPTIONS,
 	StatusEnum,
 	STATUS_OPTIONS,
@@ -79,7 +78,7 @@ const LiveRegistrationStatisticsFilter: FC<
 							status: StatusEnum.All,
 							agentCodeType: AgentCodeEnum.All,
 							callOutStatus: CallOutStatusEnum.All,
-							dormantUser: DormantMemberEnum.All,
+							dormantUser: undefined,
 							userName: '',
 							affiliatesCode: '',
 						}}
