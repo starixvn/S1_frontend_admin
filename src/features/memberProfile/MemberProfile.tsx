@@ -1,19 +1,15 @@
-import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
 import { AffixButtons } from 'components/AffixButtons'
+import { MemberProfileSider } from 'features/memberProfile/sider/MemberProfileSider'
 import MemberProfileHeader from './MemberProfileHeader'
 
-const { Sider, Content } = Layout
-
-const StyleSider = styled(Sider)`
-	border: 1px solid #f0f0f0;
-`
+const { Content } = Layout
 
 const MemberProfile = () => {
 	return (
 		<Layout style={{ height: '100%' }}>
-			<StyleSider theme='light'> </StyleSider>
+			<MemberProfileSider />
 			<Layout>
 				<MemberProfileHeader />
 

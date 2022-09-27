@@ -7,8 +7,7 @@ import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
-import { InternalAuthRequire } from 'common/auth'
-import { AuthRequire } from '../../common/auth/AuthRequire'
+import { InternalAuthRequire, AuthRequire } from 'common/auth'
 
 const Dashboard = lazy(
 	() =>
@@ -1223,19 +1222,15 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}`,
 				element: (
-					<AuthRequire
-						functionId={
-							paths.customerSupport.sub.memberAdministration.functionId
-						}
-					>
+					<AuthRequire>
 						<MemberProfile />
 					</AuthRequire>
 				),
 				children: [
 					{
-						index: true,
+						path: 'dashboard/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1246,7 +1241,7 @@ const routes: RouteObject[] = [
 					},
 					// * CustomerInfo 類別
 					{
-						path: 'customerInfo/memberFlowLog',
+						path: 'customerInfo/memberFlowLog/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1255,7 +1250,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/vipLevel',
+						path: 'customerInfo/vipLevel/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1264,7 +1259,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/referralHistory',
+						path: 'customerInfo/referralHistory/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1273,7 +1268,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/notes',
+						path: 'customerInfo/notes/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1282,7 +1277,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/SMSInfo',
+						path: 'customerInfo/SMSInfo/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1291,7 +1286,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/loginLog',
+						path: 'customerInfo/loginLog/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1300,7 +1295,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'customerInfo/ipLog',
+						path: 'customerInfo/ipLog/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1311,7 +1306,7 @@ const routes: RouteObject[] = [
 
 					// * Finance 類別
 					{
-						path: 'finance/depositInfo',
+						path: 'finance/depositInfo/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1321,7 +1316,7 @@ const routes: RouteObject[] = [
 					},
 					// * Game 類別
 					{
-						path: 'game/statement',
+						path: 'game/statement/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1331,7 +1326,7 @@ const routes: RouteObject[] = [
 					},
 					// * marketing 類別
 					{
-						path: 'marketing/bonusWallet',
+						path: 'marketing/bonusWallet/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1340,7 +1335,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'setting',
+						path: 'setting/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
@@ -1349,7 +1344,7 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
-						path: 'adminUserLog',
+						path: 'adminUserLog/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}

@@ -9,16 +9,15 @@ const paths = {
 	login: {
 		root: 'login',
 	},
+	memberProfile: {
+		root: 'memberProfile',
+	},
 	assignBrand: {
 		root: 'AssignBrand',
 	},
 	customerSupport: {
 		root: 'customerSupport',
 		sub: {
-			memberAdministration: {
-				root: 'customerSupport/memberAdministration',
-				functionId: 22,
-			},
 			operatorService: {
 				root: 'customerSupport/operatorService',
 				sub: {
