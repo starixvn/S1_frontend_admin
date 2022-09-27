@@ -556,6 +556,9 @@
 	"Label_Off": "Off",
 	"Label_EmptyError": "Create Value Can't Be Empty !",
 	"Label_InitialTime": "Initial Time",
+	"Label_FuncKey" : "FuncKey",
+	"Label_ReasonId" : "Reason ID",
+	"Label_AddNewReason" : "Add New Reason",
 	"MemberProfile": {
 		"Menu": {
 			"CustomerInfo": {
