@@ -433,6 +433,13 @@ const BonusReport = lazy(
 		)
 )
 
+const ReasonManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReasonManagement' */ 'features/reasonManagement/ReasonManagement'
+		)
+)
+
 const MemberProfile = lazy(
 	() =>
 		import(
@@ -1202,6 +1209,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalAdjustment />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.reasonManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.bankTransfer.sub.reasonManagement.functionId}
+					>
+						<ReasonManagement />
 					</AuthRequire>
 				),
 			},
