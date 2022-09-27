@@ -28,8 +28,6 @@ interface IDepositLimitationTabProps {
 	}) => void
 }
 
-const { TabPane } = Tabs
-
 const DepositLimitationTab: FC<IDepositLimitationTabProps> = ({
 	loading,
 	currentCurrency,
@@ -50,6 +48,27 @@ const DepositLimitationTab: FC<IDepositLimitationTabProps> = ({
 		setCurrentCurrency(Number(currency))
 	}
 
+	const items = currencyListBySite?.map(currency => {
+		const { isoCode, currencyId } = currency
+		return {
+			label: isoCode,
+			key: String(currencyId),
+			children: (
+				<DepositLimitationTable
+					form={form}
+					loading={loading}
+					editingKey={editingKey}
+					setEditingKey={setEditingKey}
+					editPermission={editPermission}
+					tableDataSource={tableDataSource}
+					onTableRowDelete={onTableRowDelete}
+					onTableRowSave={onTableRowSave}
+					onUpdateStatus={onUpdateStatus}
+				/>
+			),
+		}
+	})
+
 	return (
 		<Tabs
 			type='card'
@@ -57,26 +76,8 @@ const DepositLimitationTab: FC<IDepositLimitationTabProps> = ({
 			destroyInactiveTabPane
 			tabBarStyle={{ margin: 0 }}
 			onChange={(value: string) => handleTabsChange(value)}
-		>
-			{currencyListBySite?.map(currency => {
-				const { isoCode, currencyId } = currency
-				return (
-					<TabPane tab={isoCode} key={currencyId}>
-						<DepositLimitationTable
-							form={form}
-							loading={loading}
-							editingKey={editingKey}
-							setEditingKey={setEditingKey}
-							editPermission={editPermission}
-							tableDataSource={tableDataSource}
-							onTableRowDelete={onTableRowDelete}
-							onTableRowSave={onTableRowSave}
-							onUpdateStatus={onUpdateStatus}
-						/>
-					</TabPane>
-				)
-			})}
-		</Tabs>
+			items={items}
+		/>
 	)
 }
 

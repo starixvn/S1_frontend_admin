@@ -13,8 +13,6 @@ interface ISnsManagementTabProps {
 	currentLang: string | undefined
 }
 
-const { TabPane } = Tabs
-
 const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 	langCode,
 	snsManagementData,
@@ -33,6 +31,17 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 		return result
 	}
 
+	const items = langCode?.map(lang => {
+		return {
+			label: lang,
+			key: lang,
+			disabled,
+			children: (
+				<SnsManagementTable snsData={getTableValues(lang)} form={form} />
+			),
+		}
+	})
+
 	//  init lang
 	useEffect(() => {
 		if (!loading && !currentLang) {
@@ -48,13 +57,8 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 				onChange={lang => setCurrentLang(lang)}
 				// 只要tabs隱藏就銷毀該table , 保持 dataSource 正常更新
 				destroyInactiveTabPane
-			>
-				{langCode.map(lang => (
-					<TabPane tab={lang} key={lang} disabled={disabled}>
-						<SnsManagementTable snsData={getTableValues(lang)} form={form} />
-					</TabPane>
-				))}
-			</Tabs>
+				items={items}
+			/>
 		</LayoutContent.Card>
 	)
 }
