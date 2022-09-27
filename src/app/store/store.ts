@@ -56,6 +56,7 @@ import { adjustmentLimitationApi } from 'features/adjustmentLimitation/api'
 import { bonusReportApi } from 'features/bonusReport/api'
 import { transferInfoManagementApi } from 'features/transferInfoManagement/api'
 import { reasonManagementApi } from 'features/reasonManagement/api'
+import { memberProfileApi } from 'features/memberProfile/api'
 
 export const store = configureStore({
 	reducer: {
@@ -118,6 +119,7 @@ export const store = configureStore({
 		[bonusReportApi.reducerPath]: bonusReportApi.reducer,
 		[withdrawalAdjustmentApi.reducerPath]: withdrawalAdjustmentApi.reducer,
 		[reasonManagementApi.reducerPath]: reasonManagementApi.reducer,
+		[memberProfileApi.reducerPath]: memberProfileApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({
@@ -176,7 +178,8 @@ export const store = configureStore({
 			.concat(adjustmentLimitationApi.middleware)
 			.concat(withdrawalKycControlApi.middleware)
 			.concat(withdrawalAdjustmentApi.middleware)
-			.concat(reasonManagementApi.middleware),
+			.concat(reasonManagementApi.middleware)
+			.concat(memberProfileApi.middleware),
 })
 
 // to ignore : TS2589: Type instantiation is excessively deep and possibly infinite.
