@@ -608,5 +608,23 @@
 				"Label_PromotionReport": "Promotion Report"
 			}
 		}
-	}
+	},
+	"Label_FullName": "Full Name",
+	"Label_DepositPointLevel" : "Deposit Point Level",
+	"Label_Identity" : "Identity",
+	"Label_Affiliate" : "Affiliate",
+	"Label_AffiliatesName" : "Affiliates Name",
+	"Label_RegisteredDate" : "Registered Date/Time",
+	"Label_LineBindingTime" : "Line Binding Time",
+	"Label_FirstDepositTime" : "First Deposit Time",
+	"Label_LastLogInTime" : "Last Login Time",
+	"Label_DOB" : "D.O.B (DD/MM/YYYY)",
+	"Label_Address" : "Address",
+	"Label_CheckDetail" : "Check Detail",
+	"Label_isRisk" : "Is Risk",
+	"Label_isKyc" : "Is Kyc",
+	"Label_isTest" : "Is Test",
+	"Label_Suspend" : "Suspend",
+	"Label_Normal" : "Normal",
+	"Label_Referral" : "Referral"
 }
