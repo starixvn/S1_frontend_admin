@@ -556,11 +556,18 @@
 	"Label_Off": "Off",
 	"Label_EmptyError": "Create Value Can't Be Empty !",
 	"Label_InitialTime": "Initial Time",
-	"Label_FuncKey" : "FuncKey",
-	"Label_ReasonId" : "Reason ID",
-	"Label_AddNewReason" : "Add New Reason",
+	"Label_FuncKey": "FuncKey",
+	"Label_ReasonId": "Reason ID",
+	"Label_AddNewReason": "Add New Reason",
 	"MemberProfile": {
 		"Menu": {
+			"Label_Dashboard": "Dashboard",
+			"Label_CustomerInfo": "Customer Info",
+			"Label_Finance": "Finance",
+			"Label_Game": "Game",
+			"Label_Marketing": "Marketing",
+			"Label_Setting": "Setting",
+			"Label_AdminUserLog": "Admin User Log",
 			"CustomerInfo": {
 				"Label_MemberFlowLog": "Member Flow Log",
 				"Label_VIPLevel": "VIP Level",
@@ -597,7 +604,8 @@
 				"Label_Label_PromotionReport": "Promotion Report",
 				"Label_RewardsPointLog": "Rewards Point Log",
 				"Label_CashBackReport": "Cash Back Report",
-				"Label_VipRebateMenu": "Vip Rebate Menu"
+				"Label_VipRebateMenu": "Vip Rebate Menu",
+				"Label_PromotionReport": "Promotion Report"
 			}
 		}
 	}
