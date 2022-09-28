@@ -1,7 +1,10 @@
 import { IGetBasicInfoData } from 'features/memberProfile/type'
-import { Row, Space, Tag } from 'antd'
+import { Row, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { StatusInfoComponent } from 'features/memberProfile/sider/StatusInfoComponent'
+import {
+	StatusInfoComponent,
+	StyleTag,
+} from 'features/memberProfile/sider/StatusInfoComponent'
 
 interface IStatusInfoProps {
 	custBasicInfo: IGetBasicInfoData
@@ -17,13 +20,13 @@ const StatusInfo = ({ custBasicInfo }: IStatusInfoProps) => {
 			<StatusInfoComponent label={t('Label_isTest')} status={isTest} />
 			<Row>
 				{tagList?.map(tag => (
-					<Tag
+					<StyleTag
 						key={tag.id}
 						color={tag.tagColour}
-						style={{ marginRight: '6px', marginTop: '6px' }}
+						style={{ marginRight: '8px', marginTop: '8px' }}
 					>
 						{tag.tagName}
-					</Tag>
+					</StyleTag>
 				))}
 			</Row>
 		</Space>

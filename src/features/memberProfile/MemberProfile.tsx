@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
 import { AffixButtons } from 'components/AffixButtons'
-// import { MemberProfileSider } from 'features/memberProfile/sider/MemberProfileSider'
-import MemberProfileHeader from './MemberProfileHeader'
-import MemberProfileSider from './MemberProfileSider'
+import MemberProfileSider from 'features/memberProfile/sider/MemberProfileSider'
+import MemberProfileHeader from 'features/memberProfile/MemberProfileHeader'
 
 const { Content } = Layout
 
