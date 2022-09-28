@@ -1,23 +1,35 @@
-import React from 'react'
 import styled from 'styled-components'
-import { Button, Divider, Dropdown, Layout, Menu, Space } from 'antd'
+import { Button, Dropdown, Layout, Menu, Space } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import {
+	MenuDividerType,
+	MenuItemGroupType,
+	MenuItemType,
+	SubMenuType,
+} from 'antd/lib/menu/hooks/useItems'
+import { FaUser } from '@react-icons/all-files/fa/FaUser'
+import { useMediaQuery } from 'usehooks-ts'
+
+type ItemType = MenuItemType | SubMenuType | MenuItemGroupType | MenuDividerType
 
 const { Header } = Layout
 
 const StyledHeader = styled(Header)`
-	background: #fff;
-	position: fixed;
-	z-index: 1;
-	width: 100%;
-	border: 1px solid #f0f0f0;
+	width: -webkit-fill-available; // 使 header 滿版
+	background: white;
+	border: 1px solid white;
 `
 
-const MemberProfileHeader = () => {
+interface IMemberProfileHeaderProps {
+	onOpenDrawer: () => void
+}
+
+const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
+	const isMobileMedia = useMediaQuery('(max-width: 768px)')
 	const { t } = useTranslation()
 	const { custId } = useParams()
 
@@ -92,7 +104,7 @@ const MemberProfileHeader = () => {
 							{t('MemberProfile.Menu.CustomerInfo.Label_IPLog')}
 						</Link>
 					),
-					key: '6',
+					key: '7',
 				},
 			]}
 		/>
@@ -349,61 +361,100 @@ const MemberProfileHeader = () => {
 		/>
 	)
 
-	return (
-		<StyledHeader>
-			<Space
-				size={8}
-				split={<Divider type='vertical' />}
-				style={{ overflow: 'hidden' }}
-			>
+	const items: (ItemType | boolean)[] = [
+		// * 如果為手機版則渲染 User Icon 用於打開 drawer
+		isMobileMedia && {
+			key: 99,
+			onClick: () => onOpenDrawer(),
+			label: <FaUser />,
+		},
+		{
+			key: 1,
+			label: (
 				<Link
 					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 				>
-					Dashboard
+					{t('MemberProfile.Menu.Label_Dashboard')}
 				</Link>
-				<Dropdown overlay={customerInfoMenu} trigger={['click']}>
+			),
+		},
+		{
+			key: 2,
+			label: (
+				<Dropdown overlay={customerInfoMenu} trigger={['click', 'hover']}>
 					<Button>
 						<Space>
-							Customer Info
+							{t('MemberProfile.Menu.Label_CustomerInfo')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
-				<Dropdown overlay={financeMenu} trigger={['click']}>
+			),
+		},
+		{
+			key: 3,
+			label: (
+				<Dropdown overlay={financeMenu} trigger={['click', 'hover']}>
 					<Button>
 						<Space>
-							Finance
+							{t('MemberProfile.Menu.Label_Finance')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
-				<Dropdown overlay={gameMenu} trigger={['click']}>
+			),
+		},
+		{
+			key: 4,
+			label: (
+				<Dropdown overlay={gameMenu} trigger={['click', 'hover']}>
 					<Button>
 						<Space>
-							Game
+							{t('MemberProfile.Menu.Label_Game')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
-				<Dropdown overlay={marketingMenu} trigger={['click']}>
+			),
+		},
+		{
+			key: 5,
+			label: (
+				<Dropdown overlay={marketingMenu} trigger={['click', 'hover']}>
 					<Button>
 						<Space>
-							Marketing
+							{t('MemberProfile.Menu.Label_Marketing')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
+			),
+		},
+		{
+			key: 6,
+			label: (
 				<Link
 					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/setting/${custId}`}
 				>
-					Setting
+					{t('MemberProfile.Menu.Label_Setting')}
 				</Link>
+			),
+		},
+		{
+			key: 7,
+			label: (
 				<Link
 					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
 				>
-					Admin User Log
+					{t('MemberProfile.Menu.Label_AdminUserLog')}
 				</Link>
-			</Space>
+			),
+		},
+	].filter(Boolean)
+
+	return (
+		<StyledHeader>
+			<Menu theme='light' mode='horizontal' items={items as ItemType[]} />
 		</StyledHeader>
 	)
 }
