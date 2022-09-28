@@ -1,22 +1,28 @@
 import { Row, Tag } from 'antd'
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import styled from 'styled-components'
 
 interface IStatusInfoComponentProps {
 	label: string
 	status: boolean
 }
 
+export const StyleTag = styled(Tag)`
+	font-size: 12px;
+	padding: 2px 10px;
+`
+
 const StatusInfoComponent = ({ label, status }: IStatusInfoComponentProps) => {
 	return (
 		<Row>
 			{status ? (
-				<Tag icon={<CheckCircleOutlined />} color='success'>
+				<StyleTag icon={<CheckCircleOutlined />} color='success'>
 					{label}
-				</Tag>
+				</StyleTag>
 			) : (
-				<Tag icon={<QuestionCircleOutlined />} color='default'>
+				<StyleTag icon={<QuestionCircleOutlined />} color='default'>
 					{label}
-				</Tag>
+				</StyleTag>
 			)}
 		</Row>
 	)

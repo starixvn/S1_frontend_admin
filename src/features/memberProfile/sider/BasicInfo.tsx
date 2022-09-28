@@ -1,5 +1,5 @@
 import { IGetBasicInfoData } from 'features/memberProfile/type'
-import { Avatar, Col, Row, Space, Typography } from 'antd'
+import { Avatar, Col, Divider, Row, Space, Tag, Typography } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { BsFillImageFill, BsCashStack } from 'react-icons/bs'
 import { AiOutlineMail } from 'react-icons/ai'
@@ -14,6 +14,7 @@ import {
 	statusList,
 } from 'features/memberProfile/constants'
 import { find } from 'lodash'
+import React from 'react'
 
 interface IBasicInfoProps {
 	custBasicInfo: IGetBasicInfoData
@@ -21,6 +22,13 @@ interface IBasicInfoProps {
 
 const StyleIcon = styled.div`
 	font-size: 1.3rem;
+	line-height: 1;
+`
+
+const OnlineTag = styled(Tag)`
+	font-size: 15px;
+	padding: 3px 10px;
+	border-radius: 15px;
 `
 
 const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
@@ -51,6 +59,7 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 		isLineBinding,
 		phoneVerified,
 		emailVerified,
+		isOnline,
 	} = custBasicInfo ?? {}
 
 	// 辨識 status 狀態
@@ -72,38 +81,42 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 
 	return (
 		<>
+			{/* 使用者頭像與資訊 */}
 			<Row gutter={8} align='middle'>
 				<Col span={10}>
 					<Avatar shape='square' size={64} icon={<UserOutlined />} />
 				</Col>
 				<Col span={14}>
-					<Space direction='vertical' style={{ padding: '5px' }} align='center'>
+					<Space direction='vertical' style={{ padding: '5px' }}>
 						<Typography.Title level={5}>{userName}</Typography.Title>
-						<Typography.Title level={5}>online</Typography.Title>
+						<OnlineTag color={isOnline ? 'success' : 'default'}>
+							{t('Label_Online')}
+						</OnlineTag>
 					</Space>
 				</Col>
 			</Row>
-			<Row>
-				<Space
-					style={{
-						padding: '5px',
-					}}
-					align='center'
-					size='middle'
-				>
+			{/* 各驗證狀態 */}
+			<Row style={{ marginTop: '10px' }} justify='space-between'>
+				<Col>
 					<StyleIcon>
 						<BsFillImageFill />
 					</StyleIcon>
+				</Col>
+				<Col>
 					<StyleIcon>
 						<AiOutlineMail
 							color={emailVerified ? '#FB9C02' : 'rgba(175,174,175,0.4)'}
 						/>
 					</StyleIcon>
+				</Col>
+				<Col>
 					<StyleIcon>
 						<FaMobileAlt
 							color={phoneVerified ? 'black' : 'rgba(175,174,175,0.4)'}
 						/>
 					</StyleIcon>
+				</Col>
+				<Col>
 					<StyleIcon>
 						<BsCashStack
 							color={
@@ -113,13 +126,16 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 							}
 						/>
 					</StyleIcon>
+				</Col>
+				<Col>
 					<StyleIcon>
 						<FaLine
 							color={isLineBinding ? '#02C755' : 'rgba(175,174,175,0.4)'}
 						/>
 					</StyleIcon>
-				</Space>
+				</Col>
 			</Row>
+			<Divider style={{ margin: '10px 0' }} />
 			{/* Info 內容 */}
 			<Space direction='vertical'>
 				<Row>
