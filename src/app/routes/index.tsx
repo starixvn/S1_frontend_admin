@@ -432,6 +432,20 @@ const BonusReport = lazy(
 		)
 )
 
+const TransferInfoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TransferInfoManagement' */ 'features/transferInfoManagement/TransferInfoManagement'
+		)
+)
+
+const TransferInfoEdit = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TransferInfoEdit' */ 'features/transferInfoManagement/editTransferInfo/EditTransferInfo'
+		)
+)
+
 const ReasonManagement = lazy(
 	() =>
 		import(
@@ -1216,6 +1230,30 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusReport.functionId}>
 						<BonusReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferInfoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferInfoManagement.functionId
+						}
+					>
+						<TransferInfoManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferInfoManagement.root}/:transferId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.bankTransfer.sub.transferInfoManagement.functionId
+						}
+					>
+						<TransferInfoEdit />
 					</AuthRequire>
 				),
 			},
