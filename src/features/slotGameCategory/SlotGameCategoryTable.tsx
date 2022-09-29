@@ -5,7 +5,6 @@ import {
 	Col,
 	Form,
 	FormInstance,
-	Popconfirm,
 	Row,
 	Select,
 	Switch,
@@ -74,10 +73,10 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					const { currencyId } = JSON.parse(dataIndex)
 					const currentStatus = Boolean(record[dataIndex])
 					return (
-						<Popconfirm
+						<Switch
+							checked={currentStatus}
 							disabled={!editPermission?.canUse}
-							title={t('Label_AreYouSure')}
-							onConfirm={() => {
+							onClick={() => {
 								setStatus({
 									currencyId,
 									slotGameId,
@@ -85,12 +84,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									dataIndex,
 								})
 							}}
-						>
-							<Switch
-								checked={currentStatus}
-								disabled={!editPermission?.canUse}
-							/>
-						</Popconfirm>
+						/>
 					)
 				},
 			}
