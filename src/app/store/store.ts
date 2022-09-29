@@ -54,6 +54,7 @@ import { withdrawalKycControlApi } from 'features/withdrawalKycControl/api'
 import { withdrawalAdjustmentApi } from 'features/withdrawalAdjustment/api'
 import { adjustmentLimitationApi } from 'features/adjustmentLimitation/api'
 import { bonusReportApi } from 'features/bonusReport/api'
+import { transferInfoManagementApi } from 'features/transferInfoManagement/api'
 import { reasonManagementApi } from 'features/reasonManagement/api'
 
 export const store = configureStore({
@@ -113,6 +114,7 @@ export const store = configureStore({
 		[slotGameCategoryApi.reducerPath]: slotGameCategoryApi.reducer,
 		[withdrawalKycControlApi.reducerPath]: withdrawalKycControlApi.reducer,
 		[adjustmentLimitationApi.reducerPath]: adjustmentLimitationApi.reducer,
+		[transferInfoManagementApi.reducerPath]: transferInfoManagementApi.reducer,
 		[bonusReportApi.reducerPath]: bonusReportApi.reducer,
 		[withdrawalAdjustmentApi.reducerPath]: withdrawalAdjustmentApi.reducer,
 		[reasonManagementApi.reducerPath]: reasonManagementApi.reducer,
@@ -169,8 +171,7 @@ export const store = configureStore({
 			.concat(depositLimitationApi.middleware)
 			.concat(withdrawalLimitationApi.middleware)
 			.concat(bonusManagementApi.middleware)
-			.concat(withdrawalKycControlApi.middleware)
-			.concat(adjustmentLimitationApi.middleware)
+			.concat(transferInfoManagementApi.middleware)
 			.concat(bonusReportApi.middleware)
 			.concat(adjustmentLimitationApi.middleware)
 			.concat(withdrawalKycControlApi.middleware)
