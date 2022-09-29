@@ -18,6 +18,7 @@ import React from 'react'
 
 interface IBasicInfoProps {
 	custBasicInfo: IGetBasicInfoData
+	onCustPhotoClick: () => void
 }
 
 const StyleIcon = styled.div`
@@ -31,7 +32,7 @@ const OnlineTag = styled(Tag)`
 	border-radius: 15px;
 `
 
-const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
+const BasicInfo = ({ custBasicInfo, onCustPhotoClick }: IBasicInfoProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
 
@@ -60,6 +61,7 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 		phoneVerified,
 		emailVerified,
 		isOnline,
+		vipLogo,
 	} = custBasicInfo ?? {}
 
 	// 辨識 status 狀態
@@ -84,7 +86,12 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 			{/* 使用者頭像與資訊 */}
 			<Row gutter={8} align='middle'>
 				<Col span={10}>
-					<Avatar shape='square' size={64} icon={<UserOutlined />} />
+					<Avatar
+						shape='square'
+						size={64}
+						icon={<UserOutlined />}
+						src={vipLogo}
+					/>
 				</Col>
 				<Col span={14}>
 					<Space direction='vertical' style={{ padding: '5px' }}>
@@ -98,8 +105,8 @@ const BasicInfo = ({ custBasicInfo }: IBasicInfoProps) => {
 			{/* 各驗證狀態 */}
 			<Row style={{ marginTop: '10px' }} justify='space-between'>
 				<Col>
-					<StyleIcon>
-						<BsFillImageFill />
+					<StyleIcon onClick={onCustPhotoClick}>
+						<BsFillImageFill style={{ cursor: 'pointer' }} />
 					</StyleIcon>
 				</Col>
 				<Col>

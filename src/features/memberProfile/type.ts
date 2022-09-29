@@ -14,6 +14,7 @@ export interface ITagData {
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
+	vipLogo: string
 	isOnline: boolean
 	userName: string
 	accountName: string
@@ -45,3 +46,17 @@ export interface IGetBasicInfoData {
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
+
+export interface IDeleteCustPhotoIdArgs {
+	custId: number
+	id: number
+}
+
+export type IGetCustPhotoIdArgs = IGetBasicInfoArgs
+
+export interface IGetCustPhotoData {
+	id: number
+	photoUrl: string
+}
+
+export type IGetCustPhotoResponse = IAxiosResponse<IGetCustPhotoData[]>
