@@ -11,9 +11,17 @@ export interface ITagData {
 	description: string
 	tagColour: string
 }
+
+export interface ICustLineProfile {
+	custId: number
+	userId: string
+	createTime: string
+}
+
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
+	vipLogo: string
 	isOnline: boolean
 	userName: string
 	accountName: string
@@ -21,6 +29,7 @@ export interface IGetBasicInfoData {
 	emailVerified: boolean
 	actStatus: number
 	isLineBinding: boolean
+	custLineProfile: ICustLineProfile
 	status: number
 	depositPointLevel: number
 	currency: string
@@ -28,7 +37,6 @@ export interface IGetBasicInfoData {
 	affiliatesName: string
 	affiliatesCode: string
 	registeredTime: string
-	lineBindingTime: string
 	firstDepositTime: string
 	lastLoginTime: string
 	lastActiveTime: string
@@ -45,3 +53,17 @@ export interface IGetBasicInfoData {
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
+
+export interface IDeleteCustPhotoIdArgs {
+	custId: number
+	id: number
+}
+
+export type IGetCustPhotoIdArgs = IGetBasicInfoArgs
+
+export interface IGetCustPhotoData {
+	id: number
+	photoUrl: string
+}
+
+export type IGetCustPhotoResponse = IAxiosResponse<IGetCustPhotoData[]>

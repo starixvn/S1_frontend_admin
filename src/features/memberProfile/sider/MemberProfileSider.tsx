@@ -1,14 +1,43 @@
-import { Layout } from 'antd'
+import { Drawer, Layout } from 'antd'
+import { LayoutContent } from 'app/pages/layout'
+import React from 'react'
 import styled from 'styled-components'
+import { useMediaQuery } from 'usehooks-ts'
+import MemberProfileSiderContent from 'features/memberProfile/sider/MemberProfileSiderContent'
 
 const { Sider } = Layout
 
 const StyleSider = styled(Sider)`
-	border: 1px solid #f0f0f0;
+	background: transparent;
+	margin: 8px;
 `
 
-const MemberProfileSider = () => {
-	return <StyleSider theme='light'> </StyleSider>
+interface IMemberProfileSiderProps {
+	drawerOpen: boolean
+	onCloseDrawer: () => void
 }
 
-export { MemberProfileSider }
+const MemberProfileSider = ({
+	drawerOpen,
+	onCloseDrawer,
+}: IMemberProfileSiderProps) => {
+	const isMobileMedia = useMediaQuery('(max-width: 768px)')
+
+	return isMobileMedia ? (
+		<Drawer placement='left' onClose={onCloseDrawer} open={drawerOpen}>
+			<MemberProfileSiderContent />
+		</Drawer>
+	) : (
+		<StyleSider width={280}>
+			<LayoutContent.Card
+				style={{
+					minHeight: '80vh',
+				}}
+			>
+				<MemberProfileSiderContent />
+			</LayoutContent.Card>
+		</StyleSider>
+	)
+}
+
+export default MemberProfileSider
