@@ -516,6 +516,20 @@ const MemberProfileAdminUserLog = lazy(
 		)
 )
 
+const MemberProfileVipLevelLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipLevelLog' */ 'features/memberProfile/pages/customerInfo/vipLevelLog/VipLevelLog'
+		)
+)
+
+const MemberProfileReferralHistory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralHistory' */ 'features/memberProfile/pages/customerInfo/referralHistory/ReferralHistory'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1291,8 +1305,7 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/vipLevel/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Vip Level</div>
+								<MemberProfileVipLevelLog />
 							</AuthRequire>
 						),
 					},
@@ -1300,8 +1313,7 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/referralHistory/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Referral History</div>
+								<MemberProfileReferralHistory />
 							</AuthRequire>
 						),
 					},
