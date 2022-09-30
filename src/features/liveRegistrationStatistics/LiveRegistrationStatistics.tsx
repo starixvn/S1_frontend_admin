@@ -39,6 +39,7 @@ import {
 	DateTypeEnum,
 	StatusEnum,
 	REFRESH_DATA_COUNT,
+	DepositStatusEnum,
 } from './constants'
 import LiveRegistrationStatisticsTable from './LiveRegistrationStatisticsTable'
 import LiveRegistrationStatisticsNoteModal from './LiveRegistrationStatisticsNoteModal'
@@ -134,7 +135,7 @@ const LiveRegistrationStatistics: FC<{
 				orderByProperty,
 				orderByDirection,
 			}).unwrap()
-
+			setPagination(prev => ({ ...prev, current, pageSize }))
 			setQueryParams({
 				...values,
 				affiliatesCode: affiliatesCode || null,
@@ -264,13 +265,13 @@ const LiveRegistrationStatistics: FC<{
 	const init = () => {
 		const {
 			currencyId = currencyListBySite[0]?.currencyId,
-			depositStatus = DateTypeEnum.LastActiveDate,
+			dateType = DateTypeEnum.LastActiveDate,
 			status = StatusEnum.All,
 			affiliatesCode = '',
 			agentCodeType = AgentCodeEnum.All,
 			callOutStatus = CallOutStatusEnum.All,
 			dormantUser,
-			dateType = DateTypeEnum.LastActiveDate,
+			depositStatus = DepositStatusEnum.All,
 			userName = '',
 			pageNumber = PAGINATION.defaultCurrent,
 			pageSize = PAGINATION.defaultPageSize,
