@@ -627,5 +627,7 @@
 	"Label_Suspend" : "Suspend",
 	"Label_Normal" : "Normal",
 	"Label_Referral" : "Referral",
-	"Label_Online" : "Online"
+	"Label_Online" : "Online",
+	"Label_LineUserId" : "Line User ID",
+	"Label_Unbind" : "Unbind"
 }

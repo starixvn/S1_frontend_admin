@@ -10,6 +10,7 @@ import {
 	useDeleteCustPhotoMutation,
 	useGetBasicInfoQuery,
 	useGetCustPhotoQuery,
+	useLineUnbindMutation,
 	useUploadCustPhotoMutation,
 } from 'features/memberProfile/api'
 import { UploadPicModal } from 'features/memberProfile/sider/uploaderModal/UploadPicModal'
@@ -41,6 +42,8 @@ const MemberProfileSiderContent = () => {
 	const [deleteCustPhoto, { isLoading: isDeleteCustPhotoLoading }] =
 		useDeleteCustPhotoMutation()
 
+	const [lineUnbind] = useLineUnbindMutation()
+
 	const handleDeleteCustPhoto = async (id: number) => {
 		try {
 			await deleteCustPhoto({ custId: Number(custId), id }).unwrap()
@@ -65,12 +68,26 @@ const MemberProfileSiderContent = () => {
 			)
 		}
 	}
+
+	const handleLineUnbind = async () => {
+		if (!custId) return
+		try {
+			await lineUnbind({ custId: Number(custId) }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	return (
 		<div>
 			<Spin spinning={isGetCustBasicInfoLoading}>
 				<BasicInfo
 					custBasicInfo={custBasicInfo}
 					onCustPhotoClick={() => uploadModal.onOpen()}
+					onLineUnbind={handleLineUnbind}
 				/>
 				<Divider style={{ margin: '15px 0' }} />
 				<StatusInfo custBasicInfo={custBasicInfo} />

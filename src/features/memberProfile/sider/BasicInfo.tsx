@@ -1,5 +1,14 @@
 import { IGetBasicInfoData } from 'features/memberProfile/type'
-import { Avatar, Col, Divider, Row, Space, Tag, Typography } from 'antd'
+import {
+	Avatar,
+	Col,
+	Divider,
+	Popconfirm,
+	Row,
+	Space,
+	Tag,
+	Typography,
+} from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { BsFillImageFill, BsCashStack } from 'react-icons/bs'
 import { AiOutlineMail } from 'react-icons/ai'
@@ -19,6 +28,7 @@ import React from 'react'
 interface IBasicInfoProps {
 	custBasicInfo: IGetBasicInfoData
 	onCustPhotoClick: () => void
+	onLineUnbind: () => void
 }
 
 const StyleIcon = styled.div`
@@ -32,7 +42,11 @@ const OnlineTag = styled(Tag)`
 	border-radius: 15px;
 `
 
-const BasicInfo = ({ custBasicInfo, onCustPhotoClick }: IBasicInfoProps) => {
+const BasicInfo = ({
+	custBasicInfo,
+	onCustPhotoClick,
+	onLineUnbind,
+}: IBasicInfoProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
 
@@ -47,7 +61,6 @@ const BasicInfo = ({ custBasicInfo, onCustPhotoClick }: IBasicInfoProps) => {
 		affiliatesName,
 		affiliatesCode,
 		registeredTime,
-		lineBindingTime,
 		firstDepositTime,
 		lastLoginTime,
 		lastActiveTime,
@@ -62,7 +75,11 @@ const BasicInfo = ({ custBasicInfo, onCustPhotoClick }: IBasicInfoProps) => {
 		emailVerified,
 		isOnline,
 		vipLogo,
+		custLineProfile,
 	} = custBasicInfo ?? {}
+
+	const { userId: lineUserId, createTime: lineBindingTime } =
+		custLineProfile ?? {}
 
 	// 辨識 status 狀態
 	const getStatusName = () => {
@@ -135,11 +152,22 @@ const BasicInfo = ({ custBasicInfo, onCustPhotoClick }: IBasicInfoProps) => {
 					</StyleIcon>
 				</Col>
 				<Col>
-					<StyleIcon>
-						<FaLine
-							color={isLineBinding ? '#02C755' : 'rgba(175,174,175,0.4)'}
-						/>
-					</StyleIcon>
+					<Popconfirm
+						title={`${t('Label_LineUserId')} : ${lineUserId}`}
+						disabled={!isLineBinding}
+						cancelText={t('Label_Close')}
+						okText={t('Label_Unbind')}
+						okType='danger'
+						onConfirm={() => onLineUnbind()}
+					>
+						<StyleIcon
+							style={{ cursor: isLineBinding ? 'pointer' : 'default' }}
+						>
+							<FaLine
+								color={isLineBinding ? '#02C755' : 'rgba(175,174,175,0.4)'}
+							/>
+						</StyleIcon>
+					</Popconfirm>
 				</Col>
 			</Row>
 			<Divider style={{ margin: '10px 0' }} />

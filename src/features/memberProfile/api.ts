@@ -12,7 +12,7 @@ import {
 export const memberProfileApi = createApi({
 	reducerPath: 'memberProfileApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['EditPhoto'],
+	tagTypes: ['EditPhoto', 'BasicInfoMutation'],
 	endpoints: builder => ({
 		getBasicInfo: builder.query<IGetBasicInfoResponse, IGetBasicInfoArgs>({
 			query: data => ({
@@ -20,6 +20,7 @@ export const memberProfileApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['BasicInfoMutation'],
 		}),
 		getCustPhoto: builder.query<IGetCustPhotoResponse, IGetCustPhotoIdArgs>({
 			query: data => ({
@@ -42,12 +43,16 @@ export const memberProfileApi = createApi({
 				url: 'Member/UploadCustPhotoId',
 				method: 'POST',
 				data,
-				headers: {
-					'content-type':
-						'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-				},
 			}),
 			invalidatesTags: ['EditPhoto'],
+		}),
+		lineUnbind: builder.mutation<void, IGetBasicInfoArgs>({
+			query: data => ({
+				url: 'Member/LineUnbind',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
 		}),
 	}),
 })
@@ -57,4 +62,5 @@ export const {
 	useGetCustPhotoQuery,
 	useDeleteCustPhotoMutation,
 	useUploadCustPhotoMutation,
+	useLineUnbindMutation,
 } = memberProfileApi
