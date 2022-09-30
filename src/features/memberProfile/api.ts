@@ -7,6 +7,8 @@ import {
 	IGetBasicInfoResponse,
 	IGetCustPhotoIdArgs,
 	IGetCustPhotoResponse,
+	IGetVipLevelLogArgs,
+	IGetVipLevelLogResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -14,6 +16,7 @@ export const memberProfileApi = createApi({
 	baseQuery: axiosBaseQuery({ baseUrl }),
 	tagTypes: ['EditPhoto', 'BasicInfoMutation'],
 	endpoints: builder => ({
+		// sider基本資料
 		getBasicInfo: builder.query<IGetBasicInfoResponse, IGetBasicInfoArgs>({
 			query: data => ({
 				url: 'Member/GetBasicInfo',
@@ -22,6 +25,7 @@ export const memberProfileApi = createApi({
 			}),
 			providesTags: ['BasicInfoMutation'],
 		}),
+		// sider 內 custPhoto
 		getCustPhoto: builder.query<IGetCustPhotoResponse, IGetCustPhotoIdArgs>({
 			query: data => ({
 				url: 'Member/GetCustPhotoId',
@@ -30,6 +34,7 @@ export const memberProfileApi = createApi({
 			}),
 			providesTags: ['EditPhoto'],
 		}),
+		// 刪除 sider 內 custPhoto (單張)
 		deleteCustPhoto: builder.mutation<void, IDeleteCustPhotoIdArgs>({
 			query: data => ({
 				url: 'Member/DeleteCustPhotoId',
@@ -38,6 +43,7 @@ export const memberProfileApi = createApi({
 			}),
 			invalidatesTags: ['EditPhoto'],
 		}),
+		// 上傳 sider 內 custPhoto (單張)
 		uploadCustPhoto: builder.mutation<void, FormData>({
 			query: data => ({
 				url: 'Member/UploadCustPhotoId',
@@ -46,6 +52,7 @@ export const memberProfileApi = createApi({
 			}),
 			invalidatesTags: ['EditPhoto'],
 		}),
+		// 取消 Line 綁定
 		lineUnbind: builder.mutation<void, IGetBasicInfoArgs>({
 			query: data => ({
 				url: 'Member/LineUnbind',
@@ -54,6 +61,16 @@ export const memberProfileApi = createApi({
 			}),
 			invalidatesTags: ['BasicInfoMutation'],
 		}),
+		// 取得 VipLevel Log 頁面資料
+		getVipLevelLog: builder.query<IGetVipLevelLogResponse, IGetVipLevelLogArgs>(
+			{
+				query: data => ({
+					url: 'customerManage/GetVipLevelLogByCustId',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
 	}),
 })
 
@@ -63,4 +80,5 @@ export const {
 	useDeleteCustPhotoMutation,
 	useUploadCustPhotoMutation,
 	useLineUnbindMutation,
+	useLazyGetVipLevelLogQuery,
 } = memberProfileApi

@@ -629,5 +629,8 @@
 	"Label_Referral" : "Referral",
 	"Label_Online" : "Online",
 	"Label_LineUserId" : "Line User ID",
-	"Label_Unbind" : "Unbind"
+	"Label_Unbind" : "Unbind",
+	"Label_OldLevel" : "Old Level",
+	"Label_NewLevel" : "New Level",
+	"Label_OperationTime" : "Operating time"
 }

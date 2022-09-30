@@ -54,11 +54,13 @@ export interface IGetBasicInfoData {
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
 
+// sider 照片刪除
 export interface IDeleteCustPhotoIdArgs {
 	custId: number
 	id: number
 }
 
+// 取得 sider 的 custPhoto
 export type IGetCustPhotoIdArgs = IGetBasicInfoArgs
 
 export interface IGetCustPhotoData {
@@ -67,3 +69,20 @@ export interface IGetCustPhotoData {
 }
 
 export type IGetCustPhotoResponse = IAxiosResponse<IGetCustPhotoData[]>
+
+// vipLevelLog Log 頁
+export interface IGetVipLevelLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+}
+
+export interface IGetVipLevelLogData {
+	oldLevel: number
+	newLevel: number
+	memo: string
+	updateTime: string
+	updaters: string
+}
+
+export type IGetVipLevelLogResponse = IAxiosResponse<IGetVipLevelLogData[]>
