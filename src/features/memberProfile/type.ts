@@ -11,6 +11,13 @@ export interface ITagData {
 	description: string
 	tagColour: string
 }
+
+export interface ICustLineProfile {
+	custId: number
+	userId: string
+	createTime: string
+}
+
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
@@ -22,6 +29,7 @@ export interface IGetBasicInfoData {
 	emailVerified: boolean
 	actStatus: number
 	isLineBinding: boolean
+	custLineProfile: ICustLineProfile
 	status: number
 	depositPointLevel: number
 	currency: string
@@ -29,7 +37,6 @@ export interface IGetBasicInfoData {
 	affiliatesName: string
 	affiliatesCode: string
 	registeredTime: string
-	lineBindingTime: string
 	firstDepositTime: string
 	lastLoginTime: string
 	lastActiveTime: string
