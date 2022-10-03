@@ -2,19 +2,25 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
 import {
+	IAddCustNoteArgs,
 	IDeleteCustPhotoIdArgs,
 	IGetBasicInfoArgs,
 	IGetBasicInfoResponse,
+	IGetCustNotesArgs,
+	IGetCustNotesResponse,
 	IGetCustPhotoIdArgs,
 	IGetCustPhotoResponse,
+	IGetReferralHistoryArgs,
+	IGetReferralHistoryResponse,
 	IGetVipLevelLogArgs,
 	IGetVipLevelLogResponse,
+	ISetCustNoteArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
 	reducerPath: 'memberProfileApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['EditPhoto', 'BasicInfoMutation'],
+	tagTypes: ['EditPhoto', 'BasicInfoMutation', 'SetCustomerNote'],
 	endpoints: builder => ({
 		// sider基本資料
 		getBasicInfo: builder.query<IGetBasicInfoResponse, IGetBasicInfoArgs>({
@@ -71,6 +77,42 @@ export const memberProfileApi = createApi({
 				}),
 			}
 		),
+		// CustomerInfo => ReferralHistory 頁面
+		getReferralHistoryLog: builder.query<
+			IGetReferralHistoryResponse,
+			IGetReferralHistoryArgs
+		>({
+			query: data => ({
+				url: 'customerManage/GetRefFriendByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// CustomerInfo => Notes 頁面
+		getCustNotes: builder.query<IGetCustNotesResponse, IGetCustNotesArgs>({
+			query: data => ({
+				url: 'customerManage/GetCustNote',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetCustomerNote'],
+		}),
+		addCustNotes: builder.mutation<void, IAddCustNoteArgs>({
+			query: data => ({
+				url: 'customerManage/AddCustNote',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetCustomerNote'],
+		}),
+		setCustNotes: builder.mutation<void, ISetCustNoteArgs>({
+			query: data => ({
+				url: 'customerManage/SetCustNote',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetCustomerNote'],
+		}),
 	}),
 })
 
@@ -81,4 +123,8 @@ export const {
 	useUploadCustPhotoMutation,
 	useLineUnbindMutation,
 	useLazyGetVipLevelLogQuery,
+	useLazyGetReferralHistoryLogQuery,
+	useLazyGetCustNotesQuery,
+	useAddCustNotesMutation,
+	useSetCustNotesMutation,
 } = memberProfileApi
