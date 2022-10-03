@@ -86,3 +86,55 @@ export interface IGetVipLevelLogData {
 }
 
 export type IGetVipLevelLogResponse = IAxiosResponse<IGetVipLevelLogData[]>
+
+// Referral History 頁面
+export type IGetReferralHistoryArgs = IGetVipLevelLogArgs
+
+export interface IGetReferralHistoryData {
+	custId: number
+	userName: string
+	currencyId: number
+	currency: string
+	registerDate: string
+	totalDeposit: number
+	depositC: number
+	totalBet: number
+	validBetC: number
+	bonusAmount: number
+	referralFreeCredit: number
+	rewardTime: string
+	status: number
+	statusName: string
+}
+
+export type IGetReferralHistoryResponse = IAxiosResponse<
+	IGetReferralHistoryData[]
+>
+
+// Notes 頁面
+export type IGetCustNotesArgs = IGetVipLevelLogArgs
+
+export interface IGetCustNotesData {
+	id: number
+	custId: number
+	note: string
+	createTime: string
+	updateTime: string
+	operator: string
+}
+
+export type IGetCustNotesResponse = IAxiosResponse<IGetCustNotesData[]>
+
+export interface IAddCustNoteArgs {
+	siteId?: number
+	custId: number
+	note: string
+}
+
+export interface ISetCustNoteArgs {
+	siteId?: number
+	custId: number
+	type: number
+	noteId: number
+	note: string
+}

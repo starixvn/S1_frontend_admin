@@ -632,5 +632,9 @@
 	"Label_Unbind" : "Unbind",
 	"Label_OldLevel" : "Old Level",
 	"Label_NewLevel" : "New Level",
-	"Label_OperationTime" : "Operating time"
+	"Label_OperationTime" : "Operating time",
+	"Label_TotalDepositedAmount" : "Total Deposited Amount",
+	"Label_TotalBetAmount" : "Total Bet Amount",
+	"Label_RewardDate" : "Reward Date",
+	"Label_AddNoteMsg" : "Add a note..."
 }
