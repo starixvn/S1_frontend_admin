@@ -43,3 +43,9 @@ export const identityList: Array<{ value: number; displayName: string }> = [
 	{ value: IdentityEnum.Referral, displayName: 'Label_Referral' },
 	{ value: IdentityEnum.Affiliate, displayName: 'Label_Affiliate' },
 ]
+
+export enum NotesMethodEnum {
+	// Set CustomerNotes 行為 enum
+	Update = 1,
+	Delete,
+}

@@ -516,6 +516,13 @@ const MemberProfileReferralHistory = lazy(
 		)
 )
 
+const MemberProfileNotes = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'CustomerNotes' */ 'features/memberProfile/pages/customerInfo/customerNotes/CustomerNotes'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1283,8 +1290,7 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/notes/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Notes</div>
+								<MemberProfileNotes />
 							</AuthRequire>
 						),
 					},
