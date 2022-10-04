@@ -201,7 +201,7 @@ export interface IWalletBalanceInfoData {
 	eligibleWithdrawal: number
 	depositSum: number
 	withdrawlSum: number
-	//  Payment Fee
+	paymentFee: number
 	totalAdjustment: number
 }
 
@@ -231,3 +231,28 @@ export interface IGetDeviceData {
 	associateCount: number
 	lastUpdateTime: string
 }
+
+export interface IGetFinancialLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	financialType: number
+}
+
+export interface IFinancialLogData {
+	id: number
+	createTime: string
+	type: number
+	typeName: string
+	direction: number
+	changeAmount: number
+	beforeAmount: number
+	afterAmount: number
+	refTransId: string
+	memo: string
+	financialType: number
+}
+
+export type IFinancialLogsResponse = IAxiosResponse<IFinancialLogData[]>

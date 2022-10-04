@@ -2,7 +2,6 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
-import { AffixButtons } from 'components/AffixButtons'
 import MemberProfileSider from 'features/memberProfile/sider/MemberProfileSider'
 import MemberProfileHeader from 'features/memberProfile/MemberProfileHeader'
 
@@ -50,10 +49,6 @@ const MemberProfile = () => {
 					</StyleContent>
 				</Layout>
 			</Content>
-
-			<AffixButtons>
-				<AffixButtons.BackToTop />
-			</AffixButtons>
 		</Layout>
 	)
 }

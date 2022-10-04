@@ -25,6 +25,8 @@ import {
 	IWalletBalanceInfoData,
 	IWinLossInfoData,
 	IWinLossSummaryData,
+	IGetFinancialLogArgs,
+	IFinancialLogsResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -199,9 +201,9 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
-		getFinancialLog: builder.query<
-			IAxiosResponse<IWinLossSummaryData[]>,
-			ICustIdInterface
+		getFinancialLogs: builder.query<
+			IFinancialLogsResponse,
+			IGetFinancialLogArgs
 		>({
 			query: data => ({
 				url: 'CustomerManage/GetFinancialLogByCustId',
@@ -250,7 +252,7 @@ export const {
 	useGetWalletBalanceInfoQuery,
 	useGetWinLossInfoQuery,
 	useGetWinLoseSummariesQuery,
-	useGetFinancialLogQuery,
+	useLazyGetFinancialLogsQuery,
 	useGetIpCountListQuery,
 	useGetDeviceListQuery,
 } = memberProfileApi
