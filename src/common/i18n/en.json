@@ -667,5 +667,7 @@
 	"Label_TotalDepositedAmount": "Total Deposited Amount",
 	"Label_TotalBetAmount": "Total Bet Amount",
 	"Label_RewardDate": "Reward Date",
-	"Label_AddNoteMsg": "Add a note..."
+	"Label_AddNoteMsg": "Add a note...",
+	"Label_ChangeAmount": "Change Amount",
+	"Label_AfterAmount": "After Amount"
 }

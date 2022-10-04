@@ -7,6 +7,7 @@ import {
 	Col,
 	Descriptions,
 	Divider,
+	Form,
 	Row,
 	Select,
 	Space,
@@ -21,6 +22,7 @@ import {
 	useGetBonusWalletInfoQuery,
 	useGetCustTpWalletQuery,
 	useGetDeviceListQuery,
+	useLazyGetFinancialLogsQuery,
 	useGetIpCountListQuery,
 	useGetTodayInfoQuery,
 	useGetWalletBalanceInfoQuery,
@@ -30,6 +32,16 @@ import {
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { IFinancialLogsResponse } from 'features/memberProfile/type'
+import { PAGINATION, usePagination } from 'common/hooks'
+import {
+	FinancialTypeEnum,
+	financialTypeOptions,
+} from 'features/memberProfile/constants'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { find } from 'lodash'
+import { useEffect } from 'react'
+import { AffixButtons } from 'components/AffixButtons'
 
 const { Option } = Select
 
@@ -37,41 +49,12 @@ const paginationConfig: TablePaginationConfig = {
 	hideOnSinglePage: true,
 }
 
-// NOTE: fake data, remove later
-const dataSource = [
-	{
-		key: '1',
-		name: 'Mike',
-		age: 32,
-		address: '10 Downing Street',
-	},
-	{
-		key: '2',
-		name: 'John',
-		age: 42,
-		address: '10 Downing Street',
-	},
-]
-
-// NOTE: fake data, remove later
-const columns = [
-	{
-		title: 'name',
-		dataIndex: 'loginname',
-		key: 'loginname',
-	},
-	{
-		title: 'address',
-		dataIndex: 'address',
-		key: 'address',
-	},
-]
-
 const Dashboard = () => {
 	const { t } = useTranslation()
 	const { custId: originCustId } = useParams()
 	const custId = Number(originCustId)
 	const { timeZoneUtcOffset } = useTimeZone()
+	const [financialLogsForm] = Form.useForm<{ financialType: number }>()
 
 	const {
 		data: { data: todayInfoData } = {},
@@ -118,6 +101,45 @@ const Dashboard = () => {
 		data: { data: deviceList } = {},
 		isFetching: isGetDeviceListFetching,
 	} = useGetDeviceListQuery({ custId })
+
+	const [
+		getFinancialLogs,
+		{
+			data: {
+				data: financialLogs = [],
+				rowCount: financialLogsTotal = 0,
+			} = {} as IFinancialLogsResponse,
+			isFetching: isGetFinancialLogsFetching,
+		},
+	] = useLazyGetFinancialLogsQuery()
+
+	const [financialLogsPagination, setFinancialLogsPagination] = usePagination({
+		paginationTotal: financialLogsTotal,
+	})
+
+	const handleFinancialLogsSearch = ({
+		current = PAGINATION.defaultCurrent,
+		pageSize = PAGINATION.defaultPageSize,
+	}) => {
+		const { financialType } = financialLogsForm.getFieldsValue()
+
+		// * 只抓 3 天的資料顯示
+		const [startDate, endDate] = dateRangeToUtcFormatter(
+			[moment().subtract(2, 'days').startOf('day'), moment().endOf('day')],
+			0
+		)
+
+		getFinancialLogs({
+			pageNumber: current,
+			pageSize,
+			custId,
+			financialType,
+			startDate,
+			endDate,
+		}).unwrap()
+
+		setFinancialLogsPagination(prev => ({ ...prev, current, pageSize }))
+	}
 
 	const ipCountColumns = [
 		{
@@ -175,6 +197,35 @@ const Dashboard = () => {
 		},
 	]
 
+	const financialColumns = [
+		{
+			title: t('Label_Time'),
+			dataIndex: 'createTime',
+			key: 'createTime',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Type'),
+			dataIndex: 'financialType',
+			key: 'financialType',
+			align: 'center' as 'center',
+			render: (financialType: number) =>
+				find(financialTypeOptions, { value: financialType })?.value ?? 'N/A',
+		},
+		{
+			title: t('Label_ChangeAmount'),
+			dataIndex: 'changeAmount',
+			key: 'changeAmount',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_AfterAmount'),
+			dataIndex: 'afterAmount',
+			key: 'afterAmount',
+			align: 'center' as 'center',
+		},
+	]
+
 	const {
 		todayWinLoss = 0,
 		todayDeposit = 0,
@@ -190,6 +241,10 @@ const Dashboard = () => {
 
 	const isBonusWalletLoading =
 		isGetBonusWalletInfoFetching || isGetBonusWalletDetailFetching
+
+	useEffect(() => {
+		handleFinancialLogsSearch({})
+	}, [])
 
 	return (
 		<>
@@ -223,10 +278,10 @@ const Dashboard = () => {
 					{/* TODO:目前還沒有此 Api 的公式，等後端提供 */}
 					<Col xxl={12} xl={24} lg={24} md={24} xs={24}>
 						<Descriptions layout='vertical' bordered column={4} size='default'>
-							<Descriptions.Item label='NGR'>34,023</Descriptions.Item>
-							<Descriptions.Item label='VOD'>6x</Descriptions.Item>
-							<Descriptions.Item label='Member '>1.5%</Descriptions.Item>
-							<Descriptions.Item label='Company Margin'>1.5%</Descriptions.Item>
+							<Descriptions.Item label='NGR'>N/A</Descriptions.Item>
+							<Descriptions.Item label='VOD'>N/A</Descriptions.Item>
+							<Descriptions.Item label='Member'>N/A</Descriptions.Item>
+							<Descriptions.Item label='Company Margin'>N/A</Descriptions.Item>
 						</Descriptions>
 						<br />
 					</Col>
@@ -262,8 +317,7 @@ const Dashboard = () => {
 									{numberFormatter.format(walletBalanceInfo?.withdrawlSum ?? 0)}
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_PaymentFee')}>
-									{/* TODO: 等後端提供此參數 */}
-									{numberFormatter.format(0)}
+									{numberFormatter.format(walletBalanceInfo?.paymentFee ?? 0)}
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_TotalAdjustment')}>
 									{numberFormatter.format(
@@ -379,7 +433,11 @@ const Dashboard = () => {
 			<LayoutContent.Card>
 				<Row align='top' gutter={16}>
 					<Col lg={12} md={12} xs={12}>
-						<Row align='middle' justify='space-between'>
+						<Row
+							align='middle'
+							justify='space-between'
+							style={{ height: '36px' }}
+						>
 							<Col>
 								<Typography.Title style={{ margin: 0 }} level={5}>
 									{`${t('Label_WinLossSummary')}:`}
@@ -419,9 +477,12 @@ const Dashboard = () => {
 						<br />
 					</Col>
 
-					{/* TODO: Financial Feature  */}
 					<Col lg={12} md={12} xs={12}>
-						<Row align='middle' justify='space-between'>
+						<Row
+							align='middle'
+							justify='space-between'
+							style={{ height: '36px' }}
+						>
 							<Col>
 								<Typography.Title style={{ margin: 0 }} level={5}>{`${t(
 									'Label_Financial'
@@ -429,32 +490,49 @@ const Dashboard = () => {
 							</Col>
 
 							<Col>
-								<Space>
-									<Select defaultValue='lucy' style={{ width: 120 }}>
-										<Option value='jack'>Jack</Option>
-										<Option value='lucy'>Lucy</Option>
-										<Option value='disabled' disabled>
-											Disabled
-										</Option>
-										<Option value='Yiminghe'>yiminghe</Option>
-									</Select>
-									<Button style={{ width: '100%' }} type='primary'>
-										Search
-									</Button>
-									<Link
-										to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/financialLog/${custId}`}
-									>
-										{t('Label_More')}
-									</Link>
-								</Space>
+								<Form
+									form={financialLogsForm}
+									initialValues={{ financialType: FinancialTypeEnum.Deposit }}
+								>
+									<Space>
+										<Form.Item name='financialType' noStyle>
+											<Select style={{ width: 180 }}>
+												{financialTypeOptions.map(option => (
+													<Option value={option.value}>{option.name}</Option>
+												))}
+											</Select>
+										</Form.Item>
+
+										<Button
+											onClick={() => handleFinancialLogsSearch({})}
+											style={{ width: '100%' }}
+											type='primary'
+											htmlType='submit'
+										>
+											{t('Label_Search')}
+										</Button>
+										<Link
+											to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/financialLog/${custId}`}
+										>
+											{t('Label_More')}
+										</Link>
+									</Space>
+								</Form>
 							</Col>
 						</Row>
 						<br />
+
 						<Table
 							bordered
-							dataSource={dataSource}
-							columns={columns}
-							pagination={paginationConfig}
+							loading={isGetFinancialLogsFetching}
+							dataSource={financialLogs}
+							columns={financialColumns}
+							pagination={
+								{
+									...financialLogsPagination,
+									...paginationConfig,
+								} as TablePaginationConfig
+							}
 						/>
 					</Col>
 
@@ -481,6 +559,10 @@ const Dashboard = () => {
 			</LayoutContent.Card>
 
 			<br />
+
+			<AffixButtons>
+				<AffixButtons.BackToTop />
+			</AffixButtons>
 		</>
 	)
 }

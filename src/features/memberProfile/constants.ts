@@ -49,3 +49,124 @@ export enum NotesMethodEnum {
 	Update = 1,
 	Delete,
 }
+
+export enum FinancialTypeEnum {
+	Deposit = 1,
+	PaymentAdjustment = 2,
+	BonusReward = 5,
+	LockedAmount = 6,
+	CancelledBonus = 7,
+	CashReward = 8,
+	Commision = 9,
+	BonusTransferIn = 10,
+	Rebate = 11,
+	CashBack = 12,
+	ReferFriendsRewards = 13,
+	VIPUpgradeReward = 14,
+	AffTransferToPlayer = 15,
+	RunningBonus = 16,
+	VerificationReward = 20,
+	Withdrawl = 1001,
+	TpTransfer = 2001,
+	TpWager = 11001,
+	TpRefunds = 12001,
+	TpPayout = 13001,
+	TpPrize = 14001,
+	TpUndo = 15001,
+	TpTip = 16001,
+}
+
+export const financialTypeOptions: { value: number; name: string }[] = [
+	{
+		value: FinancialTypeEnum.Deposit,
+		name: 'Deposit',
+	},
+	{
+		value: FinancialTypeEnum.PaymentAdjustment,
+		name: 'PaymentAdjustment',
+	},
+	{
+		value: FinancialTypeEnum.BonusReward,
+		name: 'BonusReward',
+	},
+	{
+		value: FinancialTypeEnum.LockedAmount,
+		name: 'LockedAmount',
+	},
+	{
+		value: FinancialTypeEnum.CancelledBonus,
+		name: 'CancelledBonus',
+	},
+	{
+		value: FinancialTypeEnum.CashReward,
+		name: 'CashReward',
+	},
+	{
+		value: FinancialTypeEnum.Commision,
+		name: 'Commision',
+	},
+	{
+		value: FinancialTypeEnum.BonusTransferIn,
+		name: 'BonusTransferIn',
+	},
+	{
+		value: FinancialTypeEnum.Rebate,
+		name: 'Rebate',
+	},
+	{
+		value: FinancialTypeEnum.CashBack,
+		name: 'CashBack',
+	},
+	{
+		value: FinancialTypeEnum.ReferFriendsRewards,
+		name: 'ReferFriendsRewards',
+	},
+	{
+		value: FinancialTypeEnum.VIPUpgradeReward,
+		name: 'VIPUpgradeReward',
+	},
+	{
+		value: FinancialTypeEnum.AffTransferToPlayer,
+		name: 'AffTransferToPlayer',
+	},
+	{
+		value: FinancialTypeEnum.RunningBonus,
+		name: 'RunningBonus',
+	},
+	{
+		value: FinancialTypeEnum.VerificationReward,
+		name: 'VerificationReward',
+	},
+	{
+		value: FinancialTypeEnum.Withdrawl,
+		name: 'Withdrawl',
+	},
+	{
+		value: FinancialTypeEnum.TpTransfer,
+		name: 'TpTransfer',
+	},
+	{
+		value: FinancialTypeEnum.TpWager,
+		name: 'TpWager',
+	},
+	{
+		value: FinancialTypeEnum.TpRefunds,
+		name: 'TpRefunds',
+	},
+	{
+		value: FinancialTypeEnum.TpPayout,
+		name: 'TpPayout',
+	},
+	{
+		value: FinancialTypeEnum.TpPrize,
+		name: 'TpPrize',
+	},
+	{
+		value: FinancialTypeEnum.TpUndo,
+		name: 'TpUndo',
+	},
+	{
+		value: FinancialTypeEnum.TpTip,
+		name: 'TpTip',
+	},
+]
