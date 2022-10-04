@@ -371,6 +371,10 @@ const paths = {
 				root: 'bankTransfer/transferAccountManagement',
 				functionId: 86,
 			},
+			transferInfoManagement: {
+				root: 'bankTransfer/transferInfoManagement',
+				functionId: 85,
+			},
 			reasonManagement: {
 				root: 'bankTransfer/reasonManagement',
 				functionId: 87,

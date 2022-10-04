@@ -1,5 +1,9 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
+export interface ICustIdInterface {
+	custId: number
+}
+
 // Sider 用戶資訊
 export interface IGetBasicInfoArgs {
 	custId: number
@@ -138,3 +142,117 @@ export interface ISetCustNoteArgs {
 	noteId: number
 	note: string
 }
+export interface ITodayInfoData {
+	todayDeposit: number
+	todayWithdrawal: number
+	todayWinLoss: number
+	todayBetting: number
+}
+
+export interface ICustTpWalletList {
+	tpId: number
+	tpName: string
+	tpUserName: string
+	balance: number
+	walletType: number
+}
+
+export interface ICustTpWalletData {
+	totalTpWalletBalance: number
+	tpWalletList: ICustTpWalletList[]
+}
+
+export interface IBonusWalletInfoData {
+	bonus: number // * Bonus Wallet
+	remainingTurnover: number // * Bonus Rollover
+}
+
+export interface ICustRebateCategoryData {
+	categoryId: number
+	categoryName: string
+	rebateAmountSum: number
+}
+
+export interface ICustRewardTypeData {
+	typeId: number
+	typeName: string
+	rewardAmountSum: number
+}
+
+export interface IBonusWalletDetailData {
+	custBonusSum: {
+		cancelBonusAmount: number
+		rewardPoint: number
+		totalBonus: number
+	}
+	custRebateSum: {
+		custRebateCategory: ICustRebateCategoryData[]
+		custRebateTotalSum: number
+	}
+	custRewardSum: {
+		custRewardType: ICustRewardTypeData[]
+		custRewardTotalSum: number
+	}
+}
+
+export interface IWalletBalanceInfoData {
+	balance: number
+	remainingTurnOver: number
+	eligibleWithdrawal: number
+	depositSum: number
+	withdrawlSum: number
+	paymentFee: number
+	totalAdjustment: number
+}
+
+export interface IWinLossInfoData {
+	winnings: number
+	losses: number
+	validBet: number
+	outstandingAmount: number
+	winLoss: number
+}
+
+export interface IWinLossSummaryData {
+	winlostAmount: number
+	categoryId: number
+	name: string
+}
+
+export interface IGetIpCountData {
+	loginIp: string
+	userCount: number
+}
+
+export interface IGetDeviceData {
+	deviceId: string
+	risk: string
+	frequency: number
+	associateCount: number
+	lastUpdateTime: string
+}
+
+export interface IGetFinancialLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	financialType: number
+}
+
+export interface IFinancialLogData {
+	id: number
+	createTime: string
+	type: number
+	typeName: string
+	direction: number
+	changeAmount: number
+	beforeAmount: number
+	afterAmount: number
+	refTransId: string
+	memo: string
+	financialType: number
+}
+
+export type IFinancialLogsResponse = IAxiosResponse<IFinancialLogData[]>

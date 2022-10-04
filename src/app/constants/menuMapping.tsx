@@ -382,7 +382,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.hotEventManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/HotEventManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
 		newAdminPath: paths.cms.sub.hotEventManagement.root,
@@ -631,11 +631,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 85,
+		functionId: paths.bankTransfer.sub.transferInfoManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferManage,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/TransferManage',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.transferInfoManagement.root,
 	},
 	{
 		icon: null,

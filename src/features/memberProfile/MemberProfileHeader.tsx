@@ -29,7 +29,7 @@ interface IMemberProfileHeaderProps {
 }
 
 const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
-	const isMobileMedia = useMediaQuery('(max-width: 768px)')
+	const isDesktopMedia = useMediaQuery('(max-width: 992px)')
 	const { t } = useTranslation()
 	const { custId } = useParams()
 
@@ -363,7 +363,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 
 	const items: (ItemType | boolean)[] = [
 		// * 如果為手機版則渲染 User Icon 用於打開 drawer
-		isMobileMedia && {
+		isDesktopMedia && {
 			key: 99,
 			onClick: () => onOpenDrawer(),
 			label: <FaUser />,
