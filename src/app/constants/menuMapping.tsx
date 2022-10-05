@@ -423,7 +423,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.productManagement.sub.slotGameCategory.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/CategoryManagement',
 		internalFunctionKey: allowedRoles.CMSCategoryManagement,
 		newAdminPath: paths.productManagement.sub.slotGameCategory.root,
