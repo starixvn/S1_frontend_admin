@@ -18,8 +18,6 @@ interface IWithdrawalLimitationTabProps {
 	withdrawalTableData: IWithdrawalLimitationTableData[]
 }
 
-const { TabPane } = Tabs
-
 const WithdrawalLimitationTab: FC<IWithdrawalLimitationTabProps> = ({
 	loading,
 	currentCurrency,
@@ -37,6 +35,26 @@ const WithdrawalLimitationTab: FC<IWithdrawalLimitationTabProps> = ({
 		setEditingKey(undefined)
 		setCurrentCurrency(Number(currency))
 	}
+
+	const items = currencyListBySite?.map(currency => {
+		const { isoCode, currencyId } = currency
+		return {
+			label: isoCode,
+			key: String(currencyId),
+			children: (
+				<WithdrawalLimitationTable
+					loading={loading}
+					editingKey={editingKey}
+					editPermission={editPermission}
+					setEditingKey={setEditingKey}
+					onTableRowSave={onTableRowSave}
+					withdrawalTableData={withdrawalTableData}
+					form={form}
+				/>
+			),
+		}
+	})
+
 	return (
 		<Tabs
 			type='card'
@@ -44,24 +62,8 @@ const WithdrawalLimitationTab: FC<IWithdrawalLimitationTabProps> = ({
 			destroyInactiveTabPane
 			tabBarStyle={{ margin: 0 }}
 			onChange={(value: string) => handleTabsChange(value)}
-		>
-			{currencyListBySite?.map(currency => {
-				const { isoCode, currencyId } = currency
-				return (
-					<TabPane tab={isoCode} key={currencyId}>
-						<WithdrawalLimitationTable
-							loading={loading}
-							editingKey={editingKey}
-							editPermission={editPermission}
-							setEditingKey={setEditingKey}
-							onTableRowSave={onTableRowSave}
-							withdrawalTableData={withdrawalTableData}
-							form={form}
-						/>
-					</TabPane>
-				)
-			})}
-		</Tabs>
+			items={items}
+		/>
 	)
 }
 

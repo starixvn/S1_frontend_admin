@@ -142,7 +142,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			render: (record: IRegistrationManagementData) => (
 				<Select
 					style={{ width: '140px' }}
-					defaultValue={record.status}
+					value={record.status}
 					onChange={status => onStatusChange({ custId: record.custId, status })}
 				>
 					{STATUS_OPTIONS.filter(option => option.value !== StatusEnum.All).map(

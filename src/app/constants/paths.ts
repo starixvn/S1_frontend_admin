@@ -15,6 +15,10 @@ const paths = {
 	customerSupport: {
 		root: 'customerSupport',
 		sub: {
+			memberAdministration: {
+				root: 'customerSupport/memberAdministration',
+				functionId: 22,
+			},
 			operatorService: {
 				root: 'customerSupport/operatorService',
 				sub: {
@@ -367,6 +371,14 @@ const paths = {
 			transferAccountManagement: {
 				root: 'bankTransfer/transferAccountManagement',
 				functionId: 86,
+			},
+			transferInfoManagement: {
+				root: 'bankTransfer/transferInfoManagement',
+				functionId: 85,
+			},
+			reasonManagement: {
+				root: 'bankTransfer/reasonManagement',
+				functionId: 87,
 			},
 		},
 	},

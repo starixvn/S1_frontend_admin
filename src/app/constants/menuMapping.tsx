@@ -86,11 +86,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 22,
+		functionId: paths.customerSupport.sub.memberAdministration.functionId,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/CustInfoList',
 		internalFunctionKey: allowedRoles.CustManageCustInfoList,
-		newAdminPath: '',
+		newAdminPath: paths.customerSupport.sub.memberAdministration.root,
 	},
 	{
 		icon: null,
@@ -631,11 +631,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 85,
+		functionId: paths.bankTransfer.sub.transferInfoManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferManage,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/TransferManage',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.transferInfoManagement.root,
 	},
 	{
 		icon: null,
@@ -647,11 +647,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 87,
+		functionId: paths.bankTransfer.sub.reasonManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReasonManagement,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/ReasonManagement',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.reasonManagement.root,
 	},
 	{
 		icon: null,
