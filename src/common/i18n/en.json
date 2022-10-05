@@ -611,5 +611,6 @@
 				"Label_VipRebateMenu": "Vip Rebate Menu"
 			}
 		}
-	}
+	},
+	"Label_BonusManagementDisplayTimeErrorMsg" : "The end time of the displayed date cannot exceed the end time of the activity date"
 }
