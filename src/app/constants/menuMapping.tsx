@@ -649,7 +649,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.reasonManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReasonManagement,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		internalPath: 'BankFinancial/ReasonManagement',
 		newAdminPath: paths.bankTransfer.sub.reasonManagement.root,
 	},
