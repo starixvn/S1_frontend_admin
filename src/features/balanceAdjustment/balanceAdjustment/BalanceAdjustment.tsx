@@ -178,13 +178,17 @@ const BalanceAdjustment: FC<{
 				}
 			}
 		} else if (methodType === MethodTypeEnum.mainWallet) {
-			if (!custInfoWithBalance?.custId || !adjustmentLimitInfo?.adjustmentMax)
+			if (!custInfoWithBalance?.custId && !adjustmentLimitInfo?.adjustmentMax)
 				return
 
 			const { amount = 0 } = await form.validateFields()
 
 			// * 如果調帳金額大於 adjustmentMax，需要做一次密碼確認
-			if ((amount as Number) > adjustmentLimitInfo?.adjustmentMax) {
+
+			if (
+				adjustmentLimitInfo?.adjustmentMax &&
+				(amount as Number) > adjustmentLimitInfo?.adjustmentMax
+			) {
 				checkPasswordModal.onOpen()
 			} else {
 				handleSetBalanceAdjustment()
