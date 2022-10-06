@@ -4,16 +4,22 @@ import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IAddCustNoteArgs,
 	IDeleteCustPhotoIdArgs,
+	IDeletePersonalMsgArgs,
 	IGetBasicInfoArgs,
 	IGetBasicInfoResponse,
 	IGetCustNotesArgs,
 	IGetCustNotesResponse,
 	IGetCustPhotoIdArgs,
 	IGetCustPhotoResponse,
+	IGetLoginLogArgs,
+	IGetLoginLogResponse,
 	IGetReferralHistoryArgs,
 	IGetReferralHistoryResponse,
+	IGetSMSInfoArgs,
+	IGetSmsInfoResponse,
 	IGetVipLevelLogArgs,
 	IGetVipLevelLogResponse,
+	ISendPersonalMsgArgs,
 	ISetCustNoteArgs,
 	IBonusWalletDetailData,
 	IBonusWalletInfoData,
@@ -27,12 +33,16 @@ import {
 	IWinLossSummaryData,
 	IGetFinancialLogArgs,
 	IFinancialLogsResponse,
+	IGetIpLogArgs,
+	IGetIpLogResponse,
+	IGetIpUserListArgs,
+	IGetIpUserListResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
 	reducerPath: 'memberProfileApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['EditPhoto', 'BasicInfoMutation', 'SetCustomerNote'],
+	tagTypes: ['EditPhoto', 'BasicInfoMutation', 'SetCustomerNote', 'SetSMSInfo'],
 	endpoints: builder => ({
 		// sider基本資料
 		getBasicInfo: builder.query<IGetBasicInfoResponse, IGetBasicInfoArgs>({
@@ -231,6 +241,55 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// CustomerInfo => LoginLog 頁面
+		getLoginLog: builder.query<IGetLoginLogResponse, IGetLoginLogArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetLoginLogByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// CustomerInfo => SMSInfo 頁面
+		getSmsInfo: builder.query<IGetSmsInfoResponse, IGetSMSInfoArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetPersonalMsg',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetSMSInfo'],
+		}),
+		sendPersonalMsg: builder.mutation<void, ISendPersonalMsgArgs>({
+			query: data => ({
+				url: 'CustomerManage/SendPersonalMsg',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetSMSInfo'],
+		}),
+		deletePersonalMsg: builder.mutation<void, IDeletePersonalMsgArgs>({
+			query: data => ({
+				url: 'CustomerManage/DeletePersonalMsg',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetSMSInfo'],
+		}),
+		// CustomerInfo => IP List 頁面
+		getIpLog: builder.query<IGetIpLogResponse, IGetIpLogArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetIPLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 取得關聯 IP 的帳號
+		getIpUser: builder.query<IGetIpUserListResponse, IGetIpUserListArgs>({
+			query: data => ({
+				url: 'Block/GetIPUserList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -245,6 +304,10 @@ export const {
 	useLazyGetCustNotesQuery,
 	useAddCustNotesMutation,
 	useSetCustNotesMutation,
+	useLazyGetLoginLogQuery,
+	useLazyGetSmsInfoQuery,
+	useSendPersonalMsgMutation,
+	useDeletePersonalMsgMutation,
 	useGetTodayInfoQuery,
 	useGetBonusWalletDetailQuery,
 	useGetBonusWalletInfoQuery,
@@ -255,4 +318,6 @@ export const {
 	useLazyGetFinancialLogsQuery,
 	useGetIpCountListQuery,
 	useGetDeviceListQuery,
+	useLazyGetIpLogQuery,
+	useLazyGetIpUserQuery,
 } = memberProfileApi

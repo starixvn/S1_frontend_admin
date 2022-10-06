@@ -256,3 +256,88 @@ export interface IFinancialLogData {
 }
 
 export type IFinancialLogsResponse = IAxiosResponse<IFinancialLogData[]>
+
+// LoginLog 頁面
+export interface IGetLoginLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+}
+
+export interface IGetLoginLogData {
+	id: number
+	loginTime: string
+	loginIp: string
+	fromUrl: string
+	userAgent: string
+}
+
+export type IGetLoginLogResponse = IAxiosResponse<IGetLoginLogData[]>
+
+// SMSInfo 頁面
+export type IGetSMSInfoArgs = IGetVipLevelLogArgs
+
+export interface IGetSMSInfoData {
+	isPopup: boolean
+	popupMessage: string
+	title: string
+	content: string
+	id: number
+	type: number
+	siteId: number
+	langId: string
+	recipient: string
+	sender: string
+	createTime: string
+	status: number
+	flag: boolean
+	contentRemoveTag: string
+	isBatch: boolean
+}
+
+export type IGetSmsInfoResponse = IAxiosResponse<IGetSMSInfoData[]>
+
+export interface ISendPersonalMsgArgs {
+	siteId?: number
+	custId: number
+	title: string
+	content: string
+}
+
+export interface IDeletePersonalMsgArgs {
+	id: number
+	isBatch: boolean
+}
+
+// IP List 頁面
+
+export interface IGetIpLogArgs {
+	custId: number
+	startDate: string
+	endDate: string
+}
+
+export interface IGetIpLogData {
+	loginIp: string
+	updateOperator: string
+	memo: string
+	isBlock: boolean
+	location: string
+	count: number
+	loginTime: string
+}
+
+export type IGetIpLogResponse = IAxiosResponse<IGetIpLogData[]>
+
+export interface IGetIpUserListArgs {
+	ip: string
+}
+
+export interface IGetIpUserListData {
+	custId: number
+	userName: string
+}
+
+export type IGetIpUserListResponse = IAxiosResponse<IGetIpUserListData[]>
