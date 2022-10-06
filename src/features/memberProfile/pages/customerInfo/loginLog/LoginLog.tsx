@@ -43,7 +43,7 @@ const LoginLog = () => {
 		if (!custId) return
 		const { dateRange } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 		try {
@@ -78,7 +78,7 @@ const LoginLog = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_LoginLog')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ padding: '24px' }}>
 				<LoginLogFilter
 					loading={isGetLoginLogLoading}
 					form={filterForm}

@@ -41,8 +41,8 @@ const LoginLogFilter = ({
 			form={form}
 			onFinish={() => onSearch({})}
 		>
-			<Row align='middle' gutter={16}>
-				<Col span={18}>
+			<Row align='middle' gutter={20}>
+				<Col span={8}>
 					<Form.Item label={t('Label_DateRange')}>
 						<Input.Group compact style={{ width: '100%', display: 'flex' }}>
 							<Form.Item
@@ -58,7 +58,6 @@ const LoginLogFilter = ({
 							>
 								<RangePicker
 									style={{ width: '100%' }}
-									showTime
 									ranges={MOMENT_RANGE_PICKER_RANGES([
 										'Today',
 										'Last 7 Day',
@@ -81,7 +80,7 @@ const LoginLogFilter = ({
 						</Input.Group>
 					</Form.Item>
 				</Col>
-				<Col span={6}>
+				<Col span={3}>
 					<Form.Item label={' '}>
 						<Button
 							loading={loading}
