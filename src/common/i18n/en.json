@@ -606,7 +606,8 @@
 				"Label_Notes": "Notes",
 				"Label_SMSInfo": "SMS Info",
 				"Label_LoginLog": "Login Log",
-				"Label_IPLog": "IP Log"
+				"Label_DeviceList" : "Device List",
+				"Label_IPList": "IP List"
 			},
 			"Finance": {
 				"Label_DepositInfo": "Deposit Info",
@@ -641,6 +642,17 @@
 		}
 	},
 	"Label_FullName": "Full Name",
+	"Label_LoginIp" : "Login IP",
+	"Label_Location" : "Location",
+	"Label_FromUrl" : "From Url",
+	"Label_View" : "View",
+	"Label_Read" : "Read",
+	"Label_Subject" : "Subject",
+	"Label_Content" : "Content",
+	"Label_Sender" : "Sender",
+	"Label_UnRead" : "UnRead",
+	"Label_SendPersonalMsg" : "Send Personal Message",
+	"Label_UserPreferLanguage" : "User Prefer Language",
 	"Label_DepositPointLevel": "Deposit Point Level",
 	"Label_Identity": "Identity",
 	"Label_Affiliate": "Affiliate",
@@ -669,5 +681,8 @@
 	"Label_RewardDate": "Reward Date",
 	"Label_AddNoteMsg": "Add a note...",
 	"Label_ChangeAmount": "Change Amount",
-	"Label_AfterAmount": "After Amount"
+	"Label_AfterAmount": "After Amount",
+	"Label_DeviceID" : "Device ID",
+	"Label_Frequency" : "Frequency",
+	"Label_AssociateAccount" : "Associate account"
 }

@@ -537,6 +537,34 @@ const MemberProfileNotes = lazy(
 		)
 )
 
+const MemberProfileLoginLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LoginLog' */ 'features/memberProfile/pages/customerInfo/loginLog/LoginLog'
+		)
+)
+
+const MemberProfileSmsInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SmsInfo' */ 'features/memberProfile/pages/customerInfo/smsInfo/SmsInfo'
+		)
+)
+
+const MemberProfileDeviceList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DeviceList' */ 'features/memberProfile/pages/customerInfo/deviceList/DeviceList'
+		)
+)
+
+const MemberProfileIpList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'IpList' */ 'features/memberProfile/pages/customerInfo/IpList/IpList'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1336,8 +1364,7 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/SMSInfo/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>SMS Info</div>
+								<MemberProfileSmsInfo />
 							</AuthRequire>
 						),
 					},
@@ -1345,8 +1372,15 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/loginLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Login Log</div>
+								<MemberProfileLoginLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/deviceList/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileDeviceList />
 							</AuthRequire>
 						),
 					},
@@ -1354,8 +1388,7 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/ipLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>IP Log</div>
+								<MemberProfileIpList />
 							</AuthRequire>
 						),
 					},

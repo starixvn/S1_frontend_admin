@@ -99,12 +99,22 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/ipLog/${custId}`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/deviceList/${custId}`}
 						>
-							{t('MemberProfile.Menu.CustomerInfo.Label_IPLog')}
+							{t('MemberProfile.Menu.CustomerInfo.Label_DeviceList')}
 						</Link>
 					),
 					key: '7',
+				},
+				{
+					label: (
+						<Link
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/ipLog/${custId}`}
+						>
+							{t('MemberProfile.Menu.CustomerInfo.Label_IPList')}
+						</Link>
+					),
+					key: '8',
 				},
 			]}
 		/>
