@@ -43,8 +43,6 @@ const TransferAccountManagementForm: FC<
 	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formChannel = Form.useWatch('channel', form)
 
-	const isNeedRequired = formChannel === ChannelEnum.LocalBank
-
 	const {
 		data: { data: transferAccountStatusEnum = [] } = {},
 		isFetching: isGetTransferAccountStatusEnumFetching,
@@ -280,7 +278,7 @@ const TransferAccountManagementForm: FC<
 							label={t('Label_AccountNo')}
 							rules={[
 								{
-									required: isNeedRequired,
+									required: true,
 									message: t('Label_Required', {
 										key: t('Label_AccountNo'),
 									}),
@@ -296,7 +294,7 @@ const TransferAccountManagementForm: FC<
 							label={t('Label_AccountName')}
 							rules={[
 								{
-									required: isNeedRequired,
+									required: true,
 									message: t('Label_Required', {
 										key: t('Label_AccountName'),
 									}),
