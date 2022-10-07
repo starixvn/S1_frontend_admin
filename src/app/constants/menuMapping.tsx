@@ -182,7 +182,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitAdjust',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitAdjust,
 		newAdminPath:
