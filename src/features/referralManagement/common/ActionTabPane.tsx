@@ -1,16 +1,13 @@
-import { FC } from 'react'
-import { FormInstance, Tabs, TabPaneProps, Form, Col, Row, Input } from 'antd'
+import { FormInstance, Form, Col, Row, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { TinymceEditor } from 'components'
 
-const { TabPane } = Tabs
-
-interface ActionTabPaneProps extends TabPaneProps {
+interface ActionTabPaneProps {
 	lang: string
-	form: FormInstance<any>
+	form: FormInstance
 }
 
-const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
+const ActionTabPane = ({ lang, form }: ActionTabPaneProps) => {
 	const { t } = useTranslation()
 
 	const detail = Form.useWatch(['specific', lang, 'detail'], form)
@@ -26,47 +23,45 @@ const ActionTabPane: FC<ActionTabPaneProps> = ({ lang, form, ...props }) => {
 	}
 
 	return (
-		<TabPane {...props}>
-			<Form form={form} layout='vertical'>
-				<Row align='middle' gutter={16}>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name={['specific', lang, 'bannerUrl']}
-							label={t('Label_BannerUrl')}
-						>
-							<Input allowClear />
-						</Form.Item>
-					</Col>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name={['specific', lang, 'title']}
-							label={t('Label_Title')}
-						>
-							<Input allowClear />
-						</Form.Item>
-					</Col>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name={['specific', lang, 'description']}
-							label={t('Label_Description')}
-						>
-							<Input allowClear />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row>
+		<Form form={form} layout='vertical'>
+			<Row align='middle' gutter={16}>
+				<Col lg={6} md={12} xs={12}>
 					<Form.Item
-						name={['specific', lang, 'detail']}
-						label={t('Label_Detail')}
+						name={['specific', lang, 'bannerUrl']}
+						label={t('Label_BannerUrl')}
 					>
-						<TinymceEditor
-							defaultHtmlState={detail}
-							onHtmlStateChange={onHtmlStateChange}
-						/>
+						<Input allowClear />
 					</Form.Item>
-				</Row>
-			</Form>
-		</TabPane>
+				</Col>
+				<Col lg={6} md={12} xs={12}>
+					<Form.Item
+						name={['specific', lang, 'title']}
+						label={t('Label_Title')}
+					>
+						<Input allowClear />
+					</Form.Item>
+				</Col>
+				<Col lg={6} md={12} xs={12}>
+					<Form.Item
+						name={['specific', lang, 'description']}
+						label={t('Label_Description')}
+					>
+						<Input allowClear />
+					</Form.Item>
+				</Col>
+			</Row>
+			<Row>
+				<Form.Item
+					name={['specific', lang, 'detail']}
+					label={t('Label_Detail')}
+				>
+					<TinymceEditor
+						defaultHtmlState={detail}
+						onHtmlStateChange={onHtmlStateChange}
+					/>
+				</Form.Item>
+			</Row>
+		</Form>
 	)
 }
 
