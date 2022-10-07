@@ -50,7 +50,7 @@ const EditReferralManagement = () => {
 			deposit,
 			periodDays,
 			specific,
-		} = form.getFieldsValue()
+		} = form.getFieldsValue(true)
 
 		try {
 			const specificList = coverSpecificToSpecificList(specific)
