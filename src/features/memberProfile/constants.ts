@@ -170,3 +170,22 @@ export const financialTypeOptions: { value: number; name: string }[] = [
 		name: 'TpTip',
 	},
 ]
+
+// BonusLog Page 欄位 Change Bonus 需顯示 正或負
+export enum ChangeBonusDirectionEnum {
+	Add = 1,
+	Minus,
+}
+
+// DeviceList Allow 欄位
+export enum DeviceListAllowEnum {
+	Allow = 'A',
+	Deny = 'D',
+	Review = 'R',
+}
+
+export const deviceStatusList: Array<{ value: string; displayName: string }> = [
+	{ value: DeviceListAllowEnum.Allow, displayName: 'Label_Allow' },
+	{ value: DeviceListAllowEnum.Deny, displayName: 'Label_Deny' },
+	{ value: DeviceListAllowEnum.Review, displayName: 'Label_Review' },
+]

@@ -37,6 +37,15 @@ import {
 	IGetIpLogResponse,
 	IGetIpUserListArgs,
 	IGetIpUserListResponse,
+	IGetBonusLogArgs,
+	IGetBonusLogResponse,
+	IGetVipRebateLogArgs,
+	IGetVipRebateLogData,
+	IGetRewardPointLogArgs,
+	IGetRewardPointLogResponse,
+	IGetPromotionReportArgs,
+	IGetPromotionReportResponse,
+	IGetDeviceUserListArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -244,7 +253,7 @@ export const memberProfileApi = createApi({
 		// CustomerInfo => LoginLog 頁面
 		getLoginLog: builder.query<IGetLoginLogResponse, IGetLoginLogArgs>({
 			query: data => ({
-				url: 'CustomerManage/GetLoginLogByCustId',
+				url: 'Member/GetLoginLog',
 				method: 'POST',
 				data,
 			}),
@@ -290,6 +299,57 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// 取得 bonusLog
+		getBonusLog: builder.query<IGetBonusLogResponse, IGetBonusLogArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetBonusLogByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// Marketing => VipRebateLog 頁面
+		getVipRebateLog: builder.query<
+			IAxiosResponse<IGetVipRebateLogData[]>,
+			IGetVipRebateLogArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetVipRebateInfoByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// Marketing => RewardPointLog
+		getRewardPointLog: builder.query<
+			IGetRewardPointLogResponse,
+			IGetRewardPointLogArgs
+		>({
+			query: data => ({
+				url: 'StorePoint/GetMemberRewardPointLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// Marketing => PromotionReport
+		getPromotionReport: builder.query<
+			IGetPromotionReportResponse,
+			IGetPromotionReportArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetPromotionByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getDeviceUserList: builder.query<
+			IGetIpUserListResponse,
+			IGetDeviceUserListArgs
+		>({
+			query: data => ({
+				url: 'Block/GetDeviceUserList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -320,4 +380,9 @@ export const {
 	useGetDeviceListQuery,
 	useLazyGetIpLogQuery,
 	useLazyGetIpUserQuery,
+	useLazyGetBonusLogQuery,
+	useLazyGetVipRebateLogQuery,
+	useLazyGetRewardPointLogQuery,
+	useLazyGetPromotionReportQuery,
+	useLazyGetDeviceUserListQuery,
 } = memberProfileApi

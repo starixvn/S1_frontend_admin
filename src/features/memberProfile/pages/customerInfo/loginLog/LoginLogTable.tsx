@@ -53,23 +53,9 @@ const LoginLogTable = ({
 			align: 'center' as 'center',
 		},
 		{
-			title: t('Label_DeviceID'),
-			key: 'deviceId',
-			dataIndex: 'deviceId',
-			width: 120,
-			align: 'center' as 'center',
-		},
-		{
 			title: t('Label_FromUrl'),
 			key: 'fromUrl',
 			dataIndex: 'fromUrl',
-			width: 120,
-			align: 'center' as 'center',
-		},
-		{
-			title: t('Label_Frequency'),
-			key: 'frequency',
-			dataIndex: 'frequency',
 			width: 120,
 			align: 'center' as 'center',
 		},

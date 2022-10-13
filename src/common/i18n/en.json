@@ -633,7 +633,6 @@
 				"Label_BonusWallet": "Bonus Wallet",
 				"Label_BonusLog": "Bonus Log",
 				"Label_VipRebateLog": "Vip Rebate Log",
-				"Label_Label_PromotionReport": "Promotion Report",
 				"Label_RewardsPointLog": "Rewards Point Log",
 				"Label_CashBackReport": "Cash Back Report",
 				"Label_VipRebateMenu": "Vip Rebate Menu",
@@ -684,5 +683,16 @@
 	"Label_AfterAmount": "After Amount",
 	"Label_DeviceID" : "Device ID",
 	"Label_Frequency" : "Frequency",
-	"Label_AssociateAccount" : "Associate account"
+	"Label_AssociateAccount" : "Associate account",
+	"Label_PromotionCategory" : "Promotion Category",
+	"Label_RefTransId" : "Ref TransID",
+	"Label_BonusId" : "Bonus ID",
+	"Label_ChangeBonus" : "Change Bonus",
+	"Label_RedeemAmount" : "Redeem Amount",
+	"Label_ChangePoint": "Change Point",
+	"Label_ClaimDate" : "Claim Date",
+	"Label_Allow" : "Allow",
+	"Label_Score" : "Score",
+	"Label_Deny" : "Deny",
+	"Label_Review" : "Review"
 }

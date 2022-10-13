@@ -28,7 +28,7 @@ const IpListFilter = ({
 	return (
 		<Form layout='vertical' size='middle' form={form} onFinish={onSearch}>
 			<Row align='middle' gutter={20}>
-				<Col span={8}>
+				<Col span={10}>
 					<Form.Item label={t('Label_DateRange')}>
 						<Input.Group compact style={{ width: '100%', display: 'flex' }}>
 							<Form.Item

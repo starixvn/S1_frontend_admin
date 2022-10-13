@@ -9,6 +9,7 @@ import { useLazyGetLoginLogQuery } from 'features/memberProfile/api'
 import { IGetLoginLogResponse } from 'features/memberProfile/type'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { LoginLogTable } from 'features/memberProfile/pages/customerInfo/loginLog/LoginLogTable'
+import { useEffect } from 'react'
 
 const LoginLog = () => {
 	const { t } = useTranslation()
@@ -23,7 +24,7 @@ const LoginLog = () => {
 				data: loginLog = [],
 				rowCount: loginLogTotal = 0,
 			} = {} as IGetLoginLogResponse,
-			isLoading: isGetLoginLogLoading,
+			isFetching: isGetLoginLogLoading,
 		},
 	] = useLazyGetLoginLogQuery()
 
@@ -72,6 +73,12 @@ const LoginLog = () => {
 			pageSize,
 		})
 	}
+
+	useEffect(() => {
+		if (custId) {
+			handleSearch({})
+		}
+	}, [])
 
 	return (
 		<>

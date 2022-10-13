@@ -357,16 +357,6 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 					),
 					key: '6',
 				},
-				{
-					label: (
-						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/vipRebateMenu/${custId}`}
-						>
-							{t('MemberProfile.Menu.Marketing.Label_VipRebateMenu')}
-						</Link>
-					),
-					key: '7',
-				},
 			]}
 		/>
 	)

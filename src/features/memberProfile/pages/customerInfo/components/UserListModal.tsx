@@ -7,16 +7,16 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 
 interface IpListUserModalProps {
 	loading: boolean
-	ipUserList: IGetIpUserListData[]
+	userList: IGetIpUserListData[]
 	visible: boolean
 	onCancel: () => void
 }
 
 // 因在 customerInfo 內有重複使用到 , 故獨立放在 components
 
-const IpUserListModal = ({
+const UserListModal = ({
 	loading,
-	ipUserList,
+	userList,
 	visible,
 	onCancel,
 }: IpListUserModalProps) => {
@@ -27,7 +27,7 @@ const IpUserListModal = ({
 
 	useEffect(() => {
 		if (!loading) {
-			setModalListState(ipUserList)
+			setModalListState(userList)
 		}
 	}, [loading])
 
@@ -70,4 +70,4 @@ const IpUserListModal = ({
 	)
 }
 
-export { IpUserListModal }
+export { UserListModal }

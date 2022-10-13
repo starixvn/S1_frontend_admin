@@ -163,6 +163,8 @@ export interface ICustTpWalletData {
 }
 
 export interface IBonusWalletInfoData {
+	promotionCategory: string
+	bonusCode: string
 	bonus: number // * Bonus Wallet
 	remainingTurnover: number // * Bonus Rollover
 }
@@ -230,6 +232,8 @@ export interface IGetDeviceData {
 	frequency: number
 	associateCount: number
 	lastUpdateTime: string
+	score: number
+	deviceType: string
 }
 
 export interface IGetFinancialLogArgs {
@@ -272,6 +276,7 @@ export interface IGetLoginLogData {
 	loginIp: string
 	fromUrl: string
 	userAgent: string
+	location: string
 }
 
 export type IGetLoginLogResponse = IAxiosResponse<IGetLoginLogData[]>
@@ -341,3 +346,125 @@ export interface IGetIpUserListData {
 }
 
 export type IGetIpUserListResponse = IAxiosResponse<IGetIpUserListData[]>
+
+// Marketing => Bonus Log
+export interface IGetBonusLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	promoCategoryId: number
+	refTransId: string
+}
+
+export interface IGetBonusLogData {
+	id: number
+	bonusId: number
+	createTime: string
+	typeName: string
+	direction: number
+	changeBonus: number
+	beforeBonus: number
+	afterBonus: number
+	refTransId: string
+	memo: string
+}
+
+export type IGetBonusLogResponse = IAxiosResponse<IGetBonusLogData[]>
+
+// Marketing => VipRebateLog 頁面
+
+export type IGetVipRebateLogArgs = IGetLoginLogArgs
+
+export interface IGetVipRebateLogData {
+	siteId: number
+	siteName: string
+	custId: number
+	userName: string
+	currencyId: number
+	currency: string
+	categoryId: number
+	categoryName: string
+	rcRedeemAmount: number
+	createTime: string
+	refId: string
+	settledDate: number
+}
+
+// Marketing => RewardPointLog 頁面
+
+export interface IGetRewardPointLogArgs {
+	custId: number
+	startTime: string
+	endTime: string
+	pageNumber: number
+	pageSize: number
+}
+
+export interface IGetRewardPointLogData {
+	pointType: number
+	typeName: string
+	refTransId: string
+	changePoint: number
+	beforePoint: number
+	afterPoint: number
+	memo: string
+	operator: string
+	createTime: string
+}
+
+export type IGetRewardPointLogResponse = IAxiosResponse<
+	IGetRewardPointLogData[]
+>
+
+// Marketing => PromotionReport
+export interface IGetPromotionReportArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+}
+
+export interface IGetPromotionReportData {
+	bonusId: number
+	bonusCode: string
+	description: string
+	promotionType: number
+	categoryId: number
+	categoryName: string
+	expiryDays: number
+	periodTo: number
+	currencyId: number
+	rollOver: number
+	fullFillType: number
+	bonus: number
+	bonusType: number
+	maxBonus: number
+	lockedAmount: number
+	bonusAmount: number
+	expiryTime: string
+	bonusInfoStatus: number
+	sort: number
+	custRollOver: {
+		rollOver: number
+		winOver: number
+		turnOver: number
+	}
+	claimDate: string
+	updateTime: string
+	atPage: number
+	cancelBonusAmount: number
+	expiredCancel: boolean
+}
+
+export type IGetPromotionReportResponse = IAxiosResponse<
+	IGetPromotionReportData[]
+>
+
+// 取得 DeviceList 關聯帳號
+export interface IGetDeviceUserListArgs {
+	custId: number
+	deviceId: string
+}

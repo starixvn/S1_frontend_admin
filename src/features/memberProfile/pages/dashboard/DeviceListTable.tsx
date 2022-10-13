@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Table, Typography } from 'antd'
 import { timeFormat } from 'common/utils/format'
 import { IGetDeviceData } from 'features/memberProfile/type'
 import moment from 'moment'
@@ -26,9 +26,16 @@ const DeviceListTable = ({
 		},
 		{
 			title: 'Risk',
-			dataIndex: 'risk',
 			key: 'risk',
 			align: 'center' as 'center',
+			render: (record: IGetDeviceData) => {
+				const { score, risk } = record
+				return (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{`${risk}(${score})`}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: 'Frequency',
