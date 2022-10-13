@@ -46,12 +46,19 @@ import {
 	IGetPromotionReportArgs,
 	IGetPromotionReportResponse,
 	IGetDeviceUserListArgs,
+	ICancelBonusArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
 	reducerPath: 'memberProfileApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['EditPhoto', 'BasicInfoMutation', 'SetCustomerNote', 'SetSMSInfo'],
+	tagTypes: [
+		'EditPhoto',
+		'BasicInfoMutation',
+		'SetCustomerNote',
+		'SetSMSInfo',
+		'SetPromotionReport',
+	],
 	endpoints: builder => ({
 		// sider基本資料
 		getBasicInfo: builder.query<IGetBasicInfoResponse, IGetBasicInfoArgs>({
@@ -335,10 +342,19 @@ export const memberProfileApi = createApi({
 			IGetPromotionReportArgs
 		>({
 			query: data => ({
-				url: 'CustomerManage/GetPromotionByCustId',
+				url: 'Member/GetPromotionByCustId',
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['SetPromotionReport'],
+		}),
+		cancelPromotion: builder.mutation<void, ICancelBonusArgs>({
+			query: data => ({
+				url: 'Member/CancelBonusByBonusId',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetPromotionReport'],
 		}),
 		getDeviceUserList: builder.query<
 			IGetIpUserListResponse,
@@ -385,4 +401,5 @@ export const {
 	useLazyGetRewardPointLogQuery,
 	useLazyGetPromotionReportQuery,
 	useLazyGetDeviceUserListQuery,
+	useCancelPromotionMutation,
 } = memberProfileApi

@@ -189,3 +189,44 @@ export const deviceStatusList: Array<{ value: string; displayName: string }> = [
 	{ value: DeviceListAllowEnum.Deny, displayName: 'Label_Deny' },
 	{ value: DeviceListAllowEnum.Review, displayName: 'Label_Review' },
 ]
+
+// Promotion Report Status Enum
+export enum PromotionReportStatusEnum {
+	Running = 1,
+	Canceled = 2,
+	Expiry = 3,
+	FullFill = 4,
+	TransferOut = 5,
+}
+
+export const promotionReportStatusList: Array<{
+	value: number
+	displayName: string
+}> = [
+	{
+		value: PromotionReportStatusEnum.Running,
+		displayName: 'BonusReportStatuses.Label_Running',
+	},
+	{
+		value: PromotionReportStatusEnum.Canceled,
+		displayName: 'BonusReportStatuses.Label_Canceled',
+	},
+	{
+		value: PromotionReportStatusEnum.Expiry,
+		displayName: 'BonusReportStatuses.Label_Expiry',
+	},
+	{
+		value: PromotionReportStatusEnum.FullFill,
+		displayName: 'BonusReportStatuses.Label_Fulfill',
+	},
+	{
+		value: PromotionReportStatusEnum.TransferOut,
+		displayName: 'BonusReportStatuses.Label_TransferOut',
+	},
+]
+
+// Promotion Report FullFillType Enum
+export enum PromotionReportFullFillTypeEnum {
+	RollOver = 1,
+	WinOver = 2,
+}

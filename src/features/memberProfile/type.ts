@@ -427,6 +427,11 @@ export interface IGetPromotionReportArgs {
 	endDate: string
 }
 
+export type ICustRollOverType = {
+	rollOver: number
+	winOver: number
+	turnOver: number
+}
 export interface IGetPromotionReportData {
 	bonusId: number
 	bonusCode: string
@@ -447,17 +452,24 @@ export interface IGetPromotionReportData {
 	expiryTime: string
 	bonusInfoStatus: number
 	sort: number
-	custRollOver: {
-		rollOver: number
-		winOver: number
-		turnOver: number
-	}
+	custRollOver: ICustRollOverType
 	claimDate: string
 	updateTime: string
 	atPage: number
 	cancelBonusAmount: number
 	expiredCancel: boolean
+	depositInfo: string
 }
+
+// Promotion Report Cancel
+export interface ICancelBonusArgs {
+	siteId?: number
+	custId: number
+	bonusId: number
+	currencyId: number
+}
+
+export type DepositInfoType = Array<{ Amount: number; DepositId: string }>
 
 export type IGetPromotionReportResponse = IAxiosResponse<
 	IGetPromotionReportData[]
