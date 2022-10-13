@@ -5,6 +5,7 @@ export const PAGINATION = {
 	defaultPageSize: 25,
 	position: ['topLeft'],
 	pageSizeOptions: [10, 25, 50, 100, 200, 300],
+	hideOnSinglePage: true,
 }
 
 export interface PaginationInterface {
