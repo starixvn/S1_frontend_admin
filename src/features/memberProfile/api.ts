@@ -33,6 +33,11 @@ import {
 	IWinLossSummaryData,
 	IGetFinancialLogArgs,
 	IFinancialLogsResponse,
+	PayoutVerificationRewardOTPTypeEnum,
+	ITagData,
+	VIPLevelSettingEnumData,
+	VIPLevelLogByCustData,
+	VIPLevelInfoByCustIdResponse,
 	IGetIpLogArgs,
 	IGetIpLogResponse,
 	IGetIpUserListArgs,
@@ -57,6 +62,7 @@ export const memberProfileApi = createApi({
 		'BasicInfoMutation',
 		'SetCustomerNote',
 		'SetSMSInfo',
+		'SetVipLevel',
 		'SetPromotionReport',
 	],
 	endpoints: builder => ({
@@ -257,10 +263,202 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		editFullName: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				fullName: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/EditFullName',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		editEmailName: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				email: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/EditEmail',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		editPhoneNo: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				phoneNo: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/EditPhoneNo',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		editBirthday: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				birthDate: number
+				birthMonth: number
+				birthYear: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/EditBirthday',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		editAddress: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				country: string
+				state: string
+				postCode: string
+				city: string
+				line1: string
+				line2: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/EditAddress',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		switchIsKyc: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SwitchKyc',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		switchRisk: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SwitchRisk',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		switchPhoneVerified: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SwitchPhoneVerified',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		switchEmailVerified: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SwitchEmailVerified',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		resetPassword: builder.mutation<
+			IAxiosResponse<string>,
+			{
+				custId: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/ResetPassword',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		lockAccount: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+				reason: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/Lock',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		closeAccount: builder.mutation<
+			IAxiosResponse<void>,
+			{ custId: number; reason: string }
+		>({
+			query: data => ({
+				url: 'Member/Close',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		kickOutUser: builder.mutation<
+			IAxiosResponse<string>,
+			{
+				custId: number
+				reason: string
+			}
+		>({
+			query: data => ({
+				url: 'Member/KickOut',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// CustomerInfo => LoginLog 頁面
 		getLoginLog: builder.query<IGetLoginLogResponse, IGetLoginLogArgs>({
 			query: data => ({
 				url: 'Member/GetLoginLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		resetBankInfo: builder.mutation<IAxiosResponse<void>, { custId: number }>({
+			query: data => ({
+				url: 'Member/ResetBankInfo',
 				method: 'POST',
 				data,
 			}),
@@ -298,10 +496,94 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		resetEWallet: builder.mutation<IAxiosResponse<void>, { custId: number }>({
+			query: data => ({
+				url: 'Member/ResetEWallet',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// 取得關聯 IP 的帳號
 		getIpUser: builder.query<IGetIpUserListResponse, IGetIpUserListArgs>({
 			query: data => ({
 				url: 'Block/GetIPUserList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		resetCryptoInfo: builder.mutation<IAxiosResponse<void>, { custId: number }>(
+			{
+				query: data => ({
+					url: 'Member/ResetCryptoInfo',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
+		switchRebatePayout: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				status: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SwitchRebatePayout',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		setPayoutVerificationReward: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				OTPType: PayoutVerificationRewardOTPTypeEnum
+			}
+		>({
+			query: data => ({
+				url: 'Member/PayoutVerificationReward',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		getAllTags: builder.query<IAxiosResponse<ITagData[]>, null>({
+			query: () => ({
+				url: 'TagManagement/GetAllTag',
+				method: 'POST',
+			}),
+		}),
+		removeTag: builder.mutation<
+			IAxiosResponse<void>,
+			{ custId: number; tagId: number }
+		>({
+			query: data => ({
+				url: 'Member/RemoveTag',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		addTag: builder.mutation<
+			IAxiosResponse<void>,
+			{ custId: number; tagId: number }
+		>({
+			query: data => ({
+				url: 'Member/AddTag',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
+		// * VIP Level Setting
+		// * 取得VIP等級設定資料 enum
+		getVipLevelSettingEnum: builder.query<
+			IAxiosResponse<VIPLevelSettingEnumData[]>,
+			{ siteId: number | undefined }
+		>({
+			query: data => ({
+				url: 'VipLevel/GetSetting',
 				method: 'POST',
 				data,
 			}),
@@ -313,6 +595,60 @@ export const memberProfileApi = createApi({
 				method: 'POST',
 				data,
 			}),
+		}),
+		// * 取得指定客戶 VIP 等級資料
+		getVipLevelInfoByCustId: builder.query<
+			VIPLevelInfoByCustIdResponse,
+			{ custId: number }
+		>({
+			query: data => ({
+				url: 'Member/GetVipLevelInfo',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetVipLevel'],
+		}),
+		// * 取得指定客戶 VIP 等級紀錄
+		getVipLevelLogByCustId: builder.query<
+			IAxiosResponse<VIPLevelLogByCustData[]>,
+			{ custId: number }
+		>({
+			query: data => ({
+				url: 'Member/GetVipLevelLog',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetVipLevel'],
+		}),
+		// * 設定指定客戶VIP等級
+		setVipLevel: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				vipLevel: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SetVipLevel',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetVipLevel'],
+		}),
+		// * 設定VIP等級為手動，manually:0 關, 1:開
+		setVipLevelManually: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				manually: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SetVipLevelManually',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetVipLevel'],
 		}),
 		// Marketing => VipRebateLog 頁面
 		getVipRebateLog: builder.query<
@@ -394,6 +730,32 @@ export const {
 	useLazyGetFinancialLogsQuery,
 	useGetIpCountListQuery,
 	useGetDeviceListQuery,
+	useEditFullNameMutation,
+	useEditEmailNameMutation,
+	useEditPhoneNoMutation,
+	useEditBirthdayMutation,
+	useEditAddressMutation,
+	useSwitchIsKycMutation,
+	useSwitchRiskMutation,
+	useSwitchPhoneVerifiedMutation,
+	useSwitchEmailVerifiedMutation,
+	useResetPasswordMutation,
+	useLockAccountMutation,
+	useCloseAccountMutation,
+	useKickOutUserMutation,
+	useResetBankInfoMutation,
+	useResetEWalletMutation,
+	useResetCryptoInfoMutation,
+	useSwitchRebatePayoutMutation,
+	useSetPayoutVerificationRewardMutation,
+	useLazyGetAllTagsQuery,
+	useRemoveTagMutation,
+	useAddTagMutation,
+	useLazyGetVipLevelSettingEnumQuery,
+	useLazyGetVipLevelInfoByCustIdQuery,
+	useLazyGetVipLevelLogByCustIdQuery,
+	useSetVipLevelMutation,
+	useSetVipLevelManuallyMutation,
 	useLazyGetIpLogQuery,
 	useLazyGetIpUserQuery,
 	useLazyGetBonusLogQuery,

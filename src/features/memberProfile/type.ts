@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment'
 
 export interface ICustIdInterface {
 	custId: number
@@ -35,6 +36,7 @@ export interface IGetBasicInfoData {
 	isLineBinding: boolean
 	custLineProfile: ICustLineProfile
 	status: number
+	enableRebate: number
 	depositPointLevel: number
 	currency: string
 	identity: number
@@ -45,7 +47,19 @@ export interface IGetBasicInfoData {
 	lastLoginTime: string
 	lastActiveTime: string
 	birthDay: string
-	birthMonth: string
+	birthMonth:
+		| '1'
+		| '2'
+		| '3'
+		| '4'
+		| '5'
+		| '6'
+		| '7'
+		| '8'
+		| '9'
+		| '10'
+		| '11'
+		| '12'
 	birthYear: string
 	email: string
 	mobileNumber: string
@@ -261,6 +275,67 @@ export interface IFinancialLogData {
 
 export type IFinancialLogsResponse = IAxiosResponse<IFinancialLogData[]>
 
+export enum SettingEditTypeEnum {
+	FullName = 'FullName',
+	Email = 'Email',
+	PhoneNo = 'PhoneNo',
+	Birthday = 'Birthday',
+	Address = 'Address',
+	LockAccount = 'LockAccount',
+	CloseAccount = 'CloseAccount',
+	KickOutUser = 'KickOutUser',
+}
+
+export enum SettingSwitchTypeEnum {
+	IsKyc = 'IsKyc',
+	Risk = 'Risk',
+	PhoneVerified = 'PhoneVerified',
+	EmailVerified = 'EmailVerified',
+	RebatePayout = 'RebatePayout',
+}
+
+export interface ISettingForm {
+	fullName: string
+	email: string
+	phoneNo: string
+	birthDay: Moment
+	reason: string
+	address: {
+		country: string
+		state: string
+		postCode: string
+		city: string
+		line1: string
+		line2: string
+	}
+}
+
+export enum PayoutVerificationRewardOTPTypeEnum {
+	Phone = 0,
+	Email = 1,
+}
+
+export interface VIPLevelSettingEnumData {
+	level: number
+	levelName: string
+}
+
+export interface VIPLevelInfoByCustIdData {
+	vipLevel: string
+	manually: number
+	qualifiedTime: string
+}
+
+export type VIPLevelInfoByCustIdResponse =
+	IAxiosResponse<VIPLevelInfoByCustIdData>
+
+export interface VIPLevelLogByCustData {
+	oldLevel: string
+	newLevel: string
+	memo: string
+	updateTime: string
+	updaters: string
+}
 // LoginLog 頁面
 export interface IGetLoginLogArgs {
 	pageNumber: number
