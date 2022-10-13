@@ -565,6 +565,34 @@ const MemberProfileIpList = lazy(
 		)
 )
 
+const MemberProfileBonusLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusLog' */ 'features/memberProfile/pages/marketing/bonusLog/BonusLog'
+		)
+)
+
+const MemberProfileVipRebateLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateLog' */ 'features/memberProfile/pages/marketing/vipRebateLog/VipRebateLog'
+		)
+)
+
+const MemberProfileRewardPointLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RewardPointLog' */ 'features/memberProfile/pages/marketing/rewardPointLog/RewardPointLog'
+		)
+)
+
+const MemberProfilePromotionReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PromotionReport' */ 'features/memberProfile/pages/marketing/promotionReport/PromotionReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1418,8 +1446,39 @@ const routes: RouteObject[] = [
 						path: 'marketing/bonusWallet/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileMarketingBonusWallet />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/bonusLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileBonusLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/vipRebateLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileVipRebateLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/rewardsPointLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileRewardPointLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/promotionReport/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfilePromotionReport />
 							</AuthRequire>
 						),
 					},

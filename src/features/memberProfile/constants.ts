@@ -170,3 +170,63 @@ export const financialTypeOptions: { value: number; name: string }[] = [
 		name: 'TpTip',
 	},
 ]
+
+// BonusLog Page 欄位 Change Bonus 需顯示 正或負
+export enum ChangeBonusDirectionEnum {
+	Add = 1,
+	Minus,
+}
+
+// DeviceList Allow 欄位
+export enum DeviceListAllowEnum {
+	Allow = 'A',
+	Deny = 'D',
+	Review = 'R',
+}
+
+export const deviceStatusList: Array<{ value: string; displayName: string }> = [
+	{ value: DeviceListAllowEnum.Allow, displayName: 'Label_Allow' },
+	{ value: DeviceListAllowEnum.Deny, displayName: 'Label_Deny' },
+	{ value: DeviceListAllowEnum.Review, displayName: 'Label_Review' },
+]
+
+// Promotion Report Status Enum
+export enum PromotionReportStatusEnum {
+	Running = 1,
+	Canceled = 2,
+	Expiry = 3,
+	FullFill = 4,
+	TransferOut = 5,
+}
+
+export const promotionReportStatusList: Array<{
+	value: number
+	displayName: string
+}> = [
+	{
+		value: PromotionReportStatusEnum.Running,
+		displayName: 'BonusReportStatuses.Label_Running',
+	},
+	{
+		value: PromotionReportStatusEnum.Canceled,
+		displayName: 'BonusReportStatuses.Label_Canceled',
+	},
+	{
+		value: PromotionReportStatusEnum.Expiry,
+		displayName: 'BonusReportStatuses.Label_Expiry',
+	},
+	{
+		value: PromotionReportStatusEnum.FullFill,
+		displayName: 'BonusReportStatuses.Label_Fulfill',
+	},
+	{
+		value: PromotionReportStatusEnum.TransferOut,
+		displayName: 'BonusReportStatuses.Label_TransferOut',
+	},
+]
+
+// Promotion Report FullFillType Enum
+export enum PromotionReportFullFillTypeEnum {
+	RollOver = 1,
+	WinOver = 2,
+}

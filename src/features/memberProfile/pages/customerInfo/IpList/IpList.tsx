@@ -23,7 +23,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { BlockIPModal } from 'features/memberProfile/pages/customerInfo/IpList/BlockIPModal'
 import { useModal } from 'common/hooks'
-import { IpUserListModal } from 'features/memberProfile/pages/customerInfo/components/IpUserListModal'
+import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 
 const IpList = () => {
 	const { t } = useTranslation()
@@ -178,9 +178,9 @@ const IpList = () => {
 					onFinish={handleBlockIpSubmit}
 					form={blockIpForm}
 				/>
-				<IpUserListModal
+				<UserListModal
 					loading={isGetIpUserListLoading}
-					ipUserList={ipUserList}
+					userList={ipUserList}
 					visible={ipUserListModal.visible}
 					onCancel={ipUserListModal.onCancel}
 				/>

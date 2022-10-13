@@ -42,13 +42,13 @@ const LoginLogFilter = ({
 			onFinish={() => onSearch({})}
 		>
 			<Row align='middle' gutter={20}>
-				<Col span={8}>
+				<Col span={10}>
 					<Form.Item label={t('Label_DateRange')}>
 						<Input.Group compact style={{ width: '100%', display: 'flex' }}>
 							<Form.Item
 								noStyle
 								name='dateRange'
-								initialValue={MOMENT_DATE_RANGES.Today}
+								initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
 								rules={[
 									{
 										required: true,
