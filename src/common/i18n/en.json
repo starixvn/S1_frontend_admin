@@ -694,5 +694,6 @@
 	"Label_Allow" : "Allow",
 	"Label_Score" : "Score",
 	"Label_Deny" : "Deny",
-	"Label_Review" : "Review"
+	"Label_Review" : "Review",
+	"Label_BonusManagementDisplayTimeErrorMsg": "The end time of the displayed date cannot exceed the end time of the activity date"
 }

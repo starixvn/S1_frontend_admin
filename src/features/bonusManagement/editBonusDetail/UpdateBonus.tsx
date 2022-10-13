@@ -157,51 +157,57 @@ const UpdateBonus: FC<{
 				[displayDate[0], displayDate[1]],
 				0
 			)
-
-			try {
-				await setBonus({
-					isAdd: !isEdit,
-					promotionInfo: {
-						siteId,
-						bonusCode: formBonusCode,
-						description,
-						autoExtend: Number(autoExtend),
-						promotionType,
-						expiryDays,
-						isSpecial,
-						status: status ? StatusEnum.Active : StatusEnum.InActive,
-						onlyRegistered,
-						periodType,
-						promotionDeviceType,
-						sort,
-						specialCode: isSpecial ? specialCode : null,
-						categoryId: promotionType === BonusTypeEnum.Rebate ? 0 : categoryId,
-						walletType:
-							promotionType === BonusTypeEnum.Rebate ? null : walletType,
-						tpId: promotionType === BonusTypeEnum.Rebate ? null : tpId,
-						periodFromTime,
-						periodToTime,
-						displayFromTime,
-						displayToTime,
-						promotionAction,
-						specific: specificRequestDataConverter({
-							specific: rawSpecific,
-							details: rawDetails,
+			// 在送單時才驗證時間，displayDate 結束不可超過 periodDate結束時間
+			if (displayToTime > periodToTime) {
+				message.error(t('Label_BonusManagementDisplayTimeErrorMsg'))
+			} else {
+				try {
+					await setBonus({
+						isAdd: !isEdit,
+						promotionInfo: {
+							siteId,
 							bonusCode: formBonusCode,
-							walletType: Number(walletType),
-							categoryId: Number(categoryId),
-							tpId: Number(tpId),
-						}),
-					},
-					displayConditionAboutVipLevel:
-						displayConditionRequestConverter(selectedVipLevel),
-				}).unwrap()
-				message.success(t('System.Label_Success'))
-				navigate(-1)
-			} catch (error) {
-				message.error(
-					(error as Error)?.message || t('System.Label_NotExpectedServerError')
-				)
+							description,
+							autoExtend: Number(autoExtend),
+							promotionType,
+							expiryDays,
+							isSpecial,
+							status: status ? StatusEnum.Active : StatusEnum.InActive,
+							onlyRegistered,
+							periodType,
+							promotionDeviceType,
+							sort,
+							specialCode: isSpecial ? specialCode : null,
+							categoryId:
+								promotionType === BonusTypeEnum.Rebate ? 0 : categoryId,
+							walletType:
+								promotionType === BonusTypeEnum.Rebate ? null : walletType,
+							tpId: promotionType === BonusTypeEnum.Rebate ? null : tpId,
+							periodFromTime,
+							periodToTime,
+							displayFromTime,
+							displayToTime,
+							promotionAction,
+							specific: specificRequestDataConverter({
+								specific: rawSpecific,
+								details: rawDetails,
+								bonusCode: formBonusCode,
+								walletType: Number(walletType),
+								categoryId: Number(categoryId),
+								tpId: Number(tpId),
+							}),
+						},
+						displayConditionAboutVipLevel:
+							displayConditionRequestConverter(selectedVipLevel),
+					}).unwrap()
+					message.success(t('System.Label_Success'))
+					navigate(-1)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
 			}
 		} catch (error) {
 			// 驗證層

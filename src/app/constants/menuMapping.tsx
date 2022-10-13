@@ -182,7 +182,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitAdjust',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitAdjust,
 		newAdminPath:
@@ -423,7 +423,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.productManagement.sub.slotGameCategory.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/CategoryManagement',
 		internalFunctionKey: allowedRoles.CMSCategoryManagement,
 		newAdminPath: paths.productManagement.sub.slotGameCategory.root,
@@ -649,7 +649,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.reasonManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReasonManagement,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		internalPath: 'BankFinancial/ReasonManagement',
 		newAdminPath: paths.bankTransfer.sub.reasonManagement.root,
 	},
