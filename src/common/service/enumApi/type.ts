@@ -14,6 +14,7 @@ export type EnumNameType =
 	| 'BankCardManagementStatusEnum'
 	| 'BankCardManagementPurposeEnum'
 	| 'BankCardManagementSupportChannelEnum'
+	| 'DepositStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -23,6 +24,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  BankCardManagementSupportChannelEnum - 獲得渠道列表
 	 * @argument {string}  BankCardManagementStatusEnum - 取得狀態列表
 	 * @argument {string}  BankCardManagementPurposeEnum - 取得目的列表
+	 * @argument {string}  DepositStatusEnum - 取得存款狀態列表
 	 */
 	enumName: EnumNameType
 }

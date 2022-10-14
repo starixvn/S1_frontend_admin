@@ -483,6 +483,10 @@
 	"Label_OnlineBanking": "Online Banking",
 	"Label_MobilePay": "Mobile Pay",
 	"Label_LocalBanking": "Local Banking",
+	"Label_CryptoPay": "Crypto Pay",
+	"Label_LoadCard": "Load Card",
+	"Label_QRPay": "QR Pay",
+	"Label_BankAutoChannel": "Bank Auto Channel",
 	"Label_Min": "Min",
 	"Label_Max": "Max",
 	"Label_CreateDepositLimit": "Create Deposit Limit",
@@ -735,5 +739,14 @@
 	"Label_Allow": "Allow",
 	"Label_Score": "Score",
 	"Label_Deny": "Deny",
-	"Label_Review": "Review"
+	"Label_Review": "Review",
+	"Label_UpdatedDate": "Updated Date",
+	"Label_DepositType": "Deposit Type",
+	"Label_ActualDeposit": "Actual Deposit",
+	"Label_PaymentReferenceId": "Payment Reference Id",
+	"Label_CompanyBankName": "Company Bank Name",
+	"Label_CompanyAccountName": "Company Account Name",
+	"Label_CompanyAccountNumber": "Company Account Number",
+	"Label_DepositDate": "Deposit Date",
+	"Label_CreatedDate": "Created Date"
 }
