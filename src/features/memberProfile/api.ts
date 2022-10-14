@@ -54,6 +54,8 @@ import {
 	ICancelBonusArgs,
 	IGetDepositInfoArgs,
 	IGetDepositInfoResponse,
+	IGetWithdrawalInfoArgs,
+	IGetWithdrawalInfoResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -713,6 +715,16 @@ export const memberProfileApi = createApi({
 				}),
 			}
 		),
+		getWithdrawalInfo: builder.query<
+			IGetWithdrawalInfoResponse,
+			IGetWithdrawalInfoArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetWithdrawalInfoByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -770,6 +782,7 @@ export const {
 	useLazyGetIpLogQuery,
 	useLazyGetIpUserQuery,
 	useLazyGetDepositInfoQuery,
+	useLazyGetWithdrawalInfoQuery,
 	useLazyGetBonusLogQuery,
 	useLazyGetVipRebateLogQuery,
 	useLazyGetRewardPointLogQuery,

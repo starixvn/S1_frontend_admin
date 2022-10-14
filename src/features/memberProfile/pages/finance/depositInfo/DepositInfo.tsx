@@ -39,6 +39,11 @@ const DepositInfo = () => {
 		isLoading: isGetStatusListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'DepositStatusEnum' })
 
+	const {
+		data: { data: typeList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetTypeListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'DepositTypeEnum' })
+
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
@@ -82,7 +87,8 @@ const DepositInfo = () => {
 		}
 	}, [isGetStatusListLoading])
 
-	const loading = isGetDepositInfoLoading || isGetStatusListLoading
+	const loading =
+		isGetDepositInfoLoading || isGetStatusListLoading || isGetTypeListLoading
 
 	return (
 		<>
@@ -104,6 +110,7 @@ const DepositInfo = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
 					statusList={statusList}
+					typeList={typeList}
 				/>
 			</LayoutContent.Card>
 		</>
