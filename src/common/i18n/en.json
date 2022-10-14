@@ -748,5 +748,6 @@
 	"Label_CompanyAccountName": "Company Account Name",
 	"Label_CompanyAccountNumber": "Company Account Number",
 	"Label_DepositDate": "Deposit Date",
-	"Label_CreatedDate": "Created Date"
+	"Label_CreatedDate": "Created Date",
+	"Label_WithdrawalType": "Withdrawal Type"
 }

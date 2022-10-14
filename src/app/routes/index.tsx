@@ -484,6 +484,13 @@ const MemberProfileFinanceDepositInfo = lazy(
 		)
 )
 
+const MemberProfileFinanceWithdrawalInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalInfo'
+		)
+)
+
 // *  MemberProfile > Game 類別
 const MemberProfileGameStatement = lazy(
 	() =>
@@ -1426,8 +1433,15 @@ const routes: RouteObject[] = [
 						path: 'finance/depositInfo/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileFinanceDepositInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/withdrawalInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceWithdrawalInfo />
 							</AuthRequire>
 						),
 					},

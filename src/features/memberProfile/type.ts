@@ -583,3 +583,20 @@ export interface IGetDepositInfoData {
 }
 
 export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]>
+
+// withdrawal info 頁面
+export interface IGetWithdrawalInfoArgs extends IGetDepositInfoArgs {}
+
+export interface IGetWithdrawalInfoData {
+	accountName: string
+	accountNo: string
+	amount: number
+	createTime: string
+	withdrawalType: number
+	refId: string
+	status: number
+}
+
+export type IGetWithdrawalInfoResponse = IAxiosResponse<
+	IGetWithdrawalInfoData[]
+>

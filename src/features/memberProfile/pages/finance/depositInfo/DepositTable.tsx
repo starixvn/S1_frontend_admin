@@ -4,16 +4,17 @@ import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import { DepositInfoTypeObj } from 'features/memberProfile/constants'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface DepositTableProps {
 	depositInfoList: IGetDepositInfoData[]
 	loading: boolean
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
-	statusList: { name?: string; value?: number }[]
+	statusList: IEnumTypeData[]
+	typeList: IEnumTypeData[]
 }
 const DepositTable = ({
 	depositInfoList,
@@ -21,6 +22,7 @@ const DepositTable = ({
 	timeZoneUtcOffset,
 	pagination,
 	statusList,
+	typeList,
 }: DepositTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
@@ -64,7 +66,7 @@ const DepositTable = ({
 			align: 'center' as 'center',
 			render: (depositType: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{t(DepositInfoTypeObj[depositType])}
+					{typeList.map(item => item.value === depositType && item.value)}
 				</Typography.Text>
 			),
 		},

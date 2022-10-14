@@ -12,16 +12,6 @@ export enum StatusEnum {
 	Lock,
 }
 
-export const DepositInfoTypeObj: { [type: number]: string } = {
-	1: 'Label_OnlineBanking',
-	2: 'Label_MobilePay',
-	3: 'Label_LocalBanking',
-	4: 'Label_CryptoPay',
-	5: 'Label_LoadCard',
-	6: 'Label_QRPay',
-	7: 'Label_BankAutoChannel',
-}
-
 export const statusList: Array<{ value: number; displayName: string }> = [
 	{
 		value: StatusEnum.Running,
