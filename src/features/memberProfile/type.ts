@@ -555,3 +555,31 @@ export interface IGetDeviceUserListArgs {
 	custId: number
 	deviceId: string
 }
+
+// deposit info 頁面
+
+export interface IGetDepositInfoArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	status: number
+}
+
+export interface IGetDepositInfoData {
+	accountName: string
+	accountNo: string
+	actualDeposit: number
+	amount: number
+	bankName: string
+	createTime: string
+	depositTime: string
+	depositType: number
+	refId: string
+	status: number
+	transId: string
+	updateTime: string
+}
+
+export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]>

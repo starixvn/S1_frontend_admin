@@ -52,6 +52,8 @@ import {
 	IGetPromotionReportResponse,
 	IGetDeviceUserListArgs,
 	ICancelBonusArgs,
+	IGetDepositInfoArgs,
+	IGetDepositInfoResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -702,6 +704,15 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getDepositInfo: builder.query<IGetDepositInfoResponse, IGetDepositInfoArgs>(
+			{
+				query: data => ({
+					url: 'CustomerManage/GetDepositInfoByCustId',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
 	}),
 })
 
@@ -758,6 +769,7 @@ export const {
 	useSetVipLevelManuallyMutation,
 	useLazyGetIpLogQuery,
 	useLazyGetIpUserQuery,
+	useLazyGetDepositInfoQuery,
 	useLazyGetBonusLogQuery,
 	useLazyGetVipRebateLogQuery,
 	useLazyGetRewardPointLogQuery,
