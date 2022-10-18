@@ -106,7 +106,7 @@ const ReasonManagement = ({
 
 	const handleSaved = async () => {
 		if (editingId === undefined) return
-		const { description } = tableForm.getFieldsValue()
+		const { description } = await tableForm.validateFields()
 		const { pageNumber, pageSize } = queryParams
 		try {
 			await setReason({ id: editingId, description }).unwrap()
