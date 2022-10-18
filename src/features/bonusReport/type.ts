@@ -12,7 +12,7 @@ export interface IGetBonusReportDataListArgs {
 	pageNumber: number
 	pageSize: number
 	baseCurrencyId: number
-	rebateCategoriesId: number
+	promotionCategoryId: number
 	statuses: number[]
 }
 
@@ -62,6 +62,15 @@ export interface IExportBonusReportArgs {
 	pageNumber: number
 	pageSize: number
 	baseCurrencyId: number
-	rebateCategoriesId: number
+	promotionCategoryId: number
 	statuses: number[]
 }
+
+export interface IPromotionCategoryOptionData {
+	promotionCategoryId: number
+	promotionCategoryName: string
+}
+
+export type IPromotionCategoryOptionsResponse = IAxiosResponse<
+	IPromotionCategoryOptionData[]
+>
