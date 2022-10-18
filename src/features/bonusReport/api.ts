@@ -5,12 +5,22 @@ import {
 	IBonusReportResponse,
 	IExportBonusReportArgs,
 	IGetBonusReportDataListArgs,
+	IPromotionCategoryOptionsResponse,
 } from './type'
 
 export const bonusReportApi = createApi({
 	reducerPath: 'bonusReportApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
 	endpoints: builder => ({
+		getPromotionCategoryOptions: builder.query<
+			IPromotionCategoryOptionsResponse,
+			null
+		>({
+			query: () => ({
+				url: 'BonusReport/PromotionCategoryOption',
+				method: 'POST',
+			}),
+		}),
 		getBonusReportDataList: builder.query<
 			IBonusReportResponse,
 			IGetBonusReportDataListArgs
@@ -33,6 +43,7 @@ export const bonusReportApi = createApi({
 })
 
 export const {
+	useGetPromotionCategoryOptionsQuery,
 	useLazyGetBonusReportDataListQuery,
 	useExportBonusReportMutation,
 } = bonusReportApi
