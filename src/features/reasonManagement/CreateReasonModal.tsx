@@ -62,7 +62,18 @@ const CreateReasonModal = ({
 				</Row>
 				<Row>
 					<Col span={24}>
-						<Form.Item name='description' label={t('Label_Description')}>
+						<Form.Item
+							name='description'
+							label={t('Label_Description')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_Description'),
+									}),
+								},
+							]}
+						>
 							<Input />
 						</Form.Item>
 					</Col>
