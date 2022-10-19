@@ -32,6 +32,10 @@ export interface IAddEditForm {
 	bankLoginUrl: string | null
 	bankLoginAccount: string | null
 	bankLoginPassword: string | null
+	transferPin: string | null
+	loginPin: string | null
+	mobilePin: string | null
+	corporateID: string | null
 }
 
 export interface IBankTransferAccountsArgs {
@@ -78,6 +82,10 @@ export interface IBankTransferAccountData {
 	bankLoginUrl: string | null
 	bankLoginAccount: string | null
 	bankLoginPassword: string | null
+	transferPin: string | null
+	loginPin: string | null
+	mobilePin: string | null
+	corporateID: string | null
 }
 
 export type IBankTransferAccountResponse = IAxiosResponse<
