@@ -101,6 +101,10 @@ const TransferAccountManagementForm: FC<
 					bankLoginUrl: '',
 					bankLoginAccount: '',
 					bankLoginPassword: '',
+					transferPin: '',
+					loginPin: '',
+					mobilePin: '',
+					corporateID: '',
 				}}
 			>
 				<Row align='middle' gutter={16}>
@@ -372,7 +376,7 @@ const TransferAccountManagementForm: FC<
 								},
 							]}
 						>
-							<DatePicker showTime />
+							<DatePicker showTime style={{ width: '100%' }} />
 						</Form.Item>
 					</Col>
 					<Col lg={8} md={12} xs={24}>
@@ -409,6 +413,26 @@ const TransferAccountManagementForm: FC<
 							name='bankLoginPassword'
 							label={t('Label_BankLoginPassword')}
 						>
+							<Input allowClear />
+						</Form.Item>
+					</Col>
+					<Col lg={8} md={12} xs={24}>
+						<Form.Item name='transferPin' label={t('Label_TransferPin')}>
+							<Input allowClear />
+						</Form.Item>
+					</Col>
+					<Col lg={8} md={12} xs={24}>
+						<Form.Item name='loginPin' label={t('Label_LoginPin')}>
+							<Input allowClear />
+						</Form.Item>
+					</Col>
+					<Col lg={8} md={12} xs={24}>
+						<Form.Item name='mobilePin' label={t('Label_MobilePin')}>
+							<Input allowClear />
+						</Form.Item>
+					</Col>
+					<Col lg={8} md={12} xs={24}>
+						<Form.Item name='corporateID' label={t('Label_CorporateID')}>
 							<Input allowClear />
 						</Form.Item>
 					</Col>
