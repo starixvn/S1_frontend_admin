@@ -5,9 +5,7 @@ import moment, { Moment } from 'moment'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
 import {
-	IGetCategoryResponse,
 	IGetPromotionTypeResponse,
-	useGetCategoryQuery,
 	useGetPromotionListQuery,
 } from 'common/service/allDataApi'
 import { useAppSelector } from 'app/store'
@@ -23,6 +21,7 @@ import {
 } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
+	useGetPromotionCategoryOptionsQuery,
 	useExportBonusReportMutation,
 	useLazyGetBonusReportDataListQuery,
 } from './api'
@@ -45,7 +44,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		baseCurrencyId: number
 		promotionType: number
 		statuses: number[]
-		rebateCategoriesId: number
+		promotionCategoryId: number
 		userName: string
 		transId: string
 		bonusCode: string
@@ -58,9 +57,9 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	} = useGetPromotionListQuery({ isPayout: false, isNew: true })
 
 	const {
-		data: { data: categories = [] } = {} as IGetCategoryResponse,
+		data: { data: categories = [] } = {},
 		isFetching: isGetCategoryFetching,
-	} = useGetCategoryQuery(null)
+	} = useGetPromotionCategoryOptionsQuery(null)
 
 	const [
 		getBonusReportDataList,
@@ -142,7 +141,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			baseCurrencyId,
 			promotionType,
 			statuses,
-			rebateCategoriesId,
+			promotionCategoryId,
 			userName,
 			transId,
 			bonusCode,
@@ -164,7 +163,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			pageNumber,
 			pageSize,
 			baseCurrencyId: Number(baseCurrencyId) || 0,
-			rebateCategoriesId: Number(rebateCategoriesId),
+			promotionCategoryId: Number(promotionCategoryId),
 			statuses: statuses?.map((status: string) => Number(status)) ?? [],
 		}
 
@@ -190,7 +189,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	useEffect(() => {
 		if (!isGetCategoryFetching && categories.length > 1) {
 			form.setFieldsValue({
-				rebateCategoriesId: categories[0].categoryId,
+				promotionCategoryId: categories[0].promotionCategoryId,
 			})
 		}
 	}, [isGetCategoryFetching])
@@ -202,7 +201,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				baseCurrencyId,
 				promotionType,
 				statuses,
-				rebateCategoriesId,
+				promotionCategoryId,
 				userName,
 				transId,
 				bonusCode,
@@ -219,7 +218,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				baseCurrencyId: Number(baseCurrencyId) || 0,
 				promotionType: Number(promotionType) || 0,
 				statuses: statuses?.map((status: string) => Number(status)) ?? [],
-				rebateCategoriesId: Number(rebateCategoriesId),
+				promotionCategoryId: Number(promotionCategoryId),
 				userName,
 				transId,
 				bonusCode,

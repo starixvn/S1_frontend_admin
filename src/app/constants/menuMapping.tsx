@@ -182,7 +182,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalAdjustment
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalLimitAdjust',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalLimitAdjust,
 		newAdminPath:
@@ -641,7 +641,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.transferAccountManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferAccountManage,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/TransferAccountManage',
 		newAdminPath: paths.bankTransfer.sub.transferAccountManagement.root,
 	},

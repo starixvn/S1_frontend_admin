@@ -18,15 +18,13 @@ import {
 } from 'app/constants/moment'
 import { dateFormat } from 'common/utils/format'
 import { MultipleSelect } from 'components/Select'
-import {
-	IGetCategoryData,
-	IGetPromotionTypeData,
-} from 'common/service/allDataApi'
+import { IGetPromotionTypeData } from 'common/service/allDataApi'
 import { SearchOutlined } from '@ant-design/icons'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { STATUS_TYPE_OPTIONS } from './constants'
+import { IPromotionCategoryOptionData } from './type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -36,7 +34,7 @@ interface IBonusReportFilterProps {
 	form: FormInstance
 	loading: boolean
 	promotionList: IGetPromotionTypeData[]
-	categories: IGetCategoryData[]
+	categories: IPromotionCategoryOptionData[]
 	timeZoneUtcOffset?: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -89,7 +87,7 @@ const BonusReportFilter = ({
 							baseCurrencyId: 0,
 							promotionType: 0,
 							statuses: allStatuses,
-							rebateCategoriesId: categories[0]?.categoryId,
+							promotionCategoryId: categories[0]?.promotionCategoryId,
 							userName: '',
 							transId: '',
 							bonusCode: '',
@@ -199,15 +197,20 @@ const BonusReportFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
-									name='rebateCategoriesId'
+									name='promotionCategoryId'
 									label={t('Label_Category')}
 								>
 									<Select placeholder={t('Label_Select')}>
-										{categories?.map(option => (
-											<Option key={option.categoryId} value={option.categoryId}>
-												{option.categoryName}
-											</Option>
-										))}
+										{categories?.map(
+											({ promotionCategoryId, promotionCategoryName }) => (
+												<Option
+													key={promotionCategoryId}
+													value={promotionCategoryId}
+												>
+													{promotionCategoryName}
+												</Option>
+											)
+										)}
 									</Select>
 								</Form.Item>
 							</Col>
