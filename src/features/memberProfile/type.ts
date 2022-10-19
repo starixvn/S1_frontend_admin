@@ -556,6 +556,37 @@ export interface IGetDeviceUserListArgs {
 	deviceId: string
 }
 
+// GameLog => 3RDParty
+export interface IGetThirdPartyAccountData {
+	tpName: string
+	tpUserName: string
+}
+
+// GameLog => WinLossSummary
+export interface IGetGameTypeListArgs {
+	tpCategoryList: number[]
+}
+
+export interface IGetGameTypeListData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+}
+
+export interface IGetWinLossSummaryDetailArgs {
+	custId: number
+	gameTypes: number[]
+}
+
+export interface IGetWinLossSummaryDetailData {
+	winlostAmount: number
+	stakeSettled: number
+	stakeNotRollover: number
+	gameType: number
+	gameName: string
+}
+
 // deposit info 頁面
 
 export interface IGetDepositInfoArgs {
@@ -600,3 +631,131 @@ export interface IGetWithdrawalInfoData {
 export type IGetWithdrawalInfoResponse = IAxiosResponse<
 	IGetWithdrawalInfoData[]
 >
+
+// GameLog => Turnover
+export interface IGetTurnoverArgs extends IGetWinLossSummaryDetailArgs {
+	startDate: string
+	endDate: string
+}
+
+// Turnover Response
+// Total TO = stakeSettled + stakeNotRollover,
+// Valid Bet = stakeSettled,
+// Turnover (ExcludeValidTO) = stakeNotRollover,
+// WinLoss = winlostAmount
+export interface IGetTurnoverData {
+	gameName: string
+	stakeSettled: number
+	userName: string
+	winlostAmount: number
+	stakeNotRollover: number
+}
+
+// GameLog => Statement
+
+// Table 第一層 , 取得客戶紀錄
+export interface IGetCustTpBetRecordArgs extends IGetIpLogArgs {}
+
+export interface IGetCustTpBetRecordData {
+	settledDate: string
+	totalTO: number
+	validBet: number
+	invalidBet: number
+	turnOver: number
+	runningTickets: number
+	winLoss: number
+	totalTOExcludeBonus: number
+	winLossExcludeBonus: number
+}
+
+// Table 第二層 , 取得客戶指定日期紀錄
+export interface IGetCustTpBetRecordByDayArgs extends IGetCustTpBetRecordArgs {
+	selDate: string
+}
+
+export interface IGetCustTpBetRecordByDayData {
+	settledDate: string
+	categoryName: string
+	categoryId: number
+	totalTO: number
+	validBet: number
+	invalidBet: number
+	turnOver: number
+	runningTickets: number
+	winLoss: number
+	totalTOExcludeBonus: number
+	winLossExcludeBonus: number
+}
+
+// Table 第三層 , 取得客戶指定 Category 紀錄
+export interface IGetCustTpBetRecordByCategoryIdArgs
+	extends IGetCustTpBetRecordByDayArgs {
+	categoryId: number
+}
+
+export interface IGetCustTpBetRecordByCategoryIdData {
+	settledDate: string
+	gameTypeName: string
+	gameTypeID: number
+	totalTO: number
+	validBet: number
+	invalidBet: number
+	turnOver: number
+	runningTickets: number
+	winLoss: number
+	totalTOExcludeBonus: number
+	winLossExcludeBonus: number
+}
+
+// Table 第四層 , 取得客戶指定 GameType 紀錄
+export interface IGetCustTpBetRecordByGameTypeArgs
+	extends IGetCustTpBetRecordByDayArgs {
+	pageNumber: number
+	pageSize: number
+	gameTypeId: number
+}
+
+export interface IGetCustTpBetRecordByGameTypeData {
+	transId: string
+	bonusId: number
+	bonusCode: string
+	turnOver: number
+	validBet: number
+	winlostAmount: number
+	transTime: string
+	settledTime: string
+	settlementType: number
+	settlementTypeName: string
+	turnOver_ExcludeValidTO: number
+	validBet_Valid: number
+}
+
+// Table 第五層 , 取得第三方細單
+export interface IGetTpBetRecordDetailArgs {
+	gameType: number
+	transId: string
+	custId: number
+	settledTime: string
+}
+
+export type ITpCurrency = {
+	tpCurrencyId: string
+	exchangeRate: number
+}
+
+export type IGetTpBetRecordDetailData = {
+	tpId: number
+	tpCategoryId: number
+	gameType: number
+	gameTypeName: string
+	transId: string
+	detail: string
+	detailUrl: string
+	tpCurrency: ITpCurrency
+	refTransId: string
+	tpUserName: string
+	utcBetTime: string
+	utcSettledTime: string
+	stake: number
+	winlostAmount: number
+}

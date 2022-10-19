@@ -85,7 +85,7 @@ const LoginLog = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_LoginLog')}
 			/>
-			<LayoutContent.Card style={{ padding: '24px' }}>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<LoginLogFilter
 					loading={isGetLoginLogLoading}
 					form={filterForm}

@@ -124,7 +124,7 @@ const ReferralHistoryTable = ({
 		},
 	]
 	return (
-		<LayoutContent.Card style={{ marginTop: 0 }}>
+		<LayoutContent.Card style={{ marginTop: -20 }}>
 			<Table
 				loading={loading}
 				onChange={onTableChange}

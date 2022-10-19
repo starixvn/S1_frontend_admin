@@ -21,7 +21,7 @@ const BonusWallet = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Marketing.Label_BonusWallet')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<BonusWalletTable
 					loading={isGetBonusWalletInfoFetching}
 					bonusWalletInfos={bonusWalletInfos}

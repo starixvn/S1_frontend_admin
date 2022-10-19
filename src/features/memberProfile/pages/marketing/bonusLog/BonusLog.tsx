@@ -101,7 +101,7 @@ const BonusLog = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Marketing.Label_BonusLog')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<BonusLogFilter
 					loading={loading}
 					form={filterForm}

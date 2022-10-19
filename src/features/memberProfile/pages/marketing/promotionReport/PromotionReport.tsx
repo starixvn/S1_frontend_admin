@@ -109,7 +109,7 @@ const PromotionReport = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Marketing.Label_PromotionReport')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<PromotionReportFilter
 					loading={loading}
 					form={filterForm}

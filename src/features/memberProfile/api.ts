@@ -52,10 +52,27 @@ import {
 	IGetPromotionReportResponse,
 	IGetDeviceUserListArgs,
 	ICancelBonusArgs,
+	IGetThirdPartyAccountData,
+	IGetGameTypeListArgs,
+	IGetGameTypeListData,
+	IGetWinLossSummaryDetailArgs,
+	IGetWinLossSummaryDetailData,
 	IGetDepositInfoArgs,
 	IGetDepositInfoResponse,
 	IGetWithdrawalInfoArgs,
 	IGetWithdrawalInfoResponse,
+	IGetTurnoverArgs,
+	IGetTurnoverData,
+	IGetCustTpBetRecordArgs,
+	IGetCustTpBetRecordData,
+	IGetCustTpBetRecordByDayArgs,
+	IGetCustTpBetRecordByDayData,
+	IGetCustTpBetRecordByCategoryIdArgs,
+	IGetCustTpBetRecordByCategoryIdData,
+	IGetCustTpBetRecordByGameTypeArgs,
+	IGetCustTpBetRecordByGameTypeData,
+	IGetTpBetRecordDetailArgs,
+	IGetTpBetRecordDetailData,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -715,12 +732,112 @@ export const memberProfileApi = createApi({
 				}),
 			}
 		),
+		// GameLog => 3RDParty
+		getThirdPartyAccount: builder.query<
+			IAxiosResponse<IGetThirdPartyAccountData[]>,
+			ICustIdInterface
+		>({
+			query: data => ({
+				url: 'Member/GetThirdPartyAccount',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// GameLog => WinLossSummary 取得GameTypeList
+		getGameTypeList: builder.query<
+			IAxiosResponse<IGetGameTypeListData[]>,
+			IGetGameTypeListArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetGameTypeList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// GameLog => WinLossSummary 取得 WinLossSummary Detail
+		getWinLossSummaryDetail: builder.query<
+			IAxiosResponse<IGetWinLossSummaryDetailData[]>,
+			IGetWinLossSummaryDetailArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetWinLoseSummaryDetail',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getWithdrawalInfo: builder.query<
 			IGetWithdrawalInfoResponse,
 			IGetWithdrawalInfoArgs
 		>({
 			query: data => ({
 				url: 'CustomerManage/GetWithdrawalInfoByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// GameLog => Turnover
+		getTurnoverByCustId: builder.query<
+			IAxiosResponse<IGetTurnoverData[]>,
+			IGetTurnoverArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetTurnOverByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// GameLog => Statement
+		// 第一層 , 取得客戶紀錄
+		getCustTpBetRecord: builder.query<
+			IAxiosResponse<IGetCustTpBetRecordData[]>,
+			IGetCustTpBetRecordArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecord',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 第二層 , 取得客戶指定日期紀錄
+		getCustTpBetRecordByDay: builder.query<
+			IAxiosResponse<IGetCustTpBetRecordByDayData[]>,
+			IGetCustTpBetRecordByDayArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordByDay',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 第三層 , 取得客戶指定 category 紀錄
+		getCustTpBetRecordByCategory: builder.query<
+			IAxiosResponse<IGetCustTpBetRecordByCategoryIdData[]>,
+			IGetCustTpBetRecordByCategoryIdArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordByCategoryId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 第四層 , 取得客戶指定 GameType 紀錄
+		getCustTpBetRecordByGameType: builder.query<
+			IAxiosResponse<IGetCustTpBetRecordByGameTypeData[]>,
+			IGetCustTpBetRecordByGameTypeArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordDetailByGameType',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 第五層 , 取得第三方細單
+		getTpBetRecordDetail: builder.query<
+			IAxiosResponse<IGetTpBetRecordDetailData>,
+			IGetTpBetRecordDetailArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetTpBetRecordDetail',
 				method: 'POST',
 				data,
 			}),
@@ -789,4 +906,13 @@ export const {
 	useLazyGetPromotionReportQuery,
 	useLazyGetDeviceUserListQuery,
 	useCancelPromotionMutation,
+	useGetThirdPartyAccountQuery,
+	useLazyGetGameTypeListQuery,
+	useLazyGetWinLossSummaryDetailQuery,
+	useLazyGetTurnoverByCustIdQuery,
+	useLazyGetCustTpBetRecordQuery,
+	useLazyGetCustTpBetRecordByDayQuery,
+	useLazyGetCustTpBetRecordByCategoryQuery,
+	useLazyGetCustTpBetRecordByGameTypeQuery,
+	useLazyGetTpBetRecordDetailQuery,
 } = memberProfileApi

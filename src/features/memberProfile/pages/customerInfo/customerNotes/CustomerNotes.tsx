@@ -157,7 +157,7 @@ const CustomerNotes = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_Notes')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<CustomerNotesForm
 					form={addForm}
 					loading={isAddCustNotesLoading}

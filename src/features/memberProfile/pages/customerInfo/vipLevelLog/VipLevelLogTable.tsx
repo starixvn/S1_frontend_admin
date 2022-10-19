@@ -87,7 +87,7 @@ const VipLevelLogTable = ({
 		},
 	]
 	return (
-		<LayoutContent.Card style={{ marginTop: 0 }}>
+		<LayoutContent.Card style={{ marginTop: -20 }}>
 			<Table
 				loading={loading}
 				dataSource={vipLevelLog ?? []}

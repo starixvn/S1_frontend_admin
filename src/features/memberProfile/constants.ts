@@ -230,3 +230,13 @@ export enum PromotionReportFullFillTypeEnum {
 	RollOver = 1,
 	WinOver = 2,
 }
+
+// GameLog => Statement Table State
+// 用來判斷 Statement 當前顯示的 Table
+export enum GameStatementTableEnum {
+	TPBetRecord, //  首層
+	TPBetRecordByDay, // 二層 , 特定日期
+	TPBetRecordByCategory, // 三層 , 特定 category
+	TPBetRecordByGameType, // 四層 , 特定 gameType
+	TPBetRecordDetail, // 五層 , 特定細單
+}

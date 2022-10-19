@@ -147,7 +147,7 @@ const SmsInfo = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_SMSInfo')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<SmsInfoTable
 					loading={loading}
 					pagination={pagination}

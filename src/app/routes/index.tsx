@@ -600,6 +600,27 @@ const MemberProfilePromotionReport = lazy(
 		)
 )
 
+const MemberProfileThirdPartyAccounts = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ThirdPartyAccounts' */ 'features/memberProfile/pages/game/thirdPartyAccounts/ThirdPartyAccounts'
+		)
+)
+
+const MemberProfileTurnover = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Turnover' */ 'features/memberProfile/pages/game/turnover/Turnover'
+		)
+)
+
+const MemberProfileWinLossSummary = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLossSummary' */ 'features/memberProfile/pages/game/winLossSummary/WinLossSummary'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1450,8 +1471,31 @@ const routes: RouteObject[] = [
 						path: 'game/statement/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileGameStatement />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/3RDPartyAccount/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileThirdPartyAccounts />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/winLoseSummary/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileWinLossSummary />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/turnover/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileTurnover />
 							</AuthRequire>
 						),
 					},

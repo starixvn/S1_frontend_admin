@@ -53,7 +53,7 @@ const DeviceList = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_DeviceList')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<DeviceListTable
 					loading={isDeviceListLoading}
 					deviceList={deviceList}

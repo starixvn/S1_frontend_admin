@@ -371,7 +371,7 @@ const Setting = () => {
 		<>
 			<LayoutContent.Title title='Setting' />
 
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<Row gutter={16} justify='center'>
 					<SettingInfoCard
 						onEditTypeChange={onEditTypeChange}
