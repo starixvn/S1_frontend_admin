@@ -82,7 +82,7 @@ const RewardPointLog = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Marketing.Label_RewardsPointLog')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<RewardPointLogFilter
 					loading={isGetRewardPointLogLoading}
 					form={filterForm}

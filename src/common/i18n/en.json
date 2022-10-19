@@ -108,6 +108,7 @@
 	"Label_InvitationLimit": "Invitation Limit",
 	"Label_ReferralFreeCredit": "Referral Free Credit",
 	"Label_ValidBet": "Valid Bet",
+	"Label_InvalidBet" : "InValid Bet",
 	"Label_ValidityDeposit": "Validity Deposit",
 	"Label_PeriodDays": "Term Period Within(days)",
 	"Label_EditReferralManagement": "Edit Referral Management",
@@ -157,6 +158,7 @@
 	"Label_Date": "Date",
 	"Label_DateRequired": "Date is Required",
 	"Label_GameType": "Game Type",
+	"Label_GameTypeName" : "Game Type Name",
 	"GameLevel": {
 		"Label_VintageClub": "Vintage Club",
 		"Label_SilverClub": "Silver Club",
@@ -631,7 +633,7 @@
 				"Label_Statement": "Statement",
 				"Label_Turnover": "Turnover",
 				"Label_3RDPartyAccount": "3RD Party Account",
-				"Label_WinLoseSummary": "WinLoseSummary"
+				"Label_WinLoseSummary": "Win Lose Summary"
 			},
 			"Marketing": {
 				"Label_BonusWallet": "Bonus Wallet",
@@ -739,6 +741,7 @@
 	"Label_Allow": "Allow",
 	"Label_Score": "Score",
 	"Label_Deny": "Deny",
+	"Label_ExcludeValidTO" : "(ExcludeValidTO)",
 	"Label_Review": "Review",
 	"Label_UpdatedDate": "Updated Date",
 	"Label_DepositType": "Deposit Type",
@@ -749,5 +752,20 @@
 	"Label_CompanyAccountNumber": "Company Account Number",
 	"Label_DepositDate": "Deposit Date",
 	"Label_CreatedDate": "Created Date",
-	"Label_WithdrawalType": "Withdrawal Type"
+	"Label_WithdrawalType": "Withdrawal Type",
+	"Label_TotalTO" : "Total TO",
+	"Label_TurnoverWithoutBonus" : "Turnover Without Bonus",
+	"Label_WinLossWithoutBonus" : "Win/Loss Without Bonus",
+	"Label_RunningTickets" : "Running Tickets",
+	"Label_Back" : "Back",
+	"Label_CategoryName" : "Category Name",
+	"Label_SettlementTypeName" : "Settlement Type Name",
+	"Label_SettledTime" : "Settled Time",
+	"Label_TransTime" : "Trans Time",
+	"Label_ClickToShowDetail" : "Click To Show Detail",
+	"Label_TpCategoryId" : "TpCategoryId",
+	"Label_TpCurrency" : "TpCurrency",
+	"Label_ExchangeRate" : "ExchangeRate",
+	"Label_UtcBetTime" : "UTC Bet Time" ,
+	"Label_UtcSettledTime" : "UTC Settled Time"
 }

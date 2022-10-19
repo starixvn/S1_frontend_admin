@@ -152,7 +152,7 @@ const IpList = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.CustomerInfo.Label_IPList')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<IpListFilter
 					loading={loading}
 					form={filterForm}

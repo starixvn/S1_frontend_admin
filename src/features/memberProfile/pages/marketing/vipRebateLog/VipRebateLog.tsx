@@ -79,7 +79,7 @@ const VipRebateLog = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Marketing.Label_VipRebateLog')}
 			/>
-			<LayoutContent.Card style={{ padding: '24px' }}>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<VipRebateFilter
 					loading={isGetVipRebateLogLoading}
 					form={filterForm}
