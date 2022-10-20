@@ -621,6 +621,13 @@ const MemberProfileWinLossSummary = lazy(
 		)
 )
 
+const MemberProfileCashBackReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'CashBackReport' */ 'features/memberProfile/pages/marketing/cashBackReport/CashBackReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1376,8 +1383,6 @@ const routes: RouteObject[] = [
 						path: 'dashboard/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-
 								<MemberProfileDashboard />
 							</AuthRequire>
 						),
@@ -1387,7 +1392,6 @@ const routes: RouteObject[] = [
 						path: 'customerInfo/memberFlowLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileCustomerInfoMemberFlowLog />
 							</AuthRequire>
 						),
@@ -1541,10 +1545,17 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
+						path: 'marketing/cashBackReport/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileCashBackReport />
+							</AuthRequire>
+						),
+					},
+					{
 						path: 'setting/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileSetting />
 							</AuthRequire>
 						),
