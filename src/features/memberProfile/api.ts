@@ -73,6 +73,9 @@ import {
 	IGetCustTpBetRecordByGameTypeData,
 	IGetTpBetRecordDetailArgs,
 	IGetTpBetRecordDetailData,
+	IGetPromotionCashBackData,
+	IGetPromotionDetailArgs,
+	IGetPromotionDetailData,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -842,6 +845,28 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// Marketing => CashBack Report
+		getPromotionCashBack: builder.query<
+			IAxiosResponse<IGetPromotionCashBackData[]>,
+			ICustIdInterface
+		>({
+			// 取上方 CashBack Info
+			query: data => ({
+				url: 'Member/GetPromotionCashback',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getPromotionDetail: builder.query<
+			IAxiosResponse<IGetPromotionDetailData>,
+			IGetPromotionDetailArgs
+		>({
+			query: data => ({
+				url: 'Member/GetPromotionDetail',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -915,4 +940,6 @@ export const {
 	useLazyGetCustTpBetRecordByCategoryQuery,
 	useLazyGetCustTpBetRecordByGameTypeQuery,
 	useLazyGetTpBetRecordDetailQuery,
+	useGetPromotionCashBackQuery,
+	useLazyGetPromotionDetailQuery,
 } = memberProfileApi

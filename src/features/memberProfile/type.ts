@@ -759,3 +759,34 @@ export type IGetTpBetRecordDetailData = {
 	stake: number
 	winlostAmount: number
 }
+
+// Marketing => CashBack Report
+// 取得上方 CashBack Info
+export interface IGetPromotionCashBackData {
+	bonusCode: string
+	description: string
+}
+
+// 點 BonusCode 取該 CashBack 輸額細節
+export interface IGetPromotionDetailArgs {
+	bonusCode: string
+	custId: number
+}
+
+export type ICashBackDetail = {
+	tpName: string
+	lossAmount: number // Net Loss
+	lossAmountWithBonus: number // Loss With Bonus
+}
+
+export interface IGetPromotionDetailData {
+	cashBackDetails: {
+		totalBonus: number // Total Bonus Claimable
+		maxBonus: number // Max Bonus
+		totalLossAmount: number // Total Net Loss
+		minLossAmount: number // Min Net Loss Required
+		originalTotalBonus: number // Total Bonus
+		percentage: string // percentage
+		cashBackDetail: ICashBackDetail[]
+	}
+}
