@@ -94,6 +94,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.customerSupport.sub.memberAdministrationList.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.customerSupport.sub.memberAdministrationList.root,
+	},
+	{
+		icon: null,
 		functionId: 26,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/TagManagement',

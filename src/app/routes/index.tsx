@@ -453,6 +453,13 @@ const ReasonManagement = lazy(
 		)
 )
 
+const MemberAdministrationList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberAdministrationList' */ 'features/memberAdministrationList/MemberAdministrationList'
+		)
+)
+
 const MemberProfile = lazy(
 	() =>
 		import(
@@ -1368,6 +1375,18 @@ const routes: RouteObject[] = [
 						functionId={paths.bankTransfer.sub.reasonManagement.functionId}
 					>
 						<ReasonManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministrationList.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.memberAdministrationList.functionId
+						}
+					>
+						<MemberAdministrationList />
 					</AuthRequire>
 				),
 			},
