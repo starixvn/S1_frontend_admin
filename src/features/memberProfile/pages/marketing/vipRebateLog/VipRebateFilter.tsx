@@ -1,4 +1,13 @@
-import { Button, Col, DatePicker, Form, FormInstance, Input, Row } from 'antd'
+import {
+	Button,
+	Col,
+	DatePicker,
+	Form,
+	FormInstance,
+	Input,
+	Row,
+	Select,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import {
 	MOMENT_DATE_RANGES,
@@ -7,6 +16,8 @@ import {
 import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
+import { IsPayoutEnum, isPayoutList } from 'features/memberProfile/constants'
+import { MultipleSelect } from 'components/Select'
 
 interface IVipRebateFilterProps {
 	loading: boolean
@@ -23,6 +34,7 @@ interface IVipRebateFilterProps {
 }
 
 const { RangePicker } = DatePicker
+const { Option } = Select
 
 const VipRebateFilter = ({
 	loading,
@@ -32,12 +44,44 @@ const VipRebateFilter = ({
 	timeZoneUtcOffset,
 }: IVipRebateFilterProps) => {
 	const { t } = useTranslation()
+
+	const payoutSelector = () => {
+		const onChangePayoutStatus = (newStatus: Array<number | string>) => {
+			if (newStatus.includes('all')) {
+				form.setFieldsValue({
+					payoutStatuses: isPayoutList?.map(item => item.value),
+				})
+			} else {
+				form.setFieldsValue({
+					payoutStatuses: newStatus,
+				})
+			}
+		}
+		return (
+			<MultipleSelect
+				onChange={onChangePayoutStatus}
+				placeholder={t('Label_Select')}
+			>
+				{(isPayoutList?.length as number) > 1 && (
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+				)}
+				{isPayoutList?.map(item => (
+					<Option key={Number(item.value)} value={item.value}>
+						{t(item.displayName)}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
 	return (
 		<Form
 			layout='vertical'
 			size='middle'
 			form={form}
 			onFinish={() => onSearch({})}
+			initialValues={{
+				payoutStatuses: [IsPayoutEnum.true],
+			}}
 		>
 			<Row align='middle' gutter={20}>
 				<Col span={10}>
@@ -76,6 +120,11 @@ const VipRebateFilter = ({
 								/>
 							</div>
 						</Input.Group>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item label={t('Label_PayoutStatus')} name='payoutStatuses'>
+						{payoutSelector()}
 					</Form.Item>
 				</Col>
 				<Col span={3}>

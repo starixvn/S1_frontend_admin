@@ -450,7 +450,9 @@ export type IGetBonusLogResponse = IAxiosResponse<IGetBonusLogData[]>
 
 // Marketing => VipRebateLog 頁面
 
-export type IGetVipRebateLogArgs = IGetLoginLogArgs
+export interface IGetVipRebateLogArgs extends IGetLoginLogArgs {
+	payoutStatuses: number[]
+}
 
 export interface IGetVipRebateLogData {
 	siteId: number
@@ -465,6 +467,23 @@ export interface IGetVipRebateLogData {
 	createTime: string
 	refId: string
 	settledDate: number
+	maxPayout: number
+	minPayout: number
+	rcCalculatedAmount: number
+}
+
+export interface IGetVipRebateDetailArgs {
+	custId: number
+	tpCategoryId: number
+	refId: string
+}
+
+export interface IGetVipRebateDetailData {
+	gameType?: number
+	typeName: string
+	validBet: number
+	percentage: number | null
+	calculatedAmount: number
 }
 
 // Marketing => RewardPointLog 頁面
