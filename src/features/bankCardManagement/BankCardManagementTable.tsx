@@ -5,7 +5,6 @@ import { PaginationInterface } from 'common/hooks'
 import { Space, TablePaginationConfig, Typography } from 'antd'
 import { IGetBankCardListData } from 'features/bankCardManagement/type'
 import { useTranslation } from 'react-i18next'
-import { EditFilled } from '@ant-design/icons'
 import { PermissionInterface } from 'type'
 import { find } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
@@ -39,8 +38,11 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 			align: 'center' as 'center',
 			render: (record: IGetBankCardListData) => {
 				return (
-					<Typography.Link disabled={!editPermission?.canUse}>
-						<EditFilled onClick={() => onEditClick(record)} />
+					<Typography.Link
+						disabled={!editPermission?.canUse}
+						onClick={() => onEditClick(record)}
+					>
+						{t('Label_Edit')}
 					</Typography.Link>
 				)
 			},

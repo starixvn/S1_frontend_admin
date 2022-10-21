@@ -72,7 +72,6 @@ const ReferralManagementTable: FC<IReferralManagementTableProps> = ({
 						>
 							<Switch
 								checked={Boolean(status)}
-								size='small'
 								disabled={!setActivePermission?.canUse}
 							/>
 						</Popconfirm>
