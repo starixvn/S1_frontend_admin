@@ -67,7 +67,7 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 								)
 							}}
 						>
-							<EditFilled />
+							{t('Label_Edit')}
 						</Typography.Link>
 					)
 				},
