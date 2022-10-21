@@ -13,5 +13,6 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnPaste": true,
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"typescript.tsdk": "node_modules/typescript/lib" // * 使用工作區 typescript 版本
 }

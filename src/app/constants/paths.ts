@@ -18,6 +18,10 @@ const paths = {
 	customerSupport: {
 		root: 'customerSupport',
 		sub: {
+			memberAdministrationList: {
+				root: 'customerSupport/memberAdministrationList',
+				functionId: 130,
+			},
 			operatorService: {
 				root: 'customerSupport/operatorService',
 				sub: {

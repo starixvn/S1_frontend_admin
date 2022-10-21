@@ -56,6 +56,7 @@ import { adjustmentLimitationApi } from 'features/adjustmentLimitation/api'
 import { bonusReportApi } from 'features/bonusReport/api'
 import { transferInfoManagementApi } from 'features/transferInfoManagement/api'
 import { reasonManagementApi } from 'features/reasonManagement/api'
+import { memberAdministrationListApi } from 'features/memberAdministrationList/api'
 import { memberProfileApi } from 'features/memberProfile/api'
 
 export const store = configureStore({
@@ -119,6 +120,8 @@ export const store = configureStore({
 		[bonusReportApi.reducerPath]: bonusReportApi.reducer,
 		[withdrawalAdjustmentApi.reducerPath]: withdrawalAdjustmentApi.reducer,
 		[reasonManagementApi.reducerPath]: reasonManagementApi.reducer,
+		[memberAdministrationListApi.reducerPath]:
+			memberAdministrationListApi.reducer,
 		[memberProfileApi.reducerPath]: memberProfileApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
@@ -179,6 +182,7 @@ export const store = configureStore({
 			.concat(withdrawalKycControlApi.middleware)
 			.concat(withdrawalAdjustmentApi.middleware)
 			.concat(reasonManagementApi.middleware)
+			.concat(memberAdministrationListApi.middleware)
 			.concat(memberProfileApi.middleware),
 })
 
