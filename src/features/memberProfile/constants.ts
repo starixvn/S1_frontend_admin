@@ -240,3 +240,16 @@ export enum GameStatementTableEnum {
 	TPBetRecordByGameType, // 四層 , 特定 gameType
 	TPBetRecordDetail, // 五層 , 特定細單
 }
+
+// VipRebate Log isPayout Filter List
+export enum IsPayoutEnum {
+	false,
+	true,
+}
+export const isPayoutList: Array<{
+	value: number
+	displayName: string
+}> = [
+	{ value: IsPayoutEnum.true, displayName: 'Label_Yes' },
+	{ value: IsPayoutEnum.false, displayName: 'Label_No' },
+]

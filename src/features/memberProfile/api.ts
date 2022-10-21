@@ -76,6 +76,8 @@ import {
 	IGetPromotionCashBackData,
 	IGetPromotionDetailArgs,
 	IGetPromotionDetailData,
+	IGetVipRebateDetailArgs,
+	IGetVipRebateDetailData,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -685,6 +687,16 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getVipRebateDetail: builder.query<
+			IAxiosResponse<IGetVipRebateDetailData[]>,
+			IGetVipRebateDetailArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetVipRebateDetail',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// Marketing => RewardPointLog
 		getRewardPointLog: builder.query<
 			IGetRewardPointLogResponse,
@@ -942,4 +954,5 @@ export const {
 	useLazyGetTpBetRecordDetailQuery,
 	useGetPromotionCashBackQuery,
 	useLazyGetPromotionDetailQuery,
+	useLazyGetVipRebateDetailQuery,
 } = memberProfileApi

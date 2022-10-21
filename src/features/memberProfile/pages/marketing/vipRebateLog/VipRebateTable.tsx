@@ -1,5 +1,5 @@
 import { PaginationInterface } from 'common/hooks'
-import { TablePaginationConfig, Typography } from 'antd'
+import { Button, TablePaginationConfig, Typography } from 'antd'
 import { IGetVipRebateLogData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
@@ -12,6 +12,19 @@ interface IVipRebateTableProps {
 	timeZoneUtcOffset: number
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	vipRebateLog: IGetVipRebateLogData[]
+	onDetailClicked: ({
+		createTime,
+		minPayout,
+		maxPayout,
+		refId,
+		categoryId,
+	}: {
+		createTime: string
+		maxPayout: number
+		minPayout: number
+		refId: string
+		categoryId: number
+	}) => void
 }
 
 const VipRebateTable = ({
@@ -20,11 +33,12 @@ const VipRebateTable = ({
 	timeZoneUtcOffset,
 	onTableChange,
 	vipRebateLog,
+	onDetailClicked,
 }: IVipRebateTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
 		{
-			title: t('Label_Time'),
+			title: t('Label_PayoutTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
 			width: 120,
@@ -55,11 +69,40 @@ const VipRebateTable = ({
 				rcRedeemAmount ? numberFormatter.format(rcRedeemAmount) : '-',
 		},
 		{
-			title: t('Label_RefId'),
-			key: 'refId',
-			dataIndex: 'refId',
+			title: t('Label_PayoutStatus'),
+			key: 'payoutStatus',
 			width: 100,
 			align: 'center' as 'center',
+			render: (record: IGetVipRebateLogData) => {
+				const { rcRedeemAmount } = record
+				return rcRedeemAmount > 0 ? t('Label_Yes') : t('Label_No')
+			},
+		},
+		{
+			title: t('Label_Action'),
+			key: 'action',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IGetVipRebateLogData) => {
+				const { createTime, minPayout, maxPayout, refId, categoryId } = record
+				return (
+					<Button
+						type='primary'
+						shape='round'
+						onClick={() =>
+							onDetailClicked({
+								createTime,
+								minPayout,
+								maxPayout,
+								refId,
+								categoryId,
+							})
+						}
+					>
+						{t('Label_Detail')}
+					</Button>
+				)
+			},
 		},
 	]
 

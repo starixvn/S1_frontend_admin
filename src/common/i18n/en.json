@@ -773,5 +773,11 @@
 	"Label_NetLoss" : "Net Loss",
 	"Label_TotalNetLoss" : "Total Net Loss",
 	"Label_MinNetLossRequired" : "Min Net Loss Required",
-	"Label_PercentageWithoutSymbol" : "Percentage"
+	"Label_PercentageWithoutSymbol" : "Percentage",
+	"Label_Yes" : "Yes",
+	"Label_No" : "No",
+	"Label_PayoutStatus" : "Payout Status",
+	"Label_PayoutTime" : "Payout Time",
+	"Label_ValidTurnover" : "Valid Turnover",
+	"Label_RebateByGame" : "Rebate % by Game"
 }
