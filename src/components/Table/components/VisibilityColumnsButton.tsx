@@ -4,6 +4,7 @@ import { Button, Dropdown, Menu, MenuProps } from 'antd'
 import { filter, includes } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useScrollPosition } from 'common/hooks'
+import { ItemType } from 'antd/lib/menu/hooks/useItems'
 
 const StyleMenu = styled(Menu)`
 	max-height: 250px;
@@ -58,13 +59,14 @@ const VisibilityColumnsButton = ({
 		handleInit()
 	}, [])
 
-	const menuItems = columns.map(column => ({
+	const menuItems: ItemType[] = columns.map(column => ({
 		key: column.title,
 		label: column.title,
 	}))
 
 	const menu = (
 		<StyleMenu
+			selectedKeys={visibilityColumns}
 			onClick={handleClick}
 			items={[{ key: 'all', label: t('Label_All') }, ...menuItems]}
 		/>
