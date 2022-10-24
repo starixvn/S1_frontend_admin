@@ -203,6 +203,19 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 				},
 			})
 		}
+
+		if (
+			currentBonusType === BonusTypeEnum.FreeBet ||
+			currentBonusType === BonusTypeEnum.RetentionFreeBet
+		) {
+			form?.setFieldsValue({
+				specific: {
+					[isoCode]: {
+						bonusType: AmountTypeEnum.Amount,
+					},
+				},
+			})
+		}
 	}, [currentBonusType])
 
 	return (
