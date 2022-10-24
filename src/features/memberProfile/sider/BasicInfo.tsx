@@ -25,6 +25,12 @@ import {
 import { find } from 'lodash'
 import React from 'react'
 
+const { Title, Text } = Typography
+
+const StyledText = styled(Text)`
+	overflow-wrap: anywhere; // 自動換行
+`
+
 interface IBasicInfoProps {
 	custBasicInfo: IGetBasicInfoData
 	onCustPhotoClick: () => void
@@ -112,7 +118,7 @@ const BasicInfo = ({
 				</Col>
 				<Col span={14}>
 					<Space direction='vertical' style={{ padding: '5px' }}>
-						<Typography.Title level={5}>{userName}</Typography.Title>
+						<Title level={5}>{userName}</Title>
 						<OnlineTag color={isOnline ? 'success' : 'default'}>
 							{t('Label_Online')}
 						</OnlineTag>
@@ -174,42 +180,36 @@ const BasicInfo = ({
 			{/* Info 內容 */}
 			<Space direction='vertical'>
 				<Row>
-					<Typography.Text>{`${t(
-						'Label_FullName'
-					)} : ${accountName}`}</Typography.Text>
+					<StyledText>{`${t('Label_FullName')} : ${accountName}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t(
-						'Label_Status'
-					)} : ${getStatusName()}`}</Typography.Text>
+					<StyledText>{`${t('Label_Status')} : ${getStatusName()}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t(
+					<StyledText>{`${t(
 						'Label_DepositPointLevel'
-					)} : ${depositPointLevel}`}</Typography.Text>
+					)} : ${depositPointLevel}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t(
-						'Label_Currency'
-					)} : ${currency}`}</Typography.Text>
+					<StyledText>{`${t('Label_Currency')} : ${currency}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t(
+					<StyledText>{`${t(
 						'Label_Identity'
-					)} : ${getIdentityName()}`}</Typography.Text>
+					)} : ${getIdentityName()}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t('Label_AffiliatesName')} : ${
+					<StyledText>{`${t('Label_AffiliatesName')} : ${
 						affiliatesName ?? 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text>{`${t('Label_AffiliatesCode')} : ${
+					<StyledText>{`${t('Label_AffiliatesCode')} : ${
 						affiliatesCode ?? 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_RegisteredDate'
 					)} : ${
 						registeredTime
@@ -217,10 +217,10 @@ const BasicInfo = ({
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD  HH:mm:ss')}`
 							: ''
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_LineBindingTime'
 					)} : ${
 						lineBindingTime
@@ -228,10 +228,10 @@ const BasicInfo = ({
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD  HH:mm:ss')}`
 							: 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_FirstDepositTime'
 					)} : ${
 						firstDepositTime
@@ -239,10 +239,10 @@ const BasicInfo = ({
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_LastLogInTime'
 					)} : ${
 						lastLoginTime
@@ -250,10 +250,10 @@ const BasicInfo = ({
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_LastActiveTime'
 					)} : ${
 						lastActiveTime
@@ -261,27 +261,27 @@ const BasicInfo = ({
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'
-					}`}</Typography.Text>
+					}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_DOB'
-					)} :\n${birthDay}/${birthMonth}/${birthYear}`}</Typography.Text>
+					)} :\n${birthDay}/${birthMonth}/${birthYear}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_PhoneNo'
-					)} :\n${mobileNumber}`}</Typography.Text>
+					)} :\n${mobileNumber}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_Email'
-					)} :\n${email}`}</Typography.Text>
+					)} :\n${email}`}</StyledText>
 				</Row>
 				<Row>
-					<Typography.Text style={{ whiteSpace: 'pre-wrap' }}>{`${t(
+					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_Address'
-					)} :\n${address}`}</Typography.Text>
+					)} :\n${address}`}</StyledText>
 				</Row>
 			</Space>
 		</>
