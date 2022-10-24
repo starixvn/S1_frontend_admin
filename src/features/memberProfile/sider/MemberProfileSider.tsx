@@ -32,6 +32,7 @@ const MemberProfileSider = ({
 			<LayoutContent.Card
 				style={{
 					minHeight: '80vh',
+					overflow: 'unset',
 				}}
 			>
 				<MemberProfileSiderContent />

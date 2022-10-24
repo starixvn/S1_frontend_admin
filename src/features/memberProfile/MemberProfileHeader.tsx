@@ -381,7 +381,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 		{
 			key: 2,
 			label: (
-				<Dropdown overlay={customerInfoMenu} trigger={['click', 'hover']}>
+				<Dropdown overlay={customerInfoMenu} trigger={['click']}>
 					<Button>
 						<Space>
 							{t('MemberProfile.Menu.Label_CustomerInfo')}
@@ -394,7 +394,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 		{
 			key: 3,
 			label: (
-				<Dropdown overlay={financeMenu} trigger={['click', 'hover']}>
+				<Dropdown overlay={financeMenu} trigger={['click']}>
 					<Button>
 						<Space>
 							{t('MemberProfile.Menu.Label_Finance')}
@@ -407,7 +407,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 		{
 			key: 4,
 			label: (
-				<Dropdown overlay={gameMenu} trigger={['click', 'hover']}>
+				<Dropdown overlay={gameMenu} trigger={['click']}>
 					<Button>
 						<Space>
 							{t('MemberProfile.Menu.Label_Game')}
@@ -420,7 +420,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 		{
 			key: 5,
 			label: (
-				<Dropdown overlay={marketingMenu} trigger={['click', 'hover']}>
+				<Dropdown overlay={marketingMenu} trigger={['click']}>
 					<Button>
 						<Space>
 							{t('MemberProfile.Menu.Label_Marketing')}
@@ -454,7 +454,12 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 
 	return (
 		<StyledHeader>
-			<Menu theme='light' mode='horizontal' items={items as ItemType[]} />
+			<Menu
+				theme='light'
+				triggerSubMenuAction='click'
+				mode='horizontal'
+				items={items as ItemType[]}
+			/>
 		</StyledHeader>
 	)
 }
