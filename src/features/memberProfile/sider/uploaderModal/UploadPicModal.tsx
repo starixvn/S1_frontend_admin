@@ -93,6 +93,7 @@ const UploadPicModal = ({
 						if (file.url) {
 							return (
 								<UploaderImage
+									key={Number(uid)}
 									src={file.url}
 									deleteLoading={deleteLoading}
 									onRemove={() => onDeletePhoto(Number(uid))}
@@ -101,6 +102,7 @@ const UploadPicModal = ({
 						}
 						return (
 							<UploaderImage
+								key={Number(uid)}
 								src={file.preview}
 								deleteLoading={deleteLoading}
 								onRemove={() => onDeletePhoto(Number(uid))}
