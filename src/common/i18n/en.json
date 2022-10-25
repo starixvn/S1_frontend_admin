@@ -655,7 +655,7 @@
 	"Label_TransferPin": "Transfer Pin",
 	"Label_LoginPin": "Login Pin",
 	"Label_MobilePin": "Mobile Pin",
-	"Label_CorporateID": "Corporate ID"
+	"Label_CorporateID": "Corporate ID",
 	"Label_AffiliateName": "Affiliate Name",
 	"Label_AdvancedSearch": "Advanced Search",
 	"Label_BankAccountNumber": "Bank Account Number",
@@ -784,7 +784,7 @@
 	"Label_ThirdPartyID": "Third-Party ID",
 	"Label_Direction": "Direction",
 	"Label_ThirdAdd": "3RD Add",
-	"Label_ThirdMinus":"3RD Minus",
+	"Label_ThirdMinus": "3RD Minus",
 	"Label_NetWork": "NetWork",
 	"Label_WalletAddress": "Wallet Address",
 	"Label_MemberType": "Member Type",
