@@ -7,8 +7,7 @@ import { Layout } from 'app/pages/layout'
 import { UIStatePage } from 'components/UIStatePage'
 import { MenMappingInterface, MENU_MAPPING } from 'app/constants/menuMapping'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
-import { InternalAuthRequire } from 'common/auth'
-import { AuthRequire } from '../../common/auth/AuthRequire'
+import { InternalAuthRequire, AuthRequire } from 'common/auth'
 
 const Dashboard = lazy(
 	() =>
@@ -454,6 +453,13 @@ const ReasonManagement = lazy(
 		)
 )
 
+const MemberAdministrationList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberAdministrationList' */ 'features/memberAdministrationList/MemberAdministrationList'
+		)
+)
+
 const MemberProfile = lazy(
 	() =>
 		import(
@@ -482,6 +488,83 @@ const MemberProfileFinanceDepositInfo = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/depositInfo/DepositInfo'
+		)
+)
+
+const MemberProfileFinanceWithdrawalInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalInfo'
+		)
+)
+
+const MemberProfileFinanceAdjustmentInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/adjustmentInfo/AdjustmentInfo'
+		)
+)
+
+const MemberProfileFinanceThirdPartyAdjustmentInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/thirdPartyAdjustmentInfo/ThirdPartyAdjustmentInfo'
+		)
+)
+
+const MemberProfileFinanceWithdrawalLimitLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/withdrawalLimitLog/WithdrawalLimitLog'
+		)
+)
+
+const MemberProfileFinanceTransferInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/transferInfo/TransferInfo'
+		)
+)
+
+const MemberProfileFinanceFinancialLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/financialLog/FinancialLog'
+		)
+)
+
+const MemberProfileBankInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/bankInfoLog/BankInfoLog'
+		)
+)
+
+const MemberProfileEWalletInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/eWalletInfoLog/EWalletInfoLog'
+		)
+)
+
+const MemberProfileCryptoInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/cryptoInfoLog/CryptoInfoLog'
+		)
+)
+
+const MemberProfileBankList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/bankList/BankList'
+		)
+)
+
+const MemberProfileEWalletList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/eWalletList/EWalletList'
 		)
 )
 
@@ -514,6 +597,111 @@ const MemberProfileAdminUserLog = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/adminUserLog/AdminUserLog'
+		)
+)
+
+const MemberProfileVipLevelLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipLevelLog' */ 'features/memberProfile/pages/customerInfo/vipLevelLog/VipLevelLog'
+		)
+)
+
+const MemberProfileReferralHistory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ReferralHistory' */ 'features/memberProfile/pages/customerInfo/referralHistory/ReferralHistory'
+		)
+)
+
+const MemberProfileNotes = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'CustomerNotes' */ 'features/memberProfile/pages/customerInfo/customerNotes/CustomerNotes'
+		)
+)
+
+const MemberProfileLoginLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LoginLog' */ 'features/memberProfile/pages/customerInfo/loginLog/LoginLog'
+		)
+)
+
+const MemberProfileSmsInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SmsInfo' */ 'features/memberProfile/pages/customerInfo/smsInfo/SmsInfo'
+		)
+)
+
+const MemberProfileDeviceList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DeviceList' */ 'features/memberProfile/pages/customerInfo/deviceList/DeviceList'
+		)
+)
+
+const MemberProfileIpList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'IpList' */ 'features/memberProfile/pages/customerInfo/IpList/IpList'
+		)
+)
+
+const MemberProfileBonusLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusLog' */ 'features/memberProfile/pages/marketing/bonusLog/BonusLog'
+		)
+)
+
+const MemberProfileVipRebateLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateLog' */ 'features/memberProfile/pages/marketing/vipRebateLog/VipRebateLog'
+		)
+)
+
+const MemberProfileRewardPointLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RewardPointLog' */ 'features/memberProfile/pages/marketing/rewardPointLog/RewardPointLog'
+		)
+)
+
+const MemberProfilePromotionReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PromotionReport' */ 'features/memberProfile/pages/marketing/promotionReport/PromotionReport'
+		)
+)
+
+const MemberProfileThirdPartyAccounts = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ThirdPartyAccounts' */ 'features/memberProfile/pages/game/thirdPartyAccounts/ThirdPartyAccounts'
+		)
+)
+
+const MemberProfileTurnover = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Turnover' */ 'features/memberProfile/pages/game/turnover/Turnover'
+		)
+)
+
+const MemberProfileWinLossSummary = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLossSummary' */ 'features/memberProfile/pages/game/winLossSummary/WinLossSummary'
+		)
+)
+
+const MemberProfileCashBackReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'CashBackReport' */ 'features/memberProfile/pages/marketing/cashBackReport/CashBackReport'
 		)
 )
 
@@ -1261,133 +1449,288 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministrationList.root}`,
 				element: (
 					<AuthRequire
 						functionId={
-							paths.customerSupport.sub.memberAdministration.functionId
+							paths.customerSupport.sub.memberAdministrationList.functionId
 						}
 					>
+						<MemberAdministrationList />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}`,
+				element: (
+					<AuthRequire>
 						<MemberProfile />
 					</AuthRequire>
 				),
 				children: [
 					{
-						index: true,
+						path: 'dashboard/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-
 								<MemberProfileDashboard />
 							</AuthRequire>
 						),
 					},
 					// * CustomerInfo 類別
 					{
-						path: 'customerInfo/memberFlowLog',
+						path: 'customerInfo/memberFlowLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileCustomerInfoMemberFlowLog />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/vipLevel',
+						path: 'customerInfo/vipLevel/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Vip Level</div>
+								<MemberProfileVipLevelLog />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/referralHistory',
+						path: 'customerInfo/referralHistory/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Referral History</div>
+								<MemberProfileReferralHistory />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/notes',
+						path: 'customerInfo/notes/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Notes</div>
+								<MemberProfileNotes />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/SMSInfo',
+						path: 'customerInfo/SMSInfo/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>SMS Info</div>
+								<MemberProfileSmsInfo />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/loginLog',
+						path: 'customerInfo/loginLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>Login Log</div>
+								<MemberProfileLoginLog />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'customerInfo/ipLog',
+						path: 'customerInfo/deviceList/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
-								<div>IP Log</div>
+								<MemberProfileDeviceList />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/ipLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileIpList />
 							</AuthRequire>
 						),
 					},
 
 					// * Finance 類別
 					{
-						path: 'finance/depositInfo',
+						path: 'finance/depositInfo/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileFinanceDepositInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/withdrawalInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceWithdrawalInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/adjustmentInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceAdjustmentInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/3RDPartyAdjustmentInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceThirdPartyAdjustmentInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/withdrawalLimitLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceWithdrawalLimitLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/transferInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceTransferInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/financialLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceFinancialLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/bankInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileBankInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/eWalletInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileEWalletInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/cryptoInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileCryptoInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/bankList/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileBankList />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/eWalletList/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileEWalletList />
 							</AuthRequire>
 						),
 					},
 					// * Game 類別
 					{
-						path: 'game/statement',
+						path: 'game/statement/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileGameStatement />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/3RDPartyAccount/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileThirdPartyAccounts />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/winLoseSummary/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileWinLossSummary />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'game/turnover/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileTurnover />
 							</AuthRequire>
 						),
 					},
 					// * marketing 類別
 					{
-						path: 'marketing/bonusWallet',
+						path: 'marketing/bonusWallet/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
 								<MemberProfileMarketingBonusWallet />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'setting',
+						path: 'marketing/bonusLog/:custId',
 						element: (
 							<AuthRequire>
-								{/* TODO: */}
+								<MemberProfileBonusLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/vipRebateLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileVipRebateLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/rewardsPointLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileRewardPointLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/promotionReport/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfilePromotionReport />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/cashBackReport/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileCashBackReport />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'setting/:custId',
+						element: (
+							<AuthRequire>
 								<MemberProfileSetting />
 							</AuthRequire>
 						),
 					},
 					{
-						path: 'adminUserLog',
+						path: 'adminUserLog/:custId',
 						element: (
 							<AuthRequire>
 								{/* TODO: */}
