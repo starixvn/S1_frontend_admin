@@ -53,7 +53,7 @@ const AddPointModal: FC<IAddPointModal> = ({
 	}, [visible, success])
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={<div style={{ textAlign: 'center' }}>{t('Label_AddPoint')}</div>}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}

@@ -1,11 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
-import { baseDataApi } from 'common/service/baseDataApi'
-import { allDataApi } from 'common/service/allDataApi'
-import { enumApi } from 'common/service/enumApi'
-import { homeApi } from 'common/service/homeApi/api'
-import { permissionApi } from 'common/service/permissionApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
+import { rootApi } from 'common/service/rootApi/api'
 import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
@@ -34,7 +30,6 @@ import { blockEWalletApi } from 'features/blockEWallet/api'
 import { thirdPartyAdjustmentApi } from 'features/balanceAdjustment/thirdPartyAdjustment/api'
 import { specialPasswordApi } from 'features/specialPasswordManagement/api'
 import { balanceAdjustmentApi } from 'features/balanceAdjustment/balanceAdjustment/api'
-import { eWalletSettingApi } from 'features/eWalletSetting/api'
 import { verificationManagementApi } from 'features/verificationManagement/api'
 import { turnoverPointReportApi } from 'features/turnoverPointReport/api'
 import { transferAccountManagementApi } from 'features/transferAccountManagement/api'
@@ -50,9 +45,7 @@ import { depositLimitationApi } from 'features/depositLimitation/api'
 import { slotGameCategoryApi } from 'features/slotGameCategory/api'
 import { hotEventManagementApi } from 'features/hotEventManagement/api'
 import { issueBonusManagementApi } from 'features/issueBonusManagement/api'
-import { withdrawalKycControlApi } from 'features/withdrawalKycControl/api'
 import { withdrawalAdjustmentApi } from 'features/withdrawalAdjustment/api'
-import { adjustmentLimitationApi } from 'features/adjustmentLimitation/api'
 import { bonusReportApi } from 'features/bonusReport/api'
 import { transferInfoManagementApi } from 'features/transferInfoManagement/api'
 import { reasonManagementApi } from 'features/reasonManagement/api'
@@ -63,11 +56,7 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
-		[enumApi.reducerPath]: enumApi.reducer,
-		[homeApi.reducerPath]: homeApi.reducer,
-		[baseDataApi.reducerPath]: baseDataApi.reducer,
-		[allDataApi.reducerPath]: allDataApi.reducer,
-		[permissionApi.reducerPath]: permissionApi.reducer,
+		[rootApi.reducerPath]: rootApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
@@ -92,7 +81,6 @@ export const store = configureStore({
 		[depositPointReportApi.reducerPath]: depositPointReportApi.reducer,
 		[blockEWalletApi.reducerPath]: blockEWalletApi.reducer,
 		[specialPasswordApi.reducerPath]: specialPasswordApi.reducer,
-		[eWalletSettingApi.reducerPath]: eWalletSettingApi.reducer,
 		[balanceAdjustmentApi.reducerPath]: balanceAdjustmentApi.reducer,
 		[thirdPartyAdjustmentApi.reducerPath]: thirdPartyAdjustmentApi.reducer,
 		[verificationManagementApi.reducerPath]: verificationManagementApi.reducer,
@@ -112,8 +100,6 @@ export const store = configureStore({
 		[issueBonusManagementApi.reducerPath]: issueBonusManagementApi.reducer,
 		[hotEventManagementApi.reducerPath]: hotEventManagementApi.reducer,
 		[slotGameCategoryApi.reducerPath]: slotGameCategoryApi.reducer,
-		[withdrawalKycControlApi.reducerPath]: withdrawalKycControlApi.reducer,
-		[adjustmentLimitationApi.reducerPath]: adjustmentLimitationApi.reducer,
 		[transferInfoManagementApi.reducerPath]: transferInfoManagementApi.reducer,
 		[bonusReportApi.reducerPath]: bonusReportApi.reducer,
 		[withdrawalAdjustmentApi.reducerPath]: withdrawalAdjustmentApi.reducer,
@@ -123,11 +109,7 @@ export const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: false,
 		})
-			.concat(enumApi.middleware)
-			.concat(homeApi.middleware)
-			.concat(baseDataApi.middleware)
-			.concat(allDataApi.middleware)
-			.concat(permissionApi.middleware)
+			.concat(rootApi.middleware)
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
 			.concat(blockIpApi.middleware)
@@ -153,7 +135,6 @@ export const store = configureStore({
 			.concat(depositPointReportApi.middleware)
 			.concat(blockEWalletApi.middleware)
 			.concat(specialPasswordApi.middleware)
-			.concat(eWalletSettingApi.middleware)
 			.concat(balanceAdjustmentApi.middleware)
 			.concat(thirdPartyAdjustmentApi.middleware)
 			.concat(verificationManagementApi.middleware)
@@ -173,8 +154,6 @@ export const store = configureStore({
 			.concat(bonusManagementApi.middleware)
 			.concat(transferInfoManagementApi.middleware)
 			.concat(bonusReportApi.middleware)
-			.concat(adjustmentLimitationApi.middleware)
-			.concat(withdrawalKycControlApi.middleware)
 			.concat(withdrawalAdjustmentApi.middleware)
 			.concat(reasonManagementApi.middleware),
 })

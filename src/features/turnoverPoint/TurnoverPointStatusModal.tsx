@@ -55,7 +55,7 @@ const TurnoverPointStatusModal: FC<ITurnoverPointStatusModal> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={<div style={{ textAlign: 'center' }}>{modalTitle}</div>}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
