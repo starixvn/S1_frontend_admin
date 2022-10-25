@@ -46,7 +46,7 @@ const AddLineChannelModal: FC<IAddLineChannelModalProps> = ({
 	}, [visible, success])
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>{t('Label_AddLineChannel')}</div>
 			}

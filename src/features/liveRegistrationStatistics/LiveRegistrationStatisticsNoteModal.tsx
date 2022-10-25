@@ -225,7 +225,7 @@ const LiveRegistrationStatisticsNoteModal: FC<{
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			width={600}
 			title={t('Label_Note')}
 			onCancel={onCancel}

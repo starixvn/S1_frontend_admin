@@ -27,7 +27,7 @@ const AddBlockIpFormModal: FC<IAddBlockIpFormModalProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={t('Label_AddBlockIp')}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}

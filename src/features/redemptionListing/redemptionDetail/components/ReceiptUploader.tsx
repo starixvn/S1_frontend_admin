@@ -114,7 +114,7 @@ const ReceiptUploader: FC<ReceiptUploaderInterface> = ({
 				{fileList.length >= 10 ? null : uploadButton}
 			</Upload>
 			<Modal
-				visible={previewModal.visible}
+				open={previewModal.visible}
 				title={previewTitle}
 				footer={null}
 				onCancel={previewModal.onCancel}

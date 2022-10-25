@@ -27,7 +27,7 @@ const UpdateUserPasswordModal: FC<UpdateUserPasswordModalProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={t('ChangePassword.Label_ChangePassword')}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}

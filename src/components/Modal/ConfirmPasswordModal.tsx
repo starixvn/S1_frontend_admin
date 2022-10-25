@@ -52,7 +52,7 @@ const ConfirmPasswordModal: FC<IConfirmPasswordModalProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={t('Label_ConfirmPassword')}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}

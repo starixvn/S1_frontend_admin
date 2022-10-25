@@ -81,7 +81,7 @@ const DuplicateBonusModal: FC<IDuplicateBonusProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
 			title={

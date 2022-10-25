@@ -47,7 +47,7 @@ const AddPointBatchModal: FC<IAddPointBatchModal> = ({
 	}, [visible, success])
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>{t('Label_AddPointBatch')}</div>
 			}
