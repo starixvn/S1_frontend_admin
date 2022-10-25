@@ -313,147 +313,177 @@ const MemberAdministrationListFilter = ({
 								</Form.Item>
 							</Col>
 						</Row>
-						<Divider>{t('Label_AdvancedSearch')}</Divider>
-						<Row align='middle' gutter={16}>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='loginIp' label={t('Label_LoginIp')}>
-									<Input allowClear placeholder={t('Label_LoginIp')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='email'
-									label={t('Label_Email')}
-									rules={[
-										{
-											type: 'email',
-											message: ' ',
-										},
-									]}
-								>
-									<Input
-										type='email'
-										allowClear
-										placeholder={t('Label_Email')}
-									/>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='phoneNo' label={t('Label_PhoneNo')}>
-									<Input allowClear placeholder={t('Label_PhoneNo')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='accountName' label={t('Label_FullName')}>
-									<Input allowClear placeholder={t('Label_FullName')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='bankAccountNumber'
-									label={t('Label_BankAccountNumber')}
-								>
-									<Input
-										allowClear
-										placeholder={t('Label_BankAccountNumber')}
-									/>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='affiliateCode'
-									label={t('Label_AffiliateCode')}
-								>
-									<Input allowClear placeholder={t('Label_AffiliateCode')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								{tagsSelector()}
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								{vipLevelSelector()}
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='transId' label={t('Label_TransactionId')}>
-									<Input allowClear placeholder={t('Label_TransactionId')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='shieldLevel' label={t('Label_ShieldLevel')}>
-									<Select
-										placeholder={t('Label_Select') + t('Label_ShieldLevel')}
-									>
-										{SHIELD_LEVEL_ENUM_OPTIONS?.map(({ value, displayKey }) => (
-											<Option key={value} value={value}>
-												{t(displayKey)}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='iovationLevel'
-									label={t('Label_IovationStatus')}
-								>
-									<Select
-										placeholder={t('Label_Select') + t('Label_IovationStatus')}
-									>
-										<Option value={IovationLevelEnum.All}>
-											{t('Label_SelectAll')}
-										</Option>
-										{/* // * IOVATION 為做客戶分析的第三方 */}
-										{IOVATION_LEVEL_ENUM_OPTIONS?.map(({ value, name }) => (
-											<Option key={value} value={value}>
-												{name}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='dateType' label={t('Label_DateType')}>
-									<Select placeholder={t('Label_Select') + t('Label_DateType')}>
-										{DATE_TYPE_ENUM_OPTIONS?.map(({ value, displayKey }) => (
-											<Option key={value} value={value}>
-												{t(displayKey)}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='userType' label={t('Label_UserType')}>
-									<Select placeholder={t('Label_Select') + t('Label_UserType')}>
-										{USER_TYPE_ENUM_OPTIONS?.map(({ value, displayKey }) => (
-											<Option key={value} value={value}>
-												{t(displayKey)}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='exportTransferWallet'
-									label={t('Label_ExportTransferWallet')}
-								>
-									<Select
-										placeholder={
-											t('Label_Select') + t('Label_ExportTransferWallet')
-										}
-									>
-										<Option value={1}>True</Option>
-										<Option value={0}>False</Option>
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='deviceId' label={t('Label_DeviceId')}>
-									<Input allowClear placeholder={t('Label_DeviceId')} />
-								</Form.Item>
-							</Col>
-						</Row>
+
+						<Collapse defaultActiveKey={['1']} ghost>
+							<Panel
+								header={<Divider>{t('Label_AdvancedSearch')}</Divider>}
+								key='1'
+								showArrow={false}
+							>
+								<Row align='middle' gutter={16}>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='loginIp' label={t('Label_LoginIp')}>
+											<Input allowClear placeholder={t('Label_LoginIp')} />
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='email'
+											label={t('Label_Email')}
+											rules={[
+												{
+													type: 'email',
+													message: ' ',
+												},
+											]}
+										>
+											<Input
+												type='email'
+												allowClear
+												placeholder={t('Label_Email')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='phoneNo' label={t('Label_PhoneNo')}>
+											<Input allowClear placeholder={t('Label_PhoneNo')} />
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='accountName' label={t('Label_FullName')}>
+											<Input allowClear placeholder={t('Label_FullName')} />
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='bankAccountNumber'
+											label={t('Label_BankAccountNumber')}
+										>
+											<Input
+												allowClear
+												placeholder={t('Label_BankAccountNumber')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='affiliateCode'
+											label={t('Label_AffiliateCode')}
+										>
+											<Input
+												allowClear
+												placeholder={t('Label_AffiliateCode')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										{tagsSelector()}
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										{vipLevelSelector()}
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='transId' label={t('Label_TransactionId')}>
+											<Input
+												allowClear
+												placeholder={t('Label_TransactionId')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='shieldLevel'
+											label={t('Label_ShieldLevel')}
+										>
+											<Select
+												placeholder={t('Label_Select') + t('Label_ShieldLevel')}
+											>
+												{SHIELD_LEVEL_ENUM_OPTIONS?.map(
+													({ value, displayKey }) => (
+														<Option key={value} value={value}>
+															{t(displayKey)}
+														</Option>
+													)
+												)}
+											</Select>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='iovationLevel'
+											label={t('Label_IovationStatus')}
+										>
+											<Select
+												placeholder={
+													t('Label_Select') + t('Label_IovationStatus')
+												}
+											>
+												<Option value={IovationLevelEnum.All}>
+													{t('Label_SelectAll')}
+												</Option>
+												{/* // * IOVATION 為做客戶分析的第三方 */}
+												{IOVATION_LEVEL_ENUM_OPTIONS?.map(({ value, name }) => (
+													<Option key={value} value={value}>
+														{name}
+													</Option>
+												))}
+											</Select>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='dateType' label={t('Label_DateType')}>
+											<Select
+												placeholder={t('Label_Select') + t('Label_DateType')}
+											>
+												{DATE_TYPE_ENUM_OPTIONS?.map(
+													({ value, displayKey }) => (
+														<Option key={value} value={value}>
+															{t(displayKey)}
+														</Option>
+													)
+												)}
+											</Select>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='userType' label={t('Label_UserType')}>
+											<Select
+												placeholder={t('Label_Select') + t('Label_UserType')}
+											>
+												{USER_TYPE_ENUM_OPTIONS?.map(
+													({ value, displayKey }) => (
+														<Option key={value} value={value}>
+															{t(displayKey)}
+														</Option>
+													)
+												)}
+											</Select>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='exportTransferWallet'
+											label={t('Label_ExportTransferWallet')}
+										>
+											<Select
+												placeholder={
+													t('Label_Select') + t('Label_ExportTransferWallet')
+												}
+											>
+												<Option value={1}>True</Option>
+												<Option value={0}>False</Option>
+											</Select>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='deviceId' label={t('Label_DeviceId')}>
+											<Input allowClear placeholder={t('Label_DeviceId')} />
+										</Form.Item>
+									</Col>
+								</Row>
+							</Panel>
+						</Collapse>
+
 						<br />
 						<Row justify='end' align='middle'>
 							<Col>
