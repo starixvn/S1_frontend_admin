@@ -372,7 +372,7 @@ const Setting = () => {
 			<LayoutContent.Title title='Setting' />
 
 			<LayoutContent.Card style={{ marginTop: -20 }}>
-				<Row gutter={16} justify='center'>
+				<Row gutter={16} justify='start'>
 					<SettingInfoCard
 						onEditTypeChange={onEditTypeChange}
 						openTagsModal={tagsModal.onOpen}

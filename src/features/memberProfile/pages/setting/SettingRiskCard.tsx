@@ -36,7 +36,7 @@ const SettingRiskCard = ({
 	const { isKyc, isRisk, phoneVerified, emailVerified } = custBasicInfo
 
 	return (
-		<Col xxl={4} xl={6} lg={8} span={12} style={{ marginBottom: 8 }}>
+		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Risk')} style={{ height: '100%' }}>
 				<p>
 					<Row>
