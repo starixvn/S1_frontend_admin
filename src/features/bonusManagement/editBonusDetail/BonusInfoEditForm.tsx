@@ -8,9 +8,14 @@ import { PromotionActionEnum } from 'features/bonusManagement/constants'
 interface IBonusInfoEditForm {
 	loading: boolean
 	langCode: string
+	currentTabActive: boolean
 }
 
-const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({ loading, langCode }) => {
+const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
+	loading,
+	langCode,
+	currentTabActive,
+}) => {
 	const { t } = useTranslation()
 	const { form, onEditDetailClick, currentActiveCurrency, setInfoTabsKey } =
 		useContext(EditBonusContext)
@@ -41,6 +46,14 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({ loading, langCode }) => {
 							<Form.Item
 								name={['details', tabsKey, 'detail']}
 								label={t('Label_PromotionLink')}
+								rules={[
+									{
+										required: currentTabActive,
+										message: t('Label_Required', {
+											key: t('Label_PromotionLink'),
+										}),
+									},
+								]}
 							>
 								<Input allowClear />
 							</Form.Item>
@@ -50,6 +63,14 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({ loading, langCode }) => {
 						<Form.Item
 							name={['details', tabsKey, 'bannerUrl']}
 							label={t('Label_BannerUrl')}
+							rules={[
+								{
+									required: currentTabActive,
+									message: t('Label_Required', {
+										key: t('Label_BannerUrl'),
+									}),
+								},
+							]}
 						>
 							<Input allowClear />
 						</Form.Item>
@@ -58,6 +79,14 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({ loading, langCode }) => {
 						<Form.Item
 							name={['details', tabsKey, 'title']}
 							label={t('Label_Title')}
+							rules={[
+								{
+									required: currentTabActive,
+									message: t('Label_Required', {
+										key: t('Label_Title'),
+									}),
+								},
+							]}
 						>
 							<Input allowClear />
 						</Form.Item>
@@ -66,6 +95,14 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({ loading, langCode }) => {
 						<Form.Item
 							name={['details', tabsKey, 'description']}
 							label={t('Label_Description')}
+							rules={[
+								{
+									required: currentTabActive,
+									message: t('Label_Required', {
+										key: t('Label_Description'),
+									}),
+								},
+							]}
 						>
 							<Input allowClear />
 						</Form.Item>

@@ -31,7 +31,7 @@ const EditDetailModal: FC<IEditDetailModalProps> = ({
 	}, [visible])
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			onCancel={onFinish}
 			onOk={onFinish}
 			width='70vw'
