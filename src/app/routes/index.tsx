@@ -498,6 +498,76 @@ const MemberProfileFinanceWithdrawalInfo = lazy(
 		)
 )
 
+const MemberProfileFinanceAdjustmentInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/adjustmentInfo/AdjustmentInfo'
+		)
+)
+
+const MemberProfileFinanceThirdPartyAdjustmentInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/thirdPartyAdjustmentInfo/ThirdPartyAdjustmentInfo'
+		)
+)
+
+const MemberProfileFinanceWithdrawalLimitLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/withdrawalLimitLog/WithdrawalLimitLog'
+		)
+)
+
+const MemberProfileFinanceTransferInfo = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/transferInfo/TransferInfo'
+		)
+)
+
+const MemberProfileFinanceFinancialLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/financialLog/FinancialLog'
+		)
+)
+
+const MemberProfileBankInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/bankInfoLog/BankInfoLog'
+		)
+)
+
+const MemberProfileEWalletInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/eWalletInfoLog/EWalletInfoLog'
+		)
+)
+
+const MemberProfileCryptoInfoLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/cryptoInfoLog/CryptoInfoLog'
+		)
+)
+
+const MemberProfileBankList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/bankList/BankList'
+		)
+)
+
+const MemberProfileEWalletList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/eWalletList/EWalletList'
+		)
+)
+
 // *  MemberProfile > Game 類別
 const MemberProfileGameStatement = lazy(
 	() =>
@@ -1486,6 +1556,86 @@ const routes: RouteObject[] = [
 						element: (
 							<AuthRequire>
 								<MemberProfileFinanceWithdrawalInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/adjustmentInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceAdjustmentInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/3RDPartyAdjustmentInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceThirdPartyAdjustmentInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/withdrawalLimitLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceWithdrawalLimitLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/transferInfo/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceTransferInfo />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/financialLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileFinanceFinancialLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/bankInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileBankInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/eWalletInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileEWalletInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/cryptoInfoLog/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileCryptoInfoLog />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/bankList/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileBankList />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/eWalletList/:custId',
+						element: (
+							<AuthRequire>
+								<MemberProfileEWalletList />
 							</AuthRequire>
 						),
 					},

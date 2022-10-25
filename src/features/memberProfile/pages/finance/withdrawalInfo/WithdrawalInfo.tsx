@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IGetWithdrawalInfoResponse } from 'features/memberProfile/type'
 import { LayoutContent } from 'app/pages/layout'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { Form, message } from 'antd'
+import { Form, message, TablePaginationConfig } from 'antd'
 import { useParams } from 'react-router-dom'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useLazyGetWithdrawalInfoQuery } from 'features/memberProfile/api'
@@ -12,12 +12,16 @@ import { head } from 'lodash'
 import { PAGINATION, usePagination } from 'common/hooks'
 import { WithdrawalFilter } from 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalFilter'
 import WithdrawalTable from 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalTable'
+import moment from 'moment'
 
 const WithdrawalInfo = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const [filterForm] = Form.useForm()
+	const [filterForm] = Form.useForm<{
+		status: number
+		dateRange: [moment.Moment, moment.Moment]
+	}>()
 
 	const [
 		getWithdrawalInfo,
@@ -52,12 +56,11 @@ const WithdrawalInfo = () => {
 		pageSize?: number | undefined
 	}) => {
 		if (!custId) return
-		const { dateRange } = filterForm.getFieldsValue()
+		const { dateRange, status } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			dateRange,
 			timeZoneUtcOffset
 		)
-		const { status } = filterForm.getFieldsValue()
 		try {
 			await getWithdrawalInfo({
 				pageNumber: current,
@@ -73,6 +76,15 @@ const WithdrawalInfo = () => {
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
+	}
+
+	const handleTableChange = async (newPagination: TablePaginationConfig) => {
+		const { current, pageSize } = newPagination
+
+		await handleSearch({
+			current,
+			pageSize,
+		})
 	}
 
 	useEffect(() => {
@@ -95,7 +107,7 @@ const WithdrawalInfo = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Finance.Label_WithdrawalInfo')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<WithdrawalFilter
 					loading={loading}
 					form={filterForm}
@@ -109,6 +121,7 @@ const WithdrawalInfo = () => {
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
+					onTableChange={handleTableChange}
 					statusList={statusList}
 					typeList={typeList}
 				/>
