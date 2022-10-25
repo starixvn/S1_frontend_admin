@@ -1,11 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
-import { baseDataApi } from 'common/service/baseDataApi'
-import { allDataApi } from 'common/service/allDataApi'
-import { enumApi } from 'common/service/enumApi'
-import { homeApi } from 'common/service/homeApi/api'
-import { permissionApi } from 'common/service/permissionApi/api'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
+import { rootApi } from 'common/service/rootApi/api'
 import { assignBrandApi } from 'features/assignBrand/api'
 import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
@@ -63,11 +59,7 @@ export const store = configureStore({
 		dashboard: dashboardSlice,
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
-		[enumApi.reducerPath]: enumApi.reducer,
-		[homeApi.reducerPath]: homeApi.reducer,
-		[baseDataApi.reducerPath]: baseDataApi.reducer,
-		[allDataApi.reducerPath]: allDataApi.reducer,
-		[permissionApi.reducerPath]: permissionApi.reducer,
+		[rootApi.reducerPath]: rootApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
@@ -123,11 +115,7 @@ export const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: false,
 		})
-			.concat(enumApi.middleware)
-			.concat(homeApi.middleware)
-			.concat(baseDataApi.middleware)
-			.concat(allDataApi.middleware)
-			.concat(permissionApi.middleware)
+			.concat(rootApi.middleware)
 			.concat(userSettingsApi.middleware)
 			.concat(blockBankAccountApi.middleware)
 			.concat(blockIpApi.middleware)

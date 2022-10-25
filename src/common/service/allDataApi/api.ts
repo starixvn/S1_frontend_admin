@@ -1,7 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { assign, filter, includes } from 'lodash'
-import { baseUrl } from '../Api'
-import { axiosBaseQuery } from '../axiosBaseQuery'
+import { rootApi } from '../rootApi/api'
 import {
 	IBankInfoSysData,
 	IBankInfoSysResponse,
@@ -11,9 +9,7 @@ import {
 	IVipLevelsResponse,
 } from './type'
 
-export const allDataApi = createApi({
-	reducerPath: 'allDataApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const allDataApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getVipLevel: builder.query<
 			IVipLevelsResponse,

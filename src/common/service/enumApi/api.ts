@@ -1,12 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from '../rootApi/api'
 import { IEnumTypeResponse, IGetEnumTypeArgs } from './type'
 
-export const enumApi = createApi({
-	reducerPath: 'enumApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const enumApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getEnumType: builder.query<IEnumTypeResponse, IGetEnumTypeArgs>({
 			query: data => ({

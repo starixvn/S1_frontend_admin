@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from '../Api'
-import { axiosBaseQuery } from '../axiosBaseQuery'
+import { rootApi } from '../rootApi/api'
 import { BankInfoOffResponse } from './type'
 
 export const GET_BANK_INFO_OFF_LIST_ARGS = {
@@ -11,9 +9,7 @@ export const GET_BANK_INFO_OFF_LIST_ARGS = {
 	},
 }
 
-export const baseDataApi = createApi({
-	reducerPath: 'baseDataApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const baseDataApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBankInfoOffList: builder.query<
 			BankInfoOffResponse,
