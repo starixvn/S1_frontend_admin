@@ -18,6 +18,13 @@ export type EnumNameType =
 	| 'DepositTypeEnum'
 	| 'WithdrawalStatusEnum'
 	| 'WithdrawalTypeEnum'
+	| 'TransferStatusEnum'
+	| 'TransferTypeEnum'
+	| 'AdjustmentInfoStatusEnum'
+	| 'AdjustTypeEnum'
+	| 'CustBankInfoLogStatus'
+	| 'EWalletinfoLogStatusEnum'
+	| 'WithdrawalLimitLogMainTypeEnum'
 export interface IGetEnumTypeArgs {
 	/**
 	 * @argument {string}  TransferChannelEnum - 取得渠道列表
@@ -30,6 +37,13 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DepositTypeEnum - 取得存款種類列表
 	 * @argument {string}  WithdrawalStatusEnum - 取得取款狀態列表
 	 * @argument {string}  WithdrawalTypeEnum - 取得取款種類列表
+	 * @argument {string}  TransferStatusEnum - 取得交易狀態列表
+	 * @argument {string}  TransferTypeEnum - 取得交易種類列表
+	 * @argument {string}  AdjustmentInfoStatusEnum - 取得調整狀態列表
+	 * @argument {string}  AdjustTypeEnum - 取得調整種類列表
+	 * @argument {string}  CustBankInfoLogStatus - 取得銀行狀態列表
+	 * @argument {string}  EWalletinfoLogStatusEnum - 取得電子錢包狀態列表
+	 * @argument {string}  WithdrawalLimitLogMainTypeEnum - 取得取款限制種類列表
 	 */
 	enumName: EnumNameType
 }

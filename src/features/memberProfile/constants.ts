@@ -31,6 +31,64 @@ export const statusList: Array<{ value: number; displayName: string }> = [
 	},
 ]
 
+export enum AdjustTypeEnum {
+	All,
+	Debit,
+	Credit,
+	IncreaseBonus,
+	ReduceBonus,
+}
+
+export const adjustTypeList: Array<{
+	value: number
+	displayName: string
+}> = [
+	{
+		value: AdjustTypeEnum.All,
+		displayName: 'Label_All',
+	},
+	{
+		value: AdjustTypeEnum.Debit,
+		displayName: 'Label_Debit',
+	},
+	{
+		value: AdjustTypeEnum.Credit,
+		displayName: 'Label_Credit',
+	},
+	{
+		value: AdjustTypeEnum.IncreaseBonus,
+		displayName: 'Label_IncreaseBonus',
+	},
+	{
+		value: AdjustTypeEnum.ReduceBonus,
+		displayName: 'Label_ReduceBonus',
+	},
+]
+
+export enum ThirdPartyAdjustTypeEnum {
+	All,
+	ThirdAdd,
+	ThirdMinus,
+}
+
+export const thirdPartyAdjustTypeList: Array<{
+	value: number
+	displayName: string
+}> = [
+	{
+		value: ThirdPartyAdjustTypeEnum.All,
+		displayName: 'Label_All',
+	},
+	{
+		value: ThirdPartyAdjustTypeEnum.ThirdAdd,
+		displayName: 'Label_ThirdAdd',
+	},
+	{
+		value: ThirdPartyAdjustTypeEnum.ThirdMinus,
+		displayName: 'Label_ThirdMinus',
+	},
+]
+
 export enum IdentityEnum {
 	// 用戶是怎麼成為會員的
 	Normal, // 直客
@@ -229,6 +287,34 @@ export const promotionReportStatusList: Array<{
 export enum PromotionReportFullFillTypeEnum {
 	RollOver = 1,
 	WinOver = 2,
+}
+
+// finance bankList and EWalletList page status Enum
+export const BANK_BLOCK_STATUS_VALUE_OPTIONS = {
+	ALL: 0,
+	BLOCK: 1,
+	OPEN: 2,
+}
+
+export const BANK_BLOCK_STATUS = [
+	{
+		displayKey: 'Label_SelectAll',
+		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
+	},
+	{
+		displayKey: 'Label_Unlock',
+		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN,
+	},
+	{
+		displayKey: 'Label_Block',
+		value: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
+	},
+]
+
+export const RELEASE_STATUS_VALUE_OPTIONS = {
+	DELETE: 0,
+	OPEN: 1,
+	BO_DELETE: 2,
 }
 
 // GameLog => Statement Table State

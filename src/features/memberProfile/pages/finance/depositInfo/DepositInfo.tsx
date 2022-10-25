@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IGetDepositInfoResponse } from 'features/memberProfile/type'
 import { LayoutContent } from 'app/pages/layout'
 import { DepositFilter } from 'features/memberProfile/pages/finance/depositInfo/DepositFilter'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { Form, message } from 'antd'
+import { Form, message, TablePaginationConfig } from 'antd'
 import { useParams } from 'react-router-dom'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useLazyGetDepositInfoQuery } from 'features/memberProfile/api'
@@ -12,12 +12,16 @@ import DepositTable from 'features/memberProfile/pages/finance/depositInfo/Depos
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { head } from 'lodash'
 import { PAGINATION, usePagination } from 'common/hooks'
+import moment from 'moment'
 
 const DepositInfo = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const [filterForm] = Form.useForm()
+	const [filterForm] = Form.useForm<{
+		status: number
+		dateRange: [moment.Moment, moment.Moment]
+	}>()
 
 	const [
 		getDepositInfo,
@@ -52,12 +56,11 @@ const DepositInfo = () => {
 		pageSize?: number | undefined
 	}) => {
 		if (!custId) return
-		const { dateRange } = filterForm.getFieldsValue()
+		const { dateRange, status } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			dateRange,
 			timeZoneUtcOffset
 		)
-		const { status } = filterForm.getFieldsValue()
 		try {
 			await getDepositInfo({
 				pageNumber: current,
@@ -73,6 +76,15 @@ const DepositInfo = () => {
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
+	}
+
+	const handleTableChange = async (newPagination: TablePaginationConfig) => {
+		const { current, pageSize } = newPagination
+
+		await handleSearch({
+			current,
+			pageSize,
+		})
 	}
 
 	useEffect(() => {
@@ -95,7 +107,7 @@ const DepositInfo = () => {
 			<LayoutContent.Title
 				title={t('MemberProfile.Menu.Finance.Label_DepositInfo')}
 			/>
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<DepositFilter
 					loading={loading}
 					form={filterForm}
@@ -109,6 +121,7 @@ const DepositInfo = () => {
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
+					onTableChange={handleTableChange}
 					statusList={statusList}
 					typeList={typeList}
 				/>

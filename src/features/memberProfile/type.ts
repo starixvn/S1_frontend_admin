@@ -651,6 +651,209 @@ export type IGetWithdrawalInfoResponse = IAxiosResponse<
 	IGetWithdrawalInfoData[]
 >
 
+// adjustment info 頁面
+export interface IGetAdjustmentInfoArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	adjustType: number
+}
+
+export interface IGetAdjustmentInfoData {
+	transId: string
+	adjustType: number
+	currencyId: number
+	siteId: number
+	amount: number
+	createTime: string
+	status: number
+	custId: number
+	memo: string
+	isTest: number
+	category: number
+}
+
+export type IGetAdjustmentInfoResponse = IAxiosResponse<
+	IGetAdjustmentInfoData[]
+>
+
+// thirdParty adjustment info 頁面
+export interface IGetTpAdjustmentLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startTime: string
+	endTime: string
+	tpId: number
+	direction: number
+}
+
+export interface IGetTpAdjustmentLogData {
+	siteName: string
+	userName: string
+	operator: string
+	remarks: string
+	category: number
+	categoryName: string
+	depositId: null
+	createTime: string
+	tpName: string
+	transId: string
+	direction: number
+	amount: number
+	memo: string
+	status: number
+	tpId: number
+	directionName: string
+}
+
+export type IGetTpAdjustmentLogResponse = IAxiosResponse<
+	IGetTpAdjustmentLogData[]
+>
+
+// withdrawalLimit log 頁面
+export interface IGetWithdrawalLimitLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+}
+
+export interface IGetWithdrawalLimitLogData {
+	mainType: number
+	changeWithdrawalLimit: number
+	beforeWithdrawalLimit: number
+	afterWithdrawalLimit: number
+	memo: string
+	refTransId: string
+	createTime: string
+}
+
+export type IGetWithdrawalLimitLogResponse = IAxiosResponse<
+	IGetWithdrawalLimitLogData[]
+>
+
+// transfer info 頁面
+export interface IGetTransferInfoArgs extends IGetWithdrawalLimitLogArgs {}
+
+export interface IGetTransferInfoData {
+	createTime: string
+	tpName: string
+	transId: string
+	direction: number
+	amount: number
+	thirdId: string
+	memo: string
+	status: number
+	tpId: number
+	directionName: string
+}
+
+export type IGetTransferInfoResponse = IAxiosResponse<IGetTransferInfoData[]>
+
+// financial Log 頁面
+export interface IExportFinancialLogArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+	startDate: string
+	endDate: string
+	refTransId: string
+	financialType: number
+}
+
+// bankInfo Log 頁面
+export interface IGetBankInfoArgs {
+	pageNumber: number
+	pageSize: number
+	custId: number
+}
+
+export interface IGetBankInfoData {
+	accountName: string
+	bankName: string
+	accountNum: string
+	ifscCode: string
+	createTime: string
+	status: number
+}
+
+export type IGetBankInfoResponse = IAxiosResponse<IGetBankInfoData[]>
+
+// eWalletInfo Log 頁面
+export interface IGetEWalletInfoArgs extends IGetBankInfoArgs {}
+
+export interface IGetEWalletInfoData {
+	accountNum: string
+	accountName: string
+	eWalletName: string
+	createTime: string
+	status: number
+}
+
+export type IGetEWalletInfoResponse = IAxiosResponse<IGetEWalletInfoData[]>
+
+// crypto log 頁面
+export interface IGetCryptoLogArgs extends IGetBankInfoArgs {}
+
+export interface IGetCryptoLogData {
+	currencyId: number
+	isoCode: string
+	netWork: string
+	usdtAddress: string
+	createTime: string
+	status: number
+}
+
+export type IGetCryptoLogResponse = IAxiosResponse<IGetCryptoLogData[]>
+
+// bankList 頁面
+export interface IGetBankListArgs {
+	custId: number
+}
+
+export interface IGetBankListData {
+	custId: number
+	userName: string
+	bankName: string
+	accountName: string
+	accountNum: string
+	sysId: number
+	ifscCode: string
+	createTime: string
+	updateTime: string
+	blockUpdateTime: string
+	updateOperator: string
+	status: number
+	blockStatus: number
+	currencyId: number
+}
+
+export type IGetBankListResponse = IAxiosResponse<IGetBankListData[]>
+
+// eWalletList 頁面
+export interface IGetEWalletListArgs extends IGetBankListArgs {}
+
+export interface IGetEWalletListData {
+	custId: number
+	userName: string
+	eWalletName: string
+	accountNum: string
+	sysId: number
+	createTime: string
+	updateTime: string
+	blockUpdateTime: string
+	updateOperator: string
+	status: number
+	blockStatus: number
+	currencyId: number
+}
+
+export type IGetEWalletListResponse = IAxiosResponse<IGetEWalletListData[]>
+
 // GameLog => Turnover
 export interface IGetTurnoverArgs extends IGetWinLossSummaryDetailArgs {
 	startDate: string

@@ -61,6 +61,23 @@ import {
 	IGetDepositInfoResponse,
 	IGetWithdrawalInfoArgs,
 	IGetWithdrawalInfoResponse,
+	IGetAdjustmentInfoResponse,
+	IGetAdjustmentInfoArgs,
+	IGetTransferInfoArgs,
+	IGetTransferInfoResponse,
+	IGetTpAdjustmentLogResponse,
+	IGetTpAdjustmentLogArgs,
+	IExportFinancialLogArgs,
+	IGetBankInfoResponse,
+	IGetBankInfoArgs,
+	IGetEWalletInfoResponse,
+	IGetEWalletInfoArgs,
+	IGetCryptoLogResponse,
+	IGetCryptoLogArgs,
+	IGetBankListArgs,
+	IGetBankListResponse,
+	IGetEWalletListArgs,
+	IGetEWalletListResponse,
 	IGetTurnoverArgs,
 	IGetTurnoverData,
 	IGetCustTpBetRecordArgs,
@@ -78,6 +95,8 @@ import {
 	IGetPromotionDetailData,
 	IGetVipRebateDetailArgs,
 	IGetVipRebateDetailData,
+	IGetWithdrawalLimitLogResponse,
+	IGetWithdrawalLimitLogArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -790,6 +809,91 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getAdjustmentInfo: builder.query<
+			IGetAdjustmentInfoResponse,
+			IGetAdjustmentInfoArgs
+		>({
+			query: data => ({
+				url: 'Member/GetAdjustmentInfoByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		GetTpAdjustmentLog: builder.query<
+			IGetTpAdjustmentLogResponse,
+			IGetTpAdjustmentLogArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustTpAdjustmentLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getWithdrawalLimitLog: builder.query<
+			IGetWithdrawalLimitLogResponse,
+			IGetWithdrawalLimitLogArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetWithdrawalLimitLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getTransferInfo: builder.query<
+			IGetTransferInfoResponse,
+			IGetTransferInfoArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetTpTransferInfoByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		exportFinancialLog: builder.mutation<Blob, IExportFinancialLogArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetFinancialLogByCustIdExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
+		getBankInfo: builder.query<IGetBankInfoResponse, IGetBankInfoArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetBankInfoLogByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getEWalletLog: builder.query<IGetEWalletInfoResponse, IGetEWalletInfoArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetEWalletLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getCryptoLog: builder.query<IGetCryptoLogResponse, IGetCryptoLogArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetCryptoWalletLogByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getBankList: builder.query<IGetBankListResponse, IGetBankListArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetBankList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getEWalletList: builder.query<IGetEWalletListResponse, IGetEWalletListArgs>(
+			{
+				query: data => ({
+					url: 'CustomerManage/GetEWalletList',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
 		// GameLog => Turnover
 		getTurnoverByCustId: builder.query<
 			IAxiosResponse<IGetTurnoverData[]>,
@@ -937,6 +1041,16 @@ export const {
 	useLazyGetIpUserQuery,
 	useLazyGetDepositInfoQuery,
 	useLazyGetWithdrawalInfoQuery,
+	useLazyGetAdjustmentInfoQuery,
+	useLazyGetTpAdjustmentLogQuery,
+	useLazyGetWithdrawalLimitLogQuery,
+	useLazyGetTransferInfoQuery,
+	useExportFinancialLogMutation,
+	useLazyGetBankInfoQuery,
+	useLazyGetEWalletLogQuery,
+	useLazyGetCryptoLogQuery,
+	useLazyGetBankListQuery,
+	useLazyGetEWalletListQuery,
 	useLazyGetBonusLogQuery,
 	useLazyGetVipRebateLogQuery,
 	useLazyGetRewardPointLogQuery,

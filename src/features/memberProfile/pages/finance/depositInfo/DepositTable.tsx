@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
@@ -13,6 +12,7 @@ interface DepositTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
+	onTableChange: (newPagination: TablePaginationConfig) => void
 	statusList: IEnumTypeData[]
 	typeList: IEnumTypeData[]
 }
@@ -21,6 +21,7 @@ const DepositTable = ({
 	loading,
 	timeZoneUtcOffset,
 	pagination,
+	onTableChange,
 	statusList,
 	typeList,
 }: DepositTableProps) => {
@@ -164,6 +165,7 @@ const DepositTable = ({
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
 			pagination={pagination as TablePaginationConfig}
+			onChange={onTableChange}
 		/>
 	)
 }
