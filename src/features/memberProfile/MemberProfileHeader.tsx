@@ -36,16 +36,17 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 	const customerInfoMenu = (
 		<Menu
 			items={[
-				{
-					label: (
-						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/memberFlowLog/${custId}`}
-						>
-							{t('MemberProfile.Menu.CustomerInfo.Label_MemberFlowLog')}
-						</Link>
-					),
-					key: '1',
-				},
+				// TODO
+				// {
+				// 	label: (
+				// 		<Link
+				// 			to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/memberFlowLog/${custId}`}
+				// 		>
+				// 			{t('MemberProfile.Menu.CustomerInfo.Label_MemberFlowLog')}
+				// 		</Link>
+				// 	),
+				// 	key: '1',
+				// },
 				{
 					label: (
 						<Link
@@ -440,16 +441,17 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Link>
 			),
 		},
-		{
-			key: 7,
-			label: (
-				<Link
-					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
-				>
-					{t('MemberProfile.Menu.Label_AdminUserLog')}
-				</Link>
-			),
-		},
+		//  TODO
+		// {
+		// 	key: 7,
+		// 	label: (
+		// 		<Link
+		// 			to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
+		// 		>
+		// 			{t('MemberProfile.Menu.Label_AdminUserLog')}
+		// 		</Link>
+		// 	),
+		// },
 	].filter(Boolean)
 
 	return (

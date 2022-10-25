@@ -24,7 +24,7 @@ const SettingMarketingCard = ({
 	const { t } = useTranslation()
 	const isRebatePayoutStatus = Boolean(custBasicInfo.enableRebate)
 	return (
-		<Col xxl={4} xl={6} lg={8} span={12} style={{ marginBottom: 8 }}>
+		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Marketing')} style={{ height: '100%' }}>
 				<p>
 					<Popconfirm
