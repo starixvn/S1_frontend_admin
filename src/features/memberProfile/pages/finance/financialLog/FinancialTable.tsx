@@ -2,10 +2,10 @@ import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
-import { timeFormat } from 'common/utils/format'
+import { numberFormatter, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IFinancialLogData } from 'features/memberProfile/type'
-import { financialTypeOptions } from 'features/memberProfile/constants'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface FinancialTableProps {
 	financialLogs: IFinancialLogData[]
@@ -13,6 +13,7 @@ interface FinancialTableProps {
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	typeList: IEnumTypeData[]
 }
 const FinancialTable = ({
 	financialLogs,
@@ -20,6 +21,7 @@ const FinancialTable = ({
 	timeZoneUtcOffset,
 	pagination,
 	onTableChange,
+	typeList,
 }: FinancialTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
@@ -44,27 +46,28 @@ const FinancialTable = ({
 			key: 'financialType',
 			align: 'center' as 'center',
 			render: (financialType: number) =>
-				financialTypeOptions.map(
-					item => item.value === financialType && item.name
-				),
+				typeList.map(item => item.value === financialType && item.name),
 		},
 		{
 			title: t('Label_BeforeAmount'),
 			dataIndex: 'beforeAmount',
 			key: 'beforeAmount',
 			align: 'center' as 'center',
+			render: (beforeAmount: number) => numberFormatter.format(beforeAmount),
 		},
 		{
 			title: t('Label_ChangeAmount'),
 			dataIndex: 'changeAmount',
 			key: 'changeAmount',
 			align: 'center' as 'center',
+			render: (changeAmount: number) => numberFormatter.format(changeAmount),
 		},
 		{
 			title: t('Label_AfterAmount'),
 			dataIndex: 'afterAmount',
 			key: 'afterAmount',
 			align: 'center' as 'center',
+			render: (afterAmount: number) => numberFormatter.format(afterAmount),
 		},
 		{
 			title: t('Label_Memo'),

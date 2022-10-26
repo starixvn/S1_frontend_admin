@@ -17,6 +17,8 @@ import { AffixButtons } from 'components/AffixButtons'
 import download from 'downloadjs'
 import moment from 'moment'
 import { AdjustTypeEnum } from 'features/memberProfile/constants'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
+import { head } from 'lodash'
 
 const FinancialLog = () => {
 	const { t } = useTranslation()
@@ -41,6 +43,11 @@ const FinancialLog = () => {
 
 	const [exportFinancialLog, { isLoading: isExportFinancialLogLoading }] =
 		useExportFinancialLogMutation()
+
+	const {
+		data: { data: typeList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetTypeListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'FinancialType' })
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: financialLogsTotal,
@@ -128,7 +135,15 @@ const FinancialLog = () => {
 		}
 	}, [custId])
 
-	const loading = isGetTpAdjustmentLogLoading
+	useEffect(() => {
+		if (!isGetTypeListLoading && typeList.length > 0) {
+			filterForm.setFieldsValue({
+				type: head(typeList)?.value,
+			})
+		}
+	}, [isGetTypeListLoading])
+
+	const loading = isGetTpAdjustmentLogLoading || isGetTypeListLoading
 
 	return (
 		<>
@@ -142,6 +157,7 @@ const FinancialLog = () => {
 					onSearch={handleSearch}
 					onTimeZoneChange={onTimeZoneChange}
 					timeZoneUtcOffset={timeZoneUtcOffset}
+					typeList={typeList}
 				/>
 				<FinancialTable
 					financialLogs={filteredFinancialLogs}
@@ -149,6 +165,7 @@ const FinancialLog = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
 					onTableChange={handleTableChange}
+					typeList={typeList}
 				/>
 			</LayoutContent.Card>
 			<AffixButtons>

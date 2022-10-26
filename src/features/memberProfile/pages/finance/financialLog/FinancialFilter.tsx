@@ -15,10 +15,7 @@ import {
 import { SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import {
-	FinancialTypeEnum,
-	financialTypeOptions,
-} from 'features/memberProfile/constants'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface FinancialFilterProps {
 	loading: boolean
@@ -32,6 +29,7 @@ interface FinancialFilterProps {
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	timeZoneUtcOffset: number
+	typeList: IEnumTypeData[]
 }
 const { RangePicker } = DatePicker
 
@@ -41,17 +39,12 @@ const FinancialFilter = ({
 	onSearch,
 	onTimeZoneChange,
 	timeZoneUtcOffset,
+	typeList,
 }: FinancialFilterProps) => {
 	const { t } = useTranslation()
 	const { Option } = Select
 	return (
-		<Form
-			layout='vertical'
-			size='middle'
-			form={form}
-			onFinish={onSearch}
-			initialValues={{ type: FinancialTypeEnum.Deposit }}
-		>
+		<Form layout='vertical' size='middle' form={form} onFinish={onSearch}>
 			<Row align='middle' gutter={16}>
 				<Col span={10}>
 					<Form.Item label={t('Label_DateRange')}>
@@ -88,9 +81,9 @@ const FinancialFilter = ({
 				<Col span={6}>
 					<Form.Item name='type' label={t('Label_Type')}>
 						<Select>
-							{financialTypeOptions.map(({ name, value }) => (
+							{typeList.map(({ name, value }) => (
 								<Option key={name} value={value}>
-									{t(name)}
+									{name}
 								</Option>
 							))}
 						</Select>

@@ -25,6 +25,8 @@ export type EnumNameType =
 	| 'CustBankInfoLogStatus'
 	| 'EWalletinfoLogStatusEnum'
 	| 'WithdrawalLimitLogMainTypeEnum'
+	| 'FinancialType'
+
 export interface IGetEnumTypeArgs {
 	/**
 	 * @argument {string}  TransferChannelEnum - 取得渠道列表
@@ -44,6 +46,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  CustBankInfoLogStatus - 取得銀行狀態列表
 	 * @argument {string}  EWalletinfoLogStatusEnum - 取得電子錢包狀態列表
 	 * @argument {string}  WithdrawalLimitLogMainTypeEnum - 取得取款限制種類列表
+	 * @argument {string}  FinancialType - 取得財務種類列表
 	 */
 	enumName: EnumNameType
 }
