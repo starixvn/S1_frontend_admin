@@ -141,7 +141,7 @@ const Dashboard = () => {
 	return (
 		<>
 			<LayoutContent.Card>
-				<Row align='top' gutter={16}>
+				<Row align='top' gutter={8}>
 					<Col xxl={12} xl={24} lg={24} md={24} xs={24}>
 						<TodayInfoDescriptions
 							loading={isGetTodayInfoFetching}
@@ -151,7 +151,7 @@ const Dashboard = () => {
 					</Col>
 					{/* TODO:目前還沒有此 Api 的公式，等後端提供 */}
 					<Col xxl={12} xl={24} lg={24} md={24} xs={24}>
-						<Descriptions layout='vertical' bordered column={4} size='default'>
+						<Descriptions size='small' layout='vertical' bordered column={4}>
 							<Descriptions.Item label='NGR'>N/A</Descriptions.Item>
 							<Descriptions.Item label='VOD'>N/A</Descriptions.Item>
 							<Descriptions.Item label='Member'>N/A</Descriptions.Item>
@@ -161,14 +161,14 @@ const Dashboard = () => {
 					</Col>
 				</Row>
 
-				<Row align='top' gutter={16}>
+				<Row align='top' gutter={8}>
 					<Col xxl={6} xl={12} lg={12} md={12} xs={24}>
 						<Spin spinning={isGetWalletBalanceInfoFetching}>
 							<Descriptions
+								size='small'
 								layout='horizontal'
 								bordered
 								column={1}
-								size='middle'
 								labelStyle={{ width: '50%' }}
 							>
 								<Descriptions.Item label={t('Label_WalletBalance')}>
@@ -237,7 +237,7 @@ const Dashboard = () => {
 			<Divider />
 
 			<LayoutContent.Card>
-				<Row align='top' gutter={16}>
+				<Row align='top' gutter={8}>
 					<Col lg={12} md={12} xs={12}>
 						<WinLossSummaryDescriptions
 							custId={custId}

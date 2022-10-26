@@ -65,6 +65,7 @@ const DeviceListTable = ({
 	]
 	return (
 		<Table
+			size='small'
 			bordered
 			loading={loading}
 			dataSource={deviceList}

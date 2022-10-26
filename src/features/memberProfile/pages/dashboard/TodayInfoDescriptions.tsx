@@ -21,7 +21,7 @@ const TodayInfoDescriptions = ({
 
 	return (
 		<Spin spinning={loading}>
-			<Descriptions layout='vertical' bordered column={4} size='default'>
+			<Descriptions layout='vertical' bordered column={4} size='small'>
 				<Descriptions.Item label="Today's WinLoss">
 					{numberFormatter.format(todayWinLoss)}
 				</Descriptions.Item>

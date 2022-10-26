@@ -70,6 +70,7 @@ const UploadPicModal = ({
 	return (
 		<Modal
 			open={visible}
+			title={t('Label_IdentificationCard')}
 			onCancel={onCancel}
 			footer={[
 				<Button icon={<UploadOutlined />} loading={uploading}>

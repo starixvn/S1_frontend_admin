@@ -121,7 +121,7 @@ const TurnoverFilter = ({
 				}}
 			>
 				<Row align='middle' gutter={16}>
-					<Col span={12}>
+					<Col span={10}>
 						<Form.Item label={t('Label_DateRange')}>
 							<Input.Group compact style={{ width: '100%', display: 'flex' }}>
 								<Form.Item
