@@ -22,6 +22,7 @@ const IpCountsTable = ({ loading, ipCountList }: IIpCountsTableProps) => {
 
 	return (
 		<Table
+			size='small'
 			bordered
 			loading={loading}
 			dataSource={ipCountList}

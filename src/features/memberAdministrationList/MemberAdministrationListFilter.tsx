@@ -6,7 +6,6 @@ import {
 	Col,
 	Collapse,
 	DatePicker,
-	Divider,
 	Form,
 	FormInstance,
 	Input,
@@ -314,12 +313,11 @@ const MemberAdministrationListFilter = ({
 							</Col>
 						</Row>
 
-						<Collapse defaultActiveKey={['1']} ghost>
-							<Panel
-								header={<Divider>{t('Label_AdvancedSearch')}</Divider>}
-								key='1'
-								showArrow={false}
-							>
+						<Collapse accordion ghost>
+							{/* 
+							// * forceRender 強制渲染元件，而不是點擊打開後才延遲渲染，以防止 Form.Item 拿不到 key
+							*/}
+							<Panel header={t('Label_AdvancedSearch')} key='1' forceRender>
 								<Row align='middle' gutter={16}>
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item name='loginIp' label={t('Label_LoginIp')}>

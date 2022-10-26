@@ -41,7 +41,7 @@ const WinLossSummaryDescriptions = ({
 			<br />
 
 			<Spin spinning={loading}>
-				<Descriptions layout='horizontal' bordered column={1} size='middle'>
+				<Descriptions size='small' layout='horizontal' bordered column={1}>
 					{winLossSummaries?.map(summary => (
 						<Descriptions.Item label={summary.name} key={summary.categoryId}>
 							{summary.winlostAmount}

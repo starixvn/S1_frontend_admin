@@ -124,6 +124,7 @@ const FinancialLogsTable = ({
 			<br />
 
 			<Table
+				size='small'
 				bordered
 				loading={loading}
 				dataSource={dataSource}

@@ -19,10 +19,10 @@ const WinLossInfoDescriptions = ({
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
+				size='small'
 				layout='horizontal'
 				bordered
 				column={1}
-				size='middle'
 				labelStyle={{ width: '50%' }}
 			>
 				<Descriptions.Item label={t('Label_WinLoss')}>
