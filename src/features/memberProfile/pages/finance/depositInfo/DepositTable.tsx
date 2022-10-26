@@ -67,7 +67,7 @@ const DepositTable = ({
 			align: 'center' as 'center',
 			render: (depositType: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{typeList.map(item => item.value === depositType && item.value)}
+					{typeList.map(item => item.value === depositType && item.name)}
 				</Typography.Text>
 			),
 		},
@@ -122,8 +122,7 @@ const DepositTable = ({
 			dataIndex: 'accountNo',
 			width: 100,
 			align: 'center' as 'center',
-			render: (accountNo: number) =>
-				accountNo ? numberFormatter.format(accountNo) : 0,
+			render: (accountNo: number) => accountNo ?? '-',
 		},
 		{
 			title: t('Label_DepositDate'),
