@@ -248,7 +248,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									</Form.Item>
 								</Space>
 							))}
-							{(amountList?.length as number) < 10 && (
+							{((amountList?.length as number) < 10 || !amountList) && (
 								<Form.Item>
 									<Button
 										type='dashed'

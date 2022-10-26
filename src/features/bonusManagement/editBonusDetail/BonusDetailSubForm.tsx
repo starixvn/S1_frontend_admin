@@ -555,22 +555,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										<Input disabled={!active} />
 									</Form.Item>
 								</Col>
-								<Col span={8}>
-									<Form.Item
-										name={['specific', isoCode, 'requiredAmount']}
-										label={t('Label_RequiredAmount')}
-										rules={[
-											{
-												required: active,
-												message: t('Label_Required', {
-													key: t('Label_RequiredAmount'),
-												}),
-											},
-										]}
-									>
-										<Input disabled={!active} />
-									</Form.Item>
-								</Col>
 							</Row>
 							<Row gutter={16}>
 								<Col span={8}>
