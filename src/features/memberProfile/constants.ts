@@ -109,6 +109,7 @@ export enum NotesMethodEnum {
 }
 
 export enum FinancialTypeEnum {
+	ALl = 0,
 	Deposit = 1,
 	PaymentAdjustment = 2,
 	BonusReward = 5,
@@ -136,12 +137,16 @@ export enum FinancialTypeEnum {
 
 export const financialTypeOptions: { value: number; name: string }[] = [
 	{
-		value: FinancialTypeEnum.Deposit,
-		name: 'Deposit',
+		value: FinancialTypeEnum.ALl,
+		name: 'All',
 	},
 	{
 		value: FinancialTypeEnum.PaymentAdjustment,
 		name: 'PaymentAdjustment',
+	},
+	{
+		value: FinancialTypeEnum.Deposit,
+		name: 'Deposit',
 	},
 	{
 		value: FinancialTypeEnum.BonusReward,

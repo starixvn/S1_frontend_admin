@@ -93,7 +93,7 @@ const FinancialLogsTable = ({
 				<Col>
 					<Form
 						form={form}
-						initialValues={{ financialType: FinancialTypeEnum.Deposit }}
+						initialValues={{ financialType: FinancialTypeEnum.ALl }}
 					>
 						<Space>
 							<Form.Item name='financialType' noStyle>
