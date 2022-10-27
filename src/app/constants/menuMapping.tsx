@@ -154,7 +154,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.withdrawalKycControl.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Message/WithdrawalKYCControl',
 		internalFunctionKey: allowedRoles.MessageWithdrawalKYCControl,
 		newAdminPath: paths.finance.sub.withdrawalKycControl.root,
@@ -284,7 +284,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.adjustmentLimitation.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/AdjustmentLimitManagement',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentLimitManagement,
 		newAdminPath: paths.finance.sub.setting.sub.adjustmentLimitation.root,
