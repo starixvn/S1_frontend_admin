@@ -825,5 +825,7 @@
 	"Label_Change": "Change",
 	"Label_Unlimited": "UnLimited",
 	"Label_IdentificationCard": " Identification Card",
-	"Label_CompletedTime": "Completed Time"
+	"Label_CompletedTime": "Completed Time",
+	"Label_MainDetail" : "Main Detail",
+	"Label_RawDetail" : "Raw Detail"
 }
