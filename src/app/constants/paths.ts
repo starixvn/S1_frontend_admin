@@ -29,6 +29,10 @@ const paths = {
 						root: 'customerSupport/operatorService/liveRegistrationStatistics',
 						functionId: 23,
 					},
+					otpVerificationReport: {
+						root: 'customerSupport/operatorService/otpVerificationReport',
+						functionId: 131,
+					},
 				},
 			},
 		},

@@ -341,6 +341,13 @@ const LiveRegistrationStatistics = lazy(
 		)
 )
 
+const OtpVerificationReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'OtpVerificationReport' */ 'features/otpVerificationReport/OtpVerificationReport'
+		)
+)
+
 const WithdrawalLimitation = lazy(
 	() =>
 		import(
@@ -1285,6 +1292,19 @@ const routes: RouteObject[] = [
 						}
 					>
 						<LiveRegistrationStatistics />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.operatorService.sub.otpVerificationReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.operatorService.sub
+								.otpVerificationReport.functionId
+						}
+					>
+						<OtpVerificationReport />
 					</AuthRequire>
 				),
 			},

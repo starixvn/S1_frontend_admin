@@ -121,6 +121,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.otpVerificationReport
+				.functionId,
+		name: 'Live Registration Statistics',
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.otpVerificationReport.root,
+	},
+	{
+		icon: null,
 		functionId: 24,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/TeleCSD',
