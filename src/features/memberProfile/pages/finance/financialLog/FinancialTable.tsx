@@ -57,10 +57,14 @@ const FinancialTable = ({
 		},
 		{
 			title: t('Label_ChangeAmount'),
-			dataIndex: 'changeAmount',
 			key: 'changeAmount',
 			align: 'center' as 'center',
-			render: (changeAmount: number) => numberFormatter.format(changeAmount),
+			render: (records: { changeAmount: number; direction: number }) => {
+				const { changeAmount, direction } = records
+				// 後端回傳direction參數:1代表'+' 2代表'-'
+				const sign = direction === 1 ? '+' : '-'
+				return `${sign}${numberFormatter.format(changeAmount)}`
+			},
 		},
 		{
 			title: t('Label_AfterAmount'),
