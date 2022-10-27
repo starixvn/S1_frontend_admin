@@ -705,6 +705,13 @@ const MemberProfileCashBackReport = lazy(
 		)
 )
 
+const PaymentManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PaymentManagement' */ 'features/paymentManagement/PaymentManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1739,6 +1746,14 @@ const routes: RouteObject[] = [
 						),
 					},
 				],
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.paymentGateway.root}`,
+				element: (
+					<AuthRequire functionId={paths.finance.sub.paymentGateway.functionId}>
+						<PaymentManagement />
+					</AuthRequire>
+				),
 			},
 		],
 	},
