@@ -14,6 +14,11 @@ export type EnumNameType =
 	| 'BankCardManagementStatusEnum'
 	| 'BankCardManagementPurposeEnum'
 	| 'BankCardManagementSupportChannelEnum'
+	| 'PayListMethodEnum'
+	| 'PayChannelTypeEnum'
+	| 'PayListStatusEnum'
+	| 'PayChannelMethodEnum'
+	| 'AmountRuleEnum'
 	| 'DepositStatusEnum'
 	| 'DepositTypeEnum'
 	| 'WithdrawalStatusEnum'
@@ -47,6 +52,11 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  EWalletinfoLogStatusEnum - 取得電子錢包狀態列表
 	 * @argument {string}  WithdrawalLimitLogMainTypeEnum - 取得取款限制種類列表
 	 * @argument {string}  FinancialType - 取得財務種類列表
+	 * @argument {string}  PayListMethodEnum - 取得 PayList Method 列表
+	 * @argument {string}  PayChannelTypeEnum - 取得 Payment Type 列表
+	 * @argument {string}  PayListStatusEnum - 取得 Globalstatus 列表
+	 * @argument {string}  PayChannelMethodEnum - 取得 ChannelMethod 列表
+	 * @argument {string}  AmountRuleEnum - 取得 AmountRule 列表
 	 */
 	enumName: EnumNameType
 }

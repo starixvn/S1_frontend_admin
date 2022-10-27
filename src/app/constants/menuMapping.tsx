@@ -251,11 +251,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 39,
+		functionId: paths.finance.sub.paymentGateway.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentManage',
 		internalFunctionKey: allowedRoles.FinancePaymentManage,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.paymentGateway.root,
 	},
 	{
 		icon: null,

@@ -159,7 +159,8 @@ const paths = {
 				root: 'finance/bankTransferAccount',
 			},
 			paymentGateway: {
-				root: 'finance/paymentGateway',
+				root: 'finance/paymentManagement',
+				functionId: 39,
 			},
 			depositLimit: {
 				root: 'finance/depositLimit',
