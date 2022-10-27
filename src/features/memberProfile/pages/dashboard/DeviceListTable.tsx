@@ -7,12 +7,14 @@ interface IDeviceListTableProps {
 	loading: boolean
 	deviceList: IGetDeviceData[]
 	timeZoneUtcOffset: number
+	onAccountClick: (deviceId: string) => void
 }
 
 const DeviceListTable = ({
 	loading,
 	deviceList,
 	timeZoneUtcOffset,
+	onAccountClick,
 }: IDeviceListTableProps) => {
 	const columns = [
 		{
@@ -46,9 +48,16 @@ const DeviceListTable = ({
 		},
 		{
 			title: 'Associate Count',
-			dataIndex: 'associateCount',
 			key: 'associateCount',
 			align: 'center' as 'center',
+			render: (record: IGetDeviceData) => {
+				const { associateCount, deviceId } = record
+				return (
+					<Typography.Link onClick={() => onAccountClick(deviceId)}>
+						{associateCount}
+					</Typography.Link>
+				)
+			},
 		},
 		{
 			title: 'last Used Time',

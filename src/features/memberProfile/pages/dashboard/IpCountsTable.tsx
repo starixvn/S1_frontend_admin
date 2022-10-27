@@ -1,12 +1,17 @@
-import { Table } from 'antd'
+import { Table, Typography } from 'antd'
 import { IGetIpCountData } from 'features/memberProfile/type'
 
 interface IIpCountsTableProps {
 	loading: boolean
 	ipCountList: IGetIpCountData[]
+	onAccountClick: (ip: string) => void
 }
 
-const IpCountsTable = ({ loading, ipCountList }: IIpCountsTableProps) => {
+const IpCountsTable = ({
+	loading,
+	ipCountList,
+	onAccountClick,
+}: IIpCountsTableProps) => {
 	const columns = [
 		{
 			title: 'Ip',
@@ -15,8 +20,15 @@ const IpCountsTable = ({ loading, ipCountList }: IIpCountsTableProps) => {
 		},
 		{
 			title: 'User Count',
-			dataIndex: 'userCount',
 			key: 'userCount',
+			render: (record: IGetIpCountData) => {
+				const { loginIp, userCount } = record
+				return (
+					<Typography.Link onClick={() => onAccountClick(loginIp)}>
+						{userCount}
+					</Typography.Link>
+				)
+			},
 		},
 	]
 

@@ -6,6 +6,7 @@ import {
 	Descriptions,
 	Divider,
 	Form,
+	message,
 	Row,
 	Spin,
 	TablePaginationConfig,
@@ -22,14 +23,20 @@ import {
 	useGetWalletBalanceInfoQuery,
 	useGetWinLoseSummariesQuery,
 	useGetWinLossInfoQuery,
+	useLazyGetIpUserQuery,
+	useLazyGetDeviceUserListQuery,
 } from 'features/memberProfile/api'
 import { numberFormatter } from 'common/utils/format'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { IFinancialLogsResponse } from 'features/memberProfile/type'
-import { PAGINATION, usePagination } from 'common/hooks'
+import {
+	IFinancialLogsResponse,
+	IGetIpUserListResponse,
+} from 'features/memberProfile/type'
+import { PAGINATION, useModal, usePagination } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useEffect } from 'react'
 import { AffixButtons } from 'components/AffixButtons'
+import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 import FinancialLogsTable from './FinancialLogsTable'
 import WinLossSummaryDescriptions from './WinLossSummaryDescriptions'
 import IpCountsTable from './IpCountsTable'
@@ -45,6 +52,11 @@ const Dashboard = () => {
 	const custId = Number(originCustId)
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [financialLogsForm] = Form.useForm<{ financialType: number }>()
+
+	// ipUser 關聯彈窗
+	const ipUserListModal = useModal()
+	// deviceList 關聯彈窗
+	const deviceUserModal = useModal()
 
 	const {
 		data: { data: todayInfoData } = {},
@@ -92,6 +104,24 @@ const Dashboard = () => {
 		isFetching: isGetDeviceListFetching,
 	} = useGetDeviceListQuery({ custId })
 
+	// 取得 IP 關聯 User
+	const [
+		getIpUser,
+		{
+			data: { data: ipUserList = [] } = {} as IGetIpUserListResponse,
+			isFetching: isGetIpUserListLoading,
+		},
+	] = useLazyGetIpUserQuery()
+
+	// 取得 Device 關聯 User
+	const [
+		getDeviceUserList,
+		{
+			data: { data: deviceUserList = [] } = {},
+			isFetching: isGetDeviceUserLoading,
+		},
+	] = useLazyGetDeviceUserListQuery()
+
 	const [
 		getFinancialLogs,
 		{
@@ -129,6 +159,31 @@ const Dashboard = () => {
 		}).unwrap()
 
 		setFinancialLogsPagination(prev => ({ ...prev, current, pageSize }))
+	}
+
+	//  顯示 ip 關聯帳號彈窗
+	const handleIpAccountClick = async (ip: string) => {
+		ipUserListModal.onOpen()
+		try {
+			await getIpUser({ ip }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 顯示 Device 關聯帳號彈窗
+	const handleAccountClick = async (deviceId: string) => {
+		deviceUserModal.onOpen()
+		if (!custId) return
+		try {
+			await getDeviceUserList({ custId, deviceId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	const isBonusWalletLoading =
@@ -261,6 +316,7 @@ const Dashboard = () => {
 						<IpCountsTable
 							loading={isGetIpCountListFetching}
 							ipCountList={ipCountList ?? []}
+							onAccountClick={handleIpAccountClick}
 						/>
 					</Col>
 
@@ -269,10 +325,25 @@ const Dashboard = () => {
 							loading={isGetDeviceListFetching}
 							deviceList={deviceList ?? []}
 							timeZoneUtcOffset={timeZoneUtcOffset}
+							onAccountClick={handleAccountClick}
 						/>
 					</Col>
 				</Row>
 			</LayoutContent.Card>
+			{/* IP User */}
+			<UserListModal
+				loading={isGetIpUserListLoading}
+				userList={ipUserList}
+				visible={ipUserListModal.visible}
+				onCancel={ipUserListModal.onCancel}
+			/>
+			{/* Device User */}
+			<UserListModal
+				loading={isGetDeviceUserLoading}
+				userList={deviceUserList}
+				visible={deviceUserModal.visible}
+				onCancel={deviceUserModal.onCancel}
+			/>
 
 			<br />
 
