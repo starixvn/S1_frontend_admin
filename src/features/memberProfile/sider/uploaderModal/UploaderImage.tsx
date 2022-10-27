@@ -25,7 +25,7 @@ const UploaderImage = ({
 	deleteLoading,
 }: IUploaderImageProps) => {
 	return (
-		<Spin spinning={!deleteLoading}>
+		<Spin spinning={deleteLoading}>
 			<ImageContainer>
 				<Image
 					src={src}
