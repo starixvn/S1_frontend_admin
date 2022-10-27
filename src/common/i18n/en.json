@@ -824,5 +824,6 @@
 	"Label_RebateByGame": "Rebate % by Game",
 	"Label_Change": "Change",
 	"Label_Unlimited": "UnLimited",
-	"Label_IdentificationCard": " Identification Card"
+	"Label_IdentificationCard": " Identification Card",
+	"Label_CompletedTime": "Completed Time"
 }

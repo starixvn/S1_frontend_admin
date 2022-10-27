@@ -31,6 +31,8 @@ export type EnumNameType =
 	| 'EWalletinfoLogStatusEnum'
 	| 'WithdrawalLimitLogMainTypeEnum'
 	| 'FinancialType'
+	| 'OTPProvider'
+	| 'OTPStatus'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -54,9 +56,11 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  FinancialType - 取得財務種類列表
 	 * @argument {string}  PayListMethodEnum - 取得 PayList Method 列表
 	 * @argument {string}  PayChannelTypeEnum - 取得 Payment Type 列表
-	 * @argument {string}  PayListStatusEnum - 取得 Globalstatus 列表
+	 * @argument {string}  PayListStatusEnum - 取得 GlobalStatus 列表
 	 * @argument {string}  PayChannelMethodEnum - 取得 ChannelMethod 列表
 	 * @argument {string}  AmountRuleEnum - 取得 AmountRule 列表
+	 * @argument {string}  OTPProvider - 取得 OTP 種類列表
+	 * @argument {string}  OTPStatus - 取得 OTP 狀態列表
 	 */
 	enumName: EnumNameType
 }
