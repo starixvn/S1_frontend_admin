@@ -11,7 +11,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { StatementFilter } from 'features/memberProfile/pages/game/statement/StatementFilter'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { dateRangeToUtcFormatter } from 'common/utils'
+import { dateRangeToUtcFormatter, utcFormatter } from 'common/utils'
 import { useState } from 'react'
 import { CustTpBetRecordTable } from 'features/memberProfile/pages/game/statement/tables/CustTpBetRecordTable'
 import { GameStatementTableEnum } from 'features/memberProfile/constants'
@@ -22,6 +22,7 @@ import { CustTpBetRecordByGameTypeTable } from 'features/memberProfile/pages/gam
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { IGetTpBetRecordDetailData } from 'features/memberProfile/type'
 import { TpBetRecordDetailModal } from 'features/memberProfile/pages/game/statement/tables/TpBetRecordDetailModal'
+import moment from 'moment'
 
 const Statement = () => {
 	const { t } = useTranslation()
@@ -108,19 +109,17 @@ const Statement = () => {
 
 	const handleTpBetRecordTableClicked = async (settledDate: string) => {
 		// 取得第二層的 Table Detail ,  並切換 state 至第二層
-		const { dateRange } = filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
 		filterForm.setFieldsValue({
 			selDate: settledDate,
 		})
 		try {
 			await getCustTpBetRecordByDay({
 				custId: Number(custId),
-				startDate,
-				endDate,
+				startDate: settledDate,
+				endDate: utcFormatter({
+					date: moment(settledDate).endOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				selDate: settledDate,
 			}).unwrap()
 			setTableState(prev => prev + 1)
@@ -133,16 +132,16 @@ const Statement = () => {
 
 	const handleTpBetRecordByDayTableClicked = async (categoryId: number) => {
 		// 取得第三層的 Table Detail , 並切換 state 至第三層
-		const { dateRange, selDate } = filterForm.getFieldsValue(true)
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const { selDate } = filterForm.getFieldsValue(true)
+
 		try {
 			await getCustTpBetRecordByCategory({
 				custId: Number(custId),
-				startDate,
-				endDate,
+				startDate: selDate,
+				endDate: utcFormatter({
+					date: moment(selDate).endOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				selDate,
 				categoryId,
 			}).unwrap()
@@ -162,16 +161,15 @@ const Statement = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		const { dateRange, selDate, gameTypeId } = filterForm.getFieldsValue(true)
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const { selDate, gameTypeId } = filterForm.getFieldsValue(true)
 		try {
 			await getCustTpBetRecordByGameType({
 				custId: Number(custId),
-				startDate,
-				endDate,
+				startDate: selDate,
+				endDate: utcFormatter({
+					date: moment(selDate).endOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				selDate,
 				gameTypeId,
 				pageNumber: current,
