@@ -25,10 +25,14 @@ const CryptoInfoTable = ({
 		{
 			title: t('Label_Type'),
 			key: 'Type',
-			dataIndex: 'status',
+			dataIndex: 'isoCode',
 			width: 100,
 			align: 'center' as 'center',
-			render: (status: number) => status,
+			render: (isoCode: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					{isoCode}
+				</Typography.Text>
+			),
 		},
 		{
 			title: t('Label_NetWork'),

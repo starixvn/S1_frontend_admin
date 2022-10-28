@@ -77,10 +77,10 @@ const EWalletInfoTable = ({
 		{
 			title: t('Label_Updater'),
 			key: 'Updater',
-			dataIndex: 'updater',
+			dataIndex: 'updateOperator',
 			width: 100,
 			align: 'center' as 'center',
-			render: (updater: string) => updater ?? '-',
+			render: (updateOperator: string) => updateOperator ?? '-',
 		},
 	]
 	return (
