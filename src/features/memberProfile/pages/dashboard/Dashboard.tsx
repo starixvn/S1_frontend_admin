@@ -161,6 +161,17 @@ const Dashboard = () => {
 		setFinancialLogsPagination(prev => ({ ...prev, current, pageSize }))
 	}
 
+	const handleFinanceLogTableChange = async (
+		newPagination: TablePaginationConfig
+	) => {
+		const { current, pageSize } = newPagination
+
+		await handleFinancialLogsSearch({
+			current,
+			pageSize,
+		})
+	}
+
 	//  顯示 ip 關聯帳號彈窗
 	const handleIpAccountClick = async (ip: string) => {
 		ipUserListModal.onOpen()
@@ -309,6 +320,8 @@ const Dashboard = () => {
 							dataSource={financialLogs}
 							pagination={financialLogsPagination as TablePaginationConfig}
 							onFinancialLogsSearch={handleFinancialLogsSearch}
+							timeZoneUtcOffset={timeZoneUtcOffset}
+							onTableChange={handleFinanceLogTableChange}
 						/>
 					</Col>
 

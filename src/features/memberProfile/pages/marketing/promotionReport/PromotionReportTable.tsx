@@ -15,6 +15,7 @@ import {
 	PromotionReportStatusEnum,
 	promotionReportStatusList,
 } from 'features/memberProfile/constants'
+import { isJSON } from 'common/utils'
 
 interface IPromotionReportTableProps {
 	loading: boolean
@@ -83,9 +84,9 @@ const PromotionReportTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (rawDepositInfo: string) => {
-				if (!rawDepositInfo) return '-'
+				if (!isJSON(rawDepositInfo)) return '-'
 				const depositInfo = JSON.parse(rawDepositInfo) as DepositInfoType
-				return depositInfo.map(info => (
+				return depositInfo?.map(info => (
 					<Row align='middle' justify='center'>
 						{info.DepositId}
 					</Row>
@@ -99,9 +100,9 @@ const PromotionReportTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (rawDepositInfo: string) => {
-				if (!rawDepositInfo) return '-'
+				if (!isJSON(rawDepositInfo)) return '-'
 				const depositInfo = JSON.parse(rawDepositInfo) as DepositInfoType
-				return depositInfo.map(info => (
+				return depositInfo?.map(info => (
 					<Row align='middle' justify='center'>
 						{numberFormatter.format(info.Amount)}
 					</Row>

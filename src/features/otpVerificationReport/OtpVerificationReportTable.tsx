@@ -1,5 +1,6 @@
 import moment from 'moment'
-import { Table, TablePaginationConfig, Typography } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
+import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
