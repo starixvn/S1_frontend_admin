@@ -13,6 +13,7 @@ import {
 } from 'antd/lib/menu/hooks/useItems'
 import { FaUser } from '@react-icons/all-files/fa/FaUser'
 import { useMediaQuery } from 'usehooks-ts'
+import { useAuth } from 'common/hooks'
 
 type ItemType = MenuItemType | SubMenuType | MenuItemGroupType | MenuDividerType
 
@@ -29,6 +30,18 @@ interface IMemberProfileHeaderProps {
 }
 
 const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
+	// * 決定下拉選單是否出現
+	const {
+		actionPermissions: {
+			customerInfoPermission,
+			financeLogPermission,
+			gameLogPermission,
+			marketingLogPermission,
+			// TODO
+			// adminUserLogPermission,
+		} = {},
+	} = useAuth()
+
 	const isDesktopMedia = useMediaQuery('(max-width: 992px)')
 	const { t } = useTranslation()
 	const { custId } = useParams()
@@ -379,7 +392,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Link>
 			),
 		},
-		{
+		Boolean(customerInfoPermission?.canUse) && {
 			key: 2,
 			label: (
 				<Dropdown overlay={customerInfoMenu} trigger={['click']}>
@@ -392,7 +405,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Dropdown>
 			),
 		},
-		{
+		Boolean(financeLogPermission?.canUse) && {
 			key: 3,
 			label: (
 				<Dropdown overlay={financeMenu} trigger={['click']}>
@@ -405,7 +418,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Dropdown>
 			),
 		},
-		{
+		Boolean(gameLogPermission?.canUse) && {
 			key: 4,
 			label: (
 				<Dropdown overlay={gameMenu} trigger={['click']}>
@@ -418,7 +431,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Dropdown>
 			),
 		},
-		{
+		Boolean(marketingLogPermission?.canUse) && {
 			key: 5,
 			label: (
 				<Dropdown overlay={marketingMenu} trigger={['click']}>
@@ -442,6 +455,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 			),
 		},
 		//  TODO
+		// * 要記得綁定 adminUserLogPermission 權限
 		// {
 		// 	key: 7,
 		// 	label: (

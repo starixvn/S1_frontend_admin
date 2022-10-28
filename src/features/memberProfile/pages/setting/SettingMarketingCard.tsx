@@ -3,10 +3,12 @@ import {
 	IGetBasicInfoData,
 	PayoutVerificationRewardOTPTypeEnum,
 	SettingSwitchTypeEnum,
+	ISettingMarketingPermissions,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 
 interface ISettingMarketingCardProps {
+	marketingPermissions: ISettingMarketingPermissions
 	custBasicInfo: IGetBasicInfoData
 	isSwitchRebatePayoutLoading: boolean
 	onSwitch: (newSwitchType: SettingSwitchTypeEnum, checked: boolean) => void
@@ -16,6 +18,11 @@ interface ISettingMarketingCardProps {
 }
 
 const SettingMarketingCard = ({
+	marketingPermissions: {
+		phoneVerifiedRewardPermission,
+		emailVerifiedRewardPermission,
+		lockRebatePayoutPermission,
+	},
 	custBasicInfo,
 	isSwitchRebatePayoutLoading,
 	onSwitch,
@@ -28,6 +35,7 @@ const SettingMarketingCard = ({
 			<Card title={t('Label_Marketing')} style={{ height: '100%' }}>
 				<p>
 					<Popconfirm
+						disabled={!phoneVerifiedRewardPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() =>
 							onSetPayoutVerificationReward(
@@ -35,11 +43,14 @@ const SettingMarketingCard = ({
 							)
 						}
 					>
-						<Typography.Link>{t('Label_PhoneVerifiedReward')}</Typography.Link>
+						<Typography.Link disabled={!phoneVerifiedRewardPermission?.canUse}>
+							{t('Label_PhoneVerifiedReward')}
+						</Typography.Link>
 					</Popconfirm>
 				</p>
 				<p>
 					<Popconfirm
+						disabled={!emailVerifiedRewardPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() =>
 							onSetPayoutVerificationReward(
@@ -47,7 +58,9 @@ const SettingMarketingCard = ({
 							)
 						}
 					>
-						<Typography.Link>{t('Label_EmailVerifiedReward')}</Typography.Link>
+						<Typography.Link disabled={!emailVerifiedRewardPermission?.canUse}>
+							{t('Label_EmailVerifiedReward')}
+						</Typography.Link>
 					</Popconfirm>
 				</p>
 				<p>
@@ -55,6 +68,7 @@ const SettingMarketingCard = ({
 						<Col span={6}>{t('Label_RebatePayout')}</Col>
 						<Col span={6} offset={12}>
 							<Switch
+								disabled={!lockRebatePayoutPermission?.canUse}
 								loading={isSwitchRebatePayoutLoading}
 								checked={isRebatePayoutStatus}
 								onChange={checked =>

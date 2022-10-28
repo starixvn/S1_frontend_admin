@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { MethodTypeEnum } from 'features/balanceAdjustment/constants'
+import { ISettingFinancePermissions } from 'features/memberProfile/type'
 
 interface ISettingFinanceCardProps {
+	financePermissions: ISettingFinancePermissions
 	userName: string | undefined
 	onResetBankInfo: () => void
 	onResetEWallet: () => void
@@ -14,31 +16,52 @@ interface ISettingFinanceCardProps {
 }
 
 const SettingFinanceCard = ({
+	financePermissions: {
+		resetBankInfoPermission,
+		resetEWalletPermission,
+		resetCryptoInfoPermission,
+	},
 	userName,
 	onResetBankInfo,
 	onResetEWallet,
 	onResetCryptoInfo,
 }: ISettingFinanceCardProps) => {
 	const { t } = useTranslation()
+
 	return (
 		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Finance')} style={{ height: '100%' }}>
 				<p>
-					<Popconfirm title={t('Label_AreYouSure')} onConfirm={onResetBankInfo}>
-						<Typography.Link>{t('Label_ResetBankInfo')}</Typography.Link>
-					</Popconfirm>
-				</p>
-				<p>
-					<Popconfirm title={t('Label_AreYouSure')} onConfirm={onResetEWallet}>
-						<Typography.Link>{t('Label_ResetEWallet')}</Typography.Link>
+					<Popconfirm
+						disabled={!resetBankInfoPermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={onResetBankInfo}
+					>
+						<Typography.Link disabled={!resetBankInfoPermission?.canUse}>
+							{t('Label_ResetBankInfo')}
+						</Typography.Link>
 					</Popconfirm>
 				</p>
 				<p>
 					<Popconfirm
+						disabled={!resetEWalletPermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={onResetEWallet}
+					>
+						<Typography.Link disabled={!resetEWalletPermission?.canUse}>
+							{t('Label_ResetEWallet')}
+						</Typography.Link>
+					</Popconfirm>
+				</p>
+				<p>
+					<Popconfirm
+						disabled={!resetCryptoInfoPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={onResetCryptoInfo}
 					>
-						<Typography.Link>{t('Label_ResetCryptoInfo')}</Typography.Link>
+						<Typography.Link disabled={!resetCryptoInfoPermission?.canUse}>
+							{t('Label_ResetCryptoInfo')}
+						</Typography.Link>
 					</Popconfirm>
 				</p>
 				<p>

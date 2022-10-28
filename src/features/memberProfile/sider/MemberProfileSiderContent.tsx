@@ -15,13 +15,14 @@ import {
 } from 'features/memberProfile/api'
 import { UploadPicModal } from 'features/memberProfile/sider/uploaderModal/UploadPicModal'
 import React from 'react'
-import { useModal } from 'common/hooks'
+import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { UploadFile } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
 
 const MemberProfileSiderContent = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { lineUnbindingPermission } = {} } = useAuth()
 	const { custId = '' } = useParams()
 	const uploadModal = useModal()
 	const {
@@ -85,6 +86,7 @@ const MemberProfileSiderContent = () => {
 		<div>
 			<Spin spinning={isGetCustBasicInfoLoading}>
 				<BasicInfo
+					lineUnbindingPermission={lineUnbindingPermission}
 					custBasicInfo={custBasicInfo}
 					onCustPhotoClick={() => uploadModal.onOpen()}
 					onLineUnbind={handleLineUnbind}

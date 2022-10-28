@@ -117,8 +117,10 @@ const FinancialLogsTable = ({
 						<Space>
 							<Form.Item name='financialType' noStyle>
 								<Select style={{ width: 180 }}>
-									{financialTypeOptions.map(option => (
-										<Option value={option.value}>{option.name}</Option>
+									{financialTypeOptions.map(({ name, value }) => (
+										<Option key={value} value={value}>
+											{name}
+										</Option>
 									))}
 								</Select>
 							</Form.Item>

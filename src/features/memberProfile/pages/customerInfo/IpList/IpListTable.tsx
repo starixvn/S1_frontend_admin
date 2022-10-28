@@ -4,8 +4,10 @@ import { Table } from 'components'
 import { Popconfirm, Typography } from 'antd'
 import moment from 'moment'
 import { timeFormat } from 'common/utils/format'
+import { PermissionInterface } from 'type'
 
 interface IPListTableProps {
+	blockIPPermission: PermissionInterface | undefined
 	ipList: IGetIpLogData[]
 	loading: boolean
 	timeZoneUtcOffset: number
@@ -15,6 +17,7 @@ interface IPListTableProps {
 }
 
 const IpListTable = ({
+	blockIPPermission,
 	ipList,
 	loading,
 	timeZoneUtcOffset,
@@ -33,13 +36,19 @@ const IpListTable = ({
 				const { isBlock, loginIp } = record
 				return isBlock ? (
 					<Popconfirm
+						disabled={!blockIPPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() => onUnblockClicked(loginIp)}
 					>
-						<Typography.Link>{t('Label_Unlock')}</Typography.Link>
+						<Typography.Link disabled={!blockIPPermission?.canUse}>
+							{t('Label_Unlock')}
+						</Typography.Link>
 					</Popconfirm>
 				) : (
-					<Typography.Link onClick={() => onBlockClicked(loginIp)}>
+					<Typography.Link
+						disabled={!blockIPPermission?.canUse}
+						onClick={() => onBlockClicked(loginIp)}
+					>
 						{t('Label_Block')}
 					</Typography.Link>
 				)

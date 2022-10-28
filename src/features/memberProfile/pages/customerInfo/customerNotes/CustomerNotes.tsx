@@ -11,7 +11,7 @@ import {
 	useLazyGetCustNotesQuery,
 	useSetCustNotesMutation,
 } from 'features/memberProfile/api'
-import { PAGINATION, usePagination } from 'common/hooks'
+import { PAGINATION, useAuth, usePagination } from 'common/hooks'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { CustomerNotesForm } from 'features/memberProfile/pages/customerInfo/customerNotes/CustomerNotesForm'
 import { useAppSelector } from 'app/store'
@@ -22,6 +22,10 @@ import { NotesMethodEnum } from 'features/memberProfile/constants'
 
 const CustomerNotes = () => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: { noteDeletePermission, noteEditPermission } = {},
+	} = useAuth()
+	const notePermissions = { noteDeletePermission, noteEditPermission }
 	const { custId } = useParams()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { timeZoneUtcOffset } = useTimeZone()
@@ -174,6 +178,7 @@ const CustomerNotes = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					onDeleteNote={handleDeleteNote}
 					onSetNote={handleSetNote}
+					notePermissions={notePermissions}
 				/>
 			</LayoutContent.Card>
 		</>

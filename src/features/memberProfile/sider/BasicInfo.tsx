@@ -24,6 +24,7 @@ import {
 } from 'features/memberProfile/constants'
 import { find } from 'lodash'
 import React from 'react'
+import { PermissionInterface } from 'type'
 
 const { Title, Text } = Typography
 
@@ -32,6 +33,7 @@ const StyledText = styled(Text)`
 `
 
 interface IBasicInfoProps {
+	lineUnbindingPermission: PermissionInterface | undefined
 	custBasicInfo: IGetBasicInfoData
 	onCustPhotoClick: () => void
 	onLineUnbind: () => void
@@ -49,6 +51,7 @@ const OnlineTag = styled(Tag)`
 `
 
 const BasicInfo = ({
+	lineUnbindingPermission,
 	custBasicInfo,
 	onCustPhotoClick,
 	onLineUnbind,
@@ -163,6 +166,7 @@ const BasicInfo = ({
 						disabled={!isLineBinding}
 						cancelText={t('Label_Close')}
 						okText={t('Label_Unbind')}
+						okButtonProps={{ disabled: !lineUnbindingPermission?.canUse }}
 						okType='danger'
 						onConfirm={() => onLineUnbind()}
 					>

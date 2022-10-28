@@ -1490,15 +1490,17 @@ const routes: RouteObject[] = [
 			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}`,
 				element: (
-					<AuthRequire>
+					<AuthRequire functionId={paths.memberProfile.functionId}>
 						<MemberProfile />
 					</AuthRequire>
 				),
+				// * children 的 AuthRequire 皆需要帶入 memberProfile 的 memberProfile
+				// * 因為每頁都有可能綁權限，如果不帶的話會拿不到來自 memberProfile 的所有權限
 				children: [
 					{
 						path: 'dashboard/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileDashboard />
 							</AuthRequire>
 						),
@@ -1507,7 +1509,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/memberFlowLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileCustomerInfoMemberFlowLog />
 							</AuthRequire>
 						),
@@ -1515,7 +1517,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/vipLevel/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileVipLevelLog />
 							</AuthRequire>
 						),
@@ -1523,7 +1525,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/referralHistory/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileReferralHistory />
 							</AuthRequire>
 						),
@@ -1531,7 +1533,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/notes/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileNotes />
 							</AuthRequire>
 						),
@@ -1539,7 +1541,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/SMSInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileSmsInfo />
 							</AuthRequire>
 						),
@@ -1547,7 +1549,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/loginLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileLoginLog />
 							</AuthRequire>
 						),
@@ -1555,7 +1557,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/deviceList/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileDeviceList />
 							</AuthRequire>
 						),
@@ -1563,7 +1565,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'customerInfo/ipLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileIpList />
 							</AuthRequire>
 						),
@@ -1573,7 +1575,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/depositInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceDepositInfo />
 							</AuthRequire>
 						),
@@ -1581,7 +1583,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/withdrawalInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceWithdrawalInfo />
 							</AuthRequire>
 						),
@@ -1589,7 +1591,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/adjustmentInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceAdjustmentInfo />
 							</AuthRequire>
 						),
@@ -1597,7 +1599,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/3RDPartyAdjustmentInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceThirdPartyAdjustmentInfo />
 							</AuthRequire>
 						),
@@ -1605,7 +1607,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/withdrawalLimitLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceWithdrawalLimitLog />
 							</AuthRequire>
 						),
@@ -1613,7 +1615,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/transferInfo/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceTransferInfo />
 							</AuthRequire>
 						),
@@ -1621,7 +1623,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/financialLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileFinanceFinancialLog />
 							</AuthRequire>
 						),
@@ -1629,7 +1631,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/bankInfoLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileBankInfoLog />
 							</AuthRequire>
 						),
@@ -1637,7 +1639,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/eWalletInfoLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileEWalletInfoLog />
 							</AuthRequire>
 						),
@@ -1645,7 +1647,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/cryptoInfoLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileCryptoInfoLog />
 							</AuthRequire>
 						),
@@ -1653,7 +1655,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/bankList/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileBankList />
 							</AuthRequire>
 						),
@@ -1661,7 +1663,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'finance/eWalletList/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileEWalletList />
 							</AuthRequire>
 						),
@@ -1670,7 +1672,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'game/statement/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileGameStatement />
 							</AuthRequire>
 						),
@@ -1678,7 +1680,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'game/3RDPartyAccount/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileThirdPartyAccounts />
 							</AuthRequire>
 						),
@@ -1686,7 +1688,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'game/winLoseSummary/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileWinLossSummary />
 							</AuthRequire>
 						),
@@ -1694,7 +1696,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'game/turnover/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileTurnover />
 							</AuthRequire>
 						),
@@ -1703,7 +1705,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/bonusWallet/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileMarketingBonusWallet />
 							</AuthRequire>
 						),
@@ -1711,7 +1713,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/bonusLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileBonusLog />
 							</AuthRequire>
 						),
@@ -1719,7 +1721,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/vipRebateLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileVipRebateLog />
 							</AuthRequire>
 						),
@@ -1727,7 +1729,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/rewardsPointLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileRewardPointLog />
 							</AuthRequire>
 						),
@@ -1735,7 +1737,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/promotionReport/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfilePromotionReport />
 							</AuthRequire>
 						),
@@ -1743,7 +1745,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'marketing/cashBackReport/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileCashBackReport />
 							</AuthRequire>
 						),
@@ -1751,7 +1753,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'setting/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileSetting />
 							</AuthRequire>
 						),
@@ -1759,7 +1761,7 @@ const routes: RouteObject[] = [
 					{
 						path: 'adminUserLog/:custId',
 						element: (
-							<AuthRequire>
+							<AuthRequire functionId={paths.memberProfile.functionId}>
 								{/* TODO: */}
 								<MemberProfileAdminUserLog />
 							</AuthRequire>
