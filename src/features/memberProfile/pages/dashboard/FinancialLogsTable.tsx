@@ -22,6 +22,8 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { IFinancialLogData } from 'features/memberProfile/type'
+import moment from 'moment/moment'
+import { numberFormatter, timeFormat } from 'common/utils/format'
 
 const { Option } = Select
 
@@ -40,6 +42,8 @@ interface IFinancialLogsTableProps {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => void
+	timeZoneUtcOffset: number
+	onTableChange: (newPagination: TablePaginationConfig) => void
 }
 
 const FinancialLogsTable = ({
@@ -49,6 +53,8 @@ const FinancialLogsTable = ({
 	dataSource,
 	pagination,
 	onFinancialLogsSearch,
+	timeZoneUtcOffset,
+	onTableChange,
 }: IFinancialLogsTableProps) => {
 	const { t } = useTranslation()
 
@@ -58,6 +64,14 @@ const FinancialLogsTable = ({
 			dataIndex: 'createTime',
 			key: 'createTime',
 			align: 'center' as 'center',
+			render: (createTime: string) =>
+				createTime ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
+				) : (
+					''
+				),
 		},
 		{
 			title: t('Label_Type'),
@@ -65,13 +79,18 @@ const FinancialLogsTable = ({
 			key: 'financialType',
 			align: 'center' as 'center',
 			render: (financialType: number) =>
-				find(financialTypeOptions, { value: financialType })?.value ?? 'N/A',
+				find(financialTypeOptions, { value: financialType })?.name ?? 'N/A',
 		},
 		{
 			title: t('Label_ChangeAmount'),
-			dataIndex: 'changeAmount',
 			key: 'changeAmount',
 			align: 'center' as 'center',
+			render: (records: { changeAmount: number; direction: number }) => {
+				const { changeAmount, direction } = records
+				// 後端回傳direction參數:1代表'+' 2代表'-'
+				const sign = direction === 1 ? '+' : '-'
+				return `${sign}${numberFormatter.format(changeAmount)}`
+			},
 		},
 		{
 			title: t('Label_AfterAmount'),
@@ -130,6 +149,7 @@ const FinancialLogsTable = ({
 				dataSource={dataSource}
 				columns={columns}
 				pagination={{ ...pagination, hideOnSinglePage: true }}
+				onChange={onTableChange}
 			/>
 		</>
 	)
