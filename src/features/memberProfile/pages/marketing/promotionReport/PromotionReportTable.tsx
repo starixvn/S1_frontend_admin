@@ -16,8 +16,10 @@ import {
 	promotionReportStatusList,
 } from 'features/memberProfile/constants'
 import { isJSON } from 'common/utils'
+import { PermissionInterface } from 'type'
 
 interface IPromotionReportTableProps {
+	cancelPromotionPermission: PermissionInterface | undefined
 	loading: boolean
 	pagination: PaginationInterface
 	timeZoneUtcOffset: number
@@ -33,6 +35,7 @@ interface IPromotionReportTableProps {
 }
 
 const PromotionReportTable = ({
+	cancelPromotionPermission,
 	loading,
 	pagination,
 	timeZoneUtcOffset,
@@ -59,12 +62,15 @@ const PromotionReportTable = ({
 				const { bonusInfoStatus, bonusId, currencyId } = record
 				return bonusInfoStatus === PromotionReportStatusEnum.Running ? (
 					<Popconfirm
+						disabled={!cancelPromotionPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() => {
 							onCancelPromotion({ bonusId, currencyId })
 						}}
 					>
-						<Typography.Link>{t('Label_Cancel')}</Typography.Link>
+						<Typography.Link disabled={!cancelPromotionPermission?.canUse}>
+							{t('Label_Cancel')}
+						</Typography.Link>
 					</Popconfirm>
 				) : null
 			},

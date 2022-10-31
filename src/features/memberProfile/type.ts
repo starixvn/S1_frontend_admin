@@ -1,5 +1,6 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment'
+import { PermissionInterface } from 'type'
 
 export interface ICustIdInterface {
 	custId: number
@@ -1011,4 +1012,37 @@ export interface IGetPromotionDetailData {
 		percentage: string // percentage
 		cashBackDetail: ICashBackDetail[]
 	}
+}
+
+export interface ISettingInfoPermissions {
+	editFullNamePermission: PermissionInterface | undefined
+	editEMailPermission: PermissionInterface | undefined
+	editPhoneNumberPermission: PermissionInterface | undefined
+	changeVIPLevelPermission: PermissionInterface | undefined
+	editBirthdayPermission: PermissionInterface | undefined
+	editAddressPermission: PermissionInterface | undefined
+	editTagPermission: PermissionInterface | undefined
+}
+
+export interface ISettingRiskPermissions {
+	isKycPermission: PermissionInterface | undefined
+	isRickPermission: PermissionInterface | undefined
+	phoneVerifiedPermission: PermissionInterface | undefined
+	emailVerifiedPermission: PermissionInterface | undefined
+	resetPasswordPermission: PermissionInterface | undefined
+	lockAccountPermission: PermissionInterface | undefined
+	closeAccountPermission: PermissionInterface | undefined
+	kickOutPermission: PermissionInterface | undefined
+}
+
+export interface ISettingFinancePermissions {
+	resetBankInfoPermission: PermissionInterface | undefined
+	resetEWalletPermission: PermissionInterface | undefined
+	resetCryptoInfoPermission: PermissionInterface | undefined
+}
+
+export interface ISettingMarketingPermissions {
+	phoneVerifiedRewardPermission: PermissionInterface | undefined
+	emailVerifiedRewardPermission: PermissionInterface | undefined
+	lockRebatePayoutPermission: PermissionInterface | undefined
 }

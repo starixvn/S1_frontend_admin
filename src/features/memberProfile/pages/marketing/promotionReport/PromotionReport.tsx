@@ -9,7 +9,7 @@ import {
 	useCancelPromotionMutation,
 	useLazyGetPromotionReportQuery,
 } from 'features/memberProfile/api'
-import { PAGINATION, usePagination } from 'common/hooks'
+import { PAGINATION, useAuth, usePagination } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { PromotionReportTable } from 'features/memberProfile/pages/marketing/promotionReport/PromotionReportTable'
 import { useAppSelector } from 'app/store'
@@ -17,6 +17,7 @@ import { selectUserSite } from 'common/enum'
 
 const PromotionReport = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { cancelPromotionPermission } = {} } = useAuth()
 	const { custId: originCustId } = useParams()
 	const custId = Number(originCustId)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -118,6 +119,7 @@ const PromotionReport = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 				/>
 				<PromotionReportTable
+					cancelPromotionPermission={cancelPromotionPermission}
 					loading={loading}
 					pagination={pagination}
 					timeZoneUtcOffset={timeZoneUtcOffset}

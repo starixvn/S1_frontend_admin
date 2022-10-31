@@ -1,3 +1,6 @@
+// * memberProfile 和 memberAdministrationList 共用同一個 functionId
+const memberAdminFunctionId = 22
+
 const paths = {
 	layout: {
 		root: '/',
@@ -11,6 +14,7 @@ const paths = {
 	},
 	memberProfile: {
 		root: 'memberProfile',
+		functionId: memberAdminFunctionId,
 	},
 	assignBrand: {
 		root: 'AssignBrand',
@@ -20,7 +24,7 @@ const paths = {
 		sub: {
 			memberAdministrationList: {
 				root: 'customerSupport/memberAdministrationList',
-				functionId: 130,
+				functionId: memberAdminFunctionId,
 			},
 			operatorService: {
 				root: 'customerSupport/operatorService',

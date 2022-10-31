@@ -22,11 +22,12 @@ import {
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { BlockIPModal } from 'features/memberProfile/pages/customerInfo/IpList/BlockIPModal'
-import { useModal } from 'common/hooks'
+import { useAuth, useModal } from 'common/hooks'
 import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 
 const IpList = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { blockIPPermission } = {} } = useAuth()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -161,6 +162,7 @@ const IpList = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 				/>
 				<IpListTable
+					blockIPPermission={blockIPPermission}
 					ipList={ipList}
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}

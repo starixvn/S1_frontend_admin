@@ -86,11 +86,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 22,
+		functionId: 130,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/CustInfoList',
 		internalFunctionKey: allowedRoles.CustManageCustInfoList,
-		newAdminPath: '',
 	},
 	{
 		icon: null,

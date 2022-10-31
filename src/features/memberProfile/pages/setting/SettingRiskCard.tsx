@@ -3,6 +3,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import {
 	IGetBasicInfoData,
+	ISettingRiskPermissions,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
 } from 'features/memberProfile/type'
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 interface ISettingRiskCardProps {
+	riskPermissions: ISettingRiskPermissions
 	custId: number
 	custBasicInfo: IGetBasicInfoData
 	isSwitchIsKycLoading: boolean
@@ -22,6 +24,16 @@ interface ISettingRiskCardProps {
 }
 
 const SettingRiskCard = ({
+	riskPermissions: {
+		isKycPermission,
+		isRickPermission,
+		phoneVerifiedPermission,
+		emailVerifiedPermission,
+		resetPasswordPermission,
+		lockAccountPermission,
+		closeAccountPermission,
+		kickOutPermission,
+	},
 	custId,
 	custBasicInfo,
 	isSwitchIsKycLoading,
@@ -43,6 +55,7 @@ const SettingRiskCard = ({
 						<Col span={6}>{t('Label_IsKyc')}</Col>
 						<Col span={6} offset={12}>
 							<Switch
+								disabled={!isKycPermission?.canUse}
 								loading={isSwitchIsKycLoading}
 								checked={isKyc}
 								onChange={checked =>
@@ -57,6 +70,7 @@ const SettingRiskCard = ({
 						<Col span={6}>{t('Label_IsRisk')}</Col>
 						<Col span={6} offset={12}>
 							<Switch
+								disabled={!isRickPermission?.canUse}
 								loading={isSwitchRiskLoading}
 								checked={isRisk}
 								onChange={checked =>
@@ -71,6 +85,7 @@ const SettingRiskCard = ({
 						<Col span={6}>{t('Label_PhoneVerified')}</Col>
 						<Col span={6} offset={12}>
 							<Switch
+								disabled={!phoneVerifiedPermission?.canUse}
 								loading={isSwitchPhoneVerifiedLoading}
 								checked={phoneVerified}
 								onChange={checked =>
@@ -85,6 +100,7 @@ const SettingRiskCard = ({
 						<Col span={6}>{t('Label_EmailVerified')}</Col>
 						<Col span={6} offset={12}>
 							<Switch
+								disabled={!emailVerifiedPermission?.canUse}
 								loading={isSwitchEmailVerifiedLoading}
 								checked={emailVerified}
 								onChange={checked =>
@@ -95,8 +111,14 @@ const SettingRiskCard = ({
 					</Row>
 				</p>
 				<p>
-					<Popconfirm title={t('Label_AreYouSure')} onConfirm={onResetPassword}>
-						<Typography.Link>{t('Label_ResetPassword')}</Typography.Link>
+					<Popconfirm
+						disabled={!resetPasswordPermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={onResetPassword}
+					>
+						<Typography.Link disabled={!resetPasswordPermission?.canUse}>
+							{t('Label_ResetPassword')}
+						</Typography.Link>
 					</Popconfirm>
 				</p>
 				<p>
@@ -108,6 +130,7 @@ const SettingRiskCard = ({
 				</p>
 				<p>
 					<Typography.Link
+						disabled={!lockAccountPermission?.canUse}
 						onClick={() => onEditTypeChange(SettingEditTypeEnum.LockAccount)}
 					>
 						{t('Label_LockAccount')}
@@ -115,6 +138,7 @@ const SettingRiskCard = ({
 				</p>
 				<p>
 					<Typography.Link
+						disabled={!closeAccountPermission?.canUse}
 						onClick={() => onEditTypeChange(SettingEditTypeEnum.CloseAccount)}
 					>
 						{t('Label_CloseAccount')}
@@ -122,6 +146,7 @@ const SettingRiskCard = ({
 				</p>
 				<p>
 					<Typography.Link
+						disabled={!kickOutPermission?.canUse}
 						onClick={() => onEditTypeChange(SettingEditTypeEnum.KickOutUser)}
 					>
 						{t('Label_KickOut')}

@@ -6,8 +6,10 @@ import { IGetSMSInfoData } from 'features/memberProfile/type'
 import moment from 'moment/moment'
 import { timeFormat } from 'common/utils/format'
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
+import { PermissionInterface } from 'type'
 
 interface ISmsInfoTableProps {
+	smsInfoDeletePermission: PermissionInterface | undefined
 	loading: boolean
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
@@ -18,6 +20,7 @@ interface ISmsInfoTableProps {
 }
 
 const SmsInfoTable = ({
+	smsInfoDeletePermission,
 	loading,
 	pagination,
 	onTableChange,
@@ -41,10 +44,13 @@ const SmsInfoTable = ({
 							{t('Label_View')}
 						</Typography.Link>
 						<Popconfirm
+							disabled={!smsInfoDeletePermission?.canUse}
 							title={t('Label_SureToDelete')}
 							onConfirm={() => onDeleteMsg(id)}
 						>
-							<Typography.Link>{t('Label_Delete')}</Typography.Link>
+							<Typography.Link disabled={!smsInfoDeletePermission?.canUse}>
+								{t('Label_Delete')}
+							</Typography.Link>
 						</Popconfirm>
 					</Space>
 				)

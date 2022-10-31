@@ -12,7 +12,7 @@ import {
 	IGetSMSInfoData,
 	IGetSmsInfoResponse,
 } from 'features/memberProfile/type'
-import { PAGINATION, useModal, usePagination } from 'common/hooks'
+import { PAGINATION, useAuth, useModal, usePagination } from 'common/hooks'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useEffect, useState } from 'react'
 import { SmsInfoTable } from 'features/memberProfile/pages/customerInfo/smsInfo/SmsInfoTable'
@@ -24,6 +24,12 @@ import { selectUserSite } from 'common/enum'
 
 const SmsInfo = () => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: {
+			smsInfoDeletePermission,
+			personalMessageEditPermission,
+		} = {},
+	} = useAuth()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -149,6 +155,7 @@ const SmsInfo = () => {
 			/>
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<SmsInfoTable
+					smsInfoDeletePermission={smsInfoDeletePermission}
 					loading={loading}
 					pagination={pagination}
 					onTableChange={handleTableChange}
@@ -185,7 +192,10 @@ const SmsInfo = () => {
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
-				<AffixButtons.Create onClick={sendMsgModal.onOpen} />
+				<AffixButtons.Create
+					disabled={!personalMessageEditPermission?.canUse}
+					onClick={sendMsgModal.onOpen}
+				/>
 			</AffixButtons>
 		</>
 	)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
-import { useModal } from 'common/hooks'
+import { useAuth, useModal } from 'common/hooks'
 import { useParams } from 'react-router-dom'
 import { Button, Form, message, notification, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -28,11 +28,15 @@ import {
 	useKickOutUserMutation,
 } from 'features/memberProfile/api'
 import {
+	ISettingFinancePermissions,
 	IGetBasicInfoResponse,
 	ISettingForm,
+	ISettingRiskPermissions,
 	PayoutVerificationRewardOTPTypeEnum,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
+	ISettingMarketingPermissions,
+	ISettingInfoPermissions,
 } from 'features/memberProfile/type'
 import copy from 'copy-to-clipboard'
 import SettingInfoCard from './SettingInfoCard'
@@ -46,6 +50,69 @@ import SettingGameCard from './SettingGameCard'
 
 const Setting = () => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: {
+			// * infoPermissions
+			editFullNamePermission,
+			editEMailPermission,
+			editPhoneNumberPermission,
+			changeVIPLevelPermission,
+			editBirthdayPermission,
+			editAddressPermission,
+			editTagPermission,
+			// * riskPermissions
+			isKycPermission,
+			isRickPermission,
+			phoneVerifiedPermission,
+			emailVerifiedPermission,
+			resetPasswordPermission,
+			lockAccountPermission,
+			closeAccountPermission,
+			kickOutPermission,
+			// * financePermissions
+			resetBankInfoPermission,
+			resetEWalletPermission,
+			resetCryptoInfoPermission,
+			// * marketingPermissions
+			phoneVerifiedRewardPermission,
+			emailVerifiedRewardPermission,
+			lockRebatePayoutPermission,
+		} = {},
+	} = useAuth()
+
+	const infoPermissions: ISettingInfoPermissions = {
+		editFullNamePermission,
+		editEMailPermission,
+		editPhoneNumberPermission,
+		changeVIPLevelPermission,
+		editBirthdayPermission,
+		editAddressPermission,
+		editTagPermission,
+	}
+
+	const riskPermissions: ISettingRiskPermissions = {
+		isKycPermission,
+		isRickPermission,
+		phoneVerifiedPermission,
+		emailVerifiedPermission,
+		resetPasswordPermission,
+		lockAccountPermission,
+		closeAccountPermission,
+		kickOutPermission,
+	}
+
+	const financePermissions: ISettingFinancePermissions = {
+		resetBankInfoPermission,
+		resetEWalletPermission,
+		resetCryptoInfoPermission,
+	}
+
+	const marketingPermissions: ISettingMarketingPermissions = {
+		phoneVerifiedRewardPermission,
+		emailVerifiedRewardPermission,
+		lockRebatePayoutPermission,
+	}
+
 	const { custId: originCustId } = useParams()
 	const custId = Number(originCustId)
 	const [form] = Form.useForm<ISettingForm>()
@@ -374,12 +441,14 @@ const Setting = () => {
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<Row gutter={16} justify='start'>
 					<SettingInfoCard
+						infoPermissions={infoPermissions}
 						onEditTypeChange={onEditTypeChange}
 						openTagsModal={tagsModal.onOpen}
 						openVipLevelModal={vipLevelModal.onOpen}
 					/>
 
 					<SettingRiskCard
+						riskPermissions={riskPermissions}
 						custId={custId}
 						custBasicInfo={custBasicInfo ?? {}}
 						isSwitchIsKycLoading={isSwitchIsKycLoading}
@@ -392,6 +461,7 @@ const Setting = () => {
 					/>
 
 					<SettingFinanceCard
+						financePermissions={financePermissions}
 						userName={custBasicInfo?.userName}
 						onResetBankInfo={handleResetBankInfo}
 						onResetEWallet={handleResetEWallet}
@@ -399,6 +469,7 @@ const Setting = () => {
 					/>
 
 					<SettingMarketingCard
+						marketingPermissions={marketingPermissions}
 						custBasicInfo={custBasicInfo ?? {}}
 						isSwitchRebatePayoutLoading={isSwitchRebatePayoutLoading}
 						onSwitch={handleSwitch}

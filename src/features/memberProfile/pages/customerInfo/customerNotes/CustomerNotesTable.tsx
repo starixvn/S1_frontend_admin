@@ -14,8 +14,13 @@ import { Dispatch, SetStateAction } from 'react'
 import moment from 'moment/moment'
 import { timeFormat } from 'common/utils/format'
 import { EditableCellRows } from 'components'
+import { PermissionInterface } from 'type'
 
 interface ICustomerNotesTableProps {
+	notePermissions: {
+		noteDeletePermission: PermissionInterface | undefined
+		noteEditPermission: PermissionInterface | undefined
+	}
 	loading: boolean
 	form: FormInstance
 	pagination: PaginationInterface
@@ -39,6 +44,7 @@ const CustomerNotesTable = ({
 	onDeleteNote,
 	onSetNote,
 	timeZoneUtcOffset,
+	notePermissions: { noteDeletePermission, noteEditPermission },
 }: ICustomerNotesTableProps) => {
 	const { t } = useTranslation()
 
@@ -69,14 +75,20 @@ const CustomerNotesTable = ({
 					</Space>
 				) : (
 					<Space size='middle'>
-						<Typography.Link onClick={() => onEdit(record)}>
+						<Typography.Link
+							disabled={!noteEditPermission?.canUse}
+							onClick={() => onEdit(record)}
+						>
 							{t('Label_Edit')}
 						</Typography.Link>
 						<Popconfirm
+							disabled={!noteDeletePermission?.canUse}
 							title={t('Label_SureToDelete')}
 							onConfirm={() => onDeleteNote(record)}
 						>
-							<Typography.Link>{t('Label_Delete')}</Typography.Link>
+							<Typography.Link disabled={!noteDeletePermission?.canUse}>
+								{t('Label_Delete')}
+							</Typography.Link>
 						</Popconfirm>
 					</Space>
 				)
