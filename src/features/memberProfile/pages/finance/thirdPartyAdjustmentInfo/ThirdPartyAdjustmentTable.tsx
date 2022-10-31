@@ -42,8 +42,8 @@ const ThirdPartyAdjustmentTable = ({
 				),
 		},
 		{
-			title: t('Label_ReferenceId'),
-			key: 'ReferenceId',
+			title: t('Label_TrxnID'),
+			key: 'TrxnID',
 			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
@@ -56,7 +56,15 @@ const ThirdPartyAdjustmentTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
+		},
+		{
+			title: t('Label_3RDParty'),
+			key: '3RDParty',
+			dataIndex: 'tpName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (tpName: number) => tpName ?? '-',
 		},
 		{
 			title: t('Label_AdjustmentType'),
@@ -67,7 +75,7 @@ const ThirdPartyAdjustmentTable = ({
 			render: (direction: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{thirdPartyAdjustTypeList.map(
-						item => item.value === direction && t(item.displayName)
+						({ value, displayName }) => value === direction && t(displayName)
 					)}
 				</Typography.Text>
 			),

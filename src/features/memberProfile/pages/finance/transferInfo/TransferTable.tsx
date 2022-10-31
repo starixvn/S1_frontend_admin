@@ -91,7 +91,7 @@ const TransferTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
 		},
 		{
 			title: t('Label_Memo'),

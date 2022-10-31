@@ -32,7 +32,7 @@ const EWalletInfoTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
 		},
 		{
 			title: t('Label_EWalletName'),
@@ -77,10 +77,10 @@ const EWalletInfoTable = ({
 		{
 			title: t('Label_Updater'),
 			key: 'Updater',
-			dataIndex: 'updateOperator',
+			dataIndex: 'operator',
 			width: 100,
 			align: 'center' as 'center',
-			render: (updateOperator: string) => updateOperator ?? '-',
+			render: (operator: string) => operator ?? '-',
 		},
 	]
 	return (

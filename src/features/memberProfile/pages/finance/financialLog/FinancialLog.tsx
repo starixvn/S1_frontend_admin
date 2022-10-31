@@ -95,7 +95,7 @@ const FinancialLog = () => {
 	const getFilteredFinancialLogs = () => {
 		const { refTransId } = filterForm.getFieldsValue()
 		if (refTransId) {
-			return financialLogs.filter(item => item.refTransId === refTransId)
+			return financialLogs.filter(item => item.refTransId.includes(refTransId))
 		}
 		return financialLogs
 	}

@@ -43,12 +43,12 @@ const WithdrawalTable = ({
 				),
 		},
 		{
-			title: t('Label_ReferenceId'),
-			key: 'ReferenceId',
-			dataIndex: 'refId',
+			title: t('Label_TrxnID'),
+			key: 'TrxnID',
+			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (refId: string) => refId ?? '-',
+			render: (transId: string) => transId ?? '-',
 		},
 		{
 			title: t('Label_Status'),
@@ -57,7 +57,7 @@ const WithdrawalTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
 		},
 		{
 			title: t('Label_WithdrawalType'),
@@ -67,7 +67,7 @@ const WithdrawalTable = ({
 			align: 'center' as 'center',
 			render: (withdrawalType: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{typeList.map(item => item.value === withdrawalType && item.name)}
+					{typeList.map(({ value, name }) => value === withdrawalType && name)}
 				</Typography.Text>
 			),
 		},

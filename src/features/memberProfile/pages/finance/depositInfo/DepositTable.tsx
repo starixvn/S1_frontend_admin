@@ -43,12 +43,12 @@ const DepositTable = ({
 				),
 		},
 		{
-			title: t('Label_ReferenceId'),
-			key: 'ReferenceId',
-			dataIndex: 'refId',
+			title: t('Label_TrxnID'),
+			key: 'TrxnID',
+			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (refId: string) => refId ?? '-',
+			render: (transId: string) => transId ?? '-',
 		},
 		{
 			title: t('Label_Status'),
@@ -57,7 +57,7 @@ const DepositTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
 		},
 		{
 			title: t('Label_DepositType'),
@@ -67,7 +67,7 @@ const DepositTable = ({
 			align: 'center' as 'center',
 			render: (depositType: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{typeList.map(item => item.value === depositType && item.name)}
+					{typeList.map(({ value, name }) => value === depositType && name)}
 				</Typography.Text>
 			),
 		},
@@ -91,10 +91,10 @@ const DepositTable = ({
 		{
 			title: t('Label_PaymentReferenceId'),
 			key: 'PaymentReferenceId',
-			dataIndex: 'transId',
+			dataIndex: 'refId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (transId: string) => transId ?? '-',
+			render: (refId: string) => refId ?? '-',
 		},
 		{
 			title: t('Label_CompanyBankName'),
