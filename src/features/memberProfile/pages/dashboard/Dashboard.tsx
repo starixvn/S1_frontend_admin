@@ -35,6 +35,7 @@ import {
 import { PAGINATION, useModal, usePagination } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useEffect } from 'react'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { AffixButtons } from 'components/AffixButtons'
 import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 import FinancialLogsTable from './FinancialLogsTable'
@@ -57,6 +58,11 @@ const Dashboard = () => {
 	const ipUserListModal = useModal()
 	// deviceList 關聯彈窗
 	const deviceUserModal = useModal()
+
+	const {
+		data: { data: typeList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetTypeListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'FinancialType' })
 
 	const {
 		data: { data: todayInfoData } = {},
@@ -316,9 +322,10 @@ const Dashboard = () => {
 						<FinancialLogsTable
 							custId={custId}
 							form={financialLogsForm}
-							loading={isGetFinancialLogsFetching}
+							loading={isGetFinancialLogsFetching || isGetTypeListLoading}
 							dataSource={financialLogs}
 							pagination={financialLogsPagination as TablePaginationConfig}
+							typeList={typeList}
 							onFinancialLogsSearch={handleFinancialLogsSearch}
 							timeZoneUtcOffset={timeZoneUtcOffset}
 							onTableChange={handleFinanceLogTableChange}

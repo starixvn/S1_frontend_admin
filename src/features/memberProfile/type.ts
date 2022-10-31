@@ -207,15 +207,15 @@ export interface IBonusWalletDetailData {
 		retentionBonus: number
 		rewardPoint: number
 		totalBonus: number
-	}
+	} | null
 	custRebateSum: {
 		custRebateCategory: ICustRebateCategoryData[]
 		custRebateTotalSum: number
-	}
+	} | null
 	custRewardSum: {
 		custRewardType: ICustRewardTypeData[]
 		custRewardTotalSum: number
-	}
+	} | null
 }
 
 export interface IWalletBalanceInfoData {
