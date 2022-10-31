@@ -58,6 +58,7 @@ export interface ISetBonusPayoutArgs {
 	bonusCode: string
 	rollOver: number
 	promotionType: number
+	depositId: string
 }
 
 export interface IAdjustmentLimitInfo {
