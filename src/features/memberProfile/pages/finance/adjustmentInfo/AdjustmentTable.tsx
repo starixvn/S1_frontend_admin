@@ -43,8 +43,8 @@ const AdjustmentTable = ({
 				),
 		},
 		{
-			title: t('Label_ReferenceId'),
-			key: 'ReferenceId',
+			title: t('Label_TrxnID'),
+			key: 'TrxnID',
 			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
@@ -57,7 +57,7 @@ const AdjustmentTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (status: number) =>
-				statusList.map(item => item.value === status && item.name),
+				statusList.map(({ value, name }) => value === status && name),
 		},
 		{
 			title: t('Label_AdjustmentType'),
@@ -67,7 +67,7 @@ const AdjustmentTable = ({
 			align: 'center' as 'center',
 			render: (adjustType: number) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{typeList.map(item => item.value === adjustType && item.name)}
+					{typeList.map(({ value, name }) => value === adjustType && name)}
 				</Typography.Text>
 			),
 		},

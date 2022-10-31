@@ -46,7 +46,7 @@ const FinancialTable = ({
 			key: 'financialType',
 			align: 'center' as 'center',
 			render: (financialType: number) =>
-				typeList.map(item => item.value === financialType && item.name),
+				typeList.map(({ value, name }) => value === financialType && name),
 		},
 		{
 			title: t('Label_BeforeAmount'),

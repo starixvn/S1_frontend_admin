@@ -32,16 +32,28 @@ const WithdrawalLimitTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (mainType: number) =>
-				typeList.map(item => item.value === mainType && item.name),
+				typeList.map(({ value, name }) => value === mainType && name),
 		},
 		{
 			title: t('Label_Change'),
 			key: 'Change',
-			dataIndex: 'changeWithdrawalLimit',
 			width: 100,
 			align: 'center' as 'center',
-			render: (changeWithdrawalLimit: number) =>
-				numberFormatter.format(changeWithdrawalLimit) ?? '-',
+			render: ({
+				changeWithdrawalLimit,
+				beforeWithdrawalLimit,
+				afterWithdrawalLimit,
+			}: {
+				changeWithdrawalLimit: number
+				beforeWithdrawalLimit: number
+				afterWithdrawalLimit: number
+			}) => {
+				let sign
+				if (beforeWithdrawalLimit !== afterWithdrawalLimit) {
+					sign = afterWithdrawalLimit > beforeWithdrawalLimit ? '+' : '-'
+				}
+				return `${sign ?? ''}${numberFormatter.format(changeWithdrawalLimit)}`
+			},
 		},
 		{
 			title: t('Label_Before'),
