@@ -544,7 +544,8 @@
 		"Label_CashBack": "Cash Back",
 		"Label_Rebate:": "Rebate",
 		"Label_RetentionBonus:": "Retention Bonus",
-		"Label_SpecialBonus": "Special Bonus"
+		"Label_SpecialBonus": "Special Bonus",
+		"Label_ManualBonus": "Manual Bonus"
 	},
 	"BonusReportStatuses": {
 		"Label_Running": "Running",
@@ -655,14 +656,14 @@
 	"Label_TransferPin": "Transfer Pin",
 	"Label_LoginPin": "Login Pin",
 	"Label_MobilePin": "Mobile Pin",
-	"Label_GateWay" : "Gate Way",
-	"Label_GlobalStatus" : "Global Status",
-	"Label_Set" : "Set",
-	"Label_StatusHideMsg" : "This status only hide the frontend",
-	"Label_Method": "Method" ,
-	"Label_AmountRule" : "Amount Rule",
-	"Label_FixedAmount" : "Fixed Amount",
-	"Label_FollowValueRule" : "Please Follow the Rule",
+	"Label_GateWay": "Gate Way",
+	"Label_GlobalStatus": "Global Status",
+	"Label_Set": "Set",
+	"Label_StatusHideMsg": "This status only hide the frontend",
+	"Label_Method": "Method",
+	"Label_AmountRule": "Amount Rule",
+	"Label_FixedAmount": "Fixed Amount",
+	"Label_FollowValueRule": "Please Follow the Rule",
 	"Label_CorporateID": "Corporate ID",
 	"Label_AffiliateName": "Affiliate Name",
 	"Label_AdvancedSearch": "Advanced Search",
@@ -826,6 +827,6 @@
 	"Label_Unlimited": "UnLimited",
 	"Label_IdentificationCard": " Identification Card",
 	"Label_CompletedTime": "Completed Time",
-	"Label_MainDetail" : "Main Detail",
-	"Label_RawDetail" : "Raw Detail"
+	"Label_MainDetail": "Main Detail",
+	"Label_RawDetail": "Raw Detail"
 }

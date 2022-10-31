@@ -217,12 +217,12 @@ const Dashboard = () => {
 					</Col>
 					{/* TODO:目前還沒有此 Api 的公式，等後端提供 */}
 					<Col xxl={12} xl={24} lg={24} md={24} xs={24}>
-						<Descriptions size='small' layout='vertical' bordered column={4}>
+						{/* <Descriptions size='small' layout='vertical' bordered column={4}>
 							<Descriptions.Item label='NGR'>N/A</Descriptions.Item>
 							<Descriptions.Item label='VOD'>N/A</Descriptions.Item>
 							<Descriptions.Item label='Member'>N/A</Descriptions.Item>
 							<Descriptions.Item label='Company Margin'>N/A</Descriptions.Item>
-						</Descriptions>
+						</Descriptions> */}
 						<br />
 					</Col>
 				</Row>

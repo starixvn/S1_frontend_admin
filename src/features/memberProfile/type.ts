@@ -199,6 +199,12 @@ export interface ICustRewardTypeData {
 export interface IBonusWalletDetailData {
 	custBonusSum: {
 		cancelBonusAmount: number
+		cashBack: number
+		firstDeposit: number
+		freeBet: number
+		manualBonus: number
+		reDeposit: number
+		retentionBonus: number
 		rewardPoint: number
 		totalBonus: number
 	}
