@@ -1,10 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from '../Api'
-import { axiosBaseQuery, IAxiosResponse } from '../axiosBaseQuery'
+import { IAxiosResponse } from '../axiosBaseQuery'
+import { rootApi } from '../rootApi/api'
 
-export const permissionApi = createApi({
-	reducerPath: 'permissionApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const permissionApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getLanguageList: builder.query<
 			IAxiosResponse<string[]>,

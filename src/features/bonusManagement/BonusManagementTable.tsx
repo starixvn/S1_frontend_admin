@@ -22,7 +22,7 @@ import {
 } from 'features/bonusManagement/constants'
 import { find } from 'lodash'
 import { PermissionInterface } from 'type'
-import { CopyOutlined, EditFilled } from '@ant-design/icons'
+import { CopyOutlined, FormOutlined } from '@ant-design/icons'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { useNavigate } from 'react-router-dom'
@@ -78,8 +78,8 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 							}}
 						>
 							<Switch
-								checked={status}
 								size='small'
+								checked={status}
 								disabled={!editPermission?.canUse}
 							/>
 						</Popconfirm>
@@ -88,7 +88,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			},
 		},
 		{
-			title: t('Label_Edit'),
+			title: t('Label_Action'),
 			key: 'edit',
 			width: 150,
 			align: 'center' as 'center',
@@ -104,7 +104,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 								)
 							}}
 						>
-							<EditFilled />
+							{t('Label_Edit')}
 						</Typography.Link>
 						<Typography.Link
 							disabled={!editPermission?.canUse}
@@ -135,7 +135,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 								)
 							}}
 						>
-							<EditFilled />
+							<FormOutlined />
 						</Typography.Link>
 					</Space>
 				)
@@ -322,6 +322,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 	return (
 		<LayoutContent.Card>
 			<Table
+				size='middle'
 				loading={loading}
 				columns={columns}
 				dataSource={bonusList ?? []}

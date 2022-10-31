@@ -86,11 +86,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.customerSupport.sub.memberAdministration.functionId,
+		functionId: 130,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/CustInfoList',
 		internalFunctionKey: allowedRoles.CustManageCustInfoList,
-		newAdminPath: paths.customerSupport.sub.memberAdministration.root,
+	},
+	{
+		icon: null,
+		functionId: paths.customerSupport.sub.memberAdministrationList.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.customerSupport.sub.memberAdministrationList.root,
 	},
 	{
 		icon: null,
@@ -112,6 +117,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		newAdminPath:
 			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
 				.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.otpVerificationReport
+				.functionId,
+		name: 'Live Registration Statistics',
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.otpVerificationReport.root,
 	},
 	{
 		icon: null,
@@ -245,11 +260,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 39,
+		functionId: paths.finance.sub.paymentGateway.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentManage',
 		internalFunctionKey: allowedRoles.FinancePaymentManage,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.paymentGateway.root,
 	},
 	{
 		icon: null,

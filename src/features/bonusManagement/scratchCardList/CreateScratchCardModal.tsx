@@ -20,7 +20,7 @@ const CreateScratchCardModal: FC<ICreateScratchCardModalProps> = ({
 	const { t } = useTranslation()
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
 			title={

@@ -6,23 +6,32 @@ import { BonusInfoEditForm } from 'features/bonusManagement/editBonusDetail/Bonu
 interface IBannerFormProps {
 	loading: boolean
 	langCodes: string[]
+	currentTabActive: boolean
 }
 
-const { TabPane } = Tabs
-
-const BannerInfoEditTab: FC<IBannerFormProps> = ({ loading, langCodes }) => {
+const BannerInfoEditTab: FC<IBannerFormProps> = ({
+	loading,
+	langCodes,
+	currentTabActive,
+}) => {
+	const items = langCodes?.map(langCode => {
+		return {
+			label: langCode,
+			key: langCode,
+			forceRender: true,
+			children: (
+				<BonusInfoEditForm
+					loading={loading}
+					langCode={langCode}
+					currentTabActive={currentTabActive}
+				/>
+			),
+		}
+	})
 	return (
 		<Spin spinning={loading}>
 			<LayoutContent.Card>
-				<Tabs defaultActiveKey='1' type='card'>
-					{langCodes?.map(langCode => {
-						return (
-							<TabPane tab={langCode} key={langCode}>
-								<BonusInfoEditForm loading={loading} langCode={langCode} />
-							</TabPane>
-						)
-					})}
-				</Tabs>
+				<Tabs defaultActiveKey='1' type='card' items={items} />
 			</LayoutContent.Card>
 		</Spin>
 	)

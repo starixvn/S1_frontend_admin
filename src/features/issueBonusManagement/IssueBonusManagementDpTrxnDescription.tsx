@@ -15,7 +15,7 @@ const IssueBonusManagementDpTrxnDescription = ({
 		tierDepositBonusInfo
 
 	return (
-		<Descriptions bordered column={2}>
+		<Descriptions bordered column={2} size='small'>
 			<Descriptions.Item label={t('Label_DPTrxnID')}>
 				{depositId}
 			</Descriptions.Item>

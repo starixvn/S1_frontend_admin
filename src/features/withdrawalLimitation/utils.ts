@@ -20,7 +20,7 @@ export const limitationResponseConverter = ({
 	const result: IWithdrawalLimitationTableData[] = []
 
 	limitList?.forEach(list => {
-		// 賦予當前 site 的 vipLevel 初始值
+		// 賦予當前 site 的 vipLevelLog 初始值
 		const { vipLevel, levelName, totalWithdrawalMax, times, withdrawalMin } =
 			list
 		// 0 不要顯示 , 測試用的

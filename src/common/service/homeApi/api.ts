@@ -1,11 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from '../Api'
-import { axiosBaseQuery, IAxiosResponse } from '../axiosBaseQuery'
+import { IAxiosResponse } from '../axiosBaseQuery'
+import { rootApi } from '../rootApi/api'
 
-export const homeApi = createApi({
-	reducerPath: 'homeApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const homeApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		checkBrand: builder.query<IAxiosResponse<number>, void>({
 			query: data => ({

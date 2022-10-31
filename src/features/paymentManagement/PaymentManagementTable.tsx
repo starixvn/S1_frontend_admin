@@ -1,0 +1,225 @@
+import { useTranslation } from 'react-i18next'
+import { Table } from 'components'
+import {
+	IGetPaySettingData,
+	PaymentStatusEnum,
+} from 'features/paymentManagement/type'
+import { Switch, TablePaginationConfig, Typography } from 'antd'
+import { LayoutContent } from 'app/pages/layout'
+import { PermissionInterface } from 'type'
+import { Currency } from 'common/enum/type'
+import { find } from 'lodash'
+import { numberFormatter } from 'common/utils/format'
+import { IEnumTypeData } from 'common/service/enumApi'
+import { PaginationInterface } from 'common/hooks'
+
+interface IPaymentManagementTableProps {
+	loading: boolean
+	paySettingList: IGetPaySettingData[]
+	globalStatusList: IEnumTypeData[]
+	editPermission?: PermissionInterface
+	typeList: IEnumTypeData[]
+	currencyListBySite: Currency[]
+	pagination: PaginationInterface
+	onTableChange: (newPagination: TablePaginationConfig) => void
+	onSetStatus: ({
+		channelId,
+		currencyId,
+		status,
+	}: {
+		channelId: number
+		currencyId: number
+		status: boolean
+	}) => void
+	tableMethodList: IEnumTypeData[]
+	amountRuleList: IEnumTypeData[]
+	onBankModalClicked: (payId: number) => void
+	onEditClick: (record: IGetPaySettingData) => void
+}
+const PaymentManagementTable = ({
+	loading,
+	paySettingList,
+	editPermission,
+	currencyListBySite,
+	globalStatusList,
+	pagination,
+	typeList,
+	onTableChange,
+	onSetStatus,
+	tableMethodList,
+	onBankModalClicked,
+	amountRuleList,
+	onEditClick,
+}: IPaymentManagementTableProps) => {
+	const { t } = useTranslation()
+	const columns = [
+		{
+			title: t('Label_Action'),
+			key: 'operation',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IGetPaySettingData) => (
+				<Typography.Link
+					disabled={!editPermission?.canUse}
+					onClick={() => {
+						onEditClick(record)
+					}}
+				>
+					{t('Label_Edit')}
+				</Typography.Link>
+			),
+		},
+		{
+			title: t('Label_Status'),
+			key: 'status',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IGetPaySettingData) => {
+				const { status, channelId, currencyId } = record
+				const defaultStatus = status === PaymentStatusEnum.True
+				return (
+					<Switch
+						defaultChecked={defaultStatus}
+						disabled={!editPermission?.canUse}
+						onClick={value => {
+							onSetStatus({ channelId, currencyId, status: value })
+						}}
+					/>
+				)
+			},
+		},
+		{
+			title: t('Label_Method'),
+			key: 'method',
+			dataIndex: 'method',
+			width: 100,
+			align: 'center' as 'center',
+			render: (method: number) =>
+				find(tableMethodList, target => target.value === method)?.name,
+		},
+		{
+			title: t('Label_GateWay'),
+			key: 'gateWay',
+			dataIndex: 'payName',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Channel'),
+			key: 'channel',
+			dataIndex: 'channelName',
+			width: 130,
+			align: 'center' as 'center',
+			render: (channelName: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					{channelName}
+				</Typography.Text>
+			),
+		},
+		{
+			title: t('Label_Type'),
+			key: 'type',
+			width: 100,
+			align: 'center' as 'center',
+			render: (record: IGetPaySettingData) => {
+				const { type, payId } = record
+				const displayName = find(
+					typeList,
+					target => target.value === type
+				)?.name
+				// 只有 onlineBank 有額外 行為可使用 , 直接寫死在此處
+				const onlineBankID = 1
+				return type === onlineBankID ? (
+					<Typography.Link
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+						onClick={() => {
+							onBankModalClicked(payId)
+						}}
+					>
+						{displayName}
+					</Typography.Link>
+				) : (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{displayName}
+					</Typography.Text>
+				)
+			},
+		},
+		{
+			title: t('Label_Currency'),
+			key: 'currency',
+			dataIndex: 'currencyId',
+			width: 80,
+			align: 'center' as 'center',
+			render: (currencyId: number) =>
+				find(currencyListBySite, currency => currency.currencyId === currencyId)
+					?.isoCode,
+		},
+		{
+			title: t('Label_Min'),
+			key: 'min',
+			dataIndex: 'minAmount',
+			width: 100,
+			align: 'center' as 'center',
+			render: (min: number) => numberFormatter.format(min),
+		},
+		{
+			title: t('Label_Max'),
+			key: 'max',
+			dataIndex: 'maxAmount',
+			width: 100,
+			align: 'center' as 'center',
+			render: (max: number) => numberFormatter.format(max),
+		},
+		{
+			title: t('Label_AmountRule'),
+			key: 'amountRule',
+			dataIndex: 'amountRule',
+			width: 100,
+			align: 'center' as 'center',
+			render: (amountRule: number) =>
+				find(amountRuleList, target => target.value === amountRule)?.name,
+		},
+		{
+			title: t('Label_GlobalStatus'),
+			key: 'globalstatus',
+			dataIndex: 'globalstatus',
+			width: 100,
+			align: 'center' as 'center',
+			render: (globalstatus: number) => {
+				const displayName = find(
+					globalStatusList,
+					status => status.value === globalstatus
+				)?.name
+				return displayName ?? '-'
+			},
+		},
+		{
+			title: t('Label_PointLevel'),
+			key: 'pointLevel',
+			dataIndex: 'pointLevel',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Sort'),
+			key: 'sort',
+			dataIndex: 'sort',
+			width: 100,
+			align: 'center' as 'center',
+		},
+	]
+	return (
+		<LayoutContent.Card>
+			<Table
+				loading={loading}
+				dataSource={paySettingList ?? []}
+				columns={columns}
+				pagination={pagination as TablePaginationConfig}
+				onChange={onTableChange}
+			/>
+		</LayoutContent.Card>
+	)
+}
+
+export { PaymentManagementTable }

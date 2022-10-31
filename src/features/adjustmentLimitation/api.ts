@@ -1,15 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetAdjustmentListArgs,
 	IGetAdjustmentListResponse,
 	IUpdateAdjustmentLimitArgs,
 } from 'features/adjustmentLimitation/type'
 
-export const adjustmentLimitationApi = createApi({
-	reducerPath: 'adjustmentLimitationApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const adjustmentLimitationApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getAdjustmentLimitList: builder.query<
 			IGetAdjustmentListResponse,

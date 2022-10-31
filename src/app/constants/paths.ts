@@ -1,3 +1,6 @@
+// * memberProfile 和 memberAdministrationList 共用同一個 functionId
+const memberAdminFunctionId = 22
+
 const paths = {
 	layout: {
 		root: '/',
@@ -9,15 +12,19 @@ const paths = {
 	login: {
 		root: 'login',
 	},
+	memberProfile: {
+		root: 'memberProfile',
+		functionId: memberAdminFunctionId,
+	},
 	assignBrand: {
 		root: 'AssignBrand',
 	},
 	customerSupport: {
 		root: 'customerSupport',
 		sub: {
-			memberAdministration: {
-				root: 'customerSupport/memberAdministration',
-				functionId: 22,
+			memberAdministrationList: {
+				root: 'customerSupport/memberAdministrationList',
+				functionId: memberAdminFunctionId,
 			},
 			operatorService: {
 				root: 'customerSupport/operatorService',
@@ -25,6 +32,10 @@ const paths = {
 					liveRegistrationStatistics: {
 						root: 'customerSupport/operatorService/liveRegistrationStatistics',
 						functionId: 23,
+					},
+					otpVerificationReport: {
+						root: 'customerSupport/operatorService/otpVerificationReport',
+						functionId: 131,
 					},
 				},
 			},
@@ -156,7 +167,8 @@ const paths = {
 				root: 'finance/bankTransferAccount',
 			},
 			paymentGateway: {
-				root: 'finance/paymentGateway',
+				root: 'finance/paymentManagement',
+				functionId: 39,
 			},
 			depositLimit: {
 				root: 'finance/depositLimit',

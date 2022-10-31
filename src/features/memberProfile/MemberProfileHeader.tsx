@@ -1,42 +1,69 @@
-import React from 'react'
 import styled from 'styled-components'
-import { Button, Divider, Dropdown, Layout, Menu, Space } from 'antd'
+import { Button, Dropdown, Layout, Menu, Space } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import {
+	MenuDividerType,
+	MenuItemGroupType,
+	MenuItemType,
+	SubMenuType,
+} from 'antd/lib/menu/hooks/useItems'
+import { FaUser } from '@react-icons/all-files/fa/FaUser'
+import { useMediaQuery } from 'usehooks-ts'
+import { useAuth } from 'common/hooks'
+
+type ItemType = MenuItemType | SubMenuType | MenuItemGroupType | MenuDividerType
 
 const { Header } = Layout
 
 const StyledHeader = styled(Header)`
-	background: #fff;
-	position: fixed;
-	z-index: 1;
-	width: 100%;
-	border: 1px solid #f0f0f0;
+	width: -webkit-fill-available; // 使 header 滿版
+	background: white;
+	border: 1px solid white;
 `
 
-const MemberProfileHeader = () => {
+interface IMemberProfileHeaderProps {
+	onOpenDrawer: () => void
+}
+
+const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
+	// * 決定下拉選單是否出現
+	const {
+		actionPermissions: {
+			customerInfoPermission,
+			financeLogPermission,
+			gameLogPermission,
+			marketingLogPermission,
+			// TODO
+			// adminUserLogPermission,
+		} = {},
+	} = useAuth()
+
+	const isDesktopMedia = useMediaQuery('(max-width: 992px)')
 	const { t } = useTranslation()
+	const { custId } = useParams()
 
 	const customerInfoMenu = (
 		<Menu
 			items={[
+				// TODO
+				// {
+				// 	label: (
+				// 		<Link
+				// 			to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/memberFlowLog/${custId}`}
+				// 		>
+				// 			{t('MemberProfile.Menu.CustomerInfo.Label_MemberFlowLog')}
+				// 		</Link>
+				// 	),
+				// 	key: '1',
+				// },
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/memberFlowLog`}
-						>
-							{t('MemberProfile.Menu.CustomerInfo.Label_MemberFlowLog')}
-						</Link>
-					),
-					key: '1',
-				},
-				{
-					label: (
-						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/vipLevel`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/vipLevel/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_VIPLevel')}
 						</Link>
@@ -46,7 +73,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/referralHistory`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/referralHistory/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_ReferralHistory')}
 						</Link>
@@ -56,7 +83,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/notes`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/notes/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_Notes')}
 						</Link>
@@ -66,7 +93,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/SMSInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/SMSInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_SMSInfo')}
 						</Link>
@@ -76,7 +103,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/loginLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/loginLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_LoginLog')}
 						</Link>
@@ -86,12 +113,22 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/customerInfo/ipLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/deviceList/${custId}`}
 						>
-							{t('MemberProfile.Menu.CustomerInfo.Label_IPLog')}
+							{t('MemberProfile.Menu.CustomerInfo.Label_DeviceList')}
 						</Link>
 					),
-					key: '6',
+					key: '7',
+				},
+				{
+					label: (
+						<Link
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/ipLog/${custId}`}
+						>
+							{t('MemberProfile.Menu.CustomerInfo.Label_IPList')}
+						</Link>
+					),
+					key: '8',
 				},
 			]}
 		/>
@@ -103,7 +140,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/depositInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/depositInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_DepositInfo')}
 						</Link>
@@ -113,7 +150,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/withdrawalInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/withdrawalInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_WithdrawalInfo')}
 						</Link>
@@ -123,7 +160,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/adjustmentInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/adjustmentInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_AdjustmentInfo')}
 						</Link>
@@ -133,7 +170,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/3RDPartyAdjustmentInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/3RDPartyAdjustmentInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_3RDPartyAdjustmentInfo')}
 						</Link>
@@ -143,7 +180,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/withdrawalLimitLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/withdrawalLimitLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_WithdrawalLimitLog')}
 						</Link>
@@ -153,7 +190,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/transferInfo`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/transferInfo/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_TransferInfo')}
 						</Link>
@@ -163,7 +200,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/financialLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/financialLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_FinancialLog')}
 						</Link>
@@ -173,7 +210,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/bankInfoLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/bankInfoLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_BankInfoLog')}
 						</Link>
@@ -183,7 +220,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/eWalletInfoLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/eWalletInfoLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_EWalletInfoLog')}
 						</Link>
@@ -193,7 +230,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/cryptoInfoLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/cryptoInfoLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_CryptoInfoLog')}
 						</Link>
@@ -203,7 +240,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/bankList`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/bankList/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_BankList')}
 						</Link>
@@ -213,7 +250,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/finance/eWalletList`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/eWalletList/${custId}`}
 						>
 							{t('MemberProfile.Menu.Finance.Label_EWalletList')}
 						</Link>
@@ -230,7 +267,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/game/statement`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/game/statement/${custId}`}
 						>
 							{t('MemberProfile.Menu.Game.Label_Statement')}
 						</Link>
@@ -240,7 +277,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/game/turnover`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/game/turnover/${custId}`}
 						>
 							{t('MemberProfile.Menu.Game.Label_Turnover')}
 						</Link>
@@ -250,7 +287,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/game/3RDPartyAccount`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/game/3RDPartyAccount/${custId}`}
 						>
 							{t('MemberProfile.Menu.Game.Label_3RDPartyAccount')}
 						</Link>
@@ -260,7 +297,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/game/winLoseSummary`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/game/winLoseSummary/${custId}`}
 						>
 							{t('MemberProfile.Menu.Game.Label_WinLoseSummary')}
 						</Link>
@@ -277,7 +314,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/bonusWallet`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/bonusWallet/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_BonusWallet')}
 						</Link>
@@ -287,7 +324,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/bonusLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/bonusLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_BonusLog')}
 						</Link>
@@ -297,7 +334,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/vipRebateLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/vipRebateLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_VipRebateLog')}
 						</Link>
@@ -307,7 +344,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/promotionReport`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/promotionReport/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_PromotionReport')}
 						</Link>
@@ -317,7 +354,7 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/rewardsPointLog`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/rewardsPointLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_RewardsPointLog')}
 						</Link>
@@ -327,82 +364,118 @@ const MemberProfileHeader = () => {
 				{
 					label: (
 						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/cashBackReport`}
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/cashBackReport/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_CashBackReport')}
 						</Link>
 					),
 					key: '6',
 				},
-				{
-					label: (
-						<Link
-							to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/marketing/vipRebateMenu`}
-						>
-							{t('MemberProfile.Menu.Marketing.Label_VipRebateMenu')}
-						</Link>
-					),
-					key: '7',
-				},
 			]}
 		/>
 	)
 
-	return (
-		<StyledHeader>
-			<Space
-				size={8}
-				split={<Divider type='vertical' />}
-				style={{ overflow: 'hidden' }}
-			>
+	const items: (ItemType | boolean)[] = [
+		// * 如果為手機版則渲染 User Icon 用於打開 drawer
+		isDesktopMedia && {
+			key: 99,
+			onClick: () => onOpenDrawer(),
+			label: <FaUser />,
+		},
+		{
+			key: 1,
+			label: (
 				<Link
-					to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}`}
+					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 				>
-					Dashboard
+					{t('MemberProfile.Menu.Label_Dashboard')}
 				</Link>
+			),
+		},
+		Boolean(customerInfoPermission?.canUse) && {
+			key: 2,
+			label: (
 				<Dropdown overlay={customerInfoMenu} trigger={['click']}>
 					<Button>
 						<Space>
-							Customer Info
+							{t('MemberProfile.Menu.Label_CustomerInfo')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
+			),
+		},
+		Boolean(financeLogPermission?.canUse) && {
+			key: 3,
+			label: (
 				<Dropdown overlay={financeMenu} trigger={['click']}>
 					<Button>
 						<Space>
-							Finance
+							{t('MemberProfile.Menu.Label_Finance')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
+			),
+		},
+		Boolean(gameLogPermission?.canUse) && {
+			key: 4,
+			label: (
 				<Dropdown overlay={gameMenu} trigger={['click']}>
 					<Button>
 						<Space>
-							Game
+							{t('MemberProfile.Menu.Label_Game')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
+			),
+		},
+		Boolean(marketingLogPermission?.canUse) && {
+			key: 5,
+			label: (
 				<Dropdown overlay={marketingMenu} trigger={['click']}>
 					<Button>
 						<Space>
-							Marketing
+							{t('MemberProfile.Menu.Label_Marketing')}
 							<DownOutlined />
 						</Space>
 					</Button>
 				</Dropdown>
+			),
+		},
+		{
+			key: 6,
+			label: (
 				<Link
-					to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/setting`}
+					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/setting/${custId}`}
 				>
-					Setting
+					{t('MemberProfile.Menu.Label_Setting')}
 				</Link>
-				<Link
-					to={`/${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.memberAdministration.root}/adminUserLog`}
-				>
-					Admin User Log
-				</Link>
-			</Space>
+			),
+		},
+		//  TODO
+		// * 要記得綁定 adminUserLogPermission 權限
+		// {
+		// 	key: 7,
+		// 	label: (
+		// 		<Link
+		// 			to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
+		// 		>
+		// 			{t('MemberProfile.Menu.Label_AdminUserLog')}
+		// 		</Link>
+		// 	),
+		// },
+	].filter(Boolean)
+
+	return (
+		<StyledHeader>
+			<Menu
+				theme='light'
+				triggerSubMenuAction='click'
+				mode='horizontal'
+				items={items as ItemType[]}
+			/>
 		</StyledHeader>
 	)
 }

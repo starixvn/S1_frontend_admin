@@ -71,10 +71,27 @@ const BonusReportTable = ({
 		{
 			title: t('Label_DepositAmount'),
 			key: 'bonusAmount',
-			dataIndex: 'bonusAmount',
+			dataIndex: 'depositInfo',
 			width: 120,
 			align: 'center' as 'center',
-			render: (bonusAmount: number) => numberFormatter.format(bonusAmount),
+			render: (
+				depositInfo: string | null // * 後端可能回傳 JSON | null
+			) => {
+				if (isString(depositInfo) && isJSON(depositInfo)) {
+					const depositInfoList: { Amount: number; DepositId: string }[] =
+						JSON.parse(depositInfo)
+
+					return (
+						<Space direction='vertical'>
+							{depositInfoList?.map(info =>
+								numberFormatter.format(info.Amount)
+							)}
+						</Space>
+					)
+				}
+
+				return ''
+			},
 		},
 		{
 			title: t('Label_BonusCode'),

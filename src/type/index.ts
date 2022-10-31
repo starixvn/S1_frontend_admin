@@ -52,7 +52,6 @@ export interface ActionPermissions {
 	gameLogPermission: PermissionInterface
 	phoneVerifiedPermission: PermissionInterface
 	kickOutPermission: PermissionInterface
-	enablePromotionPermission: PermissionInterface
 	marketingLogPermission: PermissionInterface
 	emailVerifiedPermission: PermissionInterface
 	blockIPPermission: PermissionInterface
@@ -60,9 +59,27 @@ export interface ActionPermissions {
 	settingPermission: PermissionInterface
 	adminUserLogPermission: PermissionInterface
 	addPointBatchPermission: PermissionInterface
+	readDetailPermission: PermissionInterface
+	customerInfoPermission: PermissionInterface
+	editFullNamePermission: PermissionInterface
+	editEMailPermission: PermissionInterface
+	editPhoneNumberPermission: PermissionInterface
+	changeVIPLevelPermission: PermissionInterface
+	editBirthdayPermission: PermissionInterface
+	editAddressPermission: PermissionInterface
+	lineUnbindingPermission: PermissionInterface
+	editTagPermission: PermissionInterface
+	cancelPromotionPermission: PermissionInterface
+	resetEWalletPermission: PermissionInterface
+	phoneVerifiedRewardPermission: PermissionInterface
+	emailVerifiedRewardPermission: PermissionInterface
+	noteEditPermission: PermissionInterface
+	noteDeletePermission: PermissionInterface
+	personalMessageEditPermission: PermissionInterface
+	smsInfoDeletePermission: PermissionInterface
 	add3RDPermission: PermissionInterface
+	resetBankInfoPermission: PermissionInterface
 }
-
 export interface PermissionInterface {
 	permissionId: number
 	name: string

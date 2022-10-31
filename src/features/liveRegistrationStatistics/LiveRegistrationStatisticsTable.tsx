@@ -2,18 +2,12 @@ import { FC } from 'react'
 import moment from 'moment'
 import { find, isArray } from 'lodash'
 import { timeFormat } from 'common/utils/format'
-import {
-	Button,
-	Select,
-	Space,
-	Table,
-	TablePaginationConfig,
-	Typography,
-} from 'antd'
+import { Button, Select, Space, TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { SorterResult } from 'antd/es/table/interface'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
+import { Table } from 'components'
 import { IRegistrationManagementData } from './type'
 import { DEPOSIT_STATUS_OPTIONS, StatusEnum, STATUS_OPTIONS } from './constants'
 

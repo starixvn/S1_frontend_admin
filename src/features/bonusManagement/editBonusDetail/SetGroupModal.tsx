@@ -16,9 +16,12 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const { form, currentActiveCurrency } = useContext(EditBonusContext)
 	const { isoCode } = currentActiveCurrency
 	const type = form?.getFieldValue(['specific', isoCode, 'bonusType'])
+
 	// 這裡另外寫一個 Form 主要是 Form.List 不支援 validate 特定 路徑 , 所以若用共用的 Form 在驗證時會全部一起驗證 ,
 	// 這邊希望先驗證這個 modal 內的資料就好 , 故先使用獨立的 form 表單再將資料寫入共用 form
 	const [modalForm] = Form.useForm()
+	// 用來監聽數量
+	const amountList = Form.useWatch('tierAmountList', modalForm)
 
 	const handleFinished = async () => {
 		try {
@@ -245,16 +248,18 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									</Form.Item>
 								</Space>
 							))}
-							<Form.Item>
-								<Button
-									type='dashed'
-									onClick={() => add()}
-									block
-									icon={<PlusOutlined />}
-								>
-									{t('Label_AddBonusSetting')}
-								</Button>
-							</Form.Item>
+							{((amountList?.length as number) < 10 || !amountList) && (
+								<Form.Item>
+									<Button
+										type='dashed'
+										onClick={() => add()}
+										block
+										icon={<PlusOutlined />}
+									>
+										{t('Label_AddBonusSetting')}
+									</Button>
+								</Form.Item>
+							)}
 						</>
 					)}
 				</Form.List>

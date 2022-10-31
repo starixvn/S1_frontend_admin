@@ -174,7 +174,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			title={t('Label_SetByProductPageTitle')}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}

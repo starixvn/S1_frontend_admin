@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetEWalletListArg,
 	IGetEWalletListResponse,
@@ -8,10 +6,7 @@ import {
 	IUpdateEWalletArgs,
 } from 'features/eWalletSetting/type'
 
-export const eWalletSettingApi = createApi({
-	reducerPath: 'eWalletSettingApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const eWalletSettingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// 取得列表
 		getEWalletList: builder.query<IGetEWalletListResponse, IGetEWalletListArg>({

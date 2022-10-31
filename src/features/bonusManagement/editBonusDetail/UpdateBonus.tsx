@@ -39,7 +39,7 @@ import {
 } from 'features/bonusManagement/utils'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { SetGroupModal } from 'features/bonusManagement/editBonusDetail/SetGroupModal'
-import { dateRangeToUtcFormatter } from 'common/utils'
+import { dateRangeToUtcFormatter, isJSON } from 'common/utils'
 import {
 	BonusTypeEnum,
 	StatusEnum,
@@ -225,7 +225,11 @@ const UpdateBonus: FC<{
 						})
 					)
 				} else {
-					const errorMessage = `${name[1]}'s ${errors[0]}`
+					const displayName = isJSON(name[1])
+						? `Lang : ${JSON.parse(name[1] as string)?.langCode?.toUpperCase()}`
+						: name[1]
+
+					const errorMessage = `${displayName}'s ${errors[0]}`
 					message.error(errorMessage)
 				}
 			}
@@ -434,6 +438,7 @@ const UpdateBonus: FC<{
 							<BannerInfoEditTab
 								loading={isGetLanguageListFetching}
 								langCodes={langCodes}
+								currentTabActive={currentTabActive}
 							/>
 						)}
 					</Col>

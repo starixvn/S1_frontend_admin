@@ -190,6 +190,32 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 				},
 			})
 		}
+
+		if (
+			currentBonusType === BonusTypeEnum.FreeBet ||
+			currentBonusType === BonusTypeEnum.RetentionFreeBet
+		) {
+			form?.setFieldsValue({
+				specific: {
+					[isoCode]: {
+						bonusType: AmountTypeEnum.Amount,
+					},
+				},
+			})
+		}
+
+		if (
+			currentBonusType === BonusTypeEnum.FreeBet ||
+			currentBonusType === BonusTypeEnum.RetentionFreeBet
+		) {
+			form?.setFieldsValue({
+				specific: {
+					[isoCode]: {
+						bonusType: AmountTypeEnum.Amount,
+					},
+				},
+			})
+		}
 	}, [currentBonusType])
 
 	return (
@@ -525,22 +551,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 									<Form.Item
 										name={['specific', isoCode, 'vN_AffCodes']}
 										label={t('Label_AffiliateCode')}
-									>
-										<Input disabled={!active} />
-									</Form.Item>
-								</Col>
-								<Col span={8}>
-									<Form.Item
-										name={['specific', isoCode, 'requiredAmount']}
-										label={t('Label_RequiredAmount')}
-										rules={[
-											{
-												required: active,
-												message: t('Label_Required', {
-													key: t('Label_RequiredAmount'),
-												}),
-											},
-										]}
 									>
 										<Input disabled={!active} />
 									</Form.Item>

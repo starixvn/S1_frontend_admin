@@ -38,7 +38,7 @@ const ChangePasswordModal: FC<ModalState> = modal => {
 		<Modal
 			forceRender
 			title={t('ChangePassword.Label_ChangePassword')}
-			visible={modal.visible}
+			open={modal.visible}
 			onOk={onChangePassword}
 			confirmLoading={loading}
 			onCancel={modal.onCancel}
