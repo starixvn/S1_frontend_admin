@@ -1,4 +1,4 @@
-import { Descriptions, Spin } from 'antd'
+import { Descriptions, Popover, Spin, Typography } from 'antd'
 import { numberFormatter } from 'common/utils/format'
 import {
 	IBonusWalletDetailData,
@@ -22,8 +22,21 @@ const BonusWalletDescriptions = ({
 	const { bonus: bonusWallet = 0, remainingTurnover: bonusRollover = 0 } =
 		bonusWalletInfoData
 
-	const { custBonusSum, custRebateSum, custRewardSum } =
-		bonusWalletDetailData ?? {}
+	const {
+		custBonusSum: {
+			totalBonus = 0,
+			firstDeposit = 0,
+			reDeposit = 0,
+			freeBet = 0,
+			cashBack = 0,
+			retentionBonus = 0,
+			manualBonus = 0,
+			cancelBonusAmount = 0,
+			rewardPoint = 0,
+		} = {},
+		custRewardSum: { custRewardTotalSum = 0, custRewardType = [] } = {},
+		custRebateSum: { custRebateTotalSum = 0, custRebateCategory = [] } = {},
+	} = bonusWalletDetailData ?? {}
 
 	return (
 		<Spin spinning={loading}>
@@ -41,19 +54,107 @@ const BonusWalletDescriptions = ({
 					{numberFormatter.format(bonusRollover)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalBonus')}>
-					{numberFormatter.format(custBonusSum?.totalBonus ?? 0)}
+					{totalBonus > 0 ? (
+						<Popover
+							content={
+								<Descriptions bordered title={t('Label_TotalBonus')} column={1}>
+									<Descriptions.Item label={t('BonusType.Label_FirstDeposit')}>
+										{firstDeposit}
+									</Descriptions.Item>
+									<Descriptions.Item label={t('BonusType.Label_ReDeposit')}>
+										{reDeposit}
+									</Descriptions.Item>
+									<Descriptions.Item label={t('BonusType.Label_FreeBet')}>
+										{freeBet}
+									</Descriptions.Item>
+									<Descriptions.Item label={t('BonusType.Label_CashBack')}>
+										{cashBack}
+									</Descriptions.Item>
+									<Descriptions.Item
+										label={t('BonusType.Label_RetentionBonus')}
+									>
+										{retentionBonus}
+									</Descriptions.Item>
+									<Descriptions.Item label={t('BonusType.Label_ManualBonus')}>
+										{manualBonus}
+									</Descriptions.Item>
+								</Descriptions>
+							}
+							trigger='click'
+						>
+							<Typography.Link>
+								{numberFormatter.format(totalBonus ?? 0)}
+							</Typography.Link>
+						</Popover>
+					) : (
+						<Typography.Text>
+							{numberFormatter.format(totalBonus ?? 0)}
+						</Typography.Text>
+					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalReward')}>
-					{numberFormatter.format(custRewardSum?.custRewardTotalSum ?? 0)}
+					{custRewardTotalSum > 0 ? (
+						<Popover
+							content={
+								<Descriptions
+									bordered
+									title={t('Label_TotalReward')}
+									column={1}
+								>
+									{custRewardType.map(({ typeName, rewardAmountSum }) => (
+										<Descriptions.Item label={typeName}>
+											{rewardAmountSum}
+										</Descriptions.Item>
+									))}
+								</Descriptions>
+							}
+							trigger='click'
+						>
+							<Typography.Link>
+								{numberFormatter.format(custRewardTotalSum ?? 0)}
+							</Typography.Link>
+						</Popover>
+					) : (
+						<Typography.Text>
+							{numberFormatter.format(custRewardTotalSum ?? 0)}
+						</Typography.Text>
+					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalRebate')}>
-					{numberFormatter.format(custRebateSum?.custRebateTotalSum ?? 0)}
+					{custRebateTotalSum > 0 ? (
+						<Popover
+							content={
+								<Descriptions
+									bordered
+									title={t('Label_TotalRebate')}
+									column={1}
+								>
+									{custRebateCategory.map(
+										({ categoryName, rebateAmountSum }) => (
+											<Descriptions.Item label={categoryName}>
+												{rebateAmountSum}
+											</Descriptions.Item>
+										)
+									)}
+								</Descriptions>
+							}
+							trigger='click'
+						>
+							<Typography.Link>
+								{numberFormatter.format(custRebateTotalSum ?? 0)}
+							</Typography.Link>
+						</Popover>
+					) : (
+						<Typography.Text>
+							{numberFormatter.format(custRebateTotalSum ?? 0)}
+						</Typography.Text>
+					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_CancelBonus')}>
-					{numberFormatter.format(custBonusSum?.cancelBonusAmount ?? 0)}
+					{numberFormatter.format(cancelBonusAmount ?? 0)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RewardsPoint')}>
-					{numberFormatter.format(custBonusSum?.rewardPoint ?? 0)}
+					{numberFormatter.format(rewardPoint ?? 0)}
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>
