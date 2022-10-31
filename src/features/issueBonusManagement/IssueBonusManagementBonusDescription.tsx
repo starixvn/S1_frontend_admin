@@ -41,7 +41,7 @@ const IssueBonusManagementBonusDescription = ({
 	const column = isPercentage ? 5 : 4
 	return (
 		<>
-			<Descriptions bordered column={column}>
+			<Descriptions bordered column={column} size='small'>
 				<Descriptions.Item label='BonusCode' span={column}>
 					{bonusCode}
 				</Descriptions.Item>
