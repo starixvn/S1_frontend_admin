@@ -22,21 +22,25 @@ const BonusWalletDescriptions = ({
 	const { bonus: bonusWallet = 0, remainingTurnover: bonusRollover = 0 } =
 		bonusWalletInfoData
 
+	const { custBonusSum, custRewardSum, custRebateSum } =
+		bonusWalletDetailData ?? {}
+
 	const {
-		custBonusSum: {
-			totalBonus = 0,
-			firstDeposit = 0,
-			reDeposit = 0,
-			freeBet = 0,
-			cashBack = 0,
-			retentionBonus = 0,
-			manualBonus = 0,
-			cancelBonusAmount = 0,
-			rewardPoint = 0,
-		} = {},
-		custRewardSum: { custRewardTotalSum = 0, custRewardType = [] } = {},
-		custRebateSum: { custRebateTotalSum = 0, custRebateCategory = [] } = {},
-	} = bonusWalletDetailData ?? {}
+		totalBonus = 0,
+		firstDeposit = 0,
+		reDeposit = 0,
+		freeBet = 0,
+		cashBack = 0,
+		retentionBonus = 0,
+		manualBonus = 0,
+		cancelBonusAmount = 0,
+		rewardPoint = 0,
+	} = custBonusSum ?? {}
+
+	const { custRewardTotalSum = 0, custRewardType = [] } = custRewardSum ?? {}
+
+	const { custRebateTotalSum = 0, custRebateCategory = [] } =
+		custRebateSum ?? {}
 
 	return (
 		<Spin spinning={loading}>
@@ -57,7 +61,12 @@ const BonusWalletDescriptions = ({
 					{totalBonus > 0 ? (
 						<Popover
 							content={
-								<Descriptions bordered title={t('Label_TotalBonus')} column={1}>
+								<Descriptions
+									size='small'
+									bordered
+									title={t('Label_TotalBonus')}
+									column={1}
+								>
 									<Descriptions.Item label={t('BonusType.Label_FirstDeposit')}>
 										{firstDeposit}
 									</Descriptions.Item>
@@ -97,6 +106,7 @@ const BonusWalletDescriptions = ({
 						<Popover
 							content={
 								<Descriptions
+									size='small'
 									bordered
 									title={t('Label_TotalReward')}
 									column={1}
@@ -125,6 +135,7 @@ const BonusWalletDescriptions = ({
 						<Popover
 							content={
 								<Descriptions
+									size='small'
 									bordered
 									title={t('Label_TotalRebate')}
 									column={1}

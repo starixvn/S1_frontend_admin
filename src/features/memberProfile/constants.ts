@@ -125,7 +125,7 @@ export enum FinancialTypeEnum {
 	AffTransferToPlayer = 15,
 	RunningBonus = 16,
 	VerificationReward = 20,
-	Withdrawl = 1001,
+	Withdrawal = 1001,
 	TpTransfer = 2001,
 	TpWager = 11001,
 	TpRefunds = 12001,
@@ -134,105 +134,6 @@ export enum FinancialTypeEnum {
 	TpUndo = 15001,
 	TpTip = 16001,
 }
-
-export const financialTypeOptions: { value: number; name: string }[] = [
-	{
-		value: FinancialTypeEnum.ALl,
-		name: 'All',
-	},
-	{
-		value: FinancialTypeEnum.PaymentAdjustment,
-		name: 'PaymentAdjustment',
-	},
-	{
-		value: FinancialTypeEnum.Deposit,
-		name: 'Deposit',
-	},
-	{
-		value: FinancialTypeEnum.BonusReward,
-		name: 'BonusReward',
-	},
-	{
-		value: FinancialTypeEnum.LockedAmount,
-		name: 'LockedAmount',
-	},
-	{
-		value: FinancialTypeEnum.CancelledBonus,
-		name: 'CancelledBonus',
-	},
-	{
-		value: FinancialTypeEnum.CashReward,
-		name: 'CashReward',
-	},
-	{
-		value: FinancialTypeEnum.Commision,
-		name: 'Commision',
-	},
-	{
-		value: FinancialTypeEnum.BonusTransferIn,
-		name: 'BonusTransferIn',
-	},
-	{
-		value: FinancialTypeEnum.Rebate,
-		name: 'Rebate',
-	},
-	{
-		value: FinancialTypeEnum.CashBack,
-		name: 'CashBack',
-	},
-	{
-		value: FinancialTypeEnum.ReferFriendsRewards,
-		name: 'ReferFriendsRewards',
-	},
-	{
-		value: FinancialTypeEnum.VIPUpgradeReward,
-		name: 'VIPUpgradeReward',
-	},
-	{
-		value: FinancialTypeEnum.AffTransferToPlayer,
-		name: 'AffTransferToPlayer',
-	},
-	{
-		value: FinancialTypeEnum.RunningBonus,
-		name: 'RunningBonus',
-	},
-	{
-		value: FinancialTypeEnum.VerificationReward,
-		name: 'VerificationReward',
-	},
-	{
-		value: FinancialTypeEnum.Withdrawl,
-		name: 'Withdrawl',
-	},
-	{
-		value: FinancialTypeEnum.TpTransfer,
-		name: 'TpTransfer',
-	},
-	{
-		value: FinancialTypeEnum.TpWager,
-		name: 'TpWager',
-	},
-	{
-		value: FinancialTypeEnum.TpRefunds,
-		name: 'TpRefunds',
-	},
-	{
-		value: FinancialTypeEnum.TpPayout,
-		name: 'TpPayout',
-	},
-	{
-		value: FinancialTypeEnum.TpPrize,
-		name: 'TpPrize',
-	},
-	{
-		value: FinancialTypeEnum.TpUndo,
-		name: 'TpUndo',
-	},
-	{
-		value: FinancialTypeEnum.TpTip,
-		name: 'TpTip',
-	},
-]
 
 // BonusLog Page 欄位 Change Bonus 需顯示 正或負
 export enum ChangeBonusDirectionEnum {

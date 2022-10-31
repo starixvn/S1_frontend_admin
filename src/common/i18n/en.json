@@ -542,8 +542,8 @@
 		"Label_ReDeposit": "Re-Deposit",
 		"Label_FreeBet": "Free Bet",
 		"Label_CashBack": "Cash Back",
-		"Label_Rebate:": "Rebate",
-		"Label_RetentionBonus:": "Retention Bonus",
+		"Label_Rebate": "Rebate",
+		"Label_RetentionBonus": "Retention Bonus",
 		"Label_SpecialBonus": "Special Bonus",
 		"Label_ManualBonus": "Manual Bonus"
 	},

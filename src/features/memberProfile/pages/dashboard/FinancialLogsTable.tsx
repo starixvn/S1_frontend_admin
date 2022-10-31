@@ -11,19 +11,16 @@ import {
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
-import {
-	FinancialTypeEnum,
-	financialTypeOptions,
-} from 'features/memberProfile/constants'
+import { FinancialTypeEnum } from 'features/memberProfile/constants'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
-
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import moment from 'moment/moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 const { Option } = Select
 
@@ -35,6 +32,7 @@ interface IFinancialLogsTableProps {
 	loading: boolean
 	dataSource: IFinancialLogData[]
 	pagination: TablePaginationConfig
+	typeList: IEnumTypeData[]
 	onFinancialLogsSearch: ({
 		current,
 		pageSize,
@@ -52,6 +50,7 @@ const FinancialLogsTable = ({
 	loading,
 	dataSource,
 	pagination,
+	typeList,
 	onFinancialLogsSearch,
 	timeZoneUtcOffset,
 	onTableChange,
@@ -79,7 +78,7 @@ const FinancialLogsTable = ({
 			key: 'financialType',
 			align: 'center' as 'center',
 			render: (financialType: number) =>
-				find(financialTypeOptions, { value: financialType })?.name ?? 'N/A',
+				find(typeList, { value: financialType })?.name ?? 'N/A',
 		},
 		{
 			title: t('Label_ChangeAmount'),
@@ -117,7 +116,7 @@ const FinancialLogsTable = ({
 						<Space>
 							<Form.Item name='financialType' noStyle>
 								<Select style={{ width: 180 }}>
-									{financialTypeOptions.map(({ name, value }) => (
+									{typeList.map(({ name, value }) => (
 										<Option key={value} value={value}>
 											{name}
 										</Option>
