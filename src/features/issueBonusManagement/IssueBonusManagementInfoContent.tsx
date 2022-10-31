@@ -35,6 +35,7 @@ const IssueBonusManagementInfoContent = ({
 }: IIssueBonusManagementInfoContentProps) => {
 	const { t } = useTranslation()
 	const checkPasswordModal = useModal()
+	const [depositId, setDepositId] = useState<string>('')
 	const { custId, currencyId } = custInfoDetails ?? {}
 	const bonusCode = Form.useWatch('bonusCode', infoForm)
 	const [bonusPayoutAmount, setBonusPayoutAmount] = useState<number>(0)
@@ -89,6 +90,7 @@ const IssueBonusManagementInfoContent = ({
 				bonusCode,
 				rollOver,
 				promotionType,
+				depositId,
 			}).unwrap()
 
 			message.success(t('System.Label_Success'))
@@ -99,7 +101,7 @@ const IssueBonusManagementInfoContent = ({
 		}
 	}
 
-	const handleCheckTierRedepositBonus = async (depositId: string) => {
+	const handleCheckTierRedepositBonus = async (newDepositId: string) => {
 		if (!siteId) return
 
 		try {
@@ -108,14 +110,16 @@ const IssueBonusManagementInfoContent = ({
 				bonusCode,
 				siteId,
 				currencyId,
-				depositId,
+				depositId: newDepositId,
 			}
 
 			await checkTierRedepositBonus(args).unwrap()
+			setDepositId(newDepositId)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
+			setDepositId('')
 		}
 	}
 
