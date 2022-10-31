@@ -238,7 +238,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.bankAccManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/BankInfoList',
 		internalFunctionKey: allowedRoles.FinanceBankInfoList,
 		newAdminPath: paths.finance.sub.setting.sub.bankAccManagement.root,
@@ -641,7 +641,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.transferAccountManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferAccountManage,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/TransferAccountManage',
 		newAdminPath: paths.bankTransfer.sub.transferAccountManagement.root,
 	},
