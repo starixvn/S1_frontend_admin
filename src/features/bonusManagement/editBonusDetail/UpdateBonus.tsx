@@ -337,7 +337,7 @@ const UpdateBonus: FC<{
 								// 只有 cashBack 用得到  其他均設為 0
 								minLoss:
 									promotionType === BonusTypeEnum.CashBack
-										? lossAmount || Math.floor(minPayout / (bonus / 100))
+										? lossAmount ?? Math.floor(minPayout / (bonus / 100))
 										: 0,
 								requiredAmount,
 								bonusType,
