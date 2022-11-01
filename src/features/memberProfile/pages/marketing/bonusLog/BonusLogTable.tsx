@@ -61,6 +61,14 @@ const BonusLogTable = ({
 			render: (typeName: string) => typeName ?? '-',
 		},
 		{
+			title: `${t('Label_Before')} ${t('Label_Bonus')}`,
+			key: 'beforeBonus',
+			dataIndex: 'beforeBonus',
+			align: 'center' as 'center',
+			width: 80,
+			render: (beforeBonus: number) => numberFormatter.format(beforeBonus),
+		},
+		{
 			title: t('Label_ChangeBonus'),
 			key: 'changeBonus',
 			width: 80,
@@ -71,14 +79,6 @@ const BonusLogTable = ({
 					? `+ ${numberFormatter.format(changeBonus)}`
 					: `- ${numberFormatter.format(changeBonus)}`
 			},
-		},
-		{
-			title: `${t('Label_Before')} ${t('Label_Bonus')}`,
-			key: 'beforeBonus',
-			dataIndex: 'beforeBonus',
-			align: 'center' as 'center',
-			width: 80,
-			render: (beforeBonus: number) => numberFormatter.format(beforeBonus),
 		},
 		{
 			title: `${t('Label_After')} ${t('Label_Bonus')}`,
