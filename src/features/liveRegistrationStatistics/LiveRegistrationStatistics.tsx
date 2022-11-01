@@ -10,7 +10,6 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { useCountdown } from 'usehooks-ts'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -38,7 +37,6 @@ import {
 	CallOutStatusEnum,
 	DateTypeEnum,
 	StatusEnum,
-	REFRESH_DATA_COUNT,
 	DepositStatusEnum,
 } from './constants'
 import LiveRegistrationStatisticsTable from './LiveRegistrationStatisticsTable'
@@ -67,10 +65,6 @@ const LiveRegistrationStatistics: FC<{
 	}>()
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const [refreshCount, { startCountdown, stopCountdown, resetCountdown }] =
-		useCountdown({
-			countStart: REFRESH_DATA_COUNT,
-		})
 	const noteModal = useModal()
 	const [noteCustId, setNoteCustId] = useState<number>()
 
@@ -257,12 +251,9 @@ const LiveRegistrationStatistics: FC<{
 		}
 	}
 
-	const handleResetCount = () => {
-		resetCountdown()
-		startCountdown()
-	}
-
 	const init = () => {
+		if (isEmpty(queryParams)) return
+
 		const {
 			currencyId = currencyListBySite[0]?.currencyId,
 			dateType = DateTypeEnum.LastActiveDate,
@@ -301,26 +292,8 @@ const LiveRegistrationStatistics: FC<{
 		})
 	}
 
-	// * 重置計數計
 	useEffect(() => {
-		if (!isGetRegistrationManagementListFetching) {
-			handleResetCount()
-		}
-	}, [isGetRegistrationManagementListFetching])
-
-	// * 計時器倒數完重撈資料
-	useEffect(() => {
-		if (refreshCount === 0) {
-			init()
-		}
-	}, [refreshCount])
-
-	useEffect(() => {
-		if (!isEmpty(queryParams)) {
-			init()
-		}
-
-		return () => stopCountdown()
+		init()
 	}, [])
 
 	const loading =
@@ -333,12 +306,12 @@ const LiveRegistrationStatistics: FC<{
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<LiveRegistrationStatisticsFilter
-				refreshCount={refreshCount}
 				loading={loading}
 				form={searchForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				countDownOverCallBack={init}
 			/>
 
 			{!isEmpty(queryParams) && (
