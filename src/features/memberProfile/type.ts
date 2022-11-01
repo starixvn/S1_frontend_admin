@@ -444,6 +444,7 @@ export interface IGetBonusLogData {
 	id: number
 	bonusId: number
 	createTime: string
+	bonusCode: string
 	typeName: string
 	direction: number
 	changeBonus: number
