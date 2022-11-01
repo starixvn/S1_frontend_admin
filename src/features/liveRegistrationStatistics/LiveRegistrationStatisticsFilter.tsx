@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import {
 	Button,
 	Col,
@@ -12,6 +12,8 @@ import {
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
+import { isFunction } from 'lodash'
+
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
@@ -22,6 +24,7 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { SearchOutlined } from '@ant-design/icons'
+import { useCountdown } from 'usehooks-ts'
 import {
 	AgentCodeEnum,
 	AGENT_CODE_OPTIONS,
@@ -32,6 +35,7 @@ import {
 	DepositStatusEnum,
 	DEPOSIT_STATUS_OPTIONS,
 	DORMANT_MEMBER_OPTIONS,
+	REFRESH_DATA_COUNT,
 	StatusEnum,
 	STATUS_OPTIONS,
 } from './constants'
@@ -42,25 +46,46 @@ const { Option } = Select
 
 interface ILiveRegistrationStatisticsFilterProps {
 	loading: boolean
-	refreshCount: number
 	form: FormInstance
 	timeZoneUtcOffset: number
 	onSearch: (values: any) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
+	countDownOverCallBack?: () => void
 }
 
 const LiveRegistrationStatisticsFilter: FC<
 	ILiveRegistrationStatisticsFilterProps
 > = ({
 	loading,
-	refreshCount,
 	form,
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
+	countDownOverCallBack,
 }) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const [refreshCount, { startCountdown, stopCountdown, resetCountdown }] =
+		useCountdown({
+			countStart: REFRESH_DATA_COUNT,
+		})
+
+	// * 計時器時間到時送出 callback
+	useEffect(() => {
+		if (refreshCount === 0 && isFunction(countDownOverCallBack)) {
+			countDownOverCallBack()
+		}
+	}, [refreshCount])
+
+	// * 計時器時間到時重置計時器
+	useEffect(() => {
+		resetCountdown()
+		startCountdown()
+	}, [loading])
+
+	useEffect(() => {
+		return () => stopCountdown()
+	}, [])
 
 	return (
 		<Collapse defaultActiveKey={1}>
