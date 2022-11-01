@@ -244,6 +244,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 								siteId,
 								minPayout: 0,
 								tierAmountList: [],
+								minLoss: 0,
 							},
 						},
 					}}
