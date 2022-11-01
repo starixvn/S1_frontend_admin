@@ -828,5 +828,6 @@
 	"Label_IdentificationCard": " Identification Card",
 	"Label_CompletedTime": "Completed Time",
 	"Label_MainDetail": "Main Detail",
-	"Label_RawDetail": "Raw Detail"
+	"Label_RawDetail": "Raw Detail",
+	"Label_OTPStatus": "OTP Status"
 }
