@@ -1,10 +1,12 @@
 import moment from 'moment'
 import { TablePaginationConfig, Typography } from 'antd'
+import { find } from 'lodash'
 import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
+import { OTP_STATUS_OPTIONS } from './constants'
 import { IOtpReportData, VerifiedEnum } from './type'
 
 interface IOtpVerificationReportTableProps {
@@ -54,6 +56,16 @@ const OtpVerificationReportTable = ({
 			dataIndex: 'content',
 			key: 'content',
 			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_OTPStatus'),
+			dataIndex: 'otpStatus',
+			key: 'otpStatus',
+			align: 'center' as 'center',
+			render: (otpStatus: number) => {
+				const { name } = find(OTP_STATUS_OPTIONS, { value: otpStatus }) ?? {}
+				return name ?? null
+			},
 		},
 		{
 			title: t('Label_Verified'),
