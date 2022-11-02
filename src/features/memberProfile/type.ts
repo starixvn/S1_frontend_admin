@@ -1,6 +1,7 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment'
 import { PermissionInterface } from 'type'
+import moment from 'moment/moment'
 
 export interface ICustIdInterface {
 	custId: number
@@ -436,7 +437,13 @@ export interface IGetBonusLogArgs {
 	custId: number
 	startDate: string
 	endDate: string
-	promoCategoryId: number
+	promoCategoryIds: number[]
+	refTransId: string | null
+}
+
+export type IBonusLogFilterForm = {
+	dateRange: [moment.Moment, moment.Moment]
+	promoCategoryIds: number[]
 	refTransId: string
 }
 
