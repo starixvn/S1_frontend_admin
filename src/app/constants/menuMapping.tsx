@@ -230,11 +230,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 36,
+		functionId: paths.finance.sub.report.sub.paymentAdjustment.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.paymentAdjustment.root,
 	},
 	{
 		icon: null,
