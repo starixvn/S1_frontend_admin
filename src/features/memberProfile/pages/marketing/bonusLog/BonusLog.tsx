@@ -6,15 +6,15 @@ import { BonusLogFilter } from 'features/memberProfile/pages/marketing/bonusLog/
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useEffect } from 'react'
-import { head, isEmpty } from 'lodash'
 import { PAGINATION, usePagination } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useParams } from 'react-router-dom'
 import { BonusLogTable } from 'features/memberProfile/pages/marketing/bonusLog/BonusLogTable'
+import { IBonusLogFilterForm } from 'features/memberProfile/type'
 
 const BonusLog = () => {
 	const { t } = useTranslation()
-	const [filterForm] = Form.useForm()
+	const [filterForm] = Form.useForm<IBonusLogFilterForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { custId } = useParams()
 
@@ -43,7 +43,7 @@ const BonusLog = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		const { dateRange, refTransId, promoCategoryId } =
+		const { dateRange, refTransId, promoCategoryIds } =
 			filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
@@ -58,8 +58,8 @@ const BonusLog = () => {
 				startDate,
 				endDate,
 				// 沒填就要傳 null , api 才會正常 return 參數
-				refTransId: !isEmpty(refTransId) ? refTransId : null,
-				promoCategoryId,
+				refTransId: refTransId || null,
+				promoCategoryIds,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -85,7 +85,7 @@ const BonusLog = () => {
 	useEffect(() => {
 		if (!isCategoryListLoading && categoryList?.length > 0) {
 			filterForm.setFieldsValue({
-				promoCategoryId: head(categoryList)?.id,
+				promoCategoryIds: categoryList?.map(category => category.id),
 			})
 		}
 	}, [isCategoryListLoading])
