@@ -11,13 +11,15 @@ import {
 	Modal,
 	Row,
 	Select,
+	Space,
+	Typography,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { IVipLevelsData } from 'common/service/allDataApi'
 import { useGetQrCodeUrlMutation } from 'features/bankCardManagement/api'
-import { UploadOutlined } from '@ant-design/icons'
+import { DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
 import { includes, isNull } from 'lodash'
@@ -359,7 +361,22 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 						{/* 僅用來讓用戶檢視上傳的 qrcode 連結正確與否和驗證表單 ,有選 eWallet才必填 */}
 						<Form.Item
 							name='qrCodeUrl'
-							label={t('Label_QrCodeUrl')}
+							label={
+								<Space>
+									{t('Label_QrCodeUrl')}
+									{!includes(supportChannels, SupportChannelEnum.EWallet) && (
+										<Typography.Link
+											onClick={() => {
+												form.setFieldsValue({
+													qrCodeUrl: null,
+												})
+											}}
+										>
+											<DeleteOutlined />
+										</Typography.Link>
+									)}
+								</Space>
+							}
 							rules={[
 								{
 									required: includes(
