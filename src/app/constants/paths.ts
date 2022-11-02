@@ -242,6 +242,15 @@ const paths = {
 				root: 'finance/issueBonusManagement',
 				functionId: 33,
 			},
+			report: {
+				root: 'finance/report',
+				sub: {
+					paymentAdjustment: {
+						root: 'finance/report/paymentAdjustment',
+						functionId: 36,
+					},
+				},
+			},
 		},
 	},
 	marketing: {

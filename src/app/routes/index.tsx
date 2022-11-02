@@ -719,6 +719,13 @@ const PaymentManagement = lazy(
 		)
 )
 
+const PaymentAdjustment = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PaymentAdjustment' */ 'features/paymentAdjustment/PaymentAdjustment'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1774,6 +1781,18 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.finance.sub.paymentGateway.functionId}>
 						<PaymentManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.report.sub.paymentAdjustment.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.report.sub.paymentAdjustment.functionId
+						}
+					>
+						<PaymentAdjustment />
 					</AuthRequire>
 				),
 			},
