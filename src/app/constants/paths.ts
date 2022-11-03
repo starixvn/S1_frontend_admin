@@ -281,9 +281,6 @@ const paths = {
 			rebateReport: {
 				root: 'marketing/rebateReport',
 			},
-			vipRebateReport: {
-				root: 'marketing/vipRebateReport',
-			},
 			vipRebateManagement: {
 				root: 'marketing/vipRebateManagement',
 				functionId: 49,
@@ -361,6 +358,10 @@ const paths = {
 			bonusReport: {
 				root: 'report/bonusReport',
 				functionId: 73,
+			},
+			vipRebateReport: {
+				root: 'report/vipRebateReport',
+				functionId: 75,
 			},
 		},
 	},

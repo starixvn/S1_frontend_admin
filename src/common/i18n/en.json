@@ -829,6 +829,7 @@
 	"Label_CompletedTime": "Completed Time",
 	"Label_MainDetail": "Main Detail",
 	"Label_RawDetail": "Raw Detail",
+	"Label_StatementDate": "StatementDate",
 	"Label_OTPStatus": "OTP Status",
 	"Label_AdjustReason" : "Adjust Reason"
 }
