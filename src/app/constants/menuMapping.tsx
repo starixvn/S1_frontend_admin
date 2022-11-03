@@ -563,11 +563,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'VIP Rebate Report',
 		icon: null,
-		functionId: 75,
+		functionId: paths.report.sub.vipRebateReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVipRebateInfoReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VipRebateInfoReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.vipRebateReport.root,
 	},
 	{
 		icon: null,

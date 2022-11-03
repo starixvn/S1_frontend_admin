@@ -439,6 +439,13 @@ const BonusReport = lazy(
 		)
 )
 
+const VipRebateReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateReport' */ 'features/vipRebateReport/VipRebateReport'
+		)
+)
+
 const TransferInfoManagement = lazy(
 	() =>
 		import(
@@ -1432,6 +1439,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusReport.functionId}>
 						<BonusReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.vipRebateReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.vipRebateReport.functionId}>
+						<VipRebateReport />
 					</AuthRequire>
 				),
 			},
