@@ -42,9 +42,9 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	const [form] = Form.useForm<{
 		currencyId: number
 		baseCurrencyId: number
-		promotionType: number
+		promotionTypes: number[]
 		statuses: number[]
-		promotionCategoryId: number
+		promotionCategoryIds: number[]
 		userName: string
 		transId: string
 		bonusCode: string
@@ -139,9 +139,9 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		const {
 			currencyId,
 			baseCurrencyId,
-			promotionType,
+			promotionTypes,
 			statuses,
-			promotionCategoryId,
+			promotionCategoryIds,
 			userName,
 			transId,
 			bonusCode,
@@ -154,7 +154,8 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		const args = {
 			siteId,
 			bonusCode,
-			promotionType: Number(promotionType) || 0,
+			promotionCategoryIds:
+				promotionCategoryIds?.map((category: string) => Number(category)) ?? [],
 			currencyId: Number(currencyId) || 0,
 			startDate,
 			endDate,
@@ -163,7 +164,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			pageNumber,
 			pageSize,
 			baseCurrencyId: Number(baseCurrencyId) || 0,
-			promotionCategoryId: Number(promotionCategoryId),
+			promotionTypes: promotionTypes?.map((type: string) => Number(type)) ?? [],
 			statuses: statuses?.map((status: string) => Number(status)) ?? [],
 		}
 
@@ -186,22 +187,28 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		isGetCategoryFetching ||
 		isGetBonusReportDataListFetching
 
+	const filterListLoading =
+		isGetCategoryFetching || isGetPromotionListDataLoading
+
 	useEffect(() => {
-		if (!isGetCategoryFetching && categories.length > 1) {
+		if (!filterListLoading) {
 			form.setFieldsValue({
-				promotionCategoryId: categories[0].promotionCategoryId,
+				promotionCategoryIds: categories.map(
+					category => category.promotionCategoryId
+				),
+				promotionTypes: promotionList?.map(item => item.type),
 			})
 		}
-	}, [isGetCategoryFetching])
+	}, [filterListLoading])
 
 	useEffect(() => {
 		const init = () => {
 			const {
 				currencyId,
 				baseCurrencyId,
-				promotionType,
+				promotionTypes,
 				statuses,
-				promotionCategoryId,
+				promotionCategoryIds,
 				userName,
 				transId,
 				bonusCode,
@@ -216,9 +223,12 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			form.setFieldsValue({
 				currencyId: Number(currencyId) || 0,
 				baseCurrencyId: Number(baseCurrencyId) || 0,
-				promotionType: Number(promotionType) || 0,
+				promotionTypes:
+					promotionTypes?.map((type: string) => Number(type)) ?? [],
 				statuses: statuses?.map((status: string) => Number(status)) ?? [],
-				promotionCategoryId: Number(promotionCategoryId),
+				promotionCategoryIds:
+					promotionCategoryIds?.map((category: string) => Number(category)) ??
+					[],
 				userName,
 				transId,
 				bonusCode,
