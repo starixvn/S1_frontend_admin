@@ -115,7 +115,10 @@ const Statement = () => {
 		try {
 			await getCustTpBetRecordByDay({
 				custId: Number(custId),
-				startDate: settledDate,
+				startDate: utcFormatter({
+					date: moment(settledDate).startOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				endDate: utcFormatter({
 					date: moment(settledDate).endOf('day'),
 					utcOffset: timeZoneUtcOffset,
@@ -137,7 +140,10 @@ const Statement = () => {
 		try {
 			await getCustTpBetRecordByCategory({
 				custId: Number(custId),
-				startDate: selDate,
+				startDate: utcFormatter({
+					date: moment(selDate).startOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				endDate: utcFormatter({
 					date: moment(selDate).endOf('day'),
 					utcOffset: timeZoneUtcOffset,
@@ -165,7 +171,10 @@ const Statement = () => {
 		try {
 			await getCustTpBetRecordByGameType({
 				custId: Number(custId),
-				startDate: selDate,
+				startDate: utcFormatter({
+					date: moment(selDate).startOf('day'),
+					utcOffset: timeZoneUtcOffset,
+				}),
 				endDate: utcFormatter({
 					date: moment(selDate).endOf('day'),
 					utcOffset: timeZoneUtcOffset,
