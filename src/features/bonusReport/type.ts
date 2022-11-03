@@ -3,7 +3,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 export interface IGetBonusReportDataListArgs {
 	siteId: number
 	bonusCode: null | string
-	promotionType: number
+	promotionTypes: number[]
 	currencyId: number
 	startDate: string
 	endDate: string
@@ -12,7 +12,7 @@ export interface IGetBonusReportDataListArgs {
 	pageNumber: number
 	pageSize: number
 	baseCurrencyId: number
-	promotionCategoryId: number
+	promotionCategoryIds: number[]
 	statuses: number[]
 }
 
@@ -53,7 +53,7 @@ export interface IBonusReportResponse
 export interface IExportBonusReportArgs {
 	siteId: number
 	bonusCode: null | string
-	promotionType: number
+	promotionTypes: number[]
 	currencyId: number
 	startDate: string
 	endDate: string
@@ -62,7 +62,7 @@ export interface IExportBonusReportArgs {
 	pageNumber: number
 	pageSize: number
 	baseCurrencyId: number
-	promotionCategoryId: number
+	promotionCategoryIds: number[]
 	statuses: number[]
 }
 

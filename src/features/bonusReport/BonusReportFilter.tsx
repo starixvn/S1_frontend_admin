@@ -73,6 +73,72 @@ const BonusReportFilter = ({
 		}
 	}
 
+	const promoCategorySelector = () => {
+		const onChangeCategory = (newCategoryIds: Array<number | string>) => {
+			if (newCategoryIds.includes('all')) {
+				form.setFieldsValue({
+					promotionCategoryIds: categories?.map(
+						item => item.promotionCategoryId
+					),
+				})
+			} else {
+				form.setFieldsValue({
+					promotionCategoryIds: newCategoryIds,
+				})
+			}
+		}
+
+		return (
+			<Form.Item
+				name='promotionCategoryIds'
+				label={t('Label_PromotionCategory')}
+			>
+				<MultipleSelect
+					onChange={onChangeCategory}
+					placeholder={t('Label_Select')}
+				>
+					{(categories?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+					{categories?.map(({ promotionCategoryId, promotionCategoryName }) => (
+						<Option key={promotionCategoryId} value={promotionCategoryId}>
+							{promotionCategoryName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const promotionTypeSelector = () => {
+		const onChangeType = (newTypes: Array<number | string>) => {
+			if (newTypes.includes('all')) {
+				form.setFieldsValue({
+					promotionTypes: promotionList?.map(item => item.type),
+				})
+			} else {
+				form.setFieldsValue({
+					promotionTypes: newTypes,
+				})
+			}
+		}
+
+		return (
+			<Form.Item name='promotionTypes' label={t('Label_BonusType')}>
+				<MultipleSelect onChange={onChangeType} placeholder={t('Label_Select')}>
+					{(promotionList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+					{promotionList?.map(({ type, promotionTypeName }) => (
+						<Option key={type} value={type}>
+							{promotionTypeName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -85,9 +151,7 @@ const BonusReportFilter = ({
 						initialValues={{
 							currencyId: 0,
 							baseCurrencyId: 0,
-							promotionType: 0,
 							statuses: allStatuses,
-							promotionCategoryId: categories[0]?.promotionCategoryId,
 							userName: '',
 							transId: '',
 							bonusCode: '',
@@ -167,16 +231,7 @@ const BonusReportFilter = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='promotionType' label={t('Label_BonusType')}>
-									<Select placeholder='select'>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-										{promotionList?.map(option => (
-											<Option key={option.type} value={option.type}>
-												{option.promotionTypeName}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
+								{promotionTypeSelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='statuses' label={t('Label_Status')}>
@@ -196,23 +251,7 @@ const BonusReportFilter = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='promotionCategoryId'
-									label={t('Label_Category')}
-								>
-									<Select placeholder={t('Label_Select')}>
-										{categories?.map(
-											({ promotionCategoryId, promotionCategoryName }) => (
-												<Option
-													key={promotionCategoryId}
-													value={promotionCategoryId}
-												>
-													{promotionCategoryName}
-												</Option>
-											)
-										)}
-									</Select>
-								</Form.Item>
+								{promoCategorySelector()}
 							</Col>
 
 							<Col lg={6} md={12} xs={12}>
