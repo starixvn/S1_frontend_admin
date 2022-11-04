@@ -6,6 +6,7 @@ import {
 	ISettingRiskPermissions,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
+	LockAccountTypeEnum,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -45,8 +46,37 @@ const SettingRiskCard = ({
 	onResetPassword,
 }: ISettingRiskCardProps) => {
 	const { t } = useTranslation()
-	const { isKyc, isRisk, phoneVerified, emailVerified } = custBasicInfo
+	const { isKyc, isRisk, phoneVerified, emailVerified, status } = custBasicInfo
 
+	const lockAccountButton = () => {
+		return (
+			<>
+				{status === LockAccountTypeEnum.Lock && (
+					<p>
+						<Typography.Link
+							disabled={!lockAccountPermission?.canUse}
+							onClick={() =>
+								onEditTypeChange(SettingEditTypeEnum.UnLockAccount)
+							}
+						>
+							{t('Label_UnLockAccount')}
+						</Typography.Link>
+					</p>
+				)}
+
+				{status === LockAccountTypeEnum.UnLock && (
+					<p>
+						<Typography.Link
+							disabled={!lockAccountPermission?.canUse}
+							onClick={() => onEditTypeChange(SettingEditTypeEnum.LockAccount)}
+						>
+							{t('Label_LockAccount')}
+						</Typography.Link>
+					</p>
+				)}
+			</>
+		)
+	}
 	return (
 		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Risk')} style={{ height: '100%' }}>
@@ -128,14 +158,9 @@ const SettingRiskCard = ({
 						{t('Label_BlockIP')}
 					</Link>
 				</p>
-				<p>
-					<Typography.Link
-						disabled={!lockAccountPermission?.canUse}
-						onClick={() => onEditTypeChange(SettingEditTypeEnum.LockAccount)}
-					>
-						{t('Label_LockAccount')}
-					</Typography.Link>
-				</p>
+
+				{lockAccountButton()}
+
 				<p>
 					<Typography.Link
 						disabled={!closeAccountPermission?.canUse}

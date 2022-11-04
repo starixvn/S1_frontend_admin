@@ -37,7 +37,7 @@ export interface IGetBasicInfoData {
 	actStatus: number
 	isLineBinding: boolean
 	custLineProfile: ICustLineProfile
-	status: number
+	status: LockAccountTypeEnum
 	enableRebate: number
 	depositPointLevel: number
 	currency: string
@@ -290,8 +290,14 @@ export enum SettingEditTypeEnum {
 	Birthday = 'Birthday',
 	Address = 'Address',
 	LockAccount = 'LockAccount',
+	UnLockAccount = 'UnLockAccount',
 	CloseAccount = 'CloseAccount',
 	KickOutUser = 'KickOutUser',
+}
+
+export enum LockAccountTypeEnum {
+	UnLock = 1,
+	Lock,
 }
 
 export enum SettingSwitchTypeEnum {

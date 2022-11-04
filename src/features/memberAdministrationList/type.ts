@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment'
 import {
 	DateTypeEnum,
 	IdentityEnum,
@@ -134,4 +135,29 @@ export interface IExportMemberArgs {
 	startDate: '2022-10-05T09:00:01+08:00'
 	endDate: '2022-10-05T09:00:01+08:00'
 	exportTransferWallet: boolean
+}
+
+export interface IForm {
+	dateRange: [Moment, Moment]
+	currencyIds: number[]
+	statuses: number[]
+	identity: IdentityEnum
+	userName: null | string
+	tpUserName: null | string
+	affiliateName: null | string
+	loginIp: null | string
+	email: null | string
+	phoneNo: null | string
+	accountName: null | string
+	bankAccountNumber: null | string
+	affiliateCode: null | string
+	tags: number[]
+	vipLevel: number[]
+	transId: null | string
+	shieldLevel: ShieldLevelEnum
+	iovationLevel: IovationLevelEnum
+	dateType: DateTypeEnum
+	deviceId: null | string
+	exportTransferWallet: boolean | number
+	userType: UserTypeEnum
 }

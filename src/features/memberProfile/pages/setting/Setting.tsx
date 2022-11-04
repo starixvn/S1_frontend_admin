@@ -33,6 +33,7 @@ import {
 	ISettingForm,
 	ISettingRiskPermissions,
 	PayoutVerificationRewardOTPTypeEnum,
+	LockAccountTypeEnum,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
 	ISettingMarketingPermissions,
@@ -270,8 +271,19 @@ const Setting = () => {
 					break
 				}
 				case SettingEditTypeEnum.LockAccount: {
-					const LOCK = 1
-					await lockAccount({ custId, status: LOCK, reason }).unwrap()
+					await lockAccount({
+						custId,
+						status: LockAccountTypeEnum.Lock,
+						reason,
+					}).unwrap()
+					break
+				}
+				case SettingEditTypeEnum.UnLockAccount: {
+					await lockAccount({
+						custId,
+						status: LockAccountTypeEnum.UnLock,
+						reason,
+					}).unwrap()
 					break
 				}
 				case SettingEditTypeEnum.CloseAccount: {
