@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
 	Button,
@@ -35,7 +34,7 @@ import {
 	DateTypeEnum,
 	UserTypeEnum,
 } from './constants'
-import { ITagData, IVipLevelData } from './type'
+import { IForm, ITagData, IVipLevelData } from './type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -43,7 +42,7 @@ const { Option } = Select
 
 interface IMemberAdministrationListFilterProps {
 	loading: boolean
-	form: FormInstance
+	form: FormInstance<IForm>
 	timeZoneUtcOffset?: number
 	currencyListBySite: Currency[]
 	allTagEnums: ITagData[]
@@ -70,6 +69,7 @@ const MemberAdministrationListFilter = ({
 	onSearch,
 }: IMemberAdministrationListFilterProps) => {
 	const { t } = useTranslation()
+	const dateType = Form.useWatch('dateType', form)
 
 	const currencySelector = () => {
 		const handleChangeCurrency = (newCurrencyIds: number[]) => {
@@ -234,6 +234,17 @@ const MemberAdministrationListFilter = ({
 						onFinish={() => onSearch({})}
 					>
 						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='dateType' label={t('Label_DateType')}>
+									<Select placeholder={t('Label_Select') + t('Label_DateType')}>
+										{DATE_TYPE_ENUM_OPTIONS?.map(({ value, displayKey }) => (
+											<Option key={value} value={value}>
+												{t(displayKey)}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
 							<Col lg={12} md={24} xs={24}>
 								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
@@ -252,6 +263,7 @@ const MemberAdministrationListFilter = ({
 											]}
 										>
 											<RangePicker
+												disabled={dateType === DateTypeEnum.All}
 												style={{ width: '100%' }}
 												showTime
 												ranges={MOMENT_RANGE_PICKER_RANGES([
@@ -259,12 +271,6 @@ const MemberAdministrationListFilter = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 										<div>
@@ -283,17 +289,6 @@ const MemberAdministrationListFilter = ({
 								{statusSelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='identity' label={t('Label_Identity')}>
-									<Select placeholder={t('Label_Select') + t('Label_Identity')}>
-										{IDENTITY_ENUM_OPTIONS?.map(({ value, displayKey }) => (
-											<Option key={value} value={value}>
-												{t(displayKey)}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear placeholder={t('Label_MemberId')} />
 								</Form.Item>
@@ -301,14 +296,6 @@ const MemberAdministrationListFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='tpUserName' label={t('Label_SabaId')}>
 									<Input allowClear placeholder={t('Label_SabaId')} />
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='affiliateName'
-									label={t('Label_AffiliateName')}
-								>
-									<Input allowClear placeholder={t('Label_AffiliateName')} />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -319,6 +306,19 @@ const MemberAdministrationListFilter = ({
 							*/}
 							<Panel header={t('Label_AdvancedSearch')} key='1' forceRender>
 								<Row align='middle' gutter={16}>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item name='identity' label={t('Label_Identity')}>
+											<Select
+												placeholder={t('Label_Select') + t('Label_Identity')}
+											>
+												{IDENTITY_ENUM_OPTIONS?.map(({ value, displayKey }) => (
+													<Option key={value} value={value}>
+														{t(displayKey)}
+													</Option>
+												))}
+											</Select>
+										</Form.Item>
+									</Col>
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item name='loginIp' label={t('Label_LoginIp')}>
 											<Input allowClear placeholder={t('Label_LoginIp')} />
@@ -345,6 +345,17 @@ const MemberAdministrationListFilter = ({
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item name='phoneNo' label={t('Label_PhoneNo')}>
 											<Input allowClear placeholder={t('Label_PhoneNo')} />
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='affiliateName'
+											label={t('Label_AffiliateName')}
+										>
+											<Input
+												allowClear
+												placeholder={t('Label_AffiliateName')}
+											/>
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
@@ -425,21 +436,6 @@ const MemberAdministrationListFilter = ({
 														{name}
 													</Option>
 												))}
-											</Select>
-										</Form.Item>
-									</Col>
-									<Col lg={6} md={12} xs={12}>
-										<Form.Item name='dateType' label={t('Label_DateType')}>
-											<Select
-												placeholder={t('Label_Select') + t('Label_DateType')}
-											>
-												{DATE_TYPE_ENUM_OPTIONS?.map(
-													({ value, displayKey }) => (
-														<Option key={value} value={value}>
-															{t(displayKey)}
-														</Option>
-													)
-												)}
 											</Select>
 										</Form.Item>
 									</Col>

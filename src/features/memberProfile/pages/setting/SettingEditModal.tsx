@@ -120,7 +120,7 @@ const SettingEditModal = ({
 							},
 						]}
 					>
-						<DatePicker style={{ width: '100%' }} />
+						<DatePicker format='MM-DD-YYYY' style={{ width: '100%' }} />
 					</Form.Item>
 				)}
 				{editType === SettingEditTypeEnum.Address && (
@@ -228,6 +228,7 @@ const SettingEditModal = ({
 					</>
 				)}
 				{(editType === SettingEditTypeEnum.LockAccount ||
+					editType === SettingEditTypeEnum.UnLockAccount ||
 					editType === SettingEditTypeEnum.CloseAccount ||
 					editType === SettingEditTypeEnum.KickOutUser) && (
 					<Form.Item

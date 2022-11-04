@@ -734,6 +734,7 @@
 	"Label_ResetPassword": "Reset Password",
 	"Label_BlockIP": "Block IP",
 	"Label_LockAccount": "Lock Account",
+	"Label_UnLockAccount": "UnLock Account",
 	"Label_CloseAccount": "Close Account",
 	"Label_KickOut": "Kick Out",
 	"Label_ResetBankInfo": "Reset Bank Info",
@@ -831,5 +832,5 @@
 	"Label_RawDetail": "Raw Detail",
 	"Label_StatementDate": "StatementDate",
 	"Label_OTPStatus": "OTP Status",
-	"Label_AdjustReason" : "Adjust Reason"
+	"Label_AdjustReason": "Adjust Reason"
 }
