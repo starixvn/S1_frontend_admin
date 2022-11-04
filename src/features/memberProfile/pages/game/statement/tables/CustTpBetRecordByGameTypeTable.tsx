@@ -60,15 +60,6 @@ const CustTpBetRecordByGameTypeTable = ({
 			),
 		},
 		{
-			title: t('Label_TurnoverWithoutBonus'),
-			key: 'totalTOExcludeBonus',
-			dataIndex: 'totalTOExcludeBonus',
-			width: 100,
-			align: 'center' as 'center',
-			render: (totalTOExcludeBonus: number) =>
-				totalTOExcludeBonus ? numberFormatter.format(totalTOExcludeBonus) : 0,
-		},
-		{
 			title: t('Label_ValidBet'),
 			key: 'validBet',
 			dataIndex: 'validBet',
@@ -95,18 +86,6 @@ const CustTpBetRecordByGameTypeTable = ({
 			align: 'center' as 'center',
 			render: (winLoss: number) => {
 				return winLoss ? numberFormatter.format(winLoss) : 0
-			},
-		},
-		{
-			title: t('Label_WinLossWithoutBonus'),
-			key: 'winLossExcludeBonus',
-			dataIndex: 'winLossExcludeBonus',
-			width: 100,
-			align: 'center' as 'center',
-			render: (winLossExcludeBonus: number) => {
-				return winLossExcludeBonus
-					? numberFormatter.format(winLossExcludeBonus)
-					: 0
 			},
 		},
 		{
