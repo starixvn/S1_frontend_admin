@@ -155,7 +155,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.issueBonusManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/BonusPayout',
 		internalFunctionKey: allowedRoles.FinanceBonusPayout,
 		newAdminPath: paths.finance.sub.issueBonusManagement.root,
@@ -309,7 +309,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.bonusManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/BonusManage',
 		internalFunctionKey: allowedRoles.MarketingBonusManage,
 		newAdminPath: paths.marketing.sub.bonusManagement.root,
