@@ -136,8 +136,8 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleSaved = async (before: IGetPaymentAdjustmentReportData) => {
-		const { memo: afterMemo, adjustCategory: afterCategory } =
-			await editForm.validateFields()
+		const { memo: afterMemo = '', adjustCategory: afterCategory } =
+			await editForm.getFieldsValue()
 		const { memo, adjustCategory, transId, currencyId, siteId } = before
 		const beforeData: IAdjustmentData = {
 			category: adjustCategory,
