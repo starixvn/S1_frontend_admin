@@ -3,6 +3,7 @@ import { Space, Typography } from 'antd'
 import { IAffInfo } from 'features/memberProfile/type'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { isNumber } from 'lodash'
 
 const { Text } = Typography
 
@@ -25,17 +26,21 @@ const AffiliateInfo = ({ affInfo }: IAffiliateInfoProps) => {
 
 	return (
 		<Space direction='vertical'>
-			<StyledText>{`${t('Label_RevenueGroup')} : ${revenueName}`}</StyledText>
+			<StyledText>{`${t('Label_RevenueGroup')} : ${
+				revenueName ?? 'N/A'
+			}`}</StyledText>
 
-			<StyledText>{`${t(
-				'Label_RevenueShare'
-			)} : ${revenueShare} %`}</StyledText>
+			<StyledText>{`${t('Label_RevenueShare')} :  ${
+				isNumber(revenueShare) ? `${revenueShare} %` : 'N/A'
+			}`}</StyledText>
 
-			<StyledText>{`${t('Label_Players')} : ${totalPlayers}`}</StyledText>
+			<StyledText>{`${t('Label_Players')} : ${
+				totalPlayers ?? 'N/A'
+			}`}</StyledText>
 
-			<StyledText>{`${t(
-				'Label_EarningLastMonth'
-			)} : ${totalEarning}`}</StyledText>
+			<StyledText>{`${t('Label_EarningLastMonth')} : ${
+				totalEarning ?? 'N/A'
+			}`}</StyledText>
 		</Space>
 	)
 }
