@@ -832,5 +832,9 @@
 	"Label_RawDetail": "Raw Detail",
 	"Label_StatementDate": "StatementDate",
 	"Label_OTPStatus": "OTP Status",
-	"Label_AdjustReason": "Adjust Reason"
+	"Label_AdjustReason": "Adjust Reason",
+	"Label_RevenueGroup": "Revenue Group",
+	"Label_RevenueShare": "Revenue Share",
+	"Label_Players": "Players",
+	"Label_EarningLastMonth": "Earning Last Month"
 }

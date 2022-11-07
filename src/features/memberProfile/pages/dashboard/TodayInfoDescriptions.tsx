@@ -31,7 +31,7 @@ const TodayInfoDescriptions = ({
 				<Descriptions.Item label="Today's Withdrawal">
 					{numberFormatter.format(todayWithdrawal)}
 				</Descriptions.Item>
-				<Descriptions.Item label="Today's Summary">
+				<Descriptions.Item label="Today's Betting">
 					{numberFormatter.format(todayBetting)}
 				</Descriptions.Item>
 			</Descriptions>

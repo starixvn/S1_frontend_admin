@@ -2,6 +2,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment'
 import { PermissionInterface } from 'type'
 import moment from 'moment/moment'
+import { IdentityEnum } from 'features/memberAdministrationList/constants'
 
 export interface ICustIdInterface {
 	custId: number
@@ -25,6 +26,26 @@ export interface ICustLineProfile {
 	createTime: string
 }
 
+export interface IAffInfo {
+	identity?: IdentityEnum
+	tagList?: ITagData[]
+	id?: number
+	tagName?: string
+	description?: string
+	tagColour?: string
+	custLineProfile?: object
+	custId?: number
+	userId?: string
+	createTime?: string
+	enableRebate?: boolean
+	affInfo?: object
+	affiliateName: string
+	revenueName: string
+	revenueShare?: number
+	totalEarning: number
+	totalPlayers: number
+}
+
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
@@ -41,7 +62,7 @@ export interface IGetBasicInfoData {
 	enableRebate: number
 	depositPointLevel: number
 	currency: string
-	identity: number
+	identity: IdentityEnum
 	affiliatesName: string
 	affiliatesCode: string
 	registeredTime: string
@@ -70,6 +91,8 @@ export interface IGetBasicInfoData {
 	isKyc: boolean
 	isTest: boolean
 	tagList: ITagData[]
+	// * affInfo 參數代理會員才會有值，一般會員 affInfo 為 null 的
+	affInfo: null | IAffInfo
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
