@@ -1,6 +1,7 @@
 import { BasicInfo } from 'features/memberProfile/sider/BasicInfo'
 import { Divider, message, Spin } from 'antd'
 import { StatusInfo } from 'features/memberProfile/sider/StatusInfo'
+import { AffiliateInfo } from 'features/memberProfile/sider/AffiliateInfo'
 import { useParams } from 'react-router-dom'
 import {
 	IGetBasicInfoResponse,
@@ -93,6 +94,8 @@ const MemberProfileSiderContent = () => {
 				/>
 				<Divider style={{ margin: '15px 0' }} />
 				<StatusInfo custBasicInfo={custBasicInfo} />
+				<Divider />
+				<AffiliateInfo affInfo={custBasicInfo?.affInfo} />
 				<Divider />
 				<UploadPicModal
 					deleteLoading={isDeleteCustPhotoLoading}
