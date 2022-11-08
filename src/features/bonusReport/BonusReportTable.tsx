@@ -44,20 +44,6 @@ const BonusReportTable = ({
 			align: 'center' as 'center',
 		},
 		{
-			title: t('Label_GetPage'),
-			key: 'atPage',
-			dataIndex: 'atPage',
-			width: 120,
-			align: 'center' as 'center',
-		},
-		{
-			title: t('Label_PromotionCategory'),
-			key: 'categoryName',
-			dataIndex: 'categoryName',
-			width: 120,
-			align: 'center' as 'center',
-		},
-		{
 			title: t('Label_DepositId'),
 			key: 'depositInfo',
 			dataIndex: 'depositInfo',
