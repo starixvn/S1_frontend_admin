@@ -20,7 +20,9 @@ import { dateFormat } from 'common/utils/format'
 import { MultipleSelect } from 'components/Select'
 import { IGetPromotionTypeData } from 'common/service/allDataApi'
 import { SearchOutlined } from '@ant-design/icons'
+import { onEnumApiMultipleSelectChange } from 'common/utils'
 import TimeZoneSelect from 'components/TimeZoneSelect'
+import { IEnumTypeData } from 'common/service/enumApi'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { STATUS_TYPE_OPTIONS } from './constants'
@@ -35,6 +37,7 @@ interface IBonusReportFilterProps {
 	loading: boolean
 	promotionList: IGetPromotionTypeData[]
 	categories: IPromotionCategoryOptionData[]
+	bonusAtPageEnum: IEnumTypeData[]
 	timeZoneUtcOffset?: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -53,6 +56,7 @@ const BonusReportFilter = ({
 	loading,
 	promotionList,
 	categories,
+	bonusAtPageEnum,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onSearch,
@@ -234,6 +238,30 @@ const BonusReportFilter = ({
 								{promotionTypeSelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='atPages' label={t('Label_GetPage')}>
+									<MultipleSelect
+										onChange={newValues =>
+											onEnumApiMultipleSelectChange(
+												newValues,
+												bonusAtPageEnum,
+												form,
+												'atPages'
+											)
+										}
+									>
+										{(bonusAtPageEnum?.length as number) > 1 && (
+											<Option value='all'>{t('Label_SelectAll')}</Option>
+										)}
+
+										{bonusAtPageEnum?.map(({ value, name }) => (
+											<Option key={value} value={value}>
+												{name}
+											</Option>
+										))}
+									</MultipleSelect>
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='statuses' label={t('Label_Status')}>
 									<MultipleSelect
 										onChange={onStatusesChange}
@@ -253,19 +281,16 @@ const BonusReportFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								{promoCategorySelector()}
 							</Col>
-
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
-
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='transId' label={t('Label_ReferenceId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
-
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='bonusCode' label={t('Label_BonusCode')}>
 									<Input allowClear />
