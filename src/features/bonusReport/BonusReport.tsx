@@ -19,7 +19,6 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetPromotionCategoryOptionsQuery,
@@ -50,15 +49,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		transId: string
 		bonusCode: string
 		dateRange: [Moment, Moment]
-		atPages: number[]
 	}>()
-
-	const {
-		data: { data: bonusAtPageEnum = [] } = {},
-		isFetching: isGetBonusAtPageEnumFetching,
-	} = useGetEnumTypeQuery({
-		enumName: 'BonusAtPageEnum',
-	})
 
 	const {
 		data: { data: promotionList = [] } = {} as IGetPromotionTypeResponse,
@@ -158,7 +149,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			endDate,
 			pageNumber,
 			pageSize,
-			atPages,
 		} = queryParams
 
 		const args = {
@@ -176,7 +166,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			baseCurrencyId: Number(baseCurrencyId) || 0,
 			promotionTypes: promotionTypes?.map((type: string) => Number(type)) ?? [],
 			statuses: statuses?.map((status: string) => Number(status)) ?? [],
-			atPages: atPages?.map((values: string) => Number(values)) ?? [],
 		}
 
 		try {
@@ -196,8 +185,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	const loading =
 		isGetPromotionListDataLoading ||
 		isGetCategoryFetching ||
-		isGetBonusReportDataListFetching ||
-		isGetBonusAtPageEnumFetching
+		isGetBonusReportDataListFetching
 
 	const filterListLoading =
 		isGetCategoryFetching || isGetPromotionListDataLoading
@@ -209,7 +197,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 					category => category.promotionCategoryId
 				),
 				promotionTypes: promotionList?.map(item => item.type),
-				atPages: bonusAtPageEnum?.map(({ value }) => value),
 			})
 		}
 	}, [filterListLoading])
@@ -230,7 +217,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				pageNumber,
 				pageSize,
 				timeZone,
-				atPages,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 
@@ -247,7 +233,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				transId,
 				bonusCode,
 				dateRange: [moment(startDate), moment(endDate)],
-				atPages: atPages?.map((values: string) => Number(values)) ?? [],
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -268,7 +253,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				loading={loading}
 				promotionList={promotionList}
 				categories={categories}
-				bonusAtPageEnum={bonusAtPageEnum}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
