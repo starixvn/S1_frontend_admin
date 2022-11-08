@@ -146,6 +146,7 @@ const UpdateBonus: FC<{
 				details: rawDetails,
 				tpId,
 				promotionAction,
+				isDisplayDate,
 			} = formData
 
 			// 時區一律設定成 +0
@@ -185,8 +186,9 @@ const UpdateBonus: FC<{
 							tpId: promotionType === BonusTypeEnum.Rebate ? null : tpId,
 							periodFromTime,
 							periodToTime,
-							displayFromTime,
-							displayToTime,
+							// * 當未勾選 isDisplayDate 則 displayFromTime、displayToTime 皆送 null 給後端
+							displayFromTime: isDisplayDate ? displayFromTime : null,
+							displayToTime: isDisplayDate ? displayToTime : null,
 							promotionAction,
 							specific: specificRequestDataConverter({
 								specific: rawSpecific,
@@ -270,6 +272,21 @@ const UpdateBonus: FC<{
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
+
+			if (displayFrom && displayTo) {
+				form.setFieldsValue({
+					displayDate: [
+						moment(displayFrom).utcOffset(0),
+						moment(displayTo).utcOffset(0),
+					],
+				})
+			} else {
+				// * 當 displayFrom、displayTo 皆為 falsy， 則關掉預設為 true 的 isDisplayDate
+				form?.setFieldsValue({
+					isDisplayDate: false,
+				})
+			}
+
 			form.setFieldsValue({
 				mainFormActive: status === StatusEnum.Active,
 				bonusCode: currentBonusCode,
@@ -279,10 +296,7 @@ const UpdateBonus: FC<{
 					moment(periodFrom).utcOffset(0),
 					moment(periodTo).utcOffset(0),
 				],
-				displayDate: [
-					moment(displayFrom).utcOffset(0),
-					moment(displayTo).utcOffset(0),
-				],
+
 				isSpecial,
 				onlyRegistered,
 				specialCode,

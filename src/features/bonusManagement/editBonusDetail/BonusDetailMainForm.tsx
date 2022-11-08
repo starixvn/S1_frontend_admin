@@ -19,7 +19,7 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment/moment'
+import moment, { Moment } from 'moment/moment'
 import {
 	BonusTypeEnum,
 	DevicesEnum,
@@ -58,9 +58,15 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 		useContext(EditBonusContext)
 	const currentBonusType = Form.useWatch('bonusType', form)
 	const sameByActive = Form.useWatch('sameByActive', form)
-	const displayDate = Form.useWatch('displayDate', form)
+	// * displayDate => 後端有情境會回傳 [null,null]
+	const displayDate: [Moment | null, Moment | null] = Form.useWatch(
+		'displayDate',
+		form
+	)
 	// 是否有勾選 special code
 	const isSpecialCode = Form.useWatch('isSpecial', form)
+	// * isDisplayDate 可以決定前台是否顯示該 Bonus, 當沒有打勾時前台的 Bonus 會被隱藏
+	const isDisplayDate = Form.useWatch('isDisplayDate', form)
 
 	const vipLevelSelect = () => {
 		const onChangeVipLevel = (newLevel: Array<number | string>) => {
@@ -137,6 +143,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						periodType: PeriodTypeEnum.Daily,
 						promotionAction: PromotionActionEnum.Detail,
 						autoExtend: false,
+						isDisplayDate: true,
 					}}
 				>
 					<Row>
@@ -267,6 +274,13 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										>
 											<Checkbox>{t('Label_AutoExtend')}</Checkbox>
 										</Form.Item>
+										<Form.Item
+											name='isDisplayDate'
+											valuePropName='checked'
+											noStyle
+										>
+											<Checkbox>{t('Label_isDisplayDate')}</Checkbox>
+										</Form.Item>
 									</Space>
 								}
 							>
@@ -283,6 +297,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										]}
 									>
 										<RangePicker
+											disabled={!isDisplayDate}
 											style={{ width: '100%' }}
 											ranges={MOMENT_RANGE_PICKER_RANGES([
 												'Today',
