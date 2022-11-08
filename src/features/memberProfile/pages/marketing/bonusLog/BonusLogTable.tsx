@@ -32,8 +32,20 @@ const BonusLogTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (bonusId: number) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 					{bonusId}
+				</Typography.Text>
+			),
+		},
+		{
+			title: t('Label_BonusCode'),
+			key: 'bonusCode',
+			dataIndex: 'bonusCode',
+			width: 100,
+			align: 'center' as 'center',
+			render: (bonusCode: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+					{bonusCode}
 				</Typography.Text>
 			),
 		},
@@ -58,19 +70,14 @@ const BonusLogTable = ({
 			dataIndex: 'typeName',
 			width: 80,
 			align: 'center' as 'center',
-			render: (typeName: string) => typeName ?? '-',
-		},
-		{
-			title: t('Label_ChangeBonus'),
-			key: 'changeBonus',
-			width: 80,
-			align: 'center' as 'center',
-			render: (record: IGetBonusLogData) => {
-				const { changeBonus, direction } = record
-				return direction === ChangeBonusDirectionEnum.Add
-					? `+ ${numberFormatter.format(changeBonus)}`
-					: `- ${numberFormatter.format(changeBonus)}`
-			},
+			render: (typeName: string) =>
+				typeName ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+						{typeName}
+					</Typography.Text>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: `${t('Label_Before')} ${t('Label_Bonus')}`,
@@ -79,6 +86,24 @@ const BonusLogTable = ({
 			align: 'center' as 'center',
 			width: 80,
 			render: (beforeBonus: number) => numberFormatter.format(beforeBonus),
+		},
+		{
+			title: t('Label_ChangeBonus'),
+			key: 'changeBonus',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IGetBonusLogData) => {
+				const { changeBonus, direction } = record
+				return direction === ChangeBonusDirectionEnum.Add ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+						{`+ ${numberFormatter.format(changeBonus)}`}
+					</Typography.Text>
+				) : (
+					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+						{`- ${numberFormatter.format(changeBonus)}`}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: `${t('Label_After')} ${t('Label_Bonus')}`,

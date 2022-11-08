@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -24,14 +24,8 @@ import {
 } from './api'
 import MemberAdministrationListFilter from './MemberAdministrationListFilter'
 import MemberAdministrationListTable from './MemberAdministrationListTable'
-import {
-	IdentityEnum,
-	IovationLevelEnum,
-	ShieldLevelEnum,
-	DateTypeEnum,
-	UserTypeEnum,
-} from './constants'
-import { IMemberResponse, IExportMemberArgs } from './type'
+import { IdentityEnum, DateTypeEnum, UserTypeEnum } from './constants'
+import { IForm, IMemberResponse, IExportMemberArgs } from './type'
 
 const MemberAdministrationList = ({
 	pageTitle = '',
@@ -44,30 +38,7 @@ const MemberAdministrationList = ({
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm<{
-		dateRange: [Moment, Moment]
-		currencyIds: number[]
-		statuses: number[]
-		identity: IdentityEnum
-		userName: null | string
-		tpUserName: null | string
-		affiliateName: null | string
-		loginIp: null | string
-		email: null | string
-		phoneNo: null | string
-		accountName: null | string
-		bankAccountNumber: null | string
-		affiliateCode: null | string
-		tags: number[]
-		vipLevel: number[]
-		transId: null | string
-		shieldLevel: ShieldLevelEnum
-		iovationLevel: IovationLevelEnum
-		dateType: DateTypeEnum
-		deviceId: null | string
-		exportTransferWallet: boolean | number
-		userType: UserTypeEnum
-	}>()
+	const [form] = Form.useForm<IForm>()
 
 	const [
 		getMemberList,

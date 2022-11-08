@@ -1,6 +1,8 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment'
 import { PermissionInterface } from 'type'
+import moment from 'moment/moment'
+import { IdentityEnum } from 'features/memberAdministrationList/constants'
 
 export interface ICustIdInterface {
 	custId: number
@@ -24,6 +26,26 @@ export interface ICustLineProfile {
 	createTime: string
 }
 
+export interface IAffInfo {
+	identity?: IdentityEnum
+	tagList?: ITagData[]
+	id?: number
+	tagName?: string
+	description?: string
+	tagColour?: string
+	custLineProfile?: object
+	custId?: number
+	userId?: string
+	createTime?: string
+	enableRebate?: boolean
+	affInfo?: object
+	affiliateName: string
+	revenueName: string
+	revenueShare?: number
+	totalEarning: number
+	totalPlayers: number
+}
+
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
@@ -36,11 +58,11 @@ export interface IGetBasicInfoData {
 	actStatus: number
 	isLineBinding: boolean
 	custLineProfile: ICustLineProfile
-	status: number
+	status: LockAccountTypeEnum
 	enableRebate: number
 	depositPointLevel: number
 	currency: string
-	identity: number
+	identity: IdentityEnum
 	affiliatesName: string
 	affiliatesCode: string
 	registeredTime: string
@@ -69,6 +91,8 @@ export interface IGetBasicInfoData {
 	isKyc: boolean
 	isTest: boolean
 	tagList: ITagData[]
+	// * affInfo 參數代理會員才會有值，一般會員 affInfo 為 null 的
+	affInfo: null | IAffInfo
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
@@ -289,8 +313,14 @@ export enum SettingEditTypeEnum {
 	Birthday = 'Birthday',
 	Address = 'Address',
 	LockAccount = 'LockAccount',
+	UnLockAccount = 'UnLockAccount',
 	CloseAccount = 'CloseAccount',
 	KickOutUser = 'KickOutUser',
+}
+
+export enum LockAccountTypeEnum {
+	UnLock = 1,
+	Lock,
 }
 
 export enum SettingSwitchTypeEnum {
@@ -436,7 +466,13 @@ export interface IGetBonusLogArgs {
 	custId: number
 	startDate: string
 	endDate: string
-	promoCategoryId: number
+	promoCategoryIds: number[]
+	refTransId: string | null
+}
+
+export type IBonusLogFilterForm = {
+	dateRange: [moment.Moment, moment.Moment]
+	promoCategoryIds: number[]
 	refTransId: string
 }
 
@@ -444,6 +480,7 @@ export interface IGetBonusLogData {
 	id: number
 	bonusId: number
 	createTime: string
+	bonusCode: string
 	typeName: string
 	direction: number
 	changeBonus: number

@@ -230,11 +230,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 36,
+		functionId: paths.finance.sub.report.sub.paymentAdjustment.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.paymentAdjustment.root,
 	},
 	{
 		icon: null,
@@ -563,11 +563,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'VIP Rebate Report',
 		icon: null,
-		functionId: 75,
+		functionId: paths.report.sub.vipRebateReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVipRebateInfoReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VipRebateInfoReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.vipRebateReport.root,
 	},
 	{
 		icon: null,

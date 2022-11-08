@@ -439,6 +439,13 @@ const BonusReport = lazy(
 		)
 )
 
+const VipRebateReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipRebateReport' */ 'features/vipRebateReport/VipRebateReport'
+		)
+)
+
 const TransferInfoManagement = lazy(
 	() =>
 		import(
@@ -716,6 +723,13 @@ const PaymentManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'PaymentManagement' */ 'features/paymentManagement/PaymentManagement'
+		)
+)
+
+const PaymentAdjustment = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PaymentAdjustment' */ 'features/paymentAdjustment/PaymentAdjustment'
 		)
 )
 
@@ -1429,6 +1443,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.vipRebateReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.vipRebateReport.functionId}>
+						<VipRebateReport />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.transferInfoManagement.root}`,
 				element: (
 					<AuthRequire
@@ -1774,6 +1796,18 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.finance.sub.paymentGateway.functionId}>
 						<PaymentManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.report.sub.paymentAdjustment.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.report.sub.paymentAdjustment.functionId
+						}
+					>
+						<PaymentAdjustment />
 					</AuthRequire>
 				),
 			},

@@ -242,6 +242,15 @@ const paths = {
 				root: 'finance/issueBonusManagement',
 				functionId: 33,
 			},
+			report: {
+				root: 'finance/report',
+				sub: {
+					paymentAdjustment: {
+						root: 'finance/report/paymentAdjustment',
+						functionId: 36,
+					},
+				},
+			},
 		},
 	},
 	marketing: {
@@ -271,9 +280,6 @@ const paths = {
 			},
 			rebateReport: {
 				root: 'marketing/rebateReport',
-			},
-			vipRebateReport: {
-				root: 'marketing/vipRebateReport',
 			},
 			vipRebateManagement: {
 				root: 'marketing/vipRebateManagement',
@@ -352,6 +358,10 @@ const paths = {
 			bonusReport: {
 				root: 'report/bonusReport',
 				functionId: 73,
+			},
+			vipRebateReport: {
+				root: 'report/vipRebateReport',
+				functionId: 75,
 			},
 		},
 	},

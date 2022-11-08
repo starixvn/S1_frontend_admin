@@ -734,6 +734,7 @@
 	"Label_ResetPassword": "Reset Password",
 	"Label_BlockIP": "Block IP",
 	"Label_LockAccount": "Lock Account",
+	"Label_UnLockAccount": "UnLock Account",
 	"Label_CloseAccount": "Close Account",
 	"Label_KickOut": "Kick Out",
 	"Label_ResetBankInfo": "Reset Bank Info",
@@ -829,5 +830,12 @@
 	"Label_CompletedTime": "Completed Time",
 	"Label_MainDetail": "Main Detail",
 	"Label_RawDetail": "Raw Detail",
-	"Label_OTPStatus": "OTP Status"
+	"Label_OTPStatus": "OTP Status",
+	"Label_StatementDate": "StatementDate",
+	"Label_AdjustReason": "Adjust Reason",
+	"Label_RevenueGroup": "Revenue Group",
+	"Label_RevenueShare": "Revenue Share",
+	"Label_Players": "Players",
+	"Label_EarningLastMonth": "Earning Last Month",
+	"Label_GetPage": "Get Page"
 }

@@ -46,7 +46,7 @@ const PromotionReportFilter = ({
 							<Form.Item
 								noStyle
 								name='dateRange'
-								initialValue={MOMENT_DATE_RANGES.Today}
+								initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
 								rules={[
 									{
 										required: true,
