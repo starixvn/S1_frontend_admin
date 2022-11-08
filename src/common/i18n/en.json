@@ -440,6 +440,7 @@
 	"Label_BonusType": "Bonus Type",
 	"Label_Null": "Null",
 	"Label_DisplayDate": "Display Date",
+	"Label_isDisplayDate": "Is Display Date",
 	"Label_SameByActive": "Same By Active",
 	"Label_ActiveDate": "Active Date",
 	"Label_AutoExtend": "Auto Extend",

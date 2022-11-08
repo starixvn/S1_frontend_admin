@@ -124,8 +124,8 @@ export interface ISetArgs {
 		categoryId: number
 		periodFromTime: string
 		periodToTime: string
-		displayFromTime: string
-		displayToTime: string
+		displayFromTime: string | null
+		displayToTime: string | null
 		expiryDays: number
 		sort: number
 		status: number

@@ -24,6 +24,9 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 	const tabsKey = JSON.stringify({ currencyId, langCode })
 	const promotionAction = Form.useWatch('promotionAction', form)
 
+	// * 當未勾選代表該 bonus 未顯示，bannerUrl、title description 改為非必填
+	const isDisplayDate = Form.useWatch('isDisplayDate', form)
+
 	return (
 		<Spin spinning={loading}>
 			<Form
@@ -65,7 +68,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_BannerUrl')}
 							rules={[
 								{
-									required: currentTabActive,
+									required: currentTabActive && isDisplayDate,
 									message: t('Label_Required', {
 										key: t('Label_BannerUrl'),
 									}),
@@ -81,7 +84,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_Title')}
 							rules={[
 								{
-									required: currentTabActive,
+									required: currentTabActive && isDisplayDate,
 									message: t('Label_Required', {
 										key: t('Label_Title'),
 									}),
@@ -97,7 +100,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_Description')}
 							rules={[
 								{
-									required: currentTabActive,
+									required: currentTabActive && isDisplayDate,
 									message: t('Label_Required', {
 										key: t('Label_Description'),
 									}),
