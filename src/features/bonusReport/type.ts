@@ -14,6 +14,7 @@ export interface IGetBonusReportDataListArgs {
 	baseCurrencyId: number
 	promotionCategoryIds: number[]
 	statuses: number[]
+	atPages: number[]
 }
 
 export interface IBonusReportData {
@@ -37,6 +38,8 @@ export interface IBonusReportData {
 	expiredCancel: boolean
 	operator: string
 	depositInfo: string | null // * JSON | null
+	categoryName: string
+	atPage: string
 }
 
 export interface ICurrencyAmountRecord {
@@ -64,6 +67,7 @@ export interface IExportBonusReportArgs {
 	baseCurrencyId: number
 	promotionCategoryIds: number[]
 	statuses: number[]
+	atPages: number[]
 }
 
 export interface IPromotionCategoryOptionData {

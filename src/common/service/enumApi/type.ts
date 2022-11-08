@@ -33,6 +33,7 @@ export type EnumNameType =
 	| 'FinancialType'
 	| 'OTPProvider'
 	| 'OTPStatus'
+	| 'BonusAtPageEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -61,6 +62,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  AmountRuleEnum - 取得 AmountRule 列表
 	 * @argument {string}  OTPProvider - 取得 OTP 種類列表
 	 * @argument {string}  OTPStatus - 取得 OTP 狀態列表
+	 * @argument {string}  BonusAtPageEnum - 取得 AtPage 列表
 	 */
 	enumName: EnumNameType
 }
