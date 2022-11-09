@@ -41,10 +41,16 @@ export interface IExportDepositAccountsFileArgs {
 	endDate: string
 }
 
-export interface IEditDepositAccountArgs {
-	transId: string
+interface IEditDepositAccountAfterInfo {
 	accountNo: string
 	memo: string
+}
+
+export interface IEditDepositAccountArgs {
+	siteId?: number
+	currencyId: number
+	transId: string
+	after: IEditDepositAccountAfterInfo
 }
 
 export interface IDepositAccountState {
