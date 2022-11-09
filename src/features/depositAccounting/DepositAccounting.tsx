@@ -25,7 +25,7 @@ import {
 import DepositAccountingFilter from './DepositAccountingFilter'
 import DepositAccountingTable from './DepositAccountingTable'
 import EditDepositAccountFormModal from './EditDepositAccountFormModal'
-import { IGetDepositAccountsResponse } from './type'
+import { IEditDepositAccountArgs, IGetDepositAccountsResponse } from './type'
 
 const DepositAccounting: FC<{
 	pageTitle?: string
@@ -122,12 +122,19 @@ const DepositAccounting: FC<{
 		accountNo: string
 		memo: string
 	}) => {
+		if (!editCurrencyId) return
 		try {
-			await editDepositAccount({
+			const args: IEditDepositAccountArgs = {
+				siteId,
+				currencyId: editCurrencyId,
 				transId,
-				accountNo,
-				memo,
-			})
+				after: {
+					accountNo,
+					memo,
+				},
+			}
+
+			await editDepositAccount(args).unwrap()
 
 			message.success(t('System.Label_Success'))
 		} catch (error) {
@@ -192,6 +199,9 @@ const DepositAccounting: FC<{
 	}
 
 	useEffect(() => {
+		form.setFieldsValue({
+			currencyIds: currencyListBySite.map(({ currencyId }) => currencyId),
+		})
 		if (isEmpty(queryParams)) return
 
 		const init = () => {
