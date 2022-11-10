@@ -122,7 +122,7 @@ const ReferralCustReport = lazy(
 const DepositPoint = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'ReferralCustReport' */ 'features/depositPoint/DepositPoint'
+			/* webpackChunkName: 'DepositPoint' */ 'features/depositPoint/DepositPoint'
 		)
 )
 
