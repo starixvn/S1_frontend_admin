@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { differenceBy } from 'lodash'
+import { differenceBy, some } from 'lodash'
 import { Checkbox, message, Modal, Spin } from 'antd'
 import { ModalState } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
@@ -51,51 +51,42 @@ const EditAssignBrandModal: FC<EditAssignBrandModalProps> = ({
 
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			width={240}
 			title={t('Label_SetBrand')}
 			onCancel={onCancel}
 			footer={null}
 		>
 			<Spin spinning={isSetAdminBrandLoading}>
-				{differenceBrands?.map(differenceBrand => (
+				{differenceBrands?.map(({ siteId, siteName }) => (
 					<>
-						<Checkbox
-							key={differenceBrand.siteId}
-							value={differenceBrand.siteId}
-							checked
-							disabled
-						>
-							{differenceBrand.siteName}
+						<Checkbox key={siteId} value={siteId} checked disabled>
+							{siteName}
 						</Checkbox>
 						<br />
 					</>
 				))}
 
-				{userBrands?.map(userBrand => {
-					const checked = editBrands.some(
-						({ siteId }) => siteId === userBrand.siteId
-					)
+				{userBrands?.map(({ siteId, siteName }) => {
+					const checked = some(editBrands, { siteId })
 
 					return (
-						<>
+						<div key={siteId}>
 							<Checkbox
-								key={userBrand.siteId}
-								value={userBrand.siteId}
+								value={siteId}
 								disabled={checked && editBrands.length === 1}
 								checked={checked}
 								onChange={() =>
 									handleSetAdminBrand({
-										siteId: userBrand.siteId,
+										siteId,
 										userId: editUserId,
 										status: checked ? 0 : 1,
 									})
 								}
 							>
-								{userBrand.siteName}
+								{siteName}
 							</Checkbox>
-							<br />
-						</>
+						</div>
 					)
 				})}
 			</Spin>
