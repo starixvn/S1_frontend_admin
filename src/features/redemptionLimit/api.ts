@@ -1,16 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetRedemptionLimitArg,
 	IGetRedemptionLimitResponse,
 	ISetRedemptionLimitArgs,
 } from './type'
 
-export const redemptionLimitApi = createApi({
-	reducerPath: 'redemptionLimitApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const redemptionLimitApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getRedemptionLimit: builder.query<
 			IGetRedemptionLimitResponse,
