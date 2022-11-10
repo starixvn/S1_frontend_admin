@@ -2,7 +2,6 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { enumReducer } from 'common/enum'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { rootApi } from 'common/service/rootApi/api'
-import { blockBankAccountApi } from 'features/blockBankAccount/api'
 import { blockIpApi } from 'features/blockIp/api'
 import { referralReportApi } from 'features/referralReport/api'
 import { vipRebateManagementApi } from 'features/vipRebateManagement/api'
@@ -60,7 +59,6 @@ export const store = configureStore({
 		adjustmentLogReport: adjustmentLogReportReducer,
 		[rootApi.reducerPath]: rootApi.reducer,
 		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
-		[blockBankAccountApi.reducerPath]: blockBankAccountApi.reducer,
 		[blockIpApi.reducerPath]: blockIpApi.reducer,
 		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
 		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
@@ -116,7 +114,6 @@ export const store = configureStore({
 		})
 			.concat(rootApi.middleware)
 			.concat(userSettingsApi.middleware)
-			.concat(blockBankAccountApi.middleware)
 			.concat(blockIpApi.middleware)
 			.concat(depositAccountingApi.middleware)
 			.concat(referralManagementApi.middleware)

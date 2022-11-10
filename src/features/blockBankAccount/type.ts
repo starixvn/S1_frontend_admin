@@ -1,3 +1,12 @@
+import { Moment } from 'moment'
+
+export interface IForm {
+	dateRange: [Moment, Moment]
+	currencyIds: number[]
+	blockStatus: number
+	userName: string
+	accountNum: string
+}
 export interface IBlockBankAccState {
 	accountName: string
 	accountNum: string
