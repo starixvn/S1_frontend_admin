@@ -3,7 +3,6 @@ import { enumReducer } from 'common/enum'
 import adjustmentLogReportReducer from 'features/adjustmentLogReport/slice'
 import { rootApi } from 'common/service/rootApi/api'
 import { dashboardSlice } from 'features/dashboard'
-import { referralManagementApi } from 'features/referralManagement/api'
 import roleManagementReducer from 'features/roleManagement/slice'
 import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 import { redemptionLimitApi } from 'features/redemptionLimit/api'
@@ -53,7 +52,6 @@ export const store = configureStore({
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
 		[rootApi.reducerPath]: rootApi.reducer,
-		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
 		[inactivePointExpiryApi.reducerPath]: inactivePointExpiryApi.reducer,
 		[redemptionLimitApi.reducerPath]: redemptionLimitApi.reducer,
 		[depositPointApi.reducerPath]: depositPointApi.reducer,
@@ -103,7 +101,6 @@ export const store = configureStore({
 			serializableCheck: false,
 		})
 			.concat(rootApi.middleware)
-			.concat(referralManagementApi.middleware)
 			.concat(inactivePointExpiryApi.middleware)
 			.concat(redemptionLimitApi.middleware)
 			.concat(depositPointApi.middleware)
