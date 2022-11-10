@@ -6,7 +6,6 @@ import { dashboardSlice } from 'features/dashboard'
 import { depositAccountingApi } from 'features/depositAccounting/api'
 import { referralManagementApi } from 'features/referralManagement/api'
 import roleManagementReducer from 'features/roleManagement/slice'
-import { userSettingsApi } from 'features/userSettings/api'
 import { inactivePointExpiryApi } from 'features/inactivePointExpiry/api'
 import { redemptionLimitApi } from 'features/redemptionLimit/api'
 import { depositPointApi } from 'features/depositPoint/api'
@@ -55,7 +54,6 @@ export const store = configureStore({
 		roleManagement: roleManagementReducer,
 		adjustmentLogReport: adjustmentLogReportReducer,
 		[rootApi.reducerPath]: rootApi.reducer,
-		[userSettingsApi.reducerPath]: userSettingsApi.reducer,
 		[depositAccountingApi.reducerPath]: depositAccountingApi.reducer,
 		[referralManagementApi.reducerPath]: referralManagementApi.reducer,
 		[inactivePointExpiryApi.reducerPath]: inactivePointExpiryApi.reducer,
@@ -107,7 +105,7 @@ export const store = configureStore({
 			serializableCheck: false,
 		})
 			.concat(rootApi.middleware)
-			.concat(userSettingsApi.middleware)
+
 			.concat(depositAccountingApi.middleware)
 			.concat(referralManagementApi.middleware)
 			.concat(inactivePointExpiryApi.middleware)
