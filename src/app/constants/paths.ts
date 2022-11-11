@@ -539,6 +539,10 @@ const paths = {
 				root: 'systemSetting/exchangeUsdRate',
 				functionId: 129,
 			},
+			bettingMonitorSetting: {
+				root: 'systemSetting/bettingMonitorSetting',
+				functionId: 135,
+			},
 		},
 	},
 

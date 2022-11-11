@@ -740,6 +740,13 @@ const ExchangeUsdRate = lazy(
 		)
 )
 
+const BettingMonitorSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BettingMonitorSetting' */ 'features/bettingMonitorSetting/BettingMonitorSetting'
+			)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1825,6 +1832,18 @@ const routes: RouteObject[] = [
 						functionId={paths.systemSetting.sub.exchangeUsdRate.functionId}
 					>
 						<ExchangeUsdRate />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.systemSetting.sub.bettingMonitorSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.systemSetting.sub.bettingMonitorSetting.functionId
+						}
+					>
+						<BettingMonitorSetting />
 					</AuthRequire>
 				),
 			},
