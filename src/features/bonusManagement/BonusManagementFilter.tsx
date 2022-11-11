@@ -19,7 +19,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment/moment'
 import {
 	DevicesEnum,
 	devicesList,
@@ -169,12 +168,6 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 									</Input.Group>

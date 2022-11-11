@@ -15,7 +15,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
@@ -91,12 +90,6 @@ const DepositAccountingFilter: FC<IDepositAccountingFilterProps> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 

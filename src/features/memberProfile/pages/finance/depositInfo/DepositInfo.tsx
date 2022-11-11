@@ -58,7 +58,7 @@ const DepositInfo = () => {
 		if (!custId) return
 		const { dateRange, status } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
 		)
 		try {

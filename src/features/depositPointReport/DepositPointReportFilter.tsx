@@ -145,12 +145,6 @@ const DepositPointReportFilter: FC<IDepositPointReportFilterProps> = ({
 															.utcOffset(timeZoneUtcOffset)
 															.format(dateFormat)
 													}
-													onChange={newDateRange =>
-														form.setFieldsValue({
-															startDate: moment(newDateRange?.[0]),
-															endDate: moment(newDateRange?.[1]),
-														})
-													}
 												/>
 											</Form.Item>
 											<div>

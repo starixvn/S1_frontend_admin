@@ -63,9 +63,10 @@ const FinancialLog = () => {
 		if (!custId) return
 		const { dateRange, type } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
 		)
+
 		try {
 			await getFinancialLogs({
 				pageNumber: current,

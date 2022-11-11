@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -102,12 +101,6 @@ const AdjustmentLogReportFilter: FC<AdjustmentLogReportFilterInterface> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 

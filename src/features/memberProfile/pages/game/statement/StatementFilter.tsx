@@ -4,7 +4,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { LeftOutlined, SearchOutlined } from '@ant-design/icons'
 import { Dispatch, SetStateAction } from 'react'
@@ -61,12 +60,6 @@ const StatementFilter = ({
 										'Last 7 Day',
 										'This Month',
 									])}
-									onChange={newDateRange =>
-										form.setFieldsValue({
-											startDate: moment(newDateRange?.[0]),
-											endDate: moment(newDateRange?.[1]),
-										})
-									}
 								/>
 							</Form.Item>
 							<div>
