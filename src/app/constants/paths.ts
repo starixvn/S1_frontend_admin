@@ -532,6 +532,15 @@ const paths = {
 			},
 		},
 	},
+	systemSetting: {
+		root: 'systemSetting',
+		sub: {
+			exchangeUsdRate: {
+				root: 'systemSetting/exchangeUsdRate',
+				functionId: 129,
+			},
+		},
+	},
 
 	cms: {
 		root: 'cms',

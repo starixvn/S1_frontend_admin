@@ -733,6 +733,13 @@ const PaymentAdjustment = lazy(
 		)
 )
 
+const ExchangeUsdRate = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ExchangeUsdRate' */ 'features/exchangeUsdRate/ExchangeUsdRate'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1808,6 +1815,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<PaymentAdjustment />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.systemSetting.sub.exchangeUsdRate.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.systemSetting.sub.exchangeUsdRate.functionId}
+					>
+						<ExchangeUsdRate />
 					</AuthRequire>
 				),
 			},
