@@ -839,5 +839,12 @@
 	"Label_EarningLastMonth": "Earning Last Month",
 	"Label_OTPStatus": "OTP Status",
 	"Label_GetPage": "Get Page",
-	"Label_USD": "USD"
+	"Label_USD": "USD",
+	"Label_AddMonitorProduct": "Add Monitor Product",
+	"Label_Day": "day",
+	"Label_Hour": "hour",
+	"label_Min": "min",
+	"Label_Days": "days",
+	"Label_Hours": "hours",
+	"label_Mins": "mins"
 }
