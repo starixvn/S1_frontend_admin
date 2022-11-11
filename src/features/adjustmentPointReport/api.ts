@@ -1,15 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IExportAdjustmentOverviewArgs,
 	IGetAdjustmentOverviewArgs,
 	IGetAdjustmentPointReportResponse,
 } from './type'
 
-export const adjustmentPointReportApi = createApi({
-	reducerPath: 'adjustmentPointReportApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const adjustmentPointReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getAdjustmentPointReport: builder.query<
 			IGetAdjustmentPointReportResponse,

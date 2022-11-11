@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetWithdrawalLimitArgs,
 	IGetWithdrawalLimitCryptoResponse,
@@ -9,9 +7,7 @@ import {
 	IUpdateWithdrawalLimitCryptoArgs,
 } from 'features/withdrawalLimitation/type'
 
-export const withdrawalLimitationApi = createApi({
-	reducerPath: 'withdrawalLimitationApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const withdrawalLimitationApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getWithdrawalLimitList: builder.query<
 			IGetWithdrawalLimitResponse,

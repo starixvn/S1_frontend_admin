@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	ICreateHotEventArgs,
 	IDeleteHotEventArgs,
@@ -16,10 +14,7 @@ import {
 	ISetHotEventStatusArgs,
 } from 'features/hotEventManagement/type'
 
-export const hotEventManagementApi = createApi({
-	reducerPath: 'hotEventManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const hotEventManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getHotEventList: builder.query<
 			IGetHotEventListResponse,

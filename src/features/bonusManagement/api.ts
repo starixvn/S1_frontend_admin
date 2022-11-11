@@ -23,7 +23,7 @@ import {
 export const bonusManagementApi = createApi({
 	reducerPath: 'bonusManagementApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST', 'Scratch'],
+	tagTypes: ['POST', 'SCRATCH'],
 	refetchOnMountOrArgChange: true,
 	endpoints: builder => ({
 		getBonusList: builder.query<IGetBonusListResponse, IGetBonusListArgs>({
@@ -104,7 +104,7 @@ export const bonusManagementApi = createApi({
 				method: 'POST',
 				data,
 			}),
-			providesTags: ['Scratch'],
+			providesTags: ['SCRATCH'],
 		}),
 		exportScratchCardList: builder.mutation<Blob, IExportScratchCardListArgs>({
 			query: data => ({
@@ -124,7 +124,7 @@ export const bonusManagementApi = createApi({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['Scratch'],
+			invalidatesTags: ['SCRATCH'],
 		}),
 	}),
 })

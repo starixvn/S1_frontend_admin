@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IBankTransferAccountAgentListResponse,
 	IBankTransferAccountByIdResponse,
@@ -13,10 +11,7 @@ import {
 	ITransferAccountReasonsResponse,
 } from './type'
 
-export const transferAccountManagementApi = createApi({
-	reducerPath: 'transferAccountManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const transferAccountManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 取得轉帳帳戶列表
 		getBankTransferAccounts: builder.query<

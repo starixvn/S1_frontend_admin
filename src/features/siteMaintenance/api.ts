@@ -1,16 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetMaintenanceArg,
 	IGetMaintenanceResponse,
 	ISetMaintenanceArgs,
 } from './type'
 
-export const siteMaintenanceApi = createApi({
-	reducerPath: 'siteMaintenanceApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const siteMaintenanceApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getMaintenance: builder.query<IGetMaintenanceResponse, IGetMaintenanceArg>({
 			query: data => ({
