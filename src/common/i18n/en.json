@@ -838,5 +838,6 @@
 	"Label_Players": "Players",
 	"Label_EarningLastMonth": "Earning Last Month",
 	"Label_OTPStatus": "OTP Status",
-	"Label_GetPage": "Get Page"
+	"Label_GetPage": "Get Page",
+	"Label_USD": "USD"
 }

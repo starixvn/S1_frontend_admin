@@ -851,4 +851,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		newAdminPath:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission.root,
 	},
+	{
+		icon: null,
+		functionId: paths.systemSetting.sub.exchangeUsdRate.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.systemSetting.sub.exchangeUsdRate.root,
+	},
 ]
