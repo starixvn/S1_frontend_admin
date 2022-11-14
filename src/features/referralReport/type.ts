@@ -1,4 +1,11 @@
+import { Moment } from 'moment'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+
+export interface IForm {
+	dateRange: [Moment, Moment]
+	currencyId: number
+	userName: string
+}
 
 export interface IReferralReportArgs {
 	pageNumber: number

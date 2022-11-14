@@ -18,13 +18,14 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import { validateIPAddress } from 'common/utils'
+import { IForm } from 'features/blockIp/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 
 interface IBlockIpFilterProps {
 	loading: boolean
-	form: FormInstance<any>
+	form: FormInstance<IForm>
 	timeZoneUtcOffset: number
 	onSearch: ({
 		current,

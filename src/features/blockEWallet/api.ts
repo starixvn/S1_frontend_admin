@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IBlockEWalletAccResponse,
 	IBlockEWalletResponse,
@@ -11,10 +10,7 @@ import {
 	ISetReleaseEWalletArgs,
 } from './type'
 
-export const blockEWalletApi = createApi({
-	reducerPath: 'blockEWalletApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const blockEWalletApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * E-Wallet 清單
 		getBlockEWalletAcc: builder.query<

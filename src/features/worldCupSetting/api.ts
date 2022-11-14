@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import { assign, find, range } from 'lodash'
 import {
 	IGetWorldCupPredictionResponse,
@@ -8,10 +7,7 @@ import {
 	ISortedWorldCupTeamResponse,
 } from './type'
 
-export const worldCupSettingApi = createApi({
-	reducerPath: 'worldCupSettingApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const worldCupSettingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 撈取所有比賽隊伍及已設定清單
 		getWorldCupPredictionSetting: builder.query<

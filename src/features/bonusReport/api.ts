@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IBonusReportResponse,
 	IExportBonusReportArgs,
@@ -8,9 +6,7 @@ import {
 	IPromotionCategoryOptionsResponse,
 } from './type'
 
-export const bonusReportApi = createApi({
-	reducerPath: 'bonusReportApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const bonusReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getPromotionCategoryOptions: builder.query<
 			IPromotionCategoryOptionsResponse,

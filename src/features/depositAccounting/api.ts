@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IExportDepositAccountsFileArgs,
 	IGetDepositAccountsArgs,
@@ -9,10 +7,7 @@ import {
 	IEditDepositAccountArgs,
 } from './type'
 
-export const depositAccountingApi = createApi({
-	reducerPath: 'depositAccountingApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const depositAccountingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDepositAccounts: builder.query<
 			IGetDepositAccountsResponse,

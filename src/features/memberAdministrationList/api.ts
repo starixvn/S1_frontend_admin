@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetMemberListArgs,
 	IMemberResponse,
@@ -9,9 +8,7 @@ import {
 	IExportMemberArgs,
 } from './type'
 
-export const memberAdministrationListApi = createApi({
-	reducerPath: 'MemberAdministrationListApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const memberAdministrationListApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getMemberList: builder.query<IMemberResponse, IGetMemberListArgs>({
 			query: data => ({

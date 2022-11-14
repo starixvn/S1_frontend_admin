@@ -122,7 +122,7 @@ const ReferralCustReport = lazy(
 const DepositPoint = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'ReferralCustReport' */ 'features/depositPoint/DepositPoint'
+			/* webpackChunkName: 'DepositPoint' */ 'features/depositPoint/DepositPoint'
 		)
 )
 
@@ -180,21 +180,21 @@ const BetList = lazy(
 const GiftListing = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/GiftListing'
+			/* webpackChunkName: 'GiftListing' */ 'features/giftListing/GiftListing'
 		)
 )
 
 const AddGiftListing = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/AddGiftListing'
+			/* webpackChunkName: 'AddGiftListing' */ 'features/giftListing/AddGiftListing'
 		)
 )
 
 const EditGiftListing = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'RedemptionLimit' */ 'features/giftListing/EditGiftListing'
+			/* webpackChunkName: 'EditGiftListing' */ 'features/giftListing/EditGiftListing'
 		)
 )
 

@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -18,15 +19,15 @@ import {
 } from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
+import { IForm } from 'features/referralReport/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
 
 interface ReferralReportFilterInterface {
-	form: FormInstance<any>
+	form: FormInstance<IForm>
 	loading: boolean
 	timeZoneUtcOffset?: number
 	onSearch: ({
@@ -61,6 +62,9 @@ const ReferralReportFilter: FC<ReferralReportFilterInterface> = ({
 						size='middle'
 						form={form}
 						onFinish={() => onSearch({})}
+						initialValues={{
+							currencyId: 0, // all
+						}}
 					>
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>

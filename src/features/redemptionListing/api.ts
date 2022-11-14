@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IExportRedemptionListArgs,
 	IGetRedemptionDetailArg,
@@ -13,10 +12,7 @@ import {
 	ISetRedemptionInfoArgs,
 } from './type'
 
-export const redemptionListingApi = createApi({
-	reducerPath: 'redemptionListingApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const redemptionListingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getVipLevel: builder.query<IGetVipLevelsResponse, null>({
 			query: () => ({

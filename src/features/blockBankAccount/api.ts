@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetBlockBankAccArgs,
 	IBlockBankAccState,
@@ -10,10 +9,7 @@ import {
 	ISetReleaseAccountArgs,
 } from './type'
 
-export const blockBankAccountApi = createApi({
-	reducerPath: 'blockBankAccountApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const blockBankAccountApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBlockBankAcc: builder.query<
 			IAxiosResponse<IBlockBankAccState[]>,
