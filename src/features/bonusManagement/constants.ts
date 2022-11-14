@@ -24,8 +24,8 @@ export const devicesList: ListType = [
 ]
 
 export enum WalletTypeEnum {
-	Seamless = 1,
-	Transfer = 2,
+	Transfer,
+	Seamless,
 }
 
 export const walletTypeList: ListType = [
