@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import {
 	Button,
@@ -187,12 +186,6 @@ const BonusReportFilter = ({
 													'This Month',
 												])}
 												format={dateFormat}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 										<div>

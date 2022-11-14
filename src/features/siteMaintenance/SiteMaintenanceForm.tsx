@@ -18,7 +18,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { timeFormat } from 'common/utils/format'
 
@@ -81,12 +80,6 @@ const SiteMaintenanceForm: FC<ISiteMaintenanceForm> = ({
 										])}
 										format={time =>
 											time.utcOffset(timeZoneUtcOffset).format(timeFormat)
-										}
-										onChange={newDateRange =>
-											form.setFieldsValue({
-												startDate: moment(newDateRange?.[0]),
-												endDate: moment(newDateRange?.[1]),
-											})
 										}
 									/>
 								</Form.Item>

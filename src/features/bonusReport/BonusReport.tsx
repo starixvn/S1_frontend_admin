@@ -101,7 +101,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		const { dateRange, transId, bonusCode, userName, ...args } =
 			await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 		try {
