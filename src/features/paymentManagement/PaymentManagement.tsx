@@ -234,11 +234,19 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	// BankInfo 彈窗
-	const handleBankInfoModalClicked = async (payId: number) => {
+	const handleBankInfoModalClicked = async ({
+		payId,
+		currencyId,
+		channelId,
+	}: {
+		payId: number
+		currencyId: number
+		channelId: number
+	}) => {
 		payIdRef.current = payId
 		try {
 			onlineBankInfoModal.onOpen()
-			await getBankInfoList({ siteId, payId }).unwrap()
+			await getBankInfoList({ siteId, currencyId, channelId }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')

@@ -33,7 +33,15 @@ interface IPaymentManagementTableProps {
 	}) => void
 	tableMethodList: IEnumTypeData[]
 	amountRuleList: IEnumTypeData[]
-	onBankModalClicked: (payId: number) => void
+	onBankModalClicked: ({
+		payId,
+		currencyId,
+		channelId,
+	}: {
+		payId: number
+		currencyId: number
+		channelId: number
+	}) => void
 	onEditClick: (record: IGetPaySettingData) => void
 }
 const PaymentManagementTable = ({
@@ -122,7 +130,7 @@ const PaymentManagementTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (record: IGetPaySettingData) => {
-				const { type, payId } = record
+				const { type, channelId, currencyId, payId } = record
 				const displayName = find(
 					typeList,
 					target => target.value === type
@@ -133,7 +141,7 @@ const PaymentManagementTable = ({
 					<Typography.Link
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 						onClick={() => {
-							onBankModalClicked(payId)
+							onBankModalClicked({ payId, channelId, currencyId })
 						}}
 					>
 						{displayName}

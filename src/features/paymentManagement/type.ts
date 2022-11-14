@@ -80,7 +80,8 @@ export interface ISetPaySettingStatusArgs {
 // 取得第三方支援的銀行
 export interface IGetBankInfoArgs {
 	siteId?: number
-	payId: number
+	currencyId: number
+	channelId: number
 }
 
 export interface IGetBankInfoData {
