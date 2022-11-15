@@ -68,24 +68,24 @@ const BonusWalletDescriptions = ({
 									column={1}
 								>
 									<Descriptions.Item label={t('BonusType.Label_FirstDeposit')}>
-										{firstDeposit}
+										{numberFormatter.format(firstDeposit)}
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ReDeposit')}>
-										{reDeposit}
+										{numberFormatter.format(reDeposit)}
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_FreeBet')}>
-										{freeBet}
+										{numberFormatter.format(freeBet)}
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_CashBack')}>
-										{cashBack}
+										{numberFormatter.format(cashBack)}
 									</Descriptions.Item>
 									<Descriptions.Item
 										label={t('BonusType.Label_RetentionBonus')}
 									>
-										{retentionBonus}
+										{numberFormatter.format(retentionBonus)}
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ManualBonus')}>
-										{manualBonus}
+										{numberFormatter.format(manualBonus)}
 									</Descriptions.Item>
 								</Descriptions>
 							}
@@ -113,7 +113,7 @@ const BonusWalletDescriptions = ({
 								>
 									{custRewardType.map(({ typeName, rewardAmountSum }) => (
 										<Descriptions.Item label={typeName}>
-											{rewardAmountSum}
+											{numberFormatter.format(rewardAmountSum)}
 										</Descriptions.Item>
 									))}
 								</Descriptions>
@@ -143,7 +143,7 @@ const BonusWalletDescriptions = ({
 									{custRebateCategory.map(
 										({ categoryName, rebateAmountSum }) => (
 											<Descriptions.Item label={categoryName}>
-												{rebateAmountSum}
+												{numberFormatter.format(rebateAmountSum)}
 											</Descriptions.Item>
 										)
 									)}
