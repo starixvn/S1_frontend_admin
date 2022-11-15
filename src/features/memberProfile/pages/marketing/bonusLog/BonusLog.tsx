@@ -11,6 +11,7 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { useParams } from 'react-router-dom'
 import { BonusLogTable } from 'features/memberProfile/pages/marketing/bonusLog/BonusLogTable'
 import { IBonusLogFilterForm } from 'features/memberProfile/type'
+import { WalletTypeEnum } from 'features/bonusManagement/constants'
 
 const BonusLog = () => {
 	const { t } = useTranslation()
@@ -18,11 +19,11 @@ const BonusLog = () => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { custId } = useParams()
 
-	// 0 = 全帶
+	// -1 = 全帶
 	const {
 		data: { data: categoryList = [] } = {},
 		isLoading: isCategoryListLoading,
-	} = useGetPromotionCategoryQuery({ walletType: 0 })
+	} = useGetPromotionCategoryQuery({ walletType: WalletTypeEnum.All })
 
 	const [
 		getBonusLog,
