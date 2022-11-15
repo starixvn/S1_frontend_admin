@@ -44,6 +44,7 @@ const EditDetailModal: FC<IEditDetailModalProps> = ({
 						<TinymceEditor
 							defaultHtmlState={defaultState}
 							onHtmlStateChange={onHtmlStateChange}
+							darkMode
 						/>
 					</Form.Item>
 				</Row>
