@@ -95,8 +95,13 @@ const MemberProfileSiderContent = () => {
 				<Divider style={{ margin: '15px 0' }} />
 				<StatusInfo custBasicInfo={custBasicInfo} />
 				<Divider />
-				<AffiliateInfo affInfo={custBasicInfo?.affInfo} />
-				<Divider />
+				{custBasicInfo?.affInfo && (
+					<>
+						<AffiliateInfo affInfo={custBasicInfo?.affInfo} />
+						<Divider />
+					</>
+				)}
+
 				<UploadPicModal
 					deleteLoading={isDeleteCustPhotoLoading}
 					custPhotoListLoading={isGetCustPhotoListFetching}
