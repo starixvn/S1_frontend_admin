@@ -846,5 +846,6 @@
 	"label_Min": "min",
 	"Label_Days": "days",
 	"Label_Hours": "hours",
-	"label_Mins": "mins"
+	"label_Mins": "mins",
+	"Label_Group" : "Group"
 }
