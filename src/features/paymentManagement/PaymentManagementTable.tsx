@@ -113,6 +113,13 @@ const PaymentManagementTable = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_Group'),
+			key: 'group',
+			dataIndex: 'groupName',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_Channel'),
 			key: 'channel',
 			dataIndex: 'channelName',
