@@ -19,6 +19,10 @@ export const STATUS_ENUM_OPTIONS: { value: number; displayKey: string }[] = [
 		value: StatueEnum.Lock,
 		displayKey: 'Label_Lock',
 	},
+	{
+		value: StatueEnum.Closed,
+		displayKey: 'Label_Close',
+	},
 ]
 
 export enum IdentityEnum {
