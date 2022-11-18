@@ -39,6 +39,7 @@ export interface IAffInfo {
 	createTime?: string
 	enableRebate?: boolean
 	affInfo?: object
+	affiliateCode: string
 	affiliateName: string
 	revenueName: string
 	revenueShare?: number
@@ -63,8 +64,8 @@ export interface IGetBasicInfoData {
 	depositPointLevel: number
 	currency: string
 	identity: IdentityEnum
-	affiliatesName: string
-	affiliatesCode: string
+	agentName: string
+	superiorAffiliateCode: string
 	registeredTime: string
 	firstDepositTime: string
 	lastLoginTime: string
