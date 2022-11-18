@@ -47,7 +47,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 					{promotionAction === PromotionActionEnum.Link && (
 						<Col span={24}>
 							<Form.Item
-								name={['details', tabsKey, 'detail']}
+								name={['details', tabsKey, 'promotionLink']}
 								label={t('Label_PromotionLink')}
 								rules={[
 									{
@@ -112,8 +112,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 					</Col>
 				</Row>
 				{/* 若沒有定義 promotionAction 一律顯示 編輯器彈窗按鈕 */}
-				{(promotionAction === PromotionActionEnum.Detail ||
-					!promotionAction) && (
+				{promotionAction !== PromotionActionEnum.Link && (
 					<Row justify='center' align='middle' style={{ marginBottom: '10px' }}>
 						<Col>
 							<Button
