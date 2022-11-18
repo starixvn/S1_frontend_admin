@@ -269,6 +269,7 @@ const UpdateBonus: FC<{
 				displayFrom,
 				displayTo,
 				tpId,
+				promotionAction,
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
@@ -296,7 +297,7 @@ const UpdateBonus: FC<{
 					moment(periodFrom).utcOffset(0),
 					moment(periodTo).utcOffset(0),
 				],
-
+				promotionAction,
 				isSpecial,
 				onlyRegistered,
 				specialCode,
@@ -392,6 +393,7 @@ const UpdateBonus: FC<{
 							description: bannerDescription,
 							detail,
 							title,
+							promotionLink,
 						} = details[key]
 						const tabsKey = JSON.stringify({ currencyId, langCode: key })
 						form.setFieldsValue({
@@ -401,6 +403,7 @@ const UpdateBonus: FC<{
 									detail,
 									title,
 									description: bannerDescription,
+									promotionLink,
 								},
 							},
 						})
