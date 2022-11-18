@@ -67,8 +67,8 @@ const BasicInfo = ({
 		depositPointLevel,
 		currency,
 		identity,
-		affiliatesName,
-		affiliatesCode,
+		agentName,
+		superiorAffiliateCode,
 		registeredTime,
 		firstDepositTime,
 		lastLoginTime,
@@ -203,13 +203,13 @@ const BasicInfo = ({
 					)} : ${getIdentityName()}`}</StyledText>
 				</Row>
 				<Row>
-					<StyledText>{`${t('Label_AffiliatesName')} : ${
-						affiliatesName ?? 'N/A'
+					<StyledText>{`${t('Label_AgentName')} : ${
+						agentName ?? 'N/A'
 					}`}</StyledText>
 				</Row>
 				<Row>
-					<StyledText>{`${t('Label_AffiliatesCode')} : ${
-						affiliatesCode ?? 'N/A'
+					<StyledText>{`${t('Label_SuperiorAffiliateCode')} : ${
+						superiorAffiliateCode ?? 'N/A'
 					}`}</StyledText>
 				</Row>
 				<Row>
