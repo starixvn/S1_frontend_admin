@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Button, Col } from 'antd'
+import { Col } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { OperatorButton } from 'components/OperatorButton/OperatorButton'
 import { StatusEnum } from '../../constants'
 
 interface IButtonGroup {
@@ -19,76 +20,54 @@ const ButtonGroup: FC<IButtonGroup> = ({
 	return (
 		<>
 			<Col span={6}>
-				<Button
-					block
-					shape='round'
-					type='primary'
-					ghost
-					style={{
-						borderColor: '#8c8c8c',
-						color: '#8c8c8c',
-					}}
+				<OperatorButton
 					loading={loading}
 					onClick={() => onSetRedemptionInfo(StatusEnum.Draft)}
+					color='Gray'
 				>
 					{t('Label_Draft')}
-				</Button>
+				</OperatorButton>
 			</Col>
 			{status !== StatusEnum.Approve && status !== StatusEnum.Rejected && (
 				<>
 					<Col span={6}>
 						{status !== StatusEnum.OnHold ? (
-							<Button
-								block
-								shape='round'
-								type='primary'
-								style={{
-									borderColor: '#e8cc10',
-									color: '#e8cc10',
-								}}
-								ghost
+							<OperatorButton
 								loading={loading}
 								onClick={() => onSetRedemptionInfo(StatusEnum.OnHold)}
+								color='Yellow'
 							>
 								{t('Label_OnHold')}
-							</Button>
+							</OperatorButton>
 						) : (
-							<Button
-								block
-								shape='round'
-								type='primary'
-								ghost
+							<OperatorButton
+								color='Black'
 								loading={loading}
 								onClick={() => onSetRedemptionInfo(StatusEnum.Pending)}
 							>
 								{t('Label_Pending')}
-							</Button>
+							</OperatorButton>
 						)}
 					</Col>
 					{status !== StatusEnum.OnHold && (
 						<>
 							<Col span={6}>
-								<Button
-									block
-									shape='round'
-									type='primary'
+								<OperatorButton
+									color='Blue'
 									loading={loading}
 									onClick={() => onSetRedemptionInfo(StatusEnum.Approve)}
 								>
 									{t('Label_ApproveCheckOut')}
-								</Button>
+								</OperatorButton>
 							</Col>
 							<Col span={6}>
-								<Button
-									block
-									shape='round'
-									type='primary'
-									danger
+								<OperatorButton
+									color='Reject'
 									loading={loading}
 									onClick={() => onSetRedemptionInfo(StatusEnum.Rejected)}
 								>
 									{t('Label_Reject')}
-								</Button>
+								</OperatorButton>
 							</Col>
 						</>
 					)}
