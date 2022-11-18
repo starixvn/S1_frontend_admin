@@ -51,8 +51,8 @@ const MemberAdministrationListTable = ({
 		},
 		{
 			title: t('Label_SabaId'),
-			key: 'tpUserName',
-			dataIndex: 'tpUserName',
+			key: 'sabaId',
+			dataIndex: 'sabaId',
 			width: 120,
 			align: 'center' as 'center',
 		},
