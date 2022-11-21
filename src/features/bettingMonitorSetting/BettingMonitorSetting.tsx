@@ -44,8 +44,7 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const { actionPermissions: { editPermission, setActivePermission } = {} } =
-		useAuth()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
@@ -310,7 +309,6 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 					editPermission={editPermission}
 					bettingMonitorList={bettingMonitorList}
 					setEditingKey={setEditingKey}
-					setActivePermission={setActivePermission}
 					onTableChange={handleTableChange}
 					onDelete={handleDeleteBetting}
 					onSaved={handleSaved}
