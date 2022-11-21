@@ -281,6 +281,9 @@ const BalanceAdjustment: FC<{
 		isGetReasonListLoading ||
 		isGetCustInfoWithBalanceLoading
 
+	const isShowSaveButton =
+		custInfoWithBalance || methodType === MethodTypeEnum.mainWalletBatch
+
 	return (
 		<>
 			<Collapse defaultActiveKey={1}>
@@ -313,7 +316,7 @@ const BalanceAdjustment: FC<{
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
-				{custInfoWithBalance && (
+				{isShowSaveButton && (
 					<AffixButtons.Saved
 						loading={
 							isSetBalanceAdjustmentLoading ||
