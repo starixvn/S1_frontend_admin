@@ -744,7 +744,14 @@ const BettingMonitorSetting = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BettingMonitorSetting' */ 'features/bettingMonitorSetting/BettingMonitorSetting'
-			)
+		)
+)
+
+const BannerManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BannerManagement' */ 'features/bannerManagement/BannerManagement'
+		)
 )
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
@@ -1844,6 +1851,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<BettingMonitorSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bannerManage.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.bannerManage.functionId}>
+						<BannerManagement />
 					</AuthRequire>
 				),
 			},

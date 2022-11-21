@@ -574,6 +574,10 @@ const paths = {
 				root: 'cms/hotEventManagement',
 				functionId: 56,
 			},
+			bannerManage: {
+				root: 'cms/bannerManage',
+				functionId: 55,
+			},
 		},
 	},
 }

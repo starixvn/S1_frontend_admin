@@ -34,6 +34,10 @@ export type EnumNameType =
 	| 'OTPProvider'
 	| 'OTPStatus'
 	| 'BonusAtPageEnum'
+	| 'BannerTypeEnum'
+	| 'BannerActionModeEnum'
+	| 'ShowStatusEnum'
+	| 'UrlRouterEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
