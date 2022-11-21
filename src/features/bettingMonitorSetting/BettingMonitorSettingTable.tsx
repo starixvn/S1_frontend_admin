@@ -26,7 +26,6 @@ export interface IBettingMonitorTableProps {
 	editPermission?: PermissionInterface
 	bettingMonitorList: IGetListData[]
 	setEditingKey: React.Dispatch<React.SetStateAction<IGetListData | undefined>>
-	setActivePermission?: PermissionInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	onDelete: (record: IGetListData) => void
 	onSaved: (record: IGetListData) => void
@@ -42,7 +41,6 @@ const BettingMonitorTable = ({
 	editPermission,
 	bettingMonitorList,
 	setEditingKey,
-	setActivePermission,
 	onTableChange,
 	onDelete,
 	onSaved,
@@ -180,7 +178,7 @@ const BettingMonitorTable = ({
 			render: (record: IGetListData) => (
 				<Space>
 					<Popconfirm
-						disabled={!setActivePermission?.canUse}
+						disabled={!editPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() => {
 							onStatusChange(record, !record.status)
@@ -188,7 +186,7 @@ const BettingMonitorTable = ({
 					>
 						<Switch
 							checked={Boolean(record.status)}
-							disabled={!setActivePermission?.canUse}
+							disabled={!editPermission?.canUse}
 						/>
 					</Popconfirm>
 				</Space>
