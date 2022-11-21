@@ -863,4 +863,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'Internal',
 		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
 	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.bannerManage.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.cms.sub.bannerManage.root,
+	},
 ]
