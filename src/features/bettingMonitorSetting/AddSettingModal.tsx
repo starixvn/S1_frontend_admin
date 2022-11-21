@@ -139,7 +139,7 @@ const AddSettingModal = ({
 					<Col lg={24} md={24} xs={24}>
 						<Form.Item
 							name='frequency'
-							label={t('Label_Frequency')}
+							label={`${t('Label_Frequency')} (${t('label_Mins')})`}
 							rules={[
 								{
 									required: true,
