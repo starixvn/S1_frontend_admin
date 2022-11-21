@@ -138,7 +138,7 @@ const BalanceAdjustment: FC<{
 				const formData = new FormData()
 				formData.append('siteId', siteId.toString())
 				formData.append('excelUpload', fileList[0] as RcFile)
-				formData.append('adjustmentType', String(adjustmentType ?? ''))
+				formData.append('option', String(adjustmentType ?? ''))
 				formData.append(
 					'withdrawalLimitAmount',
 					Number(withdrawalLimitAmount).toString()
