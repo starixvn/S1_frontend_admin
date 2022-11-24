@@ -247,7 +247,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 			)}
 			<AffixButtons>
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportBankFinancialReportLoading}
 				/>
