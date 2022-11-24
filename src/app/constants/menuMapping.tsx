@@ -681,11 +681,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 89,
+		functionId: paths.bankTransfer.sub.bankFinancialReport.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReportBankFinancialReport,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/BankFinancialReport',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.bankFinancialReport.root,
 	},
 	{
 		icon: null,

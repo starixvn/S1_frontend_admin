@@ -856,6 +856,9 @@
 	"Label_BannerPcPicUrl": "Banner Pc Pic Url",
 	"Label_BannerMobilePicUrl": "Banner Mobile Pic Url",
 	"Label_BannerLink": "Banner Link",
+	"Label_OpenBalance" : "Open Balance",
+	"Label_ClosingBalance" : "Closing Balance",
+	"Label_NetBalance" : "Net Balance",
 	"Label_SubmittedDateTime": "Submitted DateTime",
 	"Label_ReferenceNo": "Reference No"
 }

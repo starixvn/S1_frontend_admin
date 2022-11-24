@@ -761,6 +761,13 @@ const DepositSubmission = lazy(
 		)
 )
 
+const BankFinancialReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BankFinancialReport' */ 'features/bankFinancialReport/BankFinancialReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1879,6 +1886,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<DepositSubmission />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.bankTransfer.sub.bankFinancialReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.bankTransfer.sub.bankFinancialReport.functionId}
+					>
+						<BankFinancialReport />
 					</AuthRequire>
 				),
 			},
