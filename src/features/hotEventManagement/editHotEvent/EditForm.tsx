@@ -202,15 +202,7 @@ const EditForm: FC<IEditFormProps> = ({
 										]}
 										initialValue={moment()}
 									>
-										<DatePicker
-											showTime
-											style={{ width: '100%' }}
-											onChange={newDate =>
-												form.setFieldsValue({
-													startTime: moment(newDate),
-												})
-											}
-										/>
+										<DatePicker showTime style={{ width: '100%' }} />
 									</Form.Item>
 									<div>
 										<TimeZoneSelect
@@ -234,16 +226,7 @@ const EditForm: FC<IEditFormProps> = ({
 									},
 								]}
 							>
-								<DatePicker
-									showTime
-									style={{ width: '100%' }}
-									onChange={newDate =>
-										form.setFieldsValue({
-											endTime: moment(newDate).add(2, 'hours'),
-											battleTime: moment(newDate),
-										})
-									}
-								/>
+								<DatePicker showTime style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 						{/* endTime 由 battleTime 選取後自動延後兩小時產生 */}
@@ -260,16 +243,7 @@ const EditForm: FC<IEditFormProps> = ({
 									},
 								]}
 							>
-								<DatePicker
-									showTime
-									disabled
-									style={{ width: '100%' }}
-									onChange={newDate =>
-										form.setFieldsValue({
-											endTime: moment(newDate),
-										})
-									}
-								/>
+								<DatePicker showTime disabled style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 					</Row>
