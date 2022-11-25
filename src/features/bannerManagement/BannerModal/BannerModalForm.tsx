@@ -22,6 +22,7 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import BannerModalTabs from 'features/bannerManagement/BannerModal/BannerModalTabs'
+import TimeZoneSelect, { useTimeZone } from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
 import {
 	IAddForm,
@@ -62,6 +63,7 @@ const BannerModalForm = ({
 	siteId,
 }: IAddBannerModalFormProps) => {
 	const { t } = useTranslation()
+	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const actionMode = Form.useWatch('actionMode', form)
 	const tpId = Form.useWatch('tpId', form)
 	const urlRouter = Form.useWatch('urlRouter', form)
@@ -272,7 +274,6 @@ const BannerModalForm = ({
 									initialValue={MOMENT_DATE_RANGES.Today}
 								>
 									<RangePicker
-										disabled
 										style={{ width: '100%' }}
 										ranges={MOMENT_RANGE_PICKER_RANGES([
 											'Today',
@@ -282,6 +283,12 @@ const BannerModalForm = ({
 										showTime
 									/>
 								</Form.Item>
+								<div>
+									<TimeZoneSelect
+										value={timeZoneUtcOffset}
+										onChange={onTimeZoneChange}
+									/>
+								</div>
 							</Input.Group>
 						</Form.Item>
 					</Col>

@@ -30,16 +30,16 @@ interface IAddBannerModalProps {
 
 const AddBannerModal = ({
 	form,
-	visible,
 	loading,
+	visible,
 	currencyListBySite,
-	onCancel,
 	bannerTypeList,
 	showStatusList,
 	bannerActionModeList,
 	currencyId,
 	editBannerData,
 	isEditing,
+	onCancel,
 }: IAddBannerModalProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
