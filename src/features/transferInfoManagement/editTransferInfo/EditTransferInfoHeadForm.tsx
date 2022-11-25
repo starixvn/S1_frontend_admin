@@ -52,14 +52,7 @@ const EditTransferInfoHeadForm = ({
 									},
 								]}
 							>
-								<DatePicker
-									style={{ width: '100%' }}
-									onChange={newDate =>
-										form.setFieldsValue({
-											transDate: newDate,
-										})
-									}
-								/>
+								<DatePicker style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 					</Row>

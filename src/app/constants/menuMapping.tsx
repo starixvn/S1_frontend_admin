@@ -388,11 +388,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 55,
+		functionId: paths.cms.sub.bannerManage.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BannerManage',
 		internalFunctionKey: allowedRoles.CMSBannerManage,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.bannerManage.root,
 	},
 	{
 		icon: null,
@@ -862,11 +862,5 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.systemSetting.sub.bettingMonitorSetting.functionId,
 		pathMode: 'Internal',
 		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
-	},
-	{
-		icon: null,
-		functionId: paths.cms.sub.bannerManage.functionId,
-		pathMode: 'Internal',
-		newAdminPath: paths.cms.sub.bannerManage.root,
 	},
 ]
