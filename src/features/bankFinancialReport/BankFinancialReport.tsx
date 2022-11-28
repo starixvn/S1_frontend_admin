@@ -44,7 +44,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: financialAccountList = [] } = {},
 		isLoading: isGetFinancialAccountListLoading,
-	} = useGetFinancialAccountListQuery({ siteId, purposes: null })
+	} = useGetFinancialAccountListQuery({ siteId, purposes: null }) // purposes 帶 null 取全部
 
 	const {
 		data: { data: transferChannelList = [] } = {},
