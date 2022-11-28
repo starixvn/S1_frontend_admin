@@ -761,6 +761,13 @@ const DepositSubmission = lazy(
 		)
 )
 
+const DrawPrizeReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DrawPrizeReport' */ 'features/drawPrizeReport/DrawPrizeReport'
+		)
+)
+
 const BankFinancialReport = lazy(
 	() =>
 		import(
@@ -1896,6 +1903,14 @@ const routes: RouteObject[] = [
 						functionId={paths.bankTransfer.sub.bankFinancialReport.functionId}
 					>
 						<BankFinancialReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.drawPrizeReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.drawPrizeReport.functionId}>
+						<DrawPrizeReport />
 					</AuthRequire>
 				),
 			},

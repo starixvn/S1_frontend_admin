@@ -367,6 +367,10 @@ const paths = {
 				root: 'report/vipRebateReport',
 				functionId: 75,
 			},
+			drawPrizeReport: {
+				root: 'report/drawPrizeReport',
+				functionId: 78,
+			},
 		},
 	},
 	member: {

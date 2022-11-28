@@ -591,11 +591,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Draw Prize Report',
 		icon: null,
-		functionId: 78,
+		functionId: paths.report.sub.drawPrizeReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DrawPrizeReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.drawPrizeReport.root,
 	},
 	{
 		name: 'Win Lost Report',
