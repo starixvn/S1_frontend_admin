@@ -189,7 +189,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.depositSubmission
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositSubmission',
 		internalFunctionKey: allowedRoles.FinanceDepositSubmission,
 		newAdminPath:
@@ -209,7 +209,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.adjustment.sub.balanceAdjustment.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentAdjustment',
 		internalFunctionKey: allowedRoles.FinancePaymentAdjustment,
 		newAdminPath: paths.finance.sub.adjustment.sub.balanceAdjustment.root,
@@ -234,7 +234,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.paymentAdjustment.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
 		newAdminPath: paths.finance.sub.report.sub.paymentAdjustment.root,
@@ -264,7 +264,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.paymentGateway.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentManage',
 		internalFunctionKey: allowedRoles.FinancePaymentManage,
 		newAdminPath: paths.finance.sub.paymentGateway.root,
@@ -392,7 +392,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.bannerManage.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/BannerManage',
 		internalFunctionKey: allowedRoles.CMSBannerManage,
 		newAdminPath: paths.cms.sub.bannerManage.root,
@@ -568,7 +568,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.vipRebateReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVipRebateInfoReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateInfoReport',
 		newAdminPath: paths.report.sub.vipRebateReport.root,
 	},
@@ -593,7 +593,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.drawPrizeReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DrawPrizeReport',
 		newAdminPath: paths.report.sub.drawPrizeReport.root,
 	},
@@ -651,7 +651,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.transferInfoManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferManage,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/TransferManage',
 		newAdminPath: paths.bankTransfer.sub.transferInfoManagement.root,
 	},
@@ -683,7 +683,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.bankFinancialReport.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReportBankFinancialReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/BankFinancialReport',
 		newAdminPath: paths.bankTransfer.sub.bankFinancialReport.root,
 	},
@@ -703,7 +703,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.administration.sub.specialPasswordManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminSpecialPasswordManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Admin/SpecialPasswordManagement',
 		newAdminPath: paths.administration.sub.specialPasswordManagement.root,
 	},
@@ -857,13 +857,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.systemSetting.sub.exchangeUsdRate.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.systemSetting.sub.exchangeUsdRate.root,
 	},
 	{
 		icon: null,
 		functionId: paths.systemSetting.sub.bettingMonitorSetting.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
 	},
 ]
