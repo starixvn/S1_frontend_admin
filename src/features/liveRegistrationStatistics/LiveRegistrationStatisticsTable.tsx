@@ -14,6 +14,7 @@ import { PaginationInterface } from 'common/hooks'
 import { SorterResult } from 'antd/es/table/interface'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
+import { AlignType } from 'rc-table/lib/interface'
 import { IRegistrationManagementData } from './type'
 import { DEPOSIT_STATUS_OPTIONS, StatusEnum, STATUS_OPTIONS } from './constants'
 
@@ -56,7 +57,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			key: 'currency',
 			dataIndex: 'currency',
 			width: 80,
-			align: 'center' as 'center',
+			align: 'center' as AlignType,
 			render: (isoCode: string) => isoCode ?? 'N/A',
 		},
 		{

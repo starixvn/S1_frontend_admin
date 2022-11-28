@@ -406,6 +406,10 @@ const paths = {
 				root: 'bankTransfer/reasonManagement',
 				functionId: 87,
 			},
+			bankFinancialReport: {
+				root: 'bankTransfer/bankFinancialReport',
+				functionId: 89,
+			},
 		},
 	},
 	productManagement: {
