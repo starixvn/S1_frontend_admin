@@ -41,7 +41,7 @@ const DepositSubmissionForm = ({
 }: IDepositSubmissionFormProps) => {
 	const { t } = useTranslation()
 	const previewModal = useModal()
-	const accountStatus = Form.useWatch('accountStatus', form)
+	const settingStatus = Form.useWatch('settingStatus', form)
 	const accountNum = Form.useWatch('accountNo', form)
 
 	const handleResetInfo = () => {
@@ -59,10 +59,10 @@ const DepositSubmissionForm = ({
 	}
 
 	const accountNoSelector = () => {
-		const filterBankInfoList = accountStatus
+		const filterBankInfoList = settingStatus
 			? bankInfoList.filter(
-					({ accountStatus: status }) =>
-						Number(status) === Number(accountStatus)
+					({ settingStatus: status }) =>
+						Number(status) === Number(settingStatus)
 			  )
 			: bankInfoList
 		return (
@@ -98,7 +98,7 @@ const DepositSubmissionForm = ({
 					<Row gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
-								name='accountStatus'
+								name='settingStatus'
 								label={t('Label_Status')}
 								rules={[
 									{
