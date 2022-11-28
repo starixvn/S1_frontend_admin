@@ -228,6 +228,10 @@ const paths = {
 			depositWithdrawalSector: {
 				root: 'finance/depositWithdrawalSector',
 				sub: {
+					depositSubmission: {
+						root: 'finance/depositWithdrawalSector/depositSubmission',
+						functionId: 29,
+					},
 					withdrawalSubmission: {
 						root: 'finance/depositWithdrawalSector/withdrawalSubmission',
 						functionId: 125,
