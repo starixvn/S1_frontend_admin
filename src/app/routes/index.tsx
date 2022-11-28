@@ -754,6 +754,13 @@ const BannerManagement = lazy(
 		)
 )
 
+const DepositSubmission = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositSubmission' */ 'features/depositSubmission/DepositSubmission'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1859,6 +1866,19 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.bannerManage.functionId}>
 						<BannerManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositSubmission.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.depositSubmission
+								.functionId
+						}
+					>
+						<DepositSubmission />
 					</AuthRequire>
 				),
 			},
