@@ -17,6 +17,7 @@ import {
 	useLazyGetPaySettingListQuery,
 	useSetBankStatusMutation,
 	useSetGlobalStatusMutation,
+	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
 } from 'features/paymentManagement/api'
@@ -24,7 +25,11 @@ import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManag
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
 import {
 	AmountRuleEnum,
+	IEditForm,
+	IFilterForm,
+	IGetGlobalStatusData,
 	IGetPaySettingData,
+	ILoginInfoForm,
 	PaymentStatusEnum,
 } from 'features/paymentManagement/type'
 import { useEffect, useRef } from 'react'
@@ -33,6 +38,7 @@ import { PaymentManagementTable } from 'features/paymentManagement/PaymentManage
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
 import { EditPaymentModal } from 'features/paymentManagement/modals/EditPaymentModal'
 import { FixedAmountConverter } from 'features/paymentManagement/utils'
+import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginInfoModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -41,31 +47,22 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	const globalStatusModal = useModal()
 	const payIdRef = useRef<number | undefined>()
+	// 用於編輯 globalStatus LoginInfo 需要暫存的資料
+	const globalStatusLoginInfo = useRef<
+		{ payName: string; payId: number } | undefined
+	>()
+
+	const globalStatusModal = useModal()
 	const onlineBankInfoModal = useModal()
 	const editPaySettingModal = useModal()
-	const [editForm] = Form.useForm<{
-		channelId: number
-		currencyId: number
-		minAmount: number
-		maxAmount: number
-		amountRule: number
-		fixedAmountList: string
-		pointLevel: number
-		sort: number
-		channelName: string
-		type: number
-	}>()
+	const editLoginInfoModal = useModal()
 
-	const [filterForm] = Form.useForm<{
-		currencyIds: number[]
-		method: number | string
-		payId: number | string
-		type: number | string
-		globalStatus: number | string
-		status: number | string
-	}>()
+	const [editForm] = Form.useForm<IEditForm>()
+
+	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const [loginInfoForm] = Form.useForm<ILoginInfoForm>()
 
 	// Method 下拉選單
 	const {
@@ -119,6 +116,9 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [setGlobalStatus, { isLoading: isSetGlobalStatusLoading }] =
 		useSetGlobalStatusMutation()
+
+	const [setPayListLoginInfo, { isLoading: isSetPayListLoginInfoLoading }] =
+		useSetPayListLoginInfoMutation()
 
 	// BankInfo Modal
 	const [
@@ -334,6 +334,51 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleEditLoginInfoClicked = (record: IGetGlobalStatusData) => {
+		const {
+			payName,
+			payId,
+			loginPassword,
+			loginAccount,
+			loginPin,
+			loginUrl,
+			transferPin,
+		} = record
+		globalStatusLoginInfo.current = { payName, payId }
+		loginInfoForm.setFieldsValue({
+			loginAccount,
+			loginPin,
+			loginUrl,
+			transferPin,
+			loginPassword,
+		})
+		editLoginInfoModal.onOpen()
+	}
+
+	const handleSetLoginInfo = async () => {
+		if (!globalStatusLoginInfo.current?.payId) return
+		const { payId } = globalStatusLoginInfo.current
+		const {
+			transferPin = '',
+			loginPin = '',
+			...restValue
+		} = await loginInfoForm.validateFields()
+		try {
+			await setPayListLoginInfo({
+				siteId,
+				payId,
+				transferPin,
+				loginPin,
+				...restValue,
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -411,6 +456,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onCancel={globalStatusModal.onCancel}
 				payList={payList}
 				onSetStatus={handleSetGlobalStatus}
+				onEditClick={handleEditLoginInfoClicked}
 			/>
 			<OnlineBankInfoModal
 				loading={isGetBankInfoListLoading || isSetBankStatusLoading}
@@ -432,6 +478,14 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				amountRuleList={amountRuleList}
 				onSubmit={handleSubmit}
+			/>
+			<EditLoginInfoModal
+				form={loginInfoForm}
+				loading={isSetPayListLoginInfoLoading}
+				visible={editLoginInfoModal.visible}
+				onCancel={editLoginInfoModal.onCancel}
+				onSubmit={handleSetLoginInfo}
+				title={globalStatusLoginInfo.current?.payName ?? ''}
 			/>
 		</LayoutContent.Main>
 	)

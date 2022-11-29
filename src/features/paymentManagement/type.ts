@@ -6,9 +6,12 @@ export interface IGetGlobalStatusArgs {
 export interface IGetGlobalStatusData {
 	payId: number
 	payName: string
-	payStatus: number
-	sitePayStatus: number
 	status: number
+	loginAccount: string
+	loginPassword: string
+	loginPin: string
+	loginUrl: string
+	transferPin: string
 }
 
 // 設定支付第三方狀態 , GlobalStatus
@@ -16,6 +19,25 @@ export interface ISetGlobalStatusArgs {
 	siteId?: number
 	payId: number
 	status: number
+}
+
+// 設定支付三方後台登入資訊
+export interface ISetPayListLoginInfoArgs {
+	siteId?: number
+	payId: number
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+}
+
+export type ILoginInfoForm = {
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
 }
 
 export enum PaymentStatusEnum {
@@ -103,4 +125,26 @@ export interface ISetBankStatusArgs {
 export enum AmountRuleEnum {
 	Integer = 1,
 	Fixed = 3,
+}
+
+export type IFilterForm = {
+	currencyIds: number[]
+	method: number | string
+	payId: number | string
+	type: number | string
+	globalStatus: number | string
+	status: number | string
+}
+
+export type IEditForm = {
+	channelId: number
+	currencyId: number
+	minAmount: number
+	maxAmount: number
+	amountRule: number
+	fixedAmountList: string
+	pointLevel: number
+	sort: number
+	channelName: string
+	type: number
 }
