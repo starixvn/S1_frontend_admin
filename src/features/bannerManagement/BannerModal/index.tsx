@@ -5,7 +5,10 @@ import { IEnumTypeData } from 'common/service/enumApi'
 import { selectUserSite } from 'common/enum'
 import { IAddForm, IGetBannerData } from 'features/bannerManagement/type'
 import BannerModalForm from 'features/bannerManagement/BannerModal/BannerModalForm'
-import { useSetBannerMutation } from 'features/bannerManagement/api'
+import {
+	useLazyGetLanguageListQuery,
+	useSetBannerMutation,
+} from 'features/bannerManagement/api'
 import { useAppSelector } from 'app/store'
 import { useEffect } from 'react'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -13,6 +16,10 @@ import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { coverSpecificToObjString } from 'features/bannerManagement/utils'
 import { isEmpty, trim } from 'lodash'
+import {
+	ActionModeEnum,
+	UrlRouterEnum,
+} from 'features/bannerManagement/constants'
 
 interface IAddBannerModalProps {
 	form: FormInstance<IAddForm>
@@ -26,9 +33,10 @@ interface IAddBannerModalProps {
 	editBannerData?: IGetBannerData
 	isEditing: boolean
 	onCancel: () => void
+	onDelete: (bannerName: string) => void
 }
 
-const AddBannerModal = ({
+const BannerModal = ({
 	form,
 	loading,
 	visible,
@@ -40,11 +48,31 @@ const AddBannerModal = ({
 	editBannerData,
 	isEditing,
 	onCancel,
+	onDelete,
 }: IAddBannerModalProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [setBanner, { isLoading: isSetBannerLoading }] = useSetBannerMutation()
+
+	const [
+		getLanguageList,
+		{
+			data: { data: languageList = [] } = {},
+			isFetching: isGetLanguageListFetching,
+		},
+	] = useLazyGetLanguageListQuery()
+
+	const onChangeTab = async (currencyNum: number) => {
+		if (!siteId) return
+		try {
+			await getLanguageList({ siteId, currencyId: currencyNum }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 
 	useEffect(() => {
 		form.resetFields()
@@ -67,7 +95,6 @@ const AddBannerModal = ({
 				({ currencyId: specificCurrencyId }) =>
 					specificCurrencyId === currencyId
 			)?.details
-
 			form.setFieldsValue({
 				currencyId,
 				bannerName,
@@ -76,12 +103,14 @@ const AddBannerModal = ({
 				actionMode,
 				dateRange: [moment(startTime), moment(endTime)],
 				bonusCode,
-				urlRouter,
-				gameId,
+				urlRouter: Number(UrlRouterEnum[urlRouter]),
+				gameId: Number(gameId),
 				tpId,
 				specific: JSON.parse(targetDetails ?? ''),
+				filterTpId: tpId,
 			})
 		}
+		onChangeTab(currencyId)
 	}, [visible])
 
 	const handleCreate = async () => {
@@ -99,6 +128,7 @@ const AddBannerModal = ({
 				tpId,
 				urlRouter,
 				gameId,
+				filterTpId,
 				currencyId: formCurrencyId,
 				specific: formSpecific,
 			} = form.getFieldsValue(true)
@@ -107,9 +137,8 @@ const AddBannerModal = ({
 				timeZoneUtcOffset
 			)
 			const detailStr = coverSpecificToObjString(formSpecific)
-			const { matchId, specific, sort } = editBannerData ?? {}
+			const { specific, sort } = editBannerData ?? {}
 			const args = {
-				isAdd: Boolean(!isEditing),
 				siteId,
 				bannerName,
 				bannerType,
@@ -118,14 +147,12 @@ const AddBannerModal = ({
 				startTime,
 				endTime,
 				bonusCode,
-				matchId: isEditing ? Number(matchId) : 0,
-				tpId,
+				tpId:
+					actionMode === ActionModeEnum.RedirectPagesOfThisSite
+						? filterTpId
+						: tpId ?? null,
 				urlRouter,
 				gameId,
-				sportBattleDateTime: null,
-				sportCategoryId: null,
-				sportLeaguesId: null,
-				sportTeamsId: null,
 				specific: [
 					{
 						currencyId: Number(formCurrencyId),
@@ -135,6 +162,7 @@ const AddBannerModal = ({
 				],
 				sort: isEditing ? Number(sort) : 1,
 			}
+
 			try {
 				await setBanner(args).unwrap()
 				onCancel()
@@ -143,6 +171,13 @@ const AddBannerModal = ({
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
+			}
+
+			const { specific: specificList = [], bannerName: bannerNameStr = '' } =
+				editBannerData ?? {}
+
+			if (specificList[0].currencyId !== formCurrencyId) {
+				onDelete(bannerNameStr)
 			}
 		} catch (error) {
 			const { errorFields } = error
@@ -177,16 +212,16 @@ const AddBannerModal = ({
 		>
 			<BannerModalForm
 				form={form}
-				loading={loading || isSetBannerLoading}
+				loading={loading || isSetBannerLoading || isGetLanguageListFetching}
 				currencyListBySite={currencyListBySite}
 				bannerTypeList={bannerTypeList}
 				showStatusList={showStatusList}
 				bannerActionModeList={bannerActionModeList}
-				currencyId={currencyId}
-				siteId={siteId}
+				languageList={languageList}
+				onChangeTab={onChangeTab}
 			/>
 		</Modal>
 	)
 }
 
-export default AddBannerModal
+export default BannerModal

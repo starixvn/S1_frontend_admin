@@ -108,6 +108,6 @@ export const {
 	useGetTpListQuery,
 	useGetGameCasinoByTpIdQuery,
 	useGetTpListByCategoryQuery,
-	useGetLanguageListQuery,
+	useLazyGetLanguageListQuery,
 	useLazyGetBannerQuery,
 } = bannerManagementApi
