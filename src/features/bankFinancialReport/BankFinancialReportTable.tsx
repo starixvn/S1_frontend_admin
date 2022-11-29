@@ -5,6 +5,7 @@ import { ITableColumnsInfo } from 'features/bankFinancialReport/type'
 import { TableConverter } from 'features/bankFinancialReport/utils'
 import { Table, TablePaginationConfig, Typography } from 'antd'
 import { PAGINATION } from 'common/hooks'
+import { AlignType } from 'rc-table/lib/interface'
 
 interface IBankFinancialReportTableProps {
 	loading: boolean
@@ -22,7 +23,7 @@ const BankFinancialReportTable = ({
 			title: t('Label_Currency'),
 			key: 'currency',
 			dataIndex: 'displayName',
-			align: 'center' as 'center',
+			align: 'left' as AlignType,
 			width: 350,
 			fixed: 'left',
 			render: (displayName: string) => (
@@ -36,14 +37,14 @@ const BankFinancialReportTable = ({
 			key: 'openBalance',
 			dataIndex: 'openBalance',
 			width: 150,
-			align: 'center' as 'center',
+			align: 'right' as AlignType,
 			render: (openBalance: number) => numberFormatter.format(openBalance),
 		},
 		{
 			title: t('Label_ClosingBalance'),
 			key: 'closingBalance',
 			dataIndex: 'closingBalance',
-			align: 'center' as 'center',
+			align: 'right' as AlignType,
 			width: 150,
 			render: (closingBalance: number) =>
 				numberFormatter.format(closingBalance),
@@ -53,7 +54,7 @@ const BankFinancialReportTable = ({
 			key: 'netBalance',
 			dataIndex: 'netBalance',
 			width: 150,
-			align: 'center' as 'center',
+			align: 'right' as AlignType,
 			render: (netBalance: number) => numberFormatter.format(netBalance),
 		},
 		{
@@ -61,7 +62,7 @@ const BankFinancialReportTable = ({
 			key: 'fees',
 			dataIndex: 'fees',
 			width: 150,
-			align: 'center' as 'center',
+			align: 'right' as AlignType,
 			render: (fees: number) => numberFormatter.format(fees),
 		},
 	]
