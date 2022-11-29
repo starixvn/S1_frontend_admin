@@ -5,6 +5,7 @@ import {
 import { assign, cloneDeep } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
 import { v4 as uuidV4 } from 'uuid'
+import { AlignType } from 'rc-table/lib/interface'
 
 export class TableConverter {
 	// render table column
@@ -14,7 +15,7 @@ export class TableConverter {
 				title,
 				key: title,
 				dataIndex: title,
-				align: 'center' as 'center',
+				align: 'right' as AlignType,
 				width: 100,
 				render: (data: number) => numberFormatter.format(data ?? 0),
 			}
