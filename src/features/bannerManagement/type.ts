@@ -94,12 +94,19 @@ export interface IDeleteBannerArgs extends IGetBannerArgs {}
 
 export type IDeleteBannerResponse = IAxiosResponse<null>
 
-export interface IGetTpListData {
-	id: number
+export interface IGetTpBySiteAndCurrencyArgs {
+	siteId?: number
+	currencyId: number
+}
+
+export interface IGetTpBySiteAndCurrencyData {
+	tpId: number
 	tpName: string
 }
 
-export type IGetTpListResponse = IAxiosResponse<IGetTpListData[]>
+export type IGetTpBySiteAndCurrencyResponse = IAxiosResponse<
+	IGetTpBySiteAndCurrencyData[]
+>
 
 export interface IGetGameCasinoByTpIdArgs {
 	tpId: number | string
@@ -158,4 +165,5 @@ export interface IAddForm {
 	currencyId: number
 	specific: any
 	filterTpId: number | string
+	sort: number
 }

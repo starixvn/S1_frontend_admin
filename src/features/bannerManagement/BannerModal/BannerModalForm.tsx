@@ -4,6 +4,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	InputNumber,
 	Row,
 	Select,
 	Spin,
@@ -27,13 +28,13 @@ import { Currency } from 'common/enum/type'
 import {
 	IAddForm,
 	IGetGameCasinoByTpIdResponse,
+	IGetTpBySiteAndCurrencyResponse,
 	IGetTpListByCategoryResponse,
-	IGetTpListResponse,
 } from 'features/bannerManagement/type'
 import {
 	useGetGameCasinoByTpIdQuery,
+	useGetTpBySiteAndCurrencyQuery,
 	useGetTpListByCategoryQuery,
-	useGetTpListQuery,
 } from 'features/bannerManagement/api'
 import { useTranslation } from 'react-i18next'
 
@@ -48,6 +49,7 @@ interface IAddBannerModalFormProps {
 	showStatusList: IEnumTypeData[]
 	bannerActionModeList: IEnumTypeData[]
 	languageList: string[]
+	siteId?: number
 	onChangeTab: (currencyNum: number) => void
 }
 
@@ -59,6 +61,7 @@ const BannerModalForm = ({
 	showStatusList,
 	bannerActionModeList,
 	languageList,
+	siteId,
 	onChangeTab,
 }: IAddBannerModalFormProps) => {
 	const { t } = useTranslation()
@@ -66,6 +69,7 @@ const BannerModalForm = ({
 	const actionMode = Form.useWatch('actionMode', form)
 	const tpId = Form.useWatch('tpId', form)
 	const urlRouter = Form.useWatch('urlRouter', form)
+	const currencyId = Form.useWatch('currencyId', form)
 
 	const {
 		data: { data: categoryList = [] } = {} as IEnumTypeResponse,
@@ -73,9 +77,9 @@ const BannerModalForm = ({
 	} = useGetEnumTypeQuery({ enumName: 'UrlRouterEnum' })
 
 	const {
-		data: { data: tpList = [] } = {} as IGetTpListResponse,
+		data: { data: tpList = [] } = {} as IGetTpBySiteAndCurrencyResponse,
 		isLoading: isGetTpListLoading,
-	} = useGetTpListQuery(null)
+	} = useGetTpBySiteAndCurrencyQuery({ siteId, currencyId })
 
 	const {
 		data: { data: gameList = [] } = {} as IGetGameCasinoByTpIdResponse,
@@ -87,9 +91,9 @@ const BannerModalForm = ({
 		isLoading: isGetFilterTpListLoading,
 	} = useGetTpListByCategoryQuery({
 		categoryId: [
-			UrlRouterEnum.Sports,
-			UrlRouterEnum.Casino,
-			UrlRouterEnum.Lottery,
+			UrlRouterEnum.sports,
+			UrlRouterEnum['live-casino'],
+			UrlRouterEnum.lottery,
 		].includes(Number(urlRouter))
 			? urlRouter
 			: 0,
@@ -114,6 +118,10 @@ const BannerModalForm = ({
 		form.resetFields(['gameId'])
 	}
 
+	const handleActionModeChange = () => {
+		form.resetFields(['tpId', 'bonusCode', 'urlRouter', 'filterTpId', 'gameId'])
+	}
+
 	return (
 		<Spin
 			spinning={
@@ -124,7 +132,14 @@ const BannerModalForm = ({
 				isGetCategoryListLoading
 			}
 		>
-			<Form layout='vertical' size='middle' form={form}>
+			<Form
+				layout='vertical'
+				size='middle'
+				form={form}
+				initialValues={{
+					sort: 1,
+				}}
+			>
 				<Row align='middle' gutter={16}>
 					<Col lg={6} md={12} xs={24}>
 						<Form.Item
@@ -168,6 +183,29 @@ const BannerModalForm = ({
 							</Select>
 						</Form.Item>
 					</Col>
+					<Col lg={6} md={12} xs={24}>
+						<Form.Item
+							name='sort'
+							label={t('Label_Sort')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_RequiredText'),
+								},
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								type='number'
+								style={{ width: '100%' }}
+								controls={false}
+							/>
+						</Form.Item>
+					</Col>
 				</Row>
 				<Row align='middle' gutter={16}>
 					<Col lg={6} md={12} xs={24}>
@@ -191,7 +229,10 @@ const BannerModalForm = ({
 							label={t('Label_ActionMode')}
 							rules={[{ required: true }]}
 						>
-							<Select placeholder={t('Label_ActionMode')}>
+							<Select
+								placeholder={t('Label_ActionMode')}
+								onChange={handleActionModeChange}
+							>
 								{bannerActionModeList?.map(({ value, name }) => (
 									<Option key={value} value={value}>
 										{name}
@@ -231,7 +272,7 @@ const BannerModalForm = ({
 									placeholder={t('Label_TpID')}
 									onChange={handleTpIdChange}
 								>
-									{tpList?.map(({ id, tpName }) => (
+									{tpList?.map(({ tpId: id, tpName }) => (
 										<Option key={id} value={id}>
 											{tpName}
 										</Option>

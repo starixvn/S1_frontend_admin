@@ -20,11 +20,12 @@ export enum ActionModeEnum {
 	RedirectPagesOfThisSite,
 }
 
+// 因對應api返回小駝峰字串,固這邊enum皆為小駝峰
 export enum UrlRouterEnum {
-	Sports = 1,
-	Casino,
-	Referral,
-	LeaderBoard,
-	AngPow,
-	Lottery,
+	sports = 1,
+	'live-casino',
+	referral,
+	leaderBoard,
+	angPow,
+	lottery,
 }
