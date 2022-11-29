@@ -89,6 +89,7 @@ const BannerModal = ({
 				gameId,
 				tpId,
 				specific,
+				sort,
 			} = editBannerData
 
 			const targetDetails = specific?.find(
@@ -106,6 +107,7 @@ const BannerModal = ({
 				urlRouter: Number(UrlRouterEnum[urlRouter]),
 				gameId: Number(gameId),
 				tpId,
+				sort,
 				specific: JSON.parse(targetDetails ?? ''),
 				filterTpId: tpId,
 			})
@@ -126,6 +128,7 @@ const BannerModal = ({
 				dateRange,
 				bonusCode,
 				tpId,
+				sort,
 				urlRouter,
 				gameId,
 				filterTpId,
@@ -137,7 +140,7 @@ const BannerModal = ({
 				timeZoneUtcOffset
 			)
 			const detailStr = coverSpecificToObjString(formSpecific)
-			const { specific, sort } = editBannerData ?? {}
+			const { specific } = editBannerData ?? {}
 			const args = {
 				siteId,
 				bannerName,
@@ -160,7 +163,7 @@ const BannerModal = ({
 						status: isEditing ? Number(specific?.[0]?.status) : 0,
 					},
 				],
-				sort: isEditing ? Number(sort) : 1,
+				sort,
 			}
 
 			try {
@@ -218,6 +221,7 @@ const BannerModal = ({
 				showStatusList={showStatusList}
 				bannerActionModeList={bannerActionModeList}
 				languageList={languageList}
+				siteId={siteId}
 				onChangeTab={onChangeTab}
 			/>
 		</Modal>

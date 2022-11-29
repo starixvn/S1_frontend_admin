@@ -10,9 +10,10 @@ import {
 	IGetGameCasinoByTpIdResponse,
 	IGetLanguageListArgs,
 	IGetLanguageListResponse,
+	IGetTpBySiteAndCurrencyArgs,
+	IGetTpBySiteAndCurrencyResponse,
 	IGetTpListByCategoryArgs,
 	IGetTpListByCategoryResponse,
-	IGetTpListResponse,
 	ISetBannerArgs,
 	ISetBannerResponse,
 	IUpdateStatusArgs,
@@ -60,9 +61,12 @@ export const bannerManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		getTpList: builder.query<IGetTpListResponse, null>({
+		getTpBySiteAndCurrency: builder.query<
+			IGetTpBySiteAndCurrencyResponse,
+			IGetTpBySiteAndCurrencyArgs
+		>({
 			query: data => ({
-				url: 'GetAllData/GetTpList',
+				url: 'BaseData/GetTpBySiteAndCurrency',
 				method: 'POST',
 				data,
 			}),
@@ -105,7 +109,7 @@ export const {
 	useDeleteBannerMutation,
 	useSetBannerMutation,
 	useUpdateStatusMutation,
-	useGetTpListQuery,
+	useGetTpBySiteAndCurrencyQuery,
 	useGetGameCasinoByTpIdQuery,
 	useGetTpListByCategoryQuery,
 	useLazyGetLanguageListQuery,
