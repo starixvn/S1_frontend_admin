@@ -6,11 +6,14 @@ import {
 	PaymentStatusEnum,
 } from 'features/paymentManagement/type'
 import { Table } from 'components'
+import { PermissionInterface } from 'type'
 
 interface IGlobalStatusModalProps {
 	loading: boolean
 	visible: boolean
 	onCancel: () => void
+	editPermission?: PermissionInterface
+	editInfoPermission?: PermissionInterface
 	payList: IGetGlobalStatusData[]
 	onSetStatus: (payId: number, status: boolean) => void
 	onEditClick: (record: IGetGlobalStatusData) => void
@@ -23,6 +26,8 @@ const GlobalStatusModal = ({
 	visible,
 	onCancel,
 	payList,
+	editPermission,
+	editInfoPermission,
 	onSetStatus,
 	onEditClick,
 }: IGlobalStatusModalProps) => {
@@ -60,6 +65,7 @@ const GlobalStatusModal = ({
 				const { payId: currentPayId, status } = record
 				return (
 					<Switch
+						disabled={!editPermission?.canUse}
 						defaultChecked={status === PaymentStatusEnum.True}
 						onClick={value => {
 							onSetStatus(currentPayId, value)
@@ -75,7 +81,10 @@ const GlobalStatusModal = ({
 			align: 'center' as 'center',
 			render: (record: IGetGlobalStatusData) => {
 				return (
-					<Typography.Link onClick={() => onEditClick(record)}>
+					<Typography.Link
+						disabled={!editInfoPermission?.canUse}
+						onClick={() => onEditClick(record)}
+					>
 						{t('Label_Edit')}
 					</Typography.Link>
 				)
