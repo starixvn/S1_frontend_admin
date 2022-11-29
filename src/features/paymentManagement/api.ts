@@ -12,6 +12,7 @@ import {
 	ISetGlobalStatusArgs,
 	ISetPaySettingArgs,
 	ISetPaySettingStatusArgs,
+	ISetPayListLoginInfoArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -35,6 +36,15 @@ export const paymentManagementApi = createApi({
 		setGlobalStatus: builder.mutation<void, ISetGlobalStatusArgs>({
 			query: data => ({
 				url: 'ThirdPartyManagement/SetPayListStatus',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetGlobalStatus'],
+		}),
+		// 設定支付三方後台登入資訊
+		setPayListLoginInfo: builder.mutation<void, ISetPayListLoginInfoArgs>({
+			query: data => ({
+				url: 'ThirdPartyManagement/SetPayListLoginInfo',
 				method: 'POST',
 				data,
 			}),
@@ -103,4 +113,5 @@ export const {
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
 	useSetBankStatusMutation,
+	useSetPayListLoginInfoMutation,
 } = paymentManagementApi

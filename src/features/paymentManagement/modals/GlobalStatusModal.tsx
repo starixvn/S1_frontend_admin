@@ -13,6 +13,7 @@ interface IGlobalStatusModalProps {
 	onCancel: () => void
 	payList: IGetGlobalStatusData[]
 	onSetStatus: (payId: number, status: boolean) => void
+	onEditClick: (record: IGetGlobalStatusData) => void
 }
 
 const { Option } = Select
@@ -23,6 +24,7 @@ const GlobalStatusModal = ({
 	onCancel,
 	payList,
 	onSetStatus,
+	onEditClick,
 }: IGlobalStatusModalProps) => {
 	const { t } = useTranslation()
 	const [filterForm] = Form.useForm()
@@ -46,13 +48,13 @@ const GlobalStatusModal = ({
 			title: t('Label_Pay'),
 			key: 'payName',
 			dataIndex: 'payName',
-			width: '70%',
+			width: '60%',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Status'),
 			key: 'status',
-			width: '30%',
+			width: '20%',
 			align: 'center' as 'center',
 			render: (record: IGetGlobalStatusData) => {
 				const { payId: currentPayId, status } = record
@@ -63,6 +65,19 @@ const GlobalStatusModal = ({
 							onSetStatus(currentPayId, value)
 						}}
 					/>
+				)
+			},
+		},
+		{
+			title: t('Label_Action'),
+			key: 'edit',
+			width: '20%',
+			align: 'center' as 'center',
+			render: (record: IGetGlobalStatusData) => {
+				return (
+					<Typography.Link onClick={() => onEditClick(record)}>
+						{t('Label_Edit')}
+					</Typography.Link>
 				)
 			},
 		},
