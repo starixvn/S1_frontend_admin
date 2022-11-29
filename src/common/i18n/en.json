@@ -865,5 +865,8 @@
 	"Label_ClosingBalance" : "Closing Balance",
 	"Label_NetBalance" : "Net Balance",
 	"Label_SubmittedDateTime": "Submitted DateTime",
-	"Label_ReferenceNo": "Reference No"
+	"Label_ReferenceNo": "Reference No",
+	"Label_LoginUrl" : "Login Url",
+	"Label_LoginAccount" : "Login Account",
+	"Label_LoginPassword" : "Login Password"
 }
