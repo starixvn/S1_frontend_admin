@@ -27,7 +27,7 @@ interface IBannerManagementTableProps {
 	bannerList: IGetBannerListData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	onEditing: (record: IGetBannerListData) => void
-	onDelete: (record: IGetBannerListData) => void
+	onDelete: (bannerName: string) => void
 	onStatusChange: (record: IGetBannerListData) => void
 }
 
@@ -64,7 +64,7 @@ const BannerManagementTable = ({
 					<Popconfirm
 						disabled={!editPermission?.canUse}
 						title={t('Label_SureToDelete')}
-						onConfirm={() => onDelete(record)}
+						onConfirm={() => onDelete(record.bannerName)}
 					>
 						<Typography.Link disabled={!editPermission?.canUse}>
 							{t('Label_Delete')}

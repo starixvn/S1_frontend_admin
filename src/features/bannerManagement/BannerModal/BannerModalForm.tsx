@@ -32,7 +32,6 @@ import {
 } from 'features/bannerManagement/type'
 import {
 	useGetGameCasinoByTpIdQuery,
-	useGetLanguageListQuery,
 	useGetTpListByCategoryQuery,
 	useGetTpListQuery,
 } from 'features/bannerManagement/api'
@@ -48,8 +47,8 @@ interface IAddBannerModalFormProps {
 	bannerTypeList: IEnumTypeData[]
 	showStatusList: IEnumTypeData[]
 	bannerActionModeList: IEnumTypeData[]
-	currencyId: number
-	siteId?: number
+	languageList: string[]
+	onChangeTab: (currencyNum: number) => void
 }
 
 const BannerModalForm = ({
@@ -59,14 +58,20 @@ const BannerModalForm = ({
 	bannerTypeList,
 	showStatusList,
 	bannerActionModeList,
-	currencyId,
-	siteId,
+	languageList,
+	onChangeTab,
 }: IAddBannerModalFormProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const actionMode = Form.useWatch('actionMode', form)
 	const tpId = Form.useWatch('tpId', form)
 	const urlRouter = Form.useWatch('urlRouter', form)
+
+	const {
+		data: { data: categoryList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetCategoryListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'UrlRouterEnum' })
+
 	const {
 		data: { data: tpList = [] } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
@@ -78,16 +83,11 @@ const BannerModalForm = ({
 	} = useGetGameCasinoByTpIdQuery({ tpId: tpId === 'null' ? 0 : tpId })
 
 	const {
-		data: { data: categoryList = [] } = {} as IEnumTypeResponse,
-		isLoading: isGetCategoryListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'UrlRouterEnum' })
-
-	const {
 		data: { data: filterTpList = [] } = {} as IGetTpListByCategoryResponse,
 		isLoading: isGetFilterTpListLoading,
 	} = useGetTpListByCategoryQuery({
 		categoryId: [
-			UrlRouterEnum.Sport,
+			UrlRouterEnum.Sports,
 			UrlRouterEnum.Casino,
 			UrlRouterEnum.Lottery,
 		].includes(Number(urlRouter))
@@ -95,10 +95,24 @@ const BannerModalForm = ({
 			: 0,
 	})
 
-	const { data: { data: languageList } = {} } = useGetLanguageListQuery({
-		siteId,
-		currencyId: Number(currencyId),
-	})
+	const onCurrencyChange = async (formCurrency: number) => {
+		onChangeTab(formCurrency)
+		languageList.forEach(lang => {
+			form.resetFields([
+				['specific', lang, 'bannerLink'],
+				['specific', lang, 'bannerPCUrl'],
+				['specific', lang, 'bannerMobileUrl'],
+			])
+		})
+	}
+
+	const handleUrlRouterChange = () => {
+		form.resetFields(['filterTpId'])
+	}
+
+	const handleTpIdChange = () => {
+		form.resetFields(['gameId'])
+	}
 
 	return (
 		<Spin
@@ -106,8 +120,8 @@ const BannerModalForm = ({
 				loading ||
 				isGetTpListLoading ||
 				isGetGameListLoading ||
-				isGetCategoryListLoading ||
-				isGetFilterTpListLoading
+				isGetFilterTpListLoading ||
+				isGetCategoryListLoading
 			}
 		>
 			<Form layout='vertical' size='middle' form={form}>
@@ -118,7 +132,10 @@ const BannerModalForm = ({
 							label={t('Label_Currency')}
 							rules={[{ required: true }]}
 						>
-							<Select placeholder={t('Label_Currency')}>
+							<Select
+								placeholder={t('Label_Currency')}
+								onChange={onCurrencyChange}
+							>
 								{currencyListBySite?.map(item => (
 									<Option key={item.currencyId} value={item.currencyId}>
 										{item.isoCode}
@@ -190,7 +207,10 @@ const BannerModalForm = ({
 								label={t('Label_UrlRouter')}
 								rules={[{ required: true }]}
 							>
-								<Select placeholder={t('Label_UrlRouter')}>
+								<Select
+									placeholder={t('Label_UrlRouter')}
+									onChange={handleUrlRouterChange}
+								>
 									{categoryList?.map(({ value, name }) => (
 										<Option key={value} value={value}>
 											{name}
@@ -207,7 +227,10 @@ const BannerModalForm = ({
 								label={t('Label_TpID')}
 								rules={[{ required: true }]}
 							>
-								<Select placeholder={t('Label_TpID')}>
+								<Select
+									placeholder={t('Label_TpID')}
+									onChange={handleTpIdChange}
+								>
 									{tpList?.map(({ id, tpName }) => (
 										<Option key={id} value={id}>
 											{tpName}
