@@ -42,7 +42,8 @@ import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginI
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, editInfoPermission } = {} } =
+		useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -431,7 +432,6 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				onSearch={handleSearch}
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
-				editPermission={editPermission}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -454,6 +454,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetPayListLoading || isSetGlobalStatusLoading}
 				visible={globalStatusModal.visible}
 				onCancel={globalStatusModal.onCancel}
+				editInfoPermission={editInfoPermission}
+				editPermission={editPermission}
 				payList={payList}
 				onSetStatus={handleSetGlobalStatus}
 				onEditClick={handleEditLoginInfoClicked}
