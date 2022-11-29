@@ -32,7 +32,7 @@ import {
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import BannerManagementFilter from 'features/bannerManagement/BannerManagementFilter'
 import BannerManagementTable from 'features/bannerManagement/BannerManagementTable'
-import AddBannerModal from 'features/bannerManagement/BannerModal'
+import BannerModal from 'features/bannerManagement/BannerModal'
 
 interface IBannerManagementProps {
 	pageTitle?: string
@@ -138,7 +138,7 @@ const BannerManagement = ({ pageTitle }: IBannerManagementProps) => {
 		})
 	}
 
-	const handleDelete = async ({ bannerName }: IGetBannerListData) => {
+	const handleDelete = async (bannerName: string) => {
 		if (!siteId) return
 		const args = {
 			siteId,
@@ -264,7 +264,7 @@ const BannerManagement = ({ pageTitle }: IBannerManagementProps) => {
 				/>
 			)}
 			{addBannerModal.visible && (
-				<AddBannerModal
+				<BannerModal
 					form={addForm}
 					loading={loading}
 					visible={addBannerModal.visible}
@@ -276,6 +276,7 @@ const BannerManagement = ({ pageTitle }: IBannerManagementProps) => {
 					editBannerData={editBannerData}
 					isEditing={isEditing}
 					onCancel={handleCloseModal}
+					onDelete={handleDelete}
 				/>
 			)}
 			<AffixButtons>

@@ -22,14 +22,9 @@ export interface IGetBannerListData {
 	actionMode: number
 	showStatus: number
 	bonusCode: null
-	matchId: number
 	tpId: number
 	gameId: string
 	urlRouter: null
-	sportBattleDateTime: null
-	sportCategoryId: null
-	sportLeaguesId: null
-	sportTeamsId: null
 	specific: null
 	sort: number
 }
@@ -52,10 +47,9 @@ export interface IGetBannerData {
 	actionMode: number
 	showStatus: number
 	bonusCode: null
-	matchId: number
 	tpId: number
 	gameId: string
-	urlRouter: string
+	urlRouter: number
 	specific: {
 		currencyId: number
 		details: string
@@ -67,7 +61,6 @@ export interface IGetBannerData {
 export type IGetBannerResponse = IAxiosResponse<IGetBannerData>
 
 export interface ISetBannerArgs {
-	isAdd: boolean
 	siteId: number
 	bannerName: string
 	bannerType: number
@@ -76,14 +69,9 @@ export interface ISetBannerArgs {
 	startTime: string
 	endTime: string
 	bonusCode: null
-	matchId: number | null
 	tpId: number
 	gameId: string
-	urlRouter: string | null
-	sportBattleDateTime: null
-	sportCategoryId: null
-	sportLeaguesId: null
-	sportTeamsId: null
+	urlRouter: number
 	specific: {
 		currencyId: number
 		details: string
@@ -166,7 +154,7 @@ export interface IAddForm {
 	bonusCode: null
 	tpId: number | string
 	gameId: number | string
-	urlRouter: string
+	urlRouter: number
 	currencyId: number
 	specific: any
 	filterTpId: number | string
