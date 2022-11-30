@@ -6,6 +6,7 @@ import { TableConverter } from 'features/bankFinancialReport/utils'
 import { Table, TablePaginationConfig, Typography } from 'antd'
 import { PAGINATION } from 'common/hooks'
 import { AlignType } from 'rc-table/lib/interface'
+import { isPositiveNum } from 'common/utils'
 
 interface IBankFinancialReportTableProps {
 	loading: boolean
@@ -38,7 +39,14 @@ const BankFinancialReportTable = ({
 			dataIndex: 'openBalance',
 			width: 150,
 			align: 'right' as AlignType,
-			render: (openBalance: number) => numberFormatter.format(openBalance),
+			render: (openBalance: number) =>
+				isPositiveNum(openBalance) ? (
+					numberFormatter.format(openBalance)
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(openBalance)}
+					</Typography.Text>
+				),
 		},
 		{
 			title: t('Label_ClosingBalance'),
@@ -47,7 +55,13 @@ const BankFinancialReportTable = ({
 			align: 'right' as AlignType,
 			width: 150,
 			render: (closingBalance: number) =>
-				numberFormatter.format(closingBalance),
+				isPositiveNum(closingBalance) ? (
+					numberFormatter.format(closingBalance)
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(closingBalance)}
+					</Typography.Text>
+				),
 		},
 		{
 			title: t('Label_NetBalance'),
@@ -55,7 +69,14 @@ const BankFinancialReportTable = ({
 			dataIndex: 'netBalance',
 			width: 150,
 			align: 'right' as AlignType,
-			render: (netBalance: number) => numberFormatter.format(netBalance),
+			render: (netBalance: number) =>
+				isPositiveNum(netBalance) ? (
+					numberFormatter.format(netBalance)
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(netBalance)}
+					</Typography.Text>
+				),
 		},
 		{
 			title: t('Label_Fee'),
@@ -63,7 +84,14 @@ const BankFinancialReportTable = ({
 			dataIndex: 'fees',
 			width: 150,
 			align: 'right' as AlignType,
-			render: (fees: number) => numberFormatter.format(fees),
+			render: (fees: number) =>
+				isPositiveNum(fees) ? (
+					numberFormatter.format(fees)
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(fees)}
+					</Typography.Text>
+				),
 		},
 	]
 
