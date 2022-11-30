@@ -6,6 +6,8 @@ import { assign, cloneDeep } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
 import { v4 as uuidV4 } from 'uuid'
 import { AlignType } from 'rc-table/lib/interface'
+import { isPositiveNum } from 'common/utils'
+import { Typography } from 'antd'
 
 export class TableConverter {
 	// render table column
@@ -17,7 +19,16 @@ export class TableConverter {
 				dataIndex: title,
 				align: 'right' as AlignType,
 				width: 100,
-				render: (data: number) => numberFormatter.format(data ?? 0),
+				render: (data: number) => {
+					const renderData = data ?? 0
+					return isPositiveNum(renderData) ? (
+						numberFormatter.format(renderData)
+					) : (
+						<Typography.Text type='danger'>
+							{numberFormatter.format(renderData)}
+						</Typography.Text>
+					)
+				},
 			}
 			// 從第四筆依序插入
 			target.splice(4 + idx, 0, insertItem)
