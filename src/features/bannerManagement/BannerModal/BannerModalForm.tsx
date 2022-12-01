@@ -307,8 +307,8 @@ const BannerModalForm = ({
 								rules={[{ required: true }]}
 							>
 								<Select placeholder={t('Label_GameId')}>
-									{gameList?.map(({ gameCasinoId, name }) => (
-										<Option key={gameCasinoId} value={gameCasinoId}>
+									{gameList?.map(({ gameId, name }) => (
+										<Option key={gameId} value={gameId}>
 											{name}
 										</Option>
 									))}
