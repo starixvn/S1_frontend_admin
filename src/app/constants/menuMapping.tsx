@@ -5,6 +5,7 @@ import {
 	DashboardOutlined,
 	EditOutlined,
 	ExclamationCircleOutlined,
+	SettingOutlined,
 	ShopOutlined,
 	ShoppingCartOutlined,
 	TransactionOutlined,
@@ -35,6 +36,7 @@ export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	9: <RiUserSettingsLine style={iconStyle} />,
 	19: <ControlOutlined style={iconStyle} />,
 	102: <ShoppingCartOutlined style={iconStyle} />,
+	128: <SettingOutlined style={iconStyle} />,
 }
 
 export const getMapMenu = (functionId: number) => {
