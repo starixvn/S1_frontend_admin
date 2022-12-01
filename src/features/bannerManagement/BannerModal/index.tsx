@@ -91,7 +91,6 @@ const BannerModal = ({
 				specific,
 				sort,
 			} = editBannerData
-
 			const targetDetails = specific?.find(
 				({ currencyId: specificCurrencyId }) =>
 					specificCurrencyId === currencyId
@@ -105,7 +104,7 @@ const BannerModal = ({
 				dateRange: [moment(startTime), moment(endTime)],
 				bonusCode,
 				urlRouter: Number(UrlRouterEnum[urlRouter]),
-				gameId: Number(gameId),
+				gameId,
 				tpId,
 				sort,
 				specific: JSON.parse(targetDetails ?? ''),
