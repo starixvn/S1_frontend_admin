@@ -499,11 +499,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 66,
+		functionId: paths.cms.sub.urlManagement.sub.providerAppDownload.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DeepLinkManagement',
 		internalFunctionKey: allowedRoles.CMSDeepLinkManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.providerAppDownload.root,
 	},
 	{
 		icon: null,

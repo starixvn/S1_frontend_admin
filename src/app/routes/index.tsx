@@ -775,6 +775,13 @@ const BankFinancialReport = lazy(
 		)
 )
 
+const ProviderAppDownload = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProviderAppDownload' */ 'features/providerAppDownload/ProviderAppDownload'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -1911,6 +1918,18 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.drawPrizeReport.functionId}>
 						<DrawPrizeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.providerAppDownload.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.providerAppDownload.functionId
+						}
+					>
+						<ProviderAppDownload />
 					</AuthRequire>
 				),
 			},
