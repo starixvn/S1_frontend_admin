@@ -580,6 +580,10 @@ const paths = {
 						root: 'cms/urlManagement/lineDepositChannel',
 						functionId: 67,
 					},
+					providerAppDownload: {
+						root: 'cms/urlManagement/providerAppDownload',
+						functionId: 66,
+					},
 				},
 			},
 			hotEventManagement: {

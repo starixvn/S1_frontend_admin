@@ -38,6 +38,8 @@ export type EnumNameType =
 	| 'BannerActionModeEnum'
 	| 'ShowStatusEnum'
 	| 'UrlRouterEnum'
+	| 'DeepLinkTableTypeEnum'
+	| 'DeepLinkTableProtocolTypeEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -67,6 +69,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  OTPProvider - 取得 OTP 種類列表
 	 * @argument {string}  OTPStatus - 取得 OTP 狀態列表
 	 * @argument {string}  BonusAtPageEnum - 取得 AtPage 列表
+	 * @argument {string}  DeepLinkTableTypeEnum - 取得DeepLink Type清單
+	 * @argument {string}  DeepLinkTableProtocolTypeEnum - 取得DeepLink ProtocolType清單
 	 */
 	enumName: EnumNameType
 }
