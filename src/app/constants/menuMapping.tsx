@@ -218,13 +218,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 34,
+		functionId: paths.finance.sub.report.sub.depositTimeReport.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositTimeReport',
 		internalFunctionKey: allowedRoles.FinanceDepositTimeReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.depositTimeReport.root,
 	},
-
 	{
 		icon: null,
 		functionId: 35,
