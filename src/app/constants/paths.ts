@@ -249,6 +249,10 @@ const paths = {
 			report: {
 				root: 'finance/report',
 				sub: {
+					depositTimeReport: {
+						root: 'finance/report/DepositTimeReport',
+						functionId: 34,
+					},
 					paymentAdjustment: {
 						root: 'finance/report/paymentAdjustment',
 						functionId: 36,

@@ -40,6 +40,7 @@ export type EnumNameType =
 	| 'UrlRouterEnum'
 	| 'DeepLinkTableTypeEnum'
 	| 'DeepLinkTableProtocolTypeEnum'
+	| 'DepositTimeStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -71,6 +72,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  BonusAtPageEnum - 取得 AtPage 列表
 	 * @argument {string}  DeepLinkTableTypeEnum - 取得DeepLink Type清單
 	 * @argument {string}  DeepLinkTableProtocolTypeEnum - 取得DeepLink ProtocolType清單
+	 * @argument {string}  DepositTimeStatusEnum - 取得存款時間狀態列表
+	 *
 	 */
 	enumName: EnumNameType
 }

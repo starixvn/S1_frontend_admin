@@ -753,6 +753,12 @@ const BannerManagement = lazy(
 			/* webpackChunkName: 'BannerManagement' */ 'features/bannerManagement/BannerManagement'
 		)
 )
+const DepositTimeReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositTimeReport' */ 'features/depositTimeReport/DepositTimeReport'
+		)
+)
 
 const DepositSubmission = lazy(
 	() =>
@@ -1930,6 +1936,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<ProviderAppDownload />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.report.sub.depositTimeReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.report.sub.depositTimeReport.functionId
+						}
+					>
+						<DepositTimeReport />
 					</AuthRequire>
 				),
 			},
