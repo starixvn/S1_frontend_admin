@@ -796,6 +796,13 @@ const BankFinancialReport = lazy(
 		)
 )
 
+const GameStatisticalReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameStatisticalReport' */ 'features/gameStatisticalReport/GameStatisticalReport'
+		)
+)
+
 const ProviderAppDownload = lazy(
 	() =>
 		import(
@@ -1965,6 +1972,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.drawPrizeReport.functionId}>
 						<DrawPrizeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.gameStatisticalReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.gameStatisticalReport.functionId}
+					>
+						<GameStatisticalReport />
 					</AuthRequire>
 				),
 			},
