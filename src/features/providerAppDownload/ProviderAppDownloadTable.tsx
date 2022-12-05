@@ -123,7 +123,7 @@ const ProviderAppDownloadTable = ({
 				const { typeName } = record
 				return editable ? (
 					<Form.Item name='type' style={{ margin: 0 }}>
-						<Select>
+						<Select disabled>
 							{typeList.map(({ value, name }) => (
 								<Option key={value} value={value}>
 									{name}
