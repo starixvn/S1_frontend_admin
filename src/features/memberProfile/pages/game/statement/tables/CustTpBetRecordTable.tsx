@@ -1,9 +1,10 @@
 import { IGetCustTpBetRecordData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { Button, Typography } from 'antd'
+import { Button, Typography, Table as AntdTable } from 'antd'
 import moment from 'moment'
-import { dateFormat, numberFormatter } from 'common/utils/format'
+import { dateFormat, numFormatToDigits } from 'common/utils/format'
+import { sumTotalObject } from 'common/utils'
 
 interface ICustTpBetRecordTableProps {
 	loading: boolean
@@ -11,6 +12,8 @@ interface ICustTpBetRecordTableProps {
 	timeZoneUtcOffset: number
 	onDetailClicked: (settledDate: string) => void
 }
+
+const { Summary } = AntdTable
 
 const CustTpBetRecordTable = ({
 	loading,
@@ -27,8 +30,8 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'settledDate',
 			width: 150,
 			align: 'center' as 'center',
-			render: (settledDate: string) =>
-				settledDate ? (
+			render: (settledDate: string) => {
+				return settledDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{moment(settledDate)
 							.utcOffset(timeZoneUtcOffset)
@@ -36,7 +39,8 @@ const CustTpBetRecordTable = ({
 					</Typography.Text>
 				) : (
 					''
-				),
+				)
+			},
 		},
 		{
 			title: t('Label_Action'),
@@ -45,6 +49,7 @@ const CustTpBetRecordTable = ({
 			align: 'center' as 'center',
 			render: (record: IGetCustTpBetRecordData) => {
 				const { settledDate } = record
+				// noAction 為自定義的 total 欄位，total 欄位不會有 detail 可以使用
 				return (
 					<Button
 						type='primary'
@@ -62,8 +67,7 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'totalTO',
 			width: 100,
 			align: 'center' as 'center',
-			render: (totalTO: number) =>
-				totalTO ? numberFormatter.format(totalTO) : 0,
+			render: (totalTO: number) => (totalTO ? numFormatToDigits(totalTO) : 0),
 		},
 		{
 			title: t('Label_TurnoverWithoutBonus'),
@@ -72,7 +76,7 @@ const CustTpBetRecordTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (totalTOExcludeBonus: number) =>
-				totalTOExcludeBonus ? numberFormatter.format(totalTOExcludeBonus) : 0,
+				totalTOExcludeBonus ? numFormatToDigits(totalTOExcludeBonus) : 0,
 		},
 		{
 			title: t('Label_ValidBet'),
@@ -81,7 +85,7 @@ const CustTpBetRecordTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (validBet: number) => {
-				return validBet ? numberFormatter.format(validBet) : 0
+				return validBet ? numFormatToDigits(validBet) : 0
 			},
 		},
 		{
@@ -91,7 +95,7 @@ const CustTpBetRecordTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (invalidBet: number) => {
-				return invalidBet ? numberFormatter.format(invalidBet) : 0
+				return invalidBet ? numFormatToDigits(invalidBet) : 0
 			},
 		},
 		{
@@ -101,7 +105,7 @@ const CustTpBetRecordTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (turnOver: number) =>
-				turnOver ? numberFormatter.format(turnOver) : 0,
+				turnOver ? numFormatToDigits(turnOver) : 0,
 		},
 		{
 			title: t('Label_RunningTickets'),
@@ -110,7 +114,7 @@ const CustTpBetRecordTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (runningTickets: number) => {
-				return runningTickets ? numberFormatter.format(runningTickets) : 0
+				return runningTickets ? numFormatToDigits(runningTickets) : 0
 			},
 		},
 		{
@@ -120,7 +124,7 @@ const CustTpBetRecordTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (winLoss: number) => {
-				return winLoss ? numberFormatter.format(winLoss) : 0
+				return winLoss ? numFormatToDigits(winLoss) : 0
 			},
 		},
 		{
@@ -130,9 +134,7 @@ const CustTpBetRecordTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (winLossExcludeBonus: number) => {
-				return winLossExcludeBonus
-					? numberFormatter.format(winLossExcludeBonus)
-					: 0
+				return winLossExcludeBonus ? numFormatToDigits(winLossExcludeBonus) : 0
 			},
 		},
 	]
@@ -141,6 +143,62 @@ const CustTpBetRecordTable = ({
 		<Table
 			loading={loading}
 			dataSource={custTpBetRecord ?? []}
+			summary={
+				// eslint-disable-next-line react/no-unstable-nested-components
+				pageData => {
+					if (pageData.length <= 1) return null
+					const totalData: IGetCustTpBetRecordData = sumTotalObject(
+						pageData as object[]
+					)
+
+					const {
+						totalTO,
+						totalTOExcludeBonus,
+						validBet,
+						invalidBet,
+						turnOver,
+						runningTickets,
+						winLoss,
+						winLossExcludeBonus,
+					} = totalData
+					return (
+						<Summary.Row>
+							<Summary.Cell index={0} align='center'>
+								{t('Label_Total')}
+							</Summary.Cell>
+							<Summary.Cell index={1} />
+							<Summary.Cell index={2} align='center'>
+								{totalTO ? numFormatToDigits(totalTO) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={3} align='center'>
+								{totalTOExcludeBonus
+									? numFormatToDigits(totalTOExcludeBonus)
+									: 0}
+							</Summary.Cell>
+							<Summary.Cell index={4} align='center'>
+								{validBet ? numFormatToDigits(validBet) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={5} align='center'>
+								{invalidBet ? numFormatToDigits(invalidBet) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={6} align='center'>
+								{turnOver ? numFormatToDigits(turnOver) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={7} align='center'>
+								{runningTickets ? numFormatToDigits(runningTickets) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={8} align='center'>
+								{winLoss ? numFormatToDigits(winLoss) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={9} align='center'>
+								{winLossExcludeBonus
+									? numFormatToDigits(winLossExcludeBonus)
+									: 0}
+							</Summary.Cell>
+						</Summary.Row>
+					)
+				}
+			}
 			columns={columns}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 		/>

@@ -1,9 +1,10 @@
 import { IGetCustTpBetRecordByDayData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { Button, Typography } from 'antd'
+import { Button, Typography, Table as AntdTable } from 'antd'
 import moment from 'moment/moment'
-import { dateFormat, numberFormatter } from 'common/utils/format'
+import { dateFormat, numFormatToDigits } from 'common/utils/format'
+import { sumTotalObject } from 'common/utils'
 
 interface ICustTpBetRecordByDayTableProps {
 	loading: boolean
@@ -11,6 +12,9 @@ interface ICustTpBetRecordByDayTableProps {
 	custTpBetRecordByDay: IGetCustTpBetRecordByDayData[]
 	onDetailClicked: (categoryId: number) => void
 }
+
+const { Summary } = AntdTable
+
 const CustTpBetRecordByDayTable = ({
 	loading,
 	timeZoneUtcOffset,
@@ -72,8 +76,7 @@ const CustTpBetRecordByDayTable = ({
 			dataIndex: 'totalTO',
 			width: 100,
 			align: 'center' as 'center',
-			render: (totalTO: number) =>
-				totalTO ? numberFormatter.format(totalTO) : 0,
+			render: (totalTO: number) => (totalTO ? numFormatToDigits(totalTO) : 0),
 		},
 		{
 			title: t('Label_TurnoverWithoutBonus'),
@@ -82,7 +85,7 @@ const CustTpBetRecordByDayTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (totalTOExcludeBonus: number) =>
-				totalTOExcludeBonus ? numberFormatter.format(totalTOExcludeBonus) : 0,
+				totalTOExcludeBonus ? numFormatToDigits(totalTOExcludeBonus) : 0,
 		},
 		{
 			title: t('Label_ValidBet'),
@@ -91,7 +94,7 @@ const CustTpBetRecordByDayTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (validBet: number) => {
-				return validBet ? numberFormatter.format(validBet) : 0
+				return validBet ? numFormatToDigits(validBet) : 0
 			},
 		},
 		{
@@ -101,17 +104,17 @@ const CustTpBetRecordByDayTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (invalidBet: number) => {
-				return invalidBet ? numberFormatter.format(invalidBet) : 0
+				return invalidBet ? numFormatToDigits(invalidBet) : 0
 			},
 		},
 		{
 			title: `${t('Label_TurnOver')} ${t('Label_ExcludeValidTO')}`,
 			dataIndex: 'turnOver',
-			key: 'stakeNotRollover',
+			key: 'turnOver',
 			width: 120,
 			align: 'center' as 'center',
 			render: (turnOver: number) =>
-				turnOver ? numberFormatter.format(turnOver) : 0,
+				turnOver ? numFormatToDigits(turnOver) : 0,
 		},
 		{
 			title: t('Label_RunningTickets'),
@@ -120,7 +123,7 @@ const CustTpBetRecordByDayTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (runningTickets: number) => {
-				return runningTickets ? numberFormatter.format(runningTickets) : 0
+				return runningTickets ? numFormatToDigits(runningTickets) : 0
 			},
 		},
 		{
@@ -130,7 +133,7 @@ const CustTpBetRecordByDayTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (winLoss: number) => {
-				return winLoss ? numberFormatter.format(winLoss) : 0
+				return winLoss ? numFormatToDigits(winLoss) : 0
 			},
 		},
 		{
@@ -140,9 +143,7 @@ const CustTpBetRecordByDayTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (winLossExcludeBonus: number) => {
-				return winLossExcludeBonus
-					? numberFormatter.format(winLossExcludeBonus)
-					: 0
+				return winLossExcludeBonus ? numFormatToDigits(winLossExcludeBonus) : 0
 			},
 		},
 	]
@@ -151,6 +152,62 @@ const CustTpBetRecordByDayTable = ({
 		<Table
 			loading={loading}
 			dataSource={custTpBetRecordByDay ?? []}
+			summary={
+				// eslint-disable-next-line react/no-unstable-nested-components
+				pageData => {
+					if (pageData.length <= 1) return null
+					const totalData: IGetCustTpBetRecordByDayData = sumTotalObject(
+						pageData as object[]
+					)
+					const {
+						totalTO,
+						totalTOExcludeBonus,
+						validBet,
+						invalidBet,
+						turnOver,
+						runningTickets,
+						winLoss,
+						winLossExcludeBonus,
+					} = totalData
+					return (
+						<Summary.Row>
+							<Summary.Cell index={0} />
+							<Summary.Cell index={1} />
+							<Summary.Cell index={2} align='center'>
+								{t('Label_Total')}
+							</Summary.Cell>
+							<Summary.Cell index={3} align='center'>
+								{totalTO ? numFormatToDigits(totalTO) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={4} align='center'>
+								{totalTOExcludeBonus
+									? numFormatToDigits(totalTOExcludeBonus)
+									: 0}
+							</Summary.Cell>
+							<Summary.Cell index={5} align='center'>
+								{validBet ? numFormatToDigits(validBet) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={6} align='center'>
+								{invalidBet ? numFormatToDigits(invalidBet) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={7} align='center'>
+								{turnOver ? numFormatToDigits(turnOver) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={8} align='center'>
+								{runningTickets ? numFormatToDigits(runningTickets) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={9} align='center'>
+								{winLoss ? numFormatToDigits(winLoss) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={10} align='center'>
+								{winLossExcludeBonus
+									? numFormatToDigits(winLossExcludeBonus)
+									: 0}
+							</Summary.Cell>
+						</Summary.Row>
+					)
+				}
+			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
 		/>
