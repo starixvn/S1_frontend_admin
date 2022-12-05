@@ -46,9 +46,11 @@ export const utcFormatter = ({
 
 // * 用於處理 RangePicker 元件的時間格式
 export const dateRangeToUtcFormatter = (
-	dateRange: [moment.Moment | Date, moment.Moment | Date],
+	dateRange?: [moment.Moment | Date, moment.Moment | Date],
 	utc?: number | string
 ) => {
+	if (!dateRange) return ['', '']
+
 	return [
 		utcFormatter({
 			date: dateRange[0],

@@ -869,4 +869,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'Internal',
 		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.gameStatisticalReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.report.sub.gameStatisticalReport.root,
+	},
 ]
