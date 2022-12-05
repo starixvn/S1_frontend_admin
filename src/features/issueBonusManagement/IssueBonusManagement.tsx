@@ -92,7 +92,6 @@ const IssueBonusManagement: FC<{
 				searchForm={searchForm}
 				onSearch={handleSearch}
 			/>
-
 			{isShowInfoForm && !isGetCustInfoDetailsError && (userName || sabaId) && (
 				<IssueBonusManagementInfoContent
 					infoForm={infoForm}

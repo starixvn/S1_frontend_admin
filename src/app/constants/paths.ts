@@ -240,6 +240,10 @@ const paths = {
 						root: 'finance/depositWithdrawalSector/withdrawalAdjustment',
 						functionId: 30,
 					},
+					depositOperator: {
+						root: 'finance/depositWithdrawalSector/depositOperator',
+						functionId: 27,
+					},
 				},
 			},
 			issueBonusManagement: {

@@ -327,6 +327,21 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
+
+const DepositOperator = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositOperator' */ 'features/depositOperator/DepositOperator'
+		)
+)
+
+const DepositRequest = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositRequest' */ 'features/depositOperator/depositRequest/DepositRequest'
+		)
+)
+
 const BankCardManagement = lazy(
 	() =>
 		import(
@@ -1336,6 +1351,32 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalSubmission />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.depositOperator
+								.functionId
+						}
+					>
+						<DepositOperator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root}/:transId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.depositOperator
+								.functionId
+						}
+					>
+						<DepositRequest />
 					</AuthRequire>
 				),
 			},

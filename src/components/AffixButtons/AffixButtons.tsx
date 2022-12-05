@@ -14,6 +14,7 @@ import {
 	AddBatchButton,
 	DragButton,
 	CloseButton,
+	RejectButton,
 } from './ActionButtons'
 import GoNextRouteButton from './GoNextRouteButton'
 import GoBackRouteButton from './GoBackRouteButton'
@@ -22,6 +23,7 @@ import { BUTTON_HEIGHT } from './StyledButton'
 
 export const AFFIX_BUTTON_TYPE_ENUM = {
 	BACK_TO_TOP_BUTTON: 'BACK_TO_TOP_BUTTON',
+	REJECT_BUTTON: 'REJECT_BUTTON',
 	CREATE_BUTTON: 'CREATE_BUTTON',
 	DELETE_BUTTON: 'DELETE_BUTTON',
 	SAVED_BUTTON: 'SAVED_BUTTON',
@@ -72,6 +74,7 @@ const getAffixButtonStyle = (index: number): CSSProperties => {
 interface AffixButtonsInterface extends FC<{ children: ReactNode }> {
 	BackToTop: typeof BackToTopButton
 	Create: typeof CreateButton
+	Reject: typeof RejectButton
 	Delete: typeof DeleteButton
 	Saved: typeof SavedButton
 	Reload: typeof ReloadButton
@@ -133,6 +136,7 @@ const AffixButtons: AffixButtonsInterface = props => {
 }
 
 AffixButtons.Create = CreateButton
+AffixButtons.Reject = RejectButton
 AffixButtons.Delete = DeleteButton
 AffixButtons.Saved = SavedButton
 AffixButtons.Reload = ReloadButton

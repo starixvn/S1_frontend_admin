@@ -1,7 +1,9 @@
 import { IAxiosResponse } from '../axiosBaseQuery'
 
 export interface IBankInfoOffState {
+	accountCode: string
 	bankId: number
+	isoCode: string
 	accountName: string
 	accountNo: string
 	accountStatus: number
@@ -20,6 +22,73 @@ export interface IBankInfoOffState {
 	bankSite: string
 	sort: number
 	ver: number
+	channel: number
+	corporateID: string
+	displayName: string
+	bankLoginAccount: string
+	bankLoginPassword: string
+	bankLoginUrl: string
+	loginPin: string
+	mobilePin: string
+	transferPin: string
+	pointLevels: number[]
+	purposes: number[]
+	settingStatus: number
+	siteId: number
+	siteName: string
+	vipLevels: number[]
 }
 
 export type BankInfoOffResponse = IAxiosResponse<IBankInfoOffState[]>
+
+export interface IBankCodeData {
+	sysId: number
+	currencyId: number
+	bankCode: string | null
+	bankName: string | null
+}
+
+export type IBankCodeResponse = IAxiosResponse<IBankCodeData[]>
+
+export interface IGetBankCodeListArgs {
+	siteId?: number
+	/**
+	 * @argument 0 - 全部
+	 */
+	currency: number
+}
+
+export interface IVipLevelEnumData {
+	level: number
+	levelName: string
+}
+
+export type IVipLevelEnumResponse = IAxiosResponse<IVipLevelEnumData[]>
+
+export interface IGetVipLevelSettingBySiteIdArgs {
+	siteId?: number
+}
+
+export interface ICalCodeData {
+	bankId: number
+	calCodeName: string | null
+	currencyId: number
+	sysId: number
+}
+
+export type ICalCodeResponse = IAxiosResponse<ICalCodeData[]>
+
+export interface IGetCalCodeListArgs {
+	siteId?: number
+}
+
+export interface IPaymentData {
+	payId: number
+	payName: string
+	channelId: number
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+}
