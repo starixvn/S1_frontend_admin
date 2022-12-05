@@ -43,3 +43,13 @@ export interface IGetPromotionTypeData {
 }
 
 export type IGetPromotionTypeResponse = IAxiosResponse<IGetPromotionTypeData[]>
+
+export interface IGetPayEnumData {
+	payId: number
+	payName: string
+	payStatus: number
+	sitePayStatus: number
+	status: number
+}
+
+export type IGetPayEnumListResponse = IAxiosResponse<IGetPayEnumData[]>

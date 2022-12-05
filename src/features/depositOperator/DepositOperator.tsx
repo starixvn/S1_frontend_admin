@@ -1,0 +1,375 @@
+import moment from 'moment'
+import download from 'downloadjs'
+import React, { Key, useEffect, useState } from 'react'
+import { filter, includes, isEmpty, map } from 'lodash'
+import { useTranslation } from 'react-i18next'
+import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
+import { LayoutContent } from 'app/pages/layout'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	PAGINATION,
+	useAuth,
+	usePagination,
+	useQueryParams,
+} from 'common/hooks'
+import { useGetPayEnumListQuery } from 'common/service/allDataApi'
+import {
+	useGetBankCodeListQuery,
+	useGetCalCodeListQuery,
+	useGetVipLevelEnumBySiteIdQuery,
+} from 'common/service/baseDataApi'
+import { IBankCodeResponse } from 'common/service/baseDataApi/type'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import {
+	useLazyGetDepositOperatorListQuery,
+	useBatchRejectedDepositTransIdsMutation,
+	useExportDepositMutation,
+} from 'features/depositOperator/api'
+import { IForm } from 'features/depositOperator/type'
+import { AffixButtons } from 'components/AffixButtons'
+import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
+import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
+
+const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
+	const { t } = useTranslation()
+	const [form] = Form.useForm<IForm>()
+	const {
+		actionPermissions: { exportExcelPermission, rejectPermission } = {},
+	} = useAuth()
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const [queryParams, setQueryParams] = useQueryParams()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const formCurrencyIds = Form.useWatch('currencyIds', form)
+	const [tableSelectedRowTransIds, setTableSelectedTransIds] = useState<Key[]>(
+		[]
+	)
+
+	const {
+		data: { data: statusesEnum } = {} as IEnumTypeResponse,
+		isFetching: isGetStatusesEnumLoading,
+	} = useGetEnumTypeQuery({ enumName: 'DepositStatusEnum' })
+
+	const {
+		data: { data: depositTypeEnum } = {} as IEnumTypeResponse,
+		isFetching: isGetDepositTypeEnumLoading,
+	} = useGetEnumTypeQuery({ enumName: 'DepositTypeEnum' })
+
+	const {
+		data: { data: payEnumList = [] } = {},
+		isFetching: isGetPayEnumListFetching,
+	} = useGetPayEnumListQuery(null)
+
+	const {
+		data: { data: bankCodeList = [] } = {} as IBankCodeResponse,
+		isFetching: isGetbankCodeListLoading,
+	} = useGetBankCodeListQuery({
+		siteId,
+		currency: 0, // * All
+	})
+
+	const {
+		data: { data: vipLevelEnum = [] } = {},
+		isFetching: isGetVipLevelEnumFetching,
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
+
+	const {
+		data: { data: calCodeList = [] } = {},
+		isFetching: isGetCalCodeListFetching,
+	} = useGetCalCodeListQuery({
+		siteId,
+	})
+
+	const [
+		getDepositOperatorList,
+
+		{
+			data: {
+				data: depositOperatorList = [],
+				rowCount: DepositOperatorTotal = 0,
+			} = {},
+			isFetching: isGetDepositOperatorListFetching,
+		},
+	] = useLazyGetDepositOperatorListQuery()
+
+	const [
+		batchRejectedDepositTransIds,
+		{ isLoading: isBatchRejectedDepositTransIdsLoading },
+	] = useBatchRejectedDepositTransIdsMutation()
+
+	const [exportDeposit, { isLoading: isExportDepositLoading }] =
+		useExportDepositMutation()
+
+	const [pagination, setPagination] = usePagination({
+		paginationTotal: DepositOperatorTotal,
+	})
+
+	const resetSelectedTransIds = () => {
+		setTableSelectedTransIds([])
+	}
+
+	const handleExport = async () => {
+		if (!siteId) return
+		const {
+			currencyIds = [],
+			statuses = [],
+			selectPayId = [],
+			depositTypes = [],
+			selectBankCode = [],
+			userName = '',
+			depositId = null,
+			startAmount = null,
+			endAmount = null,
+			levelStatuses = [],
+			agent = '',
+			selectCalCode = [],
+			startDate,
+			endDate,
+		} = queryParams ?? {}
+		try {
+			const blob = await exportDeposit({
+				siteId,
+				startDate,
+				endDate,
+				depositId,
+				userName,
+				selectBankCode: map(selectBankCode, value => Number(value)) ?? [],
+				selectCalCode: map(selectCalCode, value => Number(value)) ?? [],
+				selectPayId: map(selectPayId, value => Number(value)) ?? [],
+				// * -1 代表不做範圍的限制
+				startAmount: startAmount || -1,
+				endAmount: endAmount || -1,
+				depositTypes: map(depositTypes, value => Number(value)) ?? [],
+				statuses: map(statuses, value => Number(value)) ?? [],
+				currencyIds: map(currencyIds, value => Number(value)) ?? [],
+				levelStatuses: map(levelStatuses, value => Number(value)) ?? [],
+				agent,
+			}).unwrap()
+			download(
+				blob,
+				`DepositOperator_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+			)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSearch = async ({
+		current = PAGINATION.defaultCurrent,
+		pageSize = PAGINATION.defaultPageSize,
+		currentTimeZoneUtcOffset = timeZoneUtcOffset,
+	}) => {
+		if (!siteId) return
+		resetSelectedTransIds()
+
+		const {
+			dateRange,
+			selectPayIds,
+			startAmount,
+			endAmount,
+			depositId,
+			...rest
+		} = form.getFieldsValue()
+		const [startDate, endDate] = dateRangeToUtcFormatter(
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			currentTimeZoneUtcOffset
+		)
+
+		try {
+			await getDepositOperatorList({
+				siteId,
+				startDate,
+				endDate,
+				pageNumber: current,
+				pageSize,
+				selectPayId: selectPayIds,
+				// * -1 代表不做範圍的限制
+				startAmount: startAmount || -1,
+				endAmount: endAmount || -1,
+				depositId: depositId || null,
+				...rest,
+			}).unwrap()
+			setPagination(prev => ({ ...prev, current, pageSize }))
+			setQueryParams({
+				startDate,
+				endDate,
+				pageNumber: current,
+				pageSize,
+				selectPayId: selectPayIds,
+				startAmount,
+				endAmount,
+				depositId: depositId || null,
+				...rest,
+				timeZone: currentTimeZoneUtcOffset,
+			})
+			setPagination(prev => ({ ...prev, current, pageSize }))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleTableChange = ({
+		current = PAGINATION.defaultCurrent,
+		pageSize = PAGINATION.defaultPageSize,
+	}: TablePaginationConfig) => {
+		handleSearch({
+			current,
+			pageSize,
+			currentTimeZoneUtcOffset: timeZoneUtcOffset,
+		})
+	}
+
+	const handleBatchRejectedDepositTransIds = async () => {
+		try {
+			await batchRejectedDepositTransIds({
+				transIds: tableSelectedRowTransIds,
+			}).unwrap()
+			resetSelectedTransIds()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const enumLoading =
+		isGetStatusesEnumLoading ||
+		isGetDepositTypeEnumLoading ||
+		isGetPayEnumListFetching ||
+		isGetbankCodeListLoading ||
+		isGetVipLevelEnumFetching ||
+		isGetCalCodeListFetching
+
+	useEffect(() => {
+		const init = () => {
+			if (isEmpty(queryParams)) {
+				form.setFieldsValue({
+					currencyIds:
+						currencyListBySite?.map(({ currencyId }) => currencyId) ?? [],
+					statuses: statusesEnum?.map(({ value }) => value),
+					selectPayIds: [],
+					selectBankCode: bankCodeList?.map(({ sysId }) => sysId),
+					depositTypes: depositTypeEnum?.map(({ value }) => value),
+					levelStatuses: vipLevelEnum?.map(({ level }) => level),
+				})
+			} else {
+				const {
+					timeZone,
+					currencyIds = [],
+					statuses = [],
+					selectPayId = [],
+					depositTypes = [],
+					selectBankCode = [],
+					userName = '',
+					depositId = null,
+					startAmount = null,
+					endAmount = null,
+					levelStatuses = [],
+					agent = '',
+					selectCalCode = [],
+					pageNumber,
+					pageSize,
+					startDate,
+					endDate,
+				} = queryParams ?? {}
+				onTimeZoneChange(Number(timeZone))
+				form.setFieldsValue({
+					dateRange: [moment(startDate), moment(endDate)],
+					currencyIds: currencyIds?.map((value: string) => Number(value)) ?? [],
+					statuses: statuses?.map((value: string) => Number(value)) ?? [],
+					selectPayIds:
+						selectPayId?.map((value: string) => Number(value)) ?? [],
+					depositTypes:
+						depositTypes?.map((value: string) => Number(value)) ?? [],
+					selectBankCode:
+						selectBankCode?.map((value: string) => Number(value)) ?? [],
+					userName,
+					depositId,
+					startAmount: Number(startAmount),
+					endAmount: Number(endAmount),
+					levelStatuses:
+						levelStatuses?.map((value: string) => Number(value)) ?? [],
+					agent,
+					selectCalCode:
+						selectCalCode?.map((value: string) => Number(value)) ?? [],
+				})
+				handleSearch({
+					current: Number(pageNumber),
+					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
+			}
+		}
+
+		if (!enumLoading) {
+			init()
+		}
+	}, [enumLoading])
+
+	const filteredBankCodeListByCurrencyIds = filter(
+		bankCodeList,
+		({ currencyId }) => includes(formCurrencyIds, currencyId)
+	)
+
+	const hasSelectedRow = tableSelectedRowTransIds.length > 0
+
+	// * 處理多選 checkbox
+	const rowSelection = {
+		selectedRowKeys: tableSelectedRowTransIds,
+		onChange: (newSelectedRowKeys: (string | number)[]) =>
+			setTableSelectedTransIds(newSelectedRowKeys),
+	}
+
+	return (
+		<LayoutContent.Main>
+			<PageHeader title={pageTitle} />
+			<DepositOperatorFilter
+				form={form}
+				loading={isGetDepositOperatorListFetching}
+				enumLoading={enumLoading}
+				currencyListBySite={currencyListBySite}
+				statusesEnum={statusesEnum}
+				payEnumList={payEnumList}
+				depositTypeEnum={depositTypeEnum}
+				bankCodeList={filteredBankCodeListByCurrencyIds}
+				vipLevelEnum={vipLevelEnum}
+				calCodeList={calCodeList}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				onSearch={handleSearch}
+				onTimeZoneChange={onTimeZoneChange}
+			/>
+			<DepositOperatorTable
+				loading={isGetDepositOperatorListFetching}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				depositOperatorList={depositOperatorList}
+				pagination={pagination}
+				rowSelection={rowSelection}
+				onTableChange={handleTableChange}
+			/>
+
+			<AffixButtons>
+				<AffixButtons.BackToTop />
+				<AffixButtons.Reject
+					loading={isBatchRejectedDepositTransIdsLoading}
+					disabled={!hasSelectedRow || !rejectPermission?.canUse}
+					onClick={handleBatchRejectedDepositTransIds}
+				/>
+				<AffixButtons.FileExport
+					loading={isExportDepositLoading}
+					disabled={isEmpty(queryParams) || !exportExcelPermission?.canUse}
+					onClick={handleExport}
+				/>
+			</AffixButtons>
+		</LayoutContent.Main>
+	)
+}
+
+export default DepositOperator

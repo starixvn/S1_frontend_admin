@@ -172,11 +172,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 27,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositList',
 		internalFunctionKey: allowedRoles.FinanceDepositList,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root,
 	},
 	{
 		icon: null,
