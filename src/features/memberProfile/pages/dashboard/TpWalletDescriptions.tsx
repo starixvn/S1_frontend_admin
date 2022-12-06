@@ -1,8 +1,11 @@
 import React from 'react'
-import { Descriptions, Spin } from 'antd'
+import { Descriptions, Spin, Typography } from 'antd'
 import { numberFormatter } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
 import { ICustTpWalletData } from 'features/memberProfile/type'
+import { isPositiveNum } from 'common/utils'
+
+const { Text } = Typography
 
 interface ITpWalletDescriptionsProps {
 	loading: boolean
@@ -25,7 +28,15 @@ const TpWalletDescriptions = ({
 				labelStyle={{ width: '50%' }}
 			>
 				<Descriptions.Item label={t('Label_TransferWallet')}>
-					{numberFormatter.format(tpWalletData?.totalTpWalletBalance ?? 0)}
+					<Text
+						type={
+							isPositiveNum(tpWalletData?.totalTpWalletBalance || 0)
+								? undefined
+								: 'danger'
+						}
+					>
+						{numberFormatter.format(tpWalletData?.totalTpWalletBalance || 0)}
+					</Text>
 				</Descriptions.Item>
 
 				{tpWalletData?.tpWalletList.map(({ tpName, tpId, balance }) => (

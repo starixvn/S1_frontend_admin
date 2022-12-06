@@ -1,12 +1,14 @@
+import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface FinancialTableProps {
 	financialLogs: IFinancialLogData[]
 	loading: boolean
@@ -53,7 +55,14 @@ const FinancialTable = ({
 			dataIndex: 'beforeAmount',
 			key: 'beforeAmount',
 			align: 'center' as 'center',
-			render: (beforeAmount: number) => numberFormatter.format(beforeAmount),
+			render: (beforeAmount: number) => (
+				<Text
+					type={isPositiveNum(beforeAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(beforeAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ChangeAmount'),
@@ -71,7 +80,14 @@ const FinancialTable = ({
 			dataIndex: 'afterAmount',
 			key: 'afterAmount',
 			align: 'center' as 'center',
-			render: (afterAmount: number) => numberFormatter.format(afterAmount),
+			render: (afterAmount: number) => (
+				<Text
+					type={isPositiveNum(afterAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(afterAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_Memo'),

@@ -15,8 +15,10 @@ import {
 	PromotionReportStatusEnum,
 	promotionReportStatusList,
 } from 'features/memberProfile/constants'
-import { isJSON } from 'common/utils'
+import { isJSON, isPositiveNum } from 'common/utils'
 import { PermissionInterface } from 'type'
+
+const { Text } = Typography
 
 interface IPromotionReportTableProps {
 	cancelPromotionPermission: PermissionInterface | undefined
@@ -110,7 +112,12 @@ const PromotionReportTable = ({
 				const depositInfo = JSON.parse(rawDepositInfo) as DepositInfoType
 				return depositInfo?.map(info => (
 					<Row align='middle' justify='center'>
-						{numberFormatter.format(info.Amount)}
+						<Text
+							type={isPositiveNum(info.Amount) ? undefined : 'danger'}
+							style={{ whiteSpace: 'nowrap', padding: '5px' }}
+						>
+							{numberFormatter.format(info.Amount || 0)}
+						</Text>
 					</Row>
 				))
 			},
@@ -133,8 +140,14 @@ const PromotionReportTable = ({
 			dataIndex: 'bonusAmount',
 			width: 80,
 			align: 'center' as 'center',
-			render: (bonusAmount: number) =>
-				bonusAmount ? numberFormatter.format(bonusAmount) : '-',
+			render: (bonusAmount: number) => (
+				<Text
+					type={isPositiveNum(bonusAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(bonusAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_LockedAmount'),
@@ -142,8 +155,14 @@ const PromotionReportTable = ({
 			dataIndex: 'lockedAmount',
 			width: 80,
 			align: 'center' as 'center',
-			render: (lockedAmount: number) =>
-				lockedAmount ? numberFormatter.format(lockedAmount) : '-',
+			render: (lockedAmount: number) => (
+				<Text
+					type={isPositiveNum(lockedAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(lockedAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_LockedAmount'),
@@ -151,8 +170,14 @@ const PromotionReportTable = ({
 			dataIndex: 'lockedAmount',
 			width: 80,
 			align: 'center' as 'center',
-			render: (lockedAmount: number) =>
-				lockedAmount ? numberFormatter.format(lockedAmount) : '-',
+			render: (lockedAmount: number) => (
+				<Text
+					type={isPositiveNum(lockedAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(lockedAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: `${t('Label_Rollover')} / ${t('Label_WinOver')}`,
@@ -160,22 +185,34 @@ const PromotionReportTable = ({
 			dataIndex: 'custRollOver',
 			width: 100,
 			align: 'center' as 'center',
-			render: (custRollOver: ICustRollOverType) => {
-				const { rollOver } = custRollOver
-				return numberFormatter.format(rollOver)
-			},
+			render: ({ rollOver }: ICustRollOverType) => (
+				<Text
+					type={isPositiveNum(rollOver) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(rollOver || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinOver'),
 			key: 'winOver',
 			width: 80,
 			align: 'center' as 'center',
-			render: (record: IGetPromotionReportData) => {
-				const { custRollOver, fullFillType } = record
-				const { winOver } = custRollOver
-				return fullFillType === PromotionReportFullFillTypeEnum.WinOver
-					? numberFormatter.format(winOver)
-					: 0
+			render: ({
+				custRollOver: { winOver },
+				fullFillType,
+			}: IGetPromotionReportData) => {
+				const num =
+					fullFillType === PromotionReportFullFillTypeEnum.WinOver ? winOver : 0
+				return (
+					<Text
+						type={isPositiveNum(num) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(num)}
+					</Text>
+				)
 			},
 		},
 		{
@@ -184,10 +221,14 @@ const PromotionReportTable = ({
 			dataIndex: 'custRollOver',
 			width: 100,
 			align: 'center' as 'center',
-			render: (custRollOver: ICustRollOverType) => {
-				const { turnOver } = custRollOver
-				return numberFormatter.format(turnOver)
-			},
+			render: ({ turnOver }: ICustRollOverType) => (
+				<Text
+					type={isPositiveNum(turnOver) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(turnOver || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_CancelBonusAmount'),
@@ -195,8 +236,14 @@ const PromotionReportTable = ({
 			dataIndex: 'cancelBonusAmount',
 			width: 120,
 			align: 'center' as 'center',
-			render: (cancelBonusAmount: number) =>
-				cancelBonusAmount ? numberFormatter.format(cancelBonusAmount) : '-',
+			render: (cancelBonusAmount: number) => (
+				<Text
+					type={isPositiveNum(cancelBonusAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(cancelBonusAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ClaimDate'),

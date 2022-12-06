@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { IGetPromotionDetailData } from 'features/memberProfile/type'
 import { Descriptions, Typography } from 'antd'
 import { numberFormatter } from 'common/utils/format'
+import { isPositiveNum } from 'common/utils'
+
+const { Text } = Typography
 
 interface ICashBackDetailTableProps {
 	loading: boolean
@@ -47,8 +50,14 @@ const CashBackDetailTable = ({
 			dataIndex: 'lossAmountWithBonus',
 			align: 'center' as 'center',
 			width: 100,
-			render: (lossAmountWithBonus: number) =>
-				lossAmountWithBonus ? numberFormatter.format(lossAmountWithBonus) : 0,
+			render: (lossAmountWithBonus: number) => (
+				<Text
+					type={isPositiveNum(lossAmountWithBonus) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(lossAmountWithBonus || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_NetLoss'),
@@ -56,8 +65,14 @@ const CashBackDetailTable = ({
 			dataIndex: 'lossAmount',
 			align: 'center' as 'center',
 			width: 100,
-			render: (lossAmount: number) =>
-				lossAmount ? numberFormatter.format(lossAmount) : 0,
+			render: (lossAmount: number) => (
+				<Text
+					type={isPositiveNum(lossAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(lossAmount || 0)}
+				</Text>
+			),
 		},
 	]
 
@@ -71,20 +86,45 @@ const CashBackDetailTable = ({
 			/>
 			<Descriptions layout='horizontal' bordered>
 				<Item label={t('Label_TotalNetLoss')}>
-					{numberFormatter.format(totalLossAmount)}
+					<Text
+						type={isPositiveNum(totalLossAmount) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(totalLossAmount || 0)}
+					</Text>
 				</Item>
 				<Item label={t('Label_MinNetLossRequired')}>
-					{numberFormatter.format(minLossAmount)}
+					<Text
+						type={isPositiveNum(minLossAmount) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(minLossAmount || 0)}
+					</Text>
 				</Item>
 				<Item label={t('Label_PercentageWithoutSymbol')}>{percentage}</Item>
 				<Item label={t('Label_TotalBonus')}>
-					{numberFormatter.format(originalTotalBonus)}
+					<Text
+						type={isPositiveNum(originalTotalBonus) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(originalTotalBonus || 0)}
+					</Text>
 				</Item>
 				<Item label={t('Label_MaxBonus')}>
-					{numberFormatter.format(maxBonus)}
+					<Text
+						type={isPositiveNum(maxBonus) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(maxBonus || 0)}
+					</Text>
 				</Item>
 				<Item label={t('Label_TotalBonusClaimable')}>
-					{numberFormatter.format(totalBonus)}
+					<Text
+						type={isPositiveNum(totalBonus) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(totalBonus || 0)}
+					</Text>
 				</Item>
 			</Descriptions>
 		</>

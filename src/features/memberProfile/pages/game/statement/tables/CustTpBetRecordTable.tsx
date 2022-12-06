@@ -1,10 +1,12 @@
+import moment from 'moment'
 import { IGetCustTpBetRecordData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { Button, Typography, Table as AntdTable } from 'antd'
-import moment from 'moment'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
-import { sumTotalObject } from 'common/utils'
+import { isPositiveNum, sumTotalObject } from 'common/utils'
+
+const { Text } = Typography
 
 interface ICustTpBetRecordTableProps {
 	loading: boolean
@@ -67,7 +69,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'totalTO',
 			width: 100,
 			align: 'center' as 'center',
-			render: (totalTO: number) => (totalTO ? numFormatToDigits(totalTO) : 0),
+			render: (totalTO: number) => (
+				<Text
+					type={isPositiveNum(totalTO) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(totalTO || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_TurnoverWithoutBonus'),
@@ -75,8 +84,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'totalTOExcludeBonus',
 			width: 100,
 			align: 'center' as 'center',
-			render: (totalTOExcludeBonus: number) =>
-				totalTOExcludeBonus ? numFormatToDigits(totalTOExcludeBonus) : 0,
+			render: (totalTOExcludeBonus: number) => (
+				<Text
+					type={isPositiveNum(totalTOExcludeBonus) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(totalTOExcludeBonus || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ValidBet'),
@@ -84,9 +99,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validBet: number) => {
-				return validBet ? numFormatToDigits(validBet) : 0
-			},
+			render: (validBet: number) => (
+				<Text
+					type={isPositiveNum(validBet) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(validBet || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_InvalidBet'),
@@ -94,9 +114,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'invalidBet',
 			width: 120,
 			align: 'center' as 'center',
-			render: (invalidBet: number) => {
-				return invalidBet ? numFormatToDigits(invalidBet) : 0
-			},
+			render: (invalidBet: number) => (
+				<Text
+					type={isPositiveNum(invalidBet) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(invalidBet || 0)}
+				</Text>
+			),
 		},
 		{
 			title: `${t('Label_TurnOver')} ${t('Label_ExcludeValidTO')}`,
@@ -104,8 +129,14 @@ const CustTpBetRecordTable = ({
 			key: 'stakeNotRollover',
 			width: 120,
 			align: 'center' as 'center',
-			render: (turnOver: number) =>
-				turnOver ? numFormatToDigits(turnOver) : 0,
+			render: (turnOver: number) => (
+				<Text
+					type={isPositiveNum(turnOver) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(turnOver || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_RunningTickets'),
@@ -113,9 +144,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'runningTickets',
 			width: 80,
 			align: 'center' as 'center',
-			render: (runningTickets: number) => {
-				return runningTickets ? numFormatToDigits(runningTickets) : 0
-			},
+			render: (runningTickets: number) => (
+				<Text
+					type={isPositiveNum(runningTickets) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(runningTickets || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLoss'),
@@ -123,9 +159,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'winLoss',
 			width: 100,
 			align: 'center' as 'center',
-			render: (winLoss: number) => {
-				return winLoss ? numFormatToDigits(winLoss) : 0
-			},
+			render: (winLoss: number) => (
+				<Text
+					type={isPositiveNum(winLoss) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(winLoss || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLossWithoutBonus'),
@@ -133,9 +174,14 @@ const CustTpBetRecordTable = ({
 			dataIndex: 'winLossExcludeBonus',
 			width: 100,
 			align: 'center' as 'center',
-			render: (winLossExcludeBonus: number) => {
-				return winLossExcludeBonus ? numFormatToDigits(winLossExcludeBonus) : 0
-			},
+			render: (winLossExcludeBonus: number) => (
+				<Text
+					type={isPositiveNum(winLossExcludeBonus) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(winLossExcludeBonus || 0)}
+				</Text>
+			),
 		},
 	]
 
