@@ -2,7 +2,10 @@ import { IGetWinLossSummaryDetailData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { numberFormatter } from 'common/utils/format'
 import { Table } from 'components'
+import { Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface IWinLossSummaryTableProps {
 	loading: boolean
 	winLossSummaryDetail: IGetWinLossSummaryDetailData[]
@@ -27,8 +30,14 @@ const WinLossSummaryTable = ({
 			key: 'stakeSettled',
 			width: '15%',
 			align: 'center' as 'center',
-			render: (stakeSettled: number) =>
-				stakeSettled ? numberFormatter.format(stakeSettled) : 0,
+			render: (stakeSettled: number) => (
+				<Text
+					type={isPositiveNum(stakeSettled) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(stakeSettled || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_TurnOver') + t('Label_ExcludeValidTO'),
@@ -36,8 +45,14 @@ const WinLossSummaryTable = ({
 			key: 'stakeNotRollover',
 			width: '15%',
 			align: 'center' as 'center',
-			render: (stakeNotRollover: number) =>
-				stakeNotRollover ? numberFormatter.format(stakeNotRollover) : 0,
+			render: (stakeNotRollover: number) => (
+				<Text
+					type={isPositiveNum(stakeNotRollover) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(stakeNotRollover || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLoss'),
@@ -45,8 +60,14 @@ const WinLossSummaryTable = ({
 			key: 'winlostAmount',
 			width: '15%',
 			align: 'center' as 'center',
-			render: (winlostAmount: number) =>
-				winlostAmount ? numberFormatter.format(winlostAmount) : 0,
+			render: (winlostAmount: number) => (
+				<Text
+					type={isPositiveNum(winlostAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(winlostAmount || 0)}
+				</Text>
+			),
 		},
 	]
 	return (

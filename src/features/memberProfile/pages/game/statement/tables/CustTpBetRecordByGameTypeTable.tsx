@@ -1,12 +1,14 @@
+import moment from 'moment'
 import { IGetCustTpBetRecordByGameTypeData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table as AntdTable, TablePaginationConfig, Typography } from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
-import moment from 'moment'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { isEmpty } from 'lodash'
-import { sumTotalObject } from 'common/utils'
+import { isPositiveNum, sumTotalObject } from 'common/utils'
+
+const { Text } = Typography
 
 interface ICustTpBetRecordByGameTypeTableProps {
 	loading: boolean
@@ -69,9 +71,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validBet: number) => {
-				return validBet ? numFormatToDigits(validBet) : 0
-			},
+			render: (validBet: number) => (
+				<Text
+					type={isPositiveNum(validBet) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(validBet || 0)}
+				</Text>
+			),
 		},
 		{
 			title: `${t('Label_TurnOver')} ${t('Label_ExcludeValidTO')}`,
@@ -79,8 +86,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			key: 'turnOver',
 			width: 120,
 			align: 'center' as 'center',
-			render: (turnOver: number) =>
-				turnOver ? numFormatToDigits(turnOver) : 0,
+			render: (turnOver: number) => (
+				<Text
+					type={isPositiveNum(turnOver) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(turnOver || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLoss'),
@@ -88,9 +101,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			dataIndex: 'winlostAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (winLoss: number) => {
-				return winLoss ? numFormatToDigits(winLoss) : 0
-			},
+			render: (winLoss: number) => (
+				<Text
+					type={isPositiveNum(winLoss) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(winLoss || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_TransTime'),

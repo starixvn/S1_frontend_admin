@@ -10,6 +10,7 @@ import {
 	Row,
 	Spin,
 	TablePaginationConfig,
+	Typography,
 } from 'antd'
 import { useParams } from 'react-router-dom'
 import {
@@ -33,7 +34,7 @@ import {
 	IGetIpUserListResponse,
 } from 'features/memberProfile/type'
 import { PAGINATION, useModal, usePagination } from 'common/hooks'
-import { dateRangeToUtcFormatter } from 'common/utils'
+import { dateRangeToUtcFormatter, isPositiveNum } from 'common/utils'
 import { useEffect } from 'react'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { AffixButtons } from 'components/AffixButtons'
@@ -46,6 +47,8 @@ import TodayInfoDescriptions from './TodayInfoDescriptions'
 import TpWalletDescriptions from './TpWalletDescriptions'
 import BonusWalletDescriptions from './BonusWalletDescriptions'
 import WinLossInfoDescriptions from './WinLossInfoDescriptions'
+
+const { Text } = Typography
 
 const Dashboard = () => {
 	const { t } = useTranslation()
@@ -244,31 +247,89 @@ const Dashboard = () => {
 								labelStyle={{ width: '50%' }}
 							>
 								<Descriptions.Item label={t('Label_WalletBalance')}>
-									{numberFormatter.format(walletBalanceInfo?.balance ?? 0)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.balance || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(walletBalanceInfo?.balance || 0)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_RemainingTurnover')}>
-									{numberFormatter.format(
-										walletBalanceInfo?.remainingTurnOver ?? 0
-									)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.remainingTurnOver || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(
+											walletBalanceInfo?.remainingTurnOver || 0
+										)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_EligibleWithdrawal')}>
-									{numberFormatter.format(
-										walletBalanceInfo?.eligibleWithdrawal ?? 0
-									)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.eligibleWithdrawal || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(
+											walletBalanceInfo?.eligibleWithdrawal || 0
+										)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_DepositSummary')}>
-									{numberFormatter.format(walletBalanceInfo?.depositSum ?? 0)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.depositSum || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(walletBalanceInfo?.depositSum || 0)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_WithdrawalSummary')}>
-									{numberFormatter.format(walletBalanceInfo?.withdrawlSum ?? 0)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.withdrawlSum || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(
+											walletBalanceInfo?.withdrawlSum || 0
+										)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_PaymentFee')}>
-									{numberFormatter.format(walletBalanceInfo?.paymentFee ?? 0)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.paymentFee || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(walletBalanceInfo?.paymentFee || 0)}
+									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_TotalAdjustment')}>
-									{numberFormatter.format(
-										walletBalanceInfo?.totalAdjustment ?? 0
-									)}
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.totalAdjustment || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numberFormatter.format(
+											walletBalanceInfo?.totalAdjustment || 0
+										)}
+									</Text>
 								</Descriptions.Item>
 							</Descriptions>
 						</Spin>
