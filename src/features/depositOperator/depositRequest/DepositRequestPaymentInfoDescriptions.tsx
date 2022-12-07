@@ -1,7 +1,8 @@
-import { Descriptions, Typography } from 'antd'
+import { Button, Descriptions, Row, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { SelectOutlined } from '@ant-design/icons'
+import { CopyOutlined, SelectOutlined } from '@ant-design/icons'
 import { IPaymentData } from 'common/service/baseDataApi/type'
+import { useCopy } from 'common/hooks'
 
 const DepositRequestPaymentInfoDescriptions = ({
 	paymentInfo,
@@ -9,6 +10,7 @@ const DepositRequestPaymentInfoDescriptions = ({
 	paymentInfo: IPaymentData | undefined
 }) => {
 	const { t } = useTranslation()
+	const { onCopy } = useCopy()
 	const {
 		payName,
 		loginUrl,
@@ -35,10 +37,28 @@ const DepositRequestPaymentInfoDescriptions = ({
 				</Typography.Link>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_Account')}>
-				{loginAccount || '-'}
+				<Row align='middle' justify='space-between'>
+					{loginAccount || '-'}
+					<Button
+						disabled={!loginAccount}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(loginAccount))}
+					/>
+				</Row>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_Password')}>
-				{loginPassword || '-'}
+				<Row align='middle' justify='space-between'>
+					{loginPassword || '-'}
+					<Button
+						disabled={!loginPassword}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(loginPassword))}
+					/>
+				</Row>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_TransferPin')}>
 				{transferPin || '-'}

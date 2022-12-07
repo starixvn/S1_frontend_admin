@@ -178,10 +178,28 @@ const DepositRequestDepositInfo = ({
 							{bankCode || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ToBankName')}>
-							{bankName || '-'}
+							<Row align='middle' justify='space-between'>
+								{bankName || '-'}
+								<Button
+									disabled={!bankName}
+									type='link'
+									style={{ padding: '0px' }}
+									icon={<CopyOutlined />}
+									onClick={() => onCopy(String(bankName))}
+								/>
+							</Row>
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ToAccountName')}>
-							{accountName || '-'}
+							<Row align='middle' justify='space-between'>
+								{accountName || '-'}
+								<Button
+									disabled={!accountName}
+									type='link'
+									style={{ padding: '0px' }}
+									icon={<CopyOutlined />}
+									onClick={() => onCopy(String(accountName))}
+								/>
+							</Row>
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ToAccountNo')}>
 							<Row align='middle' justify='space-between'>
@@ -189,10 +207,9 @@ const DepositRequestDepositInfo = ({
 								<Button
 									type='link'
 									style={{ padding: '0px' }}
+									icon={<InfoCircleOutlined style={{ fontSize: '18px' }} />}
 									onClick={() => onOpenBankInfoModal(accountNo)}
-								>
-									<InfoCircleOutlined style={{ fontSize: '18px' }} />
-								</Button>
+								/>
 							</Row>
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_CalCode')}>

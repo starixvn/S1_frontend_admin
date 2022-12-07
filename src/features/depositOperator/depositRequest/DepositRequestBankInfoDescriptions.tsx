@@ -1,8 +1,9 @@
 import React from 'react'
-import { Descriptions, Typography } from 'antd'
+import { Button, Descriptions, Row, Typography } from 'antd'
 import { IBankInfoOffState } from 'common/service/baseDataApi/type'
-import { SelectOutlined } from '@ant-design/icons'
+import { CopyOutlined, SelectOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { useCopy } from 'common/hooks'
 
 const DepositRequestBankInfoDescriptions = ({
 	bankInfo,
@@ -10,6 +11,7 @@ const DepositRequestBankInfoDescriptions = ({
 	bankInfo: IBankInfoOffState | undefined
 }) => {
 	const { t } = useTranslation()
+	const { onCopy } = useCopy()
 	const {
 		displayName,
 		bankLoginUrl,
@@ -23,10 +25,10 @@ const DepositRequestBankInfoDescriptions = ({
 
 	return (
 		<Descriptions
-			title='Deposit Info'
+			title={t('Label_BankInfo')}
 			bordered
 			column={1}
-			labelStyle={{ minWidth: '160px' }}
+			labelStyle={{ minWidth: '140px' }}
 			size='small'
 		>
 			<Descriptions.Item label={t('Label_BankAccountNo')}>
@@ -39,10 +41,28 @@ const DepositRequestBankInfoDescriptions = ({
 				</Typography.Link>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_Account')}>
-				{bankLoginAccount || '-'}
+				<Row align='middle' justify='space-between'>
+					{bankLoginAccount || '-'}
+					<Button
+						disabled={!bankLoginAccount}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(bankLoginAccount))}
+					/>
+				</Row>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_Password')}>
-				{bankLoginPassword || '-'}
+				<Row align='middle' justify='space-between'>
+					{bankLoginPassword || '-'}
+					<Button
+						disabled={!bankLoginPassword}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(bankLoginPassword))}
+					/>
+				</Row>
 			</Descriptions.Item>
 			<Descriptions.Item label={t('Label_TransferPin')}>
 				{transferPin || '-'}

@@ -5,6 +5,7 @@ import { IMemberInfo } from 'features/depositOperator/depositRequest/hooks/useMe
 import {
 	ActStatusEnum,
 	DEVICE_ALLOW_STATUS_DISPLAY_KEYS,
+	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
 
 interface IDepositRequestMemberInfoProps {
@@ -21,6 +22,7 @@ const DepositRequestMemberInfo = ({
 		currency,
 		userName,
 		vipLevel,
+		levelName,
 		actStatus,
 		isKyc,
 		isRisk,
@@ -50,7 +52,11 @@ const DepositRequestMemberInfo = ({
 					{userName || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_VipLevel')}>
-					{vipLevel || '-'}
+					{levelName ? (
+						<Tag color={VIP_LEVELS_COLOR[vipLevel as number]}>{levelName}</Tag>
+					) : (
+						'-'
+					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Deposited')}>
 					{actStatus === ActStatusEnum.Active && t('Label_Yes')}
