@@ -810,6 +810,11 @@ const ProviderAppDownload = lazy(
 		)
 )
 
+const AppQrCode = lazy(
+	() =>
+		import(/* webpackChunkName: 'AppQrCode' */ 'features/appQrCode/AppQrCode')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2006,6 +2011,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<DepositTimeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.appQrCode.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.cms.sub.urlManagement.sub.appQrCode.functionId}
+					>
+						<AppQrCode />
 					</AuthRequire>
 				),
 			},

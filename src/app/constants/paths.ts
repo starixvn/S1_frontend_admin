@@ -592,6 +592,10 @@ const paths = {
 						root: 'cms/urlManagement/lineDepositChannel',
 						functionId: 67,
 					},
+					appQrCode: {
+						root: 'cms/urlManagement/appQrCode',
+						functionId: 65,
+					},
 					providerAppDownload: {
 						root: 'cms/urlManagement/providerAppDownload',
 						functionId: 66,
