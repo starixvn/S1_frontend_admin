@@ -174,7 +174,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositList',
 		internalFunctionKey: allowedRoles.FinanceDepositList,
 		newAdminPath:
@@ -221,7 +221,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.depositTimeReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositTimeReport',
 		internalFunctionKey: allowedRoles.FinanceDepositTimeReport,
 		newAdminPath: paths.finance.sub.report.sub.depositTimeReport.root,
@@ -493,7 +493,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		name: 'APP QR Code',
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.appQrCode.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/AppLinkManagement',
 		internalFunctionKey: allowedRoles.CMSAppLinkManagement,
 		newAdminPath: paths.cms.sub.urlManagement.sub.appQrCode.root,
@@ -501,7 +501,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.providerAppDownload.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DeepLinkManagement',
 		internalFunctionKey: allowedRoles.CMSDeepLinkManagement,
 		newAdminPath: paths.cms.sub.urlManagement.sub.providerAppDownload.root,
@@ -872,7 +872,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.gameStatisticalReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.gameStatisticalReport.root,
 	},
 ]
