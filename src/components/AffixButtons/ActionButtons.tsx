@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons'
 import { ButtonProps } from 'antd'
 import { BiExport, BiAddToQueue, BiSortAlt2 } from 'react-icons/bi'
+import { BsX } from 'react-icons/bs'
 import StyledButton from './StyledButton'
 
 const CreateButton = (props: ButtonProps) => {
@@ -16,6 +17,18 @@ const CreateButton = (props: ButtonProps) => {
 			icon={<PlusOutlined />}
 			type='primary'
 			shape='circle'
+			{...props}
+		/>
+	)
+}
+
+const RejectButton = (props: ButtonProps) => {
+	return (
+		<StyledButton
+			icon={<BsX style={{ fontSize: 24, marginTop: 8 }} />}
+			type='primary'
+			shape='circle'
+			danger
 			{...props}
 		/>
 	)
@@ -91,6 +104,7 @@ const CloseButton = (props: ButtonProps) => (
 )
 
 CreateButton.AFFIX_BUTTON_TYPE = 'CREATE_BUTTON'
+RejectButton.AFFIX_BUTTON_TYPE = 'REJECT_BUTTON'
 DeleteButton.AFFIX_BUTTON_TYPE = 'DELETE_BUTTON'
 SavedButton.AFFIX_BUTTON_TYPE = 'SAVED_BUTTON'
 ReloadButton.AFFIX_BUTTON_TYPE = 'RELOAD_BUTTON'
@@ -102,6 +116,7 @@ CloseButton.AFFIX_BUTTON_TYPE = 'CLOSE_BUTTON'
 
 export {
 	CreateButton,
+	RejectButton,
 	DeleteButton,
 	SavedButton,
 	ReloadButton,

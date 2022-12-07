@@ -1,11 +1,14 @@
+import moment from 'moment'
 import { IGetCustTpBetRecordByGameTypeData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Typography } from 'antd'
-import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment'
+import { Table as AntdTable, TablePaginationConfig, Typography } from 'antd'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { isEmpty } from 'lodash'
+import { isPositiveNum, sumTotalObject } from 'common/utils'
+
+const { Text } = Typography
 
 interface ICustTpBetRecordByGameTypeTableProps {
 	loading: boolean
@@ -21,6 +24,9 @@ interface ICustTpBetRecordByGameTypeTableProps {
 		settledTime: string
 	}) => void
 }
+
+const { Summary } = AntdTable
+
 const CustTpBetRecordByGameTypeTable = ({
 	loading,
 	custTpBetRecordByGameType,
@@ -65,9 +71,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validBet: number) => {
-				return validBet ? numberFormatter.format(validBet) : 0
-			},
+			render: (validBet: number) => (
+				<Text
+					type={isPositiveNum(validBet) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(validBet || 0)}
+				</Text>
+			),
 		},
 		{
 			title: `${t('Label_TurnOver')} ${t('Label_ExcludeValidTO')}`,
@@ -75,8 +86,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			key: 'turnOver',
 			width: 120,
 			align: 'center' as 'center',
-			render: (turnOver: number) =>
-				turnOver ? numberFormatter.format(turnOver) : 0,
+			render: (turnOver: number) => (
+				<Text
+					type={isPositiveNum(turnOver) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(turnOver || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLoss'),
@@ -84,9 +101,14 @@ const CustTpBetRecordByGameTypeTable = ({
 			dataIndex: 'winlostAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (winLoss: number) => {
-				return winLoss ? numberFormatter.format(winLoss) : 0
-			},
+			render: (winLoss: number) => (
+				<Text
+					type={isPositiveNum(winLoss) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(winLoss || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_TransTime'),
@@ -100,11 +122,11 @@ const CustTpBetRecordByGameTypeTable = ({
 						{moment(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
-					''
+					'-'
 				),
 		},
 		{
-			title: t('Label_TransTime'),
+			title: t('Label_SettledDate'),
 			key: 'settledDate',
 			dataIndex: 'settledTime',
 			width: 150,
@@ -117,7 +139,7 @@ const CustTpBetRecordByGameTypeTable = ({
 							.format(timeFormat)}
 					</Typography.Text>
 				) : (
-					''
+					'-'
 				),
 		},
 		{
@@ -140,6 +162,48 @@ const CustTpBetRecordByGameTypeTable = ({
 		<Table
 			loading={loading}
 			dataSource={custTpBetRecordByGameType ?? []}
+			summary={
+				// eslint-disable-next-line react/no-unstable-nested-components
+				pageData => {
+					if (pageData.length <= 1) return null
+					const totalData: IGetCustTpBetRecordByGameTypeData = sumTotalObject(
+						pageData as object[]
+					)
+					const { validBet, turnOver, winlostAmount } = totalData
+
+					return (
+						<Summary.Row>
+							<Summary.Cell index={0} align='center'>
+								-
+							</Summary.Cell>
+							<Summary.Cell index={1} align='center'>
+								{t('Label_Total')}
+							</Summary.Cell>
+							<Summary.Cell index={2} align='center'>
+								{validBet ? numFormatToDigits(validBet) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={3} align='center'>
+								{turnOver ? numFormatToDigits(turnOver) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={4} align='center'>
+								{winlostAmount ? numFormatToDigits(winlostAmount) : 0}
+							</Summary.Cell>
+							<Summary.Cell index={5} align='center'>
+								-
+							</Summary.Cell>
+							<Summary.Cell index={6} align='center'>
+								-
+							</Summary.Cell>
+							<Summary.Cell index={7} align='center'>
+								-
+							</Summary.Cell>
+							<Summary.Cell index={8} align='center'>
+								-
+							</Summary.Cell>
+						</Summary.Row>
+					)
+				}
+			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
 			pagination={pagination as TablePaginationConfig}

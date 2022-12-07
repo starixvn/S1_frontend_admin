@@ -2,7 +2,10 @@ import { IGetTurnoverData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { numberFormatter } from 'common/utils/format'
+import { Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface ITurnoverTableProps {
 	loading: boolean
 	turnoverData: IGetTurnoverData[]
@@ -24,10 +27,21 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 			key: 'totalTO',
 			width: 100,
 			align: 'center' as 'center',
-			render: (record: IGetTurnoverData) => {
-				const { stakeSettled = 0, stakeNotRollover = 0 } = record
-				return numberFormatter.format(stakeSettled + stakeNotRollover)
-			},
+			render: ({
+				stakeSettled = 0,
+				stakeNotRollover = 0,
+			}: IGetTurnoverData) => (
+				<Text
+					type={
+						isPositiveNum(stakeSettled + stakeNotRollover)
+							? undefined
+							: 'danger'
+					}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(stakeSettled + stakeNotRollover)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ValidBet'),
@@ -35,9 +49,14 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 			dataIndex: 'stakeSettled',
 			width: 100,
 			align: 'center' as 'center',
-			render: (stakeSettled: number) => {
-				return stakeSettled ? numberFormatter.format(stakeSettled) : 0
-			},
+			render: (stakeSettled: number) => (
+				<Text
+					type={isPositiveNum(stakeSettled) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(stakeSettled || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_TurnOver') + t('Label_ExcludeValidTO'),
@@ -45,9 +64,14 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 			dataIndex: 'stakeNotRollover',
 			width: 100,
 			align: 'center' as 'center',
-			render: (stakeNotRollover: number) => {
-				return stakeNotRollover ? numberFormatter.format(stakeNotRollover) : 0
-			},
+			render: (stakeNotRollover: number) => (
+				<Text
+					type={isPositiveNum(stakeNotRollover) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(stakeNotRollover || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_WinLoss'),
@@ -55,9 +79,14 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 			dataIndex: 'winlostAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (winlostAmount: number) => {
-				return winlostAmount ? numberFormatter.format(winlostAmount) : 0
-			},
+			render: (winlostAmount: number) => (
+				<Text
+					type={isPositiveNum(winlostAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(winlostAmount || 0)}
+				</Text>
+			),
 		},
 	]
 

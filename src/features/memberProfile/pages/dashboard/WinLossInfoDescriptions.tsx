@@ -1,7 +1,10 @@
-import { Descriptions, Spin } from 'antd'
+import { Descriptions, Spin, Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
 import { numberFormatter } from 'common/utils/format'
 import { IWinLossInfoData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
+
+const { Text } = Typography
 
 interface IWinLossInfoDescriptionsProps {
 	loading: boolean
@@ -26,19 +29,31 @@ const WinLossInfoDescriptions = ({
 				labelStyle={{ width: '50%' }}
 			>
 				<Descriptions.Item label={t('Label_WinLoss')}>
-					{numberFormatter.format(winLoss ?? 0)}
+					<Text type={isPositiveNum(winLoss || 0) ? undefined : 'danger'}>
+						{numberFormatter.format(winLoss || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_ValidBet')}>
-					{numberFormatter.format(validBet ?? 0)}
+					<Text type={isPositiveNum(validBet || 0) ? undefined : 'danger'}>
+						{numberFormatter.format(validBet || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Winnings')}>
-					{numberFormatter.format(winnings ?? 0)}
+					<Text type={isPositiveNum(winnings || 0) ? undefined : 'danger'}>
+						{numberFormatter.format(winnings || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Losses')}>
-					{numberFormatter.format(losses ?? 0)}
+					<Text type={isPositiveNum(losses || 0) ? undefined : 'danger'}>
+						{numberFormatter.format(losses || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_OutstandingAmount')}>
-					{numberFormatter.format(outstandingAmount ?? 0)}
+					<Text
+						type={isPositiveNum(outstandingAmount || 0) ? undefined : 'danger'}
+					>
+						{numberFormatter.format(outstandingAmount || 0)}
+					</Text>
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>

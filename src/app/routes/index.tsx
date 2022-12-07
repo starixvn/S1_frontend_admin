@@ -327,6 +327,21 @@ const WithdrawalSubmission = lazy(
 			/* webpackChunkName: 'WithdrawalSubmission' */ 'features/withdrawalSubmission/WithdrawalSubmission'
 		)
 )
+
+const DepositOperator = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositOperator' */ 'features/depositOperator/DepositOperator'
+		)
+)
+
+const DepositRequest = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositRequest' */ 'features/depositOperator/depositRequest/DepositRequest'
+		)
+)
+
 const BankCardManagement = lazy(
 	() =>
 		import(
@@ -753,6 +768,12 @@ const BannerManagement = lazy(
 			/* webpackChunkName: 'BannerManagement' */ 'features/bannerManagement/BannerManagement'
 		)
 )
+const DepositTimeReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositTimeReport' */ 'features/depositTimeReport/DepositTimeReport'
+		)
+)
 
 const DepositSubmission = lazy(
 	() =>
@@ -773,6 +794,25 @@ const BankFinancialReport = lazy(
 		import(
 			/* webpackChunkName: 'BankFinancialReport' */ 'features/bankFinancialReport/BankFinancialReport'
 		)
+)
+
+const GameStatisticalReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameStatisticalReport' */ 'features/gameStatisticalReport/GameStatisticalReport'
+		)
+)
+
+const ProviderAppDownload = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProviderAppDownload' */ 'features/providerAppDownload/ProviderAppDownload'
+		)
+)
+
+const AppQrCode = lazy(
+	() =>
+		import(/* webpackChunkName: 'AppQrCode' */ 'features/appQrCode/AppQrCode')
 )
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
@@ -1323,6 +1363,32 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalSubmission />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.depositOperator
+								.functionId
+						}
+					>
+						<DepositOperator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root}/:transId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.depositOperator
+								.functionId
+						}
+					>
+						<DepositRequest />
 					</AuthRequire>
 				),
 			},
@@ -1911,6 +1977,50 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.drawPrizeReport.functionId}>
 						<DrawPrizeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.gameStatisticalReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.gameStatisticalReport.functionId}
+					>
+						<GameStatisticalReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.providerAppDownload.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.providerAppDownload.functionId
+						}
+					>
+						<ProviderAppDownload />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.report.sub.depositTimeReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.report.sub.depositTimeReport.functionId
+						}
+					>
+						<DepositTimeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.appQrCode.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.cms.sub.urlManagement.sub.appQrCode.functionId}
+					>
+						<AppQrCode />
 					</AuthRequire>
 				),
 			},

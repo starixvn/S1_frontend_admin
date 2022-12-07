@@ -50,6 +50,7 @@ export interface IAffInfo {
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
+	levelName: string
 	vipLogo: string
 	isOnline: boolean
 	userName: string

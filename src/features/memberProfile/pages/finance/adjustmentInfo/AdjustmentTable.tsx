@@ -6,7 +6,9 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetAdjustmentInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface AdjustmentTableProps {
 	adjustmentInfoList: IGetAdjustmentInfoData[]
 	loading: boolean
@@ -77,7 +79,14 @@ const AdjustmentTable = ({
 			dataIndex: 'amount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (amount: number) => (amount ? numberFormatter.format(amount) : 0),
+			render: (amount: number) => (
+				<Text
+					type={isPositiveNum(amount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(amount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_Reason'),

@@ -6,7 +6,9 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface DepositTableProps {
 	depositInfoList: IGetDepositInfoData[]
 	loading: boolean
@@ -77,7 +79,14 @@ const DepositTable = ({
 			dataIndex: 'amount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (amount: number) => (amount ? numberFormatter.format(amount) : 0),
+			render: (amount: number) => (
+				<Text
+					type={isPositiveNum(amount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(amount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ActualDeposit'),
@@ -85,8 +94,14 @@ const DepositTable = ({
 			dataIndex: 'actualDeposit',
 			width: 100,
 			align: 'center' as 'center',
-			render: (actualDeposit: number) =>
-				actualDeposit ? numberFormatter.format(actualDeposit) : 0,
+			render: (actualDeposit: number) => (
+				<Text
+					type={isPositiveNum(actualDeposit) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(actualDeposit || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_PaymentReferenceId'),

@@ -240,6 +240,10 @@ const paths = {
 						root: 'finance/depositWithdrawalSector/withdrawalAdjustment',
 						functionId: 30,
 					},
+					depositOperator: {
+						root: 'finance/depositWithdrawalSector/depositOperator',
+						functionId: 27,
+					},
 				},
 			},
 			issueBonusManagement: {
@@ -249,6 +253,10 @@ const paths = {
 			report: {
 				root: 'finance/report',
 				sub: {
+					depositTimeReport: {
+						root: 'finance/report/DepositTimeReport',
+						functionId: 34,
+					},
 					paymentAdjustment: {
 						root: 'finance/report/paymentAdjustment',
 						functionId: 36,
@@ -370,6 +378,10 @@ const paths = {
 			drawPrizeReport: {
 				root: 'report/drawPrizeReport',
 				functionId: 78,
+			},
+			gameStatisticalReport: {
+				root: 'report/gameStatisticalReport',
+				functionId: 132,
 			},
 		},
 	},
@@ -579,6 +591,14 @@ const paths = {
 					lineDepositChannel: {
 						root: 'cms/urlManagement/lineDepositChannel',
 						functionId: 67,
+					},
+					appQrCode: {
+						root: 'cms/urlManagement/appQrCode',
+						functionId: 65,
+					},
+					providerAppDownload: {
+						root: 'cms/urlManagement/providerAppDownload',
+						functionId: 66,
 					},
 				},
 			},

@@ -120,3 +120,13 @@ export enum OrderEnum {
 	descend = 0,
 	ascend = 1,
 }
+
+export enum DepositTypeEnum {
+	OnlineBanking = 1,
+	MobilePay,
+	LocalBanking,
+	CryptoPay,
+	LoadCard,
+	QRPay,
+	BankAutoChannel,
+}

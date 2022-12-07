@@ -3,6 +3,7 @@ import { Divider, message, Spin } from 'antd'
 import { StatusInfo } from 'features/memberProfile/sider/StatusInfo'
 import { AffiliateInfo } from 'features/memberProfile/sider/AffiliateInfo'
 import { useParams } from 'react-router-dom'
+import DocumentTitle from 'react-document-title'
 import {
 	IGetBasicInfoResponse,
 	IGetCustPhotoResponse,
@@ -15,11 +16,11 @@ import {
 	useUploadCustPhotoMutation,
 } from 'features/memberProfile/api'
 import { UploadPicModal } from 'features/memberProfile/sider/uploaderModal/UploadPicModal'
-import React from 'react'
 import { useAuth, useModal } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { UploadFile } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
+import { PAGE_TITLE } from 'app/config'
 
 const MemberProfileSiderContent = () => {
 	const { t } = useTranslation()
@@ -84,7 +85,7 @@ const MemberProfileSiderContent = () => {
 	}
 
 	return (
-		<div>
+		<DocumentTitle title={custBasicInfo?.userName || PAGE_TITLE}>
 			<Spin spinning={isGetCustBasicInfoLoading}>
 				<BasicInfo
 					lineUnbindingPermission={lineUnbindingPermission}
@@ -113,7 +114,7 @@ const MemberProfileSiderContent = () => {
 					uploading={isUploadCustPhotoLoading}
 				/>
 			</Spin>
-		</div>
+		</DocumentTitle>
 	)
 }
 
