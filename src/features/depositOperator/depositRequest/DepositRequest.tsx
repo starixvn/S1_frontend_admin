@@ -12,7 +12,6 @@ import {
 	Modal,
 } from 'antd'
 import { find } from 'lodash'
-import copy from 'copy-to-clipboard'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -26,7 +25,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { noImageFallBack } from 'app/constants/images'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
-import { useAuth } from 'common/hooks'
+import { useAuth, useCopy } from 'common/hooks'
 import {
 	useGetCalCodeListQuery,
 	useLazyGetPaymentListQuery,
@@ -57,6 +56,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm<IDepositRequestFrom>()
+	const { onCopy } = useCopy()
 	const {
 		data: { data: calCodeList = [] } = {},
 		isFetching: isGetCalCodeListFetching,
@@ -99,6 +99,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		const bankInfo = find(bankInfoOffList, { accountNo })
 		Modal.info({
 			content: <DepositRequestBankInfoDescriptions bankInfo={bankInfo} />,
+			width: '540px',
 		})
 	}
 
@@ -110,6 +111,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			content: (
 				<DepositRequestPaymentInfoDescriptions paymentInfo={paymentInfo} />
 			),
+			width: '540px',
 		})
 	}
 
@@ -180,14 +182,6 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleCopy = async (value: string) => {
-		if (copy(value)) {
-			message.success(`${t('Label_Copied')} ${t('System.Label_Success')}`)
-		} else {
-			message.error(t('Label_TryAgain'))
-		}
-	}
-
 	const depositLoading =
 		isDepositInfoLoading ||
 		isGetCalCodeListFetching ||
@@ -232,7 +226,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								timeZoneUtcOffset={timeZoneUtcOffset}
 								depositInfo={depositInfo}
 								calCodeList={calCodeList}
-								onCopy={handleCopy}
+								onCopy={onCopy}
 								onSetAmountByTransId={handleSetAmountByTransId}
 								onOpenBankInfoModal={onOpenBankInfoModal}
 								onOpenPaymentInfoModal={onOpenPaymentInfoModal}

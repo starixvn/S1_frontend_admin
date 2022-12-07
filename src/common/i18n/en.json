@@ -895,5 +895,6 @@
 	"Label_LoginAccount": "Login Account",
 	"Label_LoginPassword": "Login Password",
 	"Label_UniquePlayers": "Unique Player",
-	"Label_System": "System"
+	"Label_System": "System",
+	"Label_BankInfo": "Bank Info"
 }
