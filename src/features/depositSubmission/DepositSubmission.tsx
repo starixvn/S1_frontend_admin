@@ -173,6 +173,7 @@ const DepositSubmission = ({ pageTitle }: IDepositSubmissionProps) => {
 				{!isEmpty(queryParams) && (
 					<AffixButtons.Saved
 						disabled={!editPermission?.canUse}
+						loading={isSubmitDepositLoading}
 						onClick={handleSubmit}
 					/>
 				)}
