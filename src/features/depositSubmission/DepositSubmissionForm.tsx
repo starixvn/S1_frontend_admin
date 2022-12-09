@@ -20,7 +20,7 @@ import {
 } from 'features/depositSubmission/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import DepositSubmissionUploader from 'features/depositSubmission/DepositSubmissionUploader'
-import { find } from 'lodash'
+import { find, isNumber } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useModal } from 'common/hooks'
 
@@ -59,7 +59,7 @@ const DepositSubmissionForm = ({
 	}
 
 	const accountNoSelector = () => {
-		const filterBankInfoList = settingStatus
+		const filterBankInfoList = isNumber(settingStatus)
 			? bankInfoList.filter(
 					({ settingStatus: status }) =>
 						Number(status) === Number(settingStatus)
