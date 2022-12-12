@@ -896,5 +896,6 @@
 	"Label_LoginPassword": "Login Password",
 	"Label_UniquePlayers": "Unique Player",
 	"Label_System": "System",
-	"Label_BankInfo": "Bank Info"
+	"Label_BankInfo": "Bank Info",
+	"Label_ReferralUrl": "Referral Url"
 }
