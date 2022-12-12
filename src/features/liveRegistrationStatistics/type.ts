@@ -1,7 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
-export interface IData {}
-
 export interface IGetRegistrationManagementListArgs {
 	siteId?: number
 	currencyId: number
@@ -31,6 +29,7 @@ export type IRegistrationManagementData = {
 	accountName: string
 	phoneNo: null | number
 	phoneVerified: number
+	referralUrl: string
 	regTime: string
 	lastActiveTime: null | string
 	depositStatus: number

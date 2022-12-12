@@ -50,7 +50,6 @@ const LiveRegistrationStatisticsTable: FC<{
 	onCallingRecord,
 }) => {
 	const { t } = useTranslation()
-
 	const columns = [
 		{
 			title: t('Label_Currency'),
@@ -73,6 +72,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'affiliatesCode',
 			width: 80,
 			align: 'center' as 'center',
+			render: (affiliatesCode: string) => affiliatesCode ?? '-',
 		},
 		{
 			title: t('Label_MemberId'),
@@ -80,6 +80,14 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'userName',
 			width: 80,
 			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_AccountName'),
+			key: 'accountName',
+			dataIndex: 'accountName',
+			width: 80,
+			align: 'center' as 'center',
+			render: (accountName: string) => accountName ?? '-',
 		},
 		{
 			title: t('Label_PhoneNo'),
@@ -96,6 +104,14 @@ const LiveRegistrationStatisticsTable: FC<{
 			align: 'center' as 'center',
 			render: (phoneVerified: number) =>
 				phoneVerified === 1 ? t('Label_Verified') : 'No',
+		},
+		{
+			title: t('Label_ReferralUrl'),
+			key: 'referralUrl',
+			dataIndex: 'referralUrl',
+			width: 80,
+			align: 'center' as 'center',
+			render: (referralUrl: string) => referralUrl ?? '-',
 		},
 		{
 			title: t('Label_RegTimeDate'),
