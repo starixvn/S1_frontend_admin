@@ -82,7 +82,7 @@ const CustTpBetRecordByGameTypeTable = ({
 		},
 		{
 			title: `${t('Label_TurnOver')} ${t('Label_ExcludeValidTO')}`,
-			dataIndex: 'turnOver',
+			dataIndex: 'turnOver_ExcludeValidTO',
 			key: 'turnOver',
 			width: 120,
 			align: 'center' as 'center',
