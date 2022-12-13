@@ -41,6 +41,8 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 			powerpaste_allow_local_images: true,
 			powerpaste_word_import: 'prompt',
 			powerpaste_html_import: 'prompt',
+			// 允許禁用 TinyMCE 的默認 webkit 樣式粘貼過濾器
+			paste_remove_styles_if_webkit: false,
 		},
 		darkMode && {
 			content_style: 'body { background-color :rgba(129,129,129,0.6)}',
