@@ -32,6 +32,7 @@ import { IForm } from 'features/depositOperator/type'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
 import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
+import DepositOperatorOverviewTable from './DepositOperatorOverviewTable'
 
 const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -90,6 +91,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			data: {
 				data: depositOperatorList = [],
 				rowCount: DepositOperatorTotal = 0,
+				currencyAmountRecord: currencyAmountRecordList = [],
 			} = {},
 			isFetching: isGetDepositOperatorListFetching,
 		},
@@ -353,6 +355,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				pagination={pagination}
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
+			/>
+
+			<DepositOperatorOverviewTable
+				loading={isGetDepositOperatorListFetching}
+				currencyAmountRecordList={currencyAmountRecordList}
 			/>
 
 			<AffixButtons>
