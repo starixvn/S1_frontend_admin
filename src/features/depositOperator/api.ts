@@ -8,12 +8,13 @@ import {
 	IDepositCommentData,
 	ISetDepositStatusArgs,
 	ISetAmountByTransIdArgs,
+	IDepositOperatorResponse,
 } from 'features/depositOperator/type'
 
 export const depositOperatorApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDepositOperatorList: builder.query<
-			IAxiosResponse<IDepositOperatorData[]>,
+			IDepositOperatorResponse,
 			IGetDepositOperatorListArgs
 		>({
 			query: data => ({

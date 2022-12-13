@@ -1,5 +1,6 @@
 import { Key } from 'react'
 import { Moment } from 'moment'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export enum DepositStatusEnum {
 	Draft = 0,
@@ -52,6 +53,17 @@ export interface IGetDepositOperatorListArgs {
 	currencyIds: number[]
 	levelStatuses: number[]
 	agent: string
+}
+
+export interface ICurrencyAmountRecord {
+	amount: number
+	currency: string
+	record: number
+}
+
+export interface IDepositOperatorResponse
+	extends IAxiosResponse<IDepositOperatorData[]> {
+	currencyAmountRecord: ICurrencyAmountRecord[]
 }
 
 /**
