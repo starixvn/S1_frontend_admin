@@ -3,7 +3,6 @@ import { Col, Row } from 'antd'
 import { includes } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { OperatorButton } from 'components/OperatorButton/OperatorButton'
-
 import {
 	DepositStatusEnum,
 	UsableActionButtonEnum,
@@ -12,16 +11,35 @@ import {
 interface IDepositRequestOperatorButtonGroupProps {
 	usableActionButtons: number[]
 	onSetDepositStatus: (status: DepositStatusEnum) => void
+	onShowSendMessageModal: () => void
 }
 
 const DepositRequestOperatorButtonGroup = ({
 	usableActionButtons,
 	onSetDepositStatus,
+	onShowSendMessageModal,
 }: IDepositRequestOperatorButtonGroupProps) => {
 	const { t } = useTranslation()
 
 	return (
 		<Row gutter={[16, 16]}>
+			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
+				<Col span={6}>
+					<OperatorButton
+						onClick={() => onSetDepositStatus(DepositStatusEnum.Rejected)}
+						color='Reject'
+					>
+						{t('Label_Reject')}
+					</OperatorButton>
+				</Col>
+			)}
+
+			<Col span={6}>
+				<OperatorButton onClick={onShowSendMessageModal} color='Blue'>
+					{t('Label_SendMessage')}
+				</OperatorButton>
+			</Col>
+
 			{includes(usableActionButtons, UsableActionButtonEnum.Draft) && (
 				<Col span={6}>
 					<OperatorButton
@@ -44,6 +62,17 @@ const DepositRequestOperatorButtonGroup = ({
 				</Col>
 			)}
 
+			{includes(usableActionButtons, UsableActionButtonEnum.Pending) && (
+				<Col span={6}>
+					<OperatorButton
+						onClick={() => onSetDepositStatus(DepositStatusEnum.Pending)}
+						color='Yellow'
+					>
+						{t('Label_Pending')}
+					</OperatorButton>
+				</Col>
+			)}
+
 			{includes(usableActionButtons, UsableActionButtonEnum.Approved) && (
 				<Col span={6}>
 					<OperatorButton
@@ -62,17 +91,6 @@ const DepositRequestOperatorButtonGroup = ({
 						color='Purple'
 					>
 						{t('Label_ManualApproved')}
-					</OperatorButton>
-				</Col>
-			)}
-
-			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
-				<Col span={6}>
-					<OperatorButton
-						onClick={() => onSetDepositStatus(DepositStatusEnum.Rejected)}
-						color='Reject'
-					>
-						{t('Label_Reject')}
 					</OperatorButton>
 				</Col>
 			)}

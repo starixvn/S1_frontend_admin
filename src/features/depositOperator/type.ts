@@ -68,7 +68,6 @@ export interface IDepositOperatorResponse
 
 /**
  * * 轉回來預期為 Object，用到 channelName、exchangeAmount、actualExchangeAmount、sysId
- * ! 這邊會有點混淆，depositInfo json sysId 代表 bankId
  */
 export interface IDepositInfo {
 	payId?: number
@@ -92,6 +91,7 @@ export interface IODepositInfo {
 
 export interface IDepositOperatorData {
 	transId: string
+	depositId: number
 	depositType: number
 	depositTypeName: string
 	currencyId: number
@@ -102,7 +102,7 @@ export interface IDepositOperatorData {
 	realName: string | null
 	siteId: number
 	siteName: string | null
-
+	bankId: number
 	depositInfo: IDepositInfo
 	amount: 150000.0
 	actualDeposit: 150000.0
@@ -215,4 +215,16 @@ export interface ISetAmountByTransIdArgs {
 	after: {
 		amount: number
 	}
+}
+
+export interface IDepositReasonMessage {
+	name: string
+	value: number
+}
+
+export interface ISendDepositReasonMessageArgs {
+	siteId: number
+	currencyId: number
+	transId: string
+	after: { depositId: number; status: number }
 }

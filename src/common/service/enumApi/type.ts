@@ -42,6 +42,7 @@ export type EnumNameType =
 	| 'DeepLinkTableProtocolTypeEnum'
 	| 'DepositTimeStatusEnum'
 	| 'AppTypeEnum'
+	| 'SelectDepositStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -75,6 +76,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DeepLinkTableProtocolTypeEnum - 取得DeepLink ProtocolType清單
 	 * @argument {string}  DepositTimeStatusEnum - 取得存款時間狀態列表
 	 * @argument {string}  AppTypeEnum - 取得行動裝置種類
+	 * @argument {string}  SelectDepositStatusEnum -
 	 */
 	enumName: EnumNameType
 }
