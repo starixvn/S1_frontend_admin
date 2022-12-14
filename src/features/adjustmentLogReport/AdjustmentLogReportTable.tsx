@@ -1,4 +1,4 @@
-import { isArray, isNumber, isString } from 'lodash'
+import { isArray, isBoolean, isNumber, isString } from 'lodash'
 import moment from 'moment'
 import { Table, TablePaginationConfig, Tag } from 'antd'
 import styled from 'styled-components'
@@ -16,6 +16,10 @@ const StaticTitle = styled.span`
 const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
 	if (isString(item[key]) || isNumber(item[key])) return item[key]
 
+	if (isBoolean(item[key])) {
+		return item[key].toString()
+	}
+
 	if (isArray(item[key]))
 		return (item[key] as any[]).map(detailItem =>
 			Object.keys(detailItem).map(detailItemKey => (
@@ -24,7 +28,6 @@ const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
 				</div>
 			))
 		)
-
 	return 'null'
 }
 
