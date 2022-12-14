@@ -5,8 +5,12 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Key } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Tag, Typography } from 'antd'
-import { Table } from 'components'
+import { Space, TablePaginationConfig, Tag, Typography } from 'antd'
+import {
+	Table,
+	useVisibilityColumnsButtonHook,
+	VisibilityColumnsButton,
+} from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import {
@@ -39,7 +43,9 @@ const DepositOperatorTable = ({
 	onTableChange,
 }: IDepositOperatorTableProps) => {
 	const { t } = useTranslation()
-	const columns = [
+	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
+		useVisibilityColumnsButtonHook()
+	const baseColumns = [
 		{
 			title: t('Label_TransId'),
 			width: 60,
@@ -270,6 +276,8 @@ const DepositOperatorTable = ({
 		},
 	]
 
+	const columns = onGetVisibilityColumns(baseColumns)
+
 	// * for selection and operation of table
 	const dataSource = depositOperatorList.map(item => ({
 		...item,
@@ -286,6 +294,15 @@ const DepositOperatorTable = ({
 				onChange={onTableChange}
 				rowSelection={{ ...rowSelection }}
 				pagination={pagination as TablePaginationConfig}
+				// eslint-disable-next-line react/no-unstable-nested-components
+				title={() => (
+					<Space align='end' direction='vertical' style={{ width: '100%' }}>
+						<VisibilityColumnsButton
+							baseColumns={baseColumns}
+							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+						/>
+					</Space>
+				)}
 			/>
 		</LayoutContent.Card>
 	)

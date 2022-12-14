@@ -5,6 +5,7 @@ import { FormInstance, Typography, Form, Input } from 'antd'
 import { Table } from 'components'
 import { IDepositCommentData } from 'features/depositOperator/type'
 import { timeFormat } from 'common/utils/format'
+import { isEmpty } from 'lodash'
 
 const { TextArea } = Input
 
@@ -70,14 +71,21 @@ const DepositRequestComments = ({
 	]
 	return (
 		<>
-			<Table
-				loading={loading}
-				dataSource={depositComments}
-				pagination={false}
-				columns={columns}
-				style={{ marginTop: '20px' }}
-			/>
-			<br />
+			{/* 沒資料時先隱藏 table 讓畫面較不佔空間 */}
+			{!isEmpty(depositComments) && (
+				<>
+					<Table
+						size='small'
+						loading={loading}
+						dataSource={depositComments}
+						pagination={false}
+						columns={columns}
+						style={{ marginTop: '20px' }}
+					/>
+					<br />
+				</>
+			)}
+
 			<Form form={form}>
 				<Form.Item name='comment' style={{ marginTop: '10px' }}>
 					<TextArea allowClear placeholder={`${t('Label_Comment')}...`} />

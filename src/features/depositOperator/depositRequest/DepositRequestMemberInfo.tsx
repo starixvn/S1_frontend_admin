@@ -1,4 +1,4 @@
-import { Descriptions, Spin, Tag } from 'antd'
+import { Descriptions, Spin, Tag, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
@@ -7,6 +7,8 @@ import {
 	DEVICE_ALLOW_STATUS_DISPLAY_KEYS,
 	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 
 interface IDepositRequestMemberInfoProps {
 	loading: boolean
@@ -20,6 +22,7 @@ const DepositRequestMemberInfo = ({
 	const { t } = useTranslation()
 	const {
 		currency,
+		custId,
 		userName,
 		vipLevel,
 		levelName,
@@ -49,7 +52,12 @@ const DepositRequestMemberInfo = ({
 					{currency || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_MemberId')}>
-					{userName || '-'}
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName || '-'}
+					</Typography.Link>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_VipLevel')}>
 					{levelName ? (

@@ -897,5 +897,6 @@
 	"Label_UniquePlayers": "Unique Player",
 	"Label_System": "System",
 	"Label_BankInfo": "Bank Info",
-	"Label_ReferralUrl": "Referral Url"
+	"Label_ReferralUrl": "Referral Url",
+	"Label_SendMessage": "Send Message"
 }
