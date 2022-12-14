@@ -5,17 +5,34 @@ import { filter, includes } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useScrollPosition } from 'common/hooks'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
+import { ColumnsType } from 'antd/es/table'
 
 const StyleMenu = styled(Menu)`
 	max-height: 250px;
 	overflow-y: scroll;
 `
 
+export const useVisibilityColumnsButtonHook = () => {
+	const [visibilityColumns, setVisibilityColumns] = useState<string[]>([])
+
+	const onChangeVisibilityColumns = (keys: string[]) => {
+		setVisibilityColumns(keys)
+	}
+
+	const onGetVisibilityColumns = (baseColumns: ColumnsType<any>) =>
+		baseColumns.filter(({ title }) => includes(visibilityColumns, title))
+
+	return {
+		onChangeVisibilityColumns,
+		onGetVisibilityColumns,
+	}
+}
+
 const VisibilityColumnsButton = ({
-	columns,
+	baseColumns,
 	onTableVisibilityColumnsChange,
 }: {
-	columns: any[]
+	baseColumns: any[]
 	onTableVisibilityColumnsChange: (keys: any[]) => void
 }) => {
 	const ref = useRef(null)
@@ -46,7 +63,7 @@ const VisibilityColumnsButton = ({
 	}
 
 	const handleInit = () => {
-		const initialColumns = columns.map(column => column?.title)
+		const initialColumns = baseColumns.map(column => column?.title)
 		setVisibilityColumns(initialColumns)
 		onTableVisibilityColumnsChange(initialColumns)
 	}
@@ -59,7 +76,7 @@ const VisibilityColumnsButton = ({
 		handleInit()
 	}, [])
 
-	const menuItems: ItemType[] = columns.map(column => ({
+	const menuItems: ItemType[] = baseColumns.map(column => ({
 		key: column.title,
 		label: column.title,
 	}))
