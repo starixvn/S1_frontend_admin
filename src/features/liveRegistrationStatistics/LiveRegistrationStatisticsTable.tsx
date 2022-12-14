@@ -82,7 +82,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			align: 'center' as 'center',
 		},
 		{
-			title: t('Label_AccountName'),
+			title: t('Label_FullName'),
 			key: 'accountName',
 			dataIndex: 'accountName',
 			width: 80,
