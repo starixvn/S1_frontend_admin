@@ -1,7 +1,7 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import React, { Key, useEffect, useState } from 'react'
-import { filter, includes, isEmpty, map } from 'lodash'
+import { filter, includes, isEmpty, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
@@ -330,6 +330,23 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			setTableSelectedTransIds(newSelectedRowKeys),
 	}
 
+	const currencyAmountRecordTotal = reduce(
+		currencyAmountRecordList,
+		(
+			{ recordTotal, amountTotal },
+			{ record: currentRecord, amount: currentAmount }
+		) => {
+			return {
+				recordTotal: recordTotal + currentRecord,
+				amountTotal: amountTotal + currentAmount,
+			}
+		},
+		{
+			recordTotal: 0,
+			amountTotal: 0,
+		}
+	)
+
 	return (
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
@@ -357,10 +374,13 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				onTableChange={handleTableChange}
 			/>
 
-			<DepositOperatorOverviewTable
-				loading={isGetDepositOperatorListFetching}
-				currencyAmountRecordList={currencyAmountRecordList}
-			/>
+			{!isEmpty(currencyAmountRecordList) && (
+				<DepositOperatorOverviewTable
+					loading={isGetDepositOperatorListFetching}
+					currencyAmountRecordList={currencyAmountRecordList}
+					currencyAmountRecordTotal={currencyAmountRecordTotal}
+				/>
+			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
