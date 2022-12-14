@@ -317,6 +317,10 @@ const paths = {
 				root: 'marketing/verificationRewardManagement',
 				functionId: 47,
 			},
+			pointLevelManagement: {
+				root: 'marketing/pointLevelManagement',
+				functionId: 52,
+			},
 		},
 	},
 	game: {
