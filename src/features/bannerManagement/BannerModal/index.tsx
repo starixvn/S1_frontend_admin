@@ -51,7 +51,7 @@ const BannerModal = ({
 	onDelete,
 }: IAddBannerModalProps) => {
 	const { t } = useTranslation()
-	const { timeZoneUtcOffset } = useTimeZone()
+	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [setBanner, { isLoading: isSetBannerLoading }] = useSetBannerMutation()
 
@@ -80,6 +80,7 @@ const BannerModal = ({
 			const {
 				bannerName,
 				bannerType,
+				categoryId,
 				showStatus,
 				actionMode,
 				startTime,
@@ -99,6 +100,7 @@ const BannerModal = ({
 				currencyId,
 				bannerName,
 				bannerType,
+				categoryId,
 				showStatus,
 				actionMode,
 				dateRange: [moment(startTime), moment(endTime)],
@@ -120,49 +122,94 @@ const BannerModal = ({
 
 			if (!siteId) return
 			const {
-				bannerName,
-				bannerType,
-				actionMode,
-				showStatus,
+				bannerName: formBannerName,
+				bannerType: formBannerType,
+				categoryId: formCategoryId,
+				actionMode: formActionMode,
+				showStatus: formShowStatus,
 				dateRange,
-				bonusCode,
-				tpId,
-				sort,
-				urlRouter,
-				gameId,
-				filterTpId,
+				bonusCode: formBonusCode,
+				tpId: formTpId,
+				sort: formSort,
+				urlRouter: formUrlRouter,
+				gameId: formGameId,
+				filterTpId: formFilterTpId,
 				currencyId: formCurrencyId,
 				specific: formSpecific,
 			} = form.getFieldsValue(true)
-			const [startTime, endTime] = dateRangeToUtcFormatter(
+			const [formStartTime, formEndTime] = dateRangeToUtcFormatter(
 				[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 				timeZoneUtcOffset
 			)
 			const detailStr = coverSpecificToObjString(formSpecific)
-			const { specific } = editBannerData ?? {}
-			const args = {
-				siteId,
+			const {
+				specific,
 				bannerName,
 				bannerType,
-				actionMode,
+				categoryId,
 				showStatus,
+				actionMode,
 				startTime,
 				endTime,
 				bonusCode,
-				tpId:
-					actionMode === ActionModeEnum.RedirectPagesOfThisSite
-						? filterTpId
-						: tpId ?? null,
 				urlRouter,
 				gameId,
-				specific: [
-					{
-						currencyId: Number(formCurrencyId),
-						details: detailStr,
-						status: isEditing ? Number(specific?.[0]?.status) : 0,
-					},
-				],
+				tpId,
 				sort,
+			} = editBannerData ?? {}
+
+			const args = {
+				siteId,
+				currencyId: Number(currencyId),
+				before: isEditing
+					? {
+							actionMode,
+							bannerName,
+							bannerType,
+							endTime,
+							showStatus,
+							siteId,
+							sort,
+							specific: [
+								{
+									currencyId: Number(currencyId),
+									details: coverSpecificToObjString(specific),
+									status: Number(specific?.[0]?.status),
+								},
+							],
+							startTime,
+							tpId,
+							urlRouter,
+							bonusCode,
+							categoryId,
+							gameId,
+					  }
+					: {},
+				after: {
+					actionMode: formActionMode,
+					bannerName: formBannerName,
+					bannerType: formBannerType,
+					endTime: formEndTime,
+					showStatus: formShowStatus,
+					siteId,
+					sort: formSort,
+					specific: [
+						{
+							currencyId: Number(formCurrencyId),
+							details: detailStr,
+							status: isEditing ? Number(specific?.[0]?.status) : 0,
+						},
+					],
+					startTime: formStartTime,
+					tpId:
+						actionMode === ActionModeEnum.RedirectPagesOfThisSite
+							? formFilterTpId
+							: formTpId ?? null,
+					urlRouter: formUrlRouter,
+					bonusCode: formBonusCode,
+					categoryId: formCategoryId,
+					gameId: formGameId,
+				},
 			}
 
 			try {
@@ -177,8 +224,10 @@ const BannerModal = ({
 
 			const { specific: specificList = [], bannerName: bannerNameStr = '' } =
 				editBannerData ?? {}
-
-			if (specificList[0].currencyId !== formCurrencyId) {
+			if (
+				specificList[0].currencyId !== formCurrencyId ||
+				bannerName !== formBannerName
+			) {
 				onDelete(bannerNameStr)
 			}
 		} catch (error) {
@@ -221,6 +270,8 @@ const BannerModal = ({
 				bannerActionModeList={bannerActionModeList}
 				languageList={languageList}
 				siteId={siteId}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				onTimeZoneChange={onTimeZoneChange}
 				onChangeTab={onChangeTab}
 			/>
 		</Modal>

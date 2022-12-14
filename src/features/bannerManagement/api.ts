@@ -6,12 +6,14 @@ import {
 	IGetBannerListArgs,
 	IGetBannerListResponse,
 	IGetBannerResponse,
-	IGetGameCasinoByTpIdArgs,
-	IGetGameCasinoByTpIdResponse,
+	IGetGameIdListArgs,
+	IGetGameIdListResponse,
 	IGetLanguageListArgs,
 	IGetLanguageListResponse,
 	IGetTpBySiteAndCurrencyArgs,
 	IGetTpBySiteAndCurrencyResponse,
+	IGetTpCategoryByTpIdArgs,
+	IGetTpCategoryByTpIdResponse,
 	IGetTpListByCategoryArgs,
 	IGetTpListByCategoryResponse,
 	ISetBannerArgs,
@@ -71,12 +73,12 @@ export const bannerManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getGameCasinoByTpId: builder.query<
-			IGetGameCasinoByTpIdResponse,
-			IGetGameCasinoByTpIdArgs
+		getTpCategoryByTpId: builder.query<
+			IGetTpCategoryByTpIdResponse,
+			IGetTpCategoryByTpIdArgs
 		>({
 			query: data => ({
-				url: 'BaseData/GetGameCasinoByTpId',
+				url: 'BaseData/GetTpCategoryByTpId',
 				method: 'POST',
 				data,
 			}),
@@ -101,6 +103,13 @@ export const bannerManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getGameIdList: builder.query<IGetGameIdListResponse, IGetGameIdListArgs>({
+			query: data => ({
+				url: 'BaseData/GetGameIdByTpIdAndCategoryId',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -110,8 +119,9 @@ export const {
 	useSetBannerMutation,
 	useUpdateStatusMutation,
 	useGetTpBySiteAndCurrencyQuery,
-	useGetGameCasinoByTpIdQuery,
+	useGetTpCategoryByTpIdQuery,
 	useGetTpListByCategoryQuery,
 	useLazyGetLanguageListQuery,
 	useLazyGetBannerQuery,
+	useGetGameIdListQuery,
 } = bannerManagementApi

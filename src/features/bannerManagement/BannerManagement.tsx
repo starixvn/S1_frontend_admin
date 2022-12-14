@@ -143,7 +143,10 @@ const BannerManagement = ({ pageTitle }: IBannerManagementProps) => {
 		const args = {
 			siteId,
 			currencyId,
-			bannerName,
+			before: {
+				bannerName,
+			},
+			after: {},
 		}
 		try {
 			await deleteBanner(args).unwrap()
@@ -180,8 +183,15 @@ const BannerManagement = ({ pageTitle }: IBannerManagementProps) => {
 		if (!siteId) return
 		const args = {
 			siteId,
-			status: status ? StatusEnum.Inactive : StatusEnum.Active,
-			bannerName,
+			currencyId,
+			before: {
+				status: status ? StatusEnum.Active : StatusEnum.Inactive,
+				bannerName,
+			},
+			after: {
+				status: status ? StatusEnum.Inactive : StatusEnum.Active,
+				bannerName,
+			},
 		}
 		try {
 			await updateStatus(args).unwrap()
