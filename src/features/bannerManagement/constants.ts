@@ -24,6 +24,7 @@ export enum ActionModeEnum {
 export enum UrlRouterEnum {
 	sports = 1,
 	'live-casino',
+	liveCasino = 2,
 	referral,
 	leaderBoard,
 	angPow,

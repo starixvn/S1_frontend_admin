@@ -42,6 +42,7 @@ export interface IGetBannerData {
 	endTime: string
 	siteId: number
 	bannerName: string
+	categoryId: number
 	currency: null
 	bannerType: number
 	actionMode: number
@@ -62,35 +63,76 @@ export type IGetBannerResponse = IAxiosResponse<IGetBannerData>
 
 export interface ISetBannerArgs {
 	siteId: number
-	bannerName: string
-	bannerType: number
-	actionMode: number
-	showStatus: number
-	startTime: string
-	endTime: string
-	bonusCode: null
-	tpId: number
-	gameId: string
-	urlRouter: number
-	specific: {
-		currencyId: number
-		details: string
-		status: number | null
-	}[]
-	sort: number | null
+	currencyId: number
+	before: {
+		actionMode?: number
+		bannerName?: string
+		bannerType?: number
+		endTime?: string
+		showStatus?: number
+		siteId?: number
+		sort?: number | null
+		specific?: {
+			currencyId?: number
+			details?: string
+			status?: number | null
+		}[]
+		startTime?: string
+		tpId?: number
+		urlRouter?: number
+		bonusCode?: null
+		categoryId?: number
+		gameId?: string
+	}
+	after: {
+		actionMode: number
+		bannerName: string
+		bannerType: number
+		endTime: string
+		showStatus: number
+		siteId: number
+		sort: number | null
+		specific: {
+			currencyId: number
+			details: string
+			status: number | null
+		}[]
+		startTime: string
+		tpId: number
+		urlRouter: number
+		bonusCode: null
+		categoryId: number
+		gameId: string
+	}
 }
 
 export type ISetBannerResponse = IAxiosResponse<null>
 
 export interface IUpdateStatusArgs {
 	siteId: number
-	status: number
-	bannerName: string
+	currencyId: number
+	before: {
+		status: number
+		bannerName: string
+	}
+	after: {
+		status: number
+		bannerName: string
+	}
 }
 
 export type IUpdateStatusResponse = IAxiosResponse<null>
 
-export interface IDeleteBannerArgs extends IGetBannerArgs {}
+export interface IDeleteBannerArgs {
+	siteId: number
+	currencyId: number
+	before: {
+		bannerName: string
+	}
+	after: {
+		bannerName?: string
+	}
+}
 
 export type IDeleteBannerResponse = IAxiosResponse<null>
 
@@ -108,21 +150,17 @@ export type IGetTpBySiteAndCurrencyResponse = IAxiosResponse<
 	IGetTpBySiteAndCurrencyData[]
 >
 
-export interface IGetGameCasinoByTpIdArgs {
+export interface IGetTpCategoryByTpIdArgs {
 	tpId: number | string
 }
 
-export interface IGetGameCasinoByTpIdData {
-	gameCasinoId: number
-	tpId: number
-	gameId: string
-	name: string
-	cName: string
-	checked: boolean
+export interface IGetTpCategoryByTpIdData {
+	categoryId: number
+	categoryName: string
 }
 
-export type IGetGameCasinoByTpIdResponse = IAxiosResponse<
-	IGetGameCasinoByTpIdData[]
+export type IGetTpCategoryByTpIdResponse = IAxiosResponse<
+	IGetTpCategoryByTpIdData[]
 >
 
 export interface IGetTpListByCategoryArgs {
@@ -145,6 +183,20 @@ export interface IGetLanguageListArgs {
 
 export type IGetLanguageListResponse = IAxiosResponse<string[]>
 
+export interface IGetGameIdListArgs {
+	tpId: number | string
+	categoryId: number | string
+}
+
+export interface IGetGameIdListData {
+	gameCasinoId: number
+	tpId: number
+	gameId: string
+	name: string
+}
+
+export type IGetGameIdListResponse = IAxiosResponse<IGetGameIdListData[]>
+
 export interface IFilterForm {
 	bannerTypes: number[]
 	statuses: number[]
@@ -155,6 +207,7 @@ export interface IFilterForm {
 export interface IAddForm {
 	bannerName: string
 	bannerType: number | string
+	categoryId: number | string
 	actionMode: number | string
 	showStatus: number | string
 	dateRange: [Moment, Moment]
