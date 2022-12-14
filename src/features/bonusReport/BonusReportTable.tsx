@@ -1,12 +1,14 @@
 import moment from 'moment'
-import { useState } from 'react'
 import { Space, Table, TablePaginationConfig, Tag } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { isJSON } from 'common/utils'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import { VisibilityColumnsButton } from 'components'
-import { includes, isString, uniqueId } from 'lodash'
+import {
+	useVisibilityColumnsButtonHook,
+	VisibilityColumnsButton,
+} from 'components'
+import { isString, uniqueId } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { IBonusReportData } from './type'
 
@@ -26,8 +28,8 @@ const BonusReportTable = ({
 	onTableChange,
 }: IBonusReportTableProps) => {
 	const { t } = useTranslation()
-	const [visibilityColumns, setVisibilityColumns] = useState<string[]>([])
-
+	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
+		useVisibilityColumnsButtonHook()
 	const baseColumns = [
 		{
 			title: t('Label_TransId'),
@@ -229,9 +231,7 @@ const BonusReportTable = ({
 		},
 	]
 
-	const columns = baseColumns.filter(({ title }) =>
-		includes(visibilityColumns, title)
-	)
+	const columns = onGetVisibilityColumns(baseColumns)
 
 	return (
 		<LayoutContent.Card>
@@ -249,10 +249,8 @@ const BonusReportTable = ({
 				title={() => (
 					<Space align='end' direction='vertical' style={{ width: '100%' }}>
 						<VisibilityColumnsButton
-							columns={baseColumns}
-							onTableVisibilityColumnsChange={keys =>
-								setVisibilityColumns(keys)
-							}
+							baseColumns={baseColumns}
+							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
 						/>
 					</Space>
 				)}
