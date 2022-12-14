@@ -97,14 +97,13 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 				return (
 					<Space style={{ padding: '10px' }} size='middle'>
 						<Typography.Link
-							disabled={!editPermission?.canUse}
 							onClick={() => {
 								navigate(
 									`/${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/${bonusCode}`
 								)
 							}}
 						>
-							{t('Label_Edit')}
+							{editPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 						</Typography.Link>
 						<Typography.Link
 							disabled={!editPermission?.canUse}
