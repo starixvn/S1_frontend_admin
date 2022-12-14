@@ -17,8 +17,13 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 	currentTabActive,
 }) => {
 	const { t } = useTranslation()
-	const { form, onEditDetailClick, currentActiveCurrency, setInfoTabsKey } =
-		useContext(EditBonusContext)
+	const {
+		form,
+		onEditDetailClick,
+		currentActiveCurrency,
+		setInfoTabsKey,
+		editPermission,
+	} = useContext(EditBonusContext)
 	const { currencyId } = currentActiveCurrency
 	// 因為巢狀結構太複雜 , form 只允許一層巢狀 , 只好用 currencyId + langCode 轉成字串的方式
 	const tabsKey = JSON.stringify({ currencyId, langCode })
@@ -32,6 +37,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 			<Form
 				form={form}
 				layout='vertical'
+				disabled={!editPermission?.canUse}
 				initialValues={{
 					details: {
 						[tabsKey]: {

@@ -48,6 +48,7 @@ import DepositRequestPaymentInfoDescriptions from 'features/depositOperator/depo
 import DepositRequestBankInfoDescriptions from 'features/depositOperator/depositRequest/DepositRequestBankInfoDescriptions'
 import useMemberInfo from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
 import { DepositTypeEnum } from 'type'
+import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
 
 const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -94,8 +95,17 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const [setDepositManualApproval] = useSetDepositManualApprovalMutation()
 
+	const { onShowSendMessageModal } = useSendReasonMessageHook({
+		args: {
+			currencyId: depositInfo.currencyId,
+			transId: depositInfo.transId,
+			depositId: depositInfo.depositId,
+		},
+	})
+
 	const onOpenBankInfoModal = (accountNo: string | null) => {
 		if (!accountNo) return
+
 		const bankInfo = find(bankInfoOffList, { accountNo })
 		Modal.info({
 			content: <DepositRequestBankInfoDescriptions bankInfo={bankInfo} />,
@@ -190,12 +200,8 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (depositLoading) return
-		const {
-			statementTime,
-			amount,
-			// ! 這邊會有點混淆，depositInfo json sysId 代表 bankId
-			depositInfo: { sysId: bankId },
-		} = depositInfo
+
+		const { bankId, statementTime, amount } = depositInfo
 
 		form.setFieldsValue({
 			bankId,
@@ -218,7 +224,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					}}
 				>
 					<Row align='top' gutter={[16, 32]}>
-						<Col xxl={8} xl={12} lg={24} md={24} xs={24}>
+						<Col xxl={8} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestDepositInfo
 								form={form}
 								editPermission={editPermission}
@@ -232,25 +238,25 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								onOpenPaymentInfoModal={onOpenPaymentInfoModal}
 							/>
 						</Col>
-						<Col xxl={8} xl={12} lg={24} md={24} xs={24}>
+						<Col xxl={8} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestMemberInfo
 								loading={isMemberInfoLoading}
 								memberInfo={memberInfo}
 							/>
-						</Col>
-						<Col xxl={8} xl={12} lg={12} md={12} xs={12}>
+
 							{/* //* 給兩個 br 讓 Image 與其他元件同高 */}
 							<br />
 							<br />
 
 							<Spin spinning={isReceiptImgLoading}>
 								<Image
-									width='100%'
+									width='50%'
 									src={receiptImg}
 									fallback={noImageFallBack}
 								/>
 							</Spin>
 						</Col>
+
 						<Col span={24}>
 							<DepositRequestComments
 								form={form}
@@ -265,7 +271,13 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				<DepositRequestOperatorButtonGroup
 					usableActionButtons={depositInfo?.usableActionButton ?? []}
 					onSetDepositStatus={handleSetDepositStatus}
+					onShowSendMessageModal={onShowSendMessageModal}
 				/>
+
+				{/* // * 預留空間以防止 OperatorButton 及 AffixButton 黏在一起 */}
+				<br />
+				<br />
+				<br />
 			</LayoutContent.Card>
 
 			<AffixButtons>

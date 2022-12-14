@@ -8,12 +8,15 @@ import {
 	IDepositCommentData,
 	ISetDepositStatusArgs,
 	ISetAmountByTransIdArgs,
+	IDepositOperatorResponse,
+	IDepositReasonMessage,
+	ISendDepositReasonMessageArgs,
 } from 'features/depositOperator/type'
 
 export const depositOperatorApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDepositOperatorList: builder.query<
-			IAxiosResponse<IDepositOperatorData[]>,
+			IDepositOperatorResponse,
 			IGetDepositOperatorListArgs
 		>({
 			query: data => ({
@@ -111,6 +114,26 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		getDepositReasonMessages: builder.query<
+			IAxiosResponse<IDepositReasonMessage[]>,
+			null
+		>({
+			query: data => ({
+				url: 'Deposit/DepositMessageStatusList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		setDepositReasonMessage: builder.mutation<
+			IAxiosResponse<null>,
+			ISendDepositReasonMessageArgs
+		>({
+			query: data => ({
+				url: 'Deposit/SetDepositMessage',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -124,4 +147,6 @@ export const {
 	useSetDepositStatusMutation,
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,
+	useGetDepositReasonMessagesQuery,
+	useSetDepositReasonMessageMutation,
 } = depositOperatorApi

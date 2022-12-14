@@ -1,11 +1,12 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import React, { Key, useEffect, useState } from 'react'
-import { filter, includes, isEmpty, map } from 'lodash'
+import { filter, includes, isEmpty, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
+import { DepositTypeEnum } from 'type'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
@@ -28,10 +29,11 @@ import {
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
 } from 'features/depositOperator/api'
-import { IForm } from 'features/depositOperator/type'
+import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
 import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
+import DepositOperatorOverviewTable from './DepositOperatorOverviewTable'
 
 const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -51,7 +53,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const {
 		data: { data: statusesEnum } = {} as IEnumTypeResponse,
 		isFetching: isGetStatusesEnumLoading,
-	} = useGetEnumTypeQuery({ enumName: 'DepositStatusEnum' })
+	} = useGetEnumTypeQuery({ enumName: 'SelectDepositStatusEnum' })
 
 	const {
 		data: { data: depositTypeEnum } = {} as IEnumTypeResponse,
@@ -85,15 +87,17 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const [
 		getDepositOperatorList,
-
 		{
 			data: {
 				data: depositOperatorList = [],
 				rowCount: DepositOperatorTotal = 0,
+				currencyAmountRecord: currencyAmountRecordList = [],
 			} = {},
 			isFetching: isGetDepositOperatorListFetching,
 		},
-	] = useLazyGetDepositOperatorListQuery()
+	] = useLazyGetDepositOperatorListQuery({
+		pollingInterval: 15000,
+	})
 
 	const [
 		batchRejectedDepositTransIds,
@@ -254,10 +258,10 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				form.setFieldsValue({
 					currencyIds:
 						currencyListBySite?.map(({ currencyId }) => currencyId) ?? [],
-					statuses: statusesEnum?.map(({ value }) => value),
+					statuses: [DepositStatusEnum.Pending],
 					selectPayIds: [],
-					selectBankCode: bankCodeList?.map(({ sysId }) => sysId),
-					depositTypes: depositTypeEnum?.map(({ value }) => value),
+					selectBankCode: [],
+					depositTypes: [DepositTypeEnum.LocalBanking],
 					levelStatuses: vipLevelEnum?.map(({ level }) => level),
 				})
 			} else {
@@ -328,6 +332,23 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			setTableSelectedTransIds(newSelectedRowKeys),
 	}
 
+	const currencyAmountRecordTotal = reduce(
+		currencyAmountRecordList,
+		(
+			{ recordTotal, amountTotal },
+			{ record: currentRecord, amount: currentAmount }
+		) => {
+			return {
+				recordTotal: recordTotal + currentRecord,
+				amountTotal: amountTotal + currentAmount,
+			}
+		},
+		{
+			recordTotal: 0,
+			amountTotal: 0,
+		}
+	)
+
 	return (
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
@@ -354,6 +375,14 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
 			/>
+
+			{!isEmpty(currencyAmountRecordList) && (
+				<DepositOperatorOverviewTable
+					loading={isGetDepositOperatorListFetching}
+					currencyAmountRecordList={currencyAmountRecordList}
+					currencyAmountRecordTotal={currencyAmountRecordTotal}
+				/>
+			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

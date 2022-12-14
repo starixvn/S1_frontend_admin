@@ -145,6 +145,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						autoExtend: false,
 						isDisplayDate: true,
 					}}
+					disabled={!editPermission?.canUse}
 				>
 					<Row>
 						<Form.Item

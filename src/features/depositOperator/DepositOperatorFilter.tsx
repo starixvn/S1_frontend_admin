@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import {
 	Button,
 	Col,
@@ -12,10 +13,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
@@ -35,6 +33,12 @@ import { IForm } from 'features/depositOperator/type'
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
+
+// * 這頁的初始時間區間為 今日 ~ D+2
+const initialDateRange = [
+	moment().startOf('day'),
+	moment().add(2, 'd').endOf('day'),
+]
 
 interface IDepositOperatorFilterProps {
 	form: FormInstance<IForm>
@@ -281,7 +285,7 @@ const DepositOperatorFilter = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={MOMENT_DATE_RANGES.Today}
+												initialValue={initialDateRange}
 												rules={[
 													{
 														required: true,
