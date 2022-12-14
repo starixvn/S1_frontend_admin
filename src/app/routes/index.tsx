@@ -815,6 +815,13 @@ const AppQrCode = lazy(
 		import(/* webpackChunkName: 'AppQrCode' */ 'features/appQrCode/AppQrCode')
 )
 
+const PointLevelManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'pointLevelManagement' */ 'features/pointLevelManagement/PointLevelManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2021,6 +2028,16 @@ const routes: RouteObject[] = [
 						functionId={paths.cms.sub.urlManagement.sub.appQrCode.functionId}
 					>
 						<AppQrCode />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.pointLevelManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.pointLevelManagement.functionId}
+					>
+						<PointLevelManagement />
 					</AuthRequire>
 				),
 			},

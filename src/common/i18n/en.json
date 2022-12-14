@@ -894,9 +894,11 @@
 	"Label_LoginUrl": "Login Url",
 	"Label_LoginAccount": "Login Account",
 	"Label_LoginPassword": "Login Password",
-	"Label_UniquePlayers": "Unique Player",
 	"Label_System": "System",
 	"Label_BankInfo": "Bank Info",
+	"Label_UniquePlayers": "Unique Players",
 	"Label_ReferralUrl": "Referral Url",
-	"Label_SendMessage": "Send Message"
+	"Label_SendMessage": "Send Message",
+	"Label_WithdrawalCount": "Withdrawal Count",
+	"Label_AddPointLevel": "Add Point Level"
 }
