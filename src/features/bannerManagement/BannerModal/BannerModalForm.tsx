@@ -23,17 +23,18 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import BannerModalTabs from 'features/bannerManagement/BannerModal/BannerModalTabs'
-import TimeZoneSelect, { useTimeZone } from 'components/TimeZoneSelect'
+import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
 import {
 	IAddForm,
-	IGetGameCasinoByTpIdResponse,
 	IGetTpBySiteAndCurrencyResponse,
+	IGetTpCategoryByTpIdResponse,
 	IGetTpListByCategoryResponse,
 } from 'features/bannerManagement/type'
 import {
-	useGetGameCasinoByTpIdQuery,
+	useGetGameIdListQuery,
 	useGetTpBySiteAndCurrencyQuery,
+	useGetTpCategoryByTpIdQuery,
 	useGetTpListByCategoryQuery,
 } from 'features/bannerManagement/api'
 import { useTranslation } from 'react-i18next'
@@ -50,6 +51,8 @@ interface IAddBannerModalFormProps {
 	bannerActionModeList: IEnumTypeData[]
 	languageList: string[]
 	siteId?: number
+	timeZoneUtcOffset: number
+	onTimeZoneChange: (newUtcOffset: number) => void
 	onChangeTab: (currencyNum: number) => void
 }
 
@@ -62,14 +65,16 @@ const BannerModalForm = ({
 	bannerActionModeList,
 	languageList,
 	siteId,
+	timeZoneUtcOffset,
+	onTimeZoneChange,
 	onChangeTab,
 }: IAddBannerModalFormProps) => {
 	const { t } = useTranslation()
-	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const actionMode = Form.useWatch('actionMode', form)
 	const tpId = Form.useWatch('tpId', form)
 	const urlRouter = Form.useWatch('urlRouter', form)
 	const currencyId = Form.useWatch('currencyId', form)
+	const categoryId = Form.useWatch('categoryId', form)
 
 	const {
 		data: { data: categoryList = [] } = {} as IEnumTypeResponse,
@@ -79,25 +84,44 @@ const BannerModalForm = ({
 	const {
 		data: { data: tpList = [] } = {} as IGetTpBySiteAndCurrencyResponse,
 		isLoading: isGetTpListLoading,
-	} = useGetTpBySiteAndCurrencyQuery({ siteId, currencyId })
+	} = useGetTpBySiteAndCurrencyQuery(
+		{ siteId, currencyId },
+		{ skip: !siteId || !currencyId }
+	)
 
 	const {
-		data: { data: gameList = [] } = {} as IGetGameCasinoByTpIdResponse,
-		isLoading: isGetGameListLoading,
-	} = useGetGameCasinoByTpIdQuery({ tpId: tpId === 'null' ? 0 : tpId })
+		data: { data: tpCategoryList = [] } = {} as IGetTpCategoryByTpIdResponse,
+		isLoading: isGetGameCategoryListLoading,
+	} = useGetTpCategoryByTpIdQuery({ tpId }, { skip: !tpId })
 
 	const {
 		data: { data: filterTpList = [] } = {} as IGetTpListByCategoryResponse,
 		isLoading: isGetFilterTpListLoading,
-	} = useGetTpListByCategoryQuery({
-		categoryId: [
-			UrlRouterEnum.sports,
-			UrlRouterEnum['live-casino'],
-			UrlRouterEnum.lottery,
-		].includes(Number(urlRouter))
-			? urlRouter
-			: 0,
-	})
+	} = useGetTpListByCategoryQuery(
+		{
+			categoryId: urlRouter,
+		},
+		{
+			skip:
+				!urlRouter ||
+				![
+					UrlRouterEnum.sports,
+					UrlRouterEnum['live-casino'],
+					UrlRouterEnum.lottery,
+				].includes(Number(urlRouter)),
+		}
+	)
+
+	const {
+		data: { data: gameIdList = [] } = {},
+		isLoading: isGetGameIdListLoading,
+	} = useGetGameIdListQuery(
+		{
+			tpId,
+			categoryId,
+		},
+		{ skip: !tpId || !categoryId }
+	)
 
 	const onCurrencyChange = async (formCurrency: number) => {
 		onChangeTab(formCurrency)
@@ -115,11 +139,22 @@ const BannerModalForm = ({
 	}
 
 	const handleTpIdChange = () => {
-		form.resetFields(['gameId'])
+		form.resetFields(['gameId', 'categoryId'])
 	}
 
 	const handleActionModeChange = () => {
-		form.resetFields(['tpId', 'bonusCode', 'urlRouter', 'filterTpId', 'gameId'])
+		form.resetFields([
+			'tpId',
+			'bonusCode',
+			'urlRouter',
+			'filterTpId',
+			'categoryId',
+			'gameId',
+		])
+	}
+
+	const handleCategoryIdChange = () => {
+		form.resetFields(['gameId'])
 	}
 
 	return (
@@ -127,9 +162,10 @@ const BannerModalForm = ({
 			spinning={
 				loading ||
 				isGetTpListLoading ||
-				isGetGameListLoading ||
+				isGetGameCategoryListLoading ||
 				isGetFilterTpListLoading ||
-				isGetCategoryListLoading
+				isGetCategoryListLoading ||
+				isGetGameIdListLoading
 			}
 		>
 			<Form
@@ -282,7 +318,11 @@ const BannerModalForm = ({
 						</Col>
 					)}
 					{actionMode === ActionModeEnum.RedirectPagesOfThisSite &&
-						filterTpList.length > 0 && (
+						[
+							UrlRouterEnum.sports,
+							UrlRouterEnum['live-casino'],
+							UrlRouterEnum.lottery,
+						].includes(Number(urlRouter)) && (
 							<Col lg={6} md={12} xs={24}>
 								<Form.Item
 									name='filterTpId'
@@ -299,15 +339,57 @@ const BannerModalForm = ({
 								</Form.Item>
 							</Col>
 						)}
-					{actionMode === ActionModeEnum.GoToGame && gameList.length > 0 && (
+
+					{actionMode === ActionModeEnum.GoToGame && tpCategoryList.length > 0 && (
+						<Col lg={6} md={12} xs={24}>
+							<Form.Item
+								name='categoryId'
+								label={t('Label_Category')}
+								rules={[{ required: true }]}
+							>
+								<Select
+									placeholder={t('Label_Category')}
+									onChange={handleCategoryIdChange}
+								>
+									{tpCategoryList?.map(
+										({ categoryId: formCategoryId, categoryName }) => (
+											<Option key={formCategoryId} value={formCategoryId}>
+												{categoryName}
+											</Option>
+										)
+									)}
+								</Select>
+							</Form.Item>
+						</Col>
+					)}
+					{actionMode === ActionModeEnum.GoToGame && gameIdList.length > 0 && (
 						<Col lg={6} md={12} xs={24}>
 							<Form.Item
 								name='gameId'
 								label={t('Label_GameId')}
 								rules={[{ required: true }]}
 							>
-								<Select placeholder={t('Label_GameId')}>
-									{gameList?.map(({ gameId, name }) => (
+								<Select
+									placeholder={t('Label_GameId')}
+									showSearch
+									allowClear
+									filterOption={(input, option) => {
+										const isIncludes: boolean = (
+											option!.children as unknown as string
+										)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+
+										if (!isIncludes) {
+											form.setFieldsValue({
+												gameId: input,
+											})
+										}
+
+										return isIncludes
+									}}
+								>
+									{gameIdList?.map(({ gameId, name }) => (
 										<Option key={gameId} value={gameId}>
 											{name}
 										</Option>
