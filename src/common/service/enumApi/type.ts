@@ -23,6 +23,7 @@ export type EnumNameType =
 	| 'DepositTypeEnum'
 	| 'WithdrawalStatusEnum'
 	| 'WithdrawalTypeEnum'
+	| 'WithdrawalMethodEnum'
 	| 'TransferStatusEnum'
 	| 'TransferTypeEnum'
 	| 'AdjustmentInfoStatusEnum'
@@ -56,6 +57,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DepositTypeEnum - 取得存款種類列表
 	 * @argument {string}  WithdrawalStatusEnum - 取得取款狀態列表
 	 * @argument {string}  WithdrawalTypeEnum - 取得取款種類列表
+	 * @argument {string}  WithdrawalMethodEnum - 取得 WithdrawalMethodEnum
 	 * @argument {string}  TransferStatusEnum - 取得交易狀態列表
 	 * @argument {string}  TransferTypeEnum - 取得交易種類列表
 	 * @argument {string}  AdjustmentInfoStatusEnum - 取得調整狀態列表

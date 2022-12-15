@@ -148,3 +148,17 @@ export type IEditForm = {
 	channelName: string
 	type: number
 }
+
+export interface IGetCryptoInfoData {
+	currencyId: number
+	currencyName: string
+	network: string
+	networkType: number
+	status: number
+}
+
+export interface ISetCryptoInfoArgs {
+	currencyId: number
+	network: number
+	status: number
+}

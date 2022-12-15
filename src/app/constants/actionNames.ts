@@ -58,4 +58,13 @@ export const ACTION_NAMES: {
 	59: 'smsInfoDeletePermission',
 	60: 'add3RDPermission',
 	62: 'resetBankInfoPermission',
+	63: 'onHoldPermission',
+	64: 'pendingPermission',
+	65: 'approvedPermission',
+	66: 'draftPermission',
+	67: 'manualApprovedPermission',
+	68: 'manualRejectPermission',
+	69: 'verifiedPermission',
+	70: 'processPermission',
+	71: 'toKycPermission',
 }

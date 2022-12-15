@@ -182,11 +182,14 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 28,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
+				.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalList',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalList,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator.root,
 	},
 	{
 		icon: null,

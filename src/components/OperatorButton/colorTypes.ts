@@ -13,6 +13,6 @@ export enum ButtonColorEnum {
 	Gray = '#8c8c8c',
 	Yellow = '#e8cc10',
 	Black = '#313C54',
-	Purple = '#F780DC',
+	Purple = '#9150E3',
 	Green = '#2CAFA5',
 }
