@@ -213,7 +213,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	return (
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
-			<LayoutContent.Card>
+			<LayoutContent.Card style={{ marginTop: 0 }}>
 				<Form
 					form={form}
 					initialValues={{
@@ -224,7 +224,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					}}
 				>
 					<Row align='top' gutter={[16, 32]}>
-						<Col xxl={8} xl={12} lg={12} md={24} xs={24}>
+						<Col xxl={12} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestDepositInfo
 								form={form}
 								editPermission={editPermission}
@@ -238,7 +238,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								onOpenPaymentInfoModal={onOpenPaymentInfoModal}
 							/>
 						</Col>
-						<Col xxl={8} xl={12} lg={12} md={24} xs={24}>
+						<Col xxl={12} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestMemberInfo
 								loading={isMemberInfoLoading}
 								memberInfo={memberInfo}
@@ -250,7 +250,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 							<Spin spinning={isReceiptImgLoading}>
 								<Image
-									width='50%'
+									width='25%'
 									src={receiptImg}
 									fallback={noImageFallBack}
 								/>

@@ -78,12 +78,20 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isFetching: isGetVipLevelEnumFetching,
 	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
-	const {
-		data: { data: calCodeList = [] } = {},
-		isFetching: isGetCalCodeListFetching,
-	} = useGetCalCodeListQuery({
-		siteId,
-	})
+	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
+		useGetCalCodeListQuery(
+			{
+				siteId,
+			},
+			{
+				selectFromResult: ({ data: { data } = {}, isFetching }) => {
+					const filteredData = filter(data, ({ currencyId }) =>
+						includes(formCurrencyIds, currencyId)
+					)
+					return { data: filteredData, isFetching }
+				},
+			}
+		)
 
 	const [
 		getDepositOperatorList,
