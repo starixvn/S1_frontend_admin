@@ -107,15 +107,9 @@ const TransferAccountManagement: FC<{
 	}
 
 	const handleChangeSysIds = (newSysIds: number[]) => {
-		if (newSysIds.includes(0)) {
-			form.setFieldsValue({
-				sysIds: bankInfoSys?.map(item => item.sysId),
-			})
-		} else {
-			form.setFieldsValue({
-				sysIds: newSysIds,
-			})
-		}
+		form.setFieldsValue({
+			sysIds: newSysIds,
+		})
 	}
 
 	const handleStatusChange = async (record: IBankTransferAccountData) => {
@@ -186,7 +180,6 @@ const TransferAccountManagement: FC<{
 				channels: transferChannelEnum.map(({ value }) => value),
 				status: transferAccountStatusEnum.map(({ value }) => value),
 				purposes: ['all'],
-				sysIds: bankInfoSys.map(({ sysId }) => sysId),
 			})
 
 			handleSearch()
