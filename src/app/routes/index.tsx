@@ -810,6 +810,20 @@ const ProviderAppDownload = lazy(
 		)
 )
 
+const WithdrawalOperator = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalOperator' */ 'features/withdrawalOperator/WithdrawalOperator'
+		)
+)
+
+const WithdrawalRequest = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalRequest' */ 'features/withdrawalOperator/withdrawalRequest/WithdrawalRequest'
+		)
+)
+
 const AppQrCode = lazy(
 	() =>
 		import(/* webpackChunkName: 'AppQrCode' */ 'features/appQrCode/AppQrCode')
@@ -1911,6 +1925,32 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.finance.sub.paymentGateway.functionId}>
 						<PaymentManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
+								.functionId
+						}
+					>
+						<WithdrawalOperator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator.root}/:transId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
+								.functionId
+						}
+					>
+						<WithdrawalRequest />
 					</AuthRequire>
 				),
 			},
