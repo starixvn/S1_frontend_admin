@@ -20,12 +20,14 @@ import {
 	useGetBankInfoSysQuery,
 } from 'common/service/allDataApi'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
+import { IGetCryptoInfoResponse } from 'features/withdrawalSubmission/type'
+import { useGetCryptoInfoQuery } from 'features/withdrawalSubmission/api'
+import { IAddEditForm } from 'features/transferAccountManagement/type'
 import {
 	useGetBankTransferAccountPayListQuery,
 	useGetBankTransferAccountReasonsQuery,
-} from './api'
-import { IAddEditForm } from './type'
-import { ChannelEnum } from './constants'
+} from 'features/transferAccountManagement/api'
+import { ChannelEnum } from 'features/transferAccountManagement/constants'
 
 const { Option } = Select
 
@@ -42,6 +44,7 @@ const TransferAccountManagementForm: FC<
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formChannel = Form.useWatch('channel', form)
+	const formCryptoCurrency = Form.useWatch('cryptoCurrencyId', form)
 
 	const {
 		data: { data: transferAccountStatusEnum = [] } = {},
@@ -68,6 +71,11 @@ const TransferAccountManagementForm: FC<
 
 	const { data: { data: transferAccountPayList } = {} } =
 		useGetBankTransferAccountPayListQuery(null)
+
+	const { data: { data: cryptoInfoList } = {} as IGetCryptoInfoResponse } =
+		useGetCryptoInfoQuery(null)
+
+	const { cryptoCurrency, cryptoNetwork } = cryptoInfoList ?? {}
 
 	const enumLoading =
 		isGetTransferChannelEnumFetching ||
@@ -105,6 +113,8 @@ const TransferAccountManagementForm: FC<
 					loginPin: '',
 					mobilePin: '',
 					corporateID: '',
+					cryptoCurrencyId: null,
+					network: null,
 				}}
 			>
 				<Row align='middle' gutter={16}>
@@ -132,28 +142,6 @@ const TransferAccountManagementForm: FC<
 					</Col>
 					<Col lg={8} md={12} xs={24}>
 						<Form.Item
-							name='sysId'
-							label={t('Label_Bank')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Bank'),
-									}),
-								},
-							]}
-						>
-							<Select placeholder={t('Label_Bank')}>
-								{bankInfoSys?.map(({ sysId, bankName }) => (
-									<Option key={sysId} value={sysId}>
-										{bankName}
-									</Option>
-								))}
-							</Select>
-						</Form.Item>
-					</Col>
-					<Col lg={8} md={12} xs={24}>
-						<Form.Item
 							name='channel'
 							label={t('Label_Channel')}
 							rules={[
@@ -174,6 +162,83 @@ const TransferAccountManagementForm: FC<
 							</Select>
 						</Form.Item>
 					</Col>
+					{formChannel === ChannelEnum.CryptoWallet ? (
+						<>
+							<Col lg={8} md={12} xs={24}>
+								<Form.Item
+									name='cryptoCurrencyId'
+									label={t('Label_CryptoCurrency')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_CryptoCurrency'),
+											}),
+										},
+									]}
+								>
+									<Select placeholder={t('Label_CryptoCurrency')}>
+										{cryptoCurrency?.map(({ currencyId, currencyName }) => (
+											<Option key={currencyId} value={currencyId}>
+												{currencyName}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
+							<Col lg={8} md={12} xs={24}>
+								<Form.Item
+									name='network'
+									label={t('Label_NetWork')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_NetWork'),
+											}),
+										},
+									]}
+								>
+									{/* 選擇 crypto currency 之後才可篩出 可用的 netWork  */}
+									<Select placeholder={t('Label_NetWork')}>
+										{cryptoNetwork
+											?.filter(
+												({ currencyId }) => formCryptoCurrency === currencyId
+											)
+											.map(({ network }) => (
+												<Option key={network} value={network}>
+													{network}
+												</Option>
+											))}
+									</Select>
+								</Form.Item>
+							</Col>
+						</>
+					) : (
+						<Col lg={8} md={12} xs={24}>
+							<Form.Item
+								name='sysId'
+								label={t('Label_Bank')}
+								rules={[
+									{
+										required: formChannel === ChannelEnum.LocalBank,
+										message: t('Label_Required', {
+											key: t('Label_Bank'),
+										}),
+									},
+								]}
+							>
+								<Select placeholder={t('Label_Bank')}>
+									{bankInfoSys?.map(({ sysId, bankName }) => (
+										<Option key={sysId} value={sysId}>
+											{bankName}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+						</Col>
+					)}
+
 					{formChannel === ChannelEnum.Psp ? (
 						<Col lg={8} md={12} xs={24}>
 							<Form.Item name='payId' label={t('Label_Pay')}>

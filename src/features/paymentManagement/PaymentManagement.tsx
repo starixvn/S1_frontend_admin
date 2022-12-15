@@ -12,10 +12,12 @@ import {
 	useQueryParams,
 } from 'common/hooks'
 import {
+	useGetCryptoInfoQuery,
 	useGetGlobalStatusListQuery,
 	useLazyGetBankInfoListQuery,
 	useLazyGetPaySettingListQuery,
 	useSetBankStatusMutation,
+	useSetCryptoInfoMutation,
 	useSetGlobalStatusMutation,
 	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
@@ -27,6 +29,7 @@ import {
 	AmountRuleEnum,
 	IEditForm,
 	IFilterForm,
+	IGetCryptoInfoData,
 	IGetGlobalStatusData,
 	IGetPaySettingData,
 	ILoginInfoForm,
@@ -39,6 +42,7 @@ import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBan
 import { EditPaymentModal } from 'features/paymentManagement/modals/EditPaymentModal'
 import { FixedAmountConverter } from 'features/paymentManagement/utils'
 import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginInfoModal'
+import { CryptoSettingModal } from 'features/paymentManagement/modals/CryptoSettingModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -58,6 +62,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const onlineBankInfoModal = useModal()
 	const editPaySettingModal = useModal()
 	const editLoginInfoModal = useModal()
+	const cryptoInfoModal = useModal()
 
 	const [editForm] = Form.useForm<IEditForm>()
 
@@ -141,6 +146,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// PaySetting
 	const [setPaySetting, { isLoading: isSetPaySettingLoading }] =
 		useSetPaySettingMutation()
+
+	// cryptoSetting 相關
+	const {
+		data: { data: cryptoInfo = [] } = {},
+		isFetching: isGetCryptoInfoLoading,
+	} = useGetCryptoInfoQuery(null)
+
+	const [setCryptoInfo, { isLoading: isSetCryptoInfoLoading }] =
+		useSetCryptoInfoMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -380,6 +394,22 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	// 設定 Crypto Status
+	const handleSetCryptoInfo = async (
+		record: IGetCryptoInfoData,
+		status: number
+	) => {
+		const { networkType: network, currencyId } = record
+		try {
+			await setCryptoInfo({ network, currencyId, status }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -418,6 +448,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetGlobalStatusLoading ||
 		isGetPayListLoading
 
+	const cryptoLoading = isGetCryptoInfoLoading || isSetCryptoInfoLoading
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -431,6 +463,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				form={filterForm}
 				onSearch={handleSearch}
+				onSetCryptoInfoClicked={cryptoInfoModal.onOpen}
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
 			/>
 			{!isEmpty(queryParams) && (
@@ -488,6 +521,13 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onCancel={editLoginInfoModal.onCancel}
 				onSubmit={handleSetLoginInfo}
 				title={globalStatusLoginInfo.current?.payName ?? ''}
+			/>
+			<CryptoSettingModal
+				loading={cryptoLoading}
+				visible={cryptoInfoModal.visible}
+				onCancel={cryptoInfoModal.onCancel}
+				cryptoInfo={cryptoInfo}
+				onSetCryptoInfo={handleSetCryptoInfo}
 			/>
 		</LayoutContent.Main>
 	)

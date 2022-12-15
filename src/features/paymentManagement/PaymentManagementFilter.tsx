@@ -33,6 +33,7 @@ interface IPaymentManagementFilterProps {
 		pageSize?: number | undefined
 	}) => void
 	onSetGlobalStatusClicked: () => void
+	onSetCryptoInfoClicked: () => void
 }
 
 const { Panel } = Collapse
@@ -48,6 +49,7 @@ const PaymentManagementFilter = ({
 	onSearch,
 	payList,
 	currencyListBySite,
+	onSetCryptoInfoClicked,
 	onSetGlobalStatusClicked,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
@@ -201,6 +203,11 @@ const PaymentManagementFilter = ({
 										type='primary'
 										onClick={onSetGlobalStatusClicked}
 									>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
+								</Col>
+								<Col>
+									<Button type='primary' onClick={onSetCryptoInfoClicked}>
+										{t('Label_CryptoSetting')}
+									</Button>
 								</Col>
 							</Row>
 						</Form>
