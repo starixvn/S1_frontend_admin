@@ -101,6 +101,7 @@ const DepositOperatorFilter = ({
 					onChange={newCurrencyIds => {
 						onChangeCurrency(newCurrencyIds)
 						form.setFieldValue('selectBankCode', [])
+						form.setFieldValue('selectCalCode', [])
 					}}
 					placeholder={t('Label_Select') + t('Label_Currency')}
 				>
