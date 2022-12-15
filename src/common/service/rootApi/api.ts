@@ -10,6 +10,6 @@ import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
 export const rootApi = createApi({
 	reducerPath: 'rootApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST', 'NOTE_POST'],
+	tagTypes: ['POST', 'NOTE_POST', 'UPDATE_PIC'],
 	endpoints: () => ({}),
 })

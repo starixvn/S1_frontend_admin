@@ -24,6 +24,9 @@ export enum UsableActionButtonEnum {
 	Draft = 66,
 	ManualApproved = 67,
 	ManualRejected = 68,
+	Verified = 69,
+	Process = 70,
+	ToKyc = 71,
 }
 
 export enum VipLevelEnum {

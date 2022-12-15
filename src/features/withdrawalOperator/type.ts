@@ -1,0 +1,267 @@
+import moment from 'moment/moment'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { ICurrencyAmountRecordData } from 'features/paymentAdjustment/type'
+import { UploadFile } from 'antd/es/upload/interface'
+
+export interface IExportWithdrawalListArgs {
+	startDate: string
+	endDate: string
+	siteId?: number
+	startAmount: number
+	endAmount: number
+	userName: string
+	withdrawalId: string | null
+	withdrawalMethod: number
+	withdrawalTypes: number[]
+	statuses: number[]
+	currencyIds: number[]
+	levelStatuses: number[]
+	selectBankCode: number[]
+	selectCalCode: number[]
+	agent: string
+}
+
+export interface IGetWithdrawalListArgs extends IExportWithdrawalListArgs {
+	pageNumber: number
+	pageSize: number
+}
+
+export interface IGetWithdrawalData {
+	createTime: string
+	flowEndTime: string
+	isoCode: string
+	updateTime: string
+	withdrawalId: number
+	transId: string
+	withdrawalType: number
+	withdrawalTypeName: string
+	custId: number
+	userName: string
+	email: string
+	withdrawalInfo: string
+	currencyId: number
+	siteId: number
+	amount: number
+	chargeFee: number
+	memo: string
+	comment: string
+	status: number
+	statusName: string
+	siteName: string
+	bankName: string
+	bankCode: string
+	fromBankName: string
+	fromBankCode: string
+	fromAccountNo: string
+	fromAccountName: string
+	payName: string
+	sysId: number
+	payId: number
+	bankId: number
+	accountNo: string
+	accountName: string
+	ifscCode: string
+	nickName: string
+	accountType: string
+	network: string
+	walletCurrencyID: number
+	cryptoCurrency: string
+	refId: string
+	hasPhotoId: boolean
+	vipLevelName: string
+	vipLevel: number
+	operator: string
+	sameOperator: boolean
+	calCode: string
+	isKyc: number
+	isRisk: number
+	withdrawlCnt: number
+	flag: number
+	hasPic: boolean
+	bankSlipPicCount: number
+	channelName: string
+	eWalletName: string
+	eWalletSysId: number
+	deviceScore: number
+	agent: string
+	usableActionButton: number[]
+	withdrawalAccountingModels: IWithdrawalAccounting[]
+}
+
+export interface IGetWithdrawalResponse
+	extends IAxiosResponse<IGetWithdrawalData[]> {
+	currencyAmountRecord: ICurrencyAmountRecordData[]
+}
+
+export interface IGetByTransIdArgs {
+	transId?: string
+}
+
+export interface IWithdrawalCommentData {
+	comment: string
+	createTime: string
+	action: number
+	actionName: string
+	actionString: string
+	actualDeposit: number
+	operator: string
+}
+
+export interface IGetBankCodeListArgs {
+	siteId?: number
+	currency: number
+}
+
+export interface IGetBankCodeData {
+	sysId: number
+	currencyId: number
+	bankCode: string
+	bankName: string
+}
+
+export interface ICalCodeData {
+	bankId: number
+	calCodeName: string
+	currencyId: number
+	sysId: number
+}
+
+export type IFilterForm = {
+	dateRange: [moment.Moment, moment.Moment]
+	userName: string
+	currencyIds: number[]
+	statuses: number[]
+	selectCalCode: number[]
+	levelStatuses: number[]
+	selectBankCode: number[]
+	startAmount: number
+	endAmount: number
+	withdrawalTypes: number[]
+	withdrawalMethod: number
+	withdrawalId: string
+	agent: string
+}
+
+export interface IGetVipLevelBySiteArgs {
+	siteId?: number
+}
+
+export interface IVipLevelData {
+	level: number
+	levelName: string
+}
+
+export type IWithdrawalAccounting = {
+	bankId: number
+	amount: number
+	chargeFee: number
+}
+
+export interface ISetWithdrawalStatusArgs {
+	transId: string
+	comment: string | null
+	action: number
+	channelId?: number
+	withdrawalInfo?: string
+	selId?: number
+	withdrawalType?: number
+	withdrawalAccountingModels?: IWithdrawalAccounting[] | null
+}
+
+export interface IWithdrawalRequestForm {
+	comment: string
+	withdrawalType: number
+	withdrawalAccountingModels: IWithdrawalAccounting[]
+	selId: number
+	fileList: UploadFile[]
+}
+
+// 取得可用的 OnlinePayList
+export interface IGetOnlinePayListArgs {
+	currencyId: number
+	sysId: number
+	amount: number
+	custId: number
+}
+
+export interface IGetOnlinePayData {
+	payId: number
+	payName: string
+	channelId: number
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+}
+
+// 取得可用的 CryptoPay List
+export interface IGetCryptoPayListArgs {
+	currencyId: number
+	channelName: string
+	amount: number
+	custId: number
+}
+
+export type IGetCryptoPayData = IGetOnlinePayData
+
+// 取得可用的 localBank List
+export interface IGetBankInfoListArgs {
+	currencyId: number
+	purpose: number
+}
+
+export interface IGetBankInfoData {
+	bankId: number
+	siteId: number
+	siteName: string
+	currencyId: number
+	isoCode: string
+	channel: number
+	accountName: string
+	accountNo: string
+	accountCode: string
+	displayName: string
+	accountStatus: number
+	settingStatus: number
+	purpose: string
+	purposes: number[]
+	jsonPointLevels: string
+	pointLevels: number[]
+	jsonVipLevels: string
+	vipLevels: number[]
+	minAmount: number
+	maxAmount: number
+	sysId: number
+	bankCode: string
+	bankName: string
+	bankLoginUrl: string
+	bankLoginAccount: string
+	bankLoginPassword: string
+	transferPin: string
+	loginPin: string
+	mobilePin: string
+	corporateID: string
+}
+
+export interface IPayInfo {
+	accountNo: string
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+	mobilePin?: string
+	corporateID?: string
+}
+
+export type IManualOperatorArgs = IGetByTransIdArgs
+
+export interface IUploadPictureArgs {
+	pic: string[]
+	transId: string
+}
+
+export interface IDeletePictureArgs extends IGetByTransIdArgs {
+	number: number
+}

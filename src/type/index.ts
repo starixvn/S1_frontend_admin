@@ -79,6 +79,15 @@ export interface ActionPermissions {
 	smsInfoDeletePermission: PermissionInterface
 	add3RDPermission: PermissionInterface
 	resetBankInfoPermission: PermissionInterface
+	onHoldPermission: PermissionInterface
+	pendingPermission: PermissionInterface
+	approvedPermission: PermissionInterface
+	draftPermission: PermissionInterface
+	manualApprovedPermission: PermissionInterface
+	manualRejectPermission: PermissionInterface
+	verifiedPermission: PermissionInterface
+	processPermission: PermissionInterface
+	toKycPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
