@@ -81,7 +81,7 @@ const MemberAdministrationListTable = ({
 			},
 		},
 		{
-			title: t('Label_AffiliateCode'),
+			title: t('Label_SuperiorAffiliateCode'),
 			key: 'affiliateCode',
 			dataIndex: 'affiliateCode',
 			width: 120,

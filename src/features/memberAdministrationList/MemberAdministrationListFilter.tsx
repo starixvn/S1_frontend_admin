@@ -298,6 +298,14 @@ const MemberAdministrationListFilter = ({
 									<Input allowClear placeholder={t('Label_SabaId')} />
 								</Form.Item>
 							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='affiliateName'
+									label={t('Label_AffiliateName')}
+								>
+									<Input allowClear placeholder={t('Label_AffiliateName')} />
+								</Form.Item>
+							</Col>
 						</Row>
 
 						<Collapse accordion ghost>
@@ -348,17 +356,6 @@ const MemberAdministrationListFilter = ({
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
-										<Form.Item
-											name='affiliateName'
-											label={t('Label_AffiliateName')}
-										>
-											<Input
-												allowClear
-												placeholder={t('Label_AffiliateName')}
-											/>
-										</Form.Item>
-									</Col>
-									<Col lg={6} md={12} xs={12}>
 										<Form.Item name='accountName' label={t('Label_FullName')}>
 											<Input allowClear placeholder={t('Label_FullName')} />
 										</Form.Item>
@@ -377,11 +374,11 @@ const MemberAdministrationListFilter = ({
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item
 											name='affiliateCode'
-											label={t('Label_AffiliateCode')}
+											label={t('Label_SuperiorAffiliateCode')}
 										>
 											<Input
 												allowClear
-												placeholder={t('Label_AffiliateCode')}
+												placeholder={t('Label_SuperiorAffiliateCode')}
 											/>
 										</Form.Item>
 									</Col>
@@ -440,9 +437,9 @@ const MemberAdministrationListFilter = ({
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
-										<Form.Item name='userType' label={t('Label_UserType')}>
+										<Form.Item name='userType' label={t('Label_MemberType')}>
 											<Select
-												placeholder={t('Label_Select') + t('Label_UserType')}
+												placeholder={t('Label_Select') + t('Label_MemberType')}
 											>
 												{USER_TYPE_ENUM_OPTIONS?.map(
 													({ value, displayKey }) => (
