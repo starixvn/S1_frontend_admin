@@ -486,11 +486,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 64,
+		functionId: paths.cms.sub.urlManagement.sub.externalDomain.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DomainManage',
 		internalFunctionKey: allowedRoles.CMSDomainManage,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.externalDomain.root,
 	},
 	{
 		name: 'APP QR Code',

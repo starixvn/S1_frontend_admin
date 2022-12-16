@@ -935,6 +935,7 @@
 	"Label_ReferralUrl": "Referral Url",
 	"Label_AddPointLevel": "Add Point Level",
 	"Label_SendMessage": "Send Message",
+	"Label_AddDomain": "Add Domain",
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
 	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
