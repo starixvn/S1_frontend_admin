@@ -391,6 +391,10 @@ const paths = {
 				root: 'report/gameStatisticalReport',
 				functionId: 132,
 			},
+			verificationReport: {
+				root: 'report/verificationReport',
+				functionId: 76,
+			},
 		},
 	},
 	member: {
