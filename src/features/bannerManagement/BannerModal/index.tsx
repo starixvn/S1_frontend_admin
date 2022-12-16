@@ -30,7 +30,7 @@ interface IAddBannerModalProps {
 	showStatusList: IEnumTypeData[]
 	bannerActionModeList: IEnumTypeData[]
 	currencyId: number
-	editBannerData?: IGetBannerData
+	editBannerData: IGetBannerData
 	isEditing: boolean
 	onCancel: () => void
 	onDelete: (bannerName: string) => void
@@ -156,7 +156,7 @@ const BannerModal = ({
 				gameId,
 				tpId,
 				sort,
-			} = editBannerData ?? {}
+			} = editBannerData
 
 			const args = {
 				siteId,
@@ -179,7 +179,7 @@ const BannerModal = ({
 							],
 							startTime,
 							tpId,
-							urlRouter,
+							urlRouter: Number(UrlRouterEnum[urlRouter]),
 							bonusCode,
 							categoryId,
 							gameId,
