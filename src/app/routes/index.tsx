@@ -836,6 +836,13 @@ const PointLevelManagement = lazy(
 		)
 )
 
+const VerificationReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VerificationReport' */ 'features/verificationReport/VerificationReport'
+			)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2078,6 +2085,16 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.pointLevelManagement.functionId}
 					>
 						<PointLevelManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.verificationReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.verificationReport.functionId}
+					>
+						<VerificationReport />
 					</AuthRequire>
 				),
 			},

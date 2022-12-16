@@ -580,11 +580,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 76,
+		functionId: paths.report.sub.verificationReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVerificationRewardReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VerificationRewardReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.verificationReport.root,
 	},
 	{
 		icon: null,
