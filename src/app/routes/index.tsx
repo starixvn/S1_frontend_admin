@@ -843,6 +843,13 @@ const VerificationReport = lazy(
 			)
 )
 
+const ExternalDomain = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ExternalDomain' */ 'features/externalDomain/ExternalDomain'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2095,6 +2102,18 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.verificationReport.functionId}
 					>
 						<VerificationReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.urlManagement.sub.externalDomain.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.cms.sub.urlManagement.sub.externalDomain.functionId
+						}
+					>
+						<ExternalDomain />
 					</AuthRequire>
 				),
 			},

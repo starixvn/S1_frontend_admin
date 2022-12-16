@@ -612,6 +612,10 @@ const paths = {
 						root: 'cms/urlManagement/providerAppDownload',
 						functionId: 66,
 					},
+					externalDomain: {
+						root: 'cms/urlManagement/externalDomain',
+						functionId: 64,
+					},
 				},
 			},
 			hotEventManagement: {
