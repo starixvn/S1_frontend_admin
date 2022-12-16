@@ -939,8 +939,16 @@
 	"Label_AddDomain": "Add Domain",
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
-	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
 	"Label_RunningBonus": "Running Bonus",
 	"Label_DeviceAssociateCount": "Device Associate Count",
-	"Label_IpUserCount": "IP User Count"
+	"Label_IpUserCount": "IP User Count",
+	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
+	"Label_TicketStatus": "Ticket Status",
+	"Label_HandiCap": "Handicap",
+	"Label_LeagueName": "League Name",
+	"Label_SelectionName": "Selection Name",
+	"Label_HomeyScore": "Homey Score",
+	"Label_AwayScore": "Away Score",
+	"Label_HomeHandiCap": "Home Handicap",
+	"Label_AwayHandiCap": "Away Handicap"
 }

@@ -1027,6 +1027,18 @@ export type IGetTpBetRecordDetailData = {
 	utcSettledTime: string
 	stake: number
 	winlostAmount: number
+	odds: string
+	ticketStatus: string
+	handicap: string
+	leagueName: string
+	eventName: string
+	selectionName: string
+	homeTeamName: string
+	homeHandicap: string
+	homeyScore: string
+	awayTeamName: string
+	awayScore: string
+	awayHandicap: string
 }
 
 // Marketing => CashBack Report

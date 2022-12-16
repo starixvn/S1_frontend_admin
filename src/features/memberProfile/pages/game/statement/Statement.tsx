@@ -31,6 +31,11 @@ const Statement = () => {
 	const [filterForm] = Form.useForm()
 	const [tableState, setTableState] = useState(0)
 	const tpBetRecordDetailModal = useModal()
+	// 暫存當前閱讀的 categoryId 供彈窗元件判斷
+	const [currentCategoryId, setCurrentCategoryId] = useState<
+		number | undefined
+	>(undefined)
+
 	// 第一層 , 取得客戶紀錄
 	const [
 		getCustTpBetRecord,
@@ -134,6 +139,7 @@ const Statement = () => {
 	}
 
 	const handleTpBetRecordByDayTableClicked = async (categoryId: number) => {
+		setCurrentCategoryId(categoryId)
 		// 取得第三層的 Table Detail , 並切換 state 至第三層
 		const { selDate } = filterForm.getFieldsValue(true)
 
@@ -300,6 +306,7 @@ const Statement = () => {
 					/>
 				)}
 				<TpBetRecordDetailModal
+					categoryId={currentCategoryId}
 					loading={isGetTpBetRecordDetailLoading}
 					tpBetRecordDetail={tpBetRecordDetail}
 					visible={tpBetRecordDetailModal.visible}
