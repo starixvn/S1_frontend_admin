@@ -933,5 +933,6 @@
 	"Label_SendMessage": "Send Message",
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
-	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet"
+	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
+	"Label_RunningBonus": "Running Bonus"
 }

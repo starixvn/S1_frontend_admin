@@ -206,6 +206,7 @@ export interface ICustTpWalletData {
 export interface IBonusWalletInfoData {
 	promotionCategory: string
 	bonusCode: string
+	description: string
 	bonus: number // * Bonus Wallet
 	remainingTurnover: number // * Bonus Rollover
 }
