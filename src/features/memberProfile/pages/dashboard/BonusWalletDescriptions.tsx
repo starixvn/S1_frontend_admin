@@ -22,8 +22,11 @@ const BonusWalletDescriptions = ({
 }: IBonusWalletDescriptionsProps) => {
 	const { t } = useTranslation()
 
-	const { bonus: bonusWallet = 0, remainingTurnover: bonusRollover = 0 } =
-		bonusWalletInfoData
+	const {
+		bonus: bonusWallet = 0,
+		remainingTurnover: bonusRollover = 0,
+		description = '',
+	} = bonusWalletInfoData
 
 	const { custBonusSum, custRewardSum, custRebateSum } =
 		bonusWalletDetailData ?? {}
@@ -227,6 +230,9 @@ const BonusWalletDescriptions = ({
 					>
 						{numberFormatter.format(rewardPoint ?? 0)}
 					</Typography.Text>
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_RunningBonus')}>
+					<Typography.Text>{description}</Typography.Text>
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>
