@@ -97,7 +97,6 @@ const BankSettingForm = ({
 								>
 									<Form.Item
 										{...restField}
-										// 因為這裡回傳的是 object[] , 避免後端資料吃不到 object Key , 還是保留大駝峰命名
 										name={[name, 'bankId']}
 										// 僅有第一列會顯示 Label
 										label={name === 0 ? t('Label_BankAccountNo') : null}
@@ -129,6 +128,8 @@ const BankSettingForm = ({
 												message: t('Label_GreaterThanZero'),
 											},
 										]}
+										// 第一筆拆單資料自動帶入總金額
+										initialValue={name === 0 ? amount : null}
 									>
 										<InputNumber
 											type='number'
@@ -156,6 +157,7 @@ const BankSettingForm = ({
 												message: t('Label_GreaterThanZero'),
 											},
 										]}
+										initialValue={0}
 									>
 										<InputNumber
 											type='number'

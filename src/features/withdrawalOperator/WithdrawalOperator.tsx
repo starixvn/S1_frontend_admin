@@ -101,6 +101,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		({ currencyId }) => includes(formCurrencyIds, currencyId)
 	)
 
+	const filterCalCodeListByBankCode = filter(calCodeList, ({ currencyId }) =>
+		includes(formCurrencyIds, currencyId)
+	)
+
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
@@ -254,7 +258,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				withdrawalMethodList={withdrawalMethodList}
 				withdrawalStatusList={withdrawalStatusList}
 				vipLevelList={vipLevelList}
-				calCodeList={calCodeList}
+				calCodeList={filterCalCodeListByBankCode}
 				currencyListBySite={currencyListBySite}
 				withdrawalTypeList={withdrawalTypeList}
 				onTimeZoneChange={onTimeZoneChange}

@@ -858,7 +858,8 @@
 	"Label_WithdrawalCount": "Withdrawal Count",
 	"Label_WithdrawalAmount": "Withdrawal Amount",
 	"Label_WithdrawalRequest": "Withdrawal Request",
-	"Label_NameOfBank": "Name of Bank (E-wallet)",
+	"Label_NameOfBank": "Name of Bank",
+	"Label_NameOfEwallet": "Name of E-Wallet",
 	"Label_IFSCode": "IFSC Code",
 	"Label_MemberInfo": "Member Info",
 	"Label_NewestBonusClaimed": "Newest Bonus Claimed",
@@ -934,5 +935,7 @@
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
 	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
-	"Label_RunningBonus": "Running Bonus"
+	"Label_RunningBonus": "Running Bonus",
+	"Label_DeviceAssociateCount": "Device Associate Count",
+	"Label_IpUserCount": "IP User Count"
 }
