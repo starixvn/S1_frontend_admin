@@ -16,6 +16,8 @@ import { VipLevelEnum } from 'features/depositOperator/type'
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
 	memberInfo?: IMemberInfo
+	onIpCountClick: (ip: string) => void
+	onDeviceCountClick: (deviceId: string) => void
 }
 
 const { Item } = Descriptions
@@ -23,6 +25,8 @@ const { Item } = Descriptions
 const WithdrawalRequestMemberInfo = ({
 	loading,
 	memberInfo,
+	onIpCountClick,
+	onDeviceCountClick,
 }: IWithdrawalRequestMemberInfoProps) => {
 	const { t } = useTranslation()
 	const {
@@ -34,12 +38,18 @@ const WithdrawalRequestMemberInfo = ({
 		actStatus,
 		mailWalletAmount,
 		eligibleWithdrawal,
-		newestDeviceScore: { risk = '', score = null, associateCount = 0 } = {},
+		newestDeviceScore: {
+			risk = '',
+			score = null,
+			associateCount = 0,
+			deviceId = '',
+		} = {},
 		newestPromotions: {
 			bonusInfoStatus = 0,
 			description = '',
 			bonusAmount = 0,
 		} = {},
+		newestIpList: { userCount = 0, loginIp = '' } = {},
 		birthMonth,
 		birthYear,
 		birthDay,
@@ -113,12 +123,25 @@ const WithdrawalRequestMemberInfo = ({
 				<Item
 					label={t('Label_DOB')}
 				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
-				<Item label={t('Label_TotalRelatedPlayer')}>{associateCount}</Item>
+				<Item label={t('Label_DeviceAssociateCount')}>
+					<Typography.Link
+						onClick={() => onDeviceCountClick(deviceId)}
+						disabled={!deviceId}
+					>
+						{associateCount}
+					</Typography.Link>
+				</Item>
 				<Item label={t('Label_IovationStatus')}>
 					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
 				</Item>
-				{/* 排版需要，留空 */}
-				<Item>{` `}</Item>
+				<Item label={t('Label_IpUserCount')}>
+					<Typography.Link
+						onClick={() => onIpCountClick(loginIp)}
+						disabled={!loginIp}
+					>
+						{userCount}
+					</Typography.Link>
+				</Item>
 				<Item label={t('Label_Tag')}>
 					{tagList.length > 0
 						? tagList?.map(tag => (

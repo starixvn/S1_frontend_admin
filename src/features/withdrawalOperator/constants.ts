@@ -44,6 +44,7 @@ export const BONUS_STATUS: { [status: number]: string } = {
 // 比對 AccountType
 export enum AccountTypeEnum {
 	Crypto = 'crypto',
+	EWallet = 'ewallet',
 }
 
 export enum WithdrawalTypeEnum {

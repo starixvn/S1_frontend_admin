@@ -106,7 +106,7 @@ const WithdrawalOperatorFilter = ({
 	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			// reset 當前所選的 bankCode
-			form.resetFields(['selectBankCode'])
+			form.resetFields(['selectBankCode', 'selectCalCode'])
 			if (newCurrencyIds.includes(0)) {
 				form.setFieldsValue({
 					currencyIds: currencyListBySite?.map(item => item.currencyId),
@@ -232,6 +232,7 @@ const WithdrawalOperatorFilter = ({
 
 	const bankCodeSelector = () => {
 		const onChangeBankCode = (newCode: Array<number | string>) => {
+			form.resetFields(['selectCalCode'])
 			if (newCode.includes('all')) {
 				form.setFieldsValue({
 					selectBankCode: bankCodeList?.map(({ sysId }) => sysId),
