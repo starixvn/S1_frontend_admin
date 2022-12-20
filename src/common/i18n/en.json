@@ -950,5 +950,7 @@
 	"Label_HomeyScore": "Homey Score",
 	"Label_AwayScore": "Away Score",
 	"Label_HomeHandiCap": "Home Handicap",
-	"Label_AwayHandiCap": "Away Handicap"
+	"Label_AwayHandiCap": "Away Handicap",
+	"Label_AddBlockBankAccount": "Add Block Bank Account",
+	"Label_AddBlockEWallet": "Add Block E-Wallet"
 }
