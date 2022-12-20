@@ -1,6 +1,7 @@
 import {
 	IGetBankInfoData,
 	IGetCryptoPayData,
+	IGetCryptoWalletData,
 	IGetOnlinePayData,
 	IGetWithdrawalData,
 	IWithdrawalRequestForm,
@@ -36,6 +37,7 @@ interface IWithdrawalInfoDescriptionsProps {
 	localBankList: IGetBankInfoData[]
 	cryptoPayList: IGetCryptoPayData[]
 	onlinePayList: IGetOnlinePayData[]
+	cryptoWalletList: IGetCryptoWalletData[]
 	onPayInfoClicked: (
 		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
 	) => void
@@ -48,6 +50,7 @@ const WithdrawalRequestInfo = ({
 	form,
 	timeZoneUtcOffset,
 	withdrawalDetailData,
+	cryptoWalletList,
 	cryptoPayList,
 	onlinePayList,
 	localBankList,
@@ -93,6 +96,7 @@ const WithdrawalRequestInfo = ({
 	const hasLocalBank = localBankList?.length > 0
 	const hasOnlinePayment = onlinePayList?.length > 0
 	const hasCryptoPay = cryptoPayList?.length > 0
+	const hasCryptoWallet = cryptoWalletList?.length > 0
 
 	// WithdrawalType 下拉選單邏輯寫在這
 	const getWithdrawalTypeOptions = () => {
@@ -105,6 +109,16 @@ const WithdrawalRequestInfo = ({
 						key={WithdrawalTypeEnum.CryptoPay}
 					>
 						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoPay])}
+					</Option>
+				)
+			}
+			if (hasCryptoWallet) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.CryptoWallet}
+						key={WithdrawalTypeEnum.CryptoWallet}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoWallet])}
 					</Option>
 				)
 			}

@@ -12,7 +12,10 @@ export const hashPayInfo = (
 	record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
 ): IPayInfo => {
 	const result = {}
-	if (type !== WithdrawalTypeEnum.LocalBank) {
+	if (
+		type !== WithdrawalTypeEnum.LocalBank &&
+		type !== WithdrawalTypeEnum.CryptoWallet
+	) {
 		const {
 			payName,
 			loginUrl,
