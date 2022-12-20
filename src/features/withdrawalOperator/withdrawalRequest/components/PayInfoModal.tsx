@@ -23,7 +23,9 @@ const PayInfoModal = ({
 }: IPayInfoModalProps) => {
 	const { t } = useTranslation()
 	const { onCopy } = useCopy()
-	const isLocalBanking = type === WithdrawalTypeEnum.LocalBank
+	const isLocalBankingOrCryptoWallet =
+		type === WithdrawalTypeEnum.LocalBank ||
+		type === WithdrawalTypeEnum.CryptoWallet
 
 	const {
 		accountNo,
@@ -45,7 +47,11 @@ const PayInfoModal = ({
 		>
 			<Descriptions layout='horizontal' column={1} bordered size='small'>
 				<Item
-					label={isLocalBanking ? t('Label_AccountNo') : t('Label_PayName')}
+					label={
+						isLocalBankingOrCryptoWallet
+							? t('Label_AccountNo')
+							: t('Label_PayName')
+					}
 				>
 					{accountNo || '-'}
 				</Item>
@@ -80,7 +86,7 @@ const PayInfoModal = ({
 
 				<Item label={t('Label_TransferPin')}>{transferPin || '-'}</Item>
 				<Item label={t('Label_LoginPin')}>{loginPin || '-'}</Item>
-				{isLocalBanking && (
+				{isLocalBankingOrCryptoWallet && (
 					<>
 						<Item label={t('Label_MobilePin')}>{mobilePin || '-'}</Item>
 						<Item label={t('Label_CorporateID')}>{corporateID || '-'}</Item>

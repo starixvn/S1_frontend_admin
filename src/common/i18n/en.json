@@ -493,6 +493,7 @@
 	"Label_MobilePay": "Mobile Pay",
 	"Label_LocalBanking": "Local Banking",
 	"Label_CryptoPay": "Crypto Pay",
+	"Label_CryptoWallet": "Crypto Wallet",
 	"Label_LoadCard": "Load Card",
 	"Label_QRPay": "QR Pay",
 	"Label_BankAutoChannel": "Bank Auto Channel",
@@ -941,7 +942,6 @@
 	"Label_CryptoSetting": "Crypto Setting",
 	"Label_RunningBonus": "Running Bonus",
 	"Label_DeviceAssociateCount": "Device Associate Count",
-	"Label_IpUserCount": "IP User Count",
 	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
 	"Label_TicketStatus": "Ticket Status",
 	"Label_HandiCap": "Handicap",
@@ -952,5 +952,7 @@
 	"Label_HomeHandiCap": "Home Handicap",
 	"Label_AwayHandiCap": "Away Handicap",
 	"Label_AddBlockBankAccount": "Add Block Bank Account",
-	"Label_AddBlockEWallet": "Add Block E-Wallet"
+	"Label_AddBlockEWallet": "Add Block E-Wallet",
+	"Label_IpUserCount": "IP User Count",
+	"Label_GasFee": "Gas Fee"
 }
