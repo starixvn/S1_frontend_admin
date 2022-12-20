@@ -240,7 +240,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.paymentAdjustment.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
 		newAdminPath: paths.finance.sub.report.sub.paymentAdjustment.root,
@@ -574,7 +574,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.vipRebateReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVipRebateInfoReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateInfoReport',
 		newAdminPath: paths.report.sub.vipRebateReport.root,
 	},
@@ -599,7 +599,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.drawPrizeReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DrawPrizeReport',
 		newAdminPath: paths.report.sub.drawPrizeReport.root,
 	},
@@ -863,13 +863,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.systemSetting.sub.exchangeUsdRate.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.systemSetting.sub.exchangeUsdRate.root,
 	},
 	{
 		icon: null,
 		functionId: paths.systemSetting.sub.bettingMonitorSetting.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
 	},
 	{
