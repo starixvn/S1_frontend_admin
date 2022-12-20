@@ -18,6 +18,8 @@ interface IAffiliateInfoProps {
 const AffiliateInfo = ({ affInfo }: IAffiliateInfoProps) => {
 	const { t } = useTranslation()
 	const {
+		affiliateName = '',
+		affiliateCode = '',
 		revenueName = null,
 		revenueShare = null,
 		totalPlayers = 0,
@@ -26,6 +28,14 @@ const AffiliateInfo = ({ affInfo }: IAffiliateInfoProps) => {
 
 	return (
 		<Space direction='vertical'>
+			<StyledText>{`${t('Label_AffiliateName')} : ${
+				affiliateName ?? 'N/A'
+			}`}</StyledText>
+
+			<StyledText>{`${t('Label_AffiliateCode')} : ${
+				affiliateCode ?? 'N/A'
+			}`}</StyledText>
+
 			<StyledText>{`${t('Label_RevenueGroup')} : ${
 				revenueName ?? 'N/A'
 			}`}</StyledText>

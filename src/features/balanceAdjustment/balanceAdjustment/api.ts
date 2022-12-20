@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IAdjustmentLimitResponse,
 	ICheckPasswordArgs,
@@ -12,10 +11,7 @@ import {
 	ISubmitAdjustmentArgs,
 } from './type'
 
-export const balanceAdjustmentApi = createApi({
-	reducerPath: 'balanceAdjustmentApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const balanceAdjustmentApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getAdjustmentType: builder.query<IGetAdjustmentTypeResponse, null>({
 			query: data => ({

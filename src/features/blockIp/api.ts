@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IAddBlockIpArgs,
 	IBlockIPListArgs,
@@ -8,10 +6,7 @@ import {
 	IDeleteBlockIpArgs,
 } from './type'
 
-export const blockIpApi = createApi({
-	reducerPath: 'blockIpApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const blockIpApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBlockIpList: builder.query<IBlockIpResponse, IBlockIPListArgs>({
 			query: data => ({

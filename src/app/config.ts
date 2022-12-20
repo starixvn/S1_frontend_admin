@@ -5,3 +5,5 @@ export const SITE_INFO = {
 	LANG_LIST: ['en'],
 	DEFAULT_LANG: 'en',
 }
+
+export const PAGE_TITLE = 'Admin Site'

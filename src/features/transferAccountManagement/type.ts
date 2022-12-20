@@ -13,7 +13,7 @@ export interface IForm {
 
 export interface IAddEditForm {
 	currencyId: number
-	sysId: number
+	sysId: number | null
 	channel: number
 	status: number
 	purposes: number[]
@@ -36,6 +36,9 @@ export interface IAddEditForm {
 	loginPin: string | null
 	mobilePin: string | null
 	corporateID: string | null
+	// for cryptoWallet
+	cryptoCurrencyId: number | null
+	network: string | null
 }
 
 export interface IBankTransferAccountsArgs {
@@ -86,6 +89,9 @@ export interface IBankTransferAccountData {
 	loginPin: string | null
 	mobilePin: string | null
 	corporateID: string | null
+	// for cryptoWallet
+	cryptoCurrencyId: number | null
+	network: string | null
 }
 
 export type IBankTransferAccountResponse = IAxiosResponse<

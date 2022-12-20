@@ -5,6 +5,7 @@ import {
 	DashboardOutlined,
 	EditOutlined,
 	ExclamationCircleOutlined,
+	SettingOutlined,
 	ShopOutlined,
 	ShoppingCartOutlined,
 	TransactionOutlined,
@@ -35,6 +36,7 @@ export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	9: <RiUserSettingsLine style={iconStyle} />,
 	19: <ControlOutlined style={iconStyle} />,
 	102: <ShoppingCartOutlined style={iconStyle} />,
+	128: <SettingOutlined style={iconStyle} />,
 }
 
 export const getMapMenu = (functionId: number) => {
@@ -170,27 +172,35 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 27,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositList',
 		internalFunctionKey: allowedRoles.FinanceDepositList,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root,
 	},
 	{
 		icon: null,
-		functionId: 28,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
+				.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalList',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalList,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator.root,
 	},
 	{
 		icon: null,
-		functionId: 29,
+		functionId:
+			paths.finance.sub.depositWithdrawalSector.sub.depositSubmission
+				.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositSubmission',
 		internalFunctionKey: allowedRoles.FinanceDepositSubmission,
-		newAdminPath: '',
+		newAdminPath:
+			paths.finance.sub.depositWithdrawalSector.sub.depositSubmission.root,
 	},
 	{
 		icon: null,
@@ -213,13 +223,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 34,
+		functionId: paths.finance.sub.report.sub.depositTimeReport.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/DepositTimeReport',
 		internalFunctionKey: allowedRoles.FinanceDepositTimeReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.depositTimeReport.root,
 	},
-
 	{
 		icon: null,
 		functionId: 35,
@@ -364,11 +373,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 52,
+		functionId: paths.marketing.sub.pointLevelManagement.functionId,
 		internalFunctionKey: allowedRoles.MarketingPointLevelManagement,
 		pathMode: 'Internal',
-		internalPath: 'Marketing/PointLevelManagement',
-		newAdminPath: '',
+		internalPath: 'Marketing/pointLevelManagement',
+		newAdminPath: paths.marketing.sub.pointLevelManagement.root,
 	},
 	{
 		icon: null,
@@ -388,11 +397,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 55,
+		functionId: paths.cms.sub.bannerManage.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/BannerManage',
 		internalFunctionKey: allowedRoles.CMSBannerManage,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.bannerManage.root,
 	},
 	{
 		icon: null,
@@ -477,28 +486,28 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 64,
+		functionId: paths.cms.sub.urlManagement.sub.externalDomain.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DomainManage',
 		internalFunctionKey: allowedRoles.CMSDomainManage,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.externalDomain.root,
 	},
 	{
 		name: 'APP QR Code',
 		icon: null,
-		functionId: 65,
+		functionId: paths.cms.sub.urlManagement.sub.appQrCode.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/AppLinkManagement',
 		internalFunctionKey: allowedRoles.CMSAppLinkManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.appQrCode.root,
 	},
 	{
 		icon: null,
-		functionId: 66,
+		functionId: paths.cms.sub.urlManagement.sub.providerAppDownload.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DeepLinkManagement',
 		internalFunctionKey: allowedRoles.CMSDeepLinkManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.urlManagement.sub.providerAppDownload.root,
 	},
 	{
 		icon: null,
@@ -571,11 +580,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 76,
+		functionId: paths.report.sub.verificationReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVerificationRewardReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VerificationRewardReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.verificationReport.root,
 	},
 	{
 		icon: null,
@@ -588,11 +597,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Draw Prize Report',
 		icon: null,
-		functionId: 78,
+		functionId: paths.report.sub.drawPrizeReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/DrawPrizeReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.drawPrizeReport.root,
 	},
 	{
 		name: 'Win Lost Report',
@@ -678,11 +687,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 89,
+		functionId: paths.bankTransfer.sub.bankFinancialReport.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReportBankFinancialReport,
 		pathMode: 'Internal',
 		internalPath: 'BankFinancial/BankFinancialReport',
-		newAdminPath: '',
+		newAdminPath: paths.bankTransfer.sub.bankFinancialReport.root,
 	},
 	{
 		icon: null,
@@ -850,5 +859,23 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalSubmission.root,
+	},
+	{
+		icon: null,
+		functionId: paths.systemSetting.sub.exchangeUsdRate.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.systemSetting.sub.exchangeUsdRate.root,
+	},
+	{
+		icon: null,
+		functionId: paths.systemSetting.sub.bettingMonitorSetting.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.systemSetting.sub.bettingMonitorSetting.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.gameStatisticalReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.report.sub.gameStatisticalReport.root,
 	},
 ]

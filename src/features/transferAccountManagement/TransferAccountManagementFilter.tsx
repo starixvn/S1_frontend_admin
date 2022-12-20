@@ -131,10 +131,6 @@ const TransferAccountManagementFilter: FC<
 										optionFilterProp='children'
 										onChange={onChangeSysIds}
 									>
-										{(bankInfoSys?.length as number) > 1 && (
-											<Option value={0}>{t('Label_SelectAll')}</Option>
-										)}
-
 										{bankInfoSys?.map(item => (
 											<Option key={item.sysId} value={item.sysId}>
 												{item.bankName}

@@ -12,12 +12,20 @@ import {
 	ISetGlobalStatusArgs,
 	ISetPaySettingArgs,
 	ISetPaySettingStatusArgs,
+	ISetPayListLoginInfoArgs,
+	IGetCryptoInfoData,
+	ISetCryptoInfoArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
 	reducerPath: 'paymentManagementApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['SetGlobalStatus', 'SetPaySetting', 'SetBankStatus'],
+	tagTypes: [
+		'SetGlobalStatus',
+		'SetPaySetting',
+		'SetBankStatus',
+		'SetCryptoStatus',
+	],
 	endpoints: builder => ({
 		// 取得global status 列表
 		getGlobalStatusList: builder.query<
@@ -35,6 +43,15 @@ export const paymentManagementApi = createApi({
 		setGlobalStatus: builder.mutation<void, ISetGlobalStatusArgs>({
 			query: data => ({
 				url: 'ThirdPartyManagement/SetPayListStatus',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetGlobalStatus'],
+		}),
+		// 設定支付三方後台登入資訊
+		setPayListLoginInfo: builder.mutation<void, ISetPayListLoginInfoArgs>({
+			query: data => ({
+				url: 'ThirdPartyManagement/SetPayListLoginInfo',
 				method: 'POST',
 				data,
 			}),
@@ -92,6 +109,24 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetBankStatus'],
 		}),
+		// 取得 CryptoInfo
+		getCryptoInfo: builder.query<IAxiosResponse<IGetCryptoInfoData[]>, null>({
+			query: data => ({
+				url: 'ThirdPartyManagement/GetCryptoInfoList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetCryptoStatus'],
+		}),
+		// 更新 Crypto 狀態
+		setCryptoInfo: builder.mutation<IAxiosResponse<null>, ISetCryptoInfoArgs>({
+			query: data => ({
+				url: 'ThirdPartyManagement/SetCryptoInfoStatus',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetCryptoStatus'],
+		}),
 	}),
 })
 
@@ -103,4 +138,7 @@ export const {
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
 	useSetBankStatusMutation,
+	useSetPayListLoginInfoMutation,
+	useGetCryptoInfoQuery,
+	useSetCryptoInfoMutation,
 } = paymentManagementApi

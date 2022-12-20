@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetSNSListArgs,
 	IGetSNSListResponse,
@@ -8,10 +6,7 @@ import {
 	ISetSortArgs,
 } from 'features/snsManagement/type'
 
-export const snsManagementApi = createApi({
-	reducerPath: 'snsManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const snsManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDataList: builder.query<IGetSNSListResponse, IGetSNSListArgs>({
 			query: data => ({

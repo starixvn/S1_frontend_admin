@@ -6,13 +6,17 @@ import {
 	PaymentStatusEnum,
 } from 'features/paymentManagement/type'
 import { Table } from 'components'
+import { PermissionInterface } from 'type'
 
 interface IGlobalStatusModalProps {
 	loading: boolean
 	visible: boolean
 	onCancel: () => void
+	editPermission?: PermissionInterface
+	editInfoPermission?: PermissionInterface
 	payList: IGetGlobalStatusData[]
 	onSetStatus: (payId: number, status: boolean) => void
+	onEditClick: (record: IGetGlobalStatusData) => void
 }
 
 const { Option } = Select
@@ -22,7 +26,10 @@ const GlobalStatusModal = ({
 	visible,
 	onCancel,
 	payList,
+	editPermission,
+	editInfoPermission,
 	onSetStatus,
+	onEditClick,
 }: IGlobalStatusModalProps) => {
 	const { t } = useTranslation()
 	const [filterForm] = Form.useForm()
@@ -46,23 +53,40 @@ const GlobalStatusModal = ({
 			title: t('Label_Pay'),
 			key: 'payName',
 			dataIndex: 'payName',
-			width: '70%',
+			width: '60%',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Status'),
 			key: 'status',
-			width: '30%',
+			width: '20%',
 			align: 'center' as 'center',
 			render: (record: IGetGlobalStatusData) => {
 				const { payId: currentPayId, status } = record
 				return (
 					<Switch
+						disabled={!editPermission?.canUse}
 						defaultChecked={status === PaymentStatusEnum.True}
 						onClick={value => {
 							onSetStatus(currentPayId, value)
 						}}
 					/>
+				)
+			},
+		},
+		{
+			title: t('Label_Action'),
+			key: 'edit',
+			width: '20%',
+			align: 'center' as 'center',
+			render: (record: IGetGlobalStatusData) => {
+				return (
+					<Typography.Link
+						disabled={!editInfoPermission?.canUse}
+						onClick={() => onEditClick(record)}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
 				)
 			},
 		},

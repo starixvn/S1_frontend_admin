@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import moment from 'moment'
 import {
 	Col,
 	Collapse,
@@ -22,7 +21,11 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
-import { BANK_BLOCK_STATUS } from './constants'
+import {
+	BANK_BLOCK_STATUS,
+	BANK_BLOCK_STATUS_VALUE_OPTIONS,
+} from 'features/blockBankAccount/constants'
+import { IForm } from 'features/blockBankAccount/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -30,7 +33,7 @@ const { Option } = Select
 
 interface BlockBankAccountFilterInterface {
 	loading: boolean
-	form: FormInstance<any>
+	form: FormInstance<IForm>
 	timeZoneUtcOffset: number
 	onSearch: ({
 		currentTimeZoneUtcOffset,
@@ -63,6 +66,7 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							status: 0,
+							blockStatus: BANK_BLOCK_STATUS_VALUE_OPTIONS.ALL,
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -91,12 +95,6 @@ const BlockBankAccountFilter: FC<BlockBankAccountFilterInterface> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 

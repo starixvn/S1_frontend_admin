@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IDrawPrizesEventNameResponse,
 	IExportBonusListArgs,
@@ -9,9 +7,7 @@ import {
 	IGetBonusListResponse,
 } from 'features/bonusExport/type'
 
-export const bonusExportApi = createApi({
-	reducerPath: 'bonusExportApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const bonusExportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDrawPrizesEventNames: builder.query<IDrawPrizesEventNameResponse, null>({
 			query: () => ({

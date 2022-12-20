@@ -46,6 +46,11 @@ const GlobalStyle = createGlobalStyle`
     .ant-image-mask {
       display: none;
     }
+    
+    // *  onFocus 時的 outline , 用於 WithdrawalOperator/ReceiptUploader 
+    .highlight:focus {
+     border-color: #1890ff;
+}
 `
 
 export default GlobalStyle

@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetPeriodArgs,
 	IGetRebateGameTypeListArgs,
@@ -14,10 +12,7 @@ import {
 	IGetPeriodResponse,
 } from './type'
 
-export const vipRebateManagementApi = createApi({
-	reducerPath: 'vipRebateManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const vipRebateManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getPeriodArgs: builder.query<IGetPeriodResponse, IGetPeriodArgs>({
 			query: data => ({

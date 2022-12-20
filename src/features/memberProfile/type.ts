@@ -39,6 +39,7 @@ export interface IAffInfo {
 	createTime?: string
 	enableRebate?: boolean
 	affInfo?: object
+	affiliateCode: string
 	affiliateName: string
 	revenueName: string
 	revenueShare?: number
@@ -49,6 +50,7 @@ export interface IAffInfo {
 export interface IGetBasicInfoData {
 	custId: number
 	vipLevel: number
+	levelName: string
 	vipLogo: string
 	isOnline: boolean
 	userName: string
@@ -63,8 +65,8 @@ export interface IGetBasicInfoData {
 	depositPointLevel: number
 	currency: string
 	identity: IdentityEnum
-	affiliatesName: string
-	affiliatesCode: string
+	agentName: string
+	superiorAffiliateCode: string
 	registeredTime: string
 	firstDepositTime: string
 	lastLoginTime: string
@@ -204,6 +206,7 @@ export interface ICustTpWalletData {
 export interface IBonusWalletInfoData {
 	promotionCategory: string
 	bonusCode: string
+	description: string
 	bonus: number // * Bonus Wallet
 	remainingTurnover: number // * Bonus Rollover
 }

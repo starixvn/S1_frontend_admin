@@ -7,6 +7,9 @@ import { useTranslation } from 'react-i18next'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
+import { isPositiveNum } from 'common/utils'
+
+const { Text } = Typography
 
 interface IReferralHistoryTableProps {
 	loading: boolean
@@ -55,16 +58,23 @@ const ReferralHistoryTable = ({
 			key: 'totalDepositedAmount',
 			width: 120,
 			align: 'center' as 'center',
-			render: (record: IGetReferralHistoryData) => {
-				const { totalDeposit, depositC } = record
-				return (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{`${totalDeposit ? numberFormatter.format(totalDeposit) : 0} / ${
-							depositC ? numberFormatter.format(depositC) : 0
-						}`}
-					</Typography.Text>
-				)
-			},
+			render: ({ totalDeposit, depositC }: IGetReferralHistoryData) => (
+				<>
+					<Text
+						type={isPositiveNum(totalDeposit) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(totalDeposit || 0)}
+					</Text>
+					{` / `}
+					<Text
+						type={isPositiveNum(depositC) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(depositC || 0)}
+					</Text>
+				</>
+			),
 		},
 		{
 			title: t('Label_TotalBetAmount'),
@@ -74,11 +84,21 @@ const ReferralHistoryTable = ({
 			render: (record: IGetReferralHistoryData) => {
 				const { totalBet, validBetC } = record
 				return (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{`${totalBet ? numberFormatter.format(totalBet) : 0} / ${
-							validBetC ? numberFormatter.format(validBetC) : 0
-						}`}
-					</Typography.Text>
+					<>
+						<Text
+							type={isPositiveNum(totalBet) ? undefined : 'danger'}
+							style={{ whiteSpace: 'nowrap', padding: '5px' }}
+						>
+							{numberFormatter.format(totalBet || 0)}
+						</Text>
+						{` / `}
+						<Text
+							type={isPositiveNum(validBetC) ? undefined : 'danger'}
+							style={{ whiteSpace: 'nowrap', padding: '5px' }}
+						>
+							{numberFormatter.format(validBetC || 0)}
+						</Text>
+					</>
 				)
 			},
 		},
@@ -88,8 +108,14 @@ const ReferralHistoryTable = ({
 			dataIndex: 'bonusAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (bonusAmount: number) =>
-				bonusAmount ? numberFormatter.format(bonusAmount) : 0,
+			render: (bonusAmount: number) => (
+				<Text
+					type={isPositiveNum(bonusAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(bonusAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ReferralFreeCredit'),
@@ -97,8 +123,14 @@ const ReferralHistoryTable = ({
 			dataIndex: 'referralFreeCredit',
 			width: 100,
 			align: 'center' as 'center',
-			render: (referralFreeCredit: number) =>
-				referralFreeCredit ? numberFormatter.format(referralFreeCredit) : 0,
+			render: (referralFreeCredit: number) => (
+				<Text
+					type={isPositiveNum(referralFreeCredit) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(referralFreeCredit || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_RewardDate'),

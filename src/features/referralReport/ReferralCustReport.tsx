@@ -5,9 +5,9 @@ import { useParams } from 'react-router-dom'
 import { TablePaginationConfig, message } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
-import { ReferralCustReportTable } from './ReferralCustReportTable'
-import { useLazyGetCustReferralReportQuery } from './api'
-import { IReferralCustReportResponse } from './type'
+import { IReferralCustReportResponse } from 'features/referralReport/type'
+import { useLazyGetCustReferralReportQuery } from 'features/referralReport/api'
+import { ReferralCustReportTable } from 'features/referralReport/ReferralCustReportTable'
 
 const ReferralCustReport = () => {
 	const { t } = useTranslation()

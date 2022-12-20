@@ -1,10 +1,10 @@
+import moment from 'moment'
+import download from 'downloadjs'
 import { FC, useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
-import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
-import download from 'downloadjs'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
@@ -19,13 +19,17 @@ import { selectUserSite } from 'common/enum'
 import { SorterResult } from 'antd/es/table/interface'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { OrderByTypeEnum } from 'features/betList/type'
-import { IGetReferralReportResponse, IReferralReportData } from './type'
+import { ReferralReportFilter } from 'features/referralReport/ReferralReportFilter'
+import { ReferralReportTable } from 'features/referralReport/ReferralReportTable'
+import {
+	IGetReferralReportResponse,
+	IReferralReportData,
+	IForm,
+} from 'features/referralReport/type'
 import {
 	useLazyGetReferralReportQuery,
 	useExportReferralReportFileMutation,
-} from './api'
-import { ReferralReportFilter } from './ReferralReportFilter'
-import { ReferralReportTable } from './ReferralReportTable'
+} from 'features/referralReport/api'
 
 const ReferralReport: FC<{
 	pageTitle?: string
@@ -34,7 +38,7 @@ const ReferralReport: FC<{
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<IForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [range, setRange] = useState({ startDate: '', endDate: '' })
 	const [

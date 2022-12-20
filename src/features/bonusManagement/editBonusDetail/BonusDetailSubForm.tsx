@@ -249,6 +249,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 						},
 					}}
 					layout='vertical'
+					disabled={!editPermission?.canUse}
 				>
 					<Row>
 						<Form.Item

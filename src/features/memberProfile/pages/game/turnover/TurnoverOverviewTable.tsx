@@ -1,8 +1,10 @@
 import { IGetTurnoverData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
-import { Descriptions, Spin } from 'antd'
+import { Descriptions, Spin, Typography } from 'antd'
 import { numberFormatter } from 'common/utils/format'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface ITurnoverOverviewTableProps {
 	loading: boolean
 	turnoverData: IGetTurnoverData[]
@@ -28,6 +30,21 @@ const TurnoverOverviewTable = ({
 		return sumStakeSettled + sumStakeNotRollover
 	}
 
+	const turnoverDataTotal = turnoverData?.reduce(
+		(prev, cur) => prev + cur.stakeSettled,
+		0
+	)
+
+	const stakeNotRolloverTotal = turnoverData?.reduce(
+		(prev, cur) => prev + cur.stakeNotRollover,
+		0
+	)
+
+	const winlostAmountTotal = turnoverData?.reduce(
+		(prev, cur) => prev + cur.winlostAmount,
+		0
+	)
+
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
@@ -51,7 +68,12 @@ const TurnoverOverviewTable = ({
 					}}
 					span={1}
 				>
-					{numberFormatter.format(sumTotalTO())}
+					<Text
+						type={isPositiveNum(sumTotalTO()) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(sumTotalTO())}
+					</Text>
 				</Item>
 				<Item
 					label={`${t('Label_Total')} - ${t('Label_ValidBet')}`}
@@ -63,9 +85,12 @@ const TurnoverOverviewTable = ({
 					}}
 					span={1}
 				>
-					{numberFormatter.format(
-						turnoverData?.reduce((prev, cur) => prev + cur.stakeSettled, 0)
-					)}
+					<Text
+						type={isPositiveNum(turnoverDataTotal) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(turnoverDataTotal)}
+					</Text>
 				</Item>
 				<Item
 					label={`${t('Label_Total')} - ${
@@ -79,9 +104,12 @@ const TurnoverOverviewTable = ({
 					}}
 					span={1}
 				>
-					{numberFormatter.format(
-						turnoverData?.reduce((prev, cur) => prev + cur.stakeNotRollover, 0)
-					)}
+					<Text
+						type={isPositiveNum(stakeNotRolloverTotal) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(stakeNotRolloverTotal)}
+					</Text>
 				</Item>
 				<Item
 					label={`${t('Label_Total')} - ${t('Label_WinLoss')}`}
@@ -93,9 +121,12 @@ const TurnoverOverviewTable = ({
 					}}
 					span={1}
 				>
-					{numberFormatter.format(
-						turnoverData?.reduce((prev, cur) => prev + cur.winlostAmount, 0)
-					)}
+					<Text
+						type={isPositiveNum(winlostAmountTotal) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{numberFormatter.format(winlostAmountTotal)}
+					</Text>
 				</Item>
 			</Descriptions>
 		</Spin>

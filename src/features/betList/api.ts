@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetBetListArgs,
 	IGetBetListResponse,
@@ -11,10 +9,7 @@ import {
 	IGetVipLevelsResponse,
 } from './type'
 
-export const betListApi = createApi({
-	reducerPath: 'betListApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const betListApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBetList: builder.query<IGetBetListResponse, IGetBetListArgs>({
 			query: data => ({

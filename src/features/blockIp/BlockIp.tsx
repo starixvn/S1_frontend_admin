@@ -4,7 +4,7 @@ import moment from 'moment'
 import { selectUserSite } from 'common/enum'
 import { useAppSelector } from 'app/store'
 import { Form, message, TablePaginationConfig } from 'antd'
-import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
+import { dateRangeToUtcFormatter } from 'common/utils'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
@@ -16,16 +16,15 @@ import {
 } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
+import { IBlockIpResponse, IForm } from 'features/blockIp/type'
 import {
 	useDeleteBlockIpMutation,
 	useLazyGetBlockIpListQuery,
 	useAddBlockIpMutation,
-} from './api'
-
-import BlockIpFilter from './BlockIpFilter'
-import BlockIpTable from './BlockIpTable'
-import AddBlockIpFormModal from './AddBlockIpFormModal'
-import { IBlockIpResponse } from './type'
+} from 'features/blockIp/api'
+import BlockIpFilter from 'features/blockIp/BlockIpFilter'
+import BlockIpTable from 'features/blockIp/BlockIpTable'
+import AddBlockIpFormModal from 'features/blockIp/AddBlockIpFormModal'
 
 const BlockIp: FC<{
 	pageTitle?: string
@@ -33,12 +32,10 @@ const BlockIp: FC<{
 	const { t } = useTranslation()
 	const { actionPermissions: { addPermission, deletePermission } = {} } =
 		useAuth()
-
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<IForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
 	const addBlockIpModal = useModal()
 
 	const [
@@ -71,12 +68,10 @@ const BlockIp: FC<{
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const { dateRange, ip } = form.getFieldsValue()
-
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
-
 		try {
 			await getBlockIpList({
 				ip,
@@ -149,7 +144,7 @@ const BlockIp: FC<{
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(withOutSiteIdParams(queryParams))) return
+			if (isEmpty(queryParams)) return
 
 			const { startDate, endDate, ip = '', tz, pageNumber } = queryParams
 

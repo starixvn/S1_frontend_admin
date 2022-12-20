@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	AddAdminUserArgs,
 	AdminUserInterface,
@@ -11,10 +10,7 @@ import {
 	UserAdminState,
 } from './type'
 
-export const userSettingsApi = createApi({
-	reducerPath: 'userSettingsApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const userSettingsApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getUserAdminListByUserName: builder.query<
 			IAxiosResponse<UserAdminState[]>,

@@ -15,7 +15,6 @@ import { IGetGlobalStatusData } from 'features/paymentManagement/type'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
-import { PermissionInterface } from 'type'
 
 interface IPaymentManagementFilterProps {
 	filterLoading: boolean
@@ -34,7 +33,7 @@ interface IPaymentManagementFilterProps {
 		pageSize?: number | undefined
 	}) => void
 	onSetGlobalStatusClicked: () => void
-	editPermission?: PermissionInterface
+	onSetCryptoInfoClicked: () => void
 }
 
 const { Panel } = Collapse
@@ -50,8 +49,8 @@ const PaymentManagementFilter = ({
 	onSearch,
 	payList,
 	currencyListBySite,
+	onSetCryptoInfoClicked,
 	onSetGlobalStatusClicked,
-	editPermission,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
 
@@ -203,8 +202,12 @@ const PaymentManagementFilter = ({
 									<Button
 										type='primary'
 										onClick={onSetGlobalStatusClicked}
-										disabled={!editPermission?.canUse}
 									>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
+								</Col>
+								<Col>
+									<Button type='primary' onClick={onSetCryptoInfoClicked}>
+										{t('Label_CryptoSetting')}
+									</Button>
 								</Col>
 							</Row>
 						</Form>

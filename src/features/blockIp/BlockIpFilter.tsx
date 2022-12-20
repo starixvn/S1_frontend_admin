@@ -14,18 +14,18 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import moment from 'moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import { validateIPAddress } from 'common/utils'
+import { IForm } from 'features/blockIp/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 
 interface IBlockIpFilterProps {
 	loading: boolean
-	form: FormInstance<any>
+	form: FormInstance<IForm>
 	timeZoneUtcOffset: number
 	onSearch: ({
 		current,
@@ -85,12 +85,6 @@ const BlockIpFilter: FC<IBlockIpFilterProps> = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 

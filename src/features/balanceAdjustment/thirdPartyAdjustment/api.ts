@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetTpListBySiteIdArgs,
 	ITpListBySiteResponse,
@@ -35,10 +34,7 @@ interface ICustInfoWithTpBalanceData {
 
 type ICustInfoWithTpBalanceResponse = IAxiosResponse<ICustInfoWithTpBalanceData>
 
-export const thirdPartyAdjustmentApi = createApi({
-	reducerPath: 'thirdPartyAdjustmentApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const thirdPartyAdjustmentApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 取得指定品牌第三方，用於下拉選單
 		getTpListBySiteId: builder.query<

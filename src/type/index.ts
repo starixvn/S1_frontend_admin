@@ -79,6 +79,15 @@ export interface ActionPermissions {
 	smsInfoDeletePermission: PermissionInterface
 	add3RDPermission: PermissionInterface
 	resetBankInfoPermission: PermissionInterface
+	onHoldPermission: PermissionInterface
+	pendingPermission: PermissionInterface
+	approvedPermission: PermissionInterface
+	draftPermission: PermissionInterface
+	manualApprovedPermission: PermissionInterface
+	manualRejectPermission: PermissionInterface
+	verifiedPermission: PermissionInterface
+	processPermission: PermissionInterface
+	toKycPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
@@ -119,4 +128,14 @@ export interface FormPermissionInterface {
 export enum OrderEnum {
 	descend = 0,
 	ascend = 1,
+}
+
+export enum DepositTypeEnum {
+	OnlineBanking = 1,
+	MobilePay,
+	LocalBanking,
+	CryptoPay,
+	LoadCard,
+	QRPay,
+	BankAutoChannel,
 }

@@ -66,7 +66,7 @@ const allowedRoles = [
 	'Marketing/RegistrationForMarketing',
 	'Marketing/VerificationReward',
 	'Marketing/VerificationRewardReport',
-	'Marketing/PointLevelManagement',
+	'Marketing/pointLevelManagement',
 	'CustManage/TpFailRecordReport',
 	'Report/MainFinancialReport',
 	'Report/DepositReport',

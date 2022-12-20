@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import { assign } from 'lodash'
 import {
 	IExportMemberReportArgs,
@@ -10,9 +8,7 @@ import {
 	IWorldCupTeamResponse,
 } from './type'
 
-export const worldCupMemberReportApi = createApi({
-	reducerPath: 'worldCupMemberReport',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const worldCupMemberReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getMemberReport: builder.query<
 			IGetMemberReportResponse,

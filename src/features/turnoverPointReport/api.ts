@@ -1,15 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IExportTurnoverPointReportArgs,
 	IGetTurnoverPointReportArgs,
 	IGetTurnoverPointReportResponse,
 } from 'features/turnoverPointReport/type'
 
-export const turnoverPointReportApi = createApi({
-	reducerPath: 'turnoverPointReportApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const turnoverPointReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getTurnoverPointReport: builder.query<
 			IGetTurnoverPointReportResponse,

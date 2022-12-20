@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetSlotGameCategoryListArgs,
 	IGetSlotGameCategoryListResponse,
@@ -11,9 +9,7 @@ import {
 	ISetSlotGameArgs,
 } from 'features/slotGameCategory/type'
 
-export const slotGameCategoryApi = createApi({
-	reducerPath: 'slotGameCategoryApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const slotGameCategoryApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getTpList: builder.query<IGetTpListResponse, null>({
 			query: () => ({

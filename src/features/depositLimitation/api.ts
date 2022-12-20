@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	ICreateDepositLimitArgs,
 	IDeleteDepositLimitArgs,
@@ -9,10 +7,7 @@ import {
 	IUpdateDepositLimitArgs,
 } from 'features/depositLimitation/type'
 
-export const depositLimitationApi = createApi({
-	reducerPath: 'depositLimitationApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const depositLimitationApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDepositLimitList: builder.query<
 			IGetDepositLimitResponse,

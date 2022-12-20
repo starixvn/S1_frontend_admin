@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IDeleteBankTransferArgs,
 	IExportBankTransferListArgs,
@@ -16,10 +15,7 @@ import {
 	IGetTransferTypeResponse,
 } from 'features/transferInfoManagement/type'
 
-export const transferInfoManagementApi = createApi({
-	reducerPath: 'transferInfoManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const transferInfoManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// 取得 TransferType 列表
 		getTransferTypeList: builder.query<IGetTransferTypeResponse, null>({

@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import { assign } from 'lodash'
 import {
 	IGetCategoriesArgs,
@@ -18,10 +17,7 @@ import {
 	IEditGiftForm,
 } from './type'
 
-export const giftListingApi = createApi({
-	reducerPath: 'giftListingApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const giftListingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 取得商品類別
 		getCategories: builder.query<ICategoriesResponse, IGetCategoriesArgs>({

@@ -100,7 +100,11 @@ const TpBetRecordDetailModal = ({
 				label: t('Label_RawDetail'),
 				key: 'rawDetail',
 				children: (
-					<ReactJson src={JSON.parse(detail)} displayDataTypes={false} />
+					<ReactJson
+						style={{ wordBreak: 'break-word' }}
+						src={JSON.parse(detail)}
+						displayDataTypes={false}
+					/>
 				),
 			})
 		}
