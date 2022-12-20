@@ -404,6 +404,14 @@ const paths = {
 				root: 'member/blockewallet',
 				functionId: 118,
 			},
+			gameExclusion: {
+				root: 'member/gameExclusion',
+				functionId: 62,
+			},
+			betLimit: {
+				root: 'member/betLimit',
+				functionId: 63,
+			},
 		},
 	},
 	risk: {
