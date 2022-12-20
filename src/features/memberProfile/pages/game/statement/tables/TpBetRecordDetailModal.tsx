@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { Descriptions, Modal, Spin, Tabs, Typography } from 'antd'
 import ReactJson from 'react-json-view'
 import { isJSON } from 'common/utils'
+import { GameStatementCategoryEnum } from 'features/memberProfile/constants'
 
 interface ITpBetRecordDetailModalProps {
+	categoryId?: number
 	loading: boolean
 	tpBetRecordDetail: IGetTpBetRecordDetailData
 	visible: boolean
@@ -14,12 +16,14 @@ interface ITpBetRecordDetailModalProps {
 const { Item } = Descriptions
 
 const TpBetRecordDetailModal = ({
+	categoryId,
 	loading,
 	tpBetRecordDetail,
 	visible,
 	onCancel,
 }: ITpBetRecordDetailModalProps) => {
 	const { t } = useTranslation()
+
 	const {
 		detailUrl,
 		tpId,
@@ -35,6 +39,18 @@ const TpBetRecordDetailModal = ({
 		stake,
 		winlostAmount,
 		detail,
+		odds,
+		ticketStatus,
+		handicap,
+		leagueName,
+		eventName,
+		selectionName,
+		homeTeamName,
+		awayTeamName,
+		homeyScore,
+		awayScore,
+		homeHandicap,
+		awayHandicap,
 	} = tpBetRecordDetail ?? {}
 
 	const { tpCurrencyId, exchangeRate } = tpCurrency ?? {}
@@ -90,6 +106,39 @@ const TpBetRecordDetailModal = ({
 								</>
 							)}
 						</Descriptions>
+						<br />
+						{categoryId === GameStatementCategoryEnum.Sport && (
+							<Descriptions
+								layout='horizontal'
+								bordered
+								size='small'
+								column={2}
+							>
+								<Item label={t('Label_Odds')}>{odds || '-'}</Item>
+								<Item label={t('Label_TicketStatus')}>
+									{ticketStatus || '-'}
+								</Item>
+								<Item label={t('Label_TransId')}>{transId || '-'}</Item>
+								<Item label={t('Label_HandiCap')}>{handicap || '-'}</Item>
+								<Item label={t('Label_LeagueName')}>{leagueName || '-'}</Item>
+								{/* 排版需要留空  */}
+								<Item>{` `}</Item>
+								<Item label={t('Label_EventName')}>{eventName || '-'}</Item>
+								<Item label={t('Label_SelectionName')}>
+									{selectionName || '-'}
+								</Item>
+								<Item label={t('Label_HomeTeam')}>{homeTeamName || '-'}</Item>
+								<Item label={t('Label_AwayTeam')}>{awayTeamName || '-'}</Item>
+								<Item label={t('Label_HomeyScore')}>{homeyScore || '-'}</Item>
+								<Item label={t('Label_AwayScore')}>{awayScore || '-'}</Item>
+								<Item label={t('Label_HomeHandiCap')}>
+									{homeHandicap || '-'}
+								</Item>
+								<Item label={t('Label_AwayHandiCap')}>
+									{awayHandicap || '-'}
+								</Item>
+							</Descriptions>
+						)}
 					</Spin>
 				),
 			},
