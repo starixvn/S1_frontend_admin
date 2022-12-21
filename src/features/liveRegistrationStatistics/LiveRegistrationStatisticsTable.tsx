@@ -14,6 +14,7 @@ import { PaginationInterface } from 'common/hooks'
 import { SorterResult } from 'antd/es/table/interface'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
+import { AlignType } from 'rc-table/lib/interface'
 import { IRegistrationManagementData } from './type'
 import { DEPOSIT_STATUS_OPTIONS, StatusEnum, STATUS_OPTIONS } from './constants'
 
@@ -49,14 +50,13 @@ const LiveRegistrationStatisticsTable: FC<{
 	onCallingRecord,
 }) => {
 	const { t } = useTranslation()
-
 	const columns = [
 		{
 			title: t('Label_Currency'),
 			key: 'currency',
 			dataIndex: 'currency',
 			width: 80,
-			align: 'center' as 'center',
+			align: 'center' as AlignType,
 			render: (isoCode: string) => isoCode ?? 'N/A',
 		},
 		{
@@ -72,6 +72,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'affiliatesCode',
 			width: 80,
 			align: 'center' as 'center',
+			render: (affiliatesCode: string) => affiliatesCode ?? '-',
 		},
 		{
 			title: t('Label_MemberId'),
@@ -79,6 +80,14 @@ const LiveRegistrationStatisticsTable: FC<{
 			dataIndex: 'userName',
 			width: 80,
 			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_FullName'),
+			key: 'accountName',
+			dataIndex: 'accountName',
+			width: 80,
+			align: 'center' as 'center',
+			render: (accountName: string) => accountName ?? '-',
 		},
 		{
 			title: t('Label_PhoneNo'),
@@ -95,6 +104,14 @@ const LiveRegistrationStatisticsTable: FC<{
 			align: 'center' as 'center',
 			render: (phoneVerified: number) =>
 				phoneVerified === 1 ? t('Label_Verified') : 'No',
+		},
+		{
+			title: t('Label_ReferralUrl'),
+			key: 'referralUrl',
+			dataIndex: 'referralUrl',
+			width: 80,
+			align: 'center' as 'center',
+			render: (referralUrl: string) => referralUrl ?? '-',
 		},
 		{
 			title: t('Label_RegTimeDate'),

@@ -1,0 +1,83 @@
+import React from 'react'
+import { Button, Descriptions, Row, Typography } from 'antd'
+import { IBankInfoOffState } from 'common/service/baseDataApi/type'
+import { CopyOutlined, SelectOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { useCopy } from 'common/hooks'
+
+const DepositRequestBankInfoDescriptions = ({
+	bankInfo,
+}: {
+	bankInfo: IBankInfoOffState | undefined
+}) => {
+	const { t } = useTranslation()
+	const { onCopy } = useCopy()
+	const {
+		displayName,
+		bankLoginUrl,
+		bankLoginAccount,
+		bankLoginPassword,
+		transferPin,
+		loginPin,
+		mobilePin,
+		corporateID,
+	} = bankInfo ?? {}
+
+	return (
+		<Descriptions
+			title={t('Label_BankInfo')}
+			bordered
+			column={1}
+			labelStyle={{ minWidth: '140px' }}
+			size='small'
+		>
+			<Descriptions.Item label={t('Label_BankAccountNo')}>
+				{displayName || '-'}
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_Link')}>
+				{/* // * 如果沒有連結就回首頁 */}
+				<Typography.Link href={bankLoginUrl || '/'} target='_blank'>
+					<SelectOutlined />
+				</Typography.Link>
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_Account')}>
+				<Row align='middle' justify='space-between'>
+					{bankLoginAccount || '-'}
+					<Button
+						disabled={!bankLoginAccount}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(bankLoginAccount))}
+					/>
+				</Row>
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_Password')}>
+				<Row align='middle' justify='space-between'>
+					{bankLoginPassword || '-'}
+					<Button
+						disabled={!bankLoginPassword}
+						type='link'
+						style={{ padding: '0px' }}
+						icon={<CopyOutlined />}
+						onClick={() => onCopy(String(bankLoginPassword))}
+					/>
+				</Row>
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_TransferPin')}>
+				{transferPin || '-'}
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_LoginPin')}>
+				{loginPin || '-'}
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_MobilePin')}>
+				{mobilePin || '-'}
+			</Descriptions.Item>
+			<Descriptions.Item label={t('Label_CorporateID')}>
+				{corporateID || '-'}
+			</Descriptions.Item>
+		</Descriptions>
+	)
+}
+
+export default DepositRequestBankInfoDescriptions

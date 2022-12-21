@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import { assign } from 'lodash'
 import moment from 'moment'
 import {
@@ -8,10 +6,7 @@ import {
 	ISetDepositPointSettingArgs,
 } from './type'
 
-export const depositPointApi = createApi({
-	reducerPath: 'depositPointApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const depositPointApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getDepositPointSetting: builder.query<
 			IDepositPointSettingResponse,

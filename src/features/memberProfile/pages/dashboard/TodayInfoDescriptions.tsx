@@ -1,7 +1,9 @@
-import { Descriptions, Spin } from 'antd'
+import { Descriptions, Spin, Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
 import { numberFormatter } from 'common/utils/format'
 import { ITodayInfoData } from 'features/memberProfile/type'
-import React from 'react'
+
+const { Text } = Typography
 
 interface ITodayInfoDescriptionsProps {
 	loading: boolean
@@ -23,16 +25,24 @@ const TodayInfoDescriptions = ({
 		<Spin spinning={loading}>
 			<Descriptions layout='vertical' bordered column={4} size='small'>
 				<Descriptions.Item label="Today's WinLoss">
-					{numberFormatter.format(todayWinLoss)}
+					<Text type={isPositiveNum(todayWinLoss) ? undefined : 'danger'}>
+						{numberFormatter.format(todayWinLoss || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label="Today's Deposit">
-					{numberFormatter.format(todayDeposit)}
+					<Text type={isPositiveNum(todayDeposit) ? undefined : 'danger'}>
+						{numberFormatter.format(todayDeposit || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label="Today's Withdrawal">
-					{numberFormatter.format(todayWithdrawal)}
+					<Text type={isPositiveNum(todayWithdrawal) ? undefined : 'danger'}>
+						{numberFormatter.format(todayWithdrawal || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label="Today's Betting">
-					{numberFormatter.format(todayBetting)}
+					<Text type={isPositiveNum(todayBetting) ? undefined : 'danger'}>
+						{numberFormatter.format(todayBetting || 0)}
+					</Text>
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>

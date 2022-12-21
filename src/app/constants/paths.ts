@@ -228,6 +228,10 @@ const paths = {
 			depositWithdrawalSector: {
 				root: 'finance/depositWithdrawalSector',
 				sub: {
+					depositSubmission: {
+						root: 'finance/depositWithdrawalSector/depositSubmission',
+						functionId: 29,
+					},
 					withdrawalSubmission: {
 						root: 'finance/depositWithdrawalSector/withdrawalSubmission',
 						functionId: 125,
@@ -235,6 +239,14 @@ const paths = {
 					withdrawalAdjustment: {
 						root: 'finance/depositWithdrawalSector/withdrawalAdjustment',
 						functionId: 30,
+					},
+					depositOperator: {
+						root: 'finance/depositWithdrawalSector/depositOperator',
+						functionId: 27,
+					},
+					withdrawalOperator: {
+						root: 'finance/depositWithdrawalSector/withdrawalOperator',
+						functionId: 28,
 					},
 				},
 			},
@@ -245,6 +257,10 @@ const paths = {
 			report: {
 				root: 'finance/report',
 				sub: {
+					depositTimeReport: {
+						root: 'finance/report/DepositTimeReport',
+						functionId: 34,
+					},
 					paymentAdjustment: {
 						root: 'finance/report/paymentAdjustment',
 						functionId: 36,
@@ -305,6 +321,10 @@ const paths = {
 				root: 'marketing/verificationRewardManagement',
 				functionId: 47,
 			},
+			pointLevelManagement: {
+				root: 'marketing/pointLevelManagement',
+				functionId: 52,
+			},
 		},
 	},
 	game: {
@@ -363,6 +383,18 @@ const paths = {
 				root: 'report/vipRebateReport',
 				functionId: 75,
 			},
+			drawPrizeReport: {
+				root: 'report/drawPrizeReport',
+				functionId: 78,
+			},
+			gameStatisticalReport: {
+				root: 'report/gameStatisticalReport',
+				functionId: 132,
+			},
+			verificationReport: {
+				root: 'report/verificationReport',
+				functionId: 76,
+			},
 		},
 	},
 	member: {
@@ -371,6 +403,14 @@ const paths = {
 			blockEWallet: {
 				root: 'member/blockewallet',
 				functionId: 118,
+			},
+			gameExclusion: {
+				root: 'member/gameExclusion',
+				functionId: 62,
+			},
+			betLimit: {
+				root: 'member/betLimit',
+				functionId: 63,
 			},
 		},
 	},
@@ -401,6 +441,10 @@ const paths = {
 			reasonManagement: {
 				root: 'bankTransfer/reasonManagement',
 				functionId: 87,
+			},
+			bankFinancialReport: {
+				root: 'bankTransfer/bankFinancialReport',
+				functionId: 89,
 			},
 		},
 	},
@@ -532,6 +576,19 @@ const paths = {
 			},
 		},
 	},
+	systemSetting: {
+		root: 'systemSetting',
+		sub: {
+			exchangeUsdRate: {
+				root: 'systemSetting/exchangeUsdRate',
+				functionId: 129,
+			},
+			bettingMonitorSetting: {
+				root: 'systemSetting/bettingMonitorSetting',
+				functionId: 135,
+			},
+		},
+	},
 
 	cms: {
 		root: 'cms',
@@ -555,11 +612,27 @@ const paths = {
 						root: 'cms/urlManagement/lineDepositChannel',
 						functionId: 67,
 					},
+					appQrCode: {
+						root: 'cms/urlManagement/appQrCode',
+						functionId: 65,
+					},
+					providerAppDownload: {
+						root: 'cms/urlManagement/providerAppDownload',
+						functionId: 66,
+					},
+					externalDomain: {
+						root: 'cms/urlManagement/externalDomain',
+						functionId: 64,
+					},
 				},
 			},
 			hotEventManagement: {
 				root: 'cms/hotEventManagement',
 				functionId: 56,
+			},
+			bannerManage: {
+				root: 'cms/bannerManage',
+				functionId: 55,
 			},
 		},
 	},

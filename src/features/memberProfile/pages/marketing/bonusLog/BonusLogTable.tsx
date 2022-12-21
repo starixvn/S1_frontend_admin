@@ -1,12 +1,14 @@
+import moment from 'moment'
 import { IGetBonusLogData } from 'features/memberProfile/type'
 import { TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { ChangeBonusDirectionEnum } from 'features/memberProfile/constants'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface IBonusLogTableProps {
 	loading: boolean
 	bonusLog: IGetBonusLogData[]
@@ -85,22 +87,28 @@ const BonusLogTable = ({
 			dataIndex: 'beforeBonus',
 			align: 'center' as 'center',
 			width: 80,
-			render: (beforeBonus: number) => numberFormatter.format(beforeBonus),
+			render: (beforeBonus: number) => (
+				<Text
+					type={isPositiveNum(beforeBonus) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(beforeBonus || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_ChangeBonus'),
 			key: 'changeBonus',
 			width: 80,
 			align: 'center' as 'center',
-			render: (record: IGetBonusLogData) => {
-				const { changeBonus, direction } = record
-				return direction === ChangeBonusDirectionEnum.Add ? (
-					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{`+ ${numberFormatter.format(changeBonus)}`}
-					</Typography.Text>
-				) : (
-					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{`- ${numberFormatter.format(changeBonus)}`}
+			render: ({ changeBonus, direction }: IGetBonusLogData) => {
+				const sign = direction === ChangeBonusDirectionEnum.Add ? '+' : '-'
+				return (
+					<Typography.Text
+						type={isPositiveNum(changeBonus) ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap' }}
+					>
+						{`${sign} ${numberFormatter.format(changeBonus)}`}
 					</Typography.Text>
 				)
 			},
@@ -111,7 +119,14 @@ const BonusLogTable = ({
 			dataIndex: 'afterBonus',
 			align: 'center' as 'center',
 			width: 80,
-			render: (afterBonus: number) => numberFormatter.format(afterBonus),
+			render: (afterBonus: number) => (
+				<Text
+					type={isPositiveNum(afterBonus) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(afterBonus || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_Memo'),

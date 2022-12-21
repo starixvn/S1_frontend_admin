@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetBankListArgs,
 	IGetBankListResponse,
@@ -9,10 +8,7 @@ import {
 	ISubmitArgs,
 } from 'features/withdrawalSubmission/type'
 
-export const withdrawalSubmissionApi = createApi({
-	reducerPath: 'withdrawalSubmissionApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const withdrawalSubmissionApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBankList: builder.query<IGetBankListResponse, IGetBankListArgs>({
 			query: data => ({

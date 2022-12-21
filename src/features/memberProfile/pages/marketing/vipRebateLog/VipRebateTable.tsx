@@ -1,11 +1,13 @@
+import moment from 'moment'
 import { PaginationInterface } from 'common/hooks'
 import { Button, TablePaginationConfig, Typography } from 'antd'
 import { IGetVipRebateLogData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
+import { isPositiveNum } from 'common/utils'
 
+const { Text } = Typography
 interface IVipRebateTableProps {
 	loading: boolean
 	pagination: PaginationInterface
@@ -65,8 +67,14 @@ const VipRebateTable = ({
 			dataIndex: 'rcRedeemAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (rcRedeemAmount: number) =>
-				rcRedeemAmount ? numberFormatter.format(rcRedeemAmount) : '-',
+			render: (rcRedeemAmount: number) => (
+				<Text
+					type={isPositiveNum(rcRedeemAmount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(rcRedeemAmount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_PayoutStatus'),

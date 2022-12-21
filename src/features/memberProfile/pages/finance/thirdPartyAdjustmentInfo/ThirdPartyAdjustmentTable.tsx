@@ -1,12 +1,15 @@
+import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetTpAdjustmentLogData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { thirdPartyAdjustTypeList } from 'features/memberProfile/constants'
+import { isPositiveNum } from 'common/utils'
+
+const { Text } = Typography
 
 interface ThirdPartyAdjustmentTableProps {
 	tpAdjustmentLogList: IGetTpAdjustmentLogData[]
@@ -86,7 +89,14 @@ const ThirdPartyAdjustmentTable = ({
 			dataIndex: 'amount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (amount: number) => (amount ? numberFormatter.format(amount) : 0),
+			render: (amount: number) => (
+				<Text
+					type={isPositiveNum(amount) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numberFormatter.format(amount || 0)}
+				</Text>
+			),
 		},
 		{
 			title: t('Label_Reason'),

@@ -1,10 +1,13 @@
 import { Descriptions, Popover, Spin, Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
 import { numberFormatter } from 'common/utils/format'
 import {
 	IBonusWalletDetailData,
 	IBonusWalletInfoData,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
+
+const { Text } = Typography
 
 interface IBonusWalletDescriptionsProps {
 	loading: boolean
@@ -19,8 +22,11 @@ const BonusWalletDescriptions = ({
 }: IBonusWalletDescriptionsProps) => {
 	const { t } = useTranslation()
 
-	const { bonus: bonusWallet = 0, remainingTurnover: bonusRollover = 0 } =
-		bonusWalletInfoData
+	const {
+		bonus: bonusWallet = 0,
+		remainingTurnover: bonusRollover = 0,
+		description = '',
+	} = bonusWalletInfoData
 
 	const { custBonusSum, custRewardSum, custRebateSum } =
 		bonusWalletDetailData ?? {}
@@ -52,10 +58,14 @@ const BonusWalletDescriptions = ({
 				labelStyle={{ width: '50%' }}
 			>
 				<Descriptions.Item label={t('Label_BonusWallet')}>
-					{numberFormatter.format(bonusWallet)}
+					<Text type={isPositiveNum(bonusWallet) ? undefined : 'danger'}>
+						{numberFormatter.format(bonusWallet || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_BonusRollover')}>
-					{numberFormatter.format(bonusRollover)}
+					<Text type={isPositiveNum(bonusRollover) ? undefined : 'danger'}>
+						{numberFormatter.format(bonusRollover || 0)}
+					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalBonus')}>
 					{totalBonus > 0 ? (
@@ -68,37 +78,61 @@ const BonusWalletDescriptions = ({
 									column={1}
 								>
 									<Descriptions.Item label={t('BonusType.Label_FirstDeposit')}>
-										{numberFormatter.format(firstDeposit)}
+										<Text
+											type={isPositiveNum(firstDeposit) ? undefined : 'danger'}
+										>
+											{numberFormatter.format(firstDeposit || 0)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ReDeposit')}>
-										{numberFormatter.format(reDeposit)}
+										<Text
+											type={isPositiveNum(reDeposit) ? undefined : 'danger'}
+										>
+											{numberFormatter.format(reDeposit || 0)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_FreeBet')}>
-										{numberFormatter.format(freeBet)}
+										<Text type={isPositiveNum(freeBet) ? undefined : 'danger'}>
+											{numberFormatter.format(freeBet || 0)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_CashBack')}>
-										{numberFormatter.format(cashBack)}
+										<Text type={isPositiveNum(cashBack) ? undefined : 'danger'}>
+											{numberFormatter.format(cashBack || 0)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item
 										label={t('BonusType.Label_RetentionBonus')}
 									>
-										{numberFormatter.format(retentionBonus)}
+										<Text
+											type={
+												isPositiveNum(retentionBonus) ? undefined : 'danger'
+											}
+										>
+											{numberFormatter.format(retentionBonus || 0)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ManualBonus')}>
-										{numberFormatter.format(manualBonus)}
+										<Text
+											type={isPositiveNum(manualBonus) ? undefined : 'danger'}
+										>
+											{numberFormatter.format(manualBonus || 0)}
+										</Text>
 									</Descriptions.Item>
 								</Descriptions>
 							}
 							trigger='click'
 						>
-							<Typography.Link>
-								{numberFormatter.format(totalBonus ?? 0)}
+							<Typography.Link
+								type={isPositiveNum(totalBonus) ? undefined : 'danger'}
+							>
+								{numberFormatter.format(totalBonus || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
-						<Typography.Text>
-							{numberFormatter.format(totalBonus ?? 0)}
-						</Typography.Text>
+						<Text type={isPositiveNum(totalBonus) ? undefined : 'danger'}>
+							{numberFormatter.format(totalBonus || 0)}
+						</Text>
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalReward')}>
@@ -113,21 +147,31 @@ const BonusWalletDescriptions = ({
 								>
 									{custRewardType.map(({ typeName, rewardAmountSum }) => (
 										<Descriptions.Item label={typeName}>
-											{numberFormatter.format(rewardAmountSum)}
+											<Text
+												type={
+													isPositiveNum(rewardAmountSum) ? undefined : 'danger'
+												}
+											>
+												{numberFormatter.format(rewardAmountSum || 0)}
+											</Text>
 										</Descriptions.Item>
 									))}
 								</Descriptions>
 							}
 							trigger='click'
 						>
-							<Typography.Link>
-								{numberFormatter.format(custRewardTotalSum ?? 0)}
+							<Typography.Link
+								type={isPositiveNum(custRewardTotalSum) ? undefined : 'danger'}
+							>
+								{numberFormatter.format(custRewardTotalSum || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
-						<Typography.Text>
-							{numberFormatter.format(custRewardTotalSum ?? 0)}
-						</Typography.Text>
+						<Text
+							type={isPositiveNum(custRewardTotalSum) ? undefined : 'danger'}
+						>
+							{numberFormatter.format(custRewardTotalSum || 0)}
+						</Text>
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalRebate')}>
@@ -143,7 +187,15 @@ const BonusWalletDescriptions = ({
 									{custRebateCategory.map(
 										({ categoryName, rebateAmountSum }) => (
 											<Descriptions.Item label={categoryName}>
-												{numberFormatter.format(rebateAmountSum)}
+												<Text
+													type={
+														isPositiveNum(rebateAmountSum)
+															? undefined
+															: 'danger'
+													}
+												>
+													{numberFormatter.format(rebateAmountSum || 0)}
+												</Text>
 											</Descriptions.Item>
 										)
 									)}
@@ -151,21 +203,36 @@ const BonusWalletDescriptions = ({
 							}
 							trigger='click'
 						>
-							<Typography.Link>
-								{numberFormatter.format(custRebateTotalSum ?? 0)}
+							<Typography.Link
+								type={isPositiveNum(custRebateTotalSum) ? undefined : 'danger'}
+							>
+								{numberFormatter.format(custRebateTotalSum || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
-						<Typography.Text>
+						<Typography.Text
+							type={isPositiveNum(custRebateTotalSum) ? undefined : 'danger'}
+						>
 							{numberFormatter.format(custRebateTotalSum ?? 0)}
 						</Typography.Text>
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_CancelBonus')}>
-					{numberFormatter.format(cancelBonusAmount ?? 0)}
+					<Typography.Text
+						type={isPositiveNum(cancelBonusAmount) ? undefined : 'danger'}
+					>
+						{numberFormatter.format(cancelBonusAmount ?? 0)}
+					</Typography.Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RewardsPoint')}>
-					{numberFormatter.format(rewardPoint ?? 0)}
+					<Typography.Text
+						type={isPositiveNum(rewardPoint) ? undefined : 'danger'}
+					>
+						{numberFormatter.format(rewardPoint ?? 0)}
+					</Typography.Text>
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_RunningBonus')}>
+					<Typography.Text>{description}</Typography.Text>
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>

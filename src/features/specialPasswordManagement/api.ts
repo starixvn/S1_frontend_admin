@@ -1,16 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetSpecialPasswordArg,
 	IGetSpecialPasswordResponse,
 	ISetSpecialPasswordArgs,
 } from 'features/specialPasswordManagement/type'
 
-export const specialPasswordApi = createApi({
-	reducerPath: 'specialPasswordApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const specialPasswordApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getPassword: builder.query<
 			IGetSpecialPasswordResponse,

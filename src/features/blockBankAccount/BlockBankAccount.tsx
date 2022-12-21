@@ -4,22 +4,28 @@ import { FC, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { useAuth, useQueryParams } from 'common/hooks'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, List, message, Modal, Typography } from 'antd'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import BlockBankAccountFilter from './BlockBankAccountFilter'
-import BlockBankAccountTable from './BlockBankAccountTable'
 import {
 	useLazyGetBlockBankAccListQuery,
 	useLazyGetBlockBankAccQuery,
 	useSetBlockAccountMutation,
 	useSetReleaseAccountMutation,
-} from './api'
-import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
-import { IBlockBankAccListResponse, IBlockBankAccState } from './type'
+} from 'features/blockBankAccount/api'
+import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from 'features/blockBankAccount/constants'
+import {
+	IBlockBankAccListResponse,
+	IBlockBankAccState,
+	IForm,
+} from 'features/blockBankAccount/type'
+import BlockBankAccountFilter from 'features/blockBankAccount/BlockBankAccountFilter'
+import BlockBankAccountTable from 'features/blockBankAccount/BlockBankAccountTable'
+import { AffixButtons } from 'components/AffixButtons'
+import { AddBlockBankAccountModal } from './modal/AddBlockBankAccountModal'
 
 const BlockBankAccount: FC<{
 	pageTitle?: string
@@ -29,9 +35,11 @@ const BlockBankAccount: FC<{
 		useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<IForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const addBlockBankAccountModal = useModal()
+
 	const [
 		getBlockBankAcc,
 		{
@@ -43,7 +51,8 @@ const BlockBankAccount: FC<{
 	] = useLazyGetBlockBankAccQuery()
 	const [getBlockBankAccList, { isFetching: isGetBlockBankAccListFetching }] =
 		useLazyGetBlockBankAccListQuery()
-	const [setBlockAccount] = useSetBlockAccountMutation()
+	const [setBlockAccount, { isLoading: isSetBlockAccountLoading }] =
+		useSetBlockAccountMutation()
 	const [setReleaseAccount] = useSetReleaseAccountMutation()
 
 	const onChangeCurrency = (newCurrencyIds: number[]) => {
@@ -314,6 +323,25 @@ const BlockBankAccount: FC<{
 				onBlockBankAcc={handleBlockBankAcc}
 				onSetReleaseAccount={handleSetReleaseAccount}
 			/>
+
+			<AddBlockBankAccountModal
+				open={addBlockBankAccountModal.visible}
+				onCancel={addBlockBankAccountModal.onCancel}
+				title={t('Label_AddBlockBankAccount')}
+				confirmLoading={isSetBlockAccountLoading}
+				onSubmit={({ sysId, accountNum }) =>
+					handleSetBlockAccount({
+						sysId,
+						accountNum,
+						blockStatus: BANK_BLOCK_STATUS_VALUE_OPTIONS.OPEN,
+					})
+				}
+			/>
+
+			<AffixButtons>
+				<AffixButtons.BackToTop />
+				<AffixButtons.Create onClick={addBlockBankAccountModal.onOpen} />
+			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }

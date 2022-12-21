@@ -162,12 +162,6 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 													'Today',
 													'Last 7 Day',
 												])}
-												onChange={newDateRange =>
-													form.setFieldsValue({
-														startDate: moment(newDateRange?.[0]),
-														endDate: moment(newDateRange?.[1]),
-													})
-												}
 											/>
 										</Form.Item>
 										<div>

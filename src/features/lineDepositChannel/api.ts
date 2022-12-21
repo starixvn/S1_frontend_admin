@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IDeleteLineChannelArgs,
 	IGetLineChannelListArgs,
@@ -8,10 +6,7 @@ import {
 	ISetLineChannelArgs,
 } from 'features/lineDepositChannel/type'
 
-export const lineDepositChannelApi = createApi({
-	reducerPath: 'lineDepositChannelApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const lineDepositChannelApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getChannelList: builder.query<
 			IGetLineChannelListResponse,

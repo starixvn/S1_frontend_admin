@@ -51,8 +51,8 @@ const MemberAdministrationListTable = ({
 		},
 		{
 			title: t('Label_SabaId'),
-			key: 'tpUserName',
-			dataIndex: 'tpUserName',
+			key: 'sabaId',
+			dataIndex: 'sabaId',
 			width: 120,
 			align: 'center' as 'center',
 		},
@@ -81,7 +81,7 @@ const MemberAdministrationListTable = ({
 			},
 		},
 		{
-			title: t('Label_AffiliateCode'),
+			title: t('Label_SuperiorAffiliateCode'),
 			key: 'affiliateCode',
 			dataIndex: 'affiliateCode',
 			width: 120,

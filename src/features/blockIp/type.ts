@@ -1,3 +1,10 @@
+import { Moment } from 'moment'
+
+export interface IForm {
+	dateRange: [Moment, Moment]
+	ip: string
+}
+
 export interface IBlockIPListArgs {
 	ip: string
 	startDate: string

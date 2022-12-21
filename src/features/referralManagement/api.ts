@@ -1,16 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	AddReferralArgs,
 	IGetReferralResponse,
 	IGetReferralsResponse,
 } from './type'
 
-export const referralManagementApi = createApi({
-	reducerPath: 'referralManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const referralManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getReferral: builder.query<
 			IGetReferralResponse,

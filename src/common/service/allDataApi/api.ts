@@ -4,6 +4,7 @@ import {
 	IBankInfoSysData,
 	IBankInfoSysResponse,
 	IGetCategoryResponse,
+	IGetPayEnumListResponse,
 	IGetProductsResponse,
 	IGetPromotionTypeResponse,
 	IVipLevelsResponse,
@@ -66,6 +67,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// * 取得第三方支付廠商清單
+		getPayEnumList: builder.query<IGetPayEnumListResponse, null>({
+			query: () => ({
+				url: 'GetAllData/GetPayList',
+				method: 'POST',
+			}),
+		}),
 	}),
 })
 
@@ -84,4 +92,5 @@ export const {
 	useGetCategoryQuery,
 	useGetProductsQuery,
 	useGetPromotionListQuery,
+	useGetPayEnumListQuery,
 } = allDataApi

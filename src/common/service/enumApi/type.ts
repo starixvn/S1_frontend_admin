@@ -23,6 +23,7 @@ export type EnumNameType =
 	| 'DepositTypeEnum'
 	| 'WithdrawalStatusEnum'
 	| 'WithdrawalTypeEnum'
+	| 'WithdrawalMethodEnum'
 	| 'TransferStatusEnum'
 	| 'TransferTypeEnum'
 	| 'AdjustmentInfoStatusEnum'
@@ -34,6 +35,15 @@ export type EnumNameType =
 	| 'OTPProvider'
 	| 'OTPStatus'
 	| 'BonusAtPageEnum'
+	| 'BannerTypeEnum'
+	| 'BannerActionModeEnum'
+	| 'ShowStatusEnum'
+	| 'UrlRouterEnum'
+	| 'DeepLinkTableTypeEnum'
+	| 'DeepLinkTableProtocolTypeEnum'
+	| 'DepositTimeStatusEnum'
+	| 'AppTypeEnum'
+	| 'SelectDepositStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -47,6 +57,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DepositTypeEnum - 取得存款種類列表
 	 * @argument {string}  WithdrawalStatusEnum - 取得取款狀態列表
 	 * @argument {string}  WithdrawalTypeEnum - 取得取款種類列表
+	 * @argument {string}  WithdrawalMethodEnum - 取得 WithdrawalMethodEnum
 	 * @argument {string}  TransferStatusEnum - 取得交易狀態列表
 	 * @argument {string}  TransferTypeEnum - 取得交易種類列表
 	 * @argument {string}  AdjustmentInfoStatusEnum - 取得調整狀態列表
@@ -63,6 +74,11 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  OTPProvider - 取得 OTP 種類列表
 	 * @argument {string}  OTPStatus - 取得 OTP 狀態列表
 	 * @argument {string}  BonusAtPageEnum - 取得 AtPage 列表
+	 * @argument {string}  DeepLinkTableTypeEnum - 取得DeepLink Type清單
+	 * @argument {string}  DeepLinkTableProtocolTypeEnum - 取得DeepLink ProtocolType清單
+	 * @argument {string}  DepositTimeStatusEnum - 取得存款時間狀態列表
+	 * @argument {string}  AppTypeEnum - 取得行動裝置種類
+	 * @argument {string}  SelectDepositStatusEnum -
 	 */
 	enumName: EnumNameType
 }

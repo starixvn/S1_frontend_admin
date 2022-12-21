@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetWithdrawalReasonListResponse,
 	IGetWithdrawalAdjustmentArgs,
@@ -8,10 +7,7 @@ import {
 	ISubmitWithdrawalLimitAdjustArgs,
 } from 'features/withdrawalAdjustment/type'
 
-export const withdrawalAdjustmentApi = createApi({
-	reducerPath: 'withdrawalAdjustmentApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['Submit'],
+export const withdrawalAdjustmentApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getWithdrawalAdjustment: builder.query<
 			IGetWithdrawalAdjustmentResponse,
@@ -22,7 +18,7 @@ export const withdrawalAdjustmentApi = createApi({
 				method: 'POST',
 				data,
 			}),
-			providesTags: ['Submit'],
+			providesTags: ['POST'],
 		}),
 		getWithdrawalAdjustmentReasonList: builder.query<
 			IGetWithdrawalReasonListResponse,
@@ -43,7 +39,7 @@ export const withdrawalAdjustmentApi = createApi({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['Submit'],
+			invalidatesTags: ['POST'],
 		}),
 	}),
 })

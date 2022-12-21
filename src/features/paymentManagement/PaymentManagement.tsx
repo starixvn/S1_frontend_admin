@@ -12,11 +12,14 @@ import {
 	useQueryParams,
 } from 'common/hooks'
 import {
+	useGetCryptoInfoQuery,
 	useGetGlobalStatusListQuery,
 	useLazyGetBankInfoListQuery,
 	useLazyGetPaySettingListQuery,
 	useSetBankStatusMutation,
+	useSetCryptoInfoMutation,
 	useSetGlobalStatusMutation,
+	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
 } from 'features/paymentManagement/api'
@@ -24,7 +27,12 @@ import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManag
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
 import {
 	AmountRuleEnum,
+	IEditForm,
+	IFilterForm,
+	IGetCryptoInfoData,
+	IGetGlobalStatusData,
 	IGetPaySettingData,
+	ILoginInfoForm,
 	PaymentStatusEnum,
 } from 'features/paymentManagement/type'
 import { useEffect, useRef } from 'react'
@@ -33,39 +41,34 @@ import { PaymentManagementTable } from 'features/paymentManagement/PaymentManage
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
 import { EditPaymentModal } from 'features/paymentManagement/modals/EditPaymentModal'
 import { FixedAmountConverter } from 'features/paymentManagement/utils'
+import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginInfoModal'
+import { CryptoSettingModal } from 'features/paymentManagement/modals/CryptoSettingModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, editInfoPermission } = {} } =
+		useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	const globalStatusModal = useModal()
 	const payIdRef = useRef<number | undefined>()
+	// 用於編輯 globalStatus LoginInfo 需要暫存的資料
+	const globalStatusLoginInfo = useRef<
+		{ payName: string; payId: number } | undefined
+	>()
+
+	const globalStatusModal = useModal()
 	const onlineBankInfoModal = useModal()
 	const editPaySettingModal = useModal()
-	const [editForm] = Form.useForm<{
-		channelId: number
-		currencyId: number
-		minAmount: number
-		maxAmount: number
-		amountRule: number
-		fixedAmountList: string
-		pointLevel: number
-		sort: number
-		channelName: string
-		type: number
-	}>()
+	const editLoginInfoModal = useModal()
+	const cryptoInfoModal = useModal()
 
-	const [filterForm] = Form.useForm<{
-		currencyIds: number[]
-		method: number | string
-		payId: number | string
-		type: number | string
-		globalStatus: number | string
-		status: number | string
-	}>()
+	const [editForm] = Form.useForm<IEditForm>()
+
+	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const [loginInfoForm] = Form.useForm<ILoginInfoForm>()
 
 	// Method 下拉選單
 	const {
@@ -120,6 +123,9 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [setGlobalStatus, { isLoading: isSetGlobalStatusLoading }] =
 		useSetGlobalStatusMutation()
 
+	const [setPayListLoginInfo, { isLoading: isSetPayListLoginInfoLoading }] =
+		useSetPayListLoginInfoMutation()
+
 	// BankInfo Modal
 	const [
 		getBankInfoList,
@@ -140,6 +146,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// PaySetting
 	const [setPaySetting, { isLoading: isSetPaySettingLoading }] =
 		useSetPaySettingMutation()
+
+	// cryptoSetting 相關
+	const {
+		data: { data: cryptoInfo = [] } = {},
+		isFetching: isGetCryptoInfoLoading,
+	} = useGetCryptoInfoQuery(null)
+
+	const [setCryptoInfo, { isLoading: isSetCryptoInfoLoading }] =
+		useSetCryptoInfoMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -234,11 +249,19 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	// BankInfo 彈窗
-	const handleBankInfoModalClicked = async (payId: number) => {
+	const handleBankInfoModalClicked = async ({
+		payId,
+		currencyId,
+		channelId,
+	}: {
+		payId: number
+		currencyId: number
+		channelId: number
+	}) => {
 		payIdRef.current = payId
 		try {
 			onlineBankInfoModal.onOpen()
-			await getBankInfoList({ siteId, payId }).unwrap()
+			await getBankInfoList({ siteId, currencyId, channelId }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -326,6 +349,67 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleEditLoginInfoClicked = (record: IGetGlobalStatusData) => {
+		const {
+			payName,
+			payId,
+			loginPassword,
+			loginAccount,
+			loginPin,
+			loginUrl,
+			transferPin,
+		} = record
+		globalStatusLoginInfo.current = { payName, payId }
+		loginInfoForm.setFieldsValue({
+			loginAccount,
+			loginPin,
+			loginUrl,
+			transferPin,
+			loginPassword,
+		})
+		editLoginInfoModal.onOpen()
+	}
+
+	const handleSetLoginInfo = async () => {
+		if (!globalStatusLoginInfo.current?.payId) return
+		const { payId } = globalStatusLoginInfo.current
+		const {
+			transferPin = '',
+			loginPin = '',
+			...restValue
+		} = await loginInfoForm.validateFields()
+		try {
+			await setPayListLoginInfo({
+				siteId,
+				payId,
+				transferPin,
+				loginPin,
+				...restValue,
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 設定 Crypto Status
+	const handleSetCryptoInfo = async (
+		record: IGetCryptoInfoData,
+		status: number
+	) => {
+		const { networkType: network, currencyId } = record
+		try {
+			await setCryptoInfo({ network, currencyId, status }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -364,6 +448,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetGlobalStatusLoading ||
 		isGetPayListLoading
 
+	const cryptoLoading = isGetCryptoInfoLoading || isSetCryptoInfoLoading
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -377,8 +463,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				form={filterForm}
 				onSearch={handleSearch}
+				onSetCryptoInfoClicked={cryptoInfoModal.onOpen}
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
-				editPermission={editPermission}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -401,8 +487,11 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetPayListLoading || isSetGlobalStatusLoading}
 				visible={globalStatusModal.visible}
 				onCancel={globalStatusModal.onCancel}
+				editInfoPermission={editInfoPermission}
+				editPermission={editPermission}
 				payList={payList}
 				onSetStatus={handleSetGlobalStatus}
+				onEditClick={handleEditLoginInfoClicked}
 			/>
 			<OnlineBankInfoModal
 				loading={isGetBankInfoListLoading || isSetBankStatusLoading}
@@ -424,6 +513,21 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				amountRuleList={amountRuleList}
 				onSubmit={handleSubmit}
+			/>
+			<EditLoginInfoModal
+				form={loginInfoForm}
+				loading={isSetPayListLoginInfoLoading}
+				visible={editLoginInfoModal.visible}
+				onCancel={editLoginInfoModal.onCancel}
+				onSubmit={handleSetLoginInfo}
+				title={globalStatusLoginInfo.current?.payName ?? ''}
+			/>
+			<CryptoSettingModal
+				loading={cryptoLoading}
+				visible={cryptoInfoModal.visible}
+				onCancel={cryptoInfoModal.onCancel}
+				cryptoInfo={cryptoInfo}
+				onSetCryptoInfo={handleSetCryptoInfo}
 			/>
 		</LayoutContent.Main>
 	)

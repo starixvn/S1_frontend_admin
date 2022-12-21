@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	ICreateReasonArgs,
 	IGetFuncKeysListResponse,
@@ -9,10 +7,7 @@ import {
 	ISetReasonArgs,
 } from 'features/reasonManagement/type'
 
-export const reasonManagementApi = createApi({
-	reducerPath: 'reasonManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const reasonManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getFuncKeysList: builder.query<IGetFuncKeysListResponse, null>({
 			query: () => ({

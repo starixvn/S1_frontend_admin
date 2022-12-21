@@ -1,6 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetTpCategoryArg,
 	IGetTpCategoryResponse,
@@ -16,10 +14,7 @@ import {
 	ISetTurnoverPointStatusSettingArgs,
 } from './type'
 
-export const turnoverPointApi = createApi({
-	reducerPath: 'turnoverPointApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const turnoverPointApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getCategory: builder.query<IGetTpCategoryResponse, IGetTpCategoryArg>({
 			query: data => ({

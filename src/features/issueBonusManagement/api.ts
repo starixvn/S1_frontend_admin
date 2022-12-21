@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IAdjustmentLimitResponse,
 	ICheckBonusCodeResponse,
@@ -10,9 +9,7 @@ import {
 	ISetBonusPayoutArgs,
 } from './type'
 
-export const issueBonusManagementApi = createApi({
-	reducerPath: 'issueBonusManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
+export const issueBonusManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getCustInfoDetails: builder.query<
 			ICustInfoDetailsResponse,

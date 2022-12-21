@@ -64,7 +64,6 @@ const AdjustmentLogReport: FC<{
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
-
 		setQueryParams({
 			actionTypes,
 			currencyIds,

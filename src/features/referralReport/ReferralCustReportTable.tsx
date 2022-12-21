@@ -1,11 +1,11 @@
+import moment from 'moment'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment'
 import { PaginationInterface } from 'common/hooks'
-import { IReferralCustReportData } from './type'
+import { IReferralCustReportData } from 'features/referralReport/type'
 
 interface IReferralCustReportTable {
 	loading: boolean

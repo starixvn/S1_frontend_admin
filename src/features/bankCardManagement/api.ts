@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetAgentListArgs,
 	IGetAgentListResponse,
@@ -14,10 +13,7 @@ import {
 	IGetQrCodeUrlResponse,
 } from 'features/bankCardManagement/type'
 
-export const bankCardManagementApi = createApi({
-	reducerPath: 'bankCardManagementApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST'],
+export const bankCardManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// 取得銀行卡設定
 		getBankCardList: builder.query<

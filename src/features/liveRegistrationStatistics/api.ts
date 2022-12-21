@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { baseUrl } from 'common/service/Api'
-import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { rootApi } from 'common/service/rootApi/api'
 import {
 	IExportRegistrationManagementArgs,
 	IGetRegistrationManagementListArgs,
@@ -9,10 +8,7 @@ import {
 	ISetRegistrationManagementArgs,
 } from './type'
 
-export const liveRegistrationStatisticsApi = createApi({
-	reducerPath: 'liveRegistrationStatisticsApi',
-	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST', 'NOTE_POST'],
+export const liveRegistrationStatisticsApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 取得註冊會員與狀態清單
 		getRegistrationManagementList: builder.query<
