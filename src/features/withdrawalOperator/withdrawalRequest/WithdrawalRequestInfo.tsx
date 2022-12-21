@@ -1,6 +1,7 @@
 import {
 	IGetBankInfoData,
 	IGetCryptoPayData,
+	IGetCryptoWalletData,
 	IGetOnlinePayData,
 	IGetWithdrawalData,
 	IWithdrawalRequestForm,
@@ -27,17 +28,16 @@ import {
 } from 'features/withdrawalOperator/constants'
 import { multiEqual } from 'common/utils'
 import { find, head } from 'lodash'
-import { useEffect } from 'react'
 import { useCopy } from 'common/hooks'
 
 interface IWithdrawalInfoDescriptionsProps {
 	form: FormInstance<IWithdrawalRequestForm>
 	timeZoneUtcOffset: number
-	paymentListLoading: boolean
 	withdrawalDetailData?: IGetWithdrawalData
 	localBankList: IGetBankInfoData[]
 	cryptoPayList: IGetCryptoPayData[]
 	onlinePayList: IGetOnlinePayData[]
+	cryptoWalletList: IGetCryptoWalletData[]
 	onPayInfoClicked: (
 		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
 	) => void
@@ -50,7 +50,7 @@ const WithdrawalRequestInfo = ({
 	form,
 	timeZoneUtcOffset,
 	withdrawalDetailData,
-	paymentListLoading,
+	cryptoWalletList,
 	cryptoPayList,
 	onlinePayList,
 	localBankList,
@@ -74,6 +74,12 @@ const WithdrawalRequestInfo = ({
 		accountType,
 		cryptoCurrency,
 		network,
+		withdrawalType: responseType,
+		withdrawalTypeName,
+		payName: responsePayName,
+		payId: responsePayId,
+		refId,
+		eWalletName,
 	} = withdrawalDetailData ?? {}
 
 	const color = WITHDRAWAL_STATUS_TAGS_COLOR[status as WithdrawalStatusEnum]
@@ -81,27 +87,86 @@ const WithdrawalRequestInfo = ({
 	const isProcess = status === WithdrawalStatusEnum.Process
 	const type = Form.useWatch('withdrawalType', form)
 	const currentSelId = Form.useWatch('selId', form)
+
+	// accountType
 	const isCrypto = accountType === AccountTypeEnum.Crypto
+	const isEWallet = accountType === AccountTypeEnum.EWallet
 
 	// 檢查是否有 list 可以使用
 	const hasLocalBank = localBankList?.length > 0
 	const hasOnlinePayment = onlinePayList?.length > 0
 	const hasCryptoPay = cryptoPayList?.length > 0
+	const hasCryptoWallet = cryptoWalletList?.length > 0
 
-	useEffect(() => {
-		if (!paymentListLoading) {
-			// 這邊處理特殊情況 , 有些 data 實際上抓不到資料 , 但 DB 給的 type 資料有誤 , 手動導至 undefined
-			if (
-				(type === WithdrawalTypeEnum.OnlinePayment && !hasOnlinePayment) ||
-				(type === WithdrawalTypeEnum.CryptoPay && !hasCryptoPay) ||
-				(type === WithdrawalTypeEnum.LocalBank && !hasLocalBank)
-			) {
-				form.setFieldsValue({
-					withdrawalType: WithdrawalTypeEnum.Undefined,
-				})
+	// WithdrawalType 下拉選單邏輯寫在這
+	const getWithdrawalTypeOptions = () => {
+		const result: JSX.Element[] = []
+		if (isCrypto) {
+			if (hasCryptoPay) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.CryptoPay}
+						key={WithdrawalTypeEnum.CryptoPay}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoPay])}
+					</Option>
+				)
+			}
+			if (hasCryptoWallet) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.CryptoWallet}
+						key={WithdrawalTypeEnum.CryptoWallet}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoWallet])}
+					</Option>
+				)
+			}
+		} else if (isEWallet) {
+			if (hasLocalBank) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.LocalBank}
+						key={WithdrawalTypeEnum.LocalBank}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.LocalBank])}
+					</Option>
+				)
+			}
+			if (eWalletName !== null) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.OnlinePayment}
+						key={WithdrawalTypeEnum.OnlinePayment}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
+					</Option>
+				)
+			}
+		} else {
+			if (hasLocalBank) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.LocalBank}
+						key={WithdrawalTypeEnum.LocalBank}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.LocalBank])}
+					</Option>
+				)
+			}
+			if (hasOnlinePayment) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.OnlinePayment}
+						key={WithdrawalTypeEnum.OnlinePayment}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
+					</Option>
+				)
 			}
 		}
-	}, [type, paymentListLoading])
+		return result
+	}
 
 	return (
 		<Descriptions
@@ -135,12 +200,32 @@ const WithdrawalRequestInfo = ({
 					''
 				)}
 			</Item>
-			{isCrypto ? (
+			{/* Crypto  */}
+			{isCrypto && (
 				<>
 					<Item label={t('Label_AccountType')}>{cryptoCurrency}</Item>
 					<Item label={t('Label_NetWork')}>{network}</Item>
 				</>
-			) : (
+			)}
+			{/* Ewallet */}
+			{isEWallet && (
+				<>
+					<Item label={t('Label_AccountType')}>{accountType}</Item>
+					<Item label={t('Label_NameOfEwallet')}>
+						<Row justify='space-between'>
+							{eWalletName}
+							<Typography.Link
+								disabled={!eWalletName}
+								onClick={() => onCopy(eWalletName as string)}
+							>
+								<CopyOutlined style={{ fontSize: '1rem' }} />
+							</Typography.Link>
+						</Row>
+					</Item>
+				</>
+			)}
+			{/* else */}
+			{!isCrypto && !isEWallet && (
 				<Item label={t('Label_NameOfBank')}>
 					<Row justify='space-between'>
 						{bankName}
@@ -166,6 +251,7 @@ const WithdrawalRequestInfo = ({
 				</Row>
 			</Item>
 			<Item label={t('Label_AccountName')}>{accountName}</Item>
+			<Item label={t('Label_RefId')}>{refId || '-'}</Item>
 			<Item label={t('Label_IFSCode')}>{ifscCode ?? '-'}</Item>
 			<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
 			<Item label={`${t('Label_UpdateTime')} (+08:00)`}>
@@ -186,12 +272,51 @@ const WithdrawalRequestInfo = ({
 					''
 				)}
 			</Item>
-
+			{/* Process 或 Approved 單純渲染response給的資料  */}
 			{multiEqual(status, [
-				WithdrawalStatusEnum.Approved,
-				WithdrawalStatusEnum.Verify,
 				WithdrawalStatusEnum.Process,
+				WithdrawalStatusEnum.Approved,
 			]) && (
+				<>
+					<Item label={t('Label_WithdrawalType')}>{withdrawalTypeName}</Item>
+					{multiEqual(responseType, [
+						WithdrawalTypeEnum.CryptoPay,
+						WithdrawalTypeEnum.OnlinePayment,
+					]) && (
+						<Item label={t('Label_Pay')}>
+							<Row justify='space-between' align='middle'>
+								{responsePayName}
+								<Typography.Link
+									onClick={() => {
+										if (responseType === WithdrawalTypeEnum.OnlinePayment) {
+											const record = find(
+												onlinePayList,
+												item => item.payId === responsePayId
+											)
+											if (record !== undefined) {
+												onPayInfoClicked(record)
+											}
+										} else if (responseType === WithdrawalTypeEnum.CryptoPay) {
+											const record = find(
+												cryptoPayList,
+												item => item.payId === responsePayId
+											)
+											if (record !== undefined) {
+												onPayInfoClicked(record)
+											}
+										}
+									}}
+									disabled={!responsePayId}
+								>
+									<InfoCircleOutlined style={{ fontSize: '1rem' }} />
+								</Typography.Link>
+							</Row>
+						</Item>
+					)}
+				</>
+			)}
+			{/* Verify 狀態才可以有下拉選擇  */}
+			{multiEqual(status, [WithdrawalStatusEnum.Verify]) && (
 				<>
 					<Item label={t('Label_WithdrawalType')}>
 						<Form.Item name='withdrawalType' noStyle>
@@ -218,30 +343,7 @@ const WithdrawalRequestInfo = ({
 								>
 									{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.Undefined])}
 								</Option>
-								{hasLocalBank && (
-									<Option
-										value={WithdrawalTypeEnum.LocalBank}
-										key={WithdrawalTypeEnum.LocalBank}
-									>
-										{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.LocalBank])}
-									</Option>
-								)}
-								{hasOnlinePayment && (
-									<Option
-										value={WithdrawalTypeEnum.OnlinePayment}
-										key={WithdrawalTypeEnum.OnlinePayment}
-									>
-										{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
-									</Option>
-								)}
-								{hasCryptoPay && (
-									<Option
-										value={WithdrawalTypeEnum.CryptoPay}
-										key={WithdrawalTypeEnum.CryptoPay}
-									>
-										{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoPay])}
-									</Option>
-								)}
+								{getWithdrawalTypeOptions()}
 							</Select>
 						</Form.Item>
 					</Item>

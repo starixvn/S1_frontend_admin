@@ -54,6 +54,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
+
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm<IDepositRequestFrom>()
@@ -88,12 +89,16 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		transId,
 	})
 
-	const [setDepositStatus] = useSetDepositStatusMutation()
-
 	const [setAmountByTransId, { isLoading: isSetAmountByTransIdLoading }] =
 		useSetAmountByTransIdMutation()
 
-	const [setDepositManualApproval] = useSetDepositManualApprovalMutation()
+	const [setDepositStatus, { isLoading: isSetDepositStatusLoading }] =
+		useSetDepositStatusMutation()
+
+	const [
+		setDepositManualApproval,
+		{ isLoading: isSetDepositManualApprovalLoading },
+	] = useSetDepositManualApprovalMutation()
 
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
@@ -269,6 +274,9 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				</Form>
 				<Divider />
 				<DepositRequestOperatorButtonGroup
+					loading={
+						isSetDepositStatusLoading || isSetDepositManualApprovalLoading
+					}
 					usableActionButtons={depositInfo?.usableActionButton ?? []}
 					onSetDepositStatus={handleSetDepositStatus}
 					onShowSendMessageModal={onShowSendMessageModal}

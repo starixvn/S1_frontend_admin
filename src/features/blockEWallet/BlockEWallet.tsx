@@ -5,10 +5,11 @@ import { find, isEmpty } from 'lodash'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
-import { useAuth, useQueryParams } from 'common/hooks'
+import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
+import { AffixButtons } from 'components/AffixButtons'
 import {
 	useGetEWalletTypesQuery,
 	useLazyGetBlockEWalletAccQuery,
@@ -24,6 +25,7 @@ import {
 	IBlockEWalletForm,
 } from './type'
 import { BANK_BLOCK_STATUS_VALUE_OPTIONS } from './constants'
+import { AddBlockEWalletModal } from './modal/AddBlockEWalletModal'
 
 const BlockEWallet: FC<{
 	pageTitle?: string
@@ -36,6 +38,7 @@ const BlockEWallet: FC<{
 	const [form] = Form.useForm<IBlockEWalletForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const addBlockEWalletModal = useModal()
 
 	const [
 		getBlockEWalletAcc,
@@ -356,6 +359,25 @@ const BlockEWallet: FC<{
 					onSetReleaseEWallet={handleSetReleaseEWallet}
 				/>
 			)}
+
+			<AddBlockEWalletModal
+				open={addBlockEWalletModal.visible}
+				onCancel={addBlockEWalletModal.onCancel}
+				title={t('Label_AddBlockEWallet')}
+				confirmLoading={isSetBlockEWalletLoading}
+				onSubmit={({ sysId, accountNum }) =>
+					handleSetBlockEWallet({
+						sysId,
+						accountNum,
+						status: BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK,
+					})
+				}
+			/>
+
+			<AffixButtons>
+				<AffixButtons.BackToTop />
+				<AffixButtons.Create onClick={addBlockEWalletModal.onOpen} />
+			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }

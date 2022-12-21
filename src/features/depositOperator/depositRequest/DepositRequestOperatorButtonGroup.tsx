@@ -7,25 +7,39 @@ import {
 	DepositStatusEnum,
 	UsableActionButtonEnum,
 } from 'features/depositOperator/type'
+import { useAuth } from 'common/hooks'
 
 interface IDepositRequestOperatorButtonGroupProps {
+	loading?: boolean
 	usableActionButtons: number[]
 	onSetDepositStatus: (status: DepositStatusEnum) => void
 	onShowSendMessageModal: () => void
 }
 
 const DepositRequestOperatorButtonGroup = ({
+	loading,
 	usableActionButtons,
 	onSetDepositStatus,
 	onShowSendMessageModal,
 }: IDepositRequestOperatorButtonGroupProps) => {
 	const { t } = useTranslation()
-
+	const {
+		actionPermissions: {
+			approvedPermission,
+			draftPermission,
+			manualApprovedPermission,
+			onHoldPermission,
+			pendingPermission,
+			rejectPermission,
+		} = {},
+	} = useAuth()
 	return (
 		<Row gutter={[16, 16]}>
 			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!rejectPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.Rejected)}
 						color='Reject'
 					>
@@ -35,7 +49,11 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 
 			<Col span={6}>
-				<OperatorButton onClick={onShowSendMessageModal} color='Blue'>
+				<OperatorButton
+					loading={loading}
+					onClick={onShowSendMessageModal}
+					color='Blue'
+				>
 					{t('Label_SendMessage')}
 				</OperatorButton>
 			</Col>
@@ -43,6 +61,8 @@ const DepositRequestOperatorButtonGroup = ({
 			{includes(usableActionButtons, UsableActionButtonEnum.Draft) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!draftPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.Draft)}
 						color='Gray'
 					>
@@ -54,6 +74,8 @@ const DepositRequestOperatorButtonGroup = ({
 			{includes(usableActionButtons, UsableActionButtonEnum.OnHold) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!onHoldPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.OnHold)}
 						color='Yellow'
 					>
@@ -65,6 +87,8 @@ const DepositRequestOperatorButtonGroup = ({
 			{includes(usableActionButtons, UsableActionButtonEnum.Pending) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!pendingPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.Pending)}
 						color='Yellow'
 					>
@@ -76,6 +100,8 @@ const DepositRequestOperatorButtonGroup = ({
 			{includes(usableActionButtons, UsableActionButtonEnum.Approved) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!approvedPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.Approved)}
 						color='Green'
 					>
@@ -87,6 +113,8 @@ const DepositRequestOperatorButtonGroup = ({
 			{includes(usableActionButtons, UsableActionButtonEnum.ManualApproved) && (
 				<Col span={6}>
 					<OperatorButton
+						loading={loading}
+						disabled={!manualApprovedPermission?.canUse}
 						onClick={() => onSetDepositStatus(DepositStatusEnum.ManualApproved)}
 						color='Purple'
 					>

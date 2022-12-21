@@ -44,6 +44,7 @@ export const BONUS_STATUS: { [status: number]: string } = {
 // 比對 AccountType
 export enum AccountTypeEnum {
 	Crypto = 'crypto',
+	EWallet = 'ewallet',
 }
 
 export enum WithdrawalTypeEnum {
@@ -51,6 +52,7 @@ export enum WithdrawalTypeEnum {
 	OnlinePayment = 1,
 	LocalBank = 2,
 	CryptoPay = 4,
+	CryptoWallet = 5,
 }
 
 export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
@@ -58,4 +60,5 @@ export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
 	[WithdrawalTypeEnum.OnlinePayment]: 'Label_OnlinePayment',
 	[WithdrawalTypeEnum.LocalBank]: 'Label_LocalBanking',
 	[WithdrawalTypeEnum.CryptoPay]: 'Label_CryptoPay',
+	[WithdrawalTypeEnum.CryptoWallet]: 'Label_CryptoWallet',
 }

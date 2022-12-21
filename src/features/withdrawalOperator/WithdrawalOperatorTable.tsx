@@ -167,8 +167,9 @@ const WithdrawalOperatorTable = ({
 				const { channelName, withdrawalType } = record
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{withdrawalType === WithdrawalTypeEnum.CryptoPay
-							? channelName
+						{withdrawalType === WithdrawalTypeEnum.CryptoPay ||
+						withdrawalType === WithdrawalTypeEnum.CryptoWallet
+							? channelName || '-'
 							: '-'}
 					</Typography.Text>
 				)
@@ -185,7 +186,7 @@ const WithdrawalOperatorTable = ({
 				const info = JSON.parse(withdrawalInfo)
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{info?.ExchangeRate ?? ''}
+						{info?.ExchangeAmount ?? ''}
 					</Typography.Text>
 				)
 			},
@@ -213,7 +214,7 @@ const WithdrawalOperatorTable = ({
 			align: 'center' as 'center',
 			render: (bankName: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{bankName ?? ''}
+					{bankName ?? '-'}
 				</Typography.Text>
 			),
 		},

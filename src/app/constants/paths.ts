@@ -391,6 +391,10 @@ const paths = {
 				root: 'report/gameStatisticalReport',
 				functionId: 132,
 			},
+			verificationReport: {
+				root: 'report/verificationReport',
+				functionId: 76,
+			},
 		},
 	},
 	member: {
@@ -399,6 +403,14 @@ const paths = {
 			blockEWallet: {
 				root: 'member/blockewallet',
 				functionId: 118,
+			},
+			gameExclusion: {
+				root: 'member/gameExclusion',
+				functionId: 62,
+			},
+			betLimit: {
+				root: 'member/betLimit',
+				functionId: 63,
 			},
 		},
 	},
@@ -607,6 +619,10 @@ const paths = {
 					providerAppDownload: {
 						root: 'cms/urlManagement/providerAppDownload',
 						functionId: 66,
+					},
+					externalDomain: {
+						root: 'cms/urlManagement/externalDomain',
+						functionId: 64,
 					},
 				},
 			},
