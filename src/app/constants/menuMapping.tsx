@@ -487,7 +487,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.externalDomain.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DomainManage',
 		internalFunctionKey: allowedRoles.CMSDomainManage,
 		newAdminPath: paths.cms.sub.urlManagement.sub.externalDomain.root,
@@ -582,7 +582,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.verificationReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingVerificationRewardReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VerificationRewardReport',
 		newAdminPath: paths.report.sub.verificationReport.root,
 	},
