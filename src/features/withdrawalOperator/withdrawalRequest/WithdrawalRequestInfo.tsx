@@ -1,6 +1,7 @@
 import {
 	IGetBankInfoData,
 	IGetCryptoPayData,
+	IGetCryptoWalletData,
 	IGetOnlinePayData,
 	IGetWithdrawalData,
 	IWithdrawalRequestForm,
@@ -15,7 +16,7 @@ import {
 	Tag,
 	Typography,
 } from 'antd'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { CopyOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import moment from 'moment/moment'
 import {
@@ -25,7 +26,7 @@ import {
 	WithdrawalStatusEnum,
 	WithdrawalTypeEnum,
 } from 'features/withdrawalOperator/constants'
-import { multiEqual } from 'common/utils'
+import { isJSON, multiEqual } from 'common/utils'
 import { find, head } from 'lodash'
 import { useCopy } from 'common/hooks'
 
@@ -36,6 +37,7 @@ interface IWithdrawalInfoDescriptionsProps {
 	localBankList: IGetBankInfoData[]
 	cryptoPayList: IGetCryptoPayData[]
 	onlinePayList: IGetOnlinePayData[]
+	cryptoWalletList: IGetCryptoWalletData[]
 	onPayInfoClicked: (
 		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
 	) => void
@@ -48,6 +50,7 @@ const WithdrawalRequestInfo = ({
 	form,
 	timeZoneUtcOffset,
 	withdrawalDetailData,
+	cryptoWalletList,
 	cryptoPayList,
 	onlinePayList,
 	localBankList,
@@ -77,13 +80,23 @@ const WithdrawalRequestInfo = ({
 		payId: responsePayId,
 		refId,
 		eWalletName,
+		withdrawalInfo: rawWithdrawalInfo,
 	} = withdrawalDetailData ?? {}
+
+	const withdrawalInfo = isJSON(rawWithdrawalInfo)
+		? JSON.parse(rawWithdrawalInfo as string)
+		: {}
 
 	const color = WITHDRAWAL_STATUS_TAGS_COLOR[status as WithdrawalStatusEnum]
 	const isApproved = status === WithdrawalStatusEnum.Approved
 	const isProcess = status === WithdrawalStatusEnum.Process
 	const type = Form.useWatch('withdrawalType', form)
 	const currentSelId = Form.useWatch('selId', form)
+
+	// crypto 會用到的資料
+	const cryptoAmount = isApproved
+		? withdrawalInfo?.ExchangeAmount ?? ''
+		: withdrawalInfo?.TempExchangeAmount ?? ''
 
 	// accountType
 	const isCrypto = accountType === AccountTypeEnum.Crypto
@@ -93,6 +106,7 @@ const WithdrawalRequestInfo = ({
 	const hasLocalBank = localBankList?.length > 0
 	const hasOnlinePayment = onlinePayList?.length > 0
 	const hasCryptoPay = cryptoPayList?.length > 0
+	const hasCryptoWallet = cryptoWalletList?.length > 0
 
 	// WithdrawalType 下拉選單邏輯寫在這
 	const getWithdrawalTypeOptions = () => {
@@ -105,6 +119,16 @@ const WithdrawalRequestInfo = ({
 						key={WithdrawalTypeEnum.CryptoPay}
 					>
 						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoPay])}
+					</Option>
+				)
+			}
+			if (hasCryptoWallet) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.CryptoWallet}
+						key={WithdrawalTypeEnum.CryptoWallet}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.CryptoWallet])}
 					</Option>
 				)
 			}
@@ -165,7 +189,7 @@ const WithdrawalRequestInfo = ({
 			<Item label={t('Label_TransactionNo')}>{transId}</Item>
 			<Item label={t('Label_RequestAmount')}>
 				<Row justify='space-between'>
-					{numberFormatter.format(amount)}
+					{numFormatToDigits(amount)}
 					<Typography.Link
 						disabled={!amount}
 						onClick={() => onCopy(String(amount))}
@@ -174,6 +198,25 @@ const WithdrawalRequestInfo = ({
 					</Typography.Link>
 				</Row>
 			</Item>
+			{isCrypto && (
+				<Item
+					label={
+						isApproved ? t('Label_ActualCryptoAmount') : t('Label_CryptoAmount')
+					}
+				>
+					<Row justify='space-between'>
+						{cryptoAmount}
+						{cryptoAmount && (
+							<Typography.Link
+								disabled={!cryptoAmount}
+								onClick={() => onCopy(String(cryptoAmount))}
+							>
+								<CopyOutlined style={{ fontSize: '1rem' }} />
+							</Typography.Link>
+						)}
+					</Row>
+				</Item>
+			)}
 			<Item label={t('Label_Status')}>
 				<Tag color={color}>{statusName || '-'}</Tag>
 			</Item>

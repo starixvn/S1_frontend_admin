@@ -233,6 +233,11 @@ export enum GameStatementTableEnum {
 	TPBetRecordDetail, // 五層 , 特定細單
 }
 
+// GameLog => Statement CategoryEnum , 目前只有 Sports type 需要做特殊處理
+export enum GameStatementCategoryEnum {
+	Sport = 1,
+}
+
 // VipRebate Log isPayout Filter List
 export enum IsPayoutEnum {
 	false,

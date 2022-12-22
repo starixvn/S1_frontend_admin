@@ -10,6 +10,8 @@ import {
 	IGetByTransIdArgs,
 	IGetCryptoPayData,
 	IGetCryptoPayListArgs,
+	IGetCryptoWalletArgs,
+	IGetCryptoWalletData,
 	IGetOnlinePayData,
 	IGetOnlinePayListArgs,
 	IGetVipLevelBySiteArgs,
@@ -119,6 +121,16 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getCryptoWalletList: builder.query<
+			IAxiosResponse<IGetCryptoWalletData[]>,
+			IGetCryptoWalletArgs
+		>({
+			query: data => ({
+				url: 'BaseData/GetCryptoWalletList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getLocalBankList: builder.query<
 			IAxiosResponse<IGetBankInfoData[]>,
 			IGetBankInfoListArgs
@@ -199,6 +211,7 @@ export const {
 	useSetWithdrawalStatusMutation,
 	useGetOnlinePayListQuery,
 	useGetCryptoPayListQuery,
+	useGetCryptoWalletListQuery,
 	useGetLocalBankListQuery,
 	useManualApprovalMutation,
 	useManualRejectMutation,

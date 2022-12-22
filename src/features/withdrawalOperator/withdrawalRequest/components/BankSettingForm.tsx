@@ -101,7 +101,7 @@ const BankSettingForm = ({
 										// 僅有第一列會顯示 Label
 										label={name === 0 ? t('Label_BankAccountNo') : null}
 										rules={[
-											{ required: true, message: t('Label_RequiredText') },
+											{ required: canUse, message: t('Label_RequiredText') },
 										]}
 										style={{ width: '250px' }}
 									>
@@ -119,7 +119,7 @@ const BankSettingForm = ({
 										label={name === 0 ? t('Label_Amount') : null}
 										rules={[
 											{
-												required: true,
+												required: canUse,
 												message: t('Label_RequiredText'),
 											},
 											{

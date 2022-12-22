@@ -174,6 +174,8 @@ export interface IWithdrawalRequestForm {
 	withdrawalAccountingModels: IWithdrawalAccounting[]
 	selId: number
 	fileList: UploadFile[]
+	cryptoWallet: number
+	gasFee: number
 }
 
 // 取得可用的 OnlinePayList
@@ -265,3 +267,9 @@ export interface IUploadPictureArgs {
 export interface IDeletePictureArgs extends IGetByTransIdArgs {
 	number: number
 }
+
+export interface IGetCryptoWalletArgs {
+	currencyId: number
+}
+
+export type IGetCryptoWalletData = IGetBankInfoData

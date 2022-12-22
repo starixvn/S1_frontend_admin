@@ -12,6 +12,20 @@ interface RequireAuthProps {
 	children: JSX.Element
 }
 
+// * 找尋指定 functionId 功能頁權限
+export const useActionPermissionsByFunctionId = ({
+	functionId,
+}: {
+	functionId: number | undefined
+}) => {
+	const { userMenuFunctionData } = useAuth()
+	const menuFunctionData = find(userMenuFunctionData, { functionId })
+	const actionPermissions = getActionPermissions(
+		menuFunctionData?.permission ?? []
+	)
+	return { actionPermissions }
+}
+
 const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 	const { auth, onCheckSignIn, userMenuFunctionData, setActionPermissions } =
 		useAuth()

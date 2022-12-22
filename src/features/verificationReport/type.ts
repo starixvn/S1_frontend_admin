@@ -35,8 +35,8 @@ export type IVerificationRewardReportResponse = IAxiosResponse<
 
 export interface IExportVerificationRewardReportArgs {
 	currencyIds: number[]
-	userName?: string
-	sabaId?: string
+	userName: string
+	sabaId: string
 	startDate: string
 	endDate: string
 }

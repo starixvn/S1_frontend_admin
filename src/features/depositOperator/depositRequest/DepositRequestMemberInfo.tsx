@@ -24,6 +24,7 @@ const DepositRequestMemberInfo = ({
 		currency,
 		custId,
 		userName,
+		accountName,
 		vipLevel,
 		levelName,
 		actStatus,
@@ -42,7 +43,7 @@ const DepositRequestMemberInfo = ({
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
-				title='Member Info'
+				title={t('Label_MemberInfo')}
 				bordered
 				column={1}
 				labelStyle={{ minWidth: '200px' }}
@@ -58,6 +59,9 @@ const DepositRequestMemberInfo = ({
 					>
 						{userName || '-'}
 					</Typography.Link>
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_FullName')}>
+					{accountName || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_VipLevel')}>
 					{levelName ? (
