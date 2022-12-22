@@ -206,7 +206,8 @@ const WithdrawalRequestInfo = ({
 				>
 					<Row justify='space-between'>
 						{cryptoAmount}
-						{cryptoAmount && (
+						{/* 轉成 Boolean 才做判斷 */}
+						{!!cryptoAmount && (
 							<Typography.Link
 								disabled={!cryptoAmount}
 								onClick={() => onCopy(String(cryptoAmount))}
