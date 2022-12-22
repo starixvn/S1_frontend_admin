@@ -3,20 +3,45 @@ import { Form, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
-import IssueBonusManagementSearchForm from './IssueBonusManagementSearchForm'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { IssueBonusManagementBatchForm } from 'features/issueBonusManagement/batchBonusComponents/IssueBonusManagementBatchForm'
+import { PayoutTypeEnum } from 'features/issueBonusManagement/constants'
 import {
+	IAdjustmentLimitResponse,
+	ICheckBonusCodeData,
+	ICustInfoDetailsResponse,
+} from 'features/issueBonusManagement/type'
+import {
+	useLazyCheckBonusCodeQuery,
 	useLazyGetAdjustmentLimitInfoQuery,
 	useLazyGetCustInfoDetailsQuery,
-} from './api'
-import { IAdjustmentLimitResponse, ICustInfoDetailsResponse } from './type'
-import IssueBonusManagementInfoContent from './IssueBonusManagementInfoContent'
+	useSetBonusPayoutBatchMutation,
+} from 'features/issueBonusManagement/api'
+import IssueBonusManagementInfoContent from 'features/issueBonusManagement/IssueBonusManagementInfoContent'
+import IssueBonusManagementSearchForm from 'features/issueBonusManagement/IssueBonusManagementSearchForm'
+import { RcFile } from 'antd/lib/upload'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { BatchLogTable } from 'features/issueBonusManagement/batchBonusComponents/BatchLogTable'
 
 const IssueBonusManagement: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const [isShowInfoForm, setIsShowInfoForm] = useState<boolean>(false)
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
+	// 提高資料在前端渲染時的可控性，這裡把資料接出來自己控制
+	const [batchLog, setBatchLog] = useState<IAxiosResponse<void>[]>([])
+	const [batchBonusCodeInfo, setBatchBonusCodeInfo] = useState<
+		ICheckBonusCodeData | undefined
+	>(undefined)
+
+	const [batchForm] = Form.useForm<{
+		payoutType: number
+		bonusCode: string
+		currencyId: number
+	}>()
 	const [searchForm] = Form.useForm<{
 		userName: string
 		sabaId: string
@@ -24,9 +49,10 @@ const IssueBonusManagement: FC<{
 	const [infoForm] = Form.useForm<{
 		bonusCode: string
 	}>()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
 	const userName = Form.useWatch('userName', searchForm)
 	const sabaId = Form.useWatch('sabaId', searchForm)
+	const payoutType = Form.useWatch('payoutType', batchForm)
 
 	const [
 		getCustInfoDetails,
@@ -42,6 +68,13 @@ const IssueBonusManagement: FC<{
 		infoForm.resetFields()
 	}
 
+	// clear batch bonus Data
+	const handleClearBatch = () => {
+		batchForm.resetFields(['bonusCode', 'currencyId'])
+		setBatchLog([])
+		setBatchBonusCodeInfo(undefined)
+	}
+
 	const [
 		getAdjustmentLimitInfo,
 		{
@@ -49,6 +82,13 @@ const IssueBonusManagement: FC<{
 			isFetching: isGetAdjustmentLimitInfoFetching,
 		},
 	] = useLazyGetAdjustmentLimitInfoQuery()
+
+	// Check Batch Bonus Code
+	const [checkBonusCode, { isFetching: isCheckBonusCodeFetching }] =
+		useLazyCheckBonusCodeQuery()
+
+	// Set Batch Bonus
+	const [setBonusPayoutBatch] = useSetBonusPayoutBatchMutation()
 
 	const handleSearch = async () => {
 		if (!siteId) return
@@ -75,31 +115,96 @@ const IssueBonusManagement: FC<{
 		}
 	}
 
+	const handleCheckBatchBonusCode = async () => {
+		if (!siteId) return
+		const { currencyId, bonusCode } = batchForm.getFieldsValue()
+
+		try {
+			const { data } = await checkBonusCode({
+				siteId,
+				currencyId,
+				bonusCode,
+			}).unwrap()
+			if (!data.hasBonusCode) {
+				message.warn('BonusCode Error')
+			}
+			setBatchBonusCodeInfo(data)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleUploadBonus = async (file: RcFile) => {
+		if (!siteId || !batchBonusCodeInfo) return
+		const { bonusCode, bonusType, bonus } = batchBonusCodeInfo
+		const formData = new FormData()
+		formData.append('ExcelAdd', file)
+		formData.append('SiteId', String(siteId))
+		formData.append('BonusCode', bonusCode)
+		formData.append('PromotionType', String(bonusType))
+		formData.append('Amount', String(bonus))
+
+		try {
+			const response = await setBonusPayoutBatch(formData).unwrap()
+			setBatchLog(response)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+			setBatchLog([])
+			// throw error 回去 uploader 元件 , 觸發 error status
+			throw error
+		}
+	}
+
 	useEffect(() => {
 		if (!userName && !sabaId) {
 			setIsShowInfoForm(false)
 		}
 	}, [userName, sabaId])
+
+	useEffect(() => {
+		handelClear()
+		handleClearBatch()
+	}, [payoutType])
+
 	const loading =
 		isGetCustInfoDetailsFetching || isGetAdjustmentLimitInfoFetching
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-
-			<IssueBonusManagementSearchForm
-				loading={loading}
-				searchForm={searchForm}
-				onSearch={handleSearch}
+			<IssueBonusManagementBatchForm
+				loading={isCheckBonusCodeFetching}
+				form={batchForm}
+				currencyListBySite={currencyListBySite}
+				batchBonusCodeInfo={batchBonusCodeInfo}
+				onUploadBonus={handleUploadBonus}
+				onCheckBatchBonusCode={handleCheckBatchBonusCode}
 			/>
-			{isShowInfoForm && !isGetCustInfoDetailsError && (userName || sabaId) && (
-				<IssueBonusManagementInfoContent
-					infoForm={infoForm}
-					custInfoDetails={custInfoDetails}
-					adjustmentMax={adjustmentLimitInfo?.adjustmentMax}
-					siteId={siteId}
-					onClear={handelClear}
-				/>
+			{payoutType === PayoutTypeEnum.BatchBonusPayout &&
+				batchLog.length > 0 && <BatchLogTable batchLog={batchLog} />}
+			{payoutType === PayoutTypeEnum.BonusPayout && (
+				<>
+					<IssueBonusManagementSearchForm
+						loading={loading}
+						searchForm={searchForm}
+						onSearch={handleSearch}
+					/>
+					{isShowInfoForm &&
+						!isGetCustInfoDetailsError &&
+						(userName || sabaId) && (
+							<IssueBonusManagementInfoContent
+								infoForm={infoForm}
+								custInfoDetails={custInfoDetails}
+								adjustmentMax={adjustmentLimitInfo?.adjustmentMax}
+								siteId={siteId}
+								onClear={handelClear}
+							/>
+						)}
+				</>
 			)}
 		</LayoutContent.Main>
 	)
