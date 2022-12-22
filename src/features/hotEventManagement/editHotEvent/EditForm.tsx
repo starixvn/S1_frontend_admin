@@ -226,7 +226,15 @@ const EditForm: FC<IEditFormProps> = ({
 									},
 								]}
 							>
-								<DatePicker showTime style={{ width: '100%' }} />
+								<DatePicker
+									showTime
+									style={{ width: '100%' }}
+									onChange={newDate =>
+										form.setFieldsValue({
+											endTime: moment(newDate).add(2, 'hours'),
+										})
+									}
+								/>
 							</Form.Item>
 						</Col>
 						{/* endTime 由 battleTime 選取後自動延後兩小時產生 */}
