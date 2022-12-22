@@ -196,7 +196,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.depositSubmission
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositSubmission',
 		internalFunctionKey: allowedRoles.FinanceDepositSubmission,
 		newAdminPath:
@@ -496,7 +496,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		name: 'APP QR Code',
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.appQrCode.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/AppLinkManagement',
 		internalFunctionKey: allowedRoles.CMSAppLinkManagement,
 		newAdminPath: paths.cms.sub.urlManagement.sub.appQrCode.root,
@@ -504,7 +504,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.providerAppDownload.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DeepLinkManagement',
 		internalFunctionKey: allowedRoles.CMSDeepLinkManagement,
 		newAdminPath: paths.cms.sub.urlManagement.sub.providerAppDownload.root,
@@ -657,7 +657,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.transferInfoManagement.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialTransferManage,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/TransferManage',
 		newAdminPath: paths.bankTransfer.sub.transferInfoManagement.root,
 	},
