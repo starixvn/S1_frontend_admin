@@ -34,9 +34,6 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [filterForm] = Form.useForm<IFilterForm>()
-	const memberId = Form.useWatch('memberId', filterForm)
-	const sabaId = Form.useWatch('sabaId', filterForm)
-	const isButtonAble = Boolean(memberId || sabaId)
 
 	const [
 		getVerificationRewardReport,
@@ -81,8 +78,8 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 		const args = {
 			pageNumber: current,
 			pageSize,
-			userName,
-			sabaId: filterFormSabaId,
+			userName: userName ?? '',
+			sabaId: filterFormSabaId ?? '',
 			currencyIds,
 			startDate,
 			endDate,
@@ -179,7 +176,6 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				loading={loading}
 				currencyListBySite={currencyListBySite}
-				isButtonAble={isButtonAble}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}

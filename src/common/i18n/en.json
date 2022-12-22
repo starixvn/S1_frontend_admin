@@ -893,6 +893,7 @@
 	"Label_StatementTime": "Statement Time",
 	"Label_DepositCount": "Deposit Count",
 	"Label_CryptoAmount": "Crypto Amount",
+	"Label_ActualCryptoAmount": "Actual Crypto Amount",
 	"Label_Minimum": "Minimum",
 	"Label_Maximum": "Maximum",
 	"Label_BankAccountNo": "Bank Account No",

@@ -29,7 +29,6 @@ interface IVerificationReportFilterProps {
 	form: FormInstance<IFilterForm>
 	loading: boolean
 	currencyListBySite: Currency[]
-	isButtonAble: boolean
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -47,7 +46,6 @@ const VerificationReportFilter = ({
 	form,
 	loading,
 	currencyListBySite,
-	isButtonAble,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onSearch,
@@ -150,7 +148,6 @@ const VerificationReportFilter = ({
 						<Row justify='end' align='middle'>
 							<Col>
 								<Button
-									disabled={!isButtonAble}
 									loading={loading}
 									icon={<SearchOutlined />}
 									htmlType='submit'
