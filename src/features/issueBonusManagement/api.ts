@@ -67,6 +67,18 @@ export const issueBonusManagementApi = rootApi.injectEndpoints({
 				}),
 			}
 		),
+		// Batch upload bonus
+		setBonusPayoutBatch: builder.mutation<IAxiosResponse<void>[], FormData>({
+			query: data => ({
+				url: 'BonusPayout/SetBonusPayoutBatch',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -76,4 +88,5 @@ export const {
 	useLazyCheckBonusCodeQuery,
 	useLazyCheckTierRedepositBonusQuery,
 	useSetBonusPayoutMutation,
+	useSetBonusPayoutBatchMutation,
 } = issueBonusManagementApi
