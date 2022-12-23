@@ -18,6 +18,9 @@ import {
 	RELEASE_STATUS_VALUE_OPTIONS,
 } from './constants'
 
+// * custId = 0 時代表此帳號已無人使用
+const isUnused = (custId: number) => custId === 0
+
 interface IBlockBankAccountTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
@@ -96,8 +99,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						{/* // * Block 狀態不能 Release */}
-						{blockStatus !== BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK && (
+						{!isUnused(custId) && (
 							<Popconfirm
 								title={t('Label_AreYouSure')}
 								disabled={!deletePermission?.canUse}
@@ -132,8 +134,8 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: ({ status, blockStatus }: IBlockBankAccState) => {
-				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK ? (
+			render: ({ status, custId }: IBlockBankAccState) => {
+				return isUnused(custId) ? (
 					'-'
 				) : (
 					<Typography.Text>
@@ -186,8 +188,8 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			key: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: ({ createTime, blockStatus }: IBlockBankAccState) => {
-				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+			render: ({ createTime, custId }: IBlockBankAccState) => {
+				return isUnused(custId)
 					? '-'
 					: createTime &&
 							moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
