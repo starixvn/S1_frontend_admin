@@ -202,7 +202,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 					: releaseUpdateTime
 
 				return updateTime
-					? moment(updateTime).utcOffset(updateTime).format(timeFormat)
+					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: ''
 			},
 		},
