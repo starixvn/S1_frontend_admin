@@ -224,7 +224,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.depositTimeReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositTimeReport',
 		internalFunctionKey: allowedRoles.FinanceDepositTimeReport,
 		newAdminPath: paths.finance.sub.report.sub.depositTimeReport.root,
@@ -398,7 +398,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.bannerManage.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/BannerManage',
 		internalFunctionKey: allowedRoles.CMSBannerManage,
 		newAdminPath: paths.cms.sub.bannerManage.root,
@@ -487,7 +487,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.urlManagement.sub.externalDomain.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/DomainManage',
 		internalFunctionKey: allowedRoles.CMSDomainManage,
 		newAdminPath: paths.cms.sub.urlManagement.sub.externalDomain.root,
