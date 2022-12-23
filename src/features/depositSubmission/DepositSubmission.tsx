@@ -74,6 +74,7 @@ const DepositSubmission = ({ pageTitle }: IDepositSubmissionProps) => {
 			}) ?? {}
 
 		const { receipt: formReceipt } = depositForm.getFieldsValue()
+
 		const formData = new FormData()
 
 		formData.append('Detail[SiteId]', siteId.toString())
@@ -94,10 +95,8 @@ const DepositSubmission = ({ pageTitle }: IDepositSubmissionProps) => {
 			})
 		)
 		formData.append('Detail[Comment]', memo)
-		formData.append('Receipt', formReceipt[0].originFileObj as RcFile)
-
-		if (formReceipt.length === 0) {
-			message.error(t('Label_Required', { key: t('Label_Receipt') }))
+		if (formReceipt && formReceipt.length > 0) {
+			formData.append('Receipt', formReceipt[0].originFileObj as RcFile)
 		}
 		try {
 			await submitDeposit(formData).unwrap()
