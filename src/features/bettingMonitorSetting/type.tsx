@@ -47,17 +47,28 @@ export type IGetListResponse = IAxiosResponse<IGetListData[]>
 export interface ISetSettingArgs {
 	siteId: number
 	currencyId: number
-	tpId: number
-	gameType: number
-	frequency: number
-	status: number
+	before?: {
+		tpId?: number
+		gameType?: number
+		frequency?: number
+		status?: number
+	}
+	after: {
+		tpId: number
+		gameType: number
+		frequency: number
+		status: number
+	}
 }
 
 export interface IDelSettingArgs {
 	siteId: number
 	currencyId: number
-	tpId: number
-	gameType: number
+	before: {
+		tpId: number
+		gameType: number
+	}
+	after: {}
 }
 
 export interface IFilterForm {
