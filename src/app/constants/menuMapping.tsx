@@ -398,7 +398,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.bannerManage.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/BannerManage',
 		internalFunctionKey: allowedRoles.CMSBannerManage,
 		newAdminPath: paths.cms.sub.bannerManage.root,
