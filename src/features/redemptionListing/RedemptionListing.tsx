@@ -22,7 +22,7 @@ import {
 	useGetVipLevelQuery,
 	useLazyGetRedemptionListQuery,
 } from './api'
-import { IGetRedemptionListResponse, IGetVipLevelsResponse } from './type'
+import { IGetRedemptionListResponse } from './type'
 import { RedemptionListingTable } from './RedemptionListingTable'
 import { RedemptionOverviewTable } from './RedemptionOverviewTable'
 
@@ -61,7 +61,7 @@ const RedemptionListing: FC<{
 	})
 
 	const {
-		data: { data: vipLevelsList } = {} as IGetVipLevelsResponse,
+		data: { data: vipLevelsList = [] } = {},
 		isLoading: isGetVipLevelLoading,
 	} = useGetVipLevelQuery(null)
 

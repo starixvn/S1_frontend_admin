@@ -896,6 +896,7 @@
 	"Label_StatementTime": "Statement Time",
 	"Label_DepositCount": "Deposit Count",
 	"Label_CryptoAmount": "Crypto Amount",
+	"Label_ActualCryptoAmount": "Actual Crypto Amount",
 	"Label_Minimum": "Minimum",
 	"Label_Maximum": "Maximum",
 	"Label_BankAccountNo": "Bank Account No",
@@ -955,6 +956,9 @@
 	"Label_AwayHandiCap": "Away Handicap",
 	"Label_AddBlockBankAccount": "Add Block Bank Account",
 	"Label_AddBlockEWallet": "Add Block E-Wallet",
+	"Label_GasFee": "Gas Fee",
 	"Label_IpUserCount": "IP User Count",
-	"Label_GasFee": "Gas Fee"
+	"Label_PayoutType": "Payout Type",
+	"Label_BonusPayout": "Bonus Payout",
+	"Label_BatchBonusPayout": "Batch Bonus Payout"
 }

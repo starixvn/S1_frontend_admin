@@ -104,11 +104,14 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 		const args = {
 			siteId,
 			currencyId,
-			tpId,
-			gameType: tpGameType,
-			frequency,
-			// 預設新增狀態為false
-			status: StatusEnum.InActive,
+			before: {},
+			after: {
+				tpId,
+				gameType: tpGameType,
+				frequency,
+				// 預設新增狀態為false
+				status: StatusEnum.InActive,
+			},
 		}
 		try {
 			await setBettingMonitorSetting(args).unwrap()
@@ -131,8 +134,11 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 			const args = {
 				siteId,
 				currencyId,
-				tpId,
-				gameType,
+				before: {
+					tpId,
+					gameType,
+				},
+				after: {},
 			}
 			await deleteBettingMonitorSetting(args).unwrap()
 			message.success(t('System.Label_Success'))
@@ -201,17 +207,26 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 		tpId,
 		gameType,
 		status,
+		frequency,
 	}: IGetListData) => {
 		if (!siteId) return
-		const { frequency } = await editForm.validateFields()
+		const { frequency: formFrequency } = await editForm.validateFields()
 
 		const args = {
 			siteId,
 			currencyId,
-			tpId,
-			gameType,
-			frequency,
-			status,
+			before: {
+				tpId,
+				gameType,
+				frequency,
+				status,
+			},
+			after: {
+				tpId,
+				gameType,
+				frequency: formFrequency,
+				status,
+			},
 		}
 		try {
 			await setBettingMonitorSetting(args).unwrap()
@@ -233,10 +248,18 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 		const args = {
 			siteId,
 			currencyId,
-			tpId,
-			gameType,
-			frequency,
-			status: status ? StatusEnum.Active : StatusEnum.InActive,
+			before: {
+				tpId,
+				gameType,
+				frequency,
+				status: status ? StatusEnum.InActive : StatusEnum.Active,
+			},
+			after: {
+				tpId,
+				gameType,
+				frequency,
+				status: status ? StatusEnum.Active : StatusEnum.InActive,
+			},
 		}
 		try {
 			await setBettingMonitorSetting(args).unwrap()

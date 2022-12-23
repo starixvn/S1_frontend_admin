@@ -86,7 +86,12 @@ const DepositRequestDepositInfo = ({
 	const isApproved = status === DepositStatusEnum.Approved
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
-	const isOnlineBanking = depositType === DepositTypeEnum.OnlineBanking
+	const isShowPaymentInfoModalButton =
+		depositType === DepositTypeEnum.OnlineBanking ||
+		depositType === DepositTypeEnum.MobilePay ||
+		depositType === DepositTypeEnum.BankAutoChannel ||
+		depositType === DepositTypeEnum.CryptoPay ||
+		depositType === DepositTypeEnum.LoadCard
 
 	return (
 		<Spin spinning={loading}>
@@ -236,7 +241,7 @@ const DepositRequestDepositInfo = ({
 				<Descriptions.Item label={t('Label_Payment')}>
 					<Row align='middle' justify='space-between'>
 						{payName || '-'}
-						{isOnlineBanking && (
+						{isShowPaymentInfoModalButton && (
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
@@ -259,7 +264,7 @@ const DepositRequestDepositInfo = ({
 						moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_StatementTime')}>
-					{isApproved && (
+					{isLocalBank && isApproved ? (
 						<Form.Item noStyle name='statementTime'>
 							<DatePicker
 								style={{ width: 'calc(100% - 64px)' }}
@@ -267,13 +272,12 @@ const DepositRequestDepositInfo = ({
 								allowClear={false}
 							/>
 						</Form.Item>
-					)}
-
-					{!isApproved &&
+					) : (
 						statementTime &&
 						moment(statementTime)
 							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+							.format(timeFormat)
+					)}
 				</Descriptions.Item>
 			</Descriptions>
 		</Spin>

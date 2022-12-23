@@ -77,14 +77,6 @@ const DepositSubmissionUploader = ({
 						valuePropName='receipt'
 						getValueFromEvent={normFileForFormImageItem}
 						label={t('Label_Receipt')}
-						rules={[
-							{
-								required: true,
-								message: t('Label_Required', {
-									key: t('Label_Receipt'),
-								}),
-							},
-						]}
 					>
 						<Upload {...props} listType='picture-card'>
 							{formReceipt?.length >= 1 ? null : uploadButton}

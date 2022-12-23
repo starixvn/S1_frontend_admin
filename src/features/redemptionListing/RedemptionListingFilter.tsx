@@ -139,7 +139,7 @@ const RedemptionListingFilter: FC<RedemptionListingFilterInterface> = ({
 	}
 
 	useEffect(() => {
-		if (!loading && currentVipList.length > 0) {
+		if (!loading && currentVipList?.length > 0) {
 			form.setFieldsValue({
 				vipLevels: currentVipList?.map(level => level.level),
 			})
