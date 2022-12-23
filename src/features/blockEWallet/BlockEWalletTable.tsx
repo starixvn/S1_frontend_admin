@@ -84,17 +84,19 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							disabled={!deletePermission?.canUse}
-							onConfirm={() =>
-								onSetReleaseEWallet({ sysId, accountNum, custId })
-							}
-						>
-							<Typography.Link disabled={!deletePermission?.canUse}>
-								{t('Label_Release')}
-							</Typography.Link>
-						</Popconfirm>
+						{blockStatus !== BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK && (
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								disabled={!deletePermission?.canUse}
+								onConfirm={() =>
+									onSetReleaseEWallet({ sysId, accountNum, custId })
+								}
+							>
+								<Typography.Link disabled={!deletePermission?.canUse}>
+									{t('Label_Release')}
+								</Typography.Link>
+							</Popconfirm>
+						)}
 					</Space>
 				)
 			},
@@ -118,10 +120,10 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: { status: number }) => {
-				const { status } = values
-
-				return (
+			render: ({ status, blockStatus }: IBlockEWalletAccData) => {
+				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK ? (
+					'-'
+				) : (
 					<Typography.Text>
 						{status === RELEASE_STATUS_VALUE_OPTIONS.DELETE &&
 							t('Label_Delete')}
@@ -166,13 +168,12 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
-			dataIndex: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: (createTime: string) =>
-				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+			render: ({ createTime, blockStatus }: IBlockEWalletAccData) =>
+				blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+					? '-'
+					: moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_UpdateTime'),
