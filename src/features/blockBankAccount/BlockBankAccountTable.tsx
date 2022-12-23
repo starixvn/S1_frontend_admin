@@ -96,17 +96,20 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							disabled={!deletePermission?.canUse}
-							onConfirm={() =>
-								onSetReleaseAccount({ sysId, accountNum, ifscCode, custId })
-							}
-						>
-							<Typography.Link disabled={!deletePermission?.canUse}>
-								{t('Label_Release')}
-							</Typography.Link>
-						</Popconfirm>
+						{/* // * Block 狀態不能 Release */}
+						{blockStatus !== BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK && (
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								disabled={!deletePermission?.canUse}
+								onConfirm={() =>
+									onSetReleaseAccount({ sysId, accountNum, ifscCode, custId })
+								}
+							>
+								<Typography.Link disabled={!deletePermission?.canUse}>
+									{t('Label_Release')}
+								</Typography.Link>
+							</Popconfirm>
+						)}
 					</Space>
 				)
 			},
@@ -129,10 +132,10 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: { status: number }) => {
-				const { status } = values
-
-				return (
+			render: ({ status, blockStatus }: IBlockBankAccState) => {
+				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK ? (
+					'-'
+				) : (
 					<Typography.Text>
 						{status === RELEASE_STATUS_VALUE_OPTIONS.DELETE &&
 							t('Label_Delete')}
@@ -151,6 +154,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (values: { blockStatus: number }) => {
 				const { blockStatus } = values
+
 				return (
 					<Typography.Text>
 						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK &&
@@ -180,13 +184,14 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
-			dataIndex: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: (createTime: string) =>
-				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+			render: ({ createTime, blockStatus }: IBlockBankAccState) => {
+				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+					? '-'
+					: createTime &&
+							moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+			},
 		},
 		{
 			title: t('Label_UpdateTime'),
