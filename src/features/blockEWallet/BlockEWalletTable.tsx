@@ -21,6 +21,9 @@ import {
 	RELEASE_STATUS_VALUE_OPTIONS,
 } from './constants'
 
+// * custId = 0 時代表此帳號已無人使用
+const isUnused = (custId: number) => custId === 0
+
 interface IBlockEWalletTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
@@ -84,7 +87,7 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						{blockStatus !== BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK && (
+						{!isUnused(custId) && (
 							<Popconfirm
 								title={t('Label_AreYouSure')}
 								disabled={!deletePermission?.canUse}
@@ -120,8 +123,8 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: ({ status, blockStatus }: IBlockEWalletAccData) => {
-				return blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK ? (
+			render: ({ status, custId }: IBlockEWalletAccData) => {
+				return isUnused(custId) ? (
 					'-'
 				) : (
 					<Typography.Text>
@@ -170,8 +173,8 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			key: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: ({ createTime, blockStatus }: IBlockEWalletAccData) =>
-				blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK
+			render: ({ createTime, custId }: IBlockEWalletAccData) =>
+				isUnused(custId)
 					? '-'
 					: moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
