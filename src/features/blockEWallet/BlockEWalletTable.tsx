@@ -21,6 +21,9 @@ import {
 	RELEASE_STATUS_VALUE_OPTIONS,
 } from './constants'
 
+// * custId = 0 時代表此帳號已無人使用
+const isUnused = (custId: number) => custId === 0
+
 interface IBlockEWalletTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
@@ -84,17 +87,19 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							disabled={!deletePermission?.canUse}
-							onConfirm={() =>
-								onSetReleaseEWallet({ sysId, accountNum, custId })
-							}
-						>
-							<Typography.Link disabled={!deletePermission?.canUse}>
-								{t('Label_Release')}
-							</Typography.Link>
-						</Popconfirm>
+						{!isUnused(custId) && (
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								disabled={!deletePermission?.canUse}
+								onConfirm={() =>
+									onSetReleaseEWallet({ sysId, accountNum, custId })
+								}
+							>
+								<Typography.Link disabled={!deletePermission?.canUse}>
+									{t('Label_Release')}
+								</Typography.Link>
+							</Popconfirm>
+						)}
 					</Space>
 				)
 			},
@@ -118,10 +123,10 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: { status: number }) => {
-				const { status } = values
-
-				return (
+			render: ({ status, custId }: IBlockEWalletAccData) => {
+				return isUnused(custId) ? (
+					'-'
+				) : (
 					<Typography.Text>
 						{status === RELEASE_STATUS_VALUE_OPTIONS.DELETE &&
 							t('Label_Delete')}
@@ -166,13 +171,12 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
-			dataIndex: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: (createTime: string) =>
-				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+			render: ({ createTime, custId }: IBlockEWalletAccData) =>
+				isUnused(custId)
+					? '-'
+					: moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_UpdateTime'),

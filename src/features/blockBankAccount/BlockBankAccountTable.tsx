@@ -18,6 +18,9 @@ import {
 	RELEASE_STATUS_VALUE_OPTIONS,
 } from './constants'
 
+// * custId = 0 時代表此帳號已無人使用
+const isUnused = (custId: number) => custId === 0
+
 interface IBlockBankAccountTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
@@ -96,17 +99,19 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							disabled={!deletePermission?.canUse}
-							onConfirm={() =>
-								onSetReleaseAccount({ sysId, accountNum, ifscCode, custId })
-							}
-						>
-							<Typography.Link disabled={!deletePermission?.canUse}>
-								{t('Label_Release')}
-							</Typography.Link>
-						</Popconfirm>
+						{!isUnused(custId) && (
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								disabled={!deletePermission?.canUse}
+								onConfirm={() =>
+									onSetReleaseAccount({ sysId, accountNum, ifscCode, custId })
+								}
+							>
+								<Typography.Link disabled={!deletePermission?.canUse}>
+									{t('Label_Release')}
+								</Typography.Link>
+							</Popconfirm>
+						)}
 					</Space>
 				)
 			},
@@ -129,10 +134,10 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			title: t('Label_Status'),
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: { status: number }) => {
-				const { status } = values
-
-				return (
+			render: ({ status, custId }: IBlockBankAccState) => {
+				return isUnused(custId) ? (
+					'-'
+				) : (
 					<Typography.Text>
 						{status === RELEASE_STATUS_VALUE_OPTIONS.DELETE &&
 							t('Label_Delete')}
@@ -151,6 +156,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			align: 'center' as 'center',
 			render: (values: { blockStatus: number }) => {
 				const { blockStatus } = values
+
 				return (
 					<Typography.Text>
 						{blockStatus === BANK_BLOCK_STATUS_VALUE_OPTIONS.BLOCK &&
@@ -180,13 +186,14 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
-			dataIndex: 'createTime',
 			width: 140,
 			align: 'center' as 'center',
-			render: (createTime: string) =>
-				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+			render: ({ createTime, custId }: IBlockBankAccState) => {
+				return isUnused(custId)
+					? '-'
+					: createTime &&
+							moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+			},
 		},
 		{
 			title: t('Label_UpdateTime'),

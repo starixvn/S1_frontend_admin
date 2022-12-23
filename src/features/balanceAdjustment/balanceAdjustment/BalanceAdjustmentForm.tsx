@@ -35,7 +35,7 @@ interface IBalanceAdjustmentFormProps {
 }
 
 const { Option } = Select
-const xlsxMimeType =
+export const xlsxMimeType =
 	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
