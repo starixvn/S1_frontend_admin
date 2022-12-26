@@ -193,7 +193,7 @@ const MemberAdministrationList = ({
 			dateType: Number(dateType) || DateTypeEnum.All,
 			startDate,
 			endDate,
-			exportTransferWallet,
+			exportTransferWallet: Boolean(exportTransferWallet),
 		}
 
 		try {
