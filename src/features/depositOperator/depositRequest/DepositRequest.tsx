@@ -11,7 +11,7 @@ import {
 	message,
 	Modal,
 } from 'antd'
-import { find } from 'lodash'
+import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -59,12 +59,6 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm<IDepositRequestFrom>()
 	const { onCopy } = useCopy()
-	const {
-		data: { data: calCodeList = [] } = {},
-		isFetching: isGetCalCodeListFetching,
-	} = useGetCalCodeListQuery({
-		siteId,
-	})
 
 	const { depositInfo, isDepositInfoLoading, bankInfoOffList } = useDepositInfo(
 		{
@@ -78,6 +72,22 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	})
 
 	const { receiptImg, isReceiptImgLoading } = useReceiptImage({ transId })
+
+	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
+		useGetCalCodeListQuery(
+			{
+				siteId,
+			},
+			{
+				selectFromResult: ({ data: { data } = {}, isFetching }) => {
+					const filteredData = filter(
+						data,
+						({ currencyId }) => depositInfo.currencyId === currencyId
+					)
+					return { data: filteredData, isFetching }
+				},
+			}
+		)
 
 	const [getPaymentList, { isFetching: isGetPaymentListFetching }] =
 		useLazyGetPaymentListQuery()
