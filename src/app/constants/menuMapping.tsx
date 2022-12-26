@@ -647,11 +647,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 84,
+		functionId: paths.report.sub.userOnlineReport.functionId,
 		internalFunctionKey: allowedRoles.ReportUserOnlineReport,
 		pathMode: 'Internal',
 		internalPath: 'Report/UserOnlineReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.userOnlineReport.root,
 	},
 	{
 		icon: null,

@@ -958,5 +958,9 @@
 	"Label_IpUserCount": "IP User Count",
 	"Label_PayoutType": "Payout Type",
 	"Label_BonusPayout": "Bonus Payout",
-	"Label_BatchBonusPayout": "Batch Bonus Payout"
+	"Label_BatchBonusPayout": "Batch Bonus Payout",
+	"Label_LocalTime": "Local Time",
+	"Label_Desktop": "Desktop",
+	"Label_H5": "H5",
+	"Label_Old": "Old"
 }

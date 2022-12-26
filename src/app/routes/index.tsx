@@ -840,13 +840,20 @@ const VerificationReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'VerificationReport' */ 'features/verificationReport/VerificationReport'
-			)
+		)
 )
 
 const ExternalDomain = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'ExternalDomain' */ 'features/externalDomain/ExternalDomain'
+		)
+)
+
+const UserOnlineReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UserOnlineReport' */ 'features/userOnlineReport/UserOnlineReport'
 		)
 )
 
@@ -2114,6 +2121,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<ExternalDomain />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.userOnlineReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.userOnlineReport.functionId}
+					>
+						<UserOnlineReport />
 					</AuthRequire>
 				),
 			},
