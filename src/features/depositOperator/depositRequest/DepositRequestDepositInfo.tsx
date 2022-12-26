@@ -91,7 +91,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.MobilePay ||
 		depositType === DepositTypeEnum.BankAutoChannel ||
 		depositType === DepositTypeEnum.CryptoPay ||
-		depositType === DepositTypeEnum.LoadCard
+		depositType === DepositTypeEnum.LoadCard ||
+		depositType === DepositTypeEnum.QRPay
 
 	return (
 		<Spin spinning={loading}>
