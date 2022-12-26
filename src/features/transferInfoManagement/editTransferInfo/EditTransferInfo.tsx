@@ -134,90 +134,86 @@ const EditTransferInfo = () => {
 
 		const { fileList } = form.getFieldsValue(true)
 
-		if (fileList.length === 0) {
-			message.error(t('Label_Required', { key: t('Label_File') }))
-		} else {
-			const formData = new FormData()
-			// 假如 fileList 有 url 代表是編輯時帶入的已存在資源 , 則不做新增 , 沒有才做
-			if (!fileList[0].url) {
-				formData.append('UploadReceipt', fileList[0] as RcFile)
+		const formData = new FormData()
+		// 假如 fileList 有 url 代表是編輯時帶入的已存在資源 , 則不做新增 , 沒有才做
+		if (fileList.length !== 0 && !fileList[0].url) {
+			formData.append('UploadReceipt', fileList[0] as RcFile)
+		}
+		formData.append('SiteId', siteId.toString())
+		formData.append('TransferType', transferType)
+		formData.append('Reason', reason)
+		formData.append('TransactionType', transactionType)
+		formData.append('Remark', remark ?? '')
+		formData.append(
+			'TransDate',
+			utcFormatter({ date: transDate, utcOffset: timeZoneUtcOffset })
+		)
+		// 如果是編輯模式 填入 transferId
+		formData.append('TransferId', isEditing ? transferId : '')
+
+		// 僅有特定行為會有 payId or Agent 的選填 , 故若有值才送出
+		if (fromChannel) {
+			if (fromChannel === TransferChannelEnum.PSP) {
+				formData.append('FromPayId', fromPayId)
+			} else {
+				formData.append('FromAgent', fromAgent)
 			}
-			formData.append('SiteId', siteId.toString())
-			formData.append('TransferType', transferType)
-			formData.append('Reason', reason)
-			formData.append('TransactionType', transactionType)
-			formData.append('Remark', remark ?? '')
-			formData.append(
-				'TransDate',
-				utcFormatter({ date: transDate, utcOffset: timeZoneUtcOffset })
+		}
+
+		if (toChannel) {
+			if (toChannel === TransferChannelEnum.PSP) {
+				formData.append('ToPayId', toPayId)
+			} else {
+				formData.append('ToAgent', toAgent)
+			}
+		}
+
+		// Minus 只有 From Data
+		if (transactionType === TransactionTypeEnum.Minus) {
+			formData.append('FromChannel', fromChannel)
+			formData.append('FromCurrencyId', fromCurrencyId)
+			formData.append('FromAccountDisplayName', fromAccountDisplayName)
+			formData.append('FromAccountNo', fromAccountNo ?? '')
+			formData.append('FromFee', fromFee)
+			formData.append('FromAmount', fromAmount)
+			formData.append('FromSysId', fromSysId)
+		}
+		// Plus 只有 To Data
+		if (transactionType === TransactionTypeEnum.Plus) {
+			formData.append('ToChannel', toChannel)
+			formData.append('ToCurrencyId', toCurrencyId)
+			formData.append('ToAccountDisplayName', toAccountDisplayName)
+			formData.append('ToAccountNo', toAccountNo ?? '')
+			formData.append('ToAmount', toAmount)
+			formData.append('ToFee', toFee)
+			formData.append('ToSysId', toSysId)
+		}
+		// FromTo 兩者都有
+		if (transactionType === TransactionTypeEnum.FromTo) {
+			formData.append('FromChannel', fromChannel)
+			formData.append('FromCurrencyId', fromCurrencyId)
+			formData.append('FromAccountDisplayName', fromAccountDisplayName)
+			formData.append('FromAccountNo', fromAccountNo ?? '')
+			formData.append('FromFee', fromFee)
+			formData.append('FromAmount', fromAmount)
+			formData.append('FromSysId', fromSysId)
+			formData.append('ToChannel', toChannel)
+			formData.append('ToSysId', toSysId)
+			formData.append('ToCurrencyId', toCurrencyId)
+			formData.append('ToAccountDisplayName', toAccountDisplayName)
+			formData.append('ToAccountNo', toAccountNo ?? '')
+			formData.append('ToAmount', toAmount)
+			formData.append('ToFee', toFee)
+		}
+		try {
+			await setBankTransfer(formData).unwrap()
+			message.success(t('System.Label_Success'))
+			// 成功後回到前頁
+			navigate(-1)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
-			// 如果是編輯模式 填入 transferId
-			formData.append('TransferId', isEditing ? transferId : '')
-
-			// 僅有特定行為會有 payId or Agent 的選填 , 故若有值才送出
-			if (fromChannel) {
-				if (fromChannel === TransferChannelEnum.PSP) {
-					formData.append('FromPayId', fromPayId)
-				} else {
-					formData.append('FromAgent', fromAgent)
-				}
-			}
-
-			if (toChannel) {
-				if (toChannel === TransferChannelEnum.PSP) {
-					formData.append('ToPayId', toPayId)
-				} else {
-					formData.append('ToAgent', toAgent)
-				}
-			}
-
-			// Minus 只有 From Data
-			if (transactionType === TransactionTypeEnum.Minus) {
-				formData.append('FromChannel', fromChannel)
-				formData.append('FromCurrencyId', fromCurrencyId)
-				formData.append('FromAccountDisplayName', fromAccountDisplayName)
-				formData.append('FromAccountNo', fromAccountNo ?? '')
-				formData.append('FromFee', fromFee)
-				formData.append('FromAmount', fromAmount)
-				formData.append('FromSysId', fromSysId)
-			}
-			// Plus 只有 To Data
-			if (transactionType === TransactionTypeEnum.Plus) {
-				formData.append('ToChannel', toChannel)
-				formData.append('ToCurrencyId', toCurrencyId)
-				formData.append('ToAccountDisplayName', toAccountDisplayName)
-				formData.append('ToAccountNo', toAccountNo ?? '')
-				formData.append('ToAmount', toAmount)
-				formData.append('ToFee', toFee)
-				formData.append('ToSysId', toSysId)
-			}
-			// FromTo 兩者都有
-			if (transactionType === TransactionTypeEnum.FromTo) {
-				formData.append('FromChannel', fromChannel)
-				formData.append('FromCurrencyId', fromCurrencyId)
-				formData.append('FromAccountDisplayName', fromAccountDisplayName)
-				formData.append('FromAccountNo', fromAccountNo ?? '')
-				formData.append('FromFee', fromFee)
-				formData.append('FromAmount', fromAmount)
-				formData.append('FromSysId', fromSysId)
-				formData.append('ToChannel', toChannel)
-				formData.append('ToSysId', toSysId)
-				formData.append('ToCurrencyId', toCurrencyId)
-				formData.append('ToAccountDisplayName', toAccountDisplayName)
-				formData.append('ToAccountNo', toAccountNo ?? '')
-				formData.append('ToAmount', toAmount)
-				formData.append('ToFee', toFee)
-			}
-			try {
-				await setBankTransfer(formData).unwrap()
-				message.success(t('System.Label_Success'))
-				// 成功後回到前頁
-				navigate(-1)
-			} catch (error) {
-				message.error(
-					(error as Error)?.message || t('System.Label_NotExpectedServerError')
-				)
-			}
 		}
 	}
 
