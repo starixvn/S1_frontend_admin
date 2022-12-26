@@ -352,6 +352,7 @@ const paths = {
 			},
 			userOnlineReport: {
 				root: 'report/userOnlineReport',
+				functionId: 84,
 			},
 			transferInfoReport: {
 				root: 'report/transferInfoReport',

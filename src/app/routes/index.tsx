@@ -850,6 +850,13 @@ const ExternalDomain = lazy(
 		)
 )
 
+const UserOnlineReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UserOnlineReport' */ 'features/userOnlineReport/UserOnlineReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2114,6 +2121,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<ExternalDomain />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.userOnlineReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.userOnlineReport.functionId}
+					>
+						<UserOnlineReport />
 					</AuthRequire>
 				),
 			},
