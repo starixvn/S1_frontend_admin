@@ -240,7 +240,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.paymentAdjustment.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentAdjustmentReport',
 		internalFunctionKey: allowedRoles.FinanceAdjustmentReport,
 		newAdminPath: paths.finance.sub.report.sub.paymentAdjustment.root,
