@@ -768,6 +768,7 @@ const BannerManagement = lazy(
 			/* webpackChunkName: 'BannerManagement' */ 'features/bannerManagement/BannerManagement'
 		)
 )
+
 const DepositTimeReport = lazy(
 	() =>
 		import(
@@ -854,6 +855,13 @@ const UserOnlineReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'UserOnlineReport' */ 'features/userOnlineReport/UserOnlineReport'
+		)
+)
+
+const WithdrawalTimeReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalTimeReport' */ 'features/withdrawalTimeReport/WithdrawalTimeReport'
 		)
 )
 
@@ -2131,6 +2139,18 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.userOnlineReport.functionId}
 					>
 						<UserOnlineReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.report.sub.withdrawalTimeReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.report.sub.withdrawalTimeReport.functionId
+						}
+					>
+						<WithdrawalTimeReport />
 					</AuthRequire>
 				),
 			},

@@ -44,6 +44,7 @@ export type EnumNameType =
 	| 'DepositTimeStatusEnum'
 	| 'AppTypeEnum'
 	| 'SelectDepositStatusEnum'
+	| 'WithdrawalTimeStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -79,6 +80,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DepositTimeStatusEnum - 取得存款時間狀態列表
 	 * @argument {string}  AppTypeEnum - 取得行動裝置種類
 	 * @argument {string}  SelectDepositStatusEnum -
+	 * @argument {string}  WithdrawalTimeStatusEnum - 取得提款時間狀態列表
 	 */
 	enumName: EnumNameType
 }

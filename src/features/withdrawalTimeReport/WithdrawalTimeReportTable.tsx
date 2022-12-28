@@ -1,0 +1,176 @@
+import moment from 'moment'
+import { useTranslation } from 'react-i18next'
+import { TablePaginationConfig, Typography } from 'antd'
+import { Table } from 'components'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { LayoutContent } from 'app/pages/layout'
+import paths from 'app/constants/paths'
+import { PaginationInterface } from 'common/hooks'
+import { timeFormat } from 'common/utils/format'
+import { IWithdrawalTimeReportData } from 'features/withdrawalTimeReport/type'
+
+interface IWithdrawalTimeReportTableProps {
+	loading: boolean
+	pagination: PaginationInterface
+	timeZoneUtcOffset: number
+	withdrawalTimeReport: IWithdrawalTimeReportData[]
+	handleTableChange: (newPagination: TablePaginationConfig) => void
+}
+
+const WithdrawalTimeReportTable = ({
+	loading,
+	pagination,
+	timeZoneUtcOffset,
+	withdrawalTimeReport,
+	handleTableChange,
+}: IWithdrawalTimeReportTableProps) => {
+	const { t } = useTranslation()
+
+	const columns = [
+		{
+			title: t('Label_Currency'),
+			key: 'isoCode',
+			dataIndex: 'isoCode',
+			width: 60,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_WithdrawalId'),
+			key: 'withdrawalId',
+			dataIndex: 'withdrawalId',
+			width: 60,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_WithdrawalType'),
+			key: 'withdrawalTypeName',
+			dataIndex: 'withdrawalTypeName',
+			width: 60,
+			align: 'center' as 'center',
+			render: (typeName: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+					{typeName}
+				</Typography.Text>
+			),
+		},
+		{
+			title: t('Label_MemberId'),
+			key: 'memberId',
+			width: 60,
+			align: 'center' as 'center',
+			render: (record: IWithdrawalTimeReportData) => {
+				const { userName, custId } = record
+				return (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				)
+			},
+		},
+		{
+			title: t('Label_Status'),
+			key: 'statusName',
+			dataIndex: 'statusName',
+			width: 60,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Operator'),
+			key: 'operator',
+			dataIndex: 'operator',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_CreateTime'),
+			key: 'createTime',
+			dataIndex: 'createTime',
+			align: 'center' as 'center',
+			render: (createTime: string) => (
+				<div style={{ width: '180px' }}>
+					{createTime ? (
+						<Typography.Text>
+							{moment(createTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format(timeFormat)}
+						</Typography.Text>
+					) : (
+						''
+					)}
+				</div>
+			),
+		},
+		{
+			title: t('Label_UpdateTime'),
+			key: 'updateTime',
+			dataIndex: 'updateTime',
+			align: 'center' as 'center',
+			render: (updateTime: string) => (
+				<div style={{ width: '180px' }}>
+					{updateTime ? (
+						<Typography.Text>
+							{moment(updateTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format(timeFormat)}
+						</Typography.Text>
+					) : (
+						''
+					)}
+				</div>
+			),
+		},
+		{
+			title: t('Label_FlowEndTime'),
+			key: 'approvedTime',
+			dataIndex: 'approvedTime',
+			align: 'center' as 'center',
+			render: (approvedTime: string) => (
+				<div style={{ width: '180px' }}>
+					{approvedTime ? (
+						<Typography.Text>
+							{moment(approvedTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format(timeFormat)}
+						</Typography.Text>
+					) : (
+						''
+					)}
+				</div>
+			),
+		},
+		{
+			title: t('Label_ToVerifyTime'),
+			key: 'toVerifyTime',
+			dataIndex: 'toVerifyTime',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_ToApprovedTime'),
+			key: 'toApprovedTime',
+			dataIndex: 'toApprovedTime',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_CompletedTime'),
+			key: 'completeTime',
+			dataIndex: 'completeTime',
+			align: 'center' as 'center',
+		},
+	]
+
+	return (
+		<LayoutContent.Card>
+			<Table
+				columns={columns}
+				loading={loading}
+				dataSource={withdrawalTimeReport ?? []}
+				pagination={pagination as TablePaginationConfig}
+				onChange={handleTableChange}
+			/>
+		</LayoutContent.Card>
+	)
+}
+
+export { WithdrawalTimeReportTable }
