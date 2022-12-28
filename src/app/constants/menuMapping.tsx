@@ -232,7 +232,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.report.sub.withdrawalTimeReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalTimeReport',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalTimeReport,
 		newAdminPath: paths.finance.sub.report.sub.withdrawalTimeReport.root,
