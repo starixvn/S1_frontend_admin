@@ -231,11 +231,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 35,
+		functionId: paths.finance.sub.report.sub.withdrawalTimeReport.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalTimeReport',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalTimeReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.withdrawalTimeReport.root,
 	},
 	{
 		icon: null,
