@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
 	useGetDepositCommentsByTransIdQuery,
+	useGetDepositInfoByTransIdQuery,
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,
 	useSetDepositStatusMutation,
@@ -27,6 +28,8 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { useAuth, useCopy } from 'common/hooks'
 import {
+	GET_BANK_INFO_OFF_LIST_ARGS,
+	useGetBankInfoOffListQuery,
 	useGetCalCodeListQuery,
 	useLazyGetPaymentListQuery,
 } from 'common/service/baseDataApi'
@@ -37,8 +40,8 @@ import {
 	ISetDepositStatusArgs,
 	ISetAmountByTransIdArgs,
 	IDepositRequestFrom,
+	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import useDepositInfo from 'features/depositOperator/depositRequest/hooks/useDepositInfo'
 import useReceiptImage from 'features/depositOperator/depositRequest/hooks/useReceiptImage'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
 import DepositRequestComments from 'features/depositOperator/depositRequest/DepositRequestComments'
@@ -60,12 +63,22 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [form] = Form.useForm<IDepositRequestFrom>()
 	const { onCopy } = useCopy()
 
-	const { depositInfo, isDepositInfoLoading, bankInfoOffList } = useDepositInfo(
-		{
-			siteId,
-			transId,
-		}
-	)
+	const {
+		data: { data: depositInfo = {} as IDepositOperatorData } = {},
+		isFetching: isDepositInfoLoading,
+	} = useGetDepositInfoByTransIdQuery({ transId })
+
+	const { data: { data: bankInfoOffList = [] } = {} } =
+		useGetBankInfoOffListQuery(
+			{
+				siteId,
+				currencyId: depositInfo.currencyId,
+				purpose: GET_BANK_INFO_OFF_LIST_ARGS.PURPOSE.DEPOSIT,
+			},
+			{
+				skip: !depositInfo.currencyId,
+			}
+		)
 
 	const { memberInfo, isMemberInfoLoading } = useMemberInfo({
 		custId: depositInfo?.custId,
