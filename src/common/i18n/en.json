@@ -962,5 +962,7 @@
 	"Label_LocalTime": "Local Time",
 	"Label_Desktop": "Desktop",
 	"Label_H5": "H5",
-	"Label_Old": "Old"
+	"Label_Old": "Old",
+	"Label_ToVerifyTime": "To Verify Time",
+	"Label_ToApprovedTime": "To Approved Time"
 }

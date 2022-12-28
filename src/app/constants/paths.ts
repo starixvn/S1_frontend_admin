@@ -261,6 +261,10 @@ const paths = {
 						root: 'finance/report/DepositTimeReport',
 						functionId: 34,
 					},
+					withdrawalTimeReport: {
+						root: 'finance/report/WithdrawalTimeReport',
+						functionId: 35,
+					},
 					paymentAdjustment: {
 						root: 'finance/report/paymentAdjustment',
 						functionId: 36,
