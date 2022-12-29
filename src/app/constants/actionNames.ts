@@ -67,4 +67,5 @@ export const ACTION_NAMES: {
 	69: 'verifiedPermission',
 	70: 'processPermission',
 	71: 'toKycPermission',
+	73: 'sendMessagePermission',
 }

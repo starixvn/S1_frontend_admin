@@ -110,8 +110,8 @@ export interface IDepositOperatorData {
 	siteName: string | null
 	bankId: number
 	depositInfo: IDepositInfo
-	amount: 150000.0
-	actualDeposit: 150000.0
+	amount: number
+	actualDeposit: number
 	comment: string | null
 	createTime: string | null
 	oDepositInfo: IODepositInfo
@@ -233,5 +233,7 @@ export interface ISendDepositReasonMessageArgs {
 	siteId: number
 	currencyId: number
 	transId: string
+	action: number
+	actualDeposit: number
 	after: { depositId: number; status: number }
 }
