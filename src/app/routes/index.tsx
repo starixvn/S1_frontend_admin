@@ -865,6 +865,13 @@ const WithdrawalTimeReport = lazy(
 		)
 )
 
+const HotGameManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotGameManagement' */ 'features/hotGameManagement/HotGameManagement'
+		)
+)
+
 const DepositPaymentReport = lazy(
 	() =>
 		import(
@@ -2185,6 +2192,14 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.withdrawalPaymentReport.functionId}
 					>
 						<WithdrawalPaymentReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotGameManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotGameManagement.functionId}>
+						<HotGameManagement />
 					</AuthRequire>
 				),
 			},

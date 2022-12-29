@@ -643,6 +643,10 @@ const paths = {
 				root: 'cms/hotEventManagement',
 				functionId: 56,
 			},
+			hotGameManagement: {
+				root: 'cms/hotGameManagement',
+				functionId: 95,
+			},
 			bannerManage: {
 				root: 'cms/bannerManage',
 				functionId: 55,
