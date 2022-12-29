@@ -17,16 +17,25 @@ export enum ActionModeEnum {
 	GoToBonus,
 	OpenWindow,
 	RedirectPage,
-	RedirectPagesOfThisSite,
+	GoToLobby,
 }
 
-// 因對應api返回小駝峰字串,固這邊enum皆為小駝峰
+// 因對應api返回小駝峰字串,故這邊enum皆為小駝峰
 export enum UrlRouterEnum {
-	sports = 1,
+	eSport = 1,
 	'live-casino',
 	liveCasino = 2,
 	referral,
 	leaderBoard,
 	angPow,
 	lottery,
+	slots,
+	casino = 7,
+	game,
+	games = 8,
+	fishing,
+	promotion,
+	vip,
+	deposit,
+	rewards,
 }
