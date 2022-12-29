@@ -959,10 +959,20 @@
 	"Label_PayoutType": "Payout Type",
 	"Label_BonusPayout": "Bonus Payout",
 	"Label_BatchBonusPayout": "Batch Bonus Payout",
+	"Label_PayType": "Pay Type",
 	"Label_LocalTime": "Local Time",
 	"Label_Desktop": "Desktop",
 	"Label_H5": "H5",
-	"Label_Old": "Old",
 	"Label_ToVerifyTime": "To Verify Time",
-	"Label_ToApprovedTime": "To Approved Time"
+	"Label_ToApprovedTime": "To Approved Time",
+	"Label_Old": "Old",
+	"Label_TotalDepositCount": "Total Deposit Count",
+	"Label_TotalDepositAmount": "Total Deposit Amount",
+	"Label_AverageDepositTime": "Average Deposit Amount",
+	"Label_FirstDepositCount": "FTD Count",
+	"Label_AverageProcessingTime": "Average Processing Time",
+	"Label_TotalWithdrawalCount": "Total Withdrawal Count",
+	"Label_TotalWithdrawalAmount": "Total Withdrawal Amount",
+	"Label_AverageWithdrawalTime": "Average Withdrawal Amount",
+	"Label_GroupBy": "Group By"
 }

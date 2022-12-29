@@ -865,6 +865,20 @@ const WithdrawalTimeReport = lazy(
 		)
 )
 
+const DepositPaymentReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositPaymentReport' */ 'features/depositPaymentReport/DepositPaymentReport'
+		)
+)
+
+const WithdrawalPaymentReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalPaymentReport' */ 'features/withdrawalPaymentReport/WithdrawalPaymentReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2151,6 +2165,26 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalTimeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.depositPaymentReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.depositPaymentReport.functionId}
+					>
+						<DepositPaymentReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.withdrawalPaymentReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.withdrawalPaymentReport.functionId}
+					>
+						<WithdrawalPaymentReport />
 					</AuthRequire>
 				),
 			},
