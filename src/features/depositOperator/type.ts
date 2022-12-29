@@ -89,7 +89,10 @@ export interface IDepositFrom {
 }
 
 export interface IODepositInfo {
-	[key: string]: string | number
+	channelId?: number
+	currencyId?: number
+	payId?: number
+	ver?: number
 }
 
 export interface IDepositOperatorData {
@@ -107,11 +110,10 @@ export interface IDepositOperatorData {
 	siteName: string | null
 	bankId: number
 	depositInfo: IDepositInfo
-	amount: 150000.0
-	actualDeposit: 150000.0
+	amount: number
+	actualDeposit: number
 	comment: string | null
 	createTime: string | null
-	// * 這頁目前沒有用到，後端邏輯裡 oDepositInfo 只會顯示 depositType:1, 2, 3, 的資料
 	oDepositInfo: IODepositInfo
 	firstDeposit: number
 	status: number
@@ -141,6 +143,8 @@ export interface IDepositOperatorData {
 	operator: string | null
 	agent: string | null
 	depositFrom: IDepositFrom
+	fromBankCode: string
+	fromBankName: string
 }
 
 export interface IForm {
@@ -229,5 +233,7 @@ export interface ISendDepositReasonMessageArgs {
 	siteId: number
 	currencyId: number
 	transId: string
+	action: number
+	actualDeposit: number
 	after: { depositId: number; status: number }
 }

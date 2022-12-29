@@ -31,6 +31,7 @@ const DepositRequestOperatorButtonGroup = ({
 			onHoldPermission,
 			pendingPermission,
 			rejectPermission,
+			sendMessagePermission,
 		} = {},
 	} = useAuth()
 	return (
@@ -51,6 +52,7 @@ const DepositRequestOperatorButtonGroup = ({
 			<Col span={6}>
 				<OperatorButton
 					loading={loading}
+					disabled={!sendMessagePermission?.canUse}
 					onClick={onShowSendMessageModal}
 					color='Blue'
 				>

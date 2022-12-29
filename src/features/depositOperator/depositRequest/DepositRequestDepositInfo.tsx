@@ -70,8 +70,9 @@ const DepositRequestDepositInfo = ({
 		flowEndTime,
 		updateTime,
 		statementTime,
-		depositFrom,
-		depositInfo,
+		fromBankCode,
+		fromBankName,
+		oDepositInfo,
 	},
 	calCodeList,
 	onCopy,
@@ -175,10 +176,10 @@ const DepositRequestDepositInfo = ({
 				{isLocalBank && (
 					<>
 						<Descriptions.Item label={t('Label_FromBankCard')}>
-							{depositFrom?.accountName || '-'}
+							{fromBankCode || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_FromBankName')}>
-							{depositFrom?.bankName || '-'}
+							{fromBankName || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ToBankCode')}>
 							{bankCode || '-'}
@@ -246,7 +247,7 @@ const DepositRequestDepositInfo = ({
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
-								onClick={() => onOpenPaymentInfoModal(depositInfo.payId)}
+								onClick={() => onOpenPaymentInfoModal(oDepositInfo?.payId)}
 							>
 								<InfoCircleOutlined style={{ fontSize: '18px' }} />
 							</Button>
