@@ -413,11 +413,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 95,
+		functionId: paths.cms.sub.hotGameManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/HotGamesManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.hotGameManagement.root,
 	},
 
 	{
