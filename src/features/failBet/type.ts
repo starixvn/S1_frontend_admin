@@ -1,0 +1,35 @@
+export interface IGetFailRecordListArgs {
+	siteIds: (number | undefined)[]
+	currencyIds: number[]
+	tpIds: number[]
+	startTime: string
+	endTime: string
+	userName: string | null
+	transId: string | null
+	pageSize: number
+	pageNumber: number
+}
+
+export type IExportFailBetRecordArgs = Omit<
+	IGetFailRecordListArgs,
+	'pageNumber' | 'pageSize'
+>
+
+export interface IGetTpIdData {
+	id: number
+	tpName: string
+}
+
+export interface IGetFailRecordReportData {
+	id: number
+	transId: string
+	tpId: number
+	tpName: string
+	siteId: number
+	siteName: string
+	userName: string
+	currencyId: number
+	currencyName: string
+	transTime: string
+	info: string
+}

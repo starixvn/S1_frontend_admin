@@ -62,6 +62,7 @@ const paths = {
 			},
 			tpFailRecordReport: {
 				root: 'csd/tpFailRecordReport',
+				functionId: 61,
 			},
 			personalMsgBatch: {
 				root: 'csd/personalMsgBatch',

@@ -467,11 +467,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 61,
-		pathMode: 'Internal',
+		functionId: paths.csd.sub.tpFailRecordReport.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/TpFailRecordReport',
 		internalFunctionKey: allowedRoles.CustManageTpFailRecordReport,
-		newAdminPath: '',
+		newAdminPath: paths.csd.sub.tpFailRecordReport.root,
 	},
 	{
 		icon: null,
