@@ -400,6 +400,14 @@ const paths = {
 				root: 'report/verificationReport',
 				functionId: 76,
 			},
+			depositPaymentReport: {
+				root: 'report/depositPaymentReport',
+				functionId: 81,
+			},
+			withdrawalPaymentReport: {
+				root: 'report/withdrawalPaymentReport',
+				functionId: 136,
+			},
 		},
 	},
 	member: {

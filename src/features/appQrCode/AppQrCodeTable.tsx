@@ -10,8 +10,8 @@ import {
 	IGetProtocolTypeEnumData,
 } from 'features/appQrCode/type'
 import moment from 'moment'
-import { timeFormat } from 'common/utils/format'
 import { PermissionInterface } from 'type'
+import { timeFormat } from 'common/utils/format'
 
 interface IAppQrCodeTableProps {
 	loading: boolean

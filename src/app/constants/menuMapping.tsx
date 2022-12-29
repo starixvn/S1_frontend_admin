@@ -623,11 +623,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Deposit Report',
 		icon: null,
-		functionId: 81,
+		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
 		pathMode: 'Internal',
 		internalPath: 'Report/DepositReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
 	{
 		icon: null,
@@ -877,5 +877,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.gameStatisticalReport.functionId,
 		pathMode: 'Internal',
 		newAdminPath: paths.report.sub.gameStatisticalReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
 ]
