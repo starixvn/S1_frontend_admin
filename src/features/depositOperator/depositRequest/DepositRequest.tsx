@@ -105,6 +105,8 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			currencyId: depositInfo.currencyId,
 			transId: depositInfo.transId,
 			depositId: depositInfo.depositId,
+			actualDeposit: depositInfo.actualDeposit,
+			depositType: depositInfo.depositType,
 		},
 	})
 
