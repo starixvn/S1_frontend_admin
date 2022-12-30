@@ -143,7 +143,7 @@ export interface IDepositOperatorData {
 	operator: string | null
 	agent: string | null
 	depositFrom: IDepositFrom
-	formAccountNo: string
+	fromAccountNo: string
 	fromBankCode: string
 	fromBankName: string
 }
