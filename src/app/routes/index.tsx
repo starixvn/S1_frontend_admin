@@ -851,6 +851,13 @@ const ExternalDomain = lazy(
 		)
 )
 
+const ShieldTaggingReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ShieldTaggingReport' */ 'features/shieldTaggingReport/ShieldTaggingReport'
+		)
+)
+
 const UserOnlineReport = lazy(
 	() =>
 		import(
@@ -2200,6 +2207,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.cms.sub.hotGameManagement.functionId}>
 						<HotGameManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.shieldTaggingReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.member.sub.shieldTaggingReport.functionId}
+					>
+						<ShieldTaggingReport />
 					</AuthRequire>
 				),
 			},
