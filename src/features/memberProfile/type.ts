@@ -322,8 +322,10 @@ export enum SettingEditTypeEnum {
 }
 
 export enum LockAccountTypeEnum {
-	UnLock = 1,
-	Lock,
+	Running = 1,
+	Suspend,
+	Closed,
+	Locked,
 }
 
 export enum SettingSwitchTypeEnum {
