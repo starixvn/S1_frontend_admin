@@ -51,7 +51,8 @@ const SettingRiskCard = ({
 	const lockAccountButton = () => {
 		return (
 			<>
-				{status === LockAccountTypeEnum.Lock && (
+				{(status === LockAccountTypeEnum.Suspend ||
+					status === LockAccountTypeEnum.Locked) && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
@@ -64,7 +65,7 @@ const SettingRiskCard = ({
 					</p>
 				)}
 
-				{status === LockAccountTypeEnum.UnLock && (
+				{status === LockAccountTypeEnum.Running && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
@@ -77,6 +78,7 @@ const SettingRiskCard = ({
 			</>
 		)
 	}
+
 	return (
 		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Risk')} style={{ height: '100%' }}>
