@@ -70,8 +70,8 @@ const DepositRequestDepositInfo = ({
 		flowEndTime,
 		updateTime,
 		statementTime,
-		fromBankCode,
 		fromBankName,
+		formAccountNo,
 		oDepositInfo,
 	},
 	calCodeList,
@@ -175,8 +175,8 @@ const DepositRequestDepositInfo = ({
 
 				{isLocalBank && (
 					<>
-						<Descriptions.Item label={t('Label_FromBankCard')}>
-							{fromBankCode || '-'}
+						<Descriptions.Item label={t('Label_FromAccountNo')}>
+							{formAccountNo || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_FromBankName')}>
 							{fromBankName || '-'}
