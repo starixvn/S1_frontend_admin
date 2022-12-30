@@ -899,7 +899,7 @@
 	"Label_BankAccountNo": "Bank Account No",
 	"Label_DepositInfo": "Deposit Info",
 	"Label_RequestAmount": "Request Amount",
-	"Label_FromAccountNo": "From Bank No",
+	"Label_FromAccountNo": "From Account No",
 	"Label_FromBankName": "From Bank Name",
 	"Label_ToBankCode": "To Bank Code",
 	"Label_ToBankName": "To Bank Name",
