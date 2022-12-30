@@ -5,9 +5,14 @@ import moment from 'moment'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
-import { PAGINATION, useAuth, usePagination } from 'common/hooks'
+import {
+	PAGINATION,
+	useAuth,
+	usePagination,
+	useQueryParams,
+} from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectUserSite } from 'common/enum'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 
@@ -17,15 +22,19 @@ import {
 	useExportFailRecordReportMutation,
 } from 'features/failBet/api'
 
-import { filterForm } from 'features/failBet/type'
+import { IFilterForm } from 'features/failBet/type'
 import download from 'downloadjs'
+import { useEffect } from 'react'
+import { isEmpty } from 'lodash'
 
 const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [form] = Form.useForm<filterForm>()
+	const [form] = Form.useForm<IFilterForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const [queryParams, setQueryParams] = useQueryParams()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const {
 		data: { data: tpIdList = [] } = {},
@@ -77,7 +86,15 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				...args,
 			}).unwrap()
-
+			setQueryParams({
+				siteIds: [siteId],
+				startTime,
+				endTime,
+				timeZone: timeZoneUtcOffset,
+				pageNumber: current,
+				pageSize,
+				...args,
+			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -121,6 +138,53 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const loading = isGetFailRecordReportFetching || isGetTpIdListFetching
 
+	useEffect(() => {
+		if (!loading) {
+			form.setFieldsValue({
+				currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
+				tpIds: tpIdList?.map(({ id }) => id),
+			})
+		}
+	}, [loading])
+
+	useEffect(() => {
+		// init
+		const init = () => {
+			const {
+				currencyIds,
+				startTime,
+				endTime,
+				pageNumber,
+				pageSize,
+				tpIds,
+				userName,
+				transId,
+				timeZone,
+			} = queryParams
+			onTimeZoneChange(Number(timeZone))
+			form.setFieldsValue({
+				dateRange: [moment(startTime), moment(endTime)],
+				currencyIds: currencyIds
+					? currencyIds?.map((values: string) => Number(values))
+					: currencyListBySite?.map(({ currencyId }) => currencyId),
+				tpIds: tpIds
+					? tpIds?.map((values: string) => Number(values))
+					: tpIdList?.map(({ id }) => id),
+				userName,
+				transId,
+			})
+
+			handleSearch({
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
+			})
+		}
+
+		if (!isEmpty(queryParams)) {
+			init()
+		}
+	}, [])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -132,13 +196,14 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
-
-			<FailBetTable
-				loading={loading}
-				pagination={pagination}
-				failRecordReportList={failRecordReportList}
-				onTableChange={handleTableChange}
-			/>
+			{!isEmpty(queryParams) && (
+				<FailBetTable
+					loading={loading}
+					pagination={pagination}
+					failRecordReportList={failRecordReportList}
+					onTableChange={handleTableChange}
+				/>
+			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

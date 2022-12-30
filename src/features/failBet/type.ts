@@ -1,3 +1,5 @@
+import { Moment } from 'moment'
+
 export interface IGetFailRecordListArgs {
 	siteIds: (number | undefined)[]
 	currencyIds: number[]
@@ -32,4 +34,12 @@ export interface IGetFailRecordReportData {
 	currencyName: string
 	transTime: string
 	info: string
+}
+
+export interface IFilterForm {
+	currencyIds: number[]
+	tpIds: number[]
+	dateRange: [Moment, Moment]
+	userName: string
+	transId: string
 }

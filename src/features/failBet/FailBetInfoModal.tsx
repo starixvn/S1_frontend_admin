@@ -5,14 +5,14 @@ interface IFailBetInfoModalProps {
 	loading: boolean
 	visible: boolean
 	onCancel: () => void
-	failBetInfoList: string
+	FailBetInfoDetail: string
 }
 
 const FailBetInfoModal = ({
 	loading,
 	visible,
 	onCancel,
-	failBetInfoList,
+	FailBetInfoDetail,
 }: IFailBetInfoModalProps) => {
 	return (
 		<Modal
@@ -25,7 +25,7 @@ const FailBetInfoModal = ({
 			<Typography.Text>
 				<ReactJson
 					style={{ wordBreak: 'break-word' }}
-					src={JSON.parse(failBetInfoList)}
+					src={JSON.parse(FailBetInfoDetail)}
 					displayDataTypes={false}
 				/>
 			</Typography.Text>

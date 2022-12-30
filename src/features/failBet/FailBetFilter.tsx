@@ -20,14 +20,14 @@ import { SearchOutlined } from '@ant-design/icons'
 import { MultipleSelect } from 'components/Select'
 import { selectCurrencyListBySite } from 'common/enum'
 import { useAppSelector } from 'app/store'
-import { filterForm, IGetTpIdData } from 'features/failBet/type'
+import { IFilterForm, IGetTpIdData } from 'features/failBet/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
 
 interface FailBetFilterProps {
-	form: FormInstance<filterForm>
+	form: FormInstance<IFilterForm>
 	loading: boolean
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void

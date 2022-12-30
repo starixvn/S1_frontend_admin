@@ -1,8 +1,8 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { Spin, TablePaginationConfig } from 'antd'
+import { TablePaginationConfig, Button } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import React from 'react'
+import React, { useState } from 'react'
 import { IGetFailRecordReportData } from 'features/failBet/type'
 import { PaginationInterface, useModal } from 'common/hooks'
 import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
@@ -23,6 +23,13 @@ const FailBetTable = ({
 }: FailBetTableProps) => {
 	const { t } = useTranslation()
 	const failBetInfoModal = useModal()
+	const [infoDetail, setInfoDetail] = useState<string>('{}')
+
+	const handleInfoModal = async (info: string) => {
+		if (!isJSON(info)) return
+		await setInfoDetail(info)
+		await failBetInfoModal.onOpen()
+	}
 
 	const columns = [
 		{
@@ -63,33 +70,37 @@ const FailBetTable = ({
 		{
 			title: t('Label_Info'),
 			key: 'info',
-			align: 'center' as 'center',
 			render: (Record: IGetFailRecordReportData) => {
-				return isJSON(JSON.parse(Record.info)) ? (
-					<FailBetInfoModal
-						loading={loading}
-						onCancel={failBetInfoModal.onCancel}
-						visible={failBetInfoModal.visible}
-						failBetInfoList={Record.info}
-					/>
+				const { info } = Record
+				return isJSON(info) ? (
+					<Button type='primary' onClick={() => handleInfoModal(info)}>
+						Detail
+					</Button>
 				) : null
 			},
+			align: 'center' as 'center',
 		},
 	]
 
 	return (
-		<Spin spinning={loading}>
-			<LayoutContent.Card>
-				<Table
-					loading={loading}
-					columns={columns}
-					dataSource={failRecordReportList ?? []}
-					pagination={pagination as TablePaginationConfig}
-					size='middle'
-					onChange={onTableChange}
-				/>
-			</LayoutContent.Card>
-		</Spin>
+		<LayoutContent.Card>
+			<Table
+				loading={loading}
+				columns={columns}
+				dataSource={failRecordReportList ?? []}
+				pagination={pagination as TablePaginationConfig}
+				size='middle'
+				rowKey='id'
+				onChange={onTableChange}
+			/>
+
+			<FailBetInfoModal
+				loading={loading}
+				onCancel={failBetInfoModal.onCancel}
+				visible={failBetInfoModal.visible}
+				FailBetInfoDetail={infoDetail}
+			/>
+		</LayoutContent.Card>
 	)
 }
 
