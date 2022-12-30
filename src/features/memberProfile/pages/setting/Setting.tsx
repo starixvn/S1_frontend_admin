@@ -273,7 +273,7 @@ const Setting = () => {
 				case SettingEditTypeEnum.LockAccount: {
 					await lockAccount({
 						custId,
-						status: LockAccountTypeEnum.Lock,
+						status: LockAccountTypeEnum.Suspend,
 						reason,
 					}).unwrap()
 					break
@@ -281,7 +281,7 @@ const Setting = () => {
 				case SettingEditTypeEnum.UnLockAccount: {
 					await lockAccount({
 						custId,
-						status: LockAccountTypeEnum.UnLock,
+						status: LockAccountTypeEnum.Running,
 						reason,
 					}).unwrap()
 					break
