@@ -884,4 +884,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'Internal',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.member.sub.shieldTaggingReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
 ]

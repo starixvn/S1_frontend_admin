@@ -425,6 +425,10 @@ const paths = {
 				root: 'member/betLimit',
 				functionId: 63,
 			},
+			shieldTaggingReport: {
+				root: 'member/shieldTaggingReport',
+				functionId: 137,
+			},
 		},
 	},
 	risk: {
