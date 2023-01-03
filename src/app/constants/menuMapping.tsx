@@ -96,13 +96,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.customerSupport.sub.memberAdministrationList.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.customerSupport.sub.memberAdministrationList.root,
 	},
 	{
 		icon: null,
 		functionId: paths.member.sub.tagManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/TagManagement',
 		internalFunctionKey: allowedRoles.CustManageTagManagement,
 		newAdminPath: paths.member.sub.tagManagement.root,
@@ -414,7 +414,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.hotGameManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/HotGamesManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
 		newAdminPath: paths.cms.sub.hotGameManagement.root,
@@ -625,7 +625,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
@@ -881,13 +881,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
 	{
 		icon: null,
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
 	},
 ]
