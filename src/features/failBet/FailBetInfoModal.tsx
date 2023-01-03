@@ -5,14 +5,14 @@ interface IFailBetInfoModalProps {
 	loading: boolean
 	visible: boolean
 	onCancel: () => void
-	FailBetInfoDetail: string
+	infoDetailModal: object
 }
 
 const FailBetInfoModal = ({
 	loading,
 	visible,
 	onCancel,
-	FailBetInfoDetail,
+	infoDetailModal,
 }: IFailBetInfoModalProps) => {
 	return (
 		<Modal
@@ -26,7 +26,7 @@ const FailBetInfoModal = ({
 				{/* ReactJson 套件貌似無法處理客製化正負數字顏色 */}
 				<ReactJson
 					style={{ wordBreak: 'break-word' }}
-					src={JSON.parse(FailBetInfoDetail)}
+					src={infoDetailModal}
 					displayDataTypes={false}
 				/>
 			</Typography.Text>

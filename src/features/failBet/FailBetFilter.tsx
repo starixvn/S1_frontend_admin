@@ -158,7 +158,6 @@ const FailBetFilter = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												showTime
 											/>
 										</Form.Item>
 										<div>

@@ -1,7 +1,7 @@
 import { Moment } from 'moment'
 
 export interface IGetFailRecordListArgs {
-	siteIds: (number | undefined)[]
+	siteIds: number[]
 	currencyIds: number[]
 	tpIds: number[]
 	startTime: string

@@ -1,35 +1,31 @@
-import { useState } from 'react'
+import moment from 'moment/moment'
 import { Table } from 'components'
 import { isJSON } from 'common/utils'
+import { timeFormat } from 'common/utils/format'
+import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { TablePaginationConfig, Typography } from 'antd'
-import { PaginationInterface, useModal } from 'common/hooks'
 import { IGetFailRecordReportData } from 'features/failBet/type'
-import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
 
 interface FailBetTableProps {
 	loading: boolean
 	pagination: PaginationInterface
+	timeZoneUtcOffset: number
 	failRecordReportList: IGetFailRecordReportData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	onChangeInfoModal: (info: string) => void
 }
 
 const FailBetTable = ({
 	loading,
 	pagination,
+	timeZoneUtcOffset,
 	failRecordReportList,
 	onTableChange,
+	onChangeInfoModal,
 }: FailBetTableProps) => {
 	const { t } = useTranslation()
-	const failBetInfoModal = useModal()
-	const [infoDetail, setInfoDetail] = useState<string>('{}')
-
-	const handleInfoModal = async (info: string) => {
-		if (!isJSON(info)) return
-		await setInfoDetail(info)
-		await failBetInfoModal.onOpen()
-	}
 
 	const columns = [
 		{
@@ -51,7 +47,10 @@ const FailBetTable = ({
 			key: 'transTime',
 			dataIndex: 'transTime',
 			align: 'center' as 'center',
-			render: (transTime: string) => transTime || '-',
+			render: (transTime: string) =>
+				transTime
+					? moment(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					: '',
 		},
 		{
 			title: t('Label_Vender'),
@@ -73,7 +72,7 @@ const FailBetTable = ({
 			render: (Record: IGetFailRecordReportData) => {
 				const { info } = Record
 				return isJSON(info) ? (
-					<Typography.Link onClick={() => handleInfoModal(info)}>
+					<Typography.Link onClick={() => onChangeInfoModal(info)}>
 						{t('Label_Detail')}
 					</Typography.Link>
 				) : (
@@ -89,17 +88,9 @@ const FailBetTable = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={failRecordReportList ?? []}
+				dataSource={failRecordReportList}
 				pagination={pagination as TablePaginationConfig}
-				rowKey='id'
 				onChange={onTableChange}
-			/>
-
-			<FailBetInfoModal
-				loading={loading}
-				onCancel={failBetInfoModal.onCancel}
-				visible={failBetInfoModal.visible}
-				FailBetInfoDetail={infoDetail}
 			/>
 		</LayoutContent.Card>
 	)

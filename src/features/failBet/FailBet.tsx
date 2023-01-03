@@ -1,18 +1,19 @@
 import moment from 'moment'
 import download from 'downloadjs'
-import { useEffect } from 'react'
 import { isEmpty } from 'lodash'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
-import { dateRangeToUtcFormatter } from 'common/utils'
+import { dateRangeToUtcFormatter, isJSON } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
+	useModal,
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
@@ -24,6 +25,7 @@ import {
 import { IFilterForm } from 'features/failBet/type'
 import FailBetFilter from 'features/failBet/FailBetFilter'
 import FailBetTable from 'features/failBet/FailBetTable'
+import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
 
 const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -33,6 +35,8 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const failBetInfoModal = useModal()
+	const [infoDetailModal, setInfoDetailModal] = useState<object>({})
 
 	const {
 		data: { data: tpIdList = [] } = {},
@@ -59,6 +63,13 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 		paginationTotal,
 	})
 
+	// 存取 FailBet 的 info 欄位判斷是否為 json檔 並在Modal渲染
+	const handleInfoModal = (info: string) => {
+		if (!isJSON(info)) return
+		setInfoDetailModal(JSON.parse(info))
+		failBetInfoModal.onOpen()
+	}
+
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
@@ -71,7 +82,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 		const { dateRange, ...args } = await form.validateFields()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 
@@ -102,18 +113,20 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, ...args } = await form.validateFields()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
+		if (!siteId) return
+
+		const { currencyIds, startTime, endTime, tpIds, userName, transId } =
+			queryParams
 
 		try {
 			const blob = await exportFailRecordReport({
 				siteIds: [siteId],
 				startTime,
 				endTime,
-				...args,
+				currencyIds: currencyIds?.map((values: string) => Number(values)),
+				tpIds: tpIds?.map((values: string) => Number(values)),
+				userName,
+				transId,
 			}).unwrap()
 			download(
 				blob,
@@ -198,16 +211,25 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 				<FailBetTable
 					loading={loading}
 					pagination={pagination}
+					timeZoneUtcOffset={timeZoneUtcOffset}
 					failRecordReportList={failRecordReportList}
 					onTableChange={handleTableChange}
+					onChangeInfoModal={handleInfoModal}
 				/>
 			)}
+
+			<FailBetInfoModal
+				loading={loading}
+				onCancel={failBetInfoModal.onCancel}
+				visible={failBetInfoModal.visible}
+				infoDetailModal={infoDetailModal}
+			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
 					loading={isExportFailRecordReportLoading}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 				/>
 			</AffixButtons>
