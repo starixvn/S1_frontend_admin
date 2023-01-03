@@ -138,12 +138,12 @@ const IssueBonusManagement: FC<{
 
 	const handleUploadBonus = async (file: RcFile) => {
 		if (!siteId || !batchBonusCodeInfo) return
-		const { bonusCode, bonusType, bonus } = batchBonusCodeInfo
+		const { bonusCode, promotionType, bonus } = batchBonusCodeInfo
 		const formData = new FormData()
 		formData.append('ExcelAdd', file)
 		formData.append('SiteId', String(siteId))
 		formData.append('BonusCode', bonusCode)
-		formData.append('PromotionType', String(bonusType))
+		formData.append('PromotionType', String(promotionType))
 		formData.append('Amount', String(bonus))
 
 		try {
