@@ -1,4 +1,5 @@
 import { assign, filter, includes } from 'lodash'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from '../rootApi/api'
 import {
 	IBankInfoSysData,
@@ -8,6 +9,8 @@ import {
 	IGetProductsResponse,
 	IGetPromotionTypeResponse,
 	IVipLevelsResponse,
+	IGateWayData,
+	IGateWayArgs,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -74,6 +77,14 @@ export const allDataApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
+		// 這裡有帶 siteId
+		getGateWay: builder.query<IAxiosResponse<IGateWayData[]>, IGateWayArgs>({
+			query: data => ({
+				url: 'GetAllData/GetPayList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -93,4 +104,5 @@ export const {
 	useGetProductsQuery,
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
+	useGetGateWayQuery,
 } = allDataApi

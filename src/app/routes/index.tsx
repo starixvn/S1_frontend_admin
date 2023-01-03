@@ -851,6 +851,20 @@ const ExternalDomain = lazy(
 		)
 )
 
+const ShieldTaggingReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ShieldTaggingReport' */ 'features/shieldTaggingReport/ShieldTaggingReport'
+		)
+)
+
+const TagManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TagManagement' */ 'features/tagManagement/TagManagement'
+		)
+)
+
 const UserOnlineReport = lazy(
 	() =>
 		import(
@@ -862,6 +876,27 @@ const WithdrawalTimeReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'WithdrawalTimeReport' */ 'features/withdrawalTimeReport/WithdrawalTimeReport'
+		)
+)
+
+const HotGameManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HotGameManagement' */ 'features/hotGameManagement/HotGameManagement'
+		)
+)
+
+const DepositPaymentReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositPaymentReport' */ 'features/depositPaymentReport/DepositPaymentReport'
+		)
+)
+
+const WithdrawalPaymentReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalPaymentReport' */ 'features/withdrawalPaymentReport/WithdrawalPaymentReport'
 		)
 )
 
@@ -2151,6 +2186,60 @@ const routes: RouteObject[] = [
 						}
 					>
 						<WithdrawalTimeReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.tagManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
+						<TagManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.depositPaymentReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.depositPaymentReport.functionId}
+					>
+						<DepositPaymentReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.withdrawalPaymentReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.withdrawalPaymentReport.functionId}
+					>
+						<WithdrawalPaymentReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.hotGameManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.hotGameManagement.functionId}>
+						<HotGameManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.shieldTaggingReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.member.sub.shieldTaggingReport.functionId}
+					>
+						<ShieldTaggingReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.tagManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
+						<TagManagement />
 					</AuthRequire>
 				),
 			},

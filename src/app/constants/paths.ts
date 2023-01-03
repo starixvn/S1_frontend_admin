@@ -400,6 +400,14 @@ const paths = {
 				root: 'report/verificationReport',
 				functionId: 76,
 			},
+			depositPaymentReport: {
+				root: 'report/depositPaymentReport',
+				functionId: 81,
+			},
+			withdrawalPaymentReport: {
+				root: 'report/withdrawalPaymentReport',
+				functionId: 136,
+			},
 		},
 	},
 	member: {
@@ -409,6 +417,10 @@ const paths = {
 				root: 'member/blockewallet',
 				functionId: 118,
 			},
+			tagManagement: {
+				root: 'member/tagManagement',
+				functionId: 26,
+			},
 			gameExclusion: {
 				root: 'member/gameExclusion',
 				functionId: 62,
@@ -416,6 +428,10 @@ const paths = {
 			betLimit: {
 				root: 'member/betLimit',
 				functionId: 63,
+			},
+			shieldTaggingReport: {
+				root: 'member/shieldTaggingReport',
+				functionId: 137,
 			},
 		},
 	},
@@ -634,6 +650,10 @@ const paths = {
 			hotEventManagement: {
 				root: 'cms/hotEventManagement',
 				functionId: 56,
+			},
+			hotGameManagement: {
+				root: 'cms/hotGameManagement',
+				functionId: 95,
 			},
 			bannerManage: {
 				root: 'cms/bannerManage',
