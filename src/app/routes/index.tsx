@@ -858,6 +858,13 @@ const ShieldTaggingReport = lazy(
 		)
 )
 
+const TagManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'TagManagement' */ 'features/tagManagement/TagManagement'
+		)
+)
+
 const UserOnlineReport = lazy(
 	() =>
 		import(
@@ -2183,6 +2190,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.tagManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
+						<TagManagement />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.depositPaymentReport.root}`,
 				element: (
 					<AuthRequire
@@ -2217,6 +2232,14 @@ const routes: RouteObject[] = [
 						functionId={paths.member.sub.shieldTaggingReport.functionId}
 					>
 						<ShieldTaggingReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.tagManagement.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
+						<TagManagement />
 					</AuthRequire>
 				),
 			},

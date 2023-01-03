@@ -96,16 +96,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.customerSupport.sub.memberAdministrationList.functionId,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		newAdminPath: paths.customerSupport.sub.memberAdministrationList.root,
 	},
 	{
 		icon: null,
-		functionId: 26,
+		functionId: paths.member.sub.tagManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/TagManagement',
 		internalFunctionKey: allowedRoles.CustManageTagManagement,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.tagManagement.root,
 	},
 	{
 		icon: null,

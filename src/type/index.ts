@@ -89,6 +89,7 @@ export interface ActionPermissions {
 	processPermission: PermissionInterface
 	toKycPermission: PermissionInterface
 	sendMessagePermission: PermissionInterface
+	addEditPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
