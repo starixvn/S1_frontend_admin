@@ -941,9 +941,10 @@
 	"Label_AddDomain": "Add Domain",
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
+	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
+	"Label_AddTag": "Add Tag",
 	"Label_RunningBonus": "Running Bonus",
 	"Label_DeviceAssociateCount": "Device Associate Count",
-	"Label_CryptoSettingMSG": "Status Open then Member can add that Crypto Wallet",
 	"Label_TicketStatus": "Ticket Status",
 	"Label_HandiCap": "Handicap",
 	"Label_LeagueName": "League Name",
@@ -977,7 +978,6 @@
 	"Label_HotGamesInfo": "Hot Games Info",
 	"Label_Url": "Url",
 	"Label_HotGamePcPicUrl": "HotGame Pc Pic Url",
-	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
 	"Label_GroupBy": "Group By",
 	"Label_ToApprovedTime": "To Approved Time",
 	"Label_Old": "Old",
@@ -987,5 +987,7 @@
 	"Label_TriggeredPoint": "Triggered point",
 	"Label_TaggedIssue": "Tagged issue",
 	"Label_Tagged": "Tagged",
-	"Label_NoOfTagged": "No. of tagged"
+	"Label_NoOfTagged": "No. of tagged",
+	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
+	"Label_SelectStatus": "Select Status"
 }

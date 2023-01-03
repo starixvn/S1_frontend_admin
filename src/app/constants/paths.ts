@@ -417,6 +417,10 @@ const paths = {
 				root: 'member/blockewallet',
 				functionId: 118,
 			},
+			tagManagement: {
+				root: 'member/tagManagement',
+				functionId: 26,
+			},
 			gameExclusion: {
 				root: 'member/gameExclusion',
 				functionId: 62,
