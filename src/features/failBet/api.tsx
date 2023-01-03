@@ -4,18 +4,11 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetFailRecordListArgs,
 	IExportFailBetRecordArgs,
-	IGetTpIdData,
 	IGetFailRecordReportData,
 } from 'features/failBet/type'
 
 export const failBetApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getTpIdList: builder.query<IAxiosResponse<IGetTpIdData[]>, null>({
-			query: () => ({
-				url: 'GetAllData/GetTpList',
-				method: 'POST',
-			}),
-		}),
 		getFailRecordReport: builder.query<
 			IAxiosResponse<IGetFailRecordReportData[]>,
 			IGetFailRecordListArgs
@@ -38,7 +31,6 @@ export const failBetApi = rootApi.injectEndpoints({
 })
 
 export const {
-	useGetTpIdListQuery,
 	useLazyGetFailRecordReportQuery,
 	useExportFailRecordReportMutation,
 } = failBetApi

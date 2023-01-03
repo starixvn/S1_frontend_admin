@@ -23,6 +23,7 @@ const FailBetInfoModal = ({
 			width='50vw'
 		>
 			<Typography.Text>
+				{/* ReactJson 套件貌似無法處理客製化正負數字顏色 */}
 				<ReactJson
 					style={{ wordBreak: 'break-word' }}
 					src={JSON.parse(FailBetInfoDetail)}

@@ -1,3 +1,17 @@
+import moment from 'moment/moment'
+import { useTranslation } from 'react-i18next'
+import { useAppSelector } from 'app/store'
+import { LayoutContent } from 'app/pages/layout'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
+import TimeZoneSelect from 'components/TimeZoneSelect'
+import { MultipleSelect } from 'components/Select'
+import { selectCurrencyListBySite } from 'common/enum'
+import { FormInstance } from 'antd/es/form/Form'
+import { SearchOutlined } from '@ant-design/icons'
+import { RangePickerProps } from 'antd/es/date-picker'
 import {
 	Button,
 	Col,
@@ -8,23 +22,8 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
-import { FormInstance } from 'antd/es/form/Form'
-import { useTranslation } from 'react-i18next'
-import TimeZoneSelect from 'components/TimeZoneSelect'
-import { SearchOutlined } from '@ant-design/icons'
-import { MultipleSelect } from 'components/Select'
-import { selectCurrencyListBySite } from 'common/enum'
-import { useAppSelector } from 'app/store'
-import { IFilterForm, IGetTpIdData } from 'features/failBet/type'
-
-const { Panel } = Collapse
-const { RangePicker } = DatePicker
-const { Option } = Select
+import { IGetTpIdData } from 'common/service/allDataApi'
+import { IFilterForm } from 'features/failBet/type'
 
 interface FailBetFilterProps {
 	form: FormInstance<IFilterForm>
@@ -42,6 +41,10 @@ interface FailBetFilterProps {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 }
+
+const { Panel } = Collapse
+const { RangePicker } = DatePicker
+const { Option } = Select
 
 const FailBetFilter = ({
 	form,
@@ -115,6 +118,12 @@ const FailBetFilter = ({
 		)
 	}
 
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		return (
+			current > moment().endOf('day') || current < moment().subtract(30, 'day')
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key={1}>
@@ -143,6 +152,7 @@ const FailBetFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
+												disabledDate={disabledDate}
 												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Last 7 Day',

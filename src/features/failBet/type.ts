@@ -17,11 +17,6 @@ export type IExportFailBetRecordArgs = Omit<
 	'pageNumber' | 'pageSize'
 >
 
-export interface IGetTpIdData {
-	id: number
-	tpName: string
-}
-
 export interface IGetFailRecordReportData {
 	id: number
 	transId: string

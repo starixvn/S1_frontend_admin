@@ -1,12 +1,12 @@
+import { useState } from 'react'
 import { Table } from 'components'
-import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Button } from 'antd'
-import { LayoutContent } from 'app/pages/layout'
-import React, { useState } from 'react'
-import { IGetFailRecordReportData } from 'features/failBet/type'
-import { PaginationInterface, useModal } from 'common/hooks'
-import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
 import { isJSON } from 'common/utils'
+import { useTranslation } from 'react-i18next'
+import { LayoutContent } from 'app/pages/layout'
+import { TablePaginationConfig, Typography } from 'antd'
+import { PaginationInterface, useModal } from 'common/hooks'
+import { IGetFailRecordReportData } from 'features/failBet/type'
+import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
 
 interface FailBetTableProps {
 	loading: boolean
@@ -73,10 +73,12 @@ const FailBetTable = ({
 			render: (Record: IGetFailRecordReportData) => {
 				const { info } = Record
 				return isJSON(info) ? (
-					<Button type='primary' onClick={() => handleInfoModal(info)}>
-						Detail
-					</Button>
-				) : null
+					<Typography.Link onClick={() => handleInfoModal(info)}>
+						{t('Label_Detail')}
+					</Typography.Link>
+				) : (
+					'-'
+				)
 			},
 			align: 'center' as 'center',
 		},
@@ -89,7 +91,6 @@ const FailBetTable = ({
 				columns={columns}
 				dataSource={failRecordReportList ?? []}
 				pagination={pagination as TablePaginationConfig}
-				size='middle'
 				rowKey='id'
 				onChange={onTableChange}
 			/>

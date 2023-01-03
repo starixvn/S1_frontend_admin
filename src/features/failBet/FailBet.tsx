@@ -1,37 +1,35 @@
-import FailBetFilter from 'features/failBet/FailBetFilter'
-import FailBetTable from 'features/failBet/FailBetTable'
-import { Form, message, TablePaginationConfig } from 'antd'
 import moment from 'moment'
-import { dateRangeToUtcFormatter } from 'common/utils'
-import { useTranslation } from 'react-i18next'
+import download from 'downloadjs'
+import { useEffect } from 'react'
+import { isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
+import { LayoutContent } from 'app/pages/layout'
+import { useTranslation } from 'react-i18next'
+import { Form, message, TablePaginationConfig } from 'antd'
+import { dateRangeToUtcFormatter } from 'common/utils'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { AffixButtons } from 'components/AffixButtons'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-import { LayoutContent } from 'app/pages/layout'
-import { AffixButtons } from 'components/AffixButtons'
-
+import { useGetTpIdListQuery } from 'common/service/allDataApi'
 import {
-	useGetTpIdListQuery,
 	useLazyGetFailRecordReportQuery,
 	useExportFailRecordReportMutation,
 } from 'features/failBet/api'
-
 import { IFilterForm } from 'features/failBet/type'
-import download from 'downloadjs'
-import { useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import FailBetFilter from 'features/failBet/FailBetFilter'
+import FailBetTable from 'features/failBet/FailBetTable'
 
 const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
+	const [form] = Form.useForm<IFilterForm>()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [form] = Form.useForm<IFilterForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
@@ -73,7 +71,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 		const { dateRange, ...args } = await form.validateFields()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			dateRange,
 			currentTimeZoneUtcOffset
 		)
 
@@ -106,7 +104,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleExport = async () => {
 		const { dateRange, ...args } = await form.validateFields()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			dateRange,
 			timeZoneUtcOffset
 		)
 
