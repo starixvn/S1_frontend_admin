@@ -123,14 +123,14 @@ const WithdrawalTimeReportTable = ({
 		},
 		{
 			title: t('Label_FlowEndTime'),
-			key: 'approvedTime',
-			dataIndex: 'approvedTime',
+			key: 'flowEndTime',
+			dataIndex: 'flowEndTime',
 			align: 'center' as 'center',
-			render: (approvedTime: string) => (
+			render: (flowEndTime: string) => (
 				<div style={{ width: '180px' }}>
-					{approvedTime ? (
+					{flowEndTime ? (
 						<Typography.Text>
-							{moment(approvedTime)
+							{moment(flowEndTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
