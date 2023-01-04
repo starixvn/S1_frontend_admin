@@ -2,8 +2,8 @@ import { filter, find, includes } from 'lodash'
 import { useState } from 'react'
 import { MenuInterface } from 'type'
 
-export const makeMenuKey = (name: string, moduleId: number | undefined) =>
-	`${name.replace(/ /g, '')}-${moduleId}`
+export const makeMenuKey = (name: string, id: number | undefined | null) =>
+	`${name.replace(/ /g, '')}-${id}`
 
 const makeRootSubmenuKeys = (menuList: MenuInterface[]) => {
 	const menuKeys: Array<{ moduleId: number; key: string }> = []
@@ -34,24 +34,18 @@ const makeRootSubmenuKeys = (menuList: MenuInterface[]) => {
 }
 
 export const useMenuAction = ({
-	mediaMdMatches,
-	onCloseCollapsed,
 	userMenuList,
 }: {
-	mediaMdMatches: boolean
-	onCloseCollapsed: () => void
 	userMenuList: MenuInterface[]
 }) => {
 	const [openKeys, setOpenKeys] = useState<string[]>([])
 	const rootSubmenuKeys = makeRootSubmenuKeys(userMenuList)
 
-	const handleClickMenuItem = () => {
-		if (!mediaMdMatches) {
-			onCloseCollapsed()
-		}
+	const onChangeOpenKeys = (newOpenKeys: string[]) => {
+		setOpenKeys(newOpenKeys)
 	}
 
-	const handleToggleMenu = (key: string, moduleId: number | undefined) => {
+	const onToggleMenu = (key: string, moduleId: number | undefined) => {
 		const menuKeyArray =
 			find(rootSubmenuKeys, { moduleId })?.key.split('.') ?? []
 		if (includes(openKeys, key)) {
@@ -61,5 +55,5 @@ export const useMenuAction = ({
 		}
 	}
 
-	return { openKeys, handleClickMenuItem, handleToggleMenu }
+	return { openKeys, onChangeOpenKeys, onToggleMenu }
 }
