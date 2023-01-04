@@ -362,11 +362,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 50,
+		functionId: paths.member.sub.vipReview.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/VipLevelReview',
 		internalFunctionKey: allowedRoles.MarketingVipLevelReview,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.vipReview.root,
 	},
 	{
 		icon: null,

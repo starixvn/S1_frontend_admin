@@ -907,6 +907,11 @@ const SmsGenerator = lazy(
 		)
 )
 
+const VipReview = lazy(
+	() =>
+		import(/* webpackChunkName: 'VipReview' */ 'features/vipReview/VipReview')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2260,6 +2265,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.vipReview.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.vipReview.functionId}>
+						<VipReview />
 					</AuthRequire>
 				),
 			},
