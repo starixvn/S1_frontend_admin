@@ -19,14 +19,12 @@ import {
 } from 'features/withdrawalOperator/constants'
 import { Link } from 'react-router-dom'
 import { VIP_LEVELS_COLOR } from 'features/depositOperator/constants'
-import { PermissionInterface } from 'type'
 
 interface IWithdrawalOperatorTableProps {
 	loading: boolean
 	withdrawalList: IGetWithdrawalData[]
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
-	editPermission?: PermissionInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
 }
 const WithdrawalOperatorTable = ({
@@ -34,7 +32,6 @@ const WithdrawalOperatorTable = ({
 	withdrawalList,
 	timeZoneUtcOffset,
 	pagination,
-	editPermission,
 	onTableChange,
 }: IWithdrawalOperatorTableProps) => {
 	const { t } = useTranslation()
@@ -48,8 +45,7 @@ const WithdrawalOperatorTable = ({
 			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (transId: string) =>
-				editPermission?.canUse ? <Link to={transId}>{transId}</Link> : transId,
+			render: (transId: string) => <Link to={transId}>{transId}</Link>,
 		},
 		{
 			title: t('Label_Operator'),

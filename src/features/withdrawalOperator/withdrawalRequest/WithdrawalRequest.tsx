@@ -39,7 +39,7 @@ import {
 	WithdrawalTypeEnum,
 } from 'features/withdrawalOperator/constants'
 import { useEffect, useState } from 'react'
-import { useModal } from 'common/hooks'
+import { useAuth, useModal } from 'common/hooks'
 import { PayInfoModal } from 'features/withdrawalOperator/withdrawalRequest/components/PayInfoModal'
 import { hashPayInfo } from 'features/withdrawalOperator/utils'
 import { multiEqual } from 'common/utils'
@@ -60,6 +60,7 @@ const WithdrawalRequest = () => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
 	const navigate = useNavigate()
 	const payInfoModal = useModal()
@@ -555,6 +556,7 @@ const WithdrawalRequest = () => {
 						}}
 						colon={false}
 						layout='vertical'
+						disabled={!editPermission?.canUse}
 					>
 						<Row gutter={16}>
 							<Col xl={10} lg={24} md={24} xs={24}>
@@ -580,6 +582,7 @@ const WithdrawalRequest = () => {
 											loading={updateReceiptLoading}
 											form={form}
 											status={currentStatus}
+											editPermission={editPermission}
 											onUploadImage={handleUploadImage}
 											onDeleteImage={handleDeleteImage}
 										/>
@@ -603,6 +606,7 @@ const WithdrawalRequest = () => {
 											form={form}
 											status={currentStatus}
 											localBankList={localBankList}
+											editPermission={editPermission}
 											onPayInfoClicked={handlePayInfoClicked}
 											amount={amount}
 										/>
@@ -622,16 +626,21 @@ const WithdrawalRequest = () => {
 									)}
 							</Col>
 						</Row>
-						<WithdrawalRequestComment
-							withdrawalCommentData={withdrawalCommentData}
-							timeZoneUtcOffset={timeZoneUtcOffset}
-						/>
-						<WithdrawalRequestButtonGroup
-							loading={loading}
-							usableActionButton={usableActionButton}
-							onSetWithdrawalRequest={handleSetWithdrawalRequest}
-							onSetManualOperator={handleManualOperator}
-						/>
+
+						{editPermission?.canUse && (
+							<WithdrawalRequestComment
+								withdrawalCommentData={withdrawalCommentData}
+								timeZoneUtcOffset={timeZoneUtcOffset}
+							/>
+						)}
+						{editPermission?.canUse && (
+							<WithdrawalRequestButtonGroup
+								loading={loading}
+								usableActionButton={usableActionButton}
+								onSetWithdrawalRequest={handleSetWithdrawalRequest}
+								onSetManualOperator={handleManualOperator}
+							/>
+						)}
 					</Form>
 					<PayInfoModal
 						visible={payInfoModal.visible}
