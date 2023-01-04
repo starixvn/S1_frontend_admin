@@ -22,6 +22,7 @@ import IssueBonusManagementSearchForm from 'features/issueBonusManagement/IssueB
 import { RcFile } from 'antd/lib/upload'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { BatchLogTable } from 'features/issueBonusManagement/batchBonusComponents/BatchLogTable'
+import { useAuth } from 'common/hooks'
 
 const IssueBonusManagement: FC<{
 	pageTitle?: string
@@ -30,6 +31,9 @@ const IssueBonusManagement: FC<{
 	const [isShowInfoForm, setIsShowInfoForm] = useState<boolean>(false)
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
+	const { actionPermissions: { addBatchPermission, addPermission } = {} } =
+		useAuth()
 
 	// 提高資料在前端渲染時的可控性，這裡把資料接出來自己控制
 	const [batchLog, setBatchLog] = useState<IAxiosResponse<void>[]>([])
@@ -180,6 +184,8 @@ const IssueBonusManagement: FC<{
 				loading={isCheckBonusCodeFetching}
 				form={batchForm}
 				currencyListBySite={currencyListBySite}
+				addPermission={addPermission}
+				addBatchPermission={addBatchPermission}
 				batchBonusCodeInfo={batchBonusCodeInfo}
 				onUploadBonus={handleUploadBonus}
 				onCheckBatchBonusCode={handleCheckBatchBonusCode}
