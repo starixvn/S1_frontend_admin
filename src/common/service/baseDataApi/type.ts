@@ -92,3 +92,16 @@ export interface IPaymentData {
 	transferPin: string
 	loginPin: string
 }
+
+// GetGameIdByTpIdAndCategoryId
+export interface IGetGameListArgs {
+	tpId: number
+	categoryId: number
+}
+
+export interface IGameList {
+	gameCasinoId: number
+	tpId: number
+	gameId: string
+	name: string
+}

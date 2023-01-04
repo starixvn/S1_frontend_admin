@@ -44,6 +44,12 @@ export type EnumNameType =
 	| 'DepositTimeStatusEnum'
 	| 'AppTypeEnum'
 	| 'SelectDepositStatusEnum'
+	| 'WithdrawalTimeStatusEnum'
+	| 'ShieldPlatform'
+	| 'TriggeredPoints'
+	| 'ShieldRiskTagged'
+	| 'TaggedIssue'
+	| 'PaymentReportGroupByEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -79,6 +85,12 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DepositTimeStatusEnum - 取得存款時間狀態列表
 	 * @argument {string}  AppTypeEnum - 取得行動裝置種類
 	 * @argument {string}  SelectDepositStatusEnum -
+	 * @argument {string}  WithdrawalTimeStatusEnum - 取得提款時間狀態列表
+	 * @argument {string}  PaymentReportGroupByEnum - 取得提 GroupBy 狀態列表
+	 * @argument {string}  ShieldPlatform - 取得 Shield 平台裝置種類
+	 * @argument {string}  TriggeredPoints - 取得 TriggerPoints 列表
+	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
+	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
 	 */
 	enumName: EnumNameType
 }

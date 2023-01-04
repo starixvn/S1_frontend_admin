@@ -202,7 +202,7 @@ const BannerModal = ({
 					],
 					startTime: formStartTime,
 					tpId:
-						actionMode === ActionModeEnum.RedirectPagesOfThisSite
+						actionMode === ActionModeEnum.GoToLobby
 							? formFilterTpId
 							: formTpId ?? null,
 					urlRouter: formUrlRouter,

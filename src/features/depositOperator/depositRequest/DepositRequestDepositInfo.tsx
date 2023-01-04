@@ -70,8 +70,9 @@ const DepositRequestDepositInfo = ({
 		flowEndTime,
 		updateTime,
 		statementTime,
-		depositFrom,
-		depositInfo,
+		fromBankName,
+		fromAccountNo,
+		oDepositInfo,
 	},
 	calCodeList,
 	onCopy,
@@ -91,7 +92,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.MobilePay ||
 		depositType === DepositTypeEnum.BankAutoChannel ||
 		depositType === DepositTypeEnum.CryptoPay ||
-		depositType === DepositTypeEnum.LoadCard
+		depositType === DepositTypeEnum.LoadCard ||
+		depositType === DepositTypeEnum.QRPay
 
 	return (
 		<Spin spinning={loading}>
@@ -173,11 +175,11 @@ const DepositRequestDepositInfo = ({
 
 				{isLocalBank && (
 					<>
-						<Descriptions.Item label={t('Label_FromBankCard')}>
-							{depositFrom?.accountName || '-'}
+						<Descriptions.Item label={t('Label_FromAccountNo')}>
+							{fromAccountNo || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_FromBankName')}>
-							{depositFrom?.bankName || '-'}
+							{fromBankName || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ToBankCode')}>
 							{bankCode || '-'}
@@ -245,7 +247,7 @@ const DepositRequestDepositInfo = ({
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
-								onClick={() => onOpenPaymentInfoModal(depositInfo.payId)}
+								onClick={() => onOpenPaymentInfoModal(oDepositInfo?.payId)}
 							>
 								<InfoCircleOutlined style={{ fontSize: '18px' }} />
 							</Button>
