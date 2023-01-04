@@ -41,7 +41,7 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 		const newActionPermissions = getActionPermissions(
 			menuFunctionData?.permission ?? []
 		)
-
+		console.log(newActionPermissions)
 		setActionPermissions(newActionPermissions)
 	}, [menuFunctionData?.functionId])
 
