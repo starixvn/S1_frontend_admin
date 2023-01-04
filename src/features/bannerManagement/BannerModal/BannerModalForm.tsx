@@ -26,6 +26,7 @@ import BannerModalTabs from 'features/bannerManagement/BannerModal/BannerModalTa
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
 import {
+	CategoryIdEnum,
 	IAddForm,
 	IGetTpBySiteAndCurrencyResponse,
 	IGetTpCategoryByTpIdResponse,
@@ -99,7 +100,7 @@ const BannerModalForm = ({
 		isLoading: isGetFilterTpListLoading,
 	} = useGetTpListByCategoryQuery(
 		{
-			categoryId: urlRouter,
+			categoryId: CategoryIdEnum.Casino,
 		},
 		{
 			skip: !urlRouter || !(UrlRouterEnum.slots === Number(urlRouter)),
