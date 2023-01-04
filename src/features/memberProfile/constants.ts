@@ -33,8 +33,8 @@ export const statusList: Array<{ value: number; displayName: string }> = [
 
 export enum AdjustTypeEnum {
 	All,
-	Debit,
 	Credit,
+	Debit,
 	IncreaseBonus,
 	ReduceBonus,
 }
