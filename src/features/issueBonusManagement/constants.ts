@@ -19,10 +19,7 @@ export enum PayoutTypeEnum {
 	BatchBonusPayout,
 }
 
-export const payoutTypeList = [
-	{ key: PayoutTypeEnum.BonusPayout, displayName: 'Label_BonusPayout' },
-	{
-		key: PayoutTypeEnum.BatchBonusPayout,
-		displayName: 'Label_BatchBonusPayout',
-	},
-]
+export const payoutTypeList = {
+	[PayoutTypeEnum.BonusPayout]: 'Label_BonusPayout',
+	[PayoutTypeEnum.BatchBonusPayout]: 'Label_BatchBonusPayout',
+}
