@@ -56,6 +56,8 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const type = Form.useWatch('type', filterForm)
+	const { dateRange1: filterDateRange1, dateRange2: filterDateRange2 } =
+		filterForm.getFieldsValue()
 	const {
 		data: { data: vipStatusList } = {} as IEnumTypeResponse,
 		isFetching: isGetVipStatusListLoading,
@@ -354,7 +356,8 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 			{!isEmpty(queryParams) &&
 				(type === VipTypeEnum.Upgrade
 					? upgradeList.length > 0
-					: downgradeList.length > 0) && (
+					: downgradeList.length > 0) &&
+				(filterDateRange1 || filterDateRange2) && (
 					<VipReviewTable
 						loading={loading}
 						vipReviewList={

@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment'
 
-type RangesTypes = 'Today' | 'Last 7 Day' | 'This Month' | 'Last 3 Month'
+type RangesTypes = 'Today' | 'Last 7 Day' | 'This Month'
 
 type RangesType = Record<
 	string,
@@ -16,10 +16,6 @@ export const MOMENT_DATE_RANGES: {
 		moment().endOf('day'),
 	],
 	'This Month': [moment().startOf('month'), moment().endOf('month')],
-	'Last 3 Month': [
-		moment().subtract(3, 'month').startOf('month'),
-		moment().subtract(1, 'month').endOf('month'),
-	],
 }
 
 export const MOMENT_RANGE_PICKER_RANGES = (rangesTypes: RangesTypes[]) => {
