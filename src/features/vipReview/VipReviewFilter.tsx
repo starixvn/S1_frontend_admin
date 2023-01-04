@@ -18,6 +18,7 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { VipTypeEnum, vipTypeList } from 'features/vipReview/constants'
 import { useTranslation } from 'react-i18next'
+import { MOMENT_DATE_RANGES } from 'app/constants/moment'
 
 interface IVipReviewFilterProps {
 	form: FormInstance<IFilterForm>
@@ -211,6 +212,7 @@ const VipReviewFilter = ({
 											<Form.Item
 												noStyle
 												name='dateRange2'
+												initialValue={MOMENT_DATE_RANGES['Last 3 Month']}
 												rules={[
 													{
 														required: true,

@@ -286,50 +286,56 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) return
-			const {
-				type: queryType,
-				calculateYearMonth = '',
-				currencyIds = [],
-				status: statuses = [],
-				userName,
-				timeZone,
-				pageNumber,
-				pageSize,
-			} = queryParams
-			onTimeZoneChange(Number(timeZone))
+			if (isEmpty(queryParams)) {
+				filterForm.setFieldsValue({
+					status: vipStatusList?.map(({ value }) => value),
+					dateRange1: moment().subtract(1, 'month').endOf('month'),
+				})
+			} else {
+				const {
+					type: queryType,
+					calculateYearMonth = '',
+					currencyIds = [],
+					status: statuses = [],
+					userName,
+					timeZone,
+					pageNumber,
+					pageSize,
+				} = queryParams
+				onTimeZoneChange(Number(timeZone))
 
-			filterForm.setFieldsValue({
-				[Number(queryType) === VipTypeEnum.Upgrade
-					? 'dateRange1'
-					: 'dateRange2']:
-					Number(queryType) === VipTypeEnum.Upgrade
-						? moment(calculateYearMonth)
-						: [
-								moment(calculateYearMonth.slice(0, 6)),
-								moment(calculateYearMonth.slice(-6)),
-						  ],
+				filterForm.setFieldsValue({
+					[Number(queryType) === VipTypeEnum.Upgrade
+						? 'dateRange1'
+						: 'dateRange2']:
+						Number(queryType) === VipTypeEnum.Upgrade
+							? moment(calculateYearMonth)
+							: [
+									moment(calculateYearMonth.slice(0, 6)),
+									moment(calculateYearMonth.slice(-6)),
+							  ],
 
-				currencyIds: currencyIds.map((currency: string) => Number(currency)),
-				type: Number(queryType),
-				status: statuses.map((status: string) => Number(status)),
-				userName,
-			})
-			handleSearch({
-				current: Number(pageNumber),
-				pageSize: Number(pageSize),
-				currentTimeZoneUtcOffset: timeZoneUtcOffset,
-				date:
-					Number(queryType) === VipTypeEnum.Upgrade
-						? moment(calculateYearMonth)
-						: [
-								moment(calculateYearMonth.slice(0, 6)),
-								moment(calculateYearMonth.slice(-6)),
-						  ],
-			})
+					currencyIds: currencyIds.map((currency: string) => Number(currency)),
+					type: Number(queryType),
+					status: statuses.map((status: string) => Number(status)),
+					userName,
+				})
+				handleSearch({
+					current: Number(pageNumber),
+					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: timeZoneUtcOffset,
+					date:
+						Number(queryType) === VipTypeEnum.Upgrade
+							? moment(calculateYearMonth)
+							: [
+									moment(calculateYearMonth.slice(0, 6)),
+									moment(calculateYearMonth.slice(-6)),
+							  ],
+				})
+			}
 		}
 		init()
-	}, [])
+	}, [isGetVipStatusListLoading])
 
 	return (
 		<LayoutContent.Main>
