@@ -20,7 +20,10 @@ import {
 	useGetCalCodeListQuery,
 	useGetVipLevelEnumBySiteIdQuery,
 } from 'common/service/baseDataApi'
-import { IBankCodeResponse } from 'common/service/baseDataApi/type'
+import {
+	CalCodePurposeEnum,
+	IBankCodeResponse,
+} from 'common/service/baseDataApi/type'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -82,6 +85,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		useGetCalCodeListQuery(
 			{
 				siteId,
+				purpose: CalCodePurposeEnum.Deposit,
 			},
 			{
 				selectFromResult: ({ data: { data } = {}, isFetching }) => {

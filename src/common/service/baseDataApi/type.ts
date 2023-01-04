@@ -78,8 +78,13 @@ export interface ICalCodeData {
 
 export type ICalCodeResponse = IAxiosResponse<ICalCodeData[]>
 
+export enum CalCodePurposeEnum {
+	Deposit = 1,
+	Withdrawal,
+}
 export interface IGetCalCodeListArgs {
 	siteId?: number
+	purpose: CalCodePurposeEnum
 }
 
 export interface IPaymentData {

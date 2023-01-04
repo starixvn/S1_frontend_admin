@@ -51,6 +51,7 @@ import DepositRequestPaymentInfoDescriptions from 'features/depositOperator/depo
 import DepositRequestBankInfoDescriptions from 'features/depositOperator/depositRequest/DepositRequestBankInfoDescriptions'
 import useMemberInfo from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
 import { DepositTypeEnum } from 'type'
+import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
 
 const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
@@ -90,6 +91,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		useGetCalCodeListQuery(
 			{
 				siteId,
+				purpose: CalCodePurposeEnum.Deposit,
 			},
 			{
 				selectFromResult: ({ data: { data } = {}, isFetching }) => {
