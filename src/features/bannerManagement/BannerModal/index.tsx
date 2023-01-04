@@ -142,27 +142,29 @@ const BannerModal = ({
 				timeZoneUtcOffset
 			)
 			const detailStr = coverSpecificToObjString(formSpecific)
-			const {
-				specific,
-				bannerName,
-				bannerType,
-				categoryId,
-				showStatus,
-				actionMode,
-				startTime,
-				endTime,
-				bonusCode,
-				urlRouter,
-				gameId,
-				tpId,
-				sort,
-			} = editBannerData
 
-			const args = {
-				siteId,
-				currencyId: Number(currencyId),
-				before: isEditing
-					? {
+			try {
+				let args
+				if (isEditing) {
+					const {
+						specific,
+						bannerName,
+						bannerType,
+						categoryId,
+						showStatus,
+						actionMode,
+						startTime,
+						endTime,
+						bonusCode,
+						urlRouter,
+						gameId,
+						tpId,
+						sort,
+					} = editBannerData
+					args = {
+						siteId,
+						currencyId: Number(currencyId),
+						before: {
 							actionMode,
 							bannerName,
 							bannerType,
@@ -183,36 +185,66 @@ const BannerModal = ({
 							bonusCode,
 							categoryId,
 							gameId,
-					  }
-					: {},
-				after: {
-					actionMode: formActionMode,
-					bannerName: formBannerName,
-					bannerType: formBannerType,
-					endTime: formEndTime,
-					showStatus: formShowStatus,
-					siteId,
-					sort: formSort,
-					specific: [
-						{
-							currencyId: Number(formCurrencyId),
-							details: detailStr,
-							status: isEditing ? Number(specific?.[0]?.status) : 0,
 						},
-					],
-					startTime: formStartTime,
-					tpId:
-						actionMode === ActionModeEnum.GoToLobby
-							? formFilterTpId
-							: formTpId ?? null,
-					urlRouter: formUrlRouter,
-					bonusCode: formBonusCode,
-					categoryId: formCategoryId,
-					gameId: formGameId,
-				},
-			}
+						after: {
+							actionMode: formActionMode,
+							bannerName: formBannerName,
+							bannerType: formBannerType,
+							endTime: formEndTime,
+							showStatus: formShowStatus,
+							siteId,
+							sort: formSort,
+							specific: [
+								{
+									currencyId: Number(formCurrencyId),
+									details: detailStr,
+									status: Number(specific?.[0]?.status),
+								},
+							],
+							startTime: formStartTime,
+							tpId:
+								actionMode === ActionModeEnum.GoToLobby
+									? formFilterTpId
+									: formTpId ?? null,
+							urlRouter: formUrlRouter,
+							bonusCode: formBonusCode,
+							categoryId: formCategoryId,
+							gameId: formGameId,
+						},
+					}
+				} else {
+					args = {
+						siteId,
+						currencyId: Number(currencyId),
+						before: {},
+						after: {
+							actionMode: formActionMode,
+							bannerName: formBannerName,
+							bannerType: formBannerType,
+							endTime: formEndTime,
+							showStatus: formShowStatus,
+							siteId,
+							sort: formSort,
+							specific: [
+								{
+									currencyId: Number(formCurrencyId),
+									details: detailStr,
+									status: 0,
+								},
+							],
+							startTime: formStartTime,
+							tpId:
+								formActionMode === ActionModeEnum.GoToLobby
+									? formFilterTpId
+									: formTpId ?? null,
+							urlRouter: formUrlRouter,
+							bonusCode: formBonusCode,
+							categoryId: formCategoryId,
+							gameId: formGameId,
+						},
+					}
+				}
 
-			try {
 				await setBanner(args).unwrap()
 				onCancel()
 				message.success(t('System.Label_Success'))
@@ -221,14 +253,18 @@ const BannerModal = ({
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
 			}
-
-			const { specific: specificList = [], bannerName: bannerNameStr = '' } =
-				editBannerData ?? {}
-			if (
-				specificList[0].currencyId !== formCurrencyId ||
-				bannerName !== formBannerName
-			) {
-				onDelete(bannerNameStr)
+			if (isEditing) {
+				const {
+					specific: specificList = [],
+					bannerName: bannerNameStr = '',
+					bannerName,
+				} = editBannerData ?? {}
+				if (
+					specificList[0].currencyId !== formCurrencyId ||
+					bannerName !== formBannerName
+				) {
+					onDelete(bannerNameStr)
+				}
 			}
 		} catch (error) {
 			const { errorFields } = error
