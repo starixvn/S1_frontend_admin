@@ -163,8 +163,21 @@ export type IGetTpCategoryByTpIdResponse = IAxiosResponse<
 	IGetTpCategoryByTpIdData[]
 >
 
+export enum CategoryIdEnum {
+	Sports = 1,
+	Casino,
+	LiveCasino,
+	Fishing,
+	CockFighting,
+	Lottery,
+	VirtualSports,
+	P2P,
+	Crypto,
+	Games,
+}
+
 export interface IGetTpListByCategoryArgs {
-	categoryId: number | string
+	categoryId: CategoryIdEnum
 }
 
 export interface IGetTpListByCategoryData {
