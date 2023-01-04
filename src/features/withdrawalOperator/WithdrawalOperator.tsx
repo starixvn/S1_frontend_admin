@@ -33,8 +33,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
-		useAuth()
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
@@ -271,7 +270,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 					withdrawalList={withdrawalList}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
-					editPermission={editPermission}
 					onTableChange={handleTableChange}
 				/>
 			)}

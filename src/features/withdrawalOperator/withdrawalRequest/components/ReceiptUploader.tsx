@@ -10,10 +10,12 @@ import { RcFile } from 'antd/es/upload'
 import { IWithdrawalRequestForm } from 'features/withdrawalOperator/type'
 import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
 import { multiEqual } from 'common/utils'
+import { PermissionInterface } from 'type'
 
 interface IReceiptUploaderProps {
 	loading: boolean
 	form: FormInstance<IWithdrawalRequestForm>
+	editPermission?: PermissionInterface
 	status: WithdrawalStatusEnum
 	onUploadImage: (imageBase64: string) => void
 	onDeleteImage: (number: number) => void
@@ -23,15 +25,17 @@ const ReceiptUploader = ({
 	loading,
 	form,
 	status,
+	editPermission,
 	onUploadImage,
 	onDeleteImage,
 }: IReceiptUploaderProps) => {
 	const { t } = useTranslation()
 	// 判斷當前狀態能否使用
-	const canEdit = multiEqual(status, [
-		WithdrawalStatusEnum.Process,
-		WithdrawalStatusEnum.Approved,
-	])
+	const canEdit =
+		multiEqual(status, [
+			WithdrawalStatusEnum.Process,
+			WithdrawalStatusEnum.Approved,
+		]) && editPermission?.canUse
 
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)

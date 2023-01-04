@@ -24,12 +24,14 @@ import { find, isEqual, reduce } from 'lodash'
 import { useMemo } from 'react'
 import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
 import { multiEqual } from 'common/utils'
+import { PermissionInterface } from 'type'
 
 interface IBankSettingFormProps {
 	form: FormInstance<IWithdrawalRequestForm>
 	localBankList: IGetBankInfoData[]
 	status: number
 	amount: number
+	editPermission?: PermissionInterface
 	onPayInfoClicked: (
 		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
 	) => void
@@ -41,15 +43,17 @@ const BankSettingForm = ({
 	localBankList,
 	status,
 	amount,
+	editPermission,
 	onPayInfoClicked,
 }: IBankSettingFormProps) => {
 	const { t } = useTranslation()
 	const currentValue = Form.useWatch('withdrawalAccountingModels', form)
 	// 判斷能否使用
-	const canUse = multiEqual(status, [
-		WithdrawalStatusEnum.Verify,
-		WithdrawalStatusEnum.Approved,
-	])
+	const canUse =
+		multiEqual(status, [
+			WithdrawalStatusEnum.Verify,
+			WithdrawalStatusEnum.Approved,
+		]) && editPermission?.canUse
 
 	// 計算當前的 amount 加總
 	const hashAmount = useMemo(() => {
