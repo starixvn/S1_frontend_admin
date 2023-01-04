@@ -185,6 +185,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 					loading={loading}
 					pagination={pagination}
 					verificationRewardReportList={verificationRewardReportList}
+					timeZoneUtcOffset={timeZoneUtcOffset}
 					onTableChange={handleTableChange}
 				/>
 			)}
