@@ -1,15 +1,7 @@
-import { Link } from 'react-router-dom'
-import { Menu, MenuProps, Typography } from 'antd'
-import { useMediaQuery } from 'usehooks-ts'
-import { MenuInterface } from 'type'
-import { getMapMenu, MODULE_ICON_MAPPING } from 'app/constants/menuMapping'
-import { find } from 'lodash'
-import { useAuth } from 'common/hooks'
-import { makeMenuKey, useMenuAction } from './hooks'
+import { Menu } from 'antd'
+import { useMenuItems } from './hooks'
 
 // const { Search } = Input;
-
-type MenuItem = Required<MenuProps>['items'][number]
 
 const LayoutMenu = ({
 	collapsed,
@@ -18,111 +10,23 @@ const LayoutMenu = ({
 	collapsed: boolean
 	onCloseCollapsed: () => void
 }) => {
-	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const { userMenuList } = useAuth()
-	const { openKeys, handleClickMenuItem, handleToggleMenu } = useMenuAction({
-		mediaMdMatches,
+	const { openKeys, menuItems } = useMenuItems({
+		collapsed,
 		onCloseCollapsed,
-		userMenuList,
 	})
 
 	// TODOS
 	// const onSearch = (value: string) => console.log(value);
 
-	const renderMenuItem = (menu: MenuInterface): MenuItem => {
-		const { name, moduleId, functionId, permission } = menu
-		const isGroup = Boolean(moduleId)
-		const { path, icon } = getMapMenu(Number(functionId))
-		const hasPermission = find(permission, {
-			name: 'View',
-		})?.canUse
-
-		if (isGroup) return renderSubMenuItem(menu)
-
-		if (!hasPermission) return null
-
-		const menuItem: MenuItem = {
-			style: { fontSize: '12px' },
-			key: name,
-			icon,
-			label: (
-				<Link to={path} onClick={handleClickMenuItem}>
-					{name}
-				</Link>
-			),
-		}
-
-		return menuItem
-	}
-
-	const renderSubMenuItem = (menu: MenuInterface) => {
-		const { name, moduleId } = menu
-		const menuKey = makeMenuKey(name, moduleId)
-		const moduleIcon = moduleId ? MODULE_ICON_MAPPING?.[moduleId] : null
-
-		const labelItem: MenuItem = {
-			style: { fontSize: '12px' },
-			key: name,
-			disabled: true,
-			label: (
-				<div
-					style={{
-						position: 'absolute',
-						top: 0,
-						bottom: 0,
-						right: 0,
-						left: 0,
-						cursor: 'default',
-					}}
-				>
-					<Typography.Text style={{ marginLeft: 15 }} type='secondary'>
-						{name}
-					</Typography.Text>
-				</div>
-			),
-		}
-
-		const renderFunctionDatas =
-			menu.functionDatas
-				?.map(functionData => renderMenuItem(functionData))
-				.filter(Boolean) ?? []
-
-		const renderSubLayerDatas =
-			menu.subLayerDatas
-				?.map(subLayerData => renderMenuItem(subLayerData))
-				.filter(Boolean) ?? []
-
-		if (
-			renderFunctionDatas?.length === 0 &&
-			renderSubLayerDatas?.length === 0
-		) {
-			return null
-		}
-
-		const subMenuItem: MenuItem = {
-			style: { fontSize: '12px' },
-			onTitleClick: () => handleToggleMenu(menuKey, moduleId),
-			key: menuKey,
-			label: name,
-			icon: moduleIcon,
-			theme: collapsed ? 'light' : 'dark',
-			children: collapsed
-				? [labelItem, ...renderFunctionDatas, ...renderSubLayerDatas]
-				: [...renderFunctionDatas, ...renderSubLayerDatas],
-		}
-		return subMenuItem
-	}
-
-	const items = userMenuList.map(menu => renderMenuItem(menu))
-
 	return (
 		<Menu
 			{...{
-				...(!collapsed && { openKeys }),
+				// * 收合狀態時關閉菜單
+				...(!collapsed && { openKeys, selectedKeys: openKeys }),
 				mode: 'inline',
 				theme: 'dark',
 			}}
-			items={items}
+			items={menuItems}
 		>
 			{/* {!collapsed && (
 				<Search
