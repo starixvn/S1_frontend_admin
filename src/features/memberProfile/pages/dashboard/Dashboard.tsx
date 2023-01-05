@@ -165,6 +165,8 @@ const Dashboard = () => {
 			financialType,
 			startDate,
 			endDate,
+			// 空字串表示全部搜尋
+			refTransId: '',
 		}).unwrap()
 
 		setFinancialLogsPagination(prev => ({ ...prev, current, pageSize }))
