@@ -893,4 +893,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'Internal',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.member.sub.iovation.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.iovation.root,
+	},
 ]

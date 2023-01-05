@@ -900,6 +900,10 @@ const WithdrawalPaymentReport = lazy(
 		)
 )
 
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2240,6 +2244,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
 						<TagManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
 					</AuthRequire>
 				),
 			},
