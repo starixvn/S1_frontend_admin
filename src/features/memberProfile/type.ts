@@ -291,6 +291,7 @@ export interface IGetFinancialLogArgs {
 	startDate: string
 	endDate: string
 	financialType: number
+	refTransId: string
 }
 
 export interface IFinancialLogData {
