@@ -102,7 +102,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.tagManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/TagManagement',
 		internalFunctionKey: allowedRoles.CustManageTagManagement,
 		newAdminPath: paths.member.sub.tagManagement.root,
@@ -875,7 +875,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.gameStatisticalReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.gameStatisticalReport.root,
 	},
 	{
