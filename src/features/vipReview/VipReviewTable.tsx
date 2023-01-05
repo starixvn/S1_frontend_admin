@@ -194,7 +194,7 @@ const VipReviewTable = ({
 			dataIndex: 'lastUpdateUser',
 			width: 120,
 			align: 'center' as 'center',
-			render: (lastUpdateUser: string) => lastUpdateUser ?? '-',
+			render: (lastUpdateUser: string) => lastUpdateUser || '-',
 		},
 	]
 
@@ -358,7 +358,7 @@ const VipReviewTable = ({
 			dataIndex: 'lastUpdateUser',
 			width: 120,
 			align: 'center' as 'center',
-			render: (lastUpdateUser: string) => lastUpdateUser ?? '-',
+			render: (lastUpdateUser: string) => lastUpdateUser || '-',
 		},
 	]
 

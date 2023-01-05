@@ -10,6 +10,7 @@ import {
 	Select,
 } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
+import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { IFilterForm } from 'features/vipReview/type'
@@ -26,6 +27,8 @@ interface IVipReviewFilterProps {
 	currencyListBySite: Currency[]
 	vipStatusList: IEnumTypeData[]
 	timeZoneUtcOffset: number
+	selectDate: any
+	setSelectDate: (date: any) => void
 	resetQueryParams: () => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -50,11 +53,30 @@ const VipReviewFilter = ({
 	currencyListBySite,
 	vipStatusList,
 	timeZoneUtcOffset,
+	selectDate,
+	setSelectDate,
 	resetQueryParams,
 	onTimeZoneChange,
 	onSearch,
 }: IVipReviewFilterProps) => {
 	const { t } = useTranslation()
+
+	const disabledDate = (current: moment.Moment) => {
+		if (!selectDate) {
+			return false
+		}
+		const tooLate = selectDate[0] && current.diff(selectDate[0], 'month') > 1
+		const tooEarly = selectDate[1] && selectDate[1].diff(current, 'month') > 1
+		return !!tooEarly || !!tooLate
+	}
+
+	const onOpenChange = (open: boolean) => {
+		if (open) {
+			setSelectDate([null, null])
+		} else {
+			setSelectDate(null)
+		}
+	}
 
 	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
@@ -218,7 +240,13 @@ const VipReviewFilter = ({
 													},
 												]}
 											>
-												<RangePicker style={{ width: '100%' }} picker='month' />
+												<RangePicker
+													style={{ width: '100%' }}
+													picker='month'
+													onCalendarChange={date => setSelectDate(date)}
+													onOpenChange={onOpenChange}
+													disabledDate={disabledDate}
+												/>
 											</Form.Item>
 										)}
 										<div>

@@ -3,15 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { Button, Col, Modal, Row, Typography, Upload } from 'antd'
 import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 interface IVipLevelAssignBatchModalProps {
 	loading: boolean
-	downloading: boolean
 	success: boolean
 	visible: boolean
 	onFinish: (file: UploadFile[]) => void
 	onCancel: () => void
-	onDownload: () => void
 }
 
 const VipLevelAssignBatchModal = ({
@@ -19,8 +18,6 @@ const VipLevelAssignBatchModal = ({
 	visible,
 	onFinish,
 	onCancel,
-	onDownload,
-	downloading,
 	success,
 }: IVipLevelAssignBatchModalProps) => {
 	const { t } = useTranslation()
@@ -68,15 +65,16 @@ const VipLevelAssignBatchModal = ({
 					</Typography.Text>
 				</Col>
 				<Col span={24} style={{ textAlign: 'center', marginBottom: 24 }}>
-					<Button
-						type='primary'
-						icon={<DownloadOutlined />}
-						style={{ width: '100%' }}
-						onClick={onDownload}
-						loading={downloading}
+					<Link
+						to='/exampleFile/ChangeVipTemplateFile.xlsx'
+						download='ChangeVipTemplateFile.xlsx'
+						target='_blank'
+						style={{ color: 'white' }}
 					>
-						{t('Label_TemplateFile')}
-					</Button>
+						<Button type='primary' icon={<DownloadOutlined />} block>
+							{t('Label_TemplateFile')}
+						</Button>
+					</Link>
 				</Col>
 				<Col span={24} style={{ textAlign: 'center' }}>
 					<Typography.Text>

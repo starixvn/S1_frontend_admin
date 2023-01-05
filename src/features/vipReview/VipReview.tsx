@@ -38,6 +38,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
+import { withOutSiteIdParams } from 'common/utils'
 
 const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -47,11 +48,12 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		actionPermissions: {
 			editPermission,
 			exportExcelPermission,
-			addPointBatchPermission,
+			changeVIPLevelPermission,
 		} = {},
 	} = useAuth()
-	const addPointBatchModal = useModal()
+	const vipLevelAssignBatchModal = useModal()
 	const [uploadSuccess, setUploadSuccess] = useState(false)
+	const [selectDate, setSelectDate] = useState(null)
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
@@ -116,21 +118,15 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		date?: [moment.Moment, moment.Moment] | moment.Moment
 	}) => {
 		if (!siteId) return
-		const {
-			dateRange1,
-			dateRange2,
-			status,
-			userName,
-			currencyIds,
-			type: filterType,
-		} = filterForm.getFieldsValue()
+		const { dateRange1, dateRange2, status, userName, currencyIds } =
+			filterForm.getFieldsValue()
 		let calculateYearMonth = ''
-		if (filterType === VipTypeEnum.Upgrade) {
+		if (type === VipTypeEnum.Upgrade) {
 			calculateYearMonth = moment(date ?? dateRange1)
 				.utcOffset(timeZoneUtcOffset)
 				.format('YYYYMM')
 		}
-		if (filterType === VipTypeEnum.Downgrade) {
+		if (type === VipTypeEnum.Downgrade) {
 			calculateYearMonth =
 				moment(dateRange2[0]).utcOffset(timeZoneUtcOffset).format('YYYYMM') +
 				moment(dateRange2[1]).utcOffset(timeZoneUtcOffset).format('YYYYMM')
@@ -145,16 +141,16 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber: current,
 				pageSize,
 			}
-			if (filterType === VipTypeEnum.Upgrade) {
+			if (type === VipTypeEnum.Upgrade) {
 				await getUpgradeList(args).unwrap()
 			}
-			if (filterType === VipTypeEnum.Downgrade) {
+			if (type === VipTypeEnum.Downgrade) {
 				await getDowngradeList(args).unwrap()
 			}
 			setQueryParams({
 				...args,
 				currencyIds,
-				type: filterType,
+				type,
 				timeZone: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -182,6 +178,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		try {
 			await changeVipLevelBatch(formData).unwrap()
 			setUploadSuccess(true)
+
 			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
@@ -194,7 +191,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 		const {
 			type: queryType,
-			status,
+			status: statuses,
 			userName,
 			calculateYearMonth,
 			currencyIds,
@@ -205,28 +202,28 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				const upgradeArgs = {
 					siteId,
 					yearMonth: calculateYearMonth,
-					status,
+					status: statuses.map((status: string) => Number(status)),
 					userName,
-					currencyId: currencyIds,
+					currencyId: currencyIds.map((currency: string) => Number(currency)),
 				}
 				const blob = await exportUpgradeList(upgradeArgs).unwrap()
 				download(
 					blob,
-					`ExportVipReview_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					`ExportVipReviewUpgrade_${moment().format('YYYYMMDDHHmmss')}.xlsx`
 				)
 			}
 			if (Number(queryType) === VipTypeEnum.Downgrade) {
 				const downgradeArgs = {
 					siteId,
 					calculateYearMonth,
-					status,
+					status: statuses.map((status: string) => Number(status)),
 					userName,
-					currencyId: currencyIds,
+					currencyId: currencyIds.map((currency: string) => Number(currency)),
 				}
 				const blob = await exportDowngradeList(downgradeArgs).unwrap()
 				download(
 					blob,
-					`ExportVipReview_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					`ExportVipReviewDowngrade_${moment().format('YYYYMMDDHHmmss')}.xlsx`
 				)
 			}
 			message.success(t('System.Label_Success'))
@@ -272,7 +269,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const resetQueryParams = () => {
-		if (!isEmpty(queryParams)) {
+		if (!isEmpty(withOutSiteIdParams(queryParams))) {
 			setQueryParams({})
 		}
 	}
@@ -288,7 +285,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) {
+			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				filterForm.setFieldsValue({
 					status: vipStatusList?.map(({ value }) => value),
 					dateRange1: moment().subtract(1, 'month').endOf('month'),
@@ -349,14 +346,13 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				vipStatusList={vipStatusList}
 				timeZoneUtcOffset={timeZoneUtcOffset}
+				selectDate={selectDate}
+				setSelectDate={setSelectDate}
 				resetQueryParams={resetQueryParams}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
-			{!isEmpty(queryParams) &&
-				(type === VipTypeEnum.Upgrade
-					? upgradeList.length > 0
-					: downgradeList.length > 0) &&
+			{!isEmpty(withOutSiteIdParams(queryParams)) &&
 				(filterDateRange1 || filterDateRange2) && (
 					<VipReviewTable
 						loading={loading}
@@ -374,15 +370,13 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				)}
 			<VipLevelAssignBatchModal
 				loading={changeVipLevelBatchLoading}
-				visible={addPointBatchModal.visible}
+				success={uploadSuccess}
+				visible={vipLevelAssignBatchModal.visible}
 				onFinish={handleVipLevelAssignBatchFinished}
 				onCancel={() => {
-					addPointBatchModal.onCancel()
+					vipLevelAssignBatchModal.onCancel()
 					setUploadSuccess(false)
 				}}
-				onDownload={handleExport}
-				downloading={exportUpgradeListLoading || exportDowngradeListLoading}
-				success={uploadSuccess}
 			/>
 			<AffixButtons>
 				<AffixButtons.BackToTop />
@@ -392,8 +386,8 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 					loading={exportUpgradeListLoading || exportDowngradeListLoading}
 				/>
 				<AffixButtons.AddBatch
-					onClick={addPointBatchModal.onOpen}
-					disabled={!addPointBatchPermission?.canUse}
+					onClick={vipLevelAssignBatchModal.onOpen}
+					disabled={changeVIPLevelPermission?.canUse}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
