@@ -42,7 +42,7 @@ const useMenuItems = ({
 		userMenuList,
 	})
 
-	const { functionId: currencyFunctionId } =
+	const { functionId: currentFunctionId } =
 		MENU_MAPPING.find(
 			item =>
 				pathname.match(item.newAdminPath || '!!!') ||
@@ -67,15 +67,20 @@ const useMenuItems = ({
 			rootMenuKey?: string
 		): MenuItem => {
 			const { name, moduleId, functionId, permission } = menu
-			const menuKey = makeMenuKey(name, functionId)
+
+			// * if is group menu, early return renderSubMenuItem
 			const isGroup = Boolean(moduleId)
-			const { path, icon } = getMapMenu(Number(functionId))
+			if (isGroup) return renderSubMenuItem(menu, rootMenuKey)
+
+			// * if has not permission, early return null
 			const hasPermission = find(permission, {
 				name: 'View',
 			})?.canUse
 
-			const isCurrentFunctionId = currencyFunctionId === functionId
+			if (!hasPermission) return null
 
+			const menuKey = makeMenuKey(name, functionId)
+			const isCurrentFunctionId = currentFunctionId === functionId
 			// * 只執行一次，用於初始 openKeys ，迭代的同時搜集當前 functionId (當前頁面) 的所有 menuKey
 			if (isCurrentFunctionId && isFirstEffect) {
 				newDefaultOpenKeys = [
@@ -86,21 +91,16 @@ const useMenuItems = ({
 				]
 			}
 
-			if (isGroup) return renderSubMenuItem(menu, rootMenuKey)
-
-			if (!hasPermission) return null
-
+			// * make menu item
+			const { path, icon } = getMapMenu(Number(functionId))
 			const menuItem: MenuItem = {
 				style: { fontSize: '12px' },
 				key: menuKey,
 				icon,
-				label: (
-					<Link to={path} onClick={onClickMenuItem}>
-						{name}
-					</Link>
-				),
+				label: <Link to={path}>{name}</Link>,
 				onClick: ({ keyPath }) => {
 					onChangeOpenKeys(keyPath)
+					onClickMenuItem()
 				},
 			}
 
@@ -149,6 +149,7 @@ const useMenuItems = ({
 				return null
 			}
 
+			// * 將所有透過 functionDatas 及 subLayerDatas 製作出來的 subMenu 串起來
 			const subMenuItem: MenuItem = {
 				style: { fontSize: '12px' },
 				onTitleClick: () => onToggleMenu(menuKey, moduleId),
