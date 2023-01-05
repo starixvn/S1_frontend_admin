@@ -119,13 +119,6 @@ export interface IGetBankCodeData {
 	bankName: string
 }
 
-export interface ICalCodeData {
-	bankId: number
-	calCodeName: string
-	currencyId: number
-	sysId: number
-}
-
 export type IFilterForm = {
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string

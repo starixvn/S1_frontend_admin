@@ -1,6 +1,5 @@
 import { rootApi } from 'common/service/rootApi/api'
 import {
-	ICalCodeData,
 	IDeletePictureArgs,
 	IExportWithdrawalListArgs,
 	IGetBankCodeData,
@@ -68,16 +67,6 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				data,
 			}),
 			providesTags: ['POST'],
-		}),
-		getCalCodeLis: builder.query<
-			IAxiosResponse<ICalCodeData[]>,
-			{ siteId?: number }
-		>({
-			query: data => ({
-				url: 'BaseData/GetCalCodeList',
-				method: 'POST',
-				data,
-			}),
 		}),
 		getBankCodeList: builder.query<
 			IAxiosResponse<IGetBankCodeData[]>,
@@ -204,7 +193,6 @@ export const {
 	useLazyGetWithdrawalListQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
-	useGetCalCodeLisQuery,
 	useGetBankCodeListQuery,
 	useExportWithdrawalListMutation,
 	useGetVipLevelListQuery,
