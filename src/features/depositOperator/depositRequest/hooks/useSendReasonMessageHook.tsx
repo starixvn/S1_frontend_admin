@@ -1,6 +1,7 @@
 import { Form, message, Modal, Select } from 'antd'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
+import { DepositTypeEnum } from 'features/depositLimitation/type'
 import {
 	useGetDepositReasonMessagesQuery,
 	useSetDepositReasonMessageMutation,
@@ -11,9 +12,15 @@ const { Option } = Select
 const { confirm } = Modal
 
 const useSendReasonMessageHook = ({
-	args: { currencyId, transId, depositId },
+	args: { currencyId, transId, depositId, actualDeposit, depositType },
 }: {
-	args: { currencyId: number; transId: string; depositId: number }
+	args: {
+		currencyId: number
+		transId: string
+		depositId: number
+		actualDeposit: number
+		depositType: DepositTypeEnum
+	}
 }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -33,6 +40,8 @@ const useSendReasonMessageHook = ({
 				siteId,
 				currencyId,
 				transId,
+				actualDeposit,
+				action: depositType,
 				after: { depositId, status },
 			}).unwrap()
 			message.success(t('System.Label_Success'))

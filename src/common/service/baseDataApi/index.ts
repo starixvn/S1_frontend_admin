@@ -9,6 +9,8 @@ import {
 	IGetCalCodeListArgs,
 	ICalCodeResponse,
 	IPaymentData,
+	IGetGameListArgs,
+	IGameList,
 } from './type'
 
 export const GET_BANK_INFO_OFF_LIST_ARGS = {
@@ -78,6 +80,17 @@ export const baseDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 用 tpId 和 categoryId 取得指定 category的所有遊戲
+		getGameIdByTpIdAndCategoryId: builder.query<
+			IAxiosResponse<IGameList[]>,
+			IGetGameListArgs
+		>({
+			query: data => ({
+				url: 'BaseData/GetGameIdByTpIdAndCategoryId',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -87,4 +100,5 @@ export const {
 	useGetVipLevelEnumBySiteIdQuery,
 	useGetCalCodeListQuery,
 	useLazyGetPaymentListQuery,
+	useGetGameIdByTpIdAndCategoryIdQuery,
 } = baseDataApi

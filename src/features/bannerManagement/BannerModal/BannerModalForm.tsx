@@ -26,6 +26,7 @@ import BannerModalTabs from 'features/bannerManagement/BannerModal/BannerModalTa
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
 import {
+	CategoryIdEnum,
 	IAddForm,
 	IGetTpBySiteAndCurrencyResponse,
 	IGetTpCategoryByTpIdResponse,
@@ -99,16 +100,10 @@ const BannerModalForm = ({
 		isLoading: isGetFilterTpListLoading,
 	} = useGetTpListByCategoryQuery(
 		{
-			categoryId: urlRouter,
+			categoryId: CategoryIdEnum.Casino,
 		},
 		{
-			skip:
-				!urlRouter ||
-				![
-					UrlRouterEnum.sports,
-					UrlRouterEnum['live-casino'],
-					UrlRouterEnum.lottery,
-				].includes(Number(urlRouter)),
+			skip: !urlRouter || !(UrlRouterEnum.slots === Number(urlRouter)),
 		}
 	)
 
@@ -277,7 +272,7 @@ const BannerModalForm = ({
 							</Select>
 						</Form.Item>
 					</Col>
-					{actionMode === ActionModeEnum.RedirectPagesOfThisSite && (
+					{actionMode === ActionModeEnum.GoToLobby && (
 						<Col lg={6} md={12} xs={24}>
 							<Form.Item
 								name='urlRouter'
@@ -317,12 +312,8 @@ const BannerModalForm = ({
 							</Form.Item>
 						</Col>
 					)}
-					{actionMode === ActionModeEnum.RedirectPagesOfThisSite &&
-						[
-							UrlRouterEnum.sports,
-							UrlRouterEnum['live-casino'],
-							UrlRouterEnum.lottery,
-						].includes(Number(urlRouter)) && (
+					{actionMode === ActionModeEnum.GoToLobby &&
+						UrlRouterEnum.slots === Number(urlRouter) && (
 							<Col lg={6} md={12} xs={24}>
 								<Form.Item
 									name='filterTpId'

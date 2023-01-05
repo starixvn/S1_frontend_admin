@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import { BatchBonusUploader } from 'features/issueBonusManagement/batchBonusComponents/BatchBonusUploader'
 import { RcFile } from 'antd/es/upload'
+import { PermissionInterface } from 'type'
 
 interface IIssueBonusManagementBatchFormProps {
 	loading: boolean
@@ -32,6 +33,8 @@ interface IIssueBonusManagementBatchFormProps {
 	}>
 	currencyListBySite: Currency[]
 	batchBonusCodeInfo: ICheckBonusCodeData | undefined
+	addBatchPermission?: PermissionInterface
+	addPermission?: PermissionInterface
 	onUploadBonus: (file: RcFile) => void
 	onCheckBatchBonusCode: () => void
 }
@@ -43,6 +46,8 @@ const IssueBonusManagementBatchForm = ({
 	form,
 	currencyListBySite,
 	batchBonusCodeInfo,
+	addBatchPermission,
+	addPermission,
 	onUploadBonus,
 	onCheckBatchBonusCode,
 }: IIssueBonusManagementBatchFormProps) => {
@@ -78,7 +83,7 @@ const IssueBonusManagementBatchForm = ({
 				size='middle'
 				form={form}
 				initialValues={{
-					payoutType: PayoutTypeEnum.BonusPayout,
+					payoutType: addPermission?.canUse ? PayoutTypeEnum.BonusPayout : null,
 				}}
 				style={{ paddingTop: '20px' }}
 				onFinish={onCheckBatchBonusCode}
@@ -87,11 +92,22 @@ const IssueBonusManagementBatchForm = ({
 					<Col lg={6} md={24} xs={24}>
 						<Form.Item name='payoutType' label={t('Label_PayoutType')}>
 							<Select>
-								{payoutTypeList?.map(({ key, displayName }) => (
-									<Option key={key} value={key}>
-										{t(displayName)}
+								{addPermission?.canUse && (
+									<Option
+										key={PayoutTypeEnum.BonusPayout}
+										value={PayoutTypeEnum.BonusPayout}
+									>
+										{t(payoutTypeList[PayoutTypeEnum.BonusPayout])}
 									</Option>
-								))}
+								)}
+								{addBatchPermission?.canUse && (
+									<Option
+										key={PayoutTypeEnum.BatchBonusPayout}
+										value={PayoutTypeEnum.BatchBonusPayout}
+									>
+										{t(payoutTypeList[PayoutTypeEnum.BatchBonusPayout])}
+									</Option>
+								)}
 							</Select>
 						</Form.Item>
 					</Col>

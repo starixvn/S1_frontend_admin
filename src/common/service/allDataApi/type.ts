@@ -53,3 +53,18 @@ export interface IGetPayEnumData {
 }
 
 export type IGetPayEnumListResponse = IAxiosResponse<IGetPayEnumData[]>
+
+export interface IGateWayArgs {
+	siteId?: number
+}
+
+export interface IGateWayData {
+	payId: number
+	payName: string
+	status: number
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+}

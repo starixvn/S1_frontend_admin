@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter } from 'common/utils/format'
 import { ICurrencyAmountRecordData } from 'features/depositTimeReport/type'
-import { CustomDivider } from 'features/redemptionListing/RedemptionOverviewTable'
 
 const { Text } = Typography
 
@@ -12,11 +11,7 @@ interface IDepositTimeReportOverviewTableProps {
 	currencyAmountData: ICurrencyAmountRecordData[]
 }
 
-const itemRenderer = (
-	label: string,
-	totalRecord: string,
-	totalAmount: string
-) => (
+const itemRenderer = (label: string, totalRecord: string) => (
 	<Descriptions.Item
 		key={label}
 		label={label}
@@ -30,8 +25,6 @@ const itemRenderer = (
 	>
 		<Space direction='vertical' style={{ width: '100%' }}>
 			<Text>{totalRecord}</Text>
-			<CustomDivider />
-			<Text>{totalAmount}</Text>
 		</Space>
 	</Descriptions.Item>
 )
@@ -42,16 +35,11 @@ const DepositTimeReportOverviewTable = ({
 }: IDepositTimeReportOverviewTableProps) => {
 	const { t } = useTranslation()
 
-	const titleElement = () =>
-		itemRenderer('', t('Label_Record'), t('Label_Amount'))
+	const titleElement = () => itemRenderer('', t('Label_Record'))
 
 	const recordElement = () =>
-		currencyAmountData?.map(({ currency, record, amount }) =>
-			itemRenderer(
-				currency,
-				numberFormatter.format(record),
-				numberFormatter.format(amount)
-			)
+		currencyAmountData?.map(({ currency, record }) =>
+			itemRenderer(currency, numberFormatter.format(record))
 		)
 
 	return (

@@ -101,11 +101,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 26,
+		functionId: paths.member.sub.tagManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'CustManage/TagManagement',
 		internalFunctionKey: allowedRoles.CustManageTagManagement,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.tagManagement.root,
 	},
 	{
 		icon: null,
@@ -231,11 +231,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 35,
+		functionId: paths.finance.sub.report.sub.withdrawalTimeReport.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Finance/WithdrawalTimeReport',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalTimeReport,
-		newAdminPath: '',
+		newAdminPath: paths.finance.sub.report.sub.withdrawalTimeReport.root,
 	},
 	{
 		icon: null,
@@ -413,11 +413,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 95,
+		functionId: paths.cms.sub.hotGameManagement.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Marketing/HotGamesManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.hotGameManagement.root,
 	},
 
 	{
@@ -623,11 +623,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Deposit Report',
 		icon: null,
-		functionId: 81,
+		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
 		pathMode: 'Internal',
 		internalPath: 'Report/DepositReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
 	{
 		icon: null,
@@ -647,11 +647,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 84,
+		functionId: paths.report.sub.userOnlineReport.functionId,
 		internalFunctionKey: allowedRoles.ReportUserOnlineReport,
 		pathMode: 'Internal',
 		internalPath: 'Report/UserOnlineReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.userOnlineReport.root,
 	},
 	{
 		icon: null,
@@ -877,5 +877,17 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.gameStatisticalReport.functionId,
 		pathMode: 'Internal',
 		newAdminPath: paths.report.sub.gameStatisticalReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.member.sub.shieldTaggingReport.functionId,
+		pathMode: 'Internal',
+		newAdminPath: paths.member.sub.shieldTaggingReport.root,
 	},
 ]

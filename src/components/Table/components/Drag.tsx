@@ -8,7 +8,7 @@ import type { SortableContainerProps } from 'react-sortable-hoc'
 import { FC } from 'react'
 
 export const DragHandle = SortableHandle(() => (
-	<MenuOutlined style={{ cursor: 'grab', color: '#999' }} />
+	<MenuOutlined style={{ cursor: 'grab', color: '#1890ff' }} />
 ))
 
 export const SortableItem = SortableElement(
