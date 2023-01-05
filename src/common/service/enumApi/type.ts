@@ -51,6 +51,7 @@ export type EnumNameType =
 	| 'ShieldRiskTagged'
 	| 'TaggedIssue'
 	| 'PaymentReportGroupByEnum'
+	| 'IovationDeviceType'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -93,6 +94,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  TriggeredPoints - 取得 TriggerPoints 列表
 	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
 	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
+	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 */
 	enumName: EnumNameType
 }
