@@ -140,11 +140,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 25,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.smsGenerator.functionId,
 		pathMode: 'Internal',
 		internalPath: 'Message/PersonalMsgBatch',
 		internalFunctionKey: allowedRoles.MessagePersonalMsgBatch,
-		newAdminPath: '',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.smsGenerator.root,
 	},
 	{
 		icon: null,

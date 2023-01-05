@@ -938,6 +938,7 @@
 	"Label_ReferralUrl": "Referral Url",
 	"Label_AddPointLevel": "Add Point Level",
 	"Label_SendMessage": "Send Message",
+	"Label_EditMessage": "Edit Message",
 	"Label_AddDomain": "Add Domain",
 	"Label_CryptoCurrency": "Crypto Currency",
 	"Label_CryptoSetting": "Crypto Setting",
@@ -988,6 +989,15 @@
 	"Label_TaggedIssue": "Tagged issue",
 	"Label_Tagged": "Tagged",
 	"Label_NoOfTagged": "No. of tagged",
+	"Label_SelectStatus": "Select Status",
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
-	"Label_SelectStatus": "Select Status"
+	"Label_ProcessResult": "Process Result",
+	"Label_Excel": "Excel",
+	"Label_ByUserStatus": "By UserStatus",
+	"Label_BatchUpload": "Batch Upload",
+	"Label_Popup": "Pop Up",
+	"Label_PopupMessage": "Pop Up Message",
+	"Label_AccountStatus": "Account Status",
+	"Label_BatchId": "Batch ID",
+	"Label_EnLangRequiredMsg": "Lang : En is Required"
 }
