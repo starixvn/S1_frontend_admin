@@ -39,6 +39,9 @@ export const MODULE_ICON_MAPPING: ModuleIconInterface = {
 	128: <SettingOutlined style={iconStyle} />,
 }
 
+/**
+ * @returns 根據 functionId 回傳 path 資訊
+ */
 export const getMapMenu = (functionId: number) => {
 	const {
 		internalPath,
