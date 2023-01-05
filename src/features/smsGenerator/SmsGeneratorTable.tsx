@@ -16,6 +16,7 @@ interface ISmsGeneratorTableProps {
 	pagination: PaginationInterface
 	deletePermission?: PermissionInterface
 	exportExcelPermission?: PermissionInterface
+	editPermission?: PermissionInterface
 	timeZoneUtcOffset: number
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	onEdit: (batchId: number) => void
@@ -29,6 +30,7 @@ const SmsGeneratorTable = ({
 	pagination,
 	deletePermission,
 	exportExcelPermission,
+	editPermission,
 	timeZoneUtcOffset,
 	onTableChange,
 	onEdit,
@@ -48,7 +50,7 @@ const SmsGeneratorTable = ({
 				return (
 					<Space size='middle'>
 						<Typography.Link onClick={() => onEdit(batchId)}>
-							{t('Label_Edit')}
+							{editPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 						</Typography.Link>
 						<Popconfirm
 							title={t('Label_SureToDelete')}

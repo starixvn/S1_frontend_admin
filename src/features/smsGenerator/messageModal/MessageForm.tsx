@@ -5,9 +5,10 @@ import { TinymceEditor } from 'components'
 interface IMessageFormProps {
 	form: FormInstance
 	langCode: string
+	disabled: boolean
 }
 
-const MessageForm = ({ form, langCode }: IMessageFormProps) => {
+const MessageForm = ({ form, langCode, disabled }: IMessageFormProps) => {
 	const { t } = useTranslation()
 	const formPopup = Form.useWatch('isPopup', form)
 	const defaultContent = Form.useWatch(['messages', langCode, 'Content'], form)
@@ -37,6 +38,7 @@ const MessageForm = ({ form, langCode }: IMessageFormProps) => {
 					},
 				},
 			}}
+			disabled={disabled}
 		>
 			<Row gutter={[16, 16]}>
 				{formPopup && (
@@ -84,6 +86,7 @@ const MessageForm = ({ form, langCode }: IMessageFormProps) => {
 						<TinymceEditor
 							defaultHtmlState={defaultContent}
 							onHtmlStateChange={onHtmlStateChange}
+							disabled={disabled}
 						/>
 					</Form.Item>
 				</Col>

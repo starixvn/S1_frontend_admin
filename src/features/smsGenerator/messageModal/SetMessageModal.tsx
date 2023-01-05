@@ -35,12 +35,14 @@ import { Link } from 'react-router-dom'
 import { MessageTabs } from 'features/smsGenerator/messageModal/MessageTabs'
 import { useEffect } from 'react'
 import { messagesResConverter } from 'features/smsGenerator/utils'
+import { PermissionInterface } from 'type'
 
 interface ISetMessageModalProps {
 	open: boolean
 	form: FormInstance<IEditForm>
 	loading: boolean
 	currencyListBySite: Currency[]
+	editPermission?: PermissionInterface
 	onCancel: () => void
 	onFinish: (isAdd: boolean) => void
 }
@@ -52,6 +54,7 @@ const SetMessageModal = ({
 	form,
 	loading,
 	currencyListBySite,
+	editPermission,
 	onCancel,
 	onFinish,
 }: ISetMessageModalProps) => {
@@ -134,140 +137,140 @@ const SetMessageModal = ({
 			// 且為了正確觸發 form 的初始化，故每次關閉便移除整個元件
 			afterClose={() => form.resetFields()}
 			destroyOnClose
+			// 沒編輯權限則關閉 footer submit button
+			footer={!editPermission?.canUse && false}
 		>
 			{/* 新增 */}
 			{isAdd && (
-				<>
-					<Form
-						form={form}
-						layout='vertical'
-						initialValues={{
-							method: MethodEnum.ByUserStatus,
-							isPopup: false,
-						}}
-					>
+				<Form
+					form={form}
+					layout='vertical'
+					initialValues={{
+						method: MethodEnum.ByUserStatus,
+						isPopup: false,
+					}}
+					disabled={!editPermission?.canUse}
+				>
+					<Row gutter={16} align='middle'>
+						<Col lg={8} md={24} xs={24}>
+							<Form.Item
+								name='method'
+								label={t('Label_MethodType')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_MethodType'),
+										}),
+									},
+								]}
+							>
+								<Select placeholder={t('Label_Select') + t('Label_MethodType')}>
+									{methodList.map(({ value, displayName }) => (
+										<Option key={value} value={value}>
+											{t(displayName)}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+						</Col>
+						<Col lg={8} md={24} xs={24}>
+							<Form.Item
+								name='currencyId'
+								label={
+									<Space align='center' size='middle'>
+										{t('Label_Currency')}
+										<Form.Item name='isPopup' noStyle valuePropName='checked'>
+											<Checkbox>{t('Label_Popup')}</Checkbox>
+										</Form.Item>
+									</Space>
+								}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_Currency'),
+										}),
+									},
+								]}
+							>
+								<Select placeholder={t('Label_Select') + t('Label_Currency')}>
+									{currencyListBySite.map(({ currencyId, isoCode }) => (
+										<Option key={currencyId} value={currencyId}>
+											{isoCode}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+
+					{formMethod === MethodEnum.ByUserStatus && (
 						<Row gutter={16} align='middle'>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
-									name='method'
-									label={t('Label_MethodType')}
+									name='accountStatus'
+									label={t('Label_AccountStatus')}
 									rules={[
 										{
 											required: true,
 											message: t('Label_Required', {
-												key: t('Label_MethodType'),
+												key: t('Label_AccountStatus'),
 											}),
 										},
 									]}
 								>
-									<Select
-										placeholder={t('Label_Select') + t('Label_MethodType')}
-									>
-										{methodList.map(({ value, displayName }) => (
-											<Option key={value} value={value}>
+									<Select>
+										{accountStatusList?.map(({ value, displayName }) => (
+											<Option value={value} key={value}>
 												{t(displayName)}
 											</Option>
 										))}
 									</Select>
 								</Form.Item>
 							</Col>
+						</Row>
+					)}
+					{formMethod === MethodEnum.BatchUpload && (
+						<Row gutter={16} align='middle'>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
-									name='currencyId'
+									name='fileList'
+									valuePropName='fileList'
+									getValueFromEvent={normFileForFormImageItem}
 									label={
-										<Space align='center' size='middle'>
-											{t('Label_Currency')}
-											<Form.Item name='isPopup' noStyle valuePropName='checked'>
-												<Checkbox>{t('Label_Popup')}</Checkbox>
-											</Form.Item>
+										<Space size='large'>
+											{t('Label_Upload', { key: t('Label_File') })}
+											<Link
+												to='/exampleFile/PersonalMessageTemplateFile.xlsx'
+												download='PersonalMessageTemplateFile.xlsx'
+												target='_blank'
+											>
+												<DownloadOutlined />
+												{t('Label_TemplateFile')}
+											</Link>
 										</Space>
 									}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_Currency'),
-											}),
-										},
-									]}
 								>
-									<Select placeholder={t('Label_Select') + t('Label_Currency')}>
-										{currencyListBySite.map(({ currencyId, isoCode }) => (
-											<Option key={currencyId} value={currencyId}>
-												{isoCode}
-											</Option>
-										))}
-									</Select>
+									<StyleUpload {...uploadProps}>
+										<Button icon={<UploadOutlined />}>
+											{t('Label_Upload', { key: t('Label_File') })}
+										</Button>
+									</StyleUpload>
 								</Form.Item>
 							</Col>
 						</Row>
-
-						{formMethod === MethodEnum.ByUserStatus && (
-							<Row gutter={16} align='middle'>
-								<Col lg={8} md={24} xs={24}>
-									<Form.Item
-										name='accountStatus'
-										label={t('Label_AccountStatus')}
-										rules={[
-											{
-												required: true,
-												message: t('Label_Required', {
-													key: t('Label_AccountStatus'),
-												}),
-											},
-										]}
-									>
-										<Select>
-											{accountStatusList?.map(({ value, displayName }) => (
-												<Option value={value} key={value}>
-													{t(displayName)}
-												</Option>
-											))}
-										</Select>
-									</Form.Item>
-								</Col>
-							</Row>
-						)}
-						{formMethod === MethodEnum.BatchUpload && (
-							<Row gutter={16} align='middle'>
-								<Col lg={8} md={24} xs={24}>
-									<Form.Item
-										name='fileList'
-										valuePropName='fileList'
-										getValueFromEvent={normFileForFormImageItem}
-										label={
-											<Space size='large'>
-												{t('Label_Upload', { key: t('Label_File') })}
-												<Link
-													to='/exampleFile/PersonalMessageTemplateFile.xlsx'
-													download='PersonalMessageTemplateFile.xlsx'
-													target='_blank'
-												>
-													<DownloadOutlined />
-													{t('Label_TemplateFile')}
-												</Link>
-											</Space>
-										}
-									>
-										<StyleUpload {...uploadProps}>
-											<Button icon={<UploadOutlined />}>
-												{t('Label_Upload', { key: t('Label_File') })}
-											</Button>
-										</StyleUpload>
-									</Form.Item>
-								</Col>
-							</Row>
-						)}
-					</Form>
-					{langCodes?.length > 0 && (
-						<MessageTabs langCodes={langCodes} form={form} />
 					)}
-				</>
+				</Form>
 			)}
-			{/* 編輯 */}
+			{/* 編輯模式 */}
 			{!isAdd && (
 				<Spin spinning={isGetMessageDetailLoading}>
-					<Form form={form} layout='vertical'>
+					<Form
+						form={form}
+						layout='vertical'
+						disabled={!editPermission?.canUse}
+					>
 						<Row gutter={16} align='middle'>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
@@ -286,10 +289,15 @@ const SetMessageModal = ({
 							</Col>
 						</Row>
 					</Form>
-					{langCodes?.length > 0 && (
-						<MessageTabs langCodes={langCodes} form={form} />
-					)}
 				</Spin>
+			)}
+			{/* 訊息編輯 Tab */}
+			{langCodes?.length > 0 && (
+				<MessageTabs
+					langCodes={langCodes}
+					form={form}
+					editPermission={editPermission}
+				/>
 			)}
 		</Modal>
 	)

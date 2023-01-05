@@ -280,6 +280,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 					messageList={messageList}
 					deletePermission={deletePermission}
 					exportExcelPermission={exportExcelPermission}
+					editPermission={editPermission}
 					pagination={pagination}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					onTableChange={handleTableChange}
@@ -293,6 +294,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 				form={editForm}
 				loading={isSendMessageLoading || isUpdateMessageLoading}
 				currencyListBySite={currencyListBySite}
+				editPermission={editPermission}
 				onCancel={editModal.onCancel}
 				onFinish={handleSubmitMessage}
 			/>

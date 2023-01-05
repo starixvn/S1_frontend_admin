@@ -26,7 +26,7 @@ export const messagesResConverter = (message: string): IConvertJsonData[] => {
 export const formMessageConverter = (messages: object): ILanguageData[] => {
 	const result: ILanguageData[] = []
 	Object.entries(messages).forEach(([key, value]: [string, any]) => {
-		const { Title, Content, PopupMessage } = value ?? {}
+		const { Title = '', Content = '', PopupMessage = '' } = value ?? {}
 		result.push({
 			lang: key,
 			message: {

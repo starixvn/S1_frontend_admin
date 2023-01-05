@@ -33,6 +33,7 @@ export const smsGenerator = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST'],
 		}),
 		getLangCodes: builder.query<
 			IAxiosResponse<ILangCodesData>,
