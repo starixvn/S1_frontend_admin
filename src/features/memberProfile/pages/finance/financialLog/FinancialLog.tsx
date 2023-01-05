@@ -61,7 +61,7 @@ const FinancialLog = () => {
 		pageSize?: number | undefined
 	}) => {
 		if (!custId) return
-		const { dateRange, type } = filterForm.getFieldsValue()
+		const { dateRange, type, refTransId = '' } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
@@ -75,6 +75,7 @@ const FinancialLog = () => {
 				financialType: type,
 				startDate,
 				endDate,
+				refTransId,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -93,17 +94,8 @@ const FinancialLog = () => {
 		})
 	}
 
-	const getFilteredFinancialLogs = () => {
-		const { refTransId } = filterForm.getFieldsValue()
-		if (refTransId) {
-			return financialLogs.filter(item => item.refTransId.includes(refTransId))
-		}
-		return financialLogs
-	}
-	const filteredFinancialLogs = getFilteredFinancialLogs()
-
 	const handleExport = async () => {
-		const { dateRange, type } = filterForm.getFieldsValue()
+		const { dateRange, type, refTransId = '' } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			timeZoneUtcOffset
@@ -114,7 +106,7 @@ const FinancialLog = () => {
 			custId: Number(custId),
 			startDate,
 			endDate,
-			refTransId: '',
+			refTransId,
 			financialType: type,
 		}
 		try {
@@ -161,7 +153,7 @@ const FinancialLog = () => {
 					typeList={typeList}
 				/>
 				<FinancialTable
-					financialLogs={filteredFinancialLogs}
+					financialLogs={financialLogs}
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
