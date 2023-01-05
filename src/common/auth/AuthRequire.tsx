@@ -1,6 +1,6 @@
 import { find } from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from 'common/hooks'
+import { useActionPermissionsEffect, useAuth } from 'common/hooks'
 import paths from 'app/constants/paths'
 import { cloneElement, useEffect } from 'react'
 import { getActionPermissions } from 'common/utils'
@@ -27,23 +27,16 @@ export const useActionPermissionsByFunctionId = ({
 }
 
 const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
-	const { auth, onCheckSignIn, userMenuFunctionData, setActionPermissions } =
-		useAuth()
 	const location = useLocation()
-	const menuFunctionData = find(userMenuFunctionData, { functionId })
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { auth, onCheckSignIn, userMenuFunctionData } = useAuth()
+	const menuFunctionData = find(userMenuFunctionData, { functionId })
 
 	useEffect(() => {
 		onCheckSignIn()
 	}, [location.pathname])
 
-	useEffect(() => {
-		const newActionPermissions = getActionPermissions(
-			menuFunctionData?.permission ?? []
-		)
-
-		setActionPermissions(newActionPermissions)
-	}, [menuFunctionData?.functionId])
+	useActionPermissionsEffect({ functionId })
 
 	const hasPermission = find(menuFunctionData?.permission, {
 		name: 'View',
