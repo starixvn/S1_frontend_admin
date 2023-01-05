@@ -43,6 +43,8 @@ const SnsManagement: FC<{
 		setIsSortMode(prev => !prev)
 	}
 	const [langCodes, setLangCodes] = useState<string[]>([])
+	// 因為 langCodes來自於 search getData api 的 response , 故需要手動設置一個 loading 狀態，這樣首次更新才會正常吃到 langCode
+	const [isLangCodeLoading, setLangCodesLoading] = useState<boolean>(false)
 
 	const [
 		getDataList,
@@ -58,12 +60,14 @@ const SnsManagement: FC<{
 
 	const handleSearch = async () => {
 		try {
+			setLangCodesLoading(true)
 			const { data: rawData } = await getDataList({
 				siteId,
 				currencyId,
 			}).unwrap()
 			// 透過 api data 先把 keys map 出來當作 langCodes 做使用
 			setLangCodes(Object.keys(rawData))
+			setLangCodesLoading(false)
 		} catch (error) {
 			message.error(t((error as Error).message))
 		}
@@ -172,6 +176,7 @@ const SnsManagement: FC<{
 			>
 				<SnsManagementTab
 					langCode={langCodes}
+					isLangCodeLoading={isLangCodeLoading}
 					snsManagementData={snsManagementData}
 					form={tableForm}
 					setCurrentLang={setCurrentLang}
