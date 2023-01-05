@@ -7,6 +7,7 @@ import { head } from 'lodash'
 
 interface ISnsManagementTabProps {
 	langCode: string[]
+	isLangCodeLoading: boolean
 	snsManagementData: {}
 	form: FormInstance
 	setCurrentLang: Dispatch<SetStateAction<string | undefined>>
@@ -15,12 +16,13 @@ interface ISnsManagementTabProps {
 
 const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 	langCode,
+	isLangCodeLoading,
 	snsManagementData,
 	form,
 	setCurrentLang,
 	currentLang,
 }) => {
-	const { loading, disabled } = useContext(tableContext)
+	const { disabled } = useContext(tableContext)
 	const getTableValues = (lang: string) => {
 		let result: any
 		Object.entries(snsManagementData).forEach(([key, value]) => {
@@ -44,10 +46,10 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 
 	//  init lang
 	useEffect(() => {
-		if (!loading && !currentLang) {
+		if (!isLangCodeLoading) {
 			setCurrentLang(head(langCode) ?? '')
 		}
-	}, [loading])
+	}, [isLangCodeLoading])
 
 	return (
 		<LayoutContent.Card>
@@ -55,6 +57,7 @@ const SnsManagementTab: FC<ISnsManagementTabProps> = ({
 				type='card'
 				defaultActiveKey='1'
 				onChange={lang => setCurrentLang(lang)}
+				activeKey={currentLang}
 				// 只要tabs隱藏就銷毀該table , 保持 dataSource 正常更新
 				destroyInactiveTabPane
 				items={items}

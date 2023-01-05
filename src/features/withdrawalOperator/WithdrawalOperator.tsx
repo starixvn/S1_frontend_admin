@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import {
 	useExportWithdrawalListMutation,
 	useGetBankCodeListQuery,
-	useGetCalCodeLisQuery,
 	useGetVipLevelListQuery,
 	useLazyGetWithdrawalListQuery,
 } from 'features/withdrawalOperator/api'
+import { useGetCalCodeListQuery } from 'common/service/baseDataApi'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { WithdrawalOperatorFilter } from 'features/withdrawalOperator/WithdrawalOperatorFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -28,6 +28,7 @@ import { WithdrawalOperatorTable } from 'features/withdrawalOperator/WithdrawalO
 import download from 'downloadjs'
 import moment from 'moment/moment'
 import { WithdrawalOperatorOverviewTable } from 'features/withdrawalOperator/WithdrawalOperatorOverviewTable'
+import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 
 const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -83,8 +84,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: calCodeList = [] } = {},
 		isLoading: isGetCalCodeLoading,
-	} = useGetCalCodeLisQuery({
+	} = useGetCalCodeListQuery({
 		siteId,
+		purpose: CalCodePurposeEnum.Withdrawal,
 	})
 
 	const {
