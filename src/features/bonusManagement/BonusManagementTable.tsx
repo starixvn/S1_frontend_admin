@@ -69,7 +69,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 				const { status: rawStatus, bonusCode } = record
 				const status = rawStatus === StatusEnum.Active
 				return (
-					<Space>
+					<Space style={{ padding: '0 15px' }}>
 						<Popconfirm
 							disabled={!editPermission?.canUse}
 							title={t('Label_AreYouSure')}
@@ -77,11 +77,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 								onUpdateStatus({ bonusCode, status: !status })
 							}}
 						>
-							<Switch
-								size='small'
-								checked={status}
-								disabled={!editPermission?.canUse}
-							/>
+							<Switch checked={status} disabled={!editPermission?.canUse} />
 						</Popconfirm>
 					</Space>
 				)
@@ -95,7 +91,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (record: IGetBonusListData) => {
 				const { bonusCode } = record
 				return (
-					<Space style={{ padding: '10px' }} size='middle'>
+					<Space style={{ padding: '0 15px' }} size='middle'>
 						<Typography.Link
 							onClick={() => {
 								navigate(
