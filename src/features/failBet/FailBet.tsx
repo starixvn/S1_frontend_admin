@@ -1,11 +1,11 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
-import { Form, message, TablePaginationConfig } from 'antd'
+import { Form, message, TablePaginationConfig, Modal, Typography } from 'antd'
 import { dateRangeToUtcFormatter, isJSON } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
@@ -13,7 +13,6 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
-	useModal,
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
@@ -25,7 +24,7 @@ import {
 import { IFilterForm } from 'features/failBet/type'
 import FailBetFilter from 'features/failBet/FailBetFilter'
 import FailBetTable from 'features/failBet/FailBetTable'
-import FailBetInfoModal from 'features/failBet/FailBetInfoModal'
+import ReactJson from 'react-json-view'
 
 const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -35,12 +34,10 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const failBetInfoModal = useModal()
-	const [infoDetailModal, setInfoDetailModal] = useState<object>({})
 
 	const {
 		data: { data: tpIdList = [] } = {},
-		isFetching: isGetTpIdListFetching,
+		isLoading: isGetTpIdListLoading,
 	} = useGetTpIdListQuery(null)
 
 	const [
@@ -63,11 +60,24 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 		paginationTotal,
 	})
 
-	// 存取 FailBet 的 info 欄位判斷是否為 json檔 並在Modal渲染
-	const handleInfoModal = (info: string) => {
+	const handleInfoModal = async (info: string) => {
 		if (!isJSON(info)) return
-		setInfoDetailModal(JSON.parse(info))
-		failBetInfoModal.onOpen()
+
+		Modal.info({
+			title: t('Label_Info'),
+			closable: true,
+			content: (
+				<Typography.Text>
+					{/* ReactJson 套件貌似無法處理客製化正負數字顏色 */}
+					<ReactJson
+						style={{ wordBreak: 'break-word' }}
+						src={JSON.parse(info)}
+						displayDataTypes={false}
+					/>
+				</Typography.Text>
+			),
+			width: '540px',
+		})
 	}
 
 	const handleSearch = async ({
@@ -147,7 +157,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 		})
 	}
 
-	const loading = isGetFailRecordReportFetching || isGetTpIdListFetching
+	const loading = isGetFailRecordReportFetching || isGetTpIdListLoading
 
 	useEffect(() => {
 		if (!loading) {
@@ -156,7 +166,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 				tpIds: tpIdList?.map(({ id }) => id),
 			})
 		}
-	}, [loading])
+	}, [isGetTpIdListLoading])
 
 	useEffect(() => {
 		// init
@@ -217,13 +227,6 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 					onChangeInfoModal={handleInfoModal}
 				/>
 			)}
-
-			<FailBetInfoModal
-				loading={loading}
-				onCancel={failBetInfoModal.onCancel}
-				visible={failBetInfoModal.visible}
-				infoDetailModal={infoDetailModal}
-			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

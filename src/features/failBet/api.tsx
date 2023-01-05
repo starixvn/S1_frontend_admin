@@ -4,13 +4,13 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetFailRecordListArgs,
 	IExportFailBetRecordArgs,
-	IGetFailRecordReportData,
+	IFailRecordReportData,
 } from 'features/failBet/type'
 
 export const failBetApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getFailRecordReport: builder.query<
-			IAxiosResponse<IGetFailRecordReportData[]>,
+			IAxiosResponse<IFailRecordReportData[]>,
 			IGetFailRecordListArgs
 		>({
 			query: data => ({

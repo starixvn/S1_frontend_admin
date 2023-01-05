@@ -6,13 +6,13 @@ import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { TablePaginationConfig, Typography } from 'antd'
-import { IGetFailRecordReportData } from 'features/failBet/type'
+import { IFailRecordReportData } from 'features/failBet/type'
 
 interface FailBetTableProps {
 	loading: boolean
 	pagination: PaginationInterface
 	timeZoneUtcOffset: number
-	failRecordReportList: IGetFailRecordReportData[]
+	failRecordReportList: IFailRecordReportData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	onChangeInfoModal: (info: string) => void
 }
@@ -69,8 +69,7 @@ const FailBetTable = ({
 		{
 			title: t('Label_Info'),
 			key: 'info',
-			render: (Record: IGetFailRecordReportData) => {
-				const { info } = Record
+			render: ({ info }: IFailRecordReportData) => {
 				return isJSON(info) ? (
 					<Typography.Link onClick={() => onChangeInfoModal(info)}>
 						{t('Label_Detail')}
