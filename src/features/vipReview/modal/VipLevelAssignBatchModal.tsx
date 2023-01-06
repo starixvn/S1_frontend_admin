@@ -4,21 +4,27 @@ import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { Button, Col, Modal, Row, Typography, Upload } from 'antd'
 import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { IChangeVipLevelData } from 'features/vipReview/type'
+import BatchLogTable from 'features/vipReview/modal/BatchLogTable'
 
 interface IVipLevelAssignBatchModalProps {
 	loading: boolean
 	success: boolean
 	visible: boolean
+	batchLog: IChangeVipLevelData[]
+	uploadSuccess: boolean
 	onFinish: (file: UploadFile[]) => void
 	onCancel: () => void
 }
 
 const VipLevelAssignBatchModal = ({
 	loading,
+	success,
 	visible,
+	batchLog,
+	uploadSuccess,
 	onFinish,
 	onCancel,
-	success,
 }: IVipLevelAssignBatchModalProps) => {
 	const { t } = useTranslation()
 	const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -36,11 +42,13 @@ const VipLevelAssignBatchModal = ({
 		},
 		fileList,
 	}
+
 	useEffect(() => {
 		if (!visible || success) {
 			setFileList([])
 		}
 	}, [visible, success])
+
 	return (
 		<Modal
 			open={visible}
@@ -56,7 +64,7 @@ const VipLevelAssignBatchModal = ({
 			onOk={() => {
 				onFinish(fileList)
 			}}
-			width={350}
+			width='45%'
 		>
 			<Row align='middle' justify='center' gutter={[16, 8]}>
 				<Col span={24} style={{ textAlign: 'center' }}>
@@ -71,7 +79,12 @@ const VipLevelAssignBatchModal = ({
 						target='_blank'
 						style={{ color: 'white' }}
 					>
-						<Button type='primary' icon={<DownloadOutlined />} block>
+						<Button
+							style={{ maxWidth: '200px' }}
+							type='primary'
+							icon={<DownloadOutlined />}
+							block
+						>
 							{t('Label_TemplateFile')}
 						</Button>
 					</Link>
@@ -82,13 +95,16 @@ const VipLevelAssignBatchModal = ({
 					</Typography.Text>
 				</Col>
 				<Col span={24} style={{ textAlign: 'center' }}>
-					<Button icon={<UploadOutlined />} block>
+					<Button style={{ maxWidth: '200px' }} icon={<UploadOutlined />} block>
 						<Upload {...props} maxCount={1}>
 							{t('Label_SelectFile')}
 						</Upload>
 					</Button>
 				</Col>
 			</Row>
+			{batchLog.length > 0 && !uploadSuccess && (
+				<BatchLogTable batchLog={batchLog} />
+			)}
 		</Modal>
 	)
 }

@@ -11,7 +11,7 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import VipReviewTable from 'features/vipReview/VipReviewTable'
 import VipReviewFilter from 'features/vipReview/VipReviewFilter'
-import VipLevelAssignBatchModal from 'features/vipReview/VipLevelAssignBatchModal'
+import VipLevelAssignBatchModal from 'features/vipReview/modal/VipLevelAssignBatchModal'
 import {
 	useChangeVipLevelBatchMutation,
 	useExportDowngradeListMutation,
@@ -22,6 +22,7 @@ import {
 	useUpdateUpgradeMutation,
 } from 'features/vipReview/api'
 import {
+	IChangeVipLevelData,
 	IDowngradeData,
 	IDowngradeListResponse,
 	IFilterForm,
@@ -54,6 +55,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 	const vipLevelAssignBatchModal = useModal()
 	const [uploadSuccess, setUploadSuccess] = useState(false)
 	const [selectDate, setSelectDate] = useState(null)
+	const [batchLog, setBatchLog] = useState<IChangeVipLevelData[]>([])
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
@@ -177,17 +179,19 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		formData.append('ExcelUpload', file[0] as RcFile)
 		try {
 			const vipLevelBatchList = await changeVipLevelBatch(formData).unwrap()
+			setBatchLog(vipLevelBatchList)
 			let isOk = true
-			vipLevelBatchList.forEach(({ errorCode, message: errorMsg }) => {
+			vipLevelBatchList.forEach(({ errorCode }) => {
 				if (errorCode !== 0) {
-					message.error(errorMsg)
 					isOk = false
 				}
 			})
 			if (isOk) {
 				setUploadSuccess(true)
-				vipLevelAssignBatchModal.onCancel()
 				message.success(t('System.Label_Success'))
+			} else {
+				setUploadSuccess(false)
+				message.error(t('System.Label_Failed'))
 			}
 		} catch (error) {
 			message.error(
@@ -381,10 +385,13 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={changeVipLevelBatchLoading}
 				success={uploadSuccess}
 				visible={vipLevelAssignBatchModal.visible}
+				batchLog={batchLog}
+				uploadSuccess={uploadSuccess}
 				onFinish={handleVipLevelAssignBatchFinished}
 				onCancel={() => {
 					vipLevelAssignBatchModal.onCancel()
 					setUploadSuccess(false)
+					setBatchLog([])
 				}}
 			/>
 			<AffixButtons>
