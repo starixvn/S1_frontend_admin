@@ -48,6 +48,8 @@ const LayoutMenuSearch = ({
 			options={menuPaths}
 			onChange={path => navigate(path)}
 			filterOption={handleFilterOption}
+			// * 阻止預設行為，讓鍵盤方向鍵可以控制 option target
+			onKeyDown={e => e.stopPropagation()}
 		/>
 	)
 }
