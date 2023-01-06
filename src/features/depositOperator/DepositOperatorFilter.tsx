@@ -34,10 +34,10 @@ const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
 
-// * 這頁的初始時間區間為 今日 ~ D+2
+// * 這頁的初始時間區間為 D-2 ~ 今日
 const initialDateRange = [
-	moment().startOf('day'),
-	moment().add(2, 'd').endOf('day'),
+	moment().subtract(2, 'd').startOf('day'),
+	moment().endOf('day'),
 ]
 
 interface IDepositOperatorFilterProps {
