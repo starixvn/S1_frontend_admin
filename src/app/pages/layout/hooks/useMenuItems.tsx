@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useState } from 'react'
 import { MenuProps, Typography } from 'antd'
+import type { SelectProps } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { makeMenuKey, useMenuAction } from 'app/pages/layout/hooks'
 import { MenuInterface } from 'type'
@@ -35,6 +36,9 @@ const useMenuItems = ({
 	const { userMenuList } = useAuth()
 	const { pathname } = useLocation()
 	const [menuItems, setMenuItems] = useState<ItemType[]>([])
+	const [menuPaths, setMenuPaths] = useState<
+		SelectProps['options'] | undefined
+	>([])
 	const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>([])
 	const [isFirstEffect, setIsFirstEffect] = useState(true)
 
@@ -60,6 +64,7 @@ const useMenuItems = ({
 		if (isEmpty(userMenuList)) return
 
 		let newDefaultOpenKeys: (string | undefined)[] = []
+		let newMenuPaths: SelectProps['options'] = []
 
 		const renderMenuItem = (
 			menu: MenuInterface,
@@ -81,7 +86,7 @@ const useMenuItems = ({
 
 			const menuKey = makeMenuKey(name, functionId)
 			const isCurrentFunctionId = currentFunctionId === functionId
-			// * 只執行一次，用於初始 openKeys ，迭代的同時搜集當前 functionId (當前頁面) 的所有 menuKey
+			// * 用於初始 openKeys ，迭代的同時搜集當前 functionId (當前頁面) 的所有 menuKey
 			if (isCurrentFunctionId && isFirstEffect) {
 				newDefaultOpenKeys = [
 					...newDefaultOpenKeys,
@@ -102,6 +107,10 @@ const useMenuItems = ({
 					onChangeOpenKeys(keyPath)
 					onClickMenuItem()
 				},
+			}
+
+			if (path && path !== '/') {
+				newMenuPaths = [...(newMenuPaths || []), { value: path, label: name }]
 			}
 
 			return menuItem
@@ -171,7 +180,7 @@ const useMenuItems = ({
 			return renderMenuItem(menu, undefined, rootMenuKey)
 		})
 
-		// * 只執行一次，用於初始 openKeys
+		// * 用於初始 openKeys
 		if (isFirstEffect) {
 			setDefaultOpenKeys(
 				// * 去除重複的 key、去除 undefined
@@ -181,16 +190,23 @@ const useMenuItems = ({
 
 		setMenuItems(newMenuItems)
 		setIsFirstEffect(false)
-	}, [userMenuList, openKeys, collapsed])
+
+		setMenuPaths(newMenuPaths)
+	}, [isFirstEffect, userMenuList, openKeys, collapsed])
 
 	// * 初始 openKeys ，跟著當前頁面打開至對應的 menuItem
 	useEffect(() => {
 		if (!isEmpty(defaultOpenKeys)) {
 			onChangeOpenKeys(defaultOpenKeys)
 		}
-	}, [isFirstEffect])
+	}, [isFirstEffect, pathname])
 
-	return { openKeys, menuItems }
+	// *當路徑變動時再次初始 openKeys
+	useEffect(() => {
+		setIsFirstEffect(true)
+	}, [pathname])
+
+	return { openKeys, menuItems, menuPaths }
 }
 
 export { useMenuItems }
