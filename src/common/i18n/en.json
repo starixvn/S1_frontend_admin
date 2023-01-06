@@ -999,5 +999,6 @@
 	"Label_PopupMessage": "Pop Up Message",
 	"Label_AccountStatus": "Account Status",
 	"Label_BatchId": "Batch ID",
-	"Label_EnLangRequiredMsg": "Lang : En is Required"
+	"Label_EnLangRequiredMsg": "Lang : En is Required",
+	"Label_DepositBonus": "Deposit Bonus"
 }

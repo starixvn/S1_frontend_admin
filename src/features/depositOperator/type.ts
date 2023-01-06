@@ -146,6 +146,7 @@ export interface IDepositOperatorData {
 	fromAccountNo: string
 	fromBankCode: string
 	fromBankName: string
+	bonusDescription: string
 }
 
 export interface IForm {
