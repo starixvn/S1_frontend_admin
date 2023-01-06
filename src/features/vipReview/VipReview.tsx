@@ -174,12 +174,21 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId || file.length === 0) return
 		const formData = new FormData()
 		formData.append('SiteId', siteId.toString())
-		formData.append('File', file[0] as RcFile)
+		formData.append('ExcelUpload', file[0] as RcFile)
 		try {
-			await changeVipLevelBatch(formData).unwrap()
-			setUploadSuccess(true)
-
-			message.success(t('System.Label_Success'))
+			const vipLevelBatchList = await changeVipLevelBatch(formData).unwrap()
+			let isOk = true
+			vipLevelBatchList.forEach(({ errorCode, message: errorMsg }) => {
+				if (errorCode !== 0) {
+					message.error(errorMsg)
+					isOk = false
+				}
+			})
+			if (isOk) {
+				setUploadSuccess(true)
+				vipLevelAssignBatchModal.onCancel()
+				message.success(t('System.Label_Success'))
+			}
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
