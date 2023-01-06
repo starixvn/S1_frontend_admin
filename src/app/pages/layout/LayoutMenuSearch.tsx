@@ -1,4 +1,5 @@
-import { Select } from 'antd'
+import { useEffect, useRef } from 'react'
+import { Select, RefSelectProps } from 'antd'
 import type { SelectProps } from 'antd'
 import { replace, toLower } from 'lodash'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +13,7 @@ const LayoutMenuSearch = ({
 }) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
+	const ref = useRef<RefSelectProps>(null)
 
 	const handleFilterOption = (
 		input: string,
@@ -24,8 +26,21 @@ const LayoutMenuSearch = ({
 		)
 	}
 
+	const handleKeyPress = ({ ctrlKey, key }: KeyboardEvent) => {
+		if (ctrlKey && (key === 'K' || key === 'k')) {
+			ref.current?.focus()
+		}
+	}
+
+	useEffect(() => {
+		window.addEventListener('keydown', handleKeyPress)
+		return () => window.removeEventListener('keydown', handleKeyPress)
+	}, [])
+
 	return (
 		<Select
+			ref={ref}
+			suffixIcon='ctrl+k'
 			autoFocus
 			showSearch
 			placeholder={t('Label_SearchPage')}
