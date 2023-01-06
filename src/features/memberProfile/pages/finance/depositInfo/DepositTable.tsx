@@ -89,6 +89,14 @@ const DepositTable = ({
 			),
 		},
 		{
+			title: t('Label_DepositBonus'),
+			key: 'bonusDescription',
+			dataIndex: 'bonusDescription',
+			width: 100,
+			align: 'center' as 'center',
+			render: (bonusDescription: string) => bonusDescription || '-',
+		},
+		{
 			title: t('Label_ActualDeposit'),
 			key: 'ActualDeposit',
 			dataIndex: 'actualDeposit',
