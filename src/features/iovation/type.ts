@@ -16,6 +16,10 @@ export type IGetIovationReportExportArgs = Omit<
 	'pageNumber' | 'pageSize'
 >
 
+export interface IGetIovationAssociateAccountArgs {
+	deviceId: string
+}
+
 export interface IIovationReportData {
 	lastUsedTime: string
 	userName: string
@@ -25,6 +29,11 @@ export interface IIovationReportData {
 	score: number
 	frequency: number
 	associateAccount: number
+}
+
+export interface IIovationAssociateAccountData {
+	custId: number
+	userName: string
 }
 
 export interface IFilterForm {

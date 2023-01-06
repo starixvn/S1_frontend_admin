@@ -4,11 +4,23 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetIovationReportArgs,
 	IGetIovationReportExportArgs,
+	IGetIovationAssociateAccountArgs,
 	IIovationReportData,
+	IIovationAssociateAccountData,
 } from 'features/iovation/type'
 
 export const lovationApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
+		getIovationAssociateAccount: builder.query<
+			IAxiosResponse<IIovationAssociateAccountData[]>,
+			IGetIovationAssociateAccountArgs
+		>({
+			query: data => ({
+				url: 'IovationReport/GetAssociateAccount',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getIovationReport: builder.query<
 			IAxiosResponse<IIovationReportData[]>,
 			IGetIovationReportArgs
@@ -31,6 +43,7 @@ export const lovationApi = rootApi.injectEndpoints({
 })
 
 export const {
+	useLazyGetIovationAssociateAccountQuery,
 	useLazyGetIovationReportQuery,
 	useExportIovationReportMutation,
 } = lovationApi

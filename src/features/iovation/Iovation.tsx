@@ -1,7 +1,7 @@
-import download from 'downloadjs'
-import { first, isEmpty } from 'lodash'
 import moment from 'moment'
+import download from 'downloadjs'
 import { useEffect } from 'react'
+import { first, isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
@@ -10,16 +10,16 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
-
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
 	usePagination,
 	useQueryParams,
+	useModal,
 } from 'common/hooks'
-
 import {
+	useLazyGetIovationAssociateAccountQuery,
 	useLazyGetIovationReportQuery,
 	useExportIovationReportMutation,
 } from 'features/iovation/api'
@@ -36,10 +36,19 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const deviceIdModal = useModal()
+
+	const [
+		getIovationAssociateAccount,
+		{
+			data: { data: iovationAssociateAccountList = [] } = {},
+			isFetching: isGetIovationAssociateAccountFetching,
+		},
+	] = useLazyGetIovationAssociateAccountQuery()
 
 	const {
 		data: { data: iovationDeviceTypeList = [] } = {},
-		isLoading: isIovationDeviceTypeListLoading,
+		isLoading: isIovationDeviceTypeLoading,
 	} = useGetEnumTypeQuery({ enumName: 'IovationDeviceType' })
 
 	const [
@@ -135,7 +144,22 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 		})
 	}
 
-	const loading = isIovationDeviceTypeListLoading || isGetIvationReportFetching
+	//  顯示 ip 關聯裝置彈窗
+	const handleDeviceIdAccountClick = async (deviceId: string) => {
+		deviceIdModal.onOpen()
+		try {
+			await getIovationAssociateAccount({ deviceId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const loading =
+		isIovationDeviceTypeLoading ||
+		isGetIvationReportFetching ||
+		isGetIovationAssociateAccountFetching
 
 	useEffect(() => {
 		if (!loading) {
@@ -144,7 +168,7 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 				deviceType: first(iovationDeviceTypeList)?.value,
 			})
 		}
-	}, [loading])
+	}, [isIovationDeviceTypeLoading])
 
 	useEffect(() => {
 		const init = () => {
@@ -197,11 +221,17 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					IovationReportList={IovationReportList}
 					onTableChange={handleTableChange}
-					// onAccountClick={handleShieldIpAccountClick}
+					onDeviceClick={handleDeviceIdAccountClick}
 				/>
 			)}
 
-			<IovationAssociateAccountModal />
+			{/* AssociateAccount */}
+			<IovationAssociateAccountModal
+				loading={loading}
+				deviceList={iovationAssociateAccountList}
+				visible={deviceIdModal.visible}
+				onCancel={deviceIdModal.onCancel}
+			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

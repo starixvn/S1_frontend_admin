@@ -4,7 +4,7 @@ import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { TablePaginationConfig } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
 import { IIovationReportData } from 'features/iovation/type'
 
 interface IovationTableProps {
@@ -13,6 +13,7 @@ interface IovationTableProps {
 	timeZoneUtcOffset: number
 	IovationReportList: IIovationReportData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	onDeviceClick: (shieldId: string) => void
 }
 
 const IovationTable = ({
@@ -21,6 +22,7 @@ const IovationTable = ({
 	timeZoneUtcOffset,
 	IovationReportList,
 	onTableChange,
+	onDeviceClick,
 }: IovationTableProps) => {
 	const { t } = useTranslation()
 
@@ -87,10 +89,16 @@ const IovationTable = ({
 		{
 			title: t('Label_AssociateAccount'),
 			key: 'associateAccount',
-			dataIndex: 'associateAccount',
 			width: '10%',
 			align: 'center' as 'center',
-			render: (associateAccount: number) => associateAccount ?? 'N/A',
+			render: (record: IIovationReportData) => {
+				const { deviceId, associateAccount } = record
+				return (
+					<Typography.Link onClick={() => onDeviceClick(deviceId)}>
+						{associateAccount}
+					</Typography.Link>
+				)
+			},
 		},
 	]
 
