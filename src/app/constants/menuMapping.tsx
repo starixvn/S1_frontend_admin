@@ -896,7 +896,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.iovation.functionId,
-		pathMode: 'NewAdmin',
+		pathMode: 'Internal',
 		newAdminPath: paths.member.sub.iovation.root,
 	},
 ]

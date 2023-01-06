@@ -7,14 +7,14 @@ import { IIovationAssociateAccountData } from 'features/iovation/type'
 
 interface IovationAssociateAccountModalProps {
 	loading: boolean
-	deviceList: IIovationAssociateAccountData[]
+	userList: IIovationAssociateAccountData[]
 	visible: boolean
 	onCancel: () => void
 }
 
 const IovationAssociateAccountModal = ({
 	loading,
-	deviceList,
+	userList,
 	visible,
 	onCancel,
 }: IovationAssociateAccountModalProps) => {
@@ -26,7 +26,7 @@ const IovationAssociateAccountModal = ({
 
 	useEffect(() => {
 		if (!loading) {
-			setModalListState(deviceList)
+			setModalListState(userList)
 		}
 	}, [loading])
 
@@ -40,7 +40,7 @@ const IovationAssociateAccountModal = ({
 			onCancel={onCancel}
 			footer={false}
 			title={
-				<div style={{ textAlign: 'center' }}>{t('Label_AssociateDevice')}</div>
+				<div style={{ textAlign: 'center' }}>{t('Label_AssociateAccount')}</div>
 			}
 			afterClose={onClosed}
 		>
@@ -55,7 +55,7 @@ const IovationAssociateAccountModal = ({
 					renderItem={item => (
 						<List.Item>
 							<Typography.Link
-								href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/deviceList/${item.custId}`}
+								href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${item.custId}`}
 								target='_blank'
 							>
 								{item.userName}

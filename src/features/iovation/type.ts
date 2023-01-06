@@ -28,7 +28,7 @@ export interface IIovationReportData {
 	deviceType: string
 	score: number
 	frequency: number
-	associateAccount: number
+	associateCount: number
 }
 
 export interface IIovationAssociateAccountData {
