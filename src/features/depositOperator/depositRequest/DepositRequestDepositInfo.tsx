@@ -73,6 +73,7 @@ const DepositRequestDepositInfo = ({
 		fromBankName,
 		fromAccountNo,
 		oDepositInfo,
+		bonusDescription,
 	},
 	calCodeList,
 	onCopy,
@@ -158,7 +159,9 @@ const DepositRequestDepositInfo = ({
 						)}
 					</Input.Group>
 				</Descriptions.Item>
-
+				<Descriptions.Item label={t('Label_DepositBonus')}>
+					{bonusDescription || '-'}
+				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Status')}>
 					<Tag color={color}>{statusName || '-'}</Tag>
 				</Descriptions.Item>
