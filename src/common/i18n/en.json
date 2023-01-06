@@ -1000,5 +1000,6 @@
 	"Label_AccountStatus": "Account Status",
 	"Label_BatchId": "Batch ID",
 	"Label_EnLangRequiredMsg": "Lang : En is Required",
-	"Label_DepositBonus": "Deposit Bonus"
+	"Label_DepositBonus": "Deposit Bonus",
+	"Label_SearchPage": "Search Page ..."
 }

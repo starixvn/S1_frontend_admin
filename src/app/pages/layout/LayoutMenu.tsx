@@ -1,7 +1,8 @@
 import { Menu } from 'antd'
+import { ItemType } from 'antd/lib/menu/hooks/useItems'
+import { isEmpty, uniqueId } from 'lodash'
 import { useMenuItems } from './hooks'
-
-// const { Search } = Input;
+import { LayoutMenuSearch } from './LayoutMenuSearch'
 
 const LayoutMenu = ({
 	collapsed,
@@ -10,13 +11,25 @@ const LayoutMenu = ({
 	collapsed: boolean
 	onCloseCollapsed: () => void
 }) => {
-	const { openKeys, menuItems } = useMenuItems({
+	const {
+		openKeys,
+		menuItems,
+		menuPaths = [],
+	} = useMenuItems({
 		collapsed,
 		onCloseCollapsed,
 	})
 
-	// TODOS
-	// const onSearch = (value: string) => console.log(value);
+	const searchMenuItem: ItemType = {
+		label: <LayoutMenuSearch menuPaths={menuPaths} />,
+		key: uniqueId(),
+	}
+
+	const items = [
+		// * 收合狀態時不顯示搜尋元件
+		!collapsed && !isEmpty(menuItems) && searchMenuItem,
+		...menuItems,
+	].filter(Boolean) as ItemType[]
 
 	return (
 		<Menu
@@ -26,17 +39,8 @@ const LayoutMenu = ({
 				mode: 'inline',
 				theme: 'dark',
 			}}
-			items={menuItems}
-		>
-			{/* {!collapsed && (
-				<Search
-					placeholder="input search text"
-					allowClear
-					enterButton
-					onSearch={onSearch}
-				/>
-			)} */}
-		</Menu>
+			items={items}
+		/>
 	)
 }
 
