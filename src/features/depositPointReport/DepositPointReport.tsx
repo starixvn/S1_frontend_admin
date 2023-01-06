@@ -166,7 +166,7 @@ const DepositPointReport: FC<{
 		if (isGetVipLevelLoading) return
 		const init = () => {
 			form.setFieldsValue({
-				vipLevels: filteredVipLevelsList.map(item => item.level),
+				vipLevels: filteredVipLevelsList?.map(item => item.level),
 			})
 			if (isEmpty(queryParams)) return
 			const {
