@@ -26,8 +26,9 @@ const LayoutMenuSearch = ({
 		)
 	}
 
-	const handleKeyPress = ({ ctrlKey, key }: KeyboardEvent) => {
-		if (ctrlKey && (key === 'K' || key === 'k')) {
+	const handleKeyPress = ({ metaKey, altKey, key }: KeyboardEvent) => {
+		const isKey = key === 'K' || key === 'k'
+		if (isKey && (metaKey || altKey)) {
 			ref.current?.focus()
 		}
 	}
@@ -40,7 +41,7 @@ const LayoutMenuSearch = ({
 	return (
 		<Select
 			ref={ref}
-			suffixIcon='ctrl+k'
+			suffixIcon='alt+k'
 			autoFocus
 			showSearch
 			placeholder={t('Label_SearchPage')}
