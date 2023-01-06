@@ -136,6 +136,7 @@ const TurnoverFilter = ({
 								>
 									<RangePicker
 										style={{ width: '100%' }}
+										showTime
 										ranges={MOMENT_RANGE_PICKER_RANGES([
 											'Today',
 											'Last 7 Day',

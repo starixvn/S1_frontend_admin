@@ -23,6 +23,13 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_TpUserName'),
+			dataIndex: 'tpUserName',
+			key: 'tpUserName',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_TotalTO'),
 			key: 'totalTO',
 			width: 100,
