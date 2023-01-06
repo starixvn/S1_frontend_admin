@@ -1,6 +1,5 @@
-import React from 'react'
-import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
+import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
 	MOMENT_DATE_RANGES,
