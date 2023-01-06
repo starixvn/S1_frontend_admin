@@ -36,7 +36,7 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const deviceIdModal = useModal()
+	const userIdModal = useModal()
 
 	const [
 		getIovationAssociateAccount,
@@ -127,7 +127,7 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportFailBetRecordReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportIovationReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -144,9 +144,9 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 		})
 	}
 
-	//  顯示 ip 關聯裝置彈窗
-	const handleDeviceIdAccountClick = async (deviceId: string) => {
-		deviceIdModal.onOpen()
+	//  顯示 ip 關聯帳戶彈窗
+	const handleUserIdAccountClick = async (deviceId: string) => {
+		userIdModal.onOpen()
 		try {
 			await getIovationAssociateAccount({ deviceId }).unwrap()
 		} catch (error) {
@@ -221,16 +221,16 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					IovationReportList={IovationReportList}
 					onTableChange={handleTableChange}
-					onDeviceClick={handleDeviceIdAccountClick}
+					onUserClick={handleUserIdAccountClick}
 				/>
 			)}
 
 			{/* AssociateAccount */}
 			<IovationAssociateAccountModal
 				loading={loading}
-				deviceList={iovationAssociateAccountList}
-				visible={deviceIdModal.visible}
-				onCancel={deviceIdModal.onCancel}
+				userList={iovationAssociateAccountList}
+				visible={userIdModal.visible}
+				onCancel={userIdModal.onCancel}
 			/>
 
 			<AffixButtons>

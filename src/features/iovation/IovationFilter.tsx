@@ -67,8 +67,6 @@ const IovationFilter = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							currencyId: first(currencyListBySite)?.currencyId,
-							userName: '',
-							deviceId: '',
 						}}
 					>
 						<Row align='middle' gutter={16}>

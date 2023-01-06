@@ -1,9 +1,10 @@
 import moment from 'moment/moment'
-import { Table } from 'components'
-import { timeFormat } from 'common/utils/format'
-import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
+import { Table } from 'components'
+import { isPositiveNum } from 'common/utils'
+import { PaginationInterface } from 'common/hooks'
+import { numberFormatter, timeFormat } from 'common/utils/format'
 import { TablePaginationConfig, Typography } from 'antd'
 import { IIovationReportData } from 'features/iovation/type'
 
@@ -13,7 +14,7 @@ interface IovationTableProps {
 	timeZoneUtcOffset: number
 	IovationReportList: IIovationReportData[]
 	onTableChange: (newPagination: TablePaginationConfig) => void
-	onDeviceClick: (shieldId: string) => void
+	onUserClick: (deviceId: string) => void
 }
 
 const IovationTable = ({
@@ -22,7 +23,7 @@ const IovationTable = ({
 	timeZoneUtcOffset,
 	IovationReportList,
 	onTableChange,
-	onDeviceClick,
+	onUserClick,
 }: IovationTableProps) => {
 	const { t } = useTranslation()
 
@@ -76,7 +77,14 @@ const IovationTable = ({
 			dataIndex: 'score',
 			align: 'center' as 'center',
 			width: '10%',
-			render: (score: number) => score ?? 'N/A',
+			render: (score: number) =>
+				isPositiveNum(score) ? (
+					numberFormatter.format(score)
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(score)}
+					</Typography.Text>
+				),
 		},
 		{
 			title: t('Label_Frequency'),
@@ -88,14 +96,14 @@ const IovationTable = ({
 		},
 		{
 			title: t('Label_AssociateAccount'),
-			key: 'associateAccount',
+			key: 'associateCount',
 			width: '10%',
 			align: 'center' as 'center',
 			render: (record: IIovationReportData) => {
-				const { deviceId, associateAccount } = record
+				const { deviceId, associateCount } = record
 				return (
-					<Typography.Link onClick={() => onDeviceClick(deviceId)}>
-						{associateAccount}
+					<Typography.Link onClick={() => onUserClick(deviceId)}>
+						{associateCount}
 					</Typography.Link>
 				)
 			},
