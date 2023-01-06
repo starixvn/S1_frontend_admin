@@ -680,6 +680,7 @@ export interface IGetDepositInfoData {
 	status: number
 	transId: string
 	updateTime: string
+	bonusDescription: string
 }
 
 export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]>
