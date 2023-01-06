@@ -297,7 +297,7 @@ const Setting = () => {
 				default:
 					break
 			}
-
+			editModal.onCancel()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
