@@ -25,10 +25,17 @@ const WinLossSummaryTable = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_TpUserName'),
+			dataIndex: 'tpUserName',
+			key: 'tpUserName',
+			width: '20%',
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_ValidBet'),
 			dataIndex: 'stakeSettled',
 			key: 'stakeSettled',
-			width: '15%',
+			width: '20%',
 			align: 'center' as 'center',
 			render: (stakeSettled: number) => (
 				<Text
@@ -43,7 +50,7 @@ const WinLossSummaryTable = ({
 			title: t('Label_TurnOver') + t('Label_ExcludeValidTO'),
 			dataIndex: 'stakeNotRollover',
 			key: 'stakeNotRollover',
-			width: '15%',
+			width: '20%',
 			align: 'center' as 'center',
 			render: (stakeNotRollover: number) => (
 				<Text
@@ -58,7 +65,7 @@ const WinLossSummaryTable = ({
 			title: t('Label_WinLoss'),
 			dataIndex: 'winlostAmount',
 			key: 'winlostAmount',
-			width: '15%',
+			width: '20%',
 			align: 'center' as 'center',
 			render: (winlostAmount: number) => (
 				<Text

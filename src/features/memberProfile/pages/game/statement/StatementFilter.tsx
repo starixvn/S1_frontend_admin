@@ -54,6 +54,7 @@ const StatementFilter = ({
 								]}
 							>
 								<RangePicker
+									showTime
 									style={{ width: '100%' }}
 									ranges={MOMENT_RANGE_PICKER_RANGES([
 										'Today',
