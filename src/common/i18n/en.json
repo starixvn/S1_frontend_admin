@@ -989,5 +989,6 @@
 	"Label_Tagged": "Tagged",
 	"Label_NoOfTagged": "No. of tagged",
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
-	"Label_SelectStatus": "Select Status"
+	"Label_SelectStatus": "Select Status",
+	"Label_DepositBonus": "Deposit Bonus"
 }
