@@ -11,10 +11,7 @@ import {
 	Select,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -27,6 +24,7 @@ import {
 	IGetBankCodeData,
 	IVipLevelData,
 } from 'features/withdrawalOperator/type'
+import moment from 'moment/moment'
 
 interface IWithdrawalOperatorFilterProps {
 	loading: boolean
@@ -54,6 +52,12 @@ interface IWithdrawalOperatorFilterProps {
 const { Panel } = Collapse
 const { Option } = Select
 const { RangePicker } = DatePicker
+
+// * 這頁的初始時間區間為 今日 ~ D+2
+const initialDateRange = [
+	moment().startOf('day'),
+	moment().add(2, 'd').endOf('day'),
+]
 
 const WithdrawalOperatorFilter = ({
 	loading,
@@ -293,7 +297,7 @@ const WithdrawalOperatorFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={initialDateRange}
 											rules={[
 												{
 													required: true,
