@@ -53,11 +53,12 @@ const EditableCellRows: <T>(props: EditableCellProps<T>) => any = ({
 					}
 					name={dataIndex}
 					style={{ margin: 0, minWidth: 60 }}
+					noStyle
 				>
 					{inputNode}
 				</Form.Item>
 			) : (
-				children
+				<div style={{ padding: '5px 0' }}>{children}</div>
 			)}
 		</td>
 	)

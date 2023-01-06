@@ -4,7 +4,6 @@ import {
 	Popconfirm,
 	Space,
 	Switch,
-	Table,
 	Typography,
 	FormInstance,
 	TablePaginationConfig,
@@ -15,7 +14,7 @@ import { PermissionInterface } from 'type'
 import { IEditForm, IGetListData } from 'features/bettingMonitorSetting/type'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
-import { EditableCellRows } from 'components'
+import { EditableCellRows, Table } from 'components'
 
 export interface IBettingMonitorTableProps {
 	form: FormInstance<IEditForm>
@@ -66,11 +65,8 @@ const BettingMonitorTable = ({
 				const editable = isEditing(record)
 
 				return editable ? (
-					<Space style={{ padding: '5px' }}>
-						<Typography.Link
-							onClick={() => onSaved(record)}
-							style={{ marginRight: 8 }}
-						>
+					<Space size='middle'>
+						<Typography.Link onClick={() => onSaved(record)}>
 							{t('Label_Save')}
 						</Typography.Link>
 						<Typography.Link onClick={() => setEditingKey(undefined)}>
@@ -78,7 +74,7 @@ const BettingMonitorTable = ({
 						</Typography.Link>
 					</Space>
 				) : (
-					<Space style={{ padding: '5px' }}>
+					<Space size='middle'>
 						<Typography.Link
 							disabled={!editPermission?.canUse}
 							onClick={() => onEdit(record)}
@@ -252,7 +248,6 @@ const BettingMonitorTable = ({
 				columns={mergeColumns}
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
-				size='small'
 			/>
 		</Form>
 	)
