@@ -29,10 +29,10 @@ const GameStatisticalReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tabActiveKey, setActiveKey] = useState<string | undefined>()
 	const [startDate, endDate] = dateRangeToUtcFormatter(
-		dateRange,
+		// 需排除 dateRange 為 undefined 的情況
+		dateRange && [dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 		timeZoneUtcOffset
 	)
-
 	const {
 		data: {
 			data: gameStatisticalReportData = [],

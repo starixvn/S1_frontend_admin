@@ -1,7 +1,9 @@
-import React from 'react'
+import { floor } from 'lodash'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Typography } from 'antd'
+import { isPositiveNum } from 'common/utils'
+import { numberFormatter } from 'common/utils/format'
 import { ICategoryDetailData } from './type'
 
 interface IGameStatisticalReportProps {
@@ -35,21 +37,30 @@ const GameStatisticalReportPanel = ({
 			key: 'uniquePlayers',
 			dataIndex: 'uniquePlayers',
 			align: 'center' as 'center',
-			render: (uniquePlayers: number) => uniquePlayers ?? 'N/A',
+			render: (uniquePlayers: number) =>
+				numberFormatter.format(uniquePlayers) ?? 'N/A',
 		},
 		{
 			title: t('Label_TurnOver'),
 			key: 'validBetSummary',
 			dataIndex: 'validBetSummary',
 			align: 'center' as 'center',
-			render: (validBetSummary: number) => validBetSummary ?? 'N/A',
+			render: (validBetSummary: number) =>
+				numberFormatter.format(floor(validBetSummary)) ?? 'N/A',
 		},
 		{
 			title: t('Label_WinLoss'),
 			key: 'winLossSummary',
 			dataIndex: 'winLossSummary',
 			align: 'center' as 'center',
-			render: (winLossSummary: number) => winLossSummary ?? 'N/A',
+			render: (winLossSummary: number) =>
+				isPositiveNum(winLossSummary) ? (
+					numberFormatter.format(floor(winLossSummary))
+				) : (
+					<Typography.Text type='danger'>
+						{numberFormatter.format(floor(winLossSummary))}
+					</Typography.Text>
+				),
 		},
 	]
 
