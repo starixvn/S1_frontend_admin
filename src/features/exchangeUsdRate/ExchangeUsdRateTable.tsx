@@ -1,11 +1,12 @@
 import React from 'react'
 import moment from 'moment'
-import { Form, FormInstance, Space, Table, Typography } from 'antd'
+import { Form, FormInstance, Space, Typography } from 'antd'
 import { PermissionInterface } from 'type'
-import { EditableCellRows } from 'components'
+import { EditableCellRows, Table } from 'components'
 import { IGetUsdData } from 'features/exchangeUsdRate/type'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
+import { LayoutContent } from 'app/pages/layout'
 
 interface IExchangeUsdRateTableProps {
 	form: FormInstance<{
@@ -51,17 +52,14 @@ const ExchangeUsdRateTable = ({
 		{
 			title: t('Label_Action'),
 			key: 'operation',
-			width: '20%',
+			width: '10%',
 			align: 'center' as 'center',
 			render: (record: IGetUsdData) => {
 				const editable = isEditing(record)
 
 				return editable ? (
-					<Space>
-						<Typography.Link
-							onClick={() => onSaved(record)}
-							style={{ marginRight: 8 }}
-						>
+					<Space size='middle'>
+						<Typography.Link onClick={() => onSaved(record)}>
 							{t('Label_Save')}
 						</Typography.Link>
 						<Typography.Link
@@ -88,7 +86,7 @@ const ExchangeUsdRateTable = ({
 		{
 			title: t('Label_Currency'),
 			key: 'usd',
-			width: '10%',
+			width: '15%',
 			align: 'center' as 'center',
 			render: () => t('Label_USD'),
 		},
@@ -96,14 +94,14 @@ const ExchangeUsdRateTable = ({
 			title: t('Label_Currency'),
 			key: 'isoCode',
 			dataIndex: 'isoCode',
-			width: '10%',
+			width: '15%',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_ExchangeRate'),
 			key: 'usdRate',
 			dataIndex: 'usdRate',
-			width: '10%',
+			width: '15%',
 			align: 'right' as 'right',
 			editable: true,
 			render: (usdRate: number) => usdRate ?? '-',
@@ -112,7 +110,7 @@ const ExchangeUsdRateTable = ({
 			title: t('Label_LastUpdateUser'),
 			key: 'lastUpdateUser',
 			dataIndex: 'lastUpdateUser',
-			width: '10%',
+			width: '15%',
 			align: 'center' as 'center',
 			render: (lastUpdateUser: string) =>
 				lastUpdateUser ? (
@@ -127,11 +125,11 @@ const ExchangeUsdRateTable = ({
 			title: t('Label_LastUpdateTime'),
 			key: 'updateTime',
 			dataIndex: 'updateTime',
-			width: '10%',
+			width: '15%',
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime ? (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
@@ -157,21 +155,21 @@ const ExchangeUsdRateTable = ({
 	})
 
 	return (
-		<Form form={form} component={false}>
-			<Table
-				components={{
-					body: {
-						cell: EditableCellRows,
-					},
-				}}
-				loading={loading}
-				dataSource={usdRateList ?? []}
-				style={{ marginTop: '10px', marginBottom: '10px' }}
-				columns={mergeColumns}
-				pagination={false}
-				size='small'
-			/>
-		</Form>
+		<LayoutContent.Card style={{ padding: '30px 20px' }}>
+			<Form form={form} component={false}>
+				<Table
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					loading={loading}
+					dataSource={usdRateList ?? []}
+					columns={mergeColumns}
+					pagination={false}
+				/>
+			</Form>
+		</LayoutContent.Card>
 	)
 }
 
