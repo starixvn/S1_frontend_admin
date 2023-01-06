@@ -649,6 +649,7 @@ export interface IGetWinLossSummaryDetailArgs {
 }
 
 export interface IGetWinLossSummaryDetailData {
+	tpUserName: string
 	winlostAmount: number
 	stakeSettled: number
 	stakeNotRollover: number
@@ -919,6 +920,7 @@ export interface IGetTurnoverData {
 	gameName: string
 	stakeSettled: number
 	userName: string
+	tpUserName: string
 	winlostAmount: number
 	stakeNotRollover: number
 }
