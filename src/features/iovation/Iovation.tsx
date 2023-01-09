@@ -1,7 +1,7 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import { useEffect } from 'react'
-import { first, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +10,7 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
@@ -35,7 +35,6 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const userIdModal = useModal()
 
 	const [
@@ -78,7 +77,6 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
 		const { dateRange, ...args } = await form.validateFields()
 
 		const [startTime, endTime] = dateRangeToUtcFormatter(
@@ -113,8 +111,14 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleExport = async () => {
 		if (!siteId) return
 
-		const { startTime, endTime, currencyId, deviceId, deviceType, userName } =
-			queryParams
+		const {
+			startTime,
+			endTime,
+			currencyId = 0,
+			deviceId,
+			deviceType = 0,
+			userName,
+		} = queryParams
 
 		try {
 			const blob = await exportIovationReport({
@@ -162,20 +166,11 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetIovationAssociateAccountFetching
 
 	useEffect(() => {
-		if (!loading) {
-			form.setFieldsValue({
-				currencyId: first(currencyListBySite)?.currencyId,
-				deviceType: first(iovationDeviceTypeList)?.value,
-			})
-		}
-	}, [isIovationDeviceTypeLoading])
-
-	useEffect(() => {
 		const init = () => {
 			const {
-				currencyId,
+				currencyId = 0,
 				deviceId,
-				deviceType,
+				deviceType = 0,
 				userName,
 				startTime,
 				endTime,
