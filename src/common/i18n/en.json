@@ -1004,5 +1004,7 @@
 	"Label_SearchPage": "Search Page ...",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_PerCount": "Per Count"
+	"Label_PerCount": "Per Count",
+	"Label_Language": "Language",
+	"Label_LangId": "LangId"
 }

@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const VideoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2260,6 +2267,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.content.sub.videoManagement.functionId}
+					>
+						<VideoManagement />
 					</AuthRequire>
 				),
 			},
