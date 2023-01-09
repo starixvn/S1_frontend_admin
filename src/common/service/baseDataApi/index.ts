@@ -11,6 +11,12 @@ import {
 	IPaymentData,
 	IGetGameListArgs,
 	IGameList,
+	IGetOnlinePayListArgs,
+	IOnlinePayData,
+	ICryptoPayData,
+	IGetCryptoPayListArgs,
+	IGetCryptoWalletArgs,
+	ICryptoWalletData,
 } from './type'
 
 export const GET_BANK_INFO_OFF_LIST_ARGS = {
@@ -91,14 +97,49 @@ export const baseDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 取得用戶 onlinePayList 列表
+		getOnlinePayList: builder.query<
+			IAxiosResponse<IOnlinePayData[]>,
+			IGetOnlinePayListArgs
+		>({
+			query: data => ({
+				url: 'BaseData/GetOnlinePayList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 取得用戶 cryptoPayList 列表
+		getCryptoPayList: builder.query<
+			IAxiosResponse<ICryptoPayData[]>,
+			IGetCryptoPayListArgs
+		>({
+			query: data => ({
+				url: 'BaseData/GetCryptoPayList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getCryptoWalletList: builder.query<
+			IAxiosResponse<ICryptoWalletData[]>,
+			IGetCryptoWalletArgs
+		>({
+			query: data => ({
+				url: 'BaseData/GetCryptoWalletList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
 export const {
 	useGetBankInfoOffListQuery,
 	useGetBankCodeListQuery,
+	useGetOnlinePayListQuery,
 	useGetVipLevelEnumBySiteIdQuery,
 	useGetCalCodeListQuery,
 	useLazyGetPaymentListQuery,
 	useGetGameIdByTpIdAndCategoryIdQuery,
+	useGetCryptoPayListQuery,
+	useGetCryptoWalletListQuery,
 } = baseDataApi

@@ -8,12 +8,7 @@ import {
 	Space,
 	Typography,
 } from 'antd'
-import {
-	IGetBankInfoData,
-	IGetCryptoPayData,
-	IGetOnlinePayData,
-	IWithdrawalRequestForm,
-} from 'features/withdrawalOperator/type'
+import { IWithdrawalRequestForm } from 'features/withdrawalOperator/type'
 import { useTranslation } from 'react-i18next'
 import {
 	InfoCircleOutlined,
@@ -25,15 +20,20 @@ import { useMemo } from 'react'
 import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
 import { multiEqual } from 'common/utils'
 import { PermissionInterface } from 'type'
+import {
+	IBankInfoOffState,
+	ICryptoPayData,
+	IOnlinePayData,
+} from 'common/service/baseDataApi/type'
 
 interface IBankSettingFormProps {
 	form: FormInstance<IWithdrawalRequestForm>
-	localBankList: IGetBankInfoData[]
+	localBankList: IBankInfoOffState[]
 	status: number
 	amount: number
 	editPermission?: PermissionInterface
 	onPayInfoClicked: (
-		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
+		record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
 	) => void
 }
 

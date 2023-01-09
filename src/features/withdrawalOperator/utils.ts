@@ -1,15 +1,15 @@
 import { WithdrawalTypeEnum } from 'features/withdrawalOperator/constants'
-import {
-	IGetBankInfoData,
-	IGetCryptoPayData,
-	IGetOnlinePayData,
-	IPayInfo,
-} from 'features/withdrawalOperator/type'
+import { IPayInfo } from 'features/withdrawalOperator/type'
 import { assign } from 'lodash'
+import {
+	IBankInfoOffState,
+	ICryptoPayData,
+	IOnlinePayData,
+} from 'common/service/baseDataApi/type'
 
 export const hashPayInfo = (
 	type: WithdrawalTypeEnum,
-	record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
+	record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
 ): IPayInfo => {
 	const result = {}
 	if (
@@ -23,7 +23,7 @@ export const hashPayInfo = (
 			loginAccount,
 			loginPassword,
 			transferPin,
-		} = record as IGetOnlinePayData
+		} = record as IOnlinePayData
 		assign(result, {
 			accountNo: payName,
 			loginUrl,
@@ -42,7 +42,7 @@ export const hashPayInfo = (
 			bankLoginUrl,
 			transferPin,
 			corporateID,
-		} = record as IGetBankInfoData
+		} = record as IBankInfoOffState
 		assign(result, {
 			accountNo: displayName,
 			loginPin,

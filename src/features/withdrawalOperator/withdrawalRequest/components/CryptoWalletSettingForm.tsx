@@ -8,25 +8,25 @@ import {
 	Select,
 	Typography,
 } from 'antd'
-import {
-	IGetBankInfoData,
-	IGetCryptoPayData,
-	IGetCryptoWalletData,
-	IGetOnlinePayData,
-	IWithdrawalRequestForm,
-} from 'features/withdrawalOperator/type'
+import { IWithdrawalRequestForm } from 'features/withdrawalOperator/type'
 import { useTranslation } from 'react-i18next'
 import { multiEqual } from 'common/utils'
 import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
 import { find } from 'lodash'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import {
+	IBankInfoOffState,
+	ICryptoPayData,
+	ICryptoWalletData,
+	IOnlinePayData,
+} from 'common/service/baseDataApi/type'
 
 interface ICryptoWalletSettingFormProps {
 	form: FormInstance<IWithdrawalRequestForm>
-	cryptoWalletList: IGetCryptoWalletData[]
+	cryptoWalletList: ICryptoWalletData[]
 	status: number
 	onPayInfoClicked: (
-		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
+		record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
 	) => void
 }
 

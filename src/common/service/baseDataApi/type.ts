@@ -110,3 +110,40 @@ export interface IGameList {
 	gameId: string
 	name: string
 }
+
+// 取得可用的 OnlinePayList
+export interface IGetOnlinePayListArgs {
+	currencyId: number
+	sysId: number
+	amount: number
+	custId: number
+}
+
+export interface IOnlinePayData {
+	payId: number
+	payName: string
+	channelId: number
+	loginUrl: string
+	loginAccount: string
+	loginPassword: string
+	transferPin: string
+	loginPin: string
+}
+
+// 取得可用的 CryptoPay List
+export interface IGetCryptoPayListArgs {
+	currencyId: number
+	channelName: string
+	amount: number
+	custId: number
+}
+
+export type ICryptoPayData = IOnlinePayData
+
+// 取得可用的 cryptoWallet
+export interface IGetCryptoWalletArgs {
+	purpose: number
+	currencyId: number
+}
+
+export type ICryptoWalletData = IBankInfoOffState
