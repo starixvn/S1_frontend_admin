@@ -4,10 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Col, Form, message, Row, Spin } from 'antd'
 import {
 	useDeletePictureMutation,
-	useGetCryptoPayListQuery,
-	useGetCryptoWalletListQuery,
-	useGetLocalBankListQuery,
-	useGetOnlinePayListQuery,
 	useGetReceiptPictureQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
@@ -23,9 +19,6 @@ import { AffixButtons } from 'components/AffixButtons'
 import { WithdrawalRequestButtonGroup } from 'features/withdrawalOperator/withdrawalRequest/WithdrawalRequestButtonGroup'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
-	IGetBankInfoData,
-	IGetCryptoPayData,
-	IGetOnlinePayData,
 	IGetWithdrawalData,
 	IPayInfo,
 	IWithdrawalAccounting,
@@ -35,6 +28,7 @@ import { WithdrawalRequestMemberInfo } from 'features/withdrawalOperator/withdra
 import useMemberInfo from 'features/withdrawalOperator/withdrawalRequest/hooks/useMemberInfo'
 import {
 	AccountTypeEnum,
+	PurposeEnum,
 	WithdrawalStatusEnum,
 	WithdrawalTypeEnum,
 } from 'features/withdrawalOperator/constants'
@@ -55,6 +49,17 @@ import {
 } from 'features/memberProfile/api'
 import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 import { CryptoWalletSettingForm } from 'features/withdrawalOperator/withdrawalRequest/components/CryptoWalletSettingForm'
+import {
+	IBankInfoOffState,
+	ICryptoPayData,
+	IOnlinePayData,
+} from 'common/service/baseDataApi/type'
+import {
+	useGetBankInfoOffListQuery,
+	useGetCryptoPayListQuery,
+	useGetCryptoWalletListQuery,
+	useGetOnlinePayListQuery,
+} from 'common/service/baseDataApi'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
@@ -159,14 +164,15 @@ const WithdrawalRequest = () => {
 		}
 	)
 
-	const { data: { data: localBankList = [] } = {} } = useGetLocalBankListQuery(
-		{ currencyId, purpose: 2 },
-		{ skip: !currencyId }
-	)
+	const { data: { data: localBankList = [] } = {} } =
+		useGetBankInfoOffListQuery(
+			{ currencyId, purpose: PurposeEnum.Withdrawal },
+			{ skip: !currencyId }
+		)
 
 	const { data: { data: cryptoWalletList = [] } = {} } =
 		useGetCryptoWalletListQuery(
-			{ currencyId },
+			{ currencyId, purpose: PurposeEnum.Withdrawal },
 			// accountType 為 crypto 時才打 api
 			{ skip: !currencyId || accountType !== AccountTypeEnum.Crypto }
 		)
@@ -191,7 +197,7 @@ const WithdrawalRequest = () => {
 
 	// 顯示 bankInfo
 	const handlePayInfoClicked = (
-		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
+		record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
 	) => {
 		setPayInfo(hashPayInfo(currentWithdrawalType, record))
 		payInfoModal.onOpen()

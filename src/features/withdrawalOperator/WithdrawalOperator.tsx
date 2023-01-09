@@ -2,11 +2,13 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
 	useExportWithdrawalListMutation,
-	useGetBankCodeListQuery,
-	useGetVipLevelListQuery,
 	useLazyGetWithdrawalListQuery,
 } from 'features/withdrawalOperator/api'
-import { useGetCalCodeListQuery } from 'common/service/baseDataApi'
+import {
+	useGetBankCodeListQuery,
+	useGetCalCodeListQuery,
+	useGetVipLevelEnumBySiteIdQuery,
+} from 'common/service/baseDataApi'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { WithdrawalOperatorFilter } from 'features/withdrawalOperator/WithdrawalOperatorFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -79,7 +81,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: vipLevelList = [] } = {},
 		isLoading: isGetVipLevelListLoading,
-	} = useGetVipLevelListQuery({ siteId })
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
 	const {
 		data: { data: calCodeList = [] } = {},
