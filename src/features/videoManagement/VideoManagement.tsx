@@ -16,11 +16,10 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import VideoManagementFilter from 'features/videoManagement/VideoManagementFilter'
 import VideoManagementTable from 'features/videoManagement/VideoManagementTable'
 import {
-	CurrencyEnum,
-	LangIdEnum,
+	getLangIdsByCurrencies,
 	LangObj,
 } from 'features/videoManagement/constants'
-import { isEmpty } from 'lodash'
+import { includes, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import {
 	PAGINATION,
@@ -43,9 +42,24 @@ const VideoManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	)
 
 	const {
-		data: { data: LangTypeList = [] } = {},
+		data: filterLangTypeList, // * 根據 currencies 回傳支援的 langIds
 		isLoading: isGetLangTypeListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'LangType' })
+	} = useGetEnumTypeQuery(
+		{ enumName: 'LangType' },
+		{
+			selectFromResult: ({
+				data: { data: langTypeList = [] } = {},
+				isLoading,
+			}) => ({
+				data: langTypeList.filter(({ value: currency }) => {
+					const langIdsByCurrencies = getLangIdsByCurrencies(currencyIds)
+
+					return includes(langIdsByCurrencies, currency)
+				}),
+				isLoading,
+			}),
+		}
+	)
 
 	const [
 		getVideoList,
@@ -61,50 +75,6 @@ const VideoManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: videoListTotal,
 	})
-
-	let currencyList: number[] = []
-	const getCurrencyList = (langType: number) => {
-		currencyIds.forEach(currency => {
-			switch (currency) {
-				case CurrencyEnum.MYR:
-					currencyList = currencyList.concat([
-						LangIdEnum.en,
-						LangIdEnum.cs,
-						LangIdEnum.my,
-					])
-					return
-				case CurrencyEnum.THB:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.th])
-					return
-				case CurrencyEnum.IDR:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.id])
-					return
-				case CurrencyEnum.INR:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.hi])
-					return
-				case CurrencyEnum.BDT:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.bd])
-					return
-				case CurrencyEnum.CNY:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.cs])
-					return
-				case CurrencyEnum.VND:
-					currencyList = currencyList.concat([LangIdEnum.en, LangIdEnum.vn])
-					return
-				case CurrencyEnum.USD:
-					currencyList = currencyList.concat([LangIdEnum.en])
-					return
-				default:
-					currencyList = currencyList.concat([])
-					break
-			}
-		})
-		return currencyList.includes(langType)
-	}
-
-	const filterLangTypeList = LangTypeList.filter(({ value }) =>
-		getCurrencyList(value)
-	)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -158,12 +128,12 @@ const VideoManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					siteId,
 					currencyId,
 					before: {
-						langId: Number(LangObj[langId]),
+						langId: LangObj[langId],
 						title: beforeTitle,
 						link: beforeLink,
 					},
 					after: {
-						langId: Number(LangObj[langId]),
+						langId: LangObj[langId],
 						title,
 						link,
 					},
