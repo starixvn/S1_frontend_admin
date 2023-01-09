@@ -403,7 +403,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				/>
 				<AffixButtons.AddBatch
 					onClick={vipLevelAssignBatchModal.onOpen}
-					disabled={appeovedPermission?.canUse}
+					disabled={!appeovedPermission?.canUse}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
