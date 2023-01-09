@@ -49,7 +49,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		actionPermissions: {
 			editPermission,
 			exportExcelPermission,
-			changeVIPLevelPermission,
+			appeovedPermission,
 		} = {},
 	} = useAuth()
 	const vipLevelAssignBatchModal = useModal()
@@ -403,7 +403,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				/>
 				<AffixButtons.AddBatch
 					onClick={vipLevelAssignBatchModal.onOpen}
-					disabled={changeVIPLevelPermission?.canUse}
+					disabled={appeovedPermission?.canUse}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
