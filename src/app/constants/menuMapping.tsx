@@ -145,7 +145,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId:
 			paths.customerSupport.sub.operatorService.sub.smsGenerator.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Message/PersonalMsgBatch',
 		internalFunctionKey: allowedRoles.MessagePersonalMsgBatch,
 		newAdminPath:
