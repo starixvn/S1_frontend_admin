@@ -128,8 +128,6 @@ const SetMessageModal = ({
 			title={isAdd ? t('Label_SendMessage') : t('Label_EditMessage')}
 			open={open}
 			onCancel={onCancel}
-			okText={t('Label_Submit')}
-			cancelText={t('Label_Cancel')}
 			onOk={() => onFinish(isAdd)}
 			width='60vw'
 			confirmLoading={loading}
@@ -138,7 +136,23 @@ const SetMessageModal = ({
 			afterClose={() => form.resetFields()}
 			destroyOnClose
 			// 沒編輯權限則關閉 footer submit button
-			footer={!editPermission?.canUse && false}
+			footer={
+				editPermission?.canUse
+					? [
+							<Button key='back' onClick={onCancel}>
+								{t('Label_Cancel')}
+							</Button>,
+							<Button
+								key='submit'
+								type='primary'
+								loading={loading}
+								onClick={() => onFinish(isAdd)}
+							>
+								{t('Label_Submit')}
+							</Button>,
+					  ]
+					: null
+			}
 		>
 			{/* 新增 */}
 			{isAdd && (
