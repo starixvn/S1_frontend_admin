@@ -1,4 +1,3 @@
-import { first } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -66,7 +65,8 @@ const IovationFilter = ({
 						form={form}
 						onFinish={() => onSearch({})}
 						initialValues={{
-							currencyId: first(currencyListBySite)?.currencyId,
+							currencyId: 0,
+							deviceType: 0,
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -106,6 +106,7 @@ const IovationFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='currencyId' label={t('Label_Currency')}>
 									<Select placeholder='select'>
+										<Option value={0}>{t('Label_SelectAll')}</Option>
 										{currencyListBySite?.map(({ currencyId, isoCode }) => (
 											<Option key={currencyId} value={currencyId}>
 												{isoCode}
@@ -117,6 +118,7 @@ const IovationFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='deviceType' label={t('Label_DeviceType')}>
 									<Select placeholder='select'>
+										<Option value={0}>{t('Label_SelectAll')}</Option>
 										{iovationDeviceTypeList?.map(({ name, value }) => (
 											<Option key={value} value={value}>
 												{name}
