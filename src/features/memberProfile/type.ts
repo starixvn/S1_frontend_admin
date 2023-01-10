@@ -166,6 +166,7 @@ export interface IGetCustNotesData {
 	createTime: string
 	updateTime: string
 	operator: string
+	canEdit: boolean
 }
 
 export type IGetCustNotesResponse = IAxiosResponse<IGetCustNotesData[]>
