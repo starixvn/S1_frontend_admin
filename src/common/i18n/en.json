@@ -991,5 +991,6 @@
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
 	"Label_SelectStatus": "Select Status",
 	"Label_DepositBonus": "Deposit Bonus",
-	"Label_SearchPage": "Search Page ..."
+	"Label_SearchPage": "Search Page ...",
+	"Label_PreferLanguages": "Prefer Languages"
 }

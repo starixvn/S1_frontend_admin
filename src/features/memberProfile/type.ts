@@ -97,6 +97,7 @@ export interface IGetBasicInfoData {
 	affInfo: null | IAffInfo
 	phoneRewardTime: string
 	emailRewardTime: string
+	userLang: string
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
@@ -168,7 +169,6 @@ export interface IGetCustNotesData {
 	createTime: string
 	updateTime: string
 	operator: string
-	canEdit: boolean
 }
 
 export type IGetCustNotesResponse = IAxiosResponse<IGetCustNotesData[]>
