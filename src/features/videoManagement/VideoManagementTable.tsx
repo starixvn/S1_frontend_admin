@@ -62,7 +62,7 @@ const VideoManagementTable = ({
 		{
 			title: t('Label_Action'),
 			key: 'action',
-			width: 100,
+			width: '15%',
 			align: 'center' as 'center',
 			render: (record: IGetVideoData) => {
 				const editable = isEditing(record)
@@ -90,7 +90,7 @@ const VideoManagementTable = ({
 			title: t('Label_Currency'),
 			key: 'currencyId',
 			dataIndex: 'currencyId',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			render: (currencyId: number) => {
 				return find(
@@ -103,7 +103,7 @@ const VideoManagementTable = ({
 			title: t('Label_LangId'),
 			key: 'langId',
 			dataIndex: 'langId',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			render: (langId: string) => langId || '-',
 		},
@@ -111,7 +111,7 @@ const VideoManagementTable = ({
 			title: t('Label_Title'),
 			key: 'title',
 			dataIndex: 'title',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			editable: true,
 			render: (title: string) => title || '-',
@@ -120,7 +120,7 @@ const VideoManagementTable = ({
 			title: t('Label_Link'),
 			key: 'link',
 			dataIndex: 'link',
-			width: 100,
+			width: '25%',
 			align: 'center' as 'center',
 			editable: true,
 			render: (link: string) => (
@@ -133,7 +133,7 @@ const VideoManagementTable = ({
 			title: t('Label_Operator'),
 			key: 'operator',
 			dataIndex: 'operator',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			render: (operator: string) => operator || '-',
 		},
@@ -141,7 +141,7 @@ const VideoManagementTable = ({
 			title: t('Label_LastUpdateTime'),
 			key: 'lastUpdateTime',
 			dataIndex: 'lastUpdateTime',
-			width: 100,
+			width: '20%',
 			align: 'center' as 'center',
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
