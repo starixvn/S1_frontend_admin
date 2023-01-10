@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const Announcement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2239,6 +2246,14 @@ const routes: RouteObject[] = [
 						functionId={paths.member.sub.shieldTaggingReport.functionId}
 					>
 						<ShieldTaggingReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.announcement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.announcement.functionId}>
+						<Announcement />
 					</AuthRequire>
 				),
 			},

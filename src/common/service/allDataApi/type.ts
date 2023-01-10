@@ -73,3 +73,4 @@ export interface IGateWayData {
 export interface ILangCodesData {
 	iLangList: string[]
 }
+
