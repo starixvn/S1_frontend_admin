@@ -95,6 +95,8 @@ export interface IGetBasicInfoData {
 	tagList: ITagData[]
 	// * affInfo 參數代理會員才會有值，一般會員 affInfo 為 null 的
 	affInfo: null | IAffInfo
+	phoneRewardTime: string
+	emailRewardTime: string
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
