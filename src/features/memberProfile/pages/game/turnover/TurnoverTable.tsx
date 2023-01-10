@@ -1,7 +1,7 @@
 import { IGetTurnoverData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { Typography } from 'antd'
 import { isPositiveNum } from 'common/utils'
 
@@ -46,7 +46,7 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 					}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(stakeSettled + stakeNotRollover)}
+					{numFormatToDigits(stakeSettled + stakeNotRollover)}
 				</Text>
 			),
 		},
@@ -61,7 +61,7 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 					type={isPositiveNum(stakeSettled) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(stakeSettled || 0)}
+					{numFormatToDigits(stakeSettled || 0)}
 				</Text>
 			),
 		},
@@ -76,7 +76,7 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 					type={isPositiveNum(stakeNotRollover) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(stakeNotRollover || 0)}
+					{numFormatToDigits(stakeNotRollover || 0)}
 				</Text>
 			),
 		},
@@ -91,7 +91,7 @@ const TurnoverTable = ({ loading, turnoverData }: ITurnoverTableProps) => {
 					type={isPositiveNum(winlostAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(winlostAmount || 0)}
+					{numFormatToDigits(winlostAmount || 0)}
 				</Text>
 			),
 		},

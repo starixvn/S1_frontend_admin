@@ -27,7 +27,7 @@ import {
 	useLazyGetIpUserQuery,
 	useLazyGetDeviceUserListQuery,
 } from 'features/memberProfile/api'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	IFinancialLogsResponse,
@@ -256,7 +256,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(walletBalanceInfo?.balance || 0)}
+										{numFormatToDigits(walletBalanceInfo?.balance || 0)}
 									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_RemainingTurnover')}>
@@ -267,7 +267,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(
+										{numFormatToDigits(
 											walletBalanceInfo?.remainingTurnOver || 0
 										)}
 									</Text>
@@ -280,7 +280,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(
+										{numFormatToDigits(
 											walletBalanceInfo?.eligibleWithdrawal || 0
 										)}
 									</Text>
@@ -293,7 +293,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(walletBalanceInfo?.depositSum || 0)}
+										{numFormatToDigits(walletBalanceInfo?.depositSum || 0)}
 									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_WithdrawalSummary')}>
@@ -304,9 +304,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(
-											walletBalanceInfo?.withdrawlSum || 0
-										)}
+										{numFormatToDigits(walletBalanceInfo?.withdrawlSum || 0)}
 									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_PaymentFee')}>
@@ -317,7 +315,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(walletBalanceInfo?.paymentFee || 0)}
+										{numFormatToDigits(walletBalanceInfo?.paymentFee || 0)}
 									</Text>
 								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_TotalAdjustment')}>
@@ -328,9 +326,7 @@ const Dashboard = () => {
 												: 'danger'
 										}
 									>
-										{numberFormatter.format(
-											walletBalanceInfo?.totalAdjustment || 0
-										)}
+										{numFormatToDigits(walletBalanceInfo?.totalAdjustment || 0)}
 									</Text>
 								</Descriptions.Item>
 							</Descriptions>

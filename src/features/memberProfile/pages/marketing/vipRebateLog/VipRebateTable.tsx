@@ -4,7 +4,7 @@ import { Button, TablePaginationConfig, Typography } from 'antd'
 import { IGetVipRebateLogData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { isPositiveNum } from 'common/utils'
 
 const { Text } = Typography
@@ -72,7 +72,7 @@ const VipRebateTable = ({
 					type={isPositiveNum(rcRedeemAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(rcRedeemAmount || 0)}
+					{numFormatToDigits(rcRedeemAmount || 0)}
 				</Text>
 			),
 		},

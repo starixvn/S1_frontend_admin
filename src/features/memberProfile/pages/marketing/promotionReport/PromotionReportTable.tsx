@@ -9,7 +9,7 @@ import {
 } from 'features/memberProfile/type'
 import { find, isEmpty } from 'lodash'
 import moment from 'moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import {
 	PromotionReportFullFillTypeEnum,
 	PromotionReportStatusEnum,
@@ -116,7 +116,7 @@ const PromotionReportTable = ({
 							type={isPositiveNum(info.Amount) ? undefined : 'danger'}
 							style={{ whiteSpace: 'nowrap', padding: '5px' }}
 						>
-							{numberFormatter.format(info.Amount || 0)}
+							{numFormatToDigits(info.Amount || 0)}
 						</Text>
 					</Row>
 				))
@@ -145,7 +145,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(bonusAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(bonusAmount || 0)}
+					{numFormatToDigits(bonusAmount || 0)}
 				</Text>
 			),
 		},
@@ -160,7 +160,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(lockedAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(lockedAmount || 0)}
+					{numFormatToDigits(lockedAmount || 0)}
 				</Text>
 			),
 		},
@@ -175,7 +175,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(lockedAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(lockedAmount || 0)}
+					{numFormatToDigits(lockedAmount || 0)}
 				</Text>
 			),
 		},
@@ -190,7 +190,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(rollOver) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(rollOver || 0)}
+					{numFormatToDigits(rollOver || 0)}
 				</Text>
 			),
 		},
@@ -210,7 +210,7 @@ const PromotionReportTable = ({
 						type={isPositiveNum(num) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(num)}
+						{numFormatToDigits(num)}
 					</Text>
 				)
 			},
@@ -226,7 +226,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(turnOver) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(turnOver || 0)}
+					{numFormatToDigits(turnOver || 0)}
 				</Text>
 			),
 		},
@@ -241,7 +241,7 @@ const PromotionReportTable = ({
 					type={isPositiveNum(cancelBonusAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(cancelBonusAmount || 0)}
+					{numFormatToDigits(cancelBonusAmount || 0)}
 				</Text>
 			),
 		},

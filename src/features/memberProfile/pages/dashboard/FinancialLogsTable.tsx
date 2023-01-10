@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import moment from 'moment/moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 
 const { Option } = Select
@@ -88,7 +88,7 @@ const FinancialLogsTable = ({
 				const { changeAmount, direction } = records
 				// 後端回傳direction參數:1代表'+' 2代表'-'
 				const sign = direction === 1 ? '+' : '-'
-				return `${sign}${numberFormatter.format(changeAmount)}`
+				return `${sign}${numFormatToDigits(changeAmount)}`
 			},
 		},
 		{
