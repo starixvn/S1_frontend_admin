@@ -3,7 +3,6 @@ import {
 	Form,
 	FormInstance,
 	Space,
-	Table,
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
@@ -14,9 +13,10 @@ import { PermissionInterface } from 'type'
 import { Currency } from 'common/enum/type'
 import { timeFormat } from 'common/utils/format'
 import { timeZoneLocalOffset } from 'common/utils'
-import { EditableCellRows } from 'components'
+import { EditableCellRows, Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
+import { LayoutContent } from 'app/pages/layout'
 
 interface IVideoManagementTableProps {
 	loading: boolean
@@ -171,20 +171,22 @@ const VideoManagementTable = ({
 	})
 
 	return (
-		<Form form={form} component={false}>
-			<Table
-				loading={loading}
-				components={{
-					body: {
-						cell: EditableCellRows,
-					},
-				}}
-				pagination={pagination as TablePaginationConfig}
-				onChange={onTableChange}
-				dataSource={videoList ?? []}
-				columns={mergeColumns}
-			/>
-		</Form>
+		<LayoutContent.Card>
+			<Form form={form} component={false}>
+				<Table
+					loading={loading}
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					pagination={pagination as TablePaginationConfig}
+					onChange={onTableChange}
+					dataSource={videoList ?? []}
+					columns={mergeColumns}
+				/>
+			</Form>
+		</LayoutContent.Card>
 	)
 }
 
