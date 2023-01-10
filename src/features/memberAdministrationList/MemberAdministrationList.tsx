@@ -14,7 +14,7 @@ import {
 	useQueryParams,
 } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
-import { isArray, isEmpty } from 'lodash'
+import { isArray, isEmpty, trim } from 'lodash'
 import download from 'downloadjs'
 import {
 	useLazyGetMemberListQuery,
@@ -83,6 +83,8 @@ const MemberAdministrationList = ({
 			statuses,
 			vipLevel,
 			currencyIds,
+			userName,
+			tpUserName,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -97,6 +99,8 @@ const MemberAdministrationList = ({
 				tags: tags.length !== 0 ? tags : null,
 				status: statuses,
 				vipLevel,
+				userName: userName ? trim(userName) : '',
+				tpUserName: tpUserName ? trim(tpUserName) : '',
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
