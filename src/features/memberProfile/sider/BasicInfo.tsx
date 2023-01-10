@@ -85,6 +85,7 @@ const BasicInfo = ({
 		isOnline,
 		vipLogo,
 		custLineProfile,
+		userLang,
 	} = custBasicInfo ?? {}
 
 	const { userId: lineUserId, createTime: lineBindingTime } =
@@ -196,6 +197,11 @@ const BasicInfo = ({
 				</Row>
 				<Row>
 					<StyledText>{`${t('Label_Currency')} : ${currency}`}</StyledText>
+				</Row>
+				<Row>
+					<StyledText>{`${t(
+						'Label_PreferLanguages'
+					)} : ${userLang}`}</StyledText>
 				</Row>
 				<Row>
 					<StyledText>{`${t(
