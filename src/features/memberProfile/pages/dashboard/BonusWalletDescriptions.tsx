@@ -1,6 +1,6 @@
 import { Descriptions, Popover, Spin, Typography } from 'antd'
 import { isPositiveNum } from 'common/utils'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import {
 	IBonusWalletDetailData,
 	IBonusWalletInfoData,
@@ -59,12 +59,12 @@ const BonusWalletDescriptions = ({
 			>
 				<Descriptions.Item label={t('Label_BonusWallet')}>
 					<Text type={isPositiveNum(bonusWallet) ? undefined : 'danger'}>
-						{numberFormatter.format(bonusWallet || 0)}
+						{numFormatToDigits(bonusWallet || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_BonusRollover')}>
 					<Text type={isPositiveNum(bonusRollover) ? undefined : 'danger'}>
-						{numberFormatter.format(bonusRollover || 0)}
+						{numFormatToDigits(bonusRollover || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_TotalBonus')}>
@@ -81,24 +81,24 @@ const BonusWalletDescriptions = ({
 										<Text
 											type={isPositiveNum(firstDeposit) ? undefined : 'danger'}
 										>
-											{numberFormatter.format(firstDeposit || 0)}
+											{numFormatToDigits(firstDeposit || 0)}
 										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ReDeposit')}>
 										<Text
 											type={isPositiveNum(reDeposit) ? undefined : 'danger'}
 										>
-											{numberFormatter.format(reDeposit || 0)}
+											{numFormatToDigits(reDeposit || 0)}
 										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_FreeBet')}>
 										<Text type={isPositiveNum(freeBet) ? undefined : 'danger'}>
-											{numberFormatter.format(freeBet || 0)}
+											{numFormatToDigits(freeBet || 0)}
 										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_CashBack')}>
 										<Text type={isPositiveNum(cashBack) ? undefined : 'danger'}>
-											{numberFormatter.format(cashBack || 0)}
+											{numFormatToDigits(cashBack || 0)}
 										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item
@@ -109,14 +109,14 @@ const BonusWalletDescriptions = ({
 												isPositiveNum(retentionBonus) ? undefined : 'danger'
 											}
 										>
-											{numberFormatter.format(retentionBonus || 0)}
+											{numFormatToDigits(retentionBonus || 0)}
 										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label={t('BonusType.Label_ManualBonus')}>
 										<Text
 											type={isPositiveNum(manualBonus) ? undefined : 'danger'}
 										>
-											{numberFormatter.format(manualBonus || 0)}
+											{numFormatToDigits(manualBonus || 0)}
 										</Text>
 									</Descriptions.Item>
 								</Descriptions>
@@ -126,12 +126,12 @@ const BonusWalletDescriptions = ({
 							<Typography.Link
 								type={isPositiveNum(totalBonus) ? undefined : 'danger'}
 							>
-								{numberFormatter.format(totalBonus || 0)}
+								{numFormatToDigits(totalBonus || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
 						<Text type={isPositiveNum(totalBonus) ? undefined : 'danger'}>
-							{numberFormatter.format(totalBonus || 0)}
+							{numFormatToDigits(totalBonus || 0)}
 						</Text>
 					)}
 				</Descriptions.Item>
@@ -152,7 +152,7 @@ const BonusWalletDescriptions = ({
 													isPositiveNum(rewardAmountSum) ? undefined : 'danger'
 												}
 											>
-												{numberFormatter.format(rewardAmountSum || 0)}
+												{numFormatToDigits(rewardAmountSum || 0)}
 											</Text>
 										</Descriptions.Item>
 									))}
@@ -163,14 +163,14 @@ const BonusWalletDescriptions = ({
 							<Typography.Link
 								type={isPositiveNum(custRewardTotalSum) ? undefined : 'danger'}
 							>
-								{numberFormatter.format(custRewardTotalSum || 0)}
+								{numFormatToDigits(custRewardTotalSum || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
 						<Text
 							type={isPositiveNum(custRewardTotalSum) ? undefined : 'danger'}
 						>
-							{numberFormatter.format(custRewardTotalSum || 0)}
+							{numFormatToDigits(custRewardTotalSum || 0)}
 						</Text>
 					)}
 				</Descriptions.Item>
@@ -194,7 +194,7 @@ const BonusWalletDescriptions = ({
 															: 'danger'
 													}
 												>
-													{numberFormatter.format(rebateAmountSum || 0)}
+													{numFormatToDigits(rebateAmountSum || 0)}
 												</Text>
 											</Descriptions.Item>
 										)
@@ -206,14 +206,14 @@ const BonusWalletDescriptions = ({
 							<Typography.Link
 								type={isPositiveNum(custRebateTotalSum) ? undefined : 'danger'}
 							>
-								{numberFormatter.format(custRebateTotalSum || 0)}
+								{numFormatToDigits(custRebateTotalSum || 0)}
 							</Typography.Link>
 						</Popover>
 					) : (
 						<Typography.Text
 							type={isPositiveNum(custRebateTotalSum) ? undefined : 'danger'}
 						>
-							{numberFormatter.format(custRebateTotalSum ?? 0)}
+							{numFormatToDigits(custRebateTotalSum ?? 0)}
 						</Typography.Text>
 					)}
 				</Descriptions.Item>
@@ -221,14 +221,14 @@ const BonusWalletDescriptions = ({
 					<Typography.Text
 						type={isPositiveNum(cancelBonusAmount) ? undefined : 'danger'}
 					>
-						{numberFormatter.format(cancelBonusAmount ?? 0)}
+						{numFormatToDigits(cancelBonusAmount ?? 0)}
 					</Typography.Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RewardsPoint')}>
 					<Typography.Text
 						type={isPositiveNum(rewardPoint) ? undefined : 'danger'}
 					>
-						{numberFormatter.format(rewardPoint ?? 0)}
+						{numFormatToDigits(rewardPoint ?? 0)}
 					</Typography.Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RunningBonus')}>

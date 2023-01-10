@@ -2,7 +2,7 @@ import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetAdjustmentInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -84,7 +84,7 @@ const AdjustmentTable = ({
 					type={isPositiveNum(amount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(amount || 0)}
+					{numFormatToDigits(amount || 0)}
 				</Text>
 			),
 		},

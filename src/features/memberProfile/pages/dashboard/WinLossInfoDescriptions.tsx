@@ -1,6 +1,6 @@
 import { Descriptions, Spin, Typography } from 'antd'
 import { isPositiveNum } from 'common/utils'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { IWinLossInfoData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 
@@ -30,29 +30,29 @@ const WinLossInfoDescriptions = ({
 			>
 				<Descriptions.Item label={t('Label_WinLoss')}>
 					<Text type={isPositiveNum(winLoss || 0) ? undefined : 'danger'}>
-						{numberFormatter.format(winLoss || 0)}
+						{numFormatToDigits(winLoss || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_ValidBet')}>
 					<Text type={isPositiveNum(validBet || 0) ? undefined : 'danger'}>
-						{numberFormatter.format(validBet || 0)}
+						{numFormatToDigits(validBet || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Winnings')}>
 					<Text type={isPositiveNum(winnings || 0) ? undefined : 'danger'}>
-						{numberFormatter.format(winnings || 0)}
+						{numFormatToDigits(winnings || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Losses')}>
 					<Text type={isPositiveNum(losses || 0) ? undefined : 'danger'}>
-						{numberFormatter.format(losses || 0)}
+						{numFormatToDigits(losses || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_OutstandingAmount')}>
 					<Text
 						type={isPositiveNum(outstandingAmount || 0) ? undefined : 'danger'}
 					>
-						{numberFormatter.format(outstandingAmount || 0)}
+						{numFormatToDigits(outstandingAmount || 0)}
 					</Text>
 				</Descriptions.Item>
 			</Descriptions>
