@@ -17,6 +17,7 @@ import {
 	useLazyGetBankInfoListQuery,
 	useLazyGetPaySettingListQuery,
 	useSetBankStatusMutation,
+	useSetChargeFeeMutation,
 	useSetCryptoInfoMutation,
 	useSetGlobalStatusMutation,
 	useSetPayListLoginInfoMutation,
@@ -27,6 +28,7 @@ import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManag
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
 import {
 	AmountRuleEnum,
+	EditModalTypeEnum,
 	IEditForm,
 	IFilterForm,
 	IGetCryptoInfoData,
@@ -146,6 +148,10 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// PaySetting
 	const [setPaySetting, { isLoading: isSetPaySettingLoading }] =
 		useSetPaySettingMutation()
+
+	// ChargeFee
+	const [setChargeFee, { isLoading: isSetChargeFeeLoading }] =
+		useSetChargeFeeMutation()
 
 	// cryptoSetting 相關
 	const {
@@ -293,11 +299,22 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	// 編輯彈窗
-	const handleEditClick = (record: IGetPaySettingData) => {
-		const { fixedAmountList: rawFixedAmountList, ...rest } = record
+	const handleEditClick = (
+		record: IGetPaySettingData,
+		type: EditModalTypeEnum
+	) => {
+		const {
+			fixedAmountList: rawFixedAmountList,
+			chargeFeePercentage,
+			chargeFeePreCount,
+			...rest
+		} = record
 		const parsedFixedAmount = FixedAmountConverter.S2C(rawFixedAmountList)
 		editForm.setFieldsValue({
 			fixedAmountList: parsedFixedAmount,
+			percentage: chargeFeePercentage,
+			preCount: chargeFeePreCount,
+			editType: type,
 			...rest,
 		})
 		editPaySettingModal.onOpen()
@@ -311,36 +328,60 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			amountRule,
 			pointLevel,
 			sort,
+			percentage,
+			preCount,
 		} = await editForm.validateFields()
-		const { currencyId, channelId } = editForm.getFieldsValue(true)
-		if (
-			amountRule === AmountRuleEnum.Fixed &&
-			FixedAmountConverter.Validator(fixedAmountList)
-		) {
-			// 此處先檢查若 fixedAmount欄位填寫的參數有沒有正確
-			message.error(`${t('Label_FixedAmount')} : ${t('Label_FollowValueRule')}`)
-		} else {
+		const { currencyId, channelId, editType } = editForm.getFieldsValue(true)
+
+		// Edit
+		if (editType === EditModalTypeEnum.Edit) {
+			if (
+				amountRule === AmountRuleEnum.Fixed &&
+				FixedAmountConverter.Validator(fixedAmountList)
+			) {
+				// 此處先檢查若 fixedAmount欄位填寫的參數有沒有正確
+				message.error(
+					`${t('Label_FixedAmount')} : ${t('Label_FollowValueRule')}`
+				)
+			} else {
+				try {
+					await setPaySetting({
+						siteId,
+						currencyId,
+						channelId,
+						minAmount,
+						maxAmount,
+						pointLevel,
+						sort,
+						amountRule,
+						fixedAmountList:
+							amountRule === AmountRuleEnum.Fixed
+								? FixedAmountConverter.C2S(fixedAmountList)
+								: null,
+					}).unwrap()
+					message.success(t('System.Label_Success'))
+					editPaySettingModal.onCancel()
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+			}
+		}
+
+		// FeeSetting
+		if (editType === EditModalTypeEnum.FeeSetting) {
 			try {
-				await setPaySetting({
+				await setChargeFee({
 					siteId,
 					currencyId,
 					channelId,
-					minAmount,
-					maxAmount,
-					pointLevel,
-					sort,
-					amountRule,
-					fixedAmountList:
-						amountRule === AmountRuleEnum.Fixed
-							? FixedAmountConverter.C2S(fixedAmountList)
-							: null,
+					percentage,
+					preCount,
 				}).unwrap()
 				message.success(t('System.Label_Success'))
 				editPaySettingModal.onCancel()
-				// 視覺上確保 Modal 關閉後才清除資料
-				setTimeout(() => {
-					editForm.resetFields()
-				}, 500)
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -505,7 +546,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 			/>
 			<EditPaymentModal
-				loading={isSetPaySettingLoading}
+				loading={isSetPaySettingLoading || isSetChargeFeeLoading}
 				form={editForm}
 				visible={editPaySettingModal.visible}
 				onCancel={editPaySettingModal.onCancel}

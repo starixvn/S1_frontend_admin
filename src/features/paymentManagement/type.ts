@@ -75,6 +75,8 @@ export interface IGetPaySettingData {
 	status: number
 	globalstatus: number
 	method: number
+	chargeFeePercentage: number
+	chargeFeePreCount: number
 }
 
 // 支付三方設定
@@ -147,6 +149,9 @@ export type IEditForm = {
 	sort: number
 	channelName: string
 	type: number
+	percentage: number
+	preCount: number
+	editType: number
 }
 
 export interface IGetCryptoInfoData {
@@ -161,4 +166,17 @@ export interface ISetCryptoInfoArgs {
 	currencyId: number
 	network: number
 	status: number
+}
+
+export interface ISetPaySettingChargeFeeArgs {
+	siteId?: number
+	currencyId: number
+	channelId: number
+	percentage: number
+	preCount: number
+}
+
+export enum EditModalTypeEnum {
+	Edit,
+	FeeSetting,
 }
