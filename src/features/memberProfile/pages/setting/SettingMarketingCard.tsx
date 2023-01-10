@@ -1,4 +1,4 @@
-import { Card, Col, Popconfirm, Row, Switch, Typography } from 'antd'
+import { Card, Col, Popconfirm, Row, Space, Switch, Typography } from 'antd'
 import {
 	IGetBasicInfoData,
 	PayoutVerificationRewardOTPTypeEnum,
@@ -6,6 +6,10 @@ import {
 	ISettingMarketingPermissions,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
+import moment from 'moment'
+import { timeFormat } from 'common/utils/format'
+import { useTimeZone } from 'components/TimeZoneSelect'
+import { isNull } from 'lodash'
 
 interface ISettingMarketingCardProps {
 	marketingPermissions: ISettingMarketingPermissions
@@ -29,39 +33,75 @@ const SettingMarketingCard = ({
 	onSetPayoutVerificationReward,
 }: ISettingMarketingCardProps) => {
 	const { t } = useTranslation()
-	const isRebatePayoutStatus = Boolean(custBasicInfo.enableRebate)
+	const { timeZoneUtcOffset } = useTimeZone()
+	const { enableRebate, phoneRewardTime, emailRewardTime } = custBasicInfo
+	const isRebatePayoutStatus = Boolean(enableRebate)
 	return (
 		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Marketing')} style={{ height: '100%' }}>
 				<p>
-					<Popconfirm
-						disabled={!phoneVerifiedRewardPermission?.canUse}
-						title={t('Label_AreYouSure')}
-						onConfirm={() =>
-							onSetPayoutVerificationReward(
-								PayoutVerificationRewardOTPTypeEnum.Phone
-							)
-						}
-					>
-						<Typography.Link disabled={!phoneVerifiedRewardPermission?.canUse}>
-							{t('Label_PhoneVerifiedReward')}
-						</Typography.Link>
-					</Popconfirm>
+					{isNull(phoneRewardTime) ? (
+						<Popconfirm
+							disabled={!phoneVerifiedRewardPermission?.canUse}
+							title={t('Label_AreYouSure')}
+							onConfirm={() =>
+								onSetPayoutVerificationReward(
+									PayoutVerificationRewardOTPTypeEnum.Phone
+								)
+							}
+						>
+							<Typography.Link
+								disabled={!phoneVerifiedRewardPermission?.canUse}
+							>
+								{t('Label_PhoneVerifiedReward')}
+							</Typography.Link>
+						</Popconfirm>
+					) : (
+						<Space direction='vertical'>
+							<Typography.Text type='success'>
+								{t('Label_PhoneVerifiedReward')}
+							</Typography.Text>
+							<Typography.Text>
+								{phoneRewardTime
+									? moment(phoneRewardTime)
+											.utcOffset(timeZoneUtcOffset)
+											.format(timeFormat)
+									: ''}
+							</Typography.Text>
+						</Space>
+					)}
 				</p>
 				<p>
-					<Popconfirm
-						disabled={!emailVerifiedRewardPermission?.canUse}
-						title={t('Label_AreYouSure')}
-						onConfirm={() =>
-							onSetPayoutVerificationReward(
-								PayoutVerificationRewardOTPTypeEnum.Email
-							)
-						}
-					>
-						<Typography.Link disabled={!emailVerifiedRewardPermission?.canUse}>
-							{t('Label_EmailVerifiedReward')}
-						</Typography.Link>
-					</Popconfirm>
+					{isNull(emailRewardTime) ? (
+						<Popconfirm
+							disabled={!emailVerifiedRewardPermission?.canUse}
+							title={t('Label_AreYouSure')}
+							onConfirm={() =>
+								onSetPayoutVerificationReward(
+									PayoutVerificationRewardOTPTypeEnum.Email
+								)
+							}
+						>
+							<Typography.Link
+								disabled={!emailVerifiedRewardPermission?.canUse}
+							>
+								{t('Label_EmailVerifiedReward')}
+							</Typography.Link>
+						</Popconfirm>
+					) : (
+						<Space direction='vertical'>
+							<Typography.Text type='success'>
+								{t('Label_EmailVerifiedReward')}
+							</Typography.Text>
+							<Typography.Text>
+								{emailRewardTime
+									? moment(emailRewardTime)
+											.utcOffset(timeZoneUtcOffset)
+											.format(timeFormat)
+									: ''}
+							</Typography.Text>
+						</Space>
+					)}
 				</p>
 				<p>
 					<Row>
