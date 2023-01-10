@@ -379,7 +379,8 @@ const Setting = () => {
 				custId,
 				OTPType,
 			}
-			await setPayoutVerificationReward(payload).unwrap()
+			const response = await setPayoutVerificationReward(payload).unwrap()
+			message.success(response?.message || t('System.Label_Success'))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
