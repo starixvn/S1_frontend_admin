@@ -145,16 +145,6 @@ const WithdrawalRequestInfo = ({
 					</Option>
 				)
 			}
-			if (eWalletName !== null) {
-				result.push(
-					<Option
-						value={WithdrawalTypeEnum.OnlinePayment}
-						key={WithdrawalTypeEnum.OnlinePayment}
-					>
-						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
-					</Option>
-				)
-			}
 		} else {
 			if (hasLocalBank) {
 				result.push(
