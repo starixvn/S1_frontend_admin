@@ -2,7 +2,7 @@ import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetTransferInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -74,7 +74,7 @@ const TransferTable = ({
 			dataIndex: 'amount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (amount: number) => (amount ? numberFormatter.format(amount) : 0),
+			render: (amount: number) => (amount ? numFormatToDigits(amount) : 0),
 		},
 		{
 			title: t('Label_ThirdPartyID'),

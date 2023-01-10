@@ -1,6 +1,6 @@
 import React from 'react'
 import { Descriptions, Spin, Typography } from 'antd'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
 import { ICustTpWalletData } from 'features/memberProfile/type'
 import { isPositiveNum } from 'common/utils'
@@ -35,13 +35,13 @@ const TpWalletDescriptions = ({
 								: 'danger'
 						}
 					>
-						{numberFormatter.format(tpWalletData?.totalTpWalletBalance || 0)}
+						{numFormatToDigits(tpWalletData?.totalTpWalletBalance || 0)}
 					</Text>
 				</Descriptions.Item>
 
 				{tpWalletData?.tpWalletList.map(({ tpName, tpId, balance }) => (
 					<Descriptions.Item label={tpName} key={tpId}>
-						{numberFormatter.format(balance ?? 0)}
+						{numFormatToDigits(balance ?? 0)}
 					</Descriptions.Item>
 				))}
 			</Descriptions>
