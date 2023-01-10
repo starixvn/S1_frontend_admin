@@ -1,8 +1,9 @@
 import { FC } from 'react'
-import { Col, Form, FormInstance, Input, Row, Switch } from 'antd'
+import { Col, Form, FormInstance, Row, Switch } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 
 import { useTranslation } from 'react-i18next'
+import { InputNumber } from 'components'
 
 interface InactivePointExpiryFormProps {
 	form: FormInstance
@@ -27,7 +28,7 @@ const InactivePointExpiryForm: FC<InactivePointExpiryFormProps> = ({
 				disabled={componentDisabled}
 				onFinish={onSetInactivePointExpirySetting}
 			>
-				<Row align='middle' gutter={16}>
+				<Row align='top' gutter={16}>
 					<Col lg={6} md={12} xs={12}>
 						<Form.Item
 							name='days'
@@ -42,7 +43,7 @@ const InactivePointExpiryForm: FC<InactivePointExpiryFormProps> = ({
 								},
 							]}
 						>
-							<Input type='number' />
+							<InputNumber type='number' />
 						</Form.Item>
 					</Col>
 					<Col lg={3} md={6} xs={6}>
