@@ -62,6 +62,7 @@ const CustomerNotesTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetCustNotesData) => {
+				const { canEdit } = record
 				const editable = isEditing(record)
 				return editable ? (
 					<Space size='middle'>
@@ -76,7 +77,7 @@ const CustomerNotesTable = ({
 				) : (
 					<Space size='middle'>
 						<Typography.Link
-							disabled={!noteEditPermission?.canUse}
+							disabled={!noteEditPermission?.canUse || !canEdit}
 							onClick={() => onEdit(record)}
 						>
 							{t('Label_Edit')}
@@ -86,7 +87,9 @@ const CustomerNotesTable = ({
 							title={t('Label_SureToDelete')}
 							onConfirm={() => onDeleteNote(record)}
 						>
-							<Typography.Link disabled={!noteDeletePermission?.canUse}>
+							<Typography.Link
+								disabled={!noteDeletePermission?.canUse || !canEdit}
+							>
 								{t('Label_Delete')}
 							</Typography.Link>
 						</Popconfirm>
