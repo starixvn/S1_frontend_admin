@@ -63,7 +63,7 @@ const FinancialLog = () => {
 		if (!custId) return
 		const { dateRange, type, refTransId = '' } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			dateRange,
 			timeZoneUtcOffset
 		)
 
