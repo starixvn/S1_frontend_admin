@@ -2,7 +2,7 @@ import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -60,7 +60,7 @@ const FinancialTable = ({
 					type={isPositiveNum(beforeAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(beforeAmount || 0)}
+					{numFormatToDigits(beforeAmount || 0)}
 				</Text>
 			),
 		},
@@ -72,7 +72,7 @@ const FinancialTable = ({
 				const { changeAmount, direction } = records
 				// 後端回傳direction參數:1代表'+' 2代表'-'
 				const sign = direction === 1 ? '+' : '-'
-				return `${sign}${numberFormatter.format(changeAmount)}`
+				return `${sign}${numFormatToDigits(changeAmount)}`
 			},
 		},
 		{
@@ -85,7 +85,7 @@ const FinancialTable = ({
 					type={isPositiveNum(afterAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(afterAmount || 0)}
+					{numFormatToDigits(afterAmount || 0)}
 				</Text>
 			),
 		},

@@ -2,7 +2,7 @@ import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetWithdrawalLimitLogData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -55,7 +55,7 @@ const WithdrawalLimitTable = ({
 				if (beforeWithdrawalLimit !== afterWithdrawalLimit) {
 					sign = afterWithdrawalLimit > beforeWithdrawalLimit ? '+' : '-'
 				}
-				return `${sign ?? ''}${numberFormatter.format(changeWithdrawalLimit)}`
+				return `${sign ?? ''}${numFormatToDigits(changeWithdrawalLimit)}`
 			},
 		},
 		{
@@ -69,7 +69,7 @@ const WithdrawalLimitTable = ({
 					type={isPositiveNum(beforeWithdrawalLimit) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(beforeWithdrawalLimit || 0)}
+					{numFormatToDigits(beforeWithdrawalLimit || 0)}
 				</Text>
 			),
 		},
@@ -84,7 +84,7 @@ const WithdrawalLimitTable = ({
 					type={isPositiveNum(afterWithdrawalLimit) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(afterWithdrawalLimit || 0)}
+					{numFormatToDigits(afterWithdrawalLimit || 0)}
 				</Text>
 			),
 		},

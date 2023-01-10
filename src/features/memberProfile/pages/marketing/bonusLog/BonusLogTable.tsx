@@ -4,7 +4,7 @@ import { TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { ChangeBonusDirectionEnum } from 'features/memberProfile/constants'
 import { isPositiveNum } from 'common/utils'
 
@@ -92,7 +92,7 @@ const BonusLogTable = ({
 					type={isPositiveNum(beforeBonus) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(beforeBonus || 0)}
+					{numFormatToDigits(beforeBonus || 0)}
 				</Text>
 			),
 		},
@@ -108,7 +108,7 @@ const BonusLogTable = ({
 						type={isPositiveNum(changeBonus) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap' }}
 					>
-						{`${sign} ${numberFormatter.format(changeBonus)}`}
+						{`${sign} ${numFormatToDigits(changeBonus)}`}
 					</Typography.Text>
 				)
 			},
@@ -124,7 +124,7 @@ const BonusLogTable = ({
 					type={isPositiveNum(afterBonus) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(afterBonus || 0)}
+					{numFormatToDigits(afterBonus || 0)}
 				</Text>
 			),
 		},

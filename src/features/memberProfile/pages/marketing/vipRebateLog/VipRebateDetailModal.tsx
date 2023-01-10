@@ -2,7 +2,7 @@ import moment from 'moment/moment'
 import { IGetVipRebateDetailData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Modal, Spin, Typography } from 'antd'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { Table } from 'components'
 import { useEffect, useState } from 'react'
 import { isPositiveNum } from 'common/utils'
@@ -120,7 +120,7 @@ const VipRebateDetailModal = ({
 						type={isPositiveNum(minPayout) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(minPayout || 0)}
+						{numFormatToDigits(minPayout || 0)}
 					</Text>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_MaxPayout')}>
@@ -128,7 +128,7 @@ const VipRebateDetailModal = ({
 						type={isPositiveNum(maxPayout) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(maxPayout || 0)}
+						{numFormatToDigits(maxPayout || 0)}
 					</Text>
 				</Descriptions.Item>
 			</Descriptions>

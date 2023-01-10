@@ -1,7 +1,7 @@
 import { IGetTurnoverData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Spin, Typography } from 'antd'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { isPositiveNum } from 'common/utils'
 
 const { Text } = Typography
@@ -72,7 +72,7 @@ const TurnoverOverviewTable = ({
 						type={isPositiveNum(sumTotalTO()) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(sumTotalTO())}
+						{numFormatToDigits(sumTotalTO())}
 					</Text>
 				</Item>
 				<Item
@@ -89,7 +89,7 @@ const TurnoverOverviewTable = ({
 						type={isPositiveNum(turnoverDataTotal) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(turnoverDataTotal)}
+						{numFormatToDigits(turnoverDataTotal)}
 					</Text>
 				</Item>
 				<Item
@@ -108,7 +108,7 @@ const TurnoverOverviewTable = ({
 						type={isPositiveNum(stakeNotRolloverTotal) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(stakeNotRolloverTotal)}
+						{numFormatToDigits(stakeNotRolloverTotal)}
 					</Text>
 				</Item>
 				<Item
@@ -125,7 +125,7 @@ const TurnoverOverviewTable = ({
 						type={isPositiveNum(winlostAmountTotal) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(winlostAmountTotal)}
+						{numFormatToDigits(winlostAmountTotal)}
 					</Text>
 				</Item>
 			</Descriptions>
