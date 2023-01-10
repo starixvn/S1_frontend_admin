@@ -26,7 +26,7 @@ import { slotGameResponseConverter } from 'features/slotGameCategory/utils'
 import { SlotGameCategoryTable } from 'features/slotGameCategory/SlotGameCategoryTable'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
-import { assign, cloneDeep, findIndex, isEmpty } from 'lodash'
+import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
@@ -219,31 +219,41 @@ const SlotGameCategory: FC<{
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) return
-			const {
-				tpId,
-				name = '',
-				gameId = '',
-				status = 0,
-				pageSize,
-				pageNumber,
-				category,
-			} = queryParams
-			if (category) {
-				categoryForm.setFieldsValue({
-					categoryId: Number(category),
+			if (isEmpty(queryParams)) {
+				filterForm.setFieldsValue({
+					tpId: head(tpList)?.tpId,
+				})
+			} else {
+				const {
+					tpId,
+					name = '',
+					gameId = '',
+					status = 0,
+					pageSize,
+					pageNumber,
+					category,
+				} = queryParams
+				if (category) {
+					categoryForm.setFieldsValue({
+						categoryId: Number(category),
+					})
+				}
+				filterForm.setFieldsValue({
+					tpId: Number(tpId),
+					name,
+					gameId,
+					status: Number(status),
+				})
+				handleSearch({
+					current: Number(pageNumber),
+					pageSize: Number(pageSize),
 				})
 			}
-			filterForm.setFieldsValue({
-				tpId: Number(tpId),
-				name,
-				gameId,
-				status: Number(status),
-			})
-			handleSearch({ current: Number(pageNumber), pageSize: Number(pageSize) })
 		}
-		init()
-	}, [])
+		if (!isGetTpListLoading) {
+			init()
+		}
+	}, [isGetTpListLoading])
 
 	const loading =
 		isGetTpListLoading ||
