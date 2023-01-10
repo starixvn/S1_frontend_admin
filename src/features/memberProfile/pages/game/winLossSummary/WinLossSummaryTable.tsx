@@ -1,6 +1,6 @@
 import { IGetWinLossSummaryDetailData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { Table } from 'components'
 import { Typography } from 'antd'
 import { isPositiveNum } from 'common/utils'
@@ -42,7 +42,7 @@ const WinLossSummaryTable = ({
 					type={isPositiveNum(stakeSettled) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(stakeSettled || 0)}
+					{numFormatToDigits(stakeSettled || 0)}
 				</Text>
 			),
 		},
@@ -57,7 +57,7 @@ const WinLossSummaryTable = ({
 					type={isPositiveNum(stakeNotRollover) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(stakeNotRollover || 0)}
+					{numFormatToDigits(stakeNotRollover || 0)}
 				</Text>
 			),
 		},
@@ -72,7 +72,7 @@ const WinLossSummaryTable = ({
 					type={isPositiveNum(winlostAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(winlostAmount || 0)}
+					{numFormatToDigits(winlostAmount || 0)}
 				</Text>
 			),
 		},
