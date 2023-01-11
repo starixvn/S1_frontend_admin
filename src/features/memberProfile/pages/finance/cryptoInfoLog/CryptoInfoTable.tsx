@@ -5,6 +5,7 @@ import moment from 'moment'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetCryptoLogData } from 'features/memberProfile/type'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface CryptoInfoTableProps {
 	cryptoLogList: IGetCryptoLogData[]
@@ -12,6 +13,7 @@ interface CryptoInfoTableProps {
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	statusList: IEnumTypeData[]
 }
 const CryptoInfoTable = ({
 	cryptoLogList,
@@ -19,12 +21,22 @@ const CryptoInfoTable = ({
 	timeZoneUtcOffset,
 	pagination,
 	onTableChange,
+	statusList,
 }: CryptoInfoTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
 		{
 			title: t('Label_Type'),
 			key: 'Type',
+			dataIndex: 'status',
+			width: 100,
+			align: 'center' as 'center',
+			render: (status: number) =>
+				statusList.map(({ value, name }) => value === status && name),
+		},
+		{
+			title: t('Label_Channel'),
+			key: 'Channel',
 			dataIndex: 'isoCode',
 			width: 100,
 			align: 'center' as 'center',
