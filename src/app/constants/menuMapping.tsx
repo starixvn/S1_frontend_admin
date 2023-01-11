@@ -362,7 +362,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.vipReview.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipLevelReview',
 		internalFunctionKey: allowedRoles.MarketingVipLevelReview,
 		newAdminPath: paths.member.sub.vipReview.root,
