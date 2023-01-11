@@ -33,6 +33,7 @@ export const announcement = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST'],
 		}),
 		addAnnouncement: builder.mutation<
 			IAxiosResponse<null>,

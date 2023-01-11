@@ -143,7 +143,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				await editForm.validateFields()
 
 			const [startTime, endTime] = dateRangeToUtcFormatter(
-				dateRange,
+				[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 				currentTimeZoneUtcOffset
 			)
 

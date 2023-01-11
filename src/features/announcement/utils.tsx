@@ -40,7 +40,7 @@ export const announcementContentResConverter = (
 }
 
 // C2S
-// 轉換可供 update Api 和 Add Api 使用的格式
+// 轉換可供 update Api 和 add Api 使用的格式
 export const announcementConvert = (subjectOrContent: object): string => {
 	const result: ILangCodeData = {}
 	Object.entries(subjectOrContent).forEach(([key, value]: [string, any]) => {

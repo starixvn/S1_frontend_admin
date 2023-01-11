@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 import { Table } from 'components'
+import { isString } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
 import { LayoutContent } from 'app/pages/layout'
@@ -26,6 +27,8 @@ interface AnnouncementTableProps {
 	onDelete: (id: number) => void
 }
 
+const { Paragraph, Text } = Typography
+
 const AnnouncementTable = ({
 	loading,
 	pagination,
@@ -38,11 +41,11 @@ const AnnouncementTable = ({
 }: AnnouncementTableProps) => {
 	const { t } = useTranslation()
 
-	const handleInfoModal = (content: string) => {
+	const handleContentModal = (content: string) => {
 		Modal.info({
-			title: t('Label_Info'),
+			title: t('Label_Content'),
 			closable: true,
-			content: <Typography.Text>{content || '-'}</Typography.Text>,
+			content: <Text>{content || '-'}</Text>,
 			width: '540px',
 		})
 	}
@@ -53,12 +56,12 @@ const AnnouncementTable = ({
 			key: 'id',
 			dataIndex: 'id',
 			align: 'center' as 'center',
-			width: '5%',
+			width: 80,
 		},
 		{
 			title: t('Label_Action'),
 			key: 'action',
-			width: '10%',
+			width: 150,
 			dataIndex: 'id',
 			align: 'center' as 'center',
 			render: (id: number) => {
@@ -84,7 +87,7 @@ const AnnouncementTable = ({
 			key: 'seq',
 			dataIndex: 'seq',
 			align: 'center' as 'center',
-			width: '5%',
+			width: 80,
 			render: (seq: number) => seq ?? 'N/A',
 		},
 		{
@@ -92,14 +95,12 @@ const AnnouncementTable = ({
 			key: 'subject',
 			dataIndex: 'subject',
 			align: 'center' as 'center',
-			editable: true,
-			width: '7%',
+			width: 150,
+			ellipsis: true,
 			render: (subject: string) => (
-				<Typography.Paragraph
-					ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}
-				>
+				<Text ellipsis style={{ whiteSpace: 'nowrap' }}>
 					{subject || '-'}
-				</Typography.Paragraph>
+				</Text>
 			),
 		},
 		{
@@ -107,28 +108,33 @@ const AnnouncementTable = ({
 			key: 'content',
 			dataIndex: 'content',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 180,
 			render: (content: string) => (
-				<Typography.Paragraph
-					ellipsis={{
-						rows: 2,
-						expandable: false,
-						symbol: (
-							<Typography.Text onClick={() => handleInfoModal(content)}>
-								more
-							</Typography.Text>
-						),
-					}}
-				>
-					{content || '-'}
-				</Typography.Paragraph>
+				// Paragraph 會自動置頂 故沒採用Space
+				// content 能換行 故用 Paragraph
+				<div>
+					<Paragraph
+						ellipsis={{
+							rows: 2,
+							expandable: false,
+						}}
+					>
+						{content || '-'}
+					</Paragraph>
+					{/* 確保是 string 在計算長度 */}
+					{isString(content) && content.length > 20 && (
+						<Typography.Link onClick={() => handleContentModal(content)}>
+							more
+						</Typography.Link>
+					)}
+				</div>
 			),
 		},
 		{
 			title: t('Label_Status'),
 			key: 'status',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 100,
 			render: ({ status }: IAnnouncementListData) => {
 				return <Switch checked={Boolean(status)} disabled />
 			},
@@ -138,13 +144,13 @@ const AnnouncementTable = ({
 			key: 'startTime',
 			dataIndex: 'startTime',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 180,
 			render: (startTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{startTime
 						? moment(startTime).utcOffset(startTime).format(timeFormat)
 						: ''}
-				</Typography.Text>
+				</Text>
 			),
 		},
 		{
@@ -152,11 +158,11 @@ const AnnouncementTable = ({
 			key: 'endTime',
 			dataIndex: 'endTime',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 180,
 			render: (endTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{endTime ? moment(endTime).utcOffset(endTime).format(timeFormat) : ''}
-				</Typography.Text>
+				</Text>
 			),
 		},
 		{
@@ -164,7 +170,7 @@ const AnnouncementTable = ({
 			key: 'creator',
 			dataIndex: 'creator',
 			align: 'center' as 'center',
-			width: '5%',
+			width: 100,
 			render: (creator: string) => creator || '-',
 		},
 		{
@@ -172,13 +178,13 @@ const AnnouncementTable = ({
 			key: 'createTime',
 			dataIndex: 'createTime',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 180,
 			render: (createTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{createTime
 						? moment(createTime).utcOffset(createTime).format(timeFormat)
 						: ''}
-				</Typography.Text>
+				</Text>
 			),
 		},
 		{
@@ -186,7 +192,7 @@ const AnnouncementTable = ({
 			key: 'lastUpdater',
 			dataIndex: 'lastUpdater',
 			align: 'center' as 'center',
-			width: '5%',
+			width: 100,
 			render: (lastUpdater: string) => lastUpdater ?? 'N/A',
 		},
 		{
@@ -194,22 +200,22 @@ const AnnouncementTable = ({
 			key: 'lastUpdateTime',
 			dataIndex: 'lastUpdateTime',
 			align: 'center' as 'center',
-			width: '7%',
+			width: 180,
 			render: (lastUpdateTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
 						? moment(lastUpdateTime)
 								.utcOffset(lastUpdateTime)
 								.format(timeFormat)
 						: ''}
-				</Typography.Text>
+				</Text>
 			),
 		},
 		{
 			title: t('Label_isTest'),
 			key: 'isTest',
 			align: 'center' as 'center',
-			width: '5%',
+			width: 100,
 			render: ({ isTest }: IAnnouncementListData) => {
 				return <Switch checked={Boolean(isTest)} disabled />
 			},
