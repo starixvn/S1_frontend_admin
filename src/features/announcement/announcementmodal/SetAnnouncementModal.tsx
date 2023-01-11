@@ -75,7 +75,6 @@ const SetAnnouncementModal = ({
 			refetchOnMountOrArgChange: true,
 		}
 	)
-
 	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
 	const { iLangList: langCodes = [] } = infos ?? {}
 
@@ -125,7 +124,7 @@ const SetAnnouncementModal = ({
 				})
 			})
 		}
-	}, [isGetAnnouncementDetailLoading])
+	}, [isGetAnnouncementDetailLoading, open])
 
 	return (
 		<Modal
