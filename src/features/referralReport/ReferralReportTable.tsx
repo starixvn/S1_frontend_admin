@@ -2,7 +2,7 @@ import paths from 'app/constants/paths'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { Table, TablePaginationConfig, Typography } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -11,6 +11,7 @@ import { numberFormatter } from 'common/utils/format'
 import { ColumnsType } from 'antd/es/table'
 import { IReferralReportData } from 'features/referralReport/type'
 import type { SorterResult } from 'antd/es/table/interface'
+import { Table } from 'components'
 
 interface IReferralReportTableProps {
 	loading: boolean

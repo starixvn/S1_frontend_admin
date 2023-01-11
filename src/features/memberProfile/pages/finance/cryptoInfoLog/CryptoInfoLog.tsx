@@ -8,6 +8,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { PAGINATION, usePagination } from 'common/hooks'
 import { useLazyGetCryptoLogQuery } from 'features/memberProfile/api'
 import CryptoInfoTable from 'features/memberProfile/pages/finance/cryptoInfoLog/CryptoInfoTable'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const CryptoInfoLog = () => {
 	const { t } = useTranslation()
@@ -24,6 +25,11 @@ const CryptoInfoLog = () => {
 			isFetching: isGetCryptoLogLoading,
 		},
 	] = useLazyGetCryptoLogQuery()
+
+	const {
+		data: { data: statusList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetStatusListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'CryptoWalletLogStatusEnum' })
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: custCryptoLogTotal,
@@ -66,7 +72,7 @@ const CryptoInfoLog = () => {
 		}
 	}, [custId])
 
-	const loading = isGetCryptoLogLoading
+	const loading = isGetCryptoLogLoading || isGetStatusListLoading
 
 	return (
 		<>
@@ -80,6 +86,7 @@ const CryptoInfoLog = () => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={pagination}
 					onTableChange={handleTableChange}
+					statusList={statusList}
 				/>
 			</LayoutContent.Card>
 		</>

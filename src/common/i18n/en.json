@@ -989,7 +989,6 @@
 	"Label_TaggedIssue": "Tagged issue",
 	"Label_Tagged": "Tagged",
 	"Label_NoOfTagged": "No. of tagged",
-	"Label_SelectStatus": "Select Status",
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
 	"Label_ProcessResult": "Process Result",
 	"Label_Excel": "Excel",
@@ -1000,7 +999,12 @@
 	"Label_AccountStatus": "Account Status",
 	"Label_BatchId": "Batch ID",
 	"Label_EnLangRequiredMsg": "Lang : En is Required",
+	"Label_SelectStatus": "Select Status",
 	"Label_DepositBonus": "Deposit Bonus",
 	"Label_SearchPage": "Search Page ...",
-	"Label_PreferLanguages": "Prefer Languages"
+	"Label_PreferLanguages": "Prefer Languages",
+	"Label_FeeSetting": "SetFee",
+	"Label_PerCount": "Per Count",
+	"Label_Language": "Language",
+	"Label_LangId": "LangId"
 }

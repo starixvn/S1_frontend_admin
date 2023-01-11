@@ -30,6 +30,7 @@ export type EnumNameType =
 	| 'AdjustTypeEnum'
 	| 'CustBankInfoLogStatus'
 	| 'EWalletinfoLogStatusEnum'
+	| 'CryptoWalletLogStatusEnum'
 	| 'WithdrawalLimitLogMainTypeEnum'
 	| 'FinancialType'
 	| 'OTPProvider'
@@ -50,6 +51,7 @@ export type EnumNameType =
 	| 'ShieldRiskTagged'
 	| 'TaggedIssue'
 	| 'PaymentReportGroupByEnum'
+	| 'LangType'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -70,6 +72,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  AdjustTypeEnum - 取得調整種類列表
 	 * @argument {string}  CustBankInfoLogStatus - 取得銀行狀態列表
 	 * @argument {string}  EWalletinfoLogStatusEnum - 取得電子錢包狀態列表
+	 * @argument {string}  CryptoWalletLogStatusEnum - 取得加密錢包狀態列表
 	 * @argument {string}  WithdrawalLimitLogMainTypeEnum - 取得取款限制種類列表
 	 * @argument {string}  FinancialType - 取得財務種類列表
 	 * @argument {string}  PayListMethodEnum - 取得 PayList Method 列表
@@ -91,6 +94,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  TriggeredPoints - 取得 TriggerPoints 列表
 	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
 	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
+	 * @argument {string}  LangType - 取得 LangType 列表
 	 */
 	enumName: EnumNameType
 }

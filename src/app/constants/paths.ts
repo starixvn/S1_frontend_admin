@@ -100,6 +100,7 @@ const paths = {
 			},
 			videoManagement: {
 				root: 'csd/videoManagement',
+				functionId: 68,
 			},
 			domainManage: {
 				root: 'csd/domainManage',
