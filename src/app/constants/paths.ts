@@ -37,6 +37,10 @@ const paths = {
 						root: 'customerSupport/operatorService/otpVerificationReport',
 						functionId: 131,
 					},
+					smsGenerator: {
+						root: 'customerSupport/operatorService/smsGenerator',
+						functionId: 25,
+					},
 				},
 			},
 		},
