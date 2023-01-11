@@ -4,14 +4,14 @@ import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { Button, Col, Modal, Row, Typography, Upload } from 'antd'
 import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { IChangeVipLevelData } from 'features/vipReview/type'
+import { IVipLevelData } from 'features/vipReview/type'
 import BatchLogTable from 'features/vipReview/modal/BatchLogTable'
 
 interface IVipLevelAssignBatchModalProps {
 	loading: boolean
 	success: boolean
 	visible: boolean
-	batchLog: IChangeVipLevelData[]
+	batchLog: IVipLevelData[]
 	uploadSuccess: boolean
 	onFinish: (file: UploadFile[]) => void
 	onCancel: () => void
@@ -94,8 +94,8 @@ const VipLevelAssignBatchModal = ({
 						{t('Label_Upload', { key: t('Label_File') })}
 					</Typography.Text>
 				</Col>
-				<Col span={24} style={{ textAlign: 'center' }}>
-					<Button style={{ maxWidth: '200px' }} icon={<UploadOutlined />} block>
+				<Col style={{ textAlign: 'center' }}>
+					<Button icon={<UploadOutlined />} block>
 						<Upload {...props} maxCount={1}>
 							{t('Label_SelectFile')}
 						</Upload>

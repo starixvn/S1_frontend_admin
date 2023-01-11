@@ -123,7 +123,7 @@ const VipReviewFilter = ({
 
 	const typeSelector = () => {
 		const onChangeType = () => {
-			form.resetFields(['dateRange1', 'dateRange2'])
+			form.resetFields(['date', 'dateRange'])
 			resetQueryParams()
 		}
 		return (
@@ -140,9 +140,9 @@ const VipReviewFilter = ({
 				]}
 			>
 				<Select onChange={onChangeType} placeholder={t('Label_Select')}>
-					{vipTypeList?.map(({ label, value }) => (
+					{vipTypeList?.map(({ displayKey, value }) => (
 						<Option key={value} value={value}>
-							{t(label)}
+							{t(displayKey)}
 						</Option>
 					))}
 				</Select>
@@ -219,7 +219,7 @@ const VipReviewFilter = ({
 										{type === VipTypeEnum.Upgrade ? (
 											<Form.Item
 												noStyle
-												name='dateRange1'
+												name='date'
 												rules={[
 													{
 														required: true,
@@ -232,7 +232,7 @@ const VipReviewFilter = ({
 										) : (
 											<Form.Item
 												noStyle
-												name='dateRange2'
+												name='dateRange'
 												rules={[
 													{
 														required: true,

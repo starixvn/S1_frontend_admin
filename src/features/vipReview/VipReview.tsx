@@ -22,7 +22,7 @@ import {
 	useUpdateUpgradeMutation,
 } from 'features/vipReview/api'
 import {
-	IChangeVipLevelData,
+	IVipLevelData,
 	IDowngradeData,
 	IDowngradeListResponse,
 	IFilterForm,
@@ -55,12 +55,12 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 	const vipLevelAssignBatchModal = useModal()
 	const [uploadSuccess, setUploadSuccess] = useState(false)
 	const [selectDate, setSelectDate] = useState(null)
-	const [batchLog, setBatchLog] = useState<IChangeVipLevelData[]>([])
+	const [batchLog, setBatchLog] = useState<IVipLevelData[]>([])
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const type = Form.useWatch('type', filterForm)
-	const { dateRange1: filterDateRange1, dateRange2: filterDateRange2 } =
+	const { date: filterDateRange1, dateRange: filterDateRange2 } =
 		filterForm.getFieldsValue()
 	const {
 		data: { data: vipStatusList } = {} as IEnumTypeResponse,
@@ -112,26 +112,32 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
-		date = undefined,
+		queryDate = undefined,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
-		date?: [moment.Moment, moment.Moment] | moment.Moment
+		queryDate?: [moment.Moment, moment.Moment] | moment.Moment
 	}) => {
 		if (!siteId) return
-		const { dateRange1, dateRange2, status, userName, currencyIds } =
-			filterForm.getFieldsValue()
+		const {
+			date,
+			dateRange,
+			status,
+			userName,
+			currencyIds,
+			type: formType,
+		} = filterForm.getFieldsValue()
 		let calculateYearMonth = ''
-		if (type === VipTypeEnum.Upgrade) {
-			calculateYearMonth = moment(date ?? dateRange1)
+		if (formType === VipTypeEnum.Upgrade) {
+			calculateYearMonth = moment(date ?? queryDate)
 				.utcOffset(timeZoneUtcOffset)
 				.format('YYYYMM')
 		}
-		if (type === VipTypeEnum.Downgrade) {
+		if (formType === VipTypeEnum.Downgrade) {
 			calculateYearMonth =
-				moment(dateRange2[0]).utcOffset(timeZoneUtcOffset).format('YYYYMM') +
-				moment(dateRange2[1]).utcOffset(timeZoneUtcOffset).format('YYYYMM')
+				moment(dateRange[0]).utcOffset(timeZoneUtcOffset).format('YYYYMM') +
+				moment(dateRange[1]).utcOffset(timeZoneUtcOffset).format('YYYYMM')
 		}
 		try {
 			const args = {
@@ -143,16 +149,16 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber: current,
 				pageSize,
 			}
-			if (type === VipTypeEnum.Upgrade) {
+			if (formType === VipTypeEnum.Upgrade) {
 				await getUpgradeList(args).unwrap()
 			}
-			if (type === VipTypeEnum.Downgrade) {
+			if (formType === VipTypeEnum.Downgrade) {
 				await getDowngradeList(args).unwrap()
 			}
 			setQueryParams({
 				...args,
 				currencyIds,
-				type,
+				type: formType,
 				timeZone: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -301,7 +307,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				filterForm.setFieldsValue({
 					status: vipStatusList?.map(({ value }) => value),
-					dateRange1: moment().subtract(1, 'month').endOf('month'),
+					date: moment().subtract(1, 'month').endOf('month'),
 				})
 			} else {
 				const {
@@ -315,11 +321,8 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 					pageSize,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
-
 				filterForm.setFieldsValue({
-					[Number(queryType) === VipTypeEnum.Upgrade
-						? 'dateRange1'
-						: 'dateRange2']:
+					[Number(queryType) === VipTypeEnum.Upgrade ? 'date' : 'dateRange']:
 						Number(queryType) === VipTypeEnum.Upgrade
 							? moment(calculateYearMonth)
 							: [
@@ -336,7 +339,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 					current: Number(pageNumber),
 					pageSize: Number(pageSize),
 					currentTimeZoneUtcOffset: timeZoneUtcOffset,
-					date:
+					queryDate:
 						Number(queryType) === VipTypeEnum.Upgrade
 							? moment(calculateYearMonth)
 							: [

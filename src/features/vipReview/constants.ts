@@ -5,11 +5,11 @@ export enum VipTypeEnum {
 
 export const vipTypeList = [
 	{
-		label: 'Label_Upgrade',
+		displayKey: 'Label_Upgrade',
 		value: VipTypeEnum.Upgrade,
 	},
 	{
-		label: 'Label_Downgrade',
+		displayKey: 'Label_Downgrade',
 		value: VipTypeEnum.Downgrade,
 	},
 ]

@@ -2,7 +2,11 @@ import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { Table } from 'components'
+import {
+	Table,
+	useVisibilityColumnsButtonHook,
+	VisibilityColumnsButton,
+} from 'components'
 import { IDowngradeData, IUpgradeData } from 'features/vipReview/type'
 import { PaginationInterface } from 'common/hooks'
 import { PermissionInterface } from 'type'
@@ -34,6 +38,8 @@ const VipReviewTable = ({
 	onEditClick,
 }: IVipReviewTableProps) => {
 	const { t } = useTranslation()
+	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
+		useVisibilityColumnsButtonHook()
 
 	const upgradeColumns = [
 		{
@@ -43,16 +49,6 @@ const VipReviewTable = ({
 			align: 'center' as 'center',
 			render: (record: IUpgradeData | IDowngradeData) => {
 				const { canUpdateStatus, status } = record
-				const getActionStatus = () => {
-					switch (status) {
-						case ActionStatusEnum.Approved:
-							return t('Label_Approve')
-						case ActionStatusEnum.Pending:
-							return t('Label_Pending')
-						default:
-							return false
-					}
-				}
 				return canUpdateStatus ? (
 					<Space>
 						<Popconfirm
@@ -63,7 +59,8 @@ const VipReviewTable = ({
 							}}
 						>
 							<Typography.Link disabled={!editPermission?.canUse}>
-								{getActionStatus()}
+								{status === ActionStatusEnum.Approved && t('Label_Approve')}
+								{status === ActionStatusEnum.Pending && t('Label_Pending')}
 							</Typography.Link>
 						</Popconfirm>
 					</Space>
@@ -206,20 +203,10 @@ const VipReviewTable = ({
 			align: 'center' as 'center',
 			render: (record: IUpgradeData | IDowngradeData) => {
 				const { canUpdateStatus, status } = record
-				const getActionStatus = () => {
-					switch (status) {
-						case ActionStatusEnum.Approved:
-							return t('Label_Approve')
-						case ActionStatusEnum.Rejected:
-							return t('Label_Approve')
-						case ActionStatusEnum.Pending:
-							return t('Label_Pending')
-						default:
-							return false
-					}
-				}
 				return canUpdateStatus &&
-					(status === 1 || status === 2 || status === 3) ? (
+					(status === ActionStatusEnum.Approved ||
+						status === ActionStatusEnum.Pending ||
+						status === ActionStatusEnum.Rejected) ? (
 					<Space>
 						<Popconfirm
 							disabled={!editPermission?.canUse}
@@ -229,7 +216,10 @@ const VipReviewTable = ({
 							}}
 						>
 							<Typography.Link disabled={!editPermission?.canUse}>
-								{getActionStatus()}
+								{(status === ActionStatusEnum.Approved ||
+									status === ActionStatusEnum.Rejected) &&
+									t('Label_Approve')}
+								{status === ActionStatusEnum.Pending && t('Label_Pending')}
 							</Typography.Link>
 						</Popconfirm>
 					</Space>
@@ -362,6 +352,10 @@ const VipReviewTable = ({
 		},
 	]
 
+	const columns = onGetVisibilityColumns(
+		type === VipTypeEnum.Upgrade ? upgradeColumns : downgradeColumns
+	)
+
 	return (
 		<LayoutContent.Card>
 			<Table
@@ -369,9 +363,18 @@ const VipReviewTable = ({
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 				dataSource={vipReviewList ?? []}
-				columns={
-					type === VipTypeEnum.Upgrade ? upgradeColumns : downgradeColumns
-				}
+				columns={columns}
+				// eslint-disable-next-line react/no-unstable-nested-components
+				title={() => (
+					<Space align='end' direction='vertical' style={{ width: '100%' }}>
+						<VisibilityColumnsButton
+							baseColumns={
+								type === VipTypeEnum.Upgrade ? upgradeColumns : downgradeColumns
+							}
+							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+						/>
+					</Space>
+				)}
 			/>
 		</LayoutContent.Card>
 	)

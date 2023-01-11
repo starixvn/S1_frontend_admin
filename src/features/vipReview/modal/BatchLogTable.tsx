@@ -1,11 +1,11 @@
 import { LayoutContent } from 'app/pages/layout'
-import { IChangeVipLevelData } from 'features/vipReview/type'
+import { IVipLevelData } from 'features/vipReview/type'
 import { Typography } from 'antd'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 
 interface IBatchLogTableProps {
-	batchLog: IChangeVipLevelData[]
+	batchLog: IVipLevelData[]
 }
 
 const BatchLogTable = ({ batchLog }: IBatchLogTableProps) => {
@@ -25,7 +25,7 @@ const BatchLogTable = ({ batchLog }: IBatchLogTableProps) => {
 			key: 'status',
 			width: '20%',
 			align: 'center' as 'center',
-			render: (record: IChangeVipLevelData) => {
+			render: (record: IVipLevelData) => {
 				const { errorCode } = record
 				// 0 = success
 				return errorCode === 0 ? (

@@ -91,18 +91,18 @@ export interface IUpdateDowngradeArgs extends IUpdateUpgradeArgs {}
 
 export type IUpdateDowngradeResponse = IAxiosResponse<null>
 
-export interface IChangeVipLevelData {
+export interface IVipLevelData {
 	errorCode: number
 	message: string
 	rawErrorCode: string
 	rawMessage: string
 }
 
-export type IChangeVipLevelResponse = IChangeVipLevelData[]
+export type IChangeVipLevelResponse = IVipLevelData[]
 
 export interface IFilterForm {
-	dateRange1: any
-	dateRange2: [moment.Moment, moment.Moment]
+	date: any
+	dateRange: [moment.Moment, moment.Moment]
 	status: number[]
 	userName: string
 	currencyIds: number[]
