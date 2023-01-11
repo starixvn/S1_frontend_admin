@@ -438,6 +438,10 @@ const paths = {
 				root: 'member/shieldTaggingReport',
 				functionId: 137,
 			},
+			vipReview: {
+				root: 'member/vipReview',
+				functionId: 50,
+			},
 		},
 	},
 	risk: {

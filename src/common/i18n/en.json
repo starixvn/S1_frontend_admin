@@ -1006,5 +1006,16 @@
 	"Label_FeeSetting": "SetFee",
 	"Label_PerCount": "Per Count",
 	"Label_Language": "Language",
-	"Label_LangId": "LangId"
+	"Label_LangId": "LangId",
+	"Label_Upgrade": "Upgrade",
+	"Label_Downgrade": "Downgrade",
+	"Label_CurrentVipLevel": "CurrentVipLevel",
+	"Label_UpgradeVipLevel": "UpgradeVipLevel",
+	"Label_ThresholdDeposit": "Threshold Deposit",
+	"Label_UpgradeBonus": "Upgrade Bonus",
+	"Label_TurnOverAmount": "TurnOver Amount",
+	"Label_ThresholdTurnOver": "Threshold TurnOver",
+	"Label_CalculateTime": "Calculate Time",
+	"Label_LastestQualifiedTime": "Lastest Qualified Time",
+	"Label_VipLevelAssignBatch": "VIP Level Assign Batch"
 }
