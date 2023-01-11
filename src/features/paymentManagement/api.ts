@@ -15,6 +15,7 @@ import {
 	ISetPayListLoginInfoArgs,
 	IGetCryptoInfoData,
 	ISetCryptoInfoArgs,
+	ISetPaySettingChargeFeeArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -127,6 +128,18 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetCryptoStatus'],
 		}),
+		// 設定 ChargeFee
+		setChargeFee: builder.mutation<
+			IAxiosResponse<null>,
+			ISetPaySettingChargeFeeArgs
+		>({
+			query: data => ({
+				url: 'ThirdPartyManagement/SetPaySettingChargeFee',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetPaySetting'],
+		}),
 	}),
 })
 
@@ -141,4 +154,5 @@ export const {
 	useSetPayListLoginInfoMutation,
 	useGetCryptoInfoQuery,
 	useSetCryptoInfoMutation,
+	useSetChargeFeeMutation,
 } = paymentManagementApi
