@@ -8,6 +8,7 @@ import { UploaderImage } from 'features/memberProfile/sider/uploaderModal/Upload
 import { IGetCustPhotoData } from 'features/memberProfile/type'
 
 interface IUploadPicModalProps {
+	isKyc: boolean
 	deleteLoading: boolean
 	custPhotoListLoading: boolean
 	uploading: boolean
@@ -19,6 +20,7 @@ interface IUploadPicModalProps {
 }
 
 const UploadPicModal = ({
+	isKyc,
 	deleteLoading,
 	custPhotoListLoading,
 	visible,
@@ -48,7 +50,7 @@ const UploadPicModal = ({
 	}
 
 	useEffect(() => {
-		// 初始化相片, 更新後重新仔入圖片
+		// 初始化相片, 更新後重新載入圖片
 		if (!custPhotoListLoading && custPhotoList.length !== 0) {
 			const initFileList: UploadFile[] = []
 			custPhotoList.forEach(photo => {
@@ -94,6 +96,7 @@ const UploadPicModal = ({
 						if (file.url) {
 							return (
 								<UploaderImage
+									isKyc={isKyc}
 									key={Number(uid)}
 									src={file.url}
 									deleteLoading={deleteLoading}
@@ -103,6 +106,7 @@ const UploadPicModal = ({
 						}
 						return (
 							<UploaderImage
+								isKyc={isKyc}
 								key={Number(uid)}
 								src={file.preview}
 								deleteLoading={deleteLoading}
