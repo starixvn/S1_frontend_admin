@@ -104,6 +104,7 @@ const MemberProfileSiderContent = () => {
 				)}
 
 				<UploadPicModal
+					isKyc={custBasicInfo?.isKyc}
 					deleteLoading={isDeleteCustPhotoLoading}
 					custPhotoListLoading={isGetCustPhotoListFetching}
 					visible={uploadModal.visible}
