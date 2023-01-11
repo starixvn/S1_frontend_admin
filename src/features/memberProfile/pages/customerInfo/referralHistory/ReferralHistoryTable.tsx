@@ -6,7 +6,7 @@ import { IGetReferralHistoryData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { isEmpty } from 'lodash'
 import moment from 'moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { isPositiveNum } from 'common/utils'
 
 const { Text } = Typography
@@ -64,14 +64,14 @@ const ReferralHistoryTable = ({
 						type={isPositiveNum(totalDeposit) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(totalDeposit || 0)}
+						{numFormatToDigits(totalDeposit || 0)}
 					</Text>
 					{` / `}
 					<Text
 						type={isPositiveNum(depositC) ? undefined : 'danger'}
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 					>
-						{numberFormatter.format(depositC || 0)}
+						{numFormatToDigits(depositC || 0)}
 					</Text>
 				</>
 			),
@@ -89,14 +89,14 @@ const ReferralHistoryTable = ({
 							type={isPositiveNum(totalBet) ? undefined : 'danger'}
 							style={{ whiteSpace: 'nowrap', padding: '5px' }}
 						>
-							{numberFormatter.format(totalBet || 0)}
+							{numFormatToDigits(totalBet || 0)}
 						</Text>
 						{` / `}
 						<Text
 							type={isPositiveNum(validBetC) ? undefined : 'danger'}
 							style={{ whiteSpace: 'nowrap', padding: '5px' }}
 						>
-							{numberFormatter.format(validBetC || 0)}
+							{numFormatToDigits(validBetC || 0)}
 						</Text>
 					</>
 				)
@@ -113,7 +113,7 @@ const ReferralHistoryTable = ({
 					type={isPositiveNum(bonusAmount) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(bonusAmount || 0)}
+					{numFormatToDigits(bonusAmount || 0)}
 				</Text>
 			),
 		},
@@ -128,7 +128,7 @@ const ReferralHistoryTable = ({
 					type={isPositiveNum(referralFreeCredit) ? undefined : 'danger'}
 					style={{ whiteSpace: 'nowrap', padding: '5px' }}
 				>
-					{numberFormatter.format(referralFreeCredit || 0)}
+					{numFormatToDigits(referralFreeCredit || 0)}
 				</Text>
 			),
 		},
