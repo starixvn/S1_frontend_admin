@@ -59,8 +59,10 @@ const VipReviewTable = ({
 							}}
 						>
 							<Typography.Link disabled={!editPermission?.canUse}>
-								{status === ActionStatusEnum.Approved && t('Label_Approve')}
-								{status === ActionStatusEnum.Pending && t('Label_Pending')}
+								{(status === ActionStatusEnum.Rejected ||
+									status === ActionStatusEnum.Pending) &&
+									t('Label_Approve')}
+								{status === ActionStatusEnum.Approved && t('Label_Reject')}
 							</Typography.Link>
 						</Popconfirm>
 					</Space>
@@ -216,10 +218,10 @@ const VipReviewTable = ({
 							}}
 						>
 							<Typography.Link disabled={!editPermission?.canUse}>
-								{(status === ActionStatusEnum.Approved ||
-									status === ActionStatusEnum.Rejected) &&
+								{(status === ActionStatusEnum.Rejected ||
+									status === ActionStatusEnum.Pending) &&
 									t('Label_Approve')}
-								{status === ActionStatusEnum.Pending && t('Label_Pending')}
+								{status === ActionStatusEnum.Approved && t('Label_Reject')}
 							</Typography.Link>
 						</Popconfirm>
 					</Space>
