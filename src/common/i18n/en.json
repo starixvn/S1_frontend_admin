@@ -1004,5 +1004,8 @@
 	"Label_SearchPage": "Search Page ...",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_PerCount": "Per Count"
+	"Label_PerCount": "Per Count",
+	"Label_AddBetLimit": "Add Bet Limit",
+	"Label_EditBetLimit": "Edit Bet Limit",
+	"Label_LimitGroup": "Limit Group"
 }
