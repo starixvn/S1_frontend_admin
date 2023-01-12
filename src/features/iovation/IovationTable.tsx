@@ -48,6 +48,14 @@ const IovationTable = ({
 			render: (userName: string) => userName || '-',
 		},
 		{
+			title: t('Label_Currency'),
+			key: 'isoCode',
+			dataIndex: 'isoCode',
+			align: 'center' as 'center',
+			width: '10%',
+			render: (isoCode: string) => isoCode || '-',
+		},
+		{
 			title: t('Label_DeviceId'),
 			key: 'deviceId',
 			dataIndex: 'deviceId',
@@ -91,13 +99,13 @@ const IovationTable = ({
 			key: 'frequency',
 			dataIndex: 'frequency',
 			align: 'center' as 'center',
-			width: '10%',
+			width: '5%',
 			render: (frequency: number) => frequency ?? 'N/A',
 		},
 		{
 			title: t('Label_AssociateAccount'),
 			key: 'associateCount',
-			width: '10%',
+			width: '5%',
 			align: 'center' as 'center',
 			render: (record: IIovationReportData) => {
 				const { deviceId, associateCount } = record
