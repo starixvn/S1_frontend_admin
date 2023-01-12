@@ -443,6 +443,10 @@ const paths = {
 				root: 'member/vipReview',
 				functionId: 50,
 			},
+			iovation: {
+				root: 'member/iovation',
+				functionId: 138,
+			},
 		},
 	},
 	risk: {

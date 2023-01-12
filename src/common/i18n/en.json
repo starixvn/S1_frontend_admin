@@ -1000,6 +1000,8 @@
 	"Label_BatchId": "Batch ID",
 	"Label_EnLangRequiredMsg": "Lang : En is Required",
 	"Label_SelectStatus": "Select Status",
+	"Label_LastUsedTime": "Last Used Time",
+	"Label_AssociateDevice": "Associate Device",
 	"Label_DepositBonus": "Deposit Bonus",
 	"Label_SearchPage": "Search Page ...",
 	"Label_PreferLanguages": "Prefer Languages",

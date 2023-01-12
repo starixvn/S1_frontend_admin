@@ -900,6 +900,10 @@ const WithdrawalPaymentReport = lazy(
 		)
 )
 
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
 const SmsGenerator = lazy(
 	() =>
 		import(
@@ -2302,6 +2306,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
 						<FailBet />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
 					</AuthRequire>
 				),
 			},
