@@ -7,7 +7,6 @@ import {
 	IMessageDetailData,
 	IGetMessageListArgs,
 	IUpdateMessageArgs,
-	ILangCodesData,
 } from 'features/smsGenerator/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
@@ -35,16 +34,7 @@ export const smsGenerator = rootApi.injectEndpoints({
 			}),
 			providesTags: ['POST'],
 		}),
-		getLangCodes: builder.query<
-			IAxiosResponse<ILangCodesData>,
-			{ siteId?: number }
-		>({
-			query: data => ({
-				url: 'PersonalMessage/GetServerInfo',
-				method: 'POST',
-				data,
-			}),
-		}),
+
 		updateMessage: builder.mutation<IAxiosResponse<void>, IUpdateMessageArgs>({
 			query: data => ({
 				url: 'PersonalMessage/UpdateBatchMessage',
@@ -87,7 +77,6 @@ export const smsGenerator = rootApi.injectEndpoints({
 
 export const {
 	useLazyGetMessageListQuery,
-	useGetLangCodesQuery,
 	useGetMessageDetailQuery,
 	useUpdateMessageMutation,
 	useDeleteMessageMutation,

@@ -60,10 +60,6 @@ export interface IEditForm {
 	messages: any
 }
 
-export interface ILangCodesData {
-	iLangList: string[]
-}
-
 export interface IConvertJsonData {
 	key: string
 	Title: string

@@ -17,10 +17,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { Currency } from 'common/enum/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import {
-	useGetLangCodesQuery,
-	useGetMessageDetailQuery,
-} from 'features/smsGenerator/api'
+import { useGetMessageDetailQuery } from 'features/smsGenerator/api'
 import {
 	accountStatusList,
 	MethodEnum,
@@ -36,6 +33,7 @@ import { MessageTabs } from 'features/smsGenerator/messageModal/MessageTabs'
 import { useEffect } from 'react'
 import { messagesResConverter } from 'features/smsGenerator/utils'
 import { PermissionInterface } from 'type'
+import { useGetLangCodesQuery } from 'common/service/allDataApi'
 
 interface ISetMessageModalProps {
 	open: boolean
