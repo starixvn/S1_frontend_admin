@@ -15,8 +15,8 @@ export const vipTypeList = [
 ]
 
 export enum ActionStatusEnum {
-	Approved = 1,
-	Pending,
+	Pending = 1,
+	Approved,
 	Rejected,
 	Settled,
 }
