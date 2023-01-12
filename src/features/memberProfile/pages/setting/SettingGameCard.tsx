@@ -22,7 +22,7 @@ const SettingGameCard = () => {
 		})
 
 	// TODO: 等 BetLimit 及 GameExclusion 兩頁翻新之後，這裡需要一起更新路徑
-	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.internalPath
+	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.newAdminPath
 	const gameExclusionPath = find(MENU_MAPPING, { functionId: 62 })?.internalPath
 
 	return (
