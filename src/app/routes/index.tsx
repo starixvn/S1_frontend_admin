@@ -914,6 +914,10 @@ const VideoManagement = lazy(
 		)
 )
 
+const FailBet = lazy(
+	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
+)
+
 const VipReview = lazy(
 	() =>
 		import(/* webpackChunkName: 'VipReview' */ 'features/vipReview/VipReview')
@@ -2290,6 +2294,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.vipReview.functionId}>
 						<VipReview />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
+						<FailBet />
 					</AuthRequire>
 				),
 			},
