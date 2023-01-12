@@ -18,12 +18,12 @@ import { IEnumTypeData } from 'common/service/enumApi'
 import { SearchOutlined } from '@ant-design/icons'
 import { MultipleSelect } from 'components/Select'
 import { Currency } from 'common/enum/type'
-import { ICalCodeData } from 'common/service/baseDataApi/type'
 import {
-	IFilterForm,
-	IGetBankCodeData,
-	IVipLevelData,
-} from 'features/withdrawalOperator/type'
+	IBankCodeData,
+	ICalCodeData,
+	IVipLevelEnumData,
+} from 'common/service/baseDataApi/type'
+import { IFilterForm } from 'features/withdrawalOperator/type'
 import moment from 'moment/moment'
 
 interface IWithdrawalOperatorFilterProps {
@@ -34,9 +34,9 @@ interface IWithdrawalOperatorFilterProps {
 	withdrawalStatusList: IEnumTypeData[]
 	withdrawalTypeList: IEnumTypeData[]
 	currencyListBySite: Currency[]
-	vipLevelList: IVipLevelData[]
+	vipLevelList: IVipLevelEnumData[]
 	calCodeList: ICalCodeData[]
-	bankCodeList: IGetBankCodeData[]
+	bankCodeList: IBankCodeData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,

@@ -68,3 +68,8 @@ export interface IGateWayData {
 	transferPin: string
 	loginPin: string
 }
+
+// LangCodes Data
+export interface ILangCodesData {
+	iLangList: string[]
+}

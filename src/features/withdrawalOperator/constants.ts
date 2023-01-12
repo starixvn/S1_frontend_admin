@@ -62,3 +62,8 @@ export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
 	[WithdrawalTypeEnum.CryptoPay]: 'Label_CryptoPay',
 	[WithdrawalTypeEnum.CryptoWallet]: 'Label_CryptoWallet',
 }
+
+export enum PurposeEnum {
+	Deposit = 1,
+	Withdrawal,
+}

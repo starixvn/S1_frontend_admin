@@ -16,5 +16,5 @@
 Verified 出單時 WithdrawalType 下拉邏輯 => 
 
 1. 假如 `accountType = crypto` , 判斷可用 cryptoList 是否 > 0 , True 則顯示 `CryptoPay` 選項 ; 判斷 cryptoWalletList 是否 > 0 , True 則顯示 `CryptoWallet` 選項
-2. 假如 `accountType = ewallet` , 判斷可用 localBankList 是否 > 0 , True 則顯示 `LocalBanking` ; 判斷 `eWalletName !== null` , True 則顯示 `OnlinePayment`
+2. 假如 `accountType = ewallet` , 判斷可用 localBankList 是否 > 0 , True 則顯示 `LocalBanking`
 3. 假如`accountType = null` , 判斷可用 localBankList 是否 > 0 , True 則顯示 `LocalBanking` ; 判斷 onlinePayList 是否 > 0 , True 則顯示 `OnlinePayment`

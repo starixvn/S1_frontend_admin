@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import {
+	EditModalTypeEnum,
 	IGetPaySettingData,
 	PaymentStatusEnum,
 } from 'features/paymentManagement/type'
-import { Switch, TablePaginationConfig, Typography } from 'antd'
+import { Space, Switch, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PermissionInterface } from 'type'
 import { Currency } from 'common/enum/type'
@@ -42,7 +43,7 @@ interface IPaymentManagementTableProps {
 		currencyId: number
 		channelId: number
 	}) => void
-	onEditClick: (record: IGetPaySettingData) => void
+	onEditClick: (record: IGetPaySettingData, type: EditModalTypeEnum) => void
 }
 const PaymentManagementTable = ({
 	loading,
@@ -64,17 +65,27 @@ const PaymentManagementTable = ({
 		{
 			title: t('Label_Action'),
 			key: 'operation',
-			width: 80,
+			width: 100,
 			align: 'center' as 'center',
 			render: (record: IGetPaySettingData) => (
-				<Typography.Link
-					disabled={!editPermission?.canUse}
-					onClick={() => {
-						onEditClick(record)
-					}}
-				>
-					{t('Label_Edit')}
-				</Typography.Link>
+				<Space>
+					<Typography.Link
+						disabled={!editPermission?.canUse}
+						onClick={() => {
+							onEditClick(record, EditModalTypeEnum.Edit)
+						}}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
+					<Typography.Link
+						disabled={!editPermission?.canUse}
+						onClick={() => {
+							onEditClick(record, EditModalTypeEnum.FeeSetting)
+						}}
+					>
+						{t('Label_FeeSetting')}
+					</Typography.Link>
+				</Space>
 			),
 		},
 		{

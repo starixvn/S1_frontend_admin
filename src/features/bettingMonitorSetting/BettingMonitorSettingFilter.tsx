@@ -1,4 +1,4 @@
-import { Button, Col, Form, FormInstance, Row, Select } from 'antd'
+import { Button, Col, Collapse, Form, FormInstance, Row, Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
 import {
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { MultipleSelect } from 'components/Select'
 
+const { Panel } = Collapse
 const { Option } = Select
 
 interface IBettingMonitorFilterProps {
@@ -134,84 +135,90 @@ const BettingMonitorSettingFilter = ({
 	}
 
 	return (
-		<LayoutContent.Card style={{ marginTop: 0 }}>
-			<Form
-				layout='vertical'
-				size='middle'
-				form={form}
-				onFinish={() => onSearch({})}
-				initialValues={{
-					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
-					tpIds: [],
-					tpGameTypes: [],
-				}}
-			>
-				<Row align='middle' gutter={16}>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name='currencyIds'
-							label={t('Label_Currency')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Currency'),
-									}),
-								},
-							]}
-						>
-							{currencySelector()}
-						</Form.Item>
-					</Col>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name='tpIds'
-							label={t('Label_Vender')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Vender'),
-									}),
-								},
-							]}
-						>
-							{tpIdsSelector()}
-						</Form.Item>
-					</Col>
-					<Col lg={6} md={12} xs={12}>
-						<Form.Item
-							name='tpGameTypes'
-							label={t('Label_Product')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Product'),
-									}),
-								},
-							]}
-						>
-							{tpGameTypesSelector()}
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row justify='end' align='middle'>
-					<Col>
-						<Form.Item label={' '}>
-							<Button
-								loading={loading}
-								icon={<SearchOutlined />}
-								htmlType='submit'
-								type='primary'
-							>
-								{t('Label_Search')}
-							</Button>
-						</Form.Item>
-					</Col>
-				</Row>
-			</Form>
-		</LayoutContent.Card>
+		<Collapse defaultActiveKey={1}>
+			<Panel header='' key='1'>
+				<LayoutContent.Card style={{ marginTop: 0 }}>
+					<Form
+						layout='vertical'
+						size='middle'
+						form={form}
+						onFinish={() => onSearch({})}
+						initialValues={{
+							currencyIds: currencyListBySite?.map(
+								({ currencyId }) => currencyId
+							),
+							tpIds: [],
+							tpGameTypes: [],
+						}}
+					>
+						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='currencyIds'
+									label={t('Label_Currency')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Currency'),
+											}),
+										},
+									]}
+								>
+									{currencySelector()}
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='tpIds'
+									label={t('Label_Vender')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Vender'),
+											}),
+										},
+									]}
+								>
+									{tpIdsSelector()}
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='tpGameTypes'
+									label={t('Label_Product')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Product'),
+											}),
+										},
+									]}
+								>
+									{tpGameTypesSelector()}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row justify='end' align='middle'>
+							<Col>
+								<Form.Item label={' '}>
+									<Button
+										loading={loading}
+										icon={<SearchOutlined />}
+										htmlType='submit'
+										type='primary'
+									>
+										{t('Label_Search')}
+									</Button>
+								</Form.Item>
+							</Col>
+						</Row>
+					</Form>
+				</LayoutContent.Card>
+			</Panel>
+		</Collapse>
 	)
 }
 

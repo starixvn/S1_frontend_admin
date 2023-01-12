@@ -107,18 +107,6 @@ export interface IWithdrawalCommentData {
 	operator: string
 }
 
-export interface IGetBankCodeListArgs {
-	siteId?: number
-	currency: number
-}
-
-export interface IGetBankCodeData {
-	sysId: number
-	currencyId: number
-	bankCode: string
-	bankName: string
-}
-
 export type IFilterForm = {
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string
@@ -133,15 +121,6 @@ export type IFilterForm = {
 	withdrawalMethod: number
 	withdrawalId: string
 	agent: string
-}
-
-export interface IGetVipLevelBySiteArgs {
-	siteId?: number
-}
-
-export interface IVipLevelData {
-	level: number
-	levelName: string
 }
 
 export type IWithdrawalAccounting = {
@@ -171,74 +150,6 @@ export interface IWithdrawalRequestForm {
 	gasFee: number
 }
 
-// 取得可用的 OnlinePayList
-export interface IGetOnlinePayListArgs {
-	currencyId: number
-	sysId: number
-	amount: number
-	custId: number
-}
-
-export interface IGetOnlinePayData {
-	payId: number
-	payName: string
-	channelId: number
-	loginUrl: string
-	loginAccount: string
-	loginPassword: string
-	transferPin: string
-	loginPin: string
-}
-
-// 取得可用的 CryptoPay List
-export interface IGetCryptoPayListArgs {
-	currencyId: number
-	channelName: string
-	amount: number
-	custId: number
-}
-
-export type IGetCryptoPayData = IGetOnlinePayData
-
-// 取得可用的 localBank List
-export interface IGetBankInfoListArgs {
-	currencyId: number
-	purpose: number
-}
-
-export interface IGetBankInfoData {
-	bankId: number
-	siteId: number
-	siteName: string
-	currencyId: number
-	isoCode: string
-	channel: number
-	accountName: string
-	accountNo: string
-	accountCode: string
-	displayName: string
-	accountStatus: number
-	settingStatus: number
-	purpose: string
-	purposes: number[]
-	jsonPointLevels: string
-	pointLevels: number[]
-	jsonVipLevels: string
-	vipLevels: number[]
-	minAmount: number
-	maxAmount: number
-	sysId: number
-	bankCode: string
-	bankName: string
-	bankLoginUrl: string
-	bankLoginAccount: string
-	bankLoginPassword: string
-	transferPin: string
-	loginPin: string
-	mobilePin: string
-	corporateID: string
-}
-
 export interface IPayInfo {
 	accountNo: string
 	loginUrl: string
@@ -260,9 +171,3 @@ export interface IUploadPictureArgs {
 export interface IDeletePictureArgs extends IGetByTransIdArgs {
 	number: number
 }
-
-export interface IGetCryptoWalletArgs {
-	currencyId: number
-}
-
-export type IGetCryptoWalletData = IGetBankInfoData

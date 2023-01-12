@@ -4,6 +4,7 @@ import { useQueryParams } from 'common/hooks'
 import { isEmpty } from 'lodash'
 import { HotGameContext } from 'features/hotGameManagement/hotGameContext'
 import { HotGameManagementFilterCell } from 'features/hotGameManagement/hotGameManagementFilter/HotGameManagementFilterCell'
+import { LayoutContent } from 'app/pages/layout'
 
 interface IHotGameManagementFilterTabProps {
 	form: FormInstance
@@ -37,14 +38,16 @@ const HotGameManagementFilterTab = ({
 	})
 
 	return (
-		<Tabs
-			type='card'
-			activeKey={String(currentCurrency)}
-			destroyInactiveTabPane
-			tabBarStyle={{ margin: 0 }}
-			onChange={(value: string) => handleTabsChange(value)}
-			items={items}
-		/>
+		<LayoutContent.Card style={{ margin: 0, padding: '20px 20px' }}>
+			<Tabs
+				type='card'
+				activeKey={String(currentCurrency)}
+				destroyInactiveTabPane
+				tabBarStyle={{ margin: 0 }}
+				onChange={(value: string) => handleTabsChange(value)}
+				items={items}
+			/>
+		</LayoutContent.Card>
 	)
 }
 

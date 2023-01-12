@@ -11,6 +11,7 @@ import {
 	IVipLevelsResponse,
 	IGateWayData,
 	IGateWayArgs,
+	ILangCodesData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -85,6 +86,17 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 取得 site 底下所有 langCodes
+		getLangCodes: builder.query<
+			IAxiosResponse<ILangCodesData>,
+			{ siteId?: number }
+		>({
+			query: data => ({
+				url: 'GetAllData/GetServerInfo',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -105,4 +117,5 @@ export const {
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
+	useGetLangCodesQuery,
 } = allDataApi
