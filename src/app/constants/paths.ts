@@ -227,6 +227,10 @@ const paths = {
 						root: 'finance/setting/adjustmentLimitation',
 						functionId: 43,
 					},
+					modifyPaymentFeeLog: {
+						root: 'finance/setting/modifyPaymentFeeLog',
+						functionId: 139,
+					},
 				},
 			},
 			depositWithdrawalSector: {

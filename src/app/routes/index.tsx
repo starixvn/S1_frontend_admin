@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const ModifyPaymentFeeLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ModifyPaymentFeeLog' */ 'features/modifyPaymentFeeLog/ModifyPaymentFeeLog'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2260,6 +2267,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.modifyPaymentFeeLog.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId
+						}
+					>
+						<ModifyPaymentFeeLog />
 					</AuthRequire>
 				),
 			},
