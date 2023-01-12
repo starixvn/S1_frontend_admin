@@ -1,8 +1,4 @@
 import {
-	IGetBankInfoData,
-	IGetCryptoPayData,
-	IGetCryptoWalletData,
-	IGetOnlinePayData,
 	IGetWithdrawalData,
 	IWithdrawalRequestForm,
 } from 'features/withdrawalOperator/type'
@@ -29,17 +25,23 @@ import {
 import { isJSON, multiEqual } from 'common/utils'
 import { find, head } from 'lodash'
 import { useCopy } from 'common/hooks'
+import {
+	IBankInfoOffState,
+	ICryptoPayData,
+	ICryptoWalletData,
+	IOnlinePayData,
+} from 'common/service/baseDataApi/type'
 
 interface IWithdrawalInfoDescriptionsProps {
 	form: FormInstance<IWithdrawalRequestForm>
 	timeZoneUtcOffset: number
 	withdrawalDetailData?: IGetWithdrawalData
-	localBankList: IGetBankInfoData[]
-	cryptoPayList: IGetCryptoPayData[]
-	onlinePayList: IGetOnlinePayData[]
-	cryptoWalletList: IGetCryptoWalletData[]
+	localBankList: IBankInfoOffState[]
+	cryptoPayList: ICryptoPayData[]
+	onlinePayList: IOnlinePayData[]
+	cryptoWalletList: ICryptoWalletData[]
 	onPayInfoClicked: (
-		record: IGetOnlinePayData | IGetCryptoPayData | IGetBankInfoData
+		record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
 	) => void
 }
 
@@ -140,16 +142,6 @@ const WithdrawalRequestInfo = ({
 						key={WithdrawalTypeEnum.LocalBank}
 					>
 						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.LocalBank])}
-					</Option>
-				)
-			}
-			if (eWalletName !== null) {
-				result.push(
-					<Option
-						value={WithdrawalTypeEnum.OnlinePayment}
-						key={WithdrawalTypeEnum.OnlinePayment}
-					>
-						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
 					</Option>
 				)
 			}

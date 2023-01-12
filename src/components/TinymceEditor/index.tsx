@@ -7,12 +7,14 @@ interface ITinymceEditorProps {
 	defaultHtmlState?: string
 	onHtmlStateChange: (html: string) => void
 	darkMode?: boolean
+	disabled?: boolean
 }
 
 const TinymceEditor: FC<ITinymceEditorProps> = ({
 	defaultHtmlState,
 	onHtmlStateChange,
 	darkMode,
+	disabled,
 }) => {
 	const editorRef = useRef<any>(null)
 	const [defaultHtml, setDefaultHtml] = useState<string>()
@@ -66,6 +68,7 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 			}}
 			initialValue={defaultHtml}
 			init={init}
+			disabled={disabled}
 		/>
 	)
 }

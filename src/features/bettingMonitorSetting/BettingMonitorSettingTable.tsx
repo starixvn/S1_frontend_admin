@@ -15,6 +15,7 @@ import { IEditForm, IGetListData } from 'features/bettingMonitorSetting/type'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
 import { EditableCellRows, Table } from 'components'
+import { LayoutContent } from 'app/pages/layout'
 
 export interface IBettingMonitorTableProps {
 	form: FormInstance<IEditForm>
@@ -235,21 +236,22 @@ const BettingMonitorTable = ({
 	})
 
 	return (
-		<Form form={form} component={false}>
-			<Table
-				components={{
-					body: {
-						cell: EditableCellRows,
-					},
-				}}
-				loading={loading}
-				dataSource={bettingMonitorList ?? []}
-				style={{ marginTop: '10px', marginBottom: '10px' }}
-				columns={mergeColumns}
-				pagination={pagination as TablePaginationConfig}
-				onChange={onTableChange}
-			/>
-		</Form>
+		<LayoutContent.Card>
+			<Form form={form} component={false}>
+				<Table
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					loading={loading}
+					dataSource={bettingMonitorList ?? []}
+					columns={mergeColumns}
+					pagination={pagination as TablePaginationConfig}
+					onChange={onTableChange}
+				/>
+			</Form>
+		</LayoutContent.Card>
 	)
 }
 

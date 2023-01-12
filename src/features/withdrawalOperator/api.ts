@@ -2,25 +2,13 @@ import { rootApi } from 'common/service/rootApi/api'
 import {
 	IDeletePictureArgs,
 	IExportWithdrawalListArgs,
-	IGetBankCodeData,
-	IGetBankCodeListArgs,
-	IGetBankInfoData,
-	IGetBankInfoListArgs,
 	IGetByTransIdArgs,
-	IGetCryptoPayData,
-	IGetCryptoPayListArgs,
-	IGetCryptoWalletArgs,
-	IGetCryptoWalletData,
-	IGetOnlinePayData,
-	IGetOnlinePayListArgs,
-	IGetVipLevelBySiteArgs,
 	IGetWithdrawalData,
 	IGetWithdrawalListArgs,
 	IGetWithdrawalResponse,
 	IManualOperatorArgs,
 	ISetWithdrawalStatusArgs,
 	IUploadPictureArgs,
-	IVipLevelData,
 	IWithdrawalCommentData,
 } from 'features/withdrawalOperator/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -67,68 +55,6 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				data,
 			}),
 			providesTags: ['POST'],
-		}),
-		getBankCodeList: builder.query<
-			IAxiosResponse<IGetBankCodeData[]>,
-			IGetBankCodeListArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetBankCodeList',
-				method: 'POST',
-				data,
-			}),
-		}),
-		getVipLevelList: builder.query<
-			IAxiosResponse<IVipLevelData[]>,
-			IGetVipLevelBySiteArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetVipLevelSettingBySiteId',
-				method: 'POST',
-				data,
-			}),
-		}),
-		// 取得用戶 onlinePayList 列表
-		getOnlinePayList: builder.query<
-			IAxiosResponse<IGetOnlinePayData[]>,
-			IGetOnlinePayListArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetOnlinePayList',
-				method: 'POST',
-				data,
-			}),
-		}),
-		// 取得用戶 cryptoPayList 列表
-		getCryptoPayList: builder.query<
-			IAxiosResponse<IGetCryptoPayData[]>,
-			IGetCryptoPayListArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetCryptoPayList',
-				method: 'POST',
-				data,
-			}),
-		}),
-		getCryptoWalletList: builder.query<
-			IAxiosResponse<IGetCryptoWalletData[]>,
-			IGetCryptoWalletArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetCryptoWalletList',
-				method: 'POST',
-				data,
-			}),
-		}),
-		getLocalBankList: builder.query<
-			IAxiosResponse<IGetBankInfoData[]>,
-			IGetBankInfoListArgs
-		>({
-			query: data => ({
-				url: 'BaseData/GetBankInfoOffList',
-				method: 'POST',
-				data,
-			}),
 		}),
 		// 更新狀態
 		setWithdrawalStatus: builder.mutation<
@@ -193,14 +119,8 @@ export const {
 	useLazyGetWithdrawalListQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
-	useGetBankCodeListQuery,
 	useExportWithdrawalListMutation,
-	useGetVipLevelListQuery,
 	useSetWithdrawalStatusMutation,
-	useGetOnlinePayListQuery,
-	useGetCryptoPayListQuery,
-	useGetCryptoWalletListQuery,
-	useGetLocalBankListQuery,
 	useManualApprovalMutation,
 	useManualRejectMutation,
 	useUploadPictureMutation,
