@@ -27,7 +27,7 @@ interface AnnouncementTableProps {
 	onDelete: (id: number) => void
 }
 
-const { Paragraph, Text } = Typography
+const { Text } = Typography
 
 const AnnouncementTable = ({
 	loading,
@@ -96,11 +96,24 @@ const AnnouncementTable = ({
 			dataIndex: 'subject',
 			align: 'center' as 'center',
 			width: 150,
-			ellipsis: true,
 			render: (subject: string) => (
-				<Text ellipsis style={{ whiteSpace: 'nowrap' }}>
-					{subject || '-'}
-				</Text>
+				<Space style={{ textAlign: 'center' }} align='center'>
+					{isString(subject) && subject.length > 10 ? (
+						<Space>
+							<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+								{subject.substring(0, 10)}...
+							</Text>
+							<Typography.Link
+								style={{ marginLeft: -15 }}
+								onClick={() => handleContentModal(subject)}
+							>
+								more
+							</Typography.Link>
+						</Space>
+					) : (
+						<Text>{subject || '-'}</Text>
+					)}
+				</Space>
 			),
 		},
 		{
@@ -108,26 +121,25 @@ const AnnouncementTable = ({
 			key: 'content',
 			dataIndex: 'content',
 			align: 'center' as 'center',
-			width: 180,
+			width: 150,
 			render: (content: string) => (
-				// Paragraph 會自動置頂 故沒採用Space
-				// content 能換行 故用 Paragraph
-				<div>
-					<Paragraph
-						ellipsis={{
-							rows: 2,
-							expandable: false,
-						}}
-					>
-						{content || '-'}
-					</Paragraph>
-					{/* 確保是 string 在計算長度 */}
-					{isString(content) && content.length > 20 && (
-						<Typography.Link onClick={() => handleContentModal(content)}>
-							more
-						</Typography.Link>
+				<Space style={{ textAlign: 'center' }} align='center'>
+					{isString(content) && content.length > 10 ? (
+						<Space>
+							<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+								{content.substring(0, 10)}...
+							</Text>
+							<Typography.Link
+								style={{ marginLeft: -15 }}
+								onClick={() => handleContentModal(content)}
+							>
+								more
+							</Typography.Link>
+						</Space>
+					) : (
+						<Text>{content || '-'}</Text>
 					)}
-				</div>
+				</Space>
 			),
 		},
 		{
