@@ -5,6 +5,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { PermissionInterface } from 'type'
 import { numberFormatter } from 'common/utils/format'
+import { LayoutContent } from 'app/pages/layout'
 
 interface IWithdrawalKycControlTableProps {
 	loading: boolean
@@ -36,8 +37,8 @@ const WithdrawalKycControlTable = ({
 	const columns = [
 		{
 			title: t('Label_Action'),
+			width: '33%',
 			key: 'operation',
-			width: '30%',
 			align: 'center' as 'center',
 			render: (record: IGetWithdrawalKycListData) => {
 				const editable = isEditing(record)
@@ -66,14 +67,15 @@ const WithdrawalKycControlTable = ({
 		},
 		{
 			title: t('Label_Currency'),
+			width: '33%',
 			key: 'isoCode',
 			dataIndex: 'isoCode',
-			width: '10%',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Amount'),
 			key: 'amount',
+			width: '33%',
 			dataIndex: 'amount',
 			align: 'center' as 'center',
 			editable: true,
@@ -98,19 +100,21 @@ const WithdrawalKycControlTable = ({
 	})
 
 	return (
-		<Form form={form} component={false}>
-			<Table
-				components={{
-					body: {
-						cell: EditableCellRows,
-					},
-				}}
-				loading={loading}
-				dataSource={withdrawalKycListData ?? []}
-				pagination={false}
-				columns={mergeColumns}
-			/>
-		</Form>
+		<LayoutContent.Card>
+			<Form form={form} component={false}>
+				<Table
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					loading={loading}
+					dataSource={withdrawalKycListData ?? []}
+					pagination={false}
+					columns={mergeColumns}
+				/>
+			</Form>
+		</LayoutContent.Card>
 	)
 }
 
