@@ -114,6 +114,8 @@ const MemberAdministrationList = ({
 				tags: tags.length !== 0 ? tags : null,
 				statuses,
 				vipLevel,
+				userName: userName ? trim(userName) : '',
+				tpUserName: tpUserName ? trim(tpUserName) : '',
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
