@@ -114,7 +114,7 @@ export interface IConvertContentJsonData {
 	content: string
 }
 
-// subject、content 需求的格式 key為langCode
+// subject、content 需求的格式 key為 langCode
 export interface ILangCodeData {
 	[key: string]: string
 }

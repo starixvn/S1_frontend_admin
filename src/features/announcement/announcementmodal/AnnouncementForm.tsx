@@ -1,5 +1,5 @@
-import { Col, Form, FormInstance, Input, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { Col, Form, FormInstance, Input, Row } from 'antd'
 
 interface IAnnouncementFormProps {
 	form: FormInstance
