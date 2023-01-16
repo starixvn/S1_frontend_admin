@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
@@ -20,10 +20,10 @@ import {
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
-import { IGetVipLevelsData } from './type'
-import { MultipleSelect } from '../../components/Select'
-import { StatusEnum, statusesList } from './constants'
-import { dateFormat } from '../../common/utils/format'
+import { IVipLevelEnumData } from 'common/service/baseDataApi/type'
+import { dateFormat } from 'common/utils/format'
+import { MultipleSelect } from 'components/Select'
+import { StatusEnum, statusesList } from 'features/redemptionListing/constants'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -43,8 +43,7 @@ interface RedemptionListingFilterInterface {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	currencyListBySite: Currency[]
-	vipLevelsList: IGetVipLevelsData[]
-	siteId?: number
+	vipLevelsList: IVipLevelEnumData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
@@ -55,17 +54,15 @@ const RedemptionListingFilter: FC<RedemptionListingFilterInterface> = ({
 	onSearch,
 	currencyListBySite,
 	vipLevelsList,
-	siteId,
 	onTimeZoneChange,
 }) => {
 	const { t } = useTranslation()
-	const currentVipList = vipLevelsList?.filter(item => item.siteId === siteId)
 
 	const vipLevelSelect = () => {
 		const onChangeVipLevel = (newLevel: number[]) => {
 			if (newLevel.includes(0)) {
 				form.setFieldsValue({
-					vipLevels: currentVipList?.map(level => level.level),
+					vipLevels: vipLevelsList?.map(({ level }) => level),
 				})
 			} else {
 				form.setFieldsValue({
@@ -79,12 +76,12 @@ const RedemptionListingFilter: FC<RedemptionListingFilterInterface> = ({
 					onChange={onChangeVipLevel}
 					placeholder={t('Label_Select')}
 				>
-					{currentVipList?.length > 1 && (
+					{vipLevelsList?.length > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
-					{currentVipList?.map(vipLevel => (
-						<Option key={vipLevel.level} value={vipLevel.level}>
-							{vipLevel.levelName}
+					{vipLevelsList?.map(({ level, levelName }) => (
+						<Option key={level} value={level}>
+							{levelName}
 						</Option>
 					))}
 				</MultipleSelect>
@@ -137,14 +134,6 @@ const RedemptionListingFilter: FC<RedemptionListingFilterInterface> = ({
 			})
 		}
 	}
-
-	useEffect(() => {
-		if (!loading && currentVipList?.length > 0) {
-			form.setFieldsValue({
-				vipLevels: currentVipList?.map(level => level.level),
-			})
-		}
-	}, [loading])
 
 	return (
 		<Collapse defaultActiveKey={1}>

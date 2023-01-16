@@ -96,17 +96,6 @@ export interface IGetRedemptionDetailData {
 export type IGetRedemptionDetailResponse =
 	IAxiosResponse<IGetRedemptionDetailData>
 
-export interface IGetVipLevelsData {
-	siteId: number
-	level: number
-	levelName: string
-	fixed: number
-	createTime: string
-	updateTime: string
-}
-
-export type IGetVipLevelsResponse = IAxiosResponse<IGetVipLevelsData[]>
-
 export interface IGetRedemptionLogArgs {
 	transId: string
 }
