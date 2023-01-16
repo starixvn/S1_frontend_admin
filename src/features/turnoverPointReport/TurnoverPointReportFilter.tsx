@@ -24,7 +24,7 @@ import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { dateFormat } from 'common/utils/format'
 import { IGetCategoryData } from 'features/betList/type'
-import { IGetVipLevelsData } from 'features/redemptionListing/type'
+import { IVipLevelEnumData } from 'common/service/baseDataApi/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -44,7 +44,7 @@ interface ITurnoverPointReportFilterProps {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	currencyListBySite: Currency[]
-	vipLevelsList: IGetVipLevelsData[]
+	vipLevelsList: IVipLevelEnumData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 	categories: IGetCategoryData[]
 }

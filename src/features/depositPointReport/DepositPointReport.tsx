@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -16,16 +16,15 @@ import {
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
-import { useGetVipLevelQuery } from '../redemptionListing/api'
-import { IGetVipLevelsResponse } from '../redemptionListing/type'
+import { useGetVipLevelEnumBySiteIdQuery } from 'common/service/baseDataApi'
 import {
 	useExportDepositPointReportMutation,
 	useLazyGetDepositPointReportQuery,
-} from './api'
-import { IGetDepositPointReportResponse } from './type'
-import { DepositPointReportFilter } from './DepositPointReportFilter'
-import { DepositPointReportTable } from './DepositPointReportTable'
-import { DepositPointReportOverviewTable } from './DepositPointReportOverviewTable'
+} from 'features/depositPointReport/api'
+import { IGetDepositPointReportResponse } from 'features/depositPointReport/type'
+import { DepositPointReportTable } from 'features/depositPointReport/DepositPointReportTable'
+import { DepositPointReportFilter } from 'features/depositPointReport/DepositPointReportFilter'
+import { DepositPointReportOverviewTable } from 'features/depositPointReport/DepositPointReportOverviewTable'
 
 const DepositPointReport: FC<{
 	pageTitle?: string
@@ -63,13 +62,9 @@ const DepositPointReport: FC<{
 	] = useExportDepositPointReportMutation()
 
 	const {
-		data: { data: vipLevelsList } = {} as IGetVipLevelsResponse,
+		data: { data: vipLevelsList = [] } = {},
 		isLoading: isGetVipLevelLoading,
-	} = useGetVipLevelQuery(null)
-
-	const filteredVipLevelsList = vipLevelsList?.filter(
-		item => item.siteId === siteId
-	)
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -166,7 +161,7 @@ const DepositPointReport: FC<{
 		if (isGetVipLevelLoading) return
 		const init = () => {
 			form.setFieldsValue({
-				vipLevels: filteredVipLevelsList?.map(item => item.level),
+				vipLevels: vipLevelsList?.map(({ level }) => level),
 			})
 			if (isEmpty(queryParams)) return
 			const {
@@ -187,10 +182,12 @@ const DepositPointReport: FC<{
 				userName,
 				sabaId,
 				transId,
-				vipLevels: vipLevels.map((vipLevel: string) => Number(vipLevel)),
-				currencyIds: currencyIds.map((currencyId: string) =>
-					Number(currencyId)
-				),
+				vipLevels: isArray(vipLevels)
+					? vipLevels.map((vipLevel: string) => Number(vipLevel))
+					: [],
+				currencyIds: isArray(currencyIds)
+					? currencyIds.map((currencyId: string) => Number(currencyId))
+					: [],
 			})
 
 			handleSearch({
@@ -213,7 +210,7 @@ const DepositPointReport: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
-				vipLevelsList={filteredVipLevelsList}
+				vipLevelsList={vipLevelsList}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
 			{!isEmpty(queryParams) && (
