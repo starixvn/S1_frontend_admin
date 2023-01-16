@@ -8,7 +8,6 @@ import {
 	Input,
 	Row,
 } from 'antd'
-import moment from 'moment'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import {
@@ -16,7 +15,6 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import { IFilterForm } from 'features/modifyPaymentFeeLog/type'
-import { timeFormat } from 'common/utils/format'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 
@@ -83,11 +81,6 @@ const ModifyPaymentFeeLogFilter = ({
 													'Last 7 Day',
 													'This Month',
 												])}
-												format={time =>
-													moment(time)
-														.utcOffset(timeZoneUtcOffset)
-														.format(timeFormat)
-												}
 											/>
 										</Form.Item>
 										<div>

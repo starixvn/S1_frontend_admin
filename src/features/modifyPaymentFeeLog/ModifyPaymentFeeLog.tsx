@@ -2,10 +2,10 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import moment from 'moment'
 import {
-	useGetPaySettingListQuery,
 	useLazyGetModifyPaymentChargeFeeListQuery,
 	useSubmitPaySettingMutation,
 } from 'features/modifyPaymentFeeLog/api'
+import { useGetPaySettingListQuery } from 'common/service/allDataApi'
 import { IFilterForm, IModalForm } from 'features/modifyPaymentFeeLog/type'
 import ModifyPaymentFeeLogFilter from 'features/modifyPaymentFeeLog/ModifyPaymentFeeLogFilter'
 import ModifyPaymentFeeLogTable from 'features/modifyPaymentFeeLog/ModifyPaymentFeeLogTable'
@@ -102,7 +102,6 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 		handleSearch({
 			current,
 			pageSize,
-			currentTimeZoneUtcOffset: timeZoneUtcOffset,
 		})
 	}
 
@@ -113,7 +112,7 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 			chargeFeePercentage,
 			chargeFeePreCount,
 			dateRange,
-		} = modalForm.getFieldsValue()
+		} = await modalForm.validateFields()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			modalTimeZoneUtcOffset
@@ -128,6 +127,8 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 				endTime,
 			}
 			await submitPaySetting(args).unwrap()
+			modalForm.resetFields()
+			addModifyPaymentFeeLogModal.onCancel()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
@@ -148,6 +149,7 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 				handleSearch({
 					current: Number(pageNumber),
 					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timezone),
 				})
 			}
 		}
@@ -169,14 +171,16 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
-			<ModifyPaymentFeeLogTable
-				loading={loading}
-				modifyPaymentChargeFeeList={modifyPaymentChargeFeeList}
-				pagination={pagination}
-				timeZoneUtcOffset={timeZoneUtcOffset}
-				currencyListBySite={currencyListBySite}
-				onTableChange={handleTableChange}
-			/>
+			{!isEmpty(queryParams) && (
+				<ModifyPaymentFeeLogTable
+					loading={loading}
+					modifyPaymentChargeFeeList={modifyPaymentChargeFeeList}
+					pagination={pagination}
+					timeZoneUtcOffset={timeZoneUtcOffset}
+					currencyListBySite={currencyListBySite}
+					onTableChange={handleTableChange}
+				/>
+			)}
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.Create

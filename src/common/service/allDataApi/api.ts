@@ -12,6 +12,7 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	IGetPaySettingListResponse,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -97,6 +98,14 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 取得所有 paymentSetting
+		getPaySettingList: builder.query<IGetPaySettingListResponse, null>({
+			query: data => ({
+				url: 'GetAllData/GetPaySetting',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -118,4 +127,5 @@ export const {
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetPaySettingListQuery,
 } = allDataApi

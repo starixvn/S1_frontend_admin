@@ -4,18 +4,18 @@ import {
 	Form,
 	FormInstance,
 	Input,
-	InputNumber,
 	Modal,
 	Row,
 	Select,
 } from 'antd'
-import { IGetPaySettingData } from 'features/modifyPaymentFeeLog/type'
+import { IGetPaySettingData } from 'common/service/allDataApi'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
+import { InputNumber } from 'components'
 
 interface IAddModifyPaymentFeeLogModalProps {
 	loading: boolean
@@ -181,13 +181,7 @@ const AddModifyPaymentFeeLogModal = ({
 			confirmLoading={loading}
 			onCancel={onCancel}
 			afterClose={() => form.resetFields()}
-			onOk={() => {
-				form.validateFields().then(() => {
-					onFinish()
-					form.resetFields()
-					onCancel()
-				})
-			}}
+			onOk={onFinish}
 		>
 			<Form form={form} layout='vertical'>
 				<Row align='middle' gutter={16}>
