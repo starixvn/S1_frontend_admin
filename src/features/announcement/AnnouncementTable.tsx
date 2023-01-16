@@ -96,25 +96,17 @@ const AnnouncementTable = ({
 			dataIndex: 'subject',
 			align: 'center' as 'center',
 			width: 150,
-			render: (subject: string) => (
-				<Space style={{ textAlign: 'center' }} align='center'>
-					{isString(subject) && subject.length > 10 ? (
-						<Space>
-							<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-								{subject.substring(0, 10)}...
-							</Text>
-							<Typography.Link
-								style={{ marginLeft: -15 }}
-								onClick={() => handleContentModal(subject)}
-							>
-								more
-							</Typography.Link>
-						</Space>
-					) : (
-						<Text>{subject || '-'}</Text>
-					)}
-				</Space>
-			),
+			render: (subject: string) =>
+				isString(subject) && subject.length > 10 ? (
+					<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+						{subject.substring(0, 10)}...
+						<Typography.Link onClick={() => handleContentModal(subject)}>
+							more
+						</Typography.Link>
+					</Text>
+				) : (
+					<Text>{subject || '-'}</Text>
+				),
 		},
 		{
 			title: t('Label_Content'),
@@ -122,25 +114,17 @@ const AnnouncementTable = ({
 			dataIndex: 'content',
 			align: 'center' as 'center',
 			width: 150,
-			render: (content: string) => (
-				<Space style={{ textAlign: 'center' }} align='center'>
-					{isString(content) && content.length > 10 ? (
-						<Space>
-							<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-								{content.substring(0, 10)}...
-							</Text>
-							<Typography.Link
-								style={{ marginLeft: -15 }}
-								onClick={() => handleContentModal(content)}
-							>
-								more
-							</Typography.Link>
-						</Space>
-					) : (
-						<Text>{content || '-'}</Text>
-					)}
-				</Space>
-			),
+			render: (content: string) =>
+				isString(content) && content.length > 10 ? (
+					<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+						{content.substring(0, 10)}...
+						<Typography.Link onClick={() => handleContentModal(content)}>
+							more
+						</Typography.Link>
+					</Text>
+				) : (
+					<Text>{content || '-'}</Text>
+				),
 		},
 		{
 			title: t('Label_Status'),

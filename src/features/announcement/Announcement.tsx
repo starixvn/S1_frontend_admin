@@ -78,6 +78,13 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 			currentTimeZoneUtcOffset
 		)
 
+		const ArrayStatus: number[] = []
+		if (status === '2') {
+			ArrayStatus.push(Number(0), Number(1))
+		} else {
+			ArrayStatus.push(Number(status))
+		}
+
 		try {
 			await getAnnouncementList({
 				siteIds: [siteId],
@@ -85,7 +92,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				endDate,
 				pageNumber: current,
 				pageSize,
-				status,
+				statuses: ArrayStatus,
 			}).unwrap()
 			setQueryParams({
 				startDate,
