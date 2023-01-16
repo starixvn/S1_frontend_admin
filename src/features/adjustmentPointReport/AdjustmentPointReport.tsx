@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -16,16 +16,15 @@ import {
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
+import { useGetVipLevelEnumBySiteIdQuery } from 'common/service/baseDataApi'
+import { AdjustmentPointReportFilter } from 'features/adjustmentPointReport/AdjustmentPointReportFilter'
 import {
 	useExportAdjustmentPointReportMutation,
 	useLazyGetAdjustmentPointReportQuery,
-} from './api'
-import { useGetVipLevelQuery } from '../redemptionListing/api'
-import { IGetVipLevelsResponse } from '../redemptionListing/type'
-import { IGetAdjustmentPointReportResponse } from './type'
-import { AdjustmentPointReportFilter } from './AdjustmentPointReportFilter'
-import { AdjustmentPointReportTable } from './AdjustmentPointReportTable'
-import { AdjustmentPointOverviewTable } from './AdjustmentPointOverviewTable'
+} from 'features/adjustmentPointReport/api'
+import { AdjustmentPointReportTable } from 'features/adjustmentPointReport/AdjustmentPointReportTable'
+import { AdjustmentPointOverviewTable } from 'features/adjustmentPointReport/AdjustmentPointOverviewTable'
+import { IGetAdjustmentPointReportResponse } from 'features/adjustmentPointReport/type'
 
 const AdjustmentPointReport: FC<{
 	pageTitle?: string
@@ -65,13 +64,9 @@ const AdjustmentPointReport: FC<{
 		{ isLoading: isExportAdjustmentPointReportLoading },
 	] = useExportAdjustmentPointReportMutation()
 	const {
-		data: { data: vipLevelsList = [] } = {} as IGetVipLevelsResponse,
+		data: { data: vipLevelsList = [] } = {},
 		isLoading: isGetVipLevelLoading,
-	} = useGetVipLevelQuery(null)
-
-	const filteredVipLevelsList = vipLevelsList?.filter(
-		item => item.siteId === siteId
-	)
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -174,7 +169,7 @@ const AdjustmentPointReport: FC<{
 		if (isGetVipLevelLoading) return
 		const init = () => {
 			form.setFieldsValue({
-				vipLevels: filteredVipLevelsList.map(item => item.level),
+				vipLevels: vipLevelsList.map(({ level }) => level),
 			})
 			if (isEmpty(queryParams)) return
 			const {
@@ -196,11 +191,15 @@ const AdjustmentPointReport: FC<{
 				userName,
 				sabaId,
 				transId,
-				vipLevels: vipLevels.map((vipLevel: string) => Number(vipLevel)),
-				adjustTypes: adjustTypes.map((type: string) => Number(type)),
-				currencyIds: currencyIds.map((currencyId: string) =>
-					Number(currencyId)
-				),
+				vipLevels: isArray(vipLevels)
+					? vipLevels.map((vipLevel: string) => Number(vipLevel))
+					: [],
+				adjustTypes: isArray(adjustTypes)
+					? adjustTypes.map((type: string) => Number(type))
+					: [],
+				currencyIds: isArray(currencyIds)
+					? currencyIds.map((currencyId: string) => Number(currencyId))
+					: [],
 			})
 
 			handleSearch({
@@ -221,7 +220,7 @@ const AdjustmentPointReport: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
-				vipLevelsList={filteredVipLevelsList}
+				vipLevelsList={vipLevelsList}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
 			{!isEmpty(queryParams) && (

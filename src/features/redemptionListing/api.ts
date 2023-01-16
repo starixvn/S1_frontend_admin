@@ -8,18 +8,11 @@ import {
 	IGetRedemptionListResponse,
 	IGetRedemptionLogArgs,
 	IGetRedemptionLogResponse,
-	IGetVipLevelsResponse,
 	ISetRedemptionInfoArgs,
 } from './type'
 
 export const redemptionListingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getVipLevel: builder.query<IGetVipLevelsResponse, null>({
-			query: () => ({
-				url: 'GetAllData/GetAllSiteVipLevelList',
-				method: 'POST',
-			}),
-		}),
 		getRedemptionList: builder.query<
 			IGetRedemptionListResponse,
 			IGetRedemptionListArgs
@@ -89,7 +82,6 @@ export const redemptionListingApi = rootApi.injectEndpoints({
 })
 
 export const {
-	useGetVipLevelQuery,
 	useLazyGetRedemptionListQuery,
 	useLazyGetRedemptionDetailQuery,
 	useLazyGetRedemptionLogQuery,
