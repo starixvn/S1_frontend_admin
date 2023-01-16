@@ -23,7 +23,7 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { dateFormat } from 'common/utils/format'
-import { IGetVipLevelsData } from '../redemptionListing/type'
+import { IVipLevelEnumData } from 'common/service/baseDataApi/type'
 import { AdjustTypeEnum, adjustTypeList } from './constants'
 
 const { Panel } = Collapse
@@ -44,7 +44,7 @@ interface IAdjustmentPointReportFilterProps {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	currencyListBySite: Currency[]
-	vipLevelsList: IGetVipLevelsData[]
+	vipLevelsList: IVipLevelEnumData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
