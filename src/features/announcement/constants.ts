@@ -1,6 +1,6 @@
 export const STATUS_OPTIONS: Array<{ value: string; label: string }> = [
 	{
-		value: '0',
+		value: '2',
 		label: 'All',
 	},
 	{
@@ -8,7 +8,7 @@ export const STATUS_OPTIONS: Array<{ value: string; label: string }> = [
 		label: 'Active',
 	},
 	{
-		value: '2',
+		value: '0',
 		label: 'UnActive',
 	},
 ]

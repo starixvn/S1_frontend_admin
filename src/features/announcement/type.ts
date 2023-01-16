@@ -5,7 +5,7 @@ export interface IGetAnnouncementListArgs {
 	pageNumber: number
 	pageSize: number
 	siteIds: number[]
-	status: number
+	statuses: number[]
 	startDate: string
 	endDate: string
 }
@@ -79,7 +79,7 @@ export type IAnnouncementByIdResponse = IAxiosResponse<IAnnouncementByIdData>
 
 export interface IFilterForm {
 	dateRange: [Moment, Moment]
-	status: number
+	status: string
 }
 
 export interface IEditForm {
