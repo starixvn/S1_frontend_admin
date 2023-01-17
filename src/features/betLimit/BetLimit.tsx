@@ -5,7 +5,7 @@ import { message, Form, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
-import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
+import { selectUserSite } from 'common/enum'
 import {
 	useAuth,
 	useModal,
@@ -14,28 +14,46 @@ import {
 	PAGINATION,
 } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
-	useLazyGetBetLimitListQuery,
+	useSetBetLimitMutation,
+	useLazyGetByCustIdQuery,
 	useDeleteBetLimitMutation,
+	useLazyGetBetLimitListQuery,
+	useLazyGetTpCategoryListQuery,
+	useLazyGetCustInfoDetailsQuery,
+	useLazyGetTpBetLimitGroupQuery,
 } from 'features/betLimit/api'
-import { IFilterForm, IEditForm, IBetLimitData } from 'features/betLimit/type'
+import {
+	IEditForm,
+	IFilterForm,
+	IBetLimitData,
+	IGetByCustIdData,
+	IGameTypeBetLimit,
+	ITpCategoryListResponse,
+	ITpBetLimitGroupResponse,
+	ICustInfoDetailsResponse,
+} from 'features/betLimit/type'
+import { BetLimitTable } from 'features/betLimit/BetLimitTable'
 import { BetLimitFilter } from 'features/betLimit/BetLimitFilter'
 import { EditBetLimitModal } from 'features/betLimit/EditBetLimitModal'
-import { BetLimitTable } from 'features/betLimit/BetLimitTable'
 
 const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, deletePermission } = {} } =
+		useAuth()
 	const editModal = useModal()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const [isAddForm, setIsAddForm] = useState<boolean>(true)
+	const [gameTypeBetLimitList, setGameTypeBetLimitList] = useState<
+		IGameTypeBetLimit[]
+	>([])
 
 	const [
 		getBetLimitList,
@@ -47,6 +65,41 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [deleteBetLimit, { isLoading: isDeleteBetLimitLoading }] =
 		useDeleteBetLimitMutation()
+
+	const [
+		getByCustId,
+		{
+			data: { data: custBetLimit } = {} as IAxiosResponse<IGetByCustIdData>,
+			isFetching: isGetByCustIdLoading,
+		},
+	] = useLazyGetByCustIdQuery()
+
+	const [
+		getCustInfoDetails,
+		{
+			data: { data: custInfoDetails } = {} as ICustInfoDetailsResponse,
+			isFetching: isGetCustInfoDetailsFetching,
+		},
+	] = useLazyGetCustInfoDetailsQuery()
+
+	const [
+		getTpCategoryList,
+		{
+			data: { data: tpCategoryList } = {} as ITpCategoryListResponse,
+			isFetching: isGetTpCategoryListFetching,
+		},
+	] = useLazyGetTpCategoryListQuery()
+
+	const [
+		getTpBetLimitGroup,
+		{
+			data: { data: tpBetLimitGroup } = {} as ITpBetLimitGroupResponse,
+			isFetching: isGetTpBetLimitGroupFetching,
+		},
+	] = useLazyGetTpBetLimitGroupQuery()
+
+	const [setBetLimit, { isLoading: isSetBetLimitLoading }] =
+		useSetBetLimitMutation()
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: betLimitListTotal,
@@ -65,7 +118,7 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
 
 		try {
@@ -145,6 +198,113 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleModalTableChange = ({
+		categoryId,
+		typeId,
+		checked,
+		group,
+	}: {
+		categoryId: number
+		typeId: number
+		checked?: boolean
+		group?: string
+	}) => {
+		const newArr = gameTypeBetLimitList.map(data => {
+			let obj = data
+			if (data.categoryId === categoryId && data.typeId === typeId) {
+				obj = group
+					? { ...data, selectedValue: group }
+					: { ...data, checked: !checked }
+			}
+			return obj
+		})
+
+		setGameTypeBetLimitList(newArr)
+	}
+
+	const getBetLimitByCustId = async () => {
+		const { custId } = editForm.getFieldsValue(['custId'])
+
+		try {
+			const { data: custBetLimitData } = await getByCustId({
+				custId,
+			}).unwrap()
+			setGameTypeBetLimitList(custBetLimitData?.gameTypeBetLimit)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSearchUserName = async () => {
+		const { userName } = editForm.getFieldsValue()
+		if (!userName) return
+
+		try {
+			const { data: custInfoDetail } = await getCustInfoDetails({
+				siteId,
+				userName,
+			}).unwrap()
+
+			const { data: tpBetLimit } = await getTpBetLimitGroup({
+				categoryId: tpCategoryList.categoryId,
+				currencyId: custInfoDetail.currencyId,
+			}).unwrap()
+
+			setGameTypeBetLimitList(tpBetLimit)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSetBetLimit = async () => {
+		const { userName } = editForm.getFieldsValue()
+		const { currencyId } = editForm.getFieldsValue(['currencyId'])
+
+		const betSettingList = gameTypeBetLimitList.map(
+			({
+				categoryId,
+				categoryName,
+				typeId,
+				typeName,
+				limitGroup,
+				selectedValue,
+				checked,
+			}) => ({
+				checked,
+				tpCategory: categoryId,
+				tpCategoryName: categoryName,
+				gameTypeId: typeId,
+				gameTypeName: typeName,
+				limitGroup: checked ? selectedValue : null,
+				limitRange: checked
+					? limitGroup.find(obj => obj.group === selectedValue)?.range
+					: null,
+			})
+		)
+
+		try {
+			await setBetLimit({
+				siteId,
+				currencyId: currencyId ?? custInfoDetails.currencyId,
+				after: {
+					userName,
+					betSetting: betSettingList,
+				},
+			}).unwrap()
+
+			editModal.onCancel()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		if (!isEmpty(queryParams)) {
 			const {
@@ -166,11 +326,19 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		}
 	}, [])
 
 	const loading = isGetBetLimitListLoading || isDeleteBetLimitLoading
+
+	const modalLoading =
+		isGetByCustIdLoading ||
+		isSetBetLimitLoading ||
+		isGetCustInfoDetailsFetching ||
+		isGetTpCategoryListFetching ||
+		isGetTpBetLimitGroupFetching
 
 	return (
 		<LayoutContent.Main>
@@ -179,7 +347,6 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				loading={isGetBetLimitListLoading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				currencyListBySite={currencyListBySite}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
@@ -189,24 +356,32 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 					pagination={pagination}
 					betLimitList={betLimitList}
 					editPermission={editPermission}
+					deletePermission={deletePermission}
 					timeZoneUtcOffset={timeZoneUtcOffset}
-					currencyListBySite={currencyListBySite}
-					handleEdit={handleEdit}
-					handleDelete={handleDelete}
+					onEdit={handleEdit}
+					onDelete={handleDelete}
 					onTableChange={handleTableChange}
 				/>
 			)}
-			{editModal.visible && (
-				<EditBetLimitModal
-					form={editForm}
-					isAdd={isAddForm}
-					isOpen={editModal.visible}
-					editPermission={editPermission}
-					currencyListBySite={currencyListBySite}
-					onCancel={editModal.onCancel}
-				/>
-			)}
+			<EditBetLimitModal
+				form={editForm}
+				isAdd={isAddForm}
+				isOpen={editModal.visible}
+				loading={modalLoading}
+				modalTableData={
+					isAddForm ? tpBetLimitGroup : custBetLimit?.gameTypeBetLimit
+				}
+				editPermission={editPermission}
+				gameTypeBetLimitList={gameTypeBetLimitList}
+				onCancel={editModal.onCancel}
+				onSetBetLimit={handleSetBetLimit}
+				onTableChange={handleModalTableChange}
+				onSearchUserName={handleSearchUserName}
+				onGetTpCategoryList={getTpCategoryList}
+				onGetBetLimitByCustId={getBetLimitByCustId}
+			/>
 			<AffixButtons>
+				<AffixButtons.BackToTop />
 				<AffixButtons.Create
 					disabled={!editPermission?.canUse}
 					onClick={handleAdd}

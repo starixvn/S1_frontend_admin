@@ -8,9 +8,9 @@ import {
 	ISetBetLimitArgs,
 	IGetCustDetailsArgs,
 	ICustInfoDetailsResponse,
-	IGetTpCategoryListResponse,
+	ITpCategoryListResponse,
 	IGetTpBetLimitGroupArgs,
-	IGetTpBetLimitGroupResponse,
+	ITpBetLimitGroupResponse,
 } from 'features/betLimit/type'
 
 const betLimitApi = rootApi.injectEndpoints({
@@ -56,7 +56,7 @@ const betLimitApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getTpCategoryList: builder.query<IGetTpCategoryListResponse, void>({
+		getTpCategoryList: builder.query<ITpCategoryListResponse, void>({
 			query: data => ({
 				url: 'TpBetLimit/GetTpCategoryList',
 				method: 'POST',
@@ -64,7 +64,7 @@ const betLimitApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getTpBetLimitGroup: builder.query<
-			IGetTpBetLimitGroupResponse,
+			ITpBetLimitGroupResponse,
 			IGetTpBetLimitGroupArgs
 		>({
 			query: data => ({

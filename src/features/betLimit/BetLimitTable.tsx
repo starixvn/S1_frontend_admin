@@ -5,9 +5,10 @@ import { Table } from 'components'
 import { PermissionInterface } from 'type'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
+import { selectCurrencyListBySite } from 'common/enum'
 import { PaginationInterface } from 'common/hooks'
-import { Currency } from 'common/enum/type'
 import { timeFormat } from 'common/utils/format'
 import { IBetLimitData } from 'features/betLimit/type'
 
@@ -16,9 +17,9 @@ interface IBetLimitTableProps {
 	pagination: PaginationInterface
 	betLimitList: IBetLimitData[]
 	editPermission?: PermissionInterface
+	deletePermission?: PermissionInterface
 	timeZoneUtcOffset: number
-	currencyListBySite: Currency[]
-	handleEdit: ({
+	onEdit: ({
 		custId,
 		userName,
 		currencyId,
@@ -27,7 +28,7 @@ interface IBetLimitTableProps {
 		userName: string
 		currencyId: number
 	}) => void
-	handleDelete: (data: IBetLimitData) => void
+	onDelete: (data: IBetLimitData) => void
 	onTableChange: (newPagination: TablePaginationConfig) => void
 }
 
@@ -36,19 +37,20 @@ const BetLimitTable = ({
 	pagination,
 	betLimitList,
 	editPermission,
+	deletePermission,
 	timeZoneUtcOffset,
-	currencyListBySite,
-	handleEdit,
-	handleDelete,
+	onEdit,
+	onDelete,
 	onTableChange,
 }: IBetLimitTableProps) => {
 	const { t } = useTranslation()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const columns = [
 		{
 			title: t('Label_Action'),
 			key: 'edit',
-			width: 150,
+			width: 100,
 			align: 'center' as 'center',
 			render: (data: IBetLimitData) => {
 				const { custId, userName, currencyId } = data
@@ -56,17 +58,17 @@ const BetLimitTable = ({
 					<Space style={{ padding: '10px' }} size='middle'>
 						<Typography.Link
 							onClick={() => {
-								handleEdit({ custId, userName, currencyId })
+								onEdit({ custId, userName, currencyId })
 							}}
 						>
 							{editPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 						</Typography.Link>
 						<Popconfirm
-							disabled={!editPermission?.canUse}
+							disabled={!deletePermission?.canUse}
 							title={t('Label_SureToDelete')}
-							onConfirm={() => handleDelete(data)}
+							onConfirm={() => onDelete(data)}
 						>
-							<Typography.Link disabled={!editPermission?.canUse}>
+							<Typography.Link disabled={!deletePermission?.canUse}>
 								{t('Label_Delete')}
 							</Typography.Link>
 						</Popconfirm>
@@ -113,11 +115,12 @@ const BetLimitTable = ({
 			title: t('Label_CreateTime'),
 			key: 'createTime',
 			dataIndex: 'createTime',
+			width: 100,
 			align: 'center' as 'center',
 			render: (createTime: string) => (
 				<div>
 					{createTime ? (
-						<Typography.Text>
+						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 							{moment(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
@@ -139,11 +142,12 @@ const BetLimitTable = ({
 			title: t('Label_UpdateTime'),
 			key: 'updateTime',
 			dataIndex: 'updateTime',
+			width: 100,
 			align: 'center' as 'center',
 			render: (updateTime: string) => (
 				<div>
 					{updateTime ? (
-						<Typography.Text>
+						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 							{moment(updateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
@@ -161,7 +165,7 @@ const BetLimitTable = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={betLimitList ?? []}
+				dataSource={betLimitList}
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 			/>

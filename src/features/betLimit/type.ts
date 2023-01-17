@@ -1,7 +1,8 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment'
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [Moment, Moment]
 	currencyIds: number[]
 	memberId: string
 }
@@ -35,12 +36,6 @@ export interface IEditForm {
 	userName: string | null
 	custId?: number
 	currencyId: number
-}
-
-export interface ICustInfoType {
-	userName?: string
-	custId?: number
-	currencyId?: number
 }
 
 export interface IGetByCustIdArgs {
@@ -87,7 +82,7 @@ export interface ISetBetLimitArgs {
 	currencyId: number
 	after: {
 		userName: string | null
-		betSetting?: [] | IBetSetting[]
+		betSetting?: IBetSetting[]
 	}
 }
 
@@ -112,15 +107,15 @@ export interface ICustInfoDetailsData {
 
 export type ICustInfoDetailsResponse = IAxiosResponse<ICustInfoDetailsData>
 
-export interface IGetTpCategoryListData {
+export interface ITpCategoryListData {
 	categoryId: number
 }
 
-export type IGetTpCategoryListResponse = IAxiosResponse<IGetTpCategoryListData>
+export type ITpCategoryListResponse = IAxiosResponse<ITpCategoryListData>
 
 export interface IGetTpBetLimitGroupArgs {
 	categoryId: number
 	currencyId: number
 }
 
-export type IGetTpBetLimitGroupResponse = IAxiosResponse<IGameTypeBetLimit[]>
+export type ITpBetLimitGroupResponse = IAxiosResponse<IGameTypeBetLimit[]>

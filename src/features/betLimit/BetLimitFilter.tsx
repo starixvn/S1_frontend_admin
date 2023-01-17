@@ -11,12 +11,13 @@ import {
 } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
+import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import { Currency } from 'common/enum/type'
+import { selectCurrencyListBySite } from 'common/enum'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { IFilterForm } from 'features/betLimit/type'
@@ -25,7 +26,6 @@ interface IBetLimitFilterProps {
 	form: FormInstance<IFilterForm>
 	loading: boolean
 	timeZoneUtcOffset: number
-	currencyListBySite: Currency[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -46,11 +46,11 @@ const BetLimitFilter = ({
 	form,
 	loading,
 	timeZoneUtcOffset,
-	currencyListBySite,
 	onSearch,
 	onTimeZoneChange,
 }: IBetLimitFilterProps) => {
 	const { t } = useTranslation()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const currencySelector = () => {
 		const handleChangeCurrency = (newCurrencyIds: number[]) => {
