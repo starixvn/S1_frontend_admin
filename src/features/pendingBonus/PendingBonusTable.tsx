@@ -1,4 +1,4 @@
-import { Popconfirm, Typography } from 'antd'
+import { Button, Popconfirm, Typography } from 'antd'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
@@ -16,6 +16,7 @@ interface IPendingBonusTableProps {
 	transferPermission?: PermissionInterface
 	timeZoneUtcOffset: number
 	handleTransfer: (siteIds: number[]) => void
+	handleAllTransfer: () => void
 }
 
 const PendingBonusTable = ({
@@ -25,6 +26,7 @@ const PendingBonusTable = ({
 	transferPermission,
 	timeZoneUtcOffset,
 	handleTransfer,
+	handleAllTransfer,
 }: IPendingBonusTableProps) => {
 	const { t } = useTranslation()
 
@@ -140,6 +142,13 @@ const PendingBonusTable = ({
 
 	return (
 		<LayoutContent.Card style={{ marginTop: '20px' }}>
+			<Button
+				onClick={handleAllTransfer}
+				type='primary'
+				style={{ margin: '20px 0' }}
+			>
+				{t('Label_TransferAll')}
+			</Button>
 			<Table
 				loading={loading}
 				columns={columns}
