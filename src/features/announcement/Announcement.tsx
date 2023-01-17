@@ -17,11 +17,7 @@ import {
 	useQueryParams,
 } from 'common/hooks'
 import { IFilterForm, IEditForm } from 'features/announcement/type'
-import {
-	announcementConvert,
-	isTestConverter,
-	statusConverter,
-} from 'features/announcement/utils'
+import { announcementConvert } from 'features/announcement/utils'
 import {
 	useLazyGetAnnouncementListQuery,
 	useAddAnnouncementMutation,
@@ -161,9 +157,9 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 						siteId,
 						subject: announcementConvert(subject),
 						content: announcementConvert(content),
-						status: statusConverter(status),
+						status: Number(status),
 						statusName,
-						isTest: isTestConverter(isTest),
+						isTest: Number(isTest),
 						seq,
 					},
 					startTime,
@@ -213,9 +209,9 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 					siteId,
 					subject: announcementConvert(subject),
 					content: announcementConvert(content),
-					status: statusConverter(status),
+					status: Number(status),
 					statusName,
-					isTest: isTestConverter(isTest),
+					isTest: Number(isTest),
 					seq,
 				},
 				startTime,

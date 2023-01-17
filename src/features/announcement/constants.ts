@@ -1,14 +1,14 @@
-export const STATUS_OPTIONS: Array<{ value: string; label: string }> = [
+export const STATUS_OPTIONS: Array<{ value: string; displayKey: string }> = [
 	{
 		value: '2',
-		label: 'All',
+		displayKey: 'Label_All',
 	},
 	{
 		value: '1',
-		label: 'Active',
+		displayKey: 'Label_Active',
 	},
 	{
 		value: '0',
-		label: 'UnActive',
+		displayKey: 'Label_InActive',
 	},
 ]

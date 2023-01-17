@@ -97,9 +97,9 @@ const AnnouncementTable = ({
 			align: 'center' as 'center',
 			width: 150,
 			render: (subject: string) =>
-				isString(subject) && subject.length > 10 ? (
+				isString(subject) && subject.length > 25 ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{subject.substring(0, 10)}...
+						{subject.substring(0, 25)}...
 						<Typography.Link onClick={() => handleContentModal(subject)}>
 							more
 						</Typography.Link>
@@ -115,9 +115,9 @@ const AnnouncementTable = ({
 			align: 'center' as 'center',
 			width: 150,
 			render: (content: string) =>
-				isString(content) && content.length > 10 ? (
+				isString(content) && content.length > 25 ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{content.substring(0, 10)}...
+						{content.substring(0, 25)}...
 						<Typography.Link onClick={() => handleContentModal(content)}>
 							more
 						</Typography.Link>

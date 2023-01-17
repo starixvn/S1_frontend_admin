@@ -103,9 +103,9 @@ const AnnouncementFilter = ({
 									style={{ margin: 0, width: 200 }}
 								>
 									<Select placeholder={t('Label_SelectStatus')}>
-										{STATUS_OPTIONS.map(({ value, label }) => (
+										{STATUS_OPTIONS.map(({ value, displayKey }) => (
 											<Option key={value} value={value}>
-												{label}
+												{t(displayKey)}
 											</Option>
 										))}
 									</Select>
