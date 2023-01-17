@@ -6,7 +6,7 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useParams } from 'react-router-dom'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { PAGINATION, usePagination } from 'common/hooks'
+import { PAGINATION, useAuth, usePagination } from 'common/hooks'
 import {
 	useExportFinancialLogMutation,
 	useLazyGetFinancialLogsQuery,
@@ -24,6 +24,7 @@ const FinancialLog = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [filterForm] = Form.useForm<{
 		dateRange: [moment.Moment, moment.Moment]
 		type: AdjustTypeEnum
@@ -164,6 +165,7 @@ const FinancialLog = () => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
+					disabled={!exportExcelPermission?.canUse}
 					onClick={handleExport}
 					loading={isExportFinancialLogLoading}
 				/>

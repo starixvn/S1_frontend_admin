@@ -119,21 +119,20 @@ const RedemptionListing: FC<{
 			vipLevels,
 			statuses,
 			currencyIds,
-			dateRange,
-		} = form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const blob = await exportRedemptionList({
-				siteId,
+				siteId: Number(siteId),
 				userName,
 				sabaId,
 				transId,
-				vipLevels,
-				statuses,
-				currencyIds,
+				vipLevels: vipLevels?.map((vipLevel: string) => Number(vipLevel)) ?? [],
+				statuses: statuses?.map((status: string) => Number(status)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				startTime,
 				endTime,
 			}).unwrap()
@@ -232,7 +231,7 @@ const RedemptionListing: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportRedemptionListLoading}
 				/>

@@ -143,7 +143,7 @@ const MemberAdministrationList = ({
 	}
 
 	const handleExportMember = async () => {
-		if (!siteId || isEmpty(queryParams)) return
+		if (!siteId) return
 
 		const {
 			currencyIds = [],
@@ -294,7 +294,7 @@ const MemberAdministrationList = ({
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExportMember}
 					loading={isExportMemberLoading}
 				/>

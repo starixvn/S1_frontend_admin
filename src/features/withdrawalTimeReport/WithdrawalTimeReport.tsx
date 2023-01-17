@@ -220,7 +220,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
 					loading={isExportWithdrawalTimeReportLoading}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 				/>
 			</AffixButtons>
