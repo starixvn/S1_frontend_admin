@@ -247,94 +247,101 @@ const Setting = () => {
 		const { fullName, email, phoneNo, birthDay, address, reason } =
 			form.getFieldsValue()
 
-		try {
-			switch (editType) {
-				// 加{}限制作用域 不然ESLint不給過
-				case SettingEditTypeEnum.FullName: {
-					const { data: duplicateNameList } = await getCheckDuplicateName({
-						custId,
-						fullName,
-					}).unwrap()
-					if (duplicateNameList.length > 0) {
-						// 這裡不需要 title
-						Modal.warning({
-							content: 'Real name already exists, still want to continue?',
-							okCancel: true,
-							cancelText: 'No',
-							onCancel: () => {
-								editModal.onOpen()
-							},
-							onOk: () => {
-								editFullName({ custId, fullName }).unwrap()
-							},
-						})
-					} else {
+		if (editType === SettingEditTypeEnum.FullName) {
+			// 加{}限制作用域 不然ESLint不給過
+
+			const { data: duplicateNameList } = await getCheckDuplicateName({
+				custId,
+				fullName,
+			}).unwrap()
+			if (duplicateNameList.length > 0) {
+				editModal.onCancel()
+				// 這裡不需要 title
+				Modal.warning({
+					content: 'Real name already exists, still want to continue?',
+					okCancel: true,
+					cancelText: 'No',
+					onCancel: () => {
+						editModal.onOpen()
+					},
+					onOk: async () => {
 						await editFullName({ custId, fullName }).unwrap()
-					}
-					break
-				}
-				case SettingEditTypeEnum.Email:
-					await editEmail({ custId, email }).unwrap()
-					break
-				case SettingEditTypeEnum.PhoneNo:
-					await editPhoneNo({ custId, phoneNo }).unwrap()
-					break
-				case SettingEditTypeEnum.Birthday: {
-					const payload = {
-						custId,
-						birthYear: moment(birthDay).get('year'),
-						birthMonth: moment(birthDay).get('month') + 1,
-						birthDate: moment(birthDay).get('date'),
-					}
-					await editBirthday(payload).unwrap()
-					break
-				}
-				case SettingEditTypeEnum.Address: {
-					const { country, state, postCode, city, line1, line2 } = address ?? {}
-					await editAddress({
-						custId,
-						country,
-						state,
-						postCode,
-						city,
-						line1,
-						line2,
-					}).unwrap()
-					break
-				}
-				case SettingEditTypeEnum.LockAccount: {
-					await lockAccount({
-						custId,
-						status: LockAccountTypeEnum.Suspend,
-						reason,
-					}).unwrap()
-					break
-				}
-				case SettingEditTypeEnum.UnLockAccount: {
-					await lockAccount({
-						custId,
-						status: LockAccountTypeEnum.Running,
-						reason,
-					}).unwrap()
-					break
-				}
-				case SettingEditTypeEnum.CloseAccount: {
-					await closeAccount({ custId, reason }).unwrap()
-					break
-				}
-				case SettingEditTypeEnum.KickOutUser: {
-					await kickOutUser({ custId, reason }).unwrap()
-					break
-				}
-				default:
-					break
+						editModal.onCancel()
+						message.success(t('System.Label_Success'))
+					},
+				})
+			} else {
+				await editFullName({ custId, fullName }).unwrap()
+				editModal.onCancel()
+				message.success(t('System.Label_Success'))
 			}
-			editModal.onCancel()
-			message.success(t('System.Label_Success'))
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
+		} else {
+			try {
+				switch (editType) {
+					case SettingEditTypeEnum.Email:
+						await editEmail({ custId, email }).unwrap()
+						break
+					case SettingEditTypeEnum.PhoneNo:
+						await editPhoneNo({ custId, phoneNo }).unwrap()
+						break
+					case SettingEditTypeEnum.Birthday: {
+						const payload = {
+							custId,
+							birthYear: moment(birthDay).get('year'),
+							birthMonth: moment(birthDay).get('month') + 1,
+							birthDate: moment(birthDay).get('date'),
+						}
+						await editBirthday(payload).unwrap()
+						break
+					}
+					case SettingEditTypeEnum.Address: {
+						const { country, state, postCode, city, line1, line2 } =
+							address ?? {}
+						await editAddress({
+							custId,
+							country,
+							state,
+							postCode,
+							city,
+							line1,
+							line2,
+						}).unwrap()
+						break
+					}
+					case SettingEditTypeEnum.LockAccount: {
+						await lockAccount({
+							custId,
+							status: LockAccountTypeEnum.Suspend,
+							reason,
+						}).unwrap()
+						break
+					}
+					case SettingEditTypeEnum.UnLockAccount: {
+						await lockAccount({
+							custId,
+							status: LockAccountTypeEnum.Running,
+							reason,
+						}).unwrap()
+						break
+					}
+					case SettingEditTypeEnum.CloseAccount: {
+						await closeAccount({ custId, reason }).unwrap()
+						break
+					}
+					case SettingEditTypeEnum.KickOutUser: {
+						await kickOutUser({ custId, reason }).unwrap()
+						break
+					}
+					default:
+						break
+				}
+				editModal.onCancel()
+				message.success(t('System.Label_Success'))
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
 		}
 	}
 
