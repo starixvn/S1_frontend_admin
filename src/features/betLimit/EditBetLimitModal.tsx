@@ -24,10 +24,10 @@ interface IEditBetLimitModalProps {
 	isAdd: boolean
 	isOpen: boolean
 	loading: boolean
-	modalTableData?: IGameTypeBetLimit[]
 	editPermission?: PermissionInterface
 	gameTypeBetLimitList?: IGameTypeBetLimit[]
 	onCancel: () => void
+	onCloseModal: () => void
 	onSetBetLimit: () => void
 	onTableChange: ({
 		categoryId,
@@ -50,10 +50,10 @@ const EditBetLimitModal = ({
 	isAdd,
 	isOpen,
 	loading,
-	modalTableData,
 	editPermission,
 	gameTypeBetLimitList,
 	onCancel,
+	onCloseModal,
 	onSetBetLimit,
 	onTableChange,
 	onSearchUserName,
@@ -83,22 +83,13 @@ const EditBetLimitModal = ({
 			key: 'checked',
 			width: 60,
 			align: 'center' as 'center',
-			render: (data: IGameTypeBetLimit) => {
-				const { categoryId, typeId } = data
-				const stateChecked = gameTypeBetLimitList?.find(
-					obj => obj.categoryId === categoryId && obj.typeId === typeId
-				)?.checked
-
-				return (
-					<Switch
-						checked={stateChecked}
-						disabled={!editPermission?.canUse}
-						onChange={() =>
-							onTableChange({ categoryId, typeId, checked: stateChecked })
-						}
-					/>
-				)
-			},
+			render: ({ categoryId, typeId, checked }: IGameTypeBetLimit) => (
+				<Switch
+					checked={checked}
+					disabled={!editPermission?.canUse}
+					onChange={() => onTableChange({ categoryId, typeId, checked })}
+				/>
+			),
 		},
 		{
 			title: t('Label_Category'),
@@ -119,12 +110,14 @@ const EditBetLimitModal = ({
 			key: 'limitGroup',
 			width: 200,
 			align: 'center' as 'center',
-			render: (data: IGameTypeBetLimit) => {
-				const { categoryId, typeId, limitGroup, selectedValue } = data
-				const stateChecked = gameTypeBetLimitList?.find(
-					obj => obj.categoryId === categoryId && obj.typeId === typeId
-				)?.checked
-				const selectedRange = limitGroup?.find(
+			render: ({
+				typeId,
+				checked,
+				categoryId,
+				limitGroup,
+				selectedValue,
+			}: IGameTypeBetLimit) => {
+				const selectedRange = limitGroup.find(
 					({ group }) => group === selectedValue
 				)?.range
 
@@ -132,7 +125,7 @@ const EditBetLimitModal = ({
 					<Select
 						placeholder={selectedRange}
 						style={{ width: '50%' }}
-						disabled={!stateChecked || !editPermission?.canUse}
+						disabled={!checked || !editPermission?.canUse}
 						onSelect={(group: string) =>
 							onTableChange({ categoryId, typeId, group })
 						}
@@ -158,9 +151,7 @@ const EditBetLimitModal = ({
 			onOk={onSetBetLimit}
 			width='60vw'
 			confirmLoading={loading}
-			afterClose={() => {
-				form.resetFields()
-			}}
+			afterClose={onCloseModal}
 		>
 			<Spin spinning={loading}>
 				<Form form={form} layout='vertical' initialValues={{ currency }}>
@@ -182,7 +173,7 @@ const EditBetLimitModal = ({
 							</Form.Item>
 						</Col>
 						{isAdd && (
-							<Row justify='end' align='middle'>
+							<Form.Item label=' '>
 								<Col>
 									<Button
 										loading={loading}
@@ -194,7 +185,7 @@ const EditBetLimitModal = ({
 										{t('Label_Search')}
 									</Button>
 								</Col>
-							</Row>
+							</Form.Item>
 						)}
 						{!isAdd && (
 							<Col span={12}>
@@ -204,11 +195,11 @@ const EditBetLimitModal = ({
 							</Col>
 						)}
 					</Row>
-					{modalTableData && (
+					{gameTypeBetLimitList && (
 						<Table
 							loading={loading}
 							columns={columns}
-							dataSource={modalTableData}
+							dataSource={gameTypeBetLimitList}
 							pagination={false}
 						/>
 					)}

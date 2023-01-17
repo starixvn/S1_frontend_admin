@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import { isEmpty } from 'lodash'
+import { isEmpty, findIndex } from 'lodash'
 import { message, Form, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
@@ -14,7 +14,6 @@ import {
 	PAGINATION,
 } from 'common/hooks'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
@@ -30,10 +29,8 @@ import {
 	IEditForm,
 	IFilterForm,
 	IBetLimitData,
-	IGetByCustIdData,
 	IGameTypeBetLimit,
 	ITpCategoryListResponse,
-	ITpBetLimitGroupResponse,
 	ICustInfoDetailsResponse,
 } from 'features/betLimit/type'
 import { BetLimitTable } from 'features/betLimit/BetLimitTable'
@@ -52,8 +49,8 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	const [editForm] = Form.useForm<IEditForm>()
 	const [isAddForm, setIsAddForm] = useState<boolean>(true)
 	const [gameTypeBetLimitList, setGameTypeBetLimitList] = useState<
-		IGameTypeBetLimit[]
-	>([])
+		undefined | IGameTypeBetLimit[]
+	>(undefined)
 
 	const [
 		getBetLimitList,
@@ -66,13 +63,8 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	const [deleteBetLimit, { isLoading: isDeleteBetLimitLoading }] =
 		useDeleteBetLimitMutation()
 
-	const [
-		getByCustId,
-		{
-			data: { data: custBetLimit } = {} as IAxiosResponse<IGetByCustIdData>,
-			isFetching: isGetByCustIdLoading,
-		},
-	] = useLazyGetByCustIdQuery()
+	const [getByCustId, { isFetching: isGetByCustIdLoading }] =
+		useLazyGetByCustIdQuery()
 
 	const [
 		getCustInfoDetails,
@@ -90,13 +82,8 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		},
 	] = useLazyGetTpCategoryListQuery()
 
-	const [
-		getTpBetLimitGroup,
-		{
-			data: { data: tpBetLimitGroup } = {} as ITpBetLimitGroupResponse,
-			isFetching: isGetTpBetLimitGroupFetching,
-		},
-	] = useLazyGetTpBetLimitGroupQuery()
+	const [getTpBetLimitGroup, { isFetching: isGetTpBetLimitGroupFetching }] =
+		useLazyGetTpBetLimitGroupQuery()
 
 	const [setBetLimit, { isLoading: isSetBetLimitLoading }] =
 		useSetBetLimitMutation()
@@ -209,17 +196,13 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		checked?: boolean
 		group?: string
 	}) => {
-		const newArr = gameTypeBetLimitList.map(data => {
-			let obj = data
-			if (data.categoryId === categoryId && data.typeId === typeId) {
-				obj = group
-					? { ...data, selectedValue: group }
-					: { ...data, checked: !checked }
-			}
-			return obj
+		setGameTypeBetLimitList(prev => {
+			const newArr = [...(prev || [])]
+			const idx = findIndex(newArr, { categoryId, typeId })
+			const newData = group ? { selectedValue: group } : { checked: !checked }
+			newArr[idx] = { ...newArr[idx], ...newData }
+			return newArr
 		})
-
-		setGameTypeBetLimitList(newArr)
 	}
 
 	const getBetLimitByCustId = async () => {
@@ -229,6 +212,7 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 			const { data: custBetLimitData } = await getByCustId({
 				custId,
 			}).unwrap()
+
 			setGameTypeBetLimitList(custBetLimitData?.gameTypeBetLimit)
 		} catch (error) {
 			message.error(
@@ -264,21 +248,21 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		const { userName } = editForm.getFieldsValue()
 		const { currencyId } = editForm.getFieldsValue(['currencyId'])
 
-		const betSettingList = gameTypeBetLimitList.map(
+		const betSettingList = gameTypeBetLimitList?.map(
 			({
-				categoryId,
-				categoryName,
-				typeId,
-				typeName,
+				categoryId: tpCategory,
+				categoryName: tpCategoryName,
+				typeId: gameTypeId,
+				typeName: gameTypeName,
 				limitGroup,
 				selectedValue,
 				checked,
 			}) => ({
 				checked,
-				tpCategory: categoryId,
-				tpCategoryName: categoryName,
-				gameTypeId: typeId,
-				gameTypeName: typeName,
+				tpCategory,
+				tpCategoryName,
+				gameTypeId,
+				gameTypeName,
 				limitGroup: checked ? selectedValue : null,
 				limitRange: checked
 					? limitGroup.find(obj => obj.group === selectedValue)?.range
@@ -303,6 +287,11 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
+	}
+
+	const handleCloseModal = () => {
+		setGameTypeBetLimitList(undefined)
+		editForm.resetFields()
 	}
 
 	useEffect(() => {
@@ -368,12 +357,10 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 				isAdd={isAddForm}
 				isOpen={editModal.visible}
 				loading={modalLoading}
-				modalTableData={
-					isAddForm ? tpBetLimitGroup : custBetLimit?.gameTypeBetLimit
-				}
 				editPermission={editPermission}
 				gameTypeBetLimitList={gameTypeBetLimitList}
 				onCancel={editModal.onCancel}
+				onCloseModal={handleCloseModal}
 				onSetBetLimit={handleSetBetLimit}
 				onTableChange={handleModalTableChange}
 				onSearchUserName={handleSearchUserName}

@@ -484,7 +484,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.betLimit.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/UserBetLimit',
 		internalFunctionKey: allowedRoles.CustManageUserBetLimit,
 		newAdminPath: paths.member.sub.betLimit.root,
