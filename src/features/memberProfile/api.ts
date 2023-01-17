@@ -97,6 +97,8 @@ import {
 	IGetVipRebateDetailData,
 	IGetWithdrawalLimitLogResponse,
 	IGetWithdrawalLimitLogArgs,
+	IGetCheckDuplicateNameArgs,
+	IGetCheckDuplicateNameResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -983,6 +985,16 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getCheckDuplicateName: builder.query<
+			IGetCheckDuplicateNameResponse,
+			IGetCheckDuplicateNameArgs
+		>({
+			query: data => ({
+				url: 'Member/CheckDuplicateName',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -1069,4 +1081,6 @@ export const {
 	useGetPromotionCashBackQuery,
 	useLazyGetPromotionDetailQuery,
 	useLazyGetVipRebateDetailQuery,
+	useGetCheckDuplicateNameQuery,
+	useLazyGetCheckDuplicateNameQuery,
 } = memberProfileApi

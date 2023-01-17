@@ -3,7 +3,15 @@ import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { useAuth, useModal } from 'common/hooks'
 import { useParams } from 'react-router-dom'
-import { Button, Form, message, notification, Row, Typography } from 'antd'
+import {
+	Button,
+	Form,
+	message,
+	notification,
+	Row,
+	Typography,
+	Modal,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import { uniqueId } from 'lodash'
 import {
@@ -26,6 +34,7 @@ import {
 	useSwitchRebatePayoutMutation,
 	useSwitchRiskMutation,
 	useKickOutUserMutation,
+	useLazyGetCheckDuplicateNameQuery,
 } from 'features/memberProfile/api'
 import {
 	ISettingFinancePermissions,
@@ -128,6 +137,8 @@ const Setting = () => {
 	} = useGetBasicInfoQuery({
 		custId,
 	})
+
+	const [getCheckDuplicateName] = useLazyGetCheckDuplicateNameQuery()
 
 	const [editFullName, { isLoading: isEditFullNameLoading }] =
 		useEditFullNameMutation()
@@ -238,9 +249,30 @@ const Setting = () => {
 
 		try {
 			switch (editType) {
-				case SettingEditTypeEnum.FullName:
-					await editFullName({ custId, fullName }).unwrap()
+				// 加{}限制作用域 不然ESLint不給過
+				case SettingEditTypeEnum.FullName: {
+					const { data: duplicateNameList } = await getCheckDuplicateName({
+						custId,
+						fullName,
+					}).unwrap()
+					if (duplicateNameList.length > 0) {
+						// 這裡不需要 title
+						Modal.warning({
+							content: 'Real name already exists, still want to continue?',
+							okCancel: true,
+							cancelText: 'No',
+							onCancel: () => {
+								editModal.onOpen()
+							},
+							onOk: () => {
+								editFullName({ custId, fullName }).unwrap()
+							},
+						})
+					} else {
+						await editFullName({ custId, fullName }).unwrap()
+					}
 					break
+				}
 				case SettingEditTypeEnum.Email:
 					await editEmail({ custId, email }).unwrap()
 					break
