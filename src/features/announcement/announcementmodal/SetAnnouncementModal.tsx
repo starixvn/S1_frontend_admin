@@ -27,12 +27,9 @@ import {
 	IAnnouncementByIdResponse,
 	IEditForm,
 } from 'features/announcement/type'
-import {
-	announcementSubjectResConverter,
-	announcementContentResConverter,
-} from 'features/announcement/utils'
+import { announcementResConverter } from 'features/announcement/utils'
 import AnnouncementTabs from 'features/announcement/announcementmodal/AnnouncementTabs'
-import { useGetAnnouncementByIdQuery } from '../api'
+import { useGetAnnouncementByIdQuery } from 'features/announcement/api'
 
 interface SetAnnouncementModalProps {
 	open: boolean
@@ -90,9 +87,9 @@ const SetAnnouncementModal = ({
 				startTime,
 				endTime,
 			} = announcementDetail ?? {}
-
-			const subjectResult = announcementSubjectResConverter(subject)
-			const contentResult = announcementContentResConverter(content)
+			// subject content 型態相同 帶入固定參數判斷
+			const subjectResult = announcementResConverter(subject, 'subject')
+			const contentResult = announcementResConverter(content, 'content')
 
 			form.setFieldsValue({
 				dateRange: [moment(startTime), moment(endTime)],

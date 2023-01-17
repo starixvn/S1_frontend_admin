@@ -94,24 +94,9 @@ export interface IEditForm {
 	seq: number
 }
 
-export enum StatusTypeEnum {
-	false,
-	true,
-}
-
-export enum IsTestTypeEnum {
-	false,
-	true,
-}
-
-export interface IConvertSubjectJsonData {
+export interface IConvertJsonData {
 	key: string
-	subject: string
-}
-
-export interface IConvertContentJsonData {
-	key: string
-	content: string
+	[key: string]: string
 }
 
 // subject、content 需求的格式 key為 langCode

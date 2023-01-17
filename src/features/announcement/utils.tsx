@@ -1,41 +1,32 @@
-import {
-	StatusTypeEnum,
-	IsTestTypeEnum,
-	IConvertSubjectJsonData,
-	IConvertContentJsonData,
-	ILangCodeData,
-} from 'features/announcement/type'
+import { ILangCodeData, IConvertJsonData } from 'features/announcement/type'
 import { isJSON } from 'common/utils'
 
 // S2C
 // 根據原始資料取出 langCode 和 formValue
-export const announcementSubjectResConverter = (
-	subject: string
-): IConvertSubjectJsonData[] => {
-	const result: IConvertSubjectJsonData[] = []
-	if (!isJSON(subject)) return result
-	const rawData = JSON.parse(subject)
-	Object.entries(rawData).forEach(([key, value]: [string, any]) => {
-		result.push({
-			key,
-			subject: value,
-		})
-	})
-	return result
-}
 
-export const announcementContentResConverter = (
-	content: string
-): IConvertContentJsonData[] => {
-	const result: IConvertContentJsonData[] = []
-	if (!isJSON(content)) return result
-	const rawData = JSON.parse(content)
-	Object.entries(rawData).forEach(([key, value]: [string, any]) => {
-		result.push({
-			key,
-			content: value,
+export const announcementResConverter = (
+	subjectOrContent: string,
+	type: string
+): IConvertJsonData[] => {
+	const result: IConvertJsonData[] = []
+	if (!isJSON(subjectOrContent)) return result
+	const rawData = JSON.parse(subjectOrContent)
+
+	if (type === 'subject') {
+		Object.entries(rawData).forEach(([key, value]: [string, any]) => {
+			result.push({
+				key,
+				subject: value,
+			})
 		})
-	})
+	} else {
+		Object.entries(rawData).forEach(([key, value]: [string, any]) => {
+			result.push({
+				key,
+				content: value,
+			})
+		})
+	}
 	return result
 }
 
@@ -53,18 +44,4 @@ export const announcementConvert = (subjectOrContent: object): string => {
 	})
 
 	return JSON.stringify(result)
-}
-
-// 用於符合 update、add api 的格式
-export const statusConverter = (status: boolean) => {
-	return status
-		? (StatusTypeEnum.true as number)
-		: (StatusTypeEnum.false as number)
-}
-
-// 用於符合 update、add api 的格式
-export const isTestConverter = (isTest: boolean) => {
-	return isTest
-		? (IsTestTypeEnum.true as number)
-		: (IsTestTypeEnum.false as number)
 }

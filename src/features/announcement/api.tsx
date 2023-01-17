@@ -11,7 +11,7 @@ import {
 	IAnnouncementByIdData,
 } from 'features/announcement/type'
 
-export const announcement = rootApi.injectEndpoints({
+export const announcementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getAnnouncementList: builder.query<
 			IAxiosResponse<IAnnouncementListData[]>,
@@ -77,4 +77,4 @@ export const {
 	useAddAnnouncementMutation,
 	useUpdateAnnouncementMutation,
 	useDeleteAnnouncementMutation,
-} = announcement
+} = announcementApi
