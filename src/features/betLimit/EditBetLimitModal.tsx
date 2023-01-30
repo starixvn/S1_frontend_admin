@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -11,25 +11,93 @@ import {
 	Select,
 	Button,
 	Switch,
+	message,
 	FormInstance,
 } from 'antd'
 import { Table } from 'components'
+import { findIndex } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
-import { IEditForm, IGameTypeBetLimit } from 'features/betLimit/type'
+import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
+import {
+	useLazyGetByCustIdQuery,
+	useLazyGetTpCategoryListQuery,
+	useLazyGetCustInfoDetailsQuery,
+	useLazyGetTpBetLimitGroupQuery,
+} from 'features/betLimit/api'
+
+import {
+	IEditForm,
+	IGameTypeBetLimit,
+	ITpCategoryListResponse,
+} from 'features/betLimit/type'
 
 interface IEditBetLimitModalProps {
 	form: FormInstance<IEditForm>
 	isAdd: boolean
 	isOpen: boolean
-	loading: boolean
 	editPermission?: PermissionInterface
-	gameTypeBetLimitList?: IGameTypeBetLimit[]
+	isSetBetLimitLoading: boolean
 	onCancel: () => void
-	onCloseModal: () => void
-	onSetBetLimit: () => void
-	onTableChange: ({
+	onSetBetLimit: (list: IGameTypeBetLimit[]) => void
+}
+
+const EditBetLimitModal = ({
+	form,
+	isAdd,
+	isOpen,
+	editPermission,
+	isSetBetLimitLoading,
+	onCancel,
+	onSetBetLimit,
+}: IEditBetLimitModalProps) => {
+	const { t } = useTranslation()
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { currencyId } = form.getFieldsValue(['currencyId'])
+	const [gameTypeBetLimitList, setGameTypeBetLimitList] = useState<
+		undefined | IGameTypeBetLimit[]
+	>(undefined)
+
+	const currency =
+		currencyListBySite.find(
+			({ currencyId: siteCurrencyId }) => currencyId === siteCurrencyId
+		)?.isoCode ?? 'N/A'
+
+	const [getByCustId, { isFetching: isGetByCustIdLoading }] =
+		useLazyGetByCustIdQuery()
+
+	const [getCustInfoDetails, { isFetching: isGetCustInfoDetailsFetching }] =
+		useLazyGetCustInfoDetailsQuery()
+
+	const [
+		getTpCategoryList,
+		{
+			data: { data: tpCategoryList } = {} as ITpCategoryListResponse,
+			isFetching: isGetTpCategoryListFetching,
+		},
+	] = useLazyGetTpCategoryListQuery()
+
+	const [getTpBetLimitGroup, { isFetching: isGetTpBetLimitGroupFetching }] =
+		useLazyGetTpBetLimitGroupQuery()
+
+	const getBetLimitByCustId = async () => {
+		const { custId } = form.getFieldsValue(['custId'])
+
+		try {
+			const { data: custBetLimitData } = await getByCustId({
+				custId,
+			}).unwrap()
+
+			setGameTypeBetLimitList(custBetLimitData?.gameTypeBetLimit)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const onTableChange = ({
 		categoryId,
 		typeId,
 		checked,
@@ -39,43 +107,60 @@ interface IEditBetLimitModalProps {
 		typeId: number
 		checked?: boolean
 		group?: string
-	}) => void
-	onSearchUserName: () => void
-	onGetTpCategoryList: () => void
-	onGetBetLimitByCustId: () => void
-}
+	}) => {
+		setGameTypeBetLimitList(prev => {
+			const newArr = [...(prev || [])]
+			const idx = findIndex(newArr, { categoryId, typeId })
+			const newData = group ? { selectedValue: group } : { checked: !checked }
+			newArr[idx] = { ...newArr[idx], ...newData }
+			return newArr
+		})
+	}
 
-const EditBetLimitModal = ({
-	form,
-	isAdd,
-	isOpen,
-	loading,
-	editPermission,
-	gameTypeBetLimitList,
-	onCancel,
-	onCloseModal,
-	onSetBetLimit,
-	onTableChange,
-	onSearchUserName,
-	onGetTpCategoryList,
-	onGetBetLimitByCustId,
-}: IEditBetLimitModalProps) => {
-	const { t } = useTranslation()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const { currencyId } = form.getFieldsValue(['currencyId'])
+	const onSearchUserName = async () => {
+		const { userName } = form.getFieldsValue()
+		if (!userName) return
 
-	const currency =
-		currencyListBySite.find(
-			({ currencyId: siteCurrencyId }) => currencyId === siteCurrencyId
-		)?.isoCode ?? 'N/A'
+		try {
+			const { data: custInfoDetail } = await getCustInfoDetails({
+				siteId,
+				userName,
+			}).unwrap()
+
+			const { data: tpBetLimit } = await getTpBetLimitGroup({
+				categoryId: tpCategoryList.categoryId,
+				currencyId: custInfoDetail.currencyId,
+			}).unwrap()
+
+			setGameTypeBetLimitList(tpBetLimit)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const onCloseModal = () => {
+		setGameTypeBetLimitList(undefined)
+		form.resetFields()
+	}
 
 	useEffect(() => {
-		if (isAdd) {
-			onGetTpCategoryList()
-		} else {
-			onGetBetLimitByCustId()
+		if (isOpen) {
+			if (isAdd) {
+				getTpCategoryList()
+			} else {
+				getBetLimitByCustId()
+			}
 		}
-	}, [isOpen])
+	}, [isOpen, isAdd])
+
+	const loading =
+		isGetByCustIdLoading ||
+		isGetCustInfoDetailsFetching ||
+		isGetTpCategoryListFetching ||
+		isGetTpBetLimitGroupFetching ||
+		isSetBetLimitLoading
 
 	const columns = [
 		{
@@ -148,7 +233,9 @@ const EditBetLimitModal = ({
 			onCancel={onCancel}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}
-			onOk={onSetBetLimit}
+			onOk={() => {
+				onSetBetLimit(gameTypeBetLimitList ?? [])
+			}}
 			width='60vw'
 			confirmLoading={loading}
 			afterClose={onCloseModal}
