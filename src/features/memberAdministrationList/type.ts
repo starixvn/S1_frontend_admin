@@ -65,6 +65,7 @@ export interface IGetMemberListArgs {
 	endDate: string
 	pageNumber: number
 	pageSize: number
+	excludeTag: boolean
 }
 
 export interface IMemberData {
@@ -160,4 +161,5 @@ export interface IForm {
 	deviceId: null | string
 	exportTransferWallet: boolean | number
 	userType: UserTypeEnum
+	excludeTag: boolean
 }

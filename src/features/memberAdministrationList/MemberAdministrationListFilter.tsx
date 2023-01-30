@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
 	Button,
@@ -11,6 +11,8 @@ import {
 	Input,
 	Row,
 	Select,
+	Space,
+	Typography,
 } from 'antd'
 import {
 	MOMENT_DATE_RANGES,
@@ -70,20 +72,7 @@ const MemberAdministrationListFilter = ({
 	onSearch,
 }: IMemberAdministrationListFilterProps) => {
 	const { t } = useTranslation()
-	const [isExclude, setIsExclude] = useState<boolean>(false)
 	const dateType = Form.useWatch('dateType', form)
-
-	const excludeHandler = () => {
-		const { tags } = form.getFieldsValue()
-		setIsExclude(!isExclude)
-		if (tags && tags.length > 0) {
-			form.setFieldsValue({
-				tags: allTagEnums
-					.filter(({ id }) => !tags.includes(id))
-					?.map(({ id }) => id),
-			})
-		}
-	}
 
 	const currencySelector = () => {
 		const handleChangeCurrency = (newCurrencyIds: number[]) => {
@@ -159,40 +148,40 @@ const MemberAdministrationListFilter = ({
 					tags: newTags,
 				})
 			}
-			if (newTags.length === 0) {
-				setIsExclude(false)
-			}
 		}
 		return (
-			<>
-				<Form.Item name='tags' label={t('Label_Tags')}>
-					<MultipleSelect
-						onChange={handleChangeTags}
-						placeholder={t('Label_Select') + t('Label_Tags')}
-					>
-						{(allTagEnums?.length as number) > 1 && (
-							<Option value={0}>{t('Label_SelectAll')}</Option>
-						)}
-
-						{allTagEnums?.map(({ id, tagName }) => (
-							<Option key={id} value={id}>
-								{tagName}
-							</Option>
-						))}
-					</MultipleSelect>
-				</Form.Item>
-				<Checkbox
-					style={{
-						position: 'absolute',
-						right: '0',
-						top: '0',
-					}}
-					onChange={excludeHandler}
-					checked={isExclude}
+			<Form.Item
+				name='tags'
+				label={
+					<Space size='large'>
+						<Typography.Text>{t('Label_Tags')}</Typography.Text>
+						<Form.Item
+							initialValue={false}
+							name='excludeTag'
+							valuePropName='checked'
+							noStyle
+						>
+							<Checkbox>{t('Label_Exclude')}</Checkbox>
+						</Form.Item>
+					</Space>
+				}
+				style={{ width: '100%' }}
+			>
+				<MultipleSelect
+					onChange={handleChangeTags}
+					placeholder={t('Label_Select') + t('Label_Tags')}
 				>
-					{t('Label_Exclude')}
-				</Checkbox>
-			</>
+					{(allTagEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{allTagEnums?.map(({ id, tagName }) => (
+						<Option key={id} value={id}>
+							{tagName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
 		)
 	}
 
