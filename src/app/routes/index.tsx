@@ -941,6 +941,13 @@ const ModifyPaymentFeeLog = lazy(
 		)
 )
 
+const PendingBonus = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PendingBonus' */ 'features/pendingBonus/PendingBonus'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2302,6 +2309,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonus.sub.pendingBonus.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
+					>
+						<PendingBonus />
 					</AuthRequire>
 				),
 			},

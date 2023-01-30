@@ -329,11 +329,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 46,
-		pathMode: 'Internal',
+		functionId: paths.marketing.sub.bonus.sub.pendingBonus.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/PendingBonus',
 		internalFunctionKey: allowedRoles.MarketingPendingBonus,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.bonus.sub.pendingBonus.root,
 	},
 	{
 		icon: null,
