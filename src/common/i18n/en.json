@@ -988,6 +988,7 @@
 	"Label_TriggeredPoint": "Triggered point",
 	"Label_TaggedIssue": "Tagged issue",
 	"Label_Tagged": "Tagged",
+	"Label_LastUpdater": "LastUpdater",
 	"Label_NoOfTagged": "No. of tagged",
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
 	"Label_ProcessResult": "Process Result",
@@ -1019,5 +1020,9 @@
 	"Label_ThresholdTurnOver": "Threshold TurnOver",
 	"Label_CalculateTime": "Calculate Time",
 	"Label_LastestQualifiedTime": "Lastest Qualified Time",
-	"Label_VipLevelAssignBatch": "VIP Level Assign Batch"
+	"Label_VipLevelAssignBatch": "VIP Level Assign Batch",
+	"Label_SelectStatus": "Select Status",
+	"Label_EditAnnouncement": "Edit Announcement",
+	"Label_StatusName": "Status Name",
+	"Label_AddAnnouncement": "Add Announcement"
 }
