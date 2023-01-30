@@ -331,7 +331,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.marketing.sub.bonus.sub.pendingBonus.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/PendingBonus',
 		internalFunctionKey: allowedRoles.MarketingPendingBonus,
 		newAdminPath: paths.marketing.sub.bonus.sub.pendingBonus.root,
