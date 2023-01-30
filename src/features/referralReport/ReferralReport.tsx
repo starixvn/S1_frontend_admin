@@ -115,17 +115,20 @@ const ReferralReport: FC<{
 
 	const handleExport = async () => {
 		try {
-			const { userName = '', currencyId = 0, dateRange } = form.getFieldsValue()
-			const [startDate, endDate] = dateRangeToUtcFormatter(
-				dateRange,
-				timeZoneUtcOffset
-			)
-			const blob = await exportReferralReportFile({
-				userName,
-				currencyId,
+			const {
 				startDate,
 				endDate,
-				siteIds: siteId ? [siteId] : [],
+				userName = '',
+				currencyId = 0,
+				siteId: querySiteId,
+			} = queryParams
+
+			const blob = await exportReferralReportFile({
+				userName,
+				currencyId: Number(currencyId),
+				startDate,
+				endDate,
+				siteIds: querySiteId ? [Number(querySiteId)] : [],
 			}).unwrap()
 			download(
 				blob,
@@ -221,7 +224,7 @@ const ReferralReport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportReferralReportFileLoading}
 				/>

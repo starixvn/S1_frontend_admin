@@ -151,26 +151,28 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 
 	const handleExport = async () => {
 		const {
-			dateRange,
-			categoryIds,
-			currencyIds,
-			baseCurrencyId,
-			payoutStatuses,
-			userName,
-		} = filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
-		const args = {
-			siteIds: siteId ? [siteId] : [],
+			siteIds,
 			currencyIds,
 			startDate,
 			endDate,
-			userName,
+			userName = '',
 			categoryIds,
 			baseCurrencyId,
 			payoutStatuses,
+		} = queryParams
+
+		const args = {
+			siteIds: siteIds?.map((value: string) => Number(value)) ?? [],
+			currencyIds:
+				currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+			startDate,
+			endDate,
+			userName,
+			categoryIds:
+				categoryIds?.map((categoryId: string) => Number(categoryId)) ?? [],
+			baseCurrencyId: Number(baseCurrencyId),
+			payoutStatuses:
+				payoutStatuses?.map((status: string) => Number(status)) ?? [],
 		}
 		try {
 			const blob = await exportForVip(args).unwrap()
@@ -276,7 +278,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportForVipLoading}
 				/>

@@ -164,21 +164,46 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, startAmount, endAmount, withdrawalId, ...restValue } =
-			filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const {
+			startDate,
+			endDate,
+			siteId: querySiteId,
+			startAmount,
+			endAmount,
+			userName = '',
+			withdrawalId,
+			withdrawalMethod = 0,
+			withdrawalTypes,
+			statuses,
+			currencyIds,
+			levelStatuses,
+			selectBankCode,
+			selectCalCode,
+			agent = '',
+		} = queryParams
+
 		try {
 			const blob = await exportWithdrawalList({
 				startDate,
 				endDate,
-				siteId,
-				startAmount: startAmount || -1,
-				endAmount: endAmount || -1,
+				siteId: Number(querySiteId),
+				startAmount: Number(startAmount) || -1,
+				endAmount: Number(endAmount) || -1,
+				userName,
 				withdrawalId: withdrawalId || null,
-				...restValue,
+				withdrawalMethod: Number(withdrawalMethod),
+				withdrawalTypes:
+					withdrawalTypes?.map((type: string) => Number(type)) ?? [],
+				statuses: statuses?.map((status: string) => Number(status)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				levelStatuses:
+					levelStatuses?.map((status: string) => Number(status)) ?? [],
+				selectBankCode:
+					selectBankCode?.map((bankCode: string) => Number(bankCode)) ?? [],
+				selectCalCode:
+					selectCalCode?.map((calCode: string) => Number(calCode)) ?? [],
+				agent,
 			}).unwrap()
 			download(
 				blob,
@@ -286,7 +311,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportWithdrawalListLoading}
 				/>

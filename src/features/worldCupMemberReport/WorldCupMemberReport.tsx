@@ -117,20 +117,24 @@ const WorldCupMemberReport: FC<{
 	}
 
 	const handleExport = async () => {
-		const { userName, dateRange, currencyId, ticketType, teamId, selected } =
-			form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
+		const {
+			userName = '',
+			currencyId = 0,
+			ticketType = 0,
+			teamId = 0,
+			selected = 0,
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const blob = await exportMemberReport({
 				siteId,
 				userName,
-				currencyId,
-				ticketType,
-				teamId,
-				selected,
+				currencyId: Number(currencyId),
+				ticketType: Number(ticketType),
+				teamId: Number(teamId),
+				selected: Number(selected),
 				startTime,
 				endTime,
 			}).unwrap()
@@ -203,7 +207,7 @@ const WorldCupMemberReport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportMemberReportLoading}
 				/>

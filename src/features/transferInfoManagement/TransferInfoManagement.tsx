@@ -197,7 +197,6 @@ const TransferInfoManagement = ({
 
 	const handleExport = async () => {
 		const {
-			dateRange,
 			fromCurrencyId,
 			toCurrencyId,
 			fromChannel,
@@ -208,23 +207,23 @@ const TransferInfoManagement = ({
 			toAgent,
 			transferTypes,
 			reason,
-		} = filterForm.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const blob = await exportBankTransferList({
-				fromCurrencyId: fromCurrencyId !== undefined ? fromCurrencyId : null,
-				toCurrencyId: toCurrencyId !== undefined ? toCurrencyId : null,
-				fromChannel: fromChannel !== undefined ? fromChannel : null,
-				toChannel: toChannel !== undefined ? toChannel : null,
+				fromCurrencyId:
+					fromCurrencyId !== undefined ? Number(fromCurrencyId) : null,
+				toCurrencyId: toCurrencyId !== undefined ? Number(toCurrencyId) : null,
+				fromChannel: fromChannel !== undefined ? Number(fromChannel) : null,
+				toChannel: toChannel !== undefined ? Number(toChannel) : null,
 				fromAccountNo: fromAccountNo !== undefined ? fromAccountNo : null,
 				toAccountNo: toAccountNo !== undefined ? toAccountNo : null,
 				fromAgent: fromAgent !== undefined ? fromAgent : null,
 				toAgent: toAgent !== undefined ? toAgent : null,
-				reason: reason !== undefined ? reason : null,
-				transferTypes,
+				reason: reason !== undefined ? Number(reason) : null,
+				transferTypes: transferTypes?.map((type: string) => Number(type)) ?? [],
 				startTime,
 				endTime,
 				siteId,
