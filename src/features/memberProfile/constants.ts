@@ -250,3 +250,11 @@ export const isPayoutList: Array<{
 	{ value: IsPayoutEnum.true, displayName: 'Label_Yes' },
 	{ value: IsPayoutEnum.false, displayName: 'Label_No' },
 ]
+
+export enum DepositStatusEnum {
+	Approved = 3,
+}
+
+export enum WithdrawalStatusEnum {
+	Approved = 6,
+}
