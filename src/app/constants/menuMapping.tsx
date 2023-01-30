@@ -898,7 +898,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
 	},
 ]
