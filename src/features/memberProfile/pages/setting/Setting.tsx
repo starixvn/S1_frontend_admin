@@ -248,7 +248,7 @@ const Setting = () => {
 			form.getFieldsValue()
 
 		if (editType === SettingEditTypeEnum.FullName) {
-			// 加{}限制作用域 不然ESLint不給過
+			// 加上條件陳述事需加上{}限制作用域
 
 			const { data: duplicateNameList } = await getCheckDuplicateName({
 				custId,
@@ -260,7 +260,7 @@ const Setting = () => {
 				Modal.warning({
 					content: 'Real name already exists, still want to continue?',
 					okCancel: true,
-					cancelText: 'No',
+					cancelText: t('Label_No'),
 					onCancel: () => {
 						editModal.onOpen()
 					},
