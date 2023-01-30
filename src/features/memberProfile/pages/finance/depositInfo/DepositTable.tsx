@@ -1,12 +1,13 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Typography } from 'antd'
+import { Descriptions, TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
+import { DepositStatusEnum } from 'features/memberProfile/constants'
 
 const { Text } = Typography
 interface DepositTableProps {
@@ -180,15 +181,34 @@ const DepositTable = ({
 				),
 		},
 	]
+
+	const totalApprovedAmount = depositInfoList
+		.filter(depositInfo => depositInfo.status === DepositStatusEnum.Approved)
+		.reduce((acc, cur) => acc + cur.amount, 0)
+
+	const totalApproveCount = depositInfoList.filter(
+		depositInfo => depositInfo.status === DepositStatusEnum.Approved
+	).length
+
 	return (
-		<Table
-			loading={loading}
-			dataSource={depositInfoList ?? []}
-			style={{ marginTop: '10px', marginBottom: '10px' }}
-			columns={columns}
-			pagination={pagination as TablePaginationConfig}
-			onChange={onTableChange}
-		/>
+		<>
+			<Table
+				loading={loading}
+				dataSource={depositInfoList ?? []}
+				style={{ marginTop: '10px', marginBottom: '10px' }}
+				columns={columns}
+				pagination={pagination as TablePaginationConfig}
+				onChange={onTableChange}
+			/>
+			<Descriptions>
+				<Descriptions.Item label='totalApproveCount'>
+					{numFormatToDigits(totalApproveCount || 0)}
+				</Descriptions.Item>
+				<Descriptions.Item label='totalApprovedAmount'>
+					{numFormatToDigits(totalApprovedAmount || 0)}
+				</Descriptions.Item>
+			</Descriptions>
+		</>
 	)
 }
 
