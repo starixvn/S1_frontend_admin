@@ -1114,3 +1114,19 @@ export interface ISettingMarketingPermissions {
 	emailVerifiedRewardPermission: PermissionInterface | undefined
 	lockRebatePayoutPermission: PermissionInterface | undefined
 }
+
+export interface IGetCheckDuplicateNameArgs {
+	custId: number
+	fullName: string
+}
+
+export interface ICheckDuplicateNameData {
+	isoCode: string
+	custId: number
+	userName: string
+	accountName: string
+}
+
+export type IGetCheckDuplicateNameResponse = IAxiosResponse<
+	ICheckDuplicateNameData[]
+>

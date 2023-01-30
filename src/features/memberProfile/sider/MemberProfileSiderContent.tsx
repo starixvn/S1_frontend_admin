@@ -7,6 +7,7 @@ import DocumentTitle from 'react-document-title'
 import {
 	IGetBasicInfoResponse,
 	IGetCustPhotoResponse,
+	IGetCheckDuplicateNameResponse,
 } from 'features/memberProfile/type'
 import {
 	useDeleteCustPhotoMutation,
@@ -14,6 +15,7 @@ import {
 	useGetCustPhotoQuery,
 	useLineUnbindMutation,
 	useUploadCustPhotoMutation,
+	useGetCheckDuplicateNameQuery,
 } from 'features/memberProfile/api'
 import { UploadPicModal } from 'features/memberProfile/sider/uploaderModal/UploadPicModal'
 import { useAuth, useModal } from 'common/hooks'
@@ -21,12 +23,14 @@ import { useTranslation } from 'react-i18next'
 import { UploadFile } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
 import { PAGE_TITLE } from 'app/config'
+import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 
 const MemberProfileSiderContent = () => {
 	const { t } = useTranslation()
 	const { actionPermissions: { lineUnbindingPermission } = {} } = useAuth()
 	const { custId = '' } = useParams()
 	const uploadModal = useModal()
+	const ipUserListModal = useModal()
 	const {
 		data: { data: custBasicInfo } = {} as IGetBasicInfoResponse,
 		isFetching: isGetCustBasicInfoLoading,
@@ -34,10 +38,27 @@ const MemberProfileSiderContent = () => {
 		custId: Number(custId),
 	})
 
+	const { accountName: checkAccountName } = custBasicInfo ?? {}
+
 	const {
 		data: { data: custPhotoList = [] } = {} as IGetCustPhotoResponse,
 		isFetching: isGetCustPhotoListFetching,
 	} = useGetCustPhotoQuery({ custId: Number(custId) })
+
+	const {
+		data: {
+			data: checkDuplicateNameList = [],
+		} = {} as IGetCheckDuplicateNameResponse,
+		isFetching: isGetCheckDuplicateNameListFetching,
+	} = useGetCheckDuplicateNameQuery(
+		{
+			custId: Number(custId),
+			fullName: checkAccountName,
+		},
+		{
+			skip: !checkAccountName,
+		}
+	)
 
 	const [uploadCustPhoto, { isLoading: isUploadCustPhotoLoading }] =
 		useUploadCustPhotoMutation()
@@ -84,13 +105,19 @@ const MemberProfileSiderContent = () => {
 		}
 	}
 
+	const handleAccountClick = () => {
+		ipUserListModal.onOpen()
+	}
+
 	return (
 		<DocumentTitle title={custBasicInfo?.userName || PAGE_TITLE}>
 			<Spin spinning={isGetCustBasicInfoLoading}>
 				<BasicInfo
 					lineUnbindingPermission={lineUnbindingPermission}
 					custBasicInfo={custBasicInfo}
+					checkDuplicateNameList={checkDuplicateNameList}
 					onCustPhotoClick={() => uploadModal.onOpen()}
+					onAccountClick={handleAccountClick}
 					onLineUnbind={handleLineUnbind}
 				/>
 				<Divider style={{ margin: '15px 0' }} />
@@ -113,6 +140,14 @@ const MemberProfileSiderContent = () => {
 					onDeletePhoto={handleDeleteCustPhoto}
 					onUploadPhoto={handleUploadCustPhoto}
 					uploading={isUploadCustPhotoLoading}
+				/>
+
+				<UserListModal
+					loading={isGetCheckDuplicateNameListFetching}
+					userList={checkDuplicateNameList}
+					visible={ipUserListModal.visible}
+					onCancel={ipUserListModal.onCancel}
+					clearCache={false}
 				/>
 			</Spin>
 		</DocumentTitle>
