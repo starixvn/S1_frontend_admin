@@ -48,8 +48,13 @@ import { CryptoSettingModal } from 'features/paymentManagement/modals/CryptoSett
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { editPermission, editInfoPermission } = {} } =
-		useAuth()
+	const {
+		actionPermissions: {
+			editPermission,
+			editInfoPermission,
+			setFeePermission,
+		} = {},
+	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -514,6 +519,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					currencyListBySite={currencyListBySite}
 					globalStatusList={globalStatusList}
 					editPermission={editPermission}
+					setFeePermission={setFeePermission}
 					pagination={pagination}
 					typeList={typeList}
 					onTableChange={handleTableChange}
