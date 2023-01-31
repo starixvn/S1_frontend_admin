@@ -1004,5 +1004,10 @@
 	"Label_SearchPage": "Search Page ...",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_PerCount": "Per Count"
+	"Label_PerCount": "Per Count",
+	"Label_IsExpired": "IsExpired",
+	"Label_TpTypeName": "TpTypeName",
+	"Label_MaintenanceStart": "MainTen Start",
+	"Label_MaintenanceEnd": "MainTen End",
+	"Label_AddMaintenance": "Add Maintenance"
 }

@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const ProductMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2260,6 +2267,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.Maintenance.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.Maintenance.functionId}
+					>
+						<ProductMaintenance />
 					</AuthRequire>
 				),
 			},
