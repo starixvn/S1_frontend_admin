@@ -85,6 +85,7 @@ const MemberAdministrationList = ({
 			currencyIds,
 			userName,
 			tpUserName,
+			excludeTag,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -101,6 +102,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
+				excludeTag,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,

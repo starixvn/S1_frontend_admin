@@ -1030,5 +1030,6 @@
 	"Label_SelectStatus": "Select Status",
 	"Label_EditAnnouncement": "Edit Announcement",
 	"Label_StatusName": "Status Name",
-	"Label_AddAnnouncement": "Add Announcement"
+	"Label_AddAnnouncement": "Add Announcement",
+	"Label_Exclude": "exclude"
 }
