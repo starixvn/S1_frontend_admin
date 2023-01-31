@@ -114,7 +114,7 @@ const WithdrawalTable = ({
 		)
 		.reduce((acc, cur) => acc + cur.amount, 0)
 
-	const totalApproveCount = withdrawalInfoList.filter(
+	const totalApprovedCount = withdrawalInfoList.filter(
 		withdrawalInfo => withdrawalInfo.status === WithdrawalStatusEnum.Approved
 	).length
 
@@ -129,10 +129,10 @@ const WithdrawalTable = ({
 				onChange={onTableChange}
 			/>
 			<Descriptions>
-				<Descriptions.Item label='totalApproveCount'>
-					{numFormatToDigits(totalApproveCount || 0)}
+				<Descriptions.Item label={t('Label_TotalApprovedCount')}>
+					{numFormatToDigits(totalApprovedCount || 0)}
 				</Descriptions.Item>
-				<Descriptions.Item label='totalApprovedAmount'>
+				<Descriptions.Item label={t('Label_TotalApprovedAmount')}>
 					{numFormatToDigits(totalApprovedAmount || 0)}
 				</Descriptions.Item>
 			</Descriptions>
