@@ -186,7 +186,7 @@ const DepositTable = ({
 		.filter(depositInfo => depositInfo.status === DepositStatusEnum.Approved)
 		.reduce((acc, cur) => acc + cur.amount, 0)
 
-	const totalApproveCount = depositInfoList.filter(
+	const totalApprovedCount = depositInfoList.filter(
 		depositInfo => depositInfo.status === DepositStatusEnum.Approved
 	).length
 
@@ -201,10 +201,10 @@ const DepositTable = ({
 				onChange={onTableChange}
 			/>
 			<Descriptions>
-				<Descriptions.Item label='totalApproveCount'>
-					{numFormatToDigits(totalApproveCount || 0)}
+				<Descriptions.Item label={t('Label_TotalApprovedCount')}>
+					{numFormatToDigits(totalApprovedCount || 0)}
 				</Descriptions.Item>
-				<Descriptions.Item label='totalApprovedAmount'>
+				<Descriptions.Item label={t('Label_TotalApprovedAmount')}>
 					{numFormatToDigits(totalApprovedAmount || 0)}
 				</Descriptions.Item>
 			</Descriptions>
