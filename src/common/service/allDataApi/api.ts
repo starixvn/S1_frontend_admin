@@ -12,6 +12,7 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	ITpListData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -97,6 +98,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpList: builder.query<IAxiosResponse<ITpListData[]>, null>({
+			query: data => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -118,4 +126,5 @@ export const {
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetTpListQuery,
 } = allDataApi

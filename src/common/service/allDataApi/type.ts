@@ -25,6 +25,8 @@ export type IBankInfoSysResponse = IAxiosResponse<IBankInfoSysData[]>
 export interface IGetCategoryData {
 	categoryId: number
 	categoryName: string
+	checked: boolean
+	gameTypeBetLimit: string
 }
 export type IGetCategoryResponse = IAxiosResponse<IGetCategoryData[]>
 
@@ -72,4 +74,10 @@ export interface IGateWayData {
 // LangCodes Data
 export interface ILangCodesData {
 	iLangList: string[]
+}
+
+export interface ITpListData {
+	id: number
+	tpName: string
+	tpDisplayName: string
 }
