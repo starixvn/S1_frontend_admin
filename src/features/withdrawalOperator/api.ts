@@ -7,9 +7,11 @@ import {
 	IGetWithdrawalListArgs,
 	IGetWithdrawalResponse,
 	IManualOperatorArgs,
+	ISendWithdrawalMessageArgs,
 	ISetWithdrawalStatusArgs,
 	IUploadPictureArgs,
 	IWithdrawalCommentData,
+	IWithdrawalReasonMessage,
 } from 'features/withdrawalOperator/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
@@ -112,6 +114,26 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['UPDATE_PIC'],
 		}),
+		getWithdrawalReasonMessages: builder.query<
+			IAxiosResponse<IWithdrawalReasonMessage[]>,
+			null
+		>({
+			query: data => ({
+				url: 'Withdrawal/WithdrawalMessageStatusList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		setWithdrawalMessage: builder.mutation<
+			IAxiosResponse<null>,
+			ISendWithdrawalMessageArgs
+		>({
+			query: data => ({
+				url: 'Withdrawal/SetWithdrawalMessage',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -126,4 +148,6 @@ export const {
 	useUploadPictureMutation,
 	useGetReceiptPictureQuery,
 	useDeletePictureMutation,
+	useGetWithdrawalReasonMessagesQuery,
+	useSetWithdrawalMessageMutation,
 } = withdrawalOperatorApi
