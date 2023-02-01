@@ -91,7 +91,7 @@ const GameExclusionTable = ({
 			},
 		},
 		{
-			title: t('Label_UserName'),
+			title: t('Label_MemberId'),
 			key: 'userName',
 			width: 100,
 			align: 'center' as 'center',
