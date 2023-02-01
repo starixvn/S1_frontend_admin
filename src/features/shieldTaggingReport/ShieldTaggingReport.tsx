@@ -285,7 +285,7 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
 					loading={isExportShieldTaggingReport}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 				/>
 			</AffixButtons>

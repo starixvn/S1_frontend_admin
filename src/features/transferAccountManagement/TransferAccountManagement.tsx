@@ -17,6 +17,7 @@ import {
 } from 'common/service/allDataApi'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
+import { isEmpty } from 'lodash'
 import {
 	useExportBankTransferAccountMutation,
 	useGetBankTransferAccountAgentListQuery,
@@ -219,7 +220,7 @@ const TransferAccountManagement: FC<{
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExportBankTransferAccount}
 					loading={isExportBankTransferAccountLoading}
 				/>

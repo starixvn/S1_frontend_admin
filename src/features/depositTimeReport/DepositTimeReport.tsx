@@ -119,20 +119,23 @@ const DepositTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, statuses, memberId, depositId, currencyIds } =
-			filterForm.getFieldsValue()
-
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
+		const {
+			depositId,
+			startDate,
+			endDate,
+			siteIds,
+			currencyIds,
+			statuses,
+			memberId,
+		} = queryParams
 
 		try {
 			const blob = await exportDepositTimeReport({
 				depositId: depositId || null,
-				siteIds: siteId ? [siteId] : [],
-				currencyIds,
-				statuses,
+				siteIds: siteIds?.map((siteNumber: string) => Number(siteNumber)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				statuses: statuses?.map((status: string) => Number(status)) ?? [],
 				memberId: memberId || null,
 				startDate,
 				endDate,
@@ -218,7 +221,7 @@ const DepositTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
 					loading={isExportDepositTimeReportLoading}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 				/>
 			</AffixButtons>

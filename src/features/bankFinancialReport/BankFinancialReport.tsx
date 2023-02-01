@@ -129,38 +129,26 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleExport = async () => {
 		const {
-			dateRange,
-			channel: rawChannel,
-			agents: rawAgents,
-			financialAccountIds: rawAccountIds,
+			startTime,
+			endTime,
 			currencyIds,
-		} = filterForm.getFieldsValue()
-
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
-
-		// 全選的話送 null
-		const channel =
-			rawChannel.length === transferChannelList.length
-				? null
-				: (rawChannel as number[])
-		const agents = rawAgents.length === agentList.length ? null : rawAgents
-		const financialAccountIds =
-			rawAccountIds.length === financialAccountList.length
-				? null
-				: (rawAccountIds as number[])
+			channel,
+			agents,
+			financialAccountIds,
+		} = queryParams
 
 		try {
 			const blob = await exportBankFinancialReport({
 				siteId,
 				startTime,
 				endTime,
-				currencyIds,
-				channel,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				channel: channel?.map((value: string) => Number(value)) ?? null,
 				agents,
-				financialAccountIds,
+				financialAccountIds:
+					financialAccountIds?.map((accountId: string) => Number(accountId)) ??
+					null,
 			}).unwrap()
 
 			download(

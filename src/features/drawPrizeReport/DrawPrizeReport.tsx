@@ -140,17 +140,21 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, ...restValue } = filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const {
+			startDate,
+			endDate,
+			currencyIds,
+			eventNames,
+			siteId: querySiteId,
+		} = queryParams
 		try {
 			const blob = await exportDrawPrizeReport({
-				siteId,
+				siteId: querySiteId,
 				startDate,
 				endDate,
-				...restValue,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				eventNames,
 			}).unwrap()
 
 			download(

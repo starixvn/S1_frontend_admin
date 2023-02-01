@@ -137,24 +137,24 @@ const TurnoverPointReport: FC<{
 
 	const handleExport = async () => {
 		const {
-			dateRange,
-			currencyIds,
-			vipLevels,
-			categories,
 			userName = '',
 			sabaId = '',
-		} = form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+			categories,
+			vipLevels,
+			currencyIds,
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const args = {
 				userName,
 				sabaId,
-				categories,
-				vipLevels,
-				currencyIds,
+				categories: categories?.map((category: string) => Number(category)),
+				vipLevels: vipLevels?.map((vipLevel: string) => Number(vipLevel)),
+				currencyIds: currencyIds?.map((currencyId: string) =>
+					Number(currencyId)
+				),
 				startTime,
 				endTime,
 				siteId,
@@ -252,7 +252,7 @@ const TurnoverPointReport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportTurnoverPointReportLoading}
 				/>
