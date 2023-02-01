@@ -952,6 +952,20 @@ const PendingBonus = lazy(
 		)
 )
 
+const GameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameExclusion' */ 'features/gameExclusion/GameExclusion'
+		)
+)
+
+const EditGameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2377,6 +2391,22 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
 						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<GameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}/:custId`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<EditGameExclusion />
 					</AuthRequire>
 				),
 			},

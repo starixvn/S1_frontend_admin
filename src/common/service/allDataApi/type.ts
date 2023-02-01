@@ -103,3 +103,10 @@ export interface IGetPaySettingData {
 }
 
 export type IGetPaySettingListResponse = IAxiosResponse<IGetPaySettingData[]>
+
+export interface ISlotTpData {
+	tpId: number
+	tpName: string
+	gameList: null
+	checked: boolean
+}

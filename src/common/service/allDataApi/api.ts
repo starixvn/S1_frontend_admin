@@ -14,6 +14,7 @@ import {
 	ILangCodesData,
 	IGetTpIdData,
 	IGetPaySettingListResponse,
+	ISlotTpData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -113,6 +114,12 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getSlotTpList: builder.query<IAxiosResponse<ISlotTpData[]>, null>({
+			query: () => ({
+				url: 'GetAllData/GetSlotTpList',
+				method: 'POST',
+			}),
+		}),
 	}),
 })
 
@@ -136,4 +143,5 @@ export const {
 	useGetLangCodesQuery,
 	useGetTpIdListQuery,
 	useGetPaySettingListQuery,
+	useGetSlotTpListQuery,
 } = allDataApi
