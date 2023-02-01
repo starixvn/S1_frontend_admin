@@ -12,7 +12,7 @@ interface ISelectedInfoProps {
 }
 
 // 用來顯示已經選擇的遊戲，純渲染當前表單內容，故渲染邏輯全部寫在此處
-const SelectedInfo = ({ form, selectedTpGames }: ISelectedInfoProps) => {
+const ResultTable = ({ form, selectedTpGames }: ISelectedInfoProps) => {
 	const { t } = useTranslation()
 	const selectedGames = Form.useWatch('selectedGames', form)
 	const [result, setResult] = useState<IInfos[]>([])
@@ -104,4 +104,4 @@ const SelectedInfo = ({ form, selectedTpGames }: ISelectedInfoProps) => {
 	) : null
 }
 
-export { SelectedInfo }
+export { ResultTable }

@@ -1,7 +1,7 @@
 import { ITpGame } from 'features/gameExclusion/type'
 import { LayoutContent } from 'app/pages/layout'
 import { FormInstance, Row, Spin, Typography } from 'antd'
-import { GameSelect } from 'features/gameExclusion/editGameExclusion/GameSelect'
+import { GameSelector } from 'features/gameExclusion/editGameExclusion/GameSelector'
 import { useTranslation } from 'react-i18next'
 
 interface IInfoFormProps {
@@ -20,7 +20,7 @@ const GameInfoForm = ({ form, loading, selectedTpGames }: IInfoFormProps) => {
 				</Typography.Title>
 				<Row align='middle' gutter={[16, 16]}>
 					{selectedTpGames?.map(tpGame => (
-						<GameSelect tpGame={tpGame} form={form} key={tpGame.tpId} />
+						<GameSelector tpGame={tpGame} form={form} key={tpGame.tpId} />
 					))}
 				</Row>
 			</LayoutContent.Card>

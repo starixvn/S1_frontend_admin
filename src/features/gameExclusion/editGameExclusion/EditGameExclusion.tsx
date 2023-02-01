@@ -11,7 +11,7 @@ import { useLazyGetGameCasinoByTpIdQuery } from 'common/service/baseDataApi'
 import { useEffect, useRef, useState } from 'react'
 import { find, includes } from 'lodash'
 import { GameInfoForm } from 'features/gameExclusion/editGameExclusion/GameInfoForm'
-import { SelectedInfo } from 'features/gameExclusion/editGameExclusion/SelectedInfo'
+import { ResultTable } from 'features/gameExclusion/editGameExclusion/ResultTable'
 import {
 	useLazyGetGameExclusionByIdQuery,
 	useSetGameExclusionMutation,
@@ -157,7 +157,7 @@ const EditGameExclusion = () => {
 							loading={isGetGamesLoading}
 							selectedTpGames={selectedTpGames}
 						/>
-						<SelectedInfo form={form} selectedTpGames={selectedTpGames} />
+						<ResultTable form={form} selectedTpGames={selectedTpGames} />
 					</Form>
 				)}
 
