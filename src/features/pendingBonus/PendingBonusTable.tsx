@@ -71,11 +71,11 @@ const PendingBonusTable = ({
 		},
 		{
 			title: t('Label_MemberId'),
-			key: 'custId',
-			dataIndex: 'custId',
+			key: 'userName',
+			dataIndex: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (custId: number) => custId ?? '-',
+			render: (userName: string) => userName || '-',
 		},
 		{
 			title: t('Label_LockedAmount'),
