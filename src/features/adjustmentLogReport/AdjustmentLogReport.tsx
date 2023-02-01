@@ -74,7 +74,7 @@ const AdjustmentLogReport: FC<{
 			endDate,
 			current,
 			pageSize,
-			tz: timeZoneUtcOffset,
+			tz: currentTimeZoneUtcOffset,
 		})
 
 		try {
@@ -94,6 +94,7 @@ const AdjustmentLogReport: FC<{
 			)
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
+			onTimeZoneChange(currentTimeZoneUtcOffset)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -169,8 +170,6 @@ const AdjustmentLogReport: FC<{
 				pageSize,
 				tz,
 			} = queryParams
-
-			onTimeZoneChange(Number(tz))
 
 			form.setFieldsValue({
 				actionTypes: isArray(actionTypes)
