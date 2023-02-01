@@ -73,3 +73,10 @@ export interface IGateWayData {
 export interface ILangCodesData {
 	iLangList: string[]
 }
+
+export interface ISlotTpData {
+	tpId: number
+	tpName: string
+	gameList: null
+	checked: boolean
+}

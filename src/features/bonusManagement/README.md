@@ -26,7 +26,7 @@
 - 畫面左邊區塊主要是 `PromotionInfo` , 對應檔案為 `BonusDetailMainForm.tsx`
 - 畫面右邊區塊為 `Specific` 內資料 , 對應檔案為 `BonusDetailSubForm.tsx`
 - 畫面右下區塊為 各個 `Specific` 內的 `details` , 對應檔案為 `BannerInfoEditTab` 和其子元件
-- `MainForm` 和 `SubForm` 主要用 `BonusType` 做條件渲染 , 找尋特定 BonusType 行為可直接搜該 Type 名稱
+- `BasicInfoForm` 和 `SubForm` 主要用 `BonusType` 做條件渲染 , 找尋特定 BonusType 行為可直接搜該 Type 名稱
 - 所有有顯示的 Bonus Type 可搜尋 `constants.ts` 內的 `BonusTypeEnum`
 - 在特定 `bonusType` 為 `FreeBet` , `RetentionFreeBet` 時 設定 `amount Type` 為 `Amount` (預設為 `percentage`)
 - 當 isDisplayDate 未打勾時
