@@ -213,7 +213,6 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	useEffect(() => {
 		if (!isGetDrawPrizesEventNamesLoading) {
 			if (!isEmpty(queryParams)) {
-				// init
 				const {
 					startDate,
 					endDate,
@@ -224,7 +223,6 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 					eventNames = [],
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
-
 				filterForm.setFieldsValue({
 					dateRange: [moment(startDate), moment(endDate)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
@@ -234,6 +232,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				handleSearch({
 					current: Number(pageNumber),
 					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timeZone),
 				})
 			} else {
 				filterForm.setFieldsValue({

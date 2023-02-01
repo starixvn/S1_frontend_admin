@@ -155,6 +155,7 @@ const BetList: FC<{
 				currencyIds,
 			})
 		}
+
 		try {
 			const args: IGetBetListArgs = {
 				siteIds: [siteId],
