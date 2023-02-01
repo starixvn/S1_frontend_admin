@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
 
-const GameSelect = ({
+const GameSelector = ({
 	tpGame,
 	form,
 }: {
@@ -63,4 +63,4 @@ const GameSelect = ({
 	)
 }
 
-export { GameSelect }
+export { GameSelector }
