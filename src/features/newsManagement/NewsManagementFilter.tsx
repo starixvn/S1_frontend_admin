@@ -132,8 +132,6 @@ const NewsManagementFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
-						</Row>
-						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								{statusSelector()}
 							</Col>

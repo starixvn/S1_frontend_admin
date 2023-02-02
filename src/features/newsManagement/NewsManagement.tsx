@@ -165,7 +165,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
-				status: status?.map((value: string) => Number(value)),
+				status: status ? status?.map((value: string) => Number(value)) : [],
 			})
 
 			handleSearch({

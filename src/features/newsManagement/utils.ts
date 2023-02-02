@@ -5,8 +5,10 @@ export const JSONConverter = (item: object) => {
 
 	Object.entries(item).forEach(([key, value]: [string, any]) => {
 		const textValue = Object.values(value)[0]
-		const newObj = { [key]: textValue }
-		obj = { ...obj, ...newObj }
+		if (textValue) {
+			const newObj = { [key]: textValue }
+			obj = { ...obj, ...newObj }
+		}
 	})
 
 	return JSON.stringify(obj)

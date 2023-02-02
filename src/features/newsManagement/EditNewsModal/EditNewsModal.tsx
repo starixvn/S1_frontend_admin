@@ -136,7 +136,7 @@ const NewsManagementModal = ({
 						</Row>
 					)}
 					<Row align='middle' gutter={16}>
-						<Col md={12} xs={12}>
+						<Col md={12} xs={24}>
 							<Form.Item label={t('Label_PostTime')}>
 								<Input.Group compact style={{ width: '100%', display: 'flex' }}>
 									<Form.Item
@@ -157,34 +157,31 @@ const NewsManagementModal = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					<Row align='middle' gutter={16}>
-						<Col span={10}>
-							<Form.Item
-								name='sort'
-								label={t('Label_Sort')}
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_Sort'),
-										}),
-									},
-								]}
-							>
-								<Input />
-							</Form.Item>
-						</Col>
-
-						<Col span={12}>
-							<Form.Item
-								name='status'
-								label={t('Label_Status')}
-								valuePropName='checked'
-							>
-								<Switch />
-							</Form.Item>
-						</Col>
-					</Row>
+					<Col md={10} xs={24}>
+						<Form.Item
+							name='sort'
+							label={t('Label_Sort')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_Sort'),
+									}),
+								},
+							]}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col md={12} xs={24}>
+						<Form.Item
+							name='status'
+							label={t('Label_Status')}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					</Col>
 				</Form>
 			</Spin>
 			<NewsManagementEditor
