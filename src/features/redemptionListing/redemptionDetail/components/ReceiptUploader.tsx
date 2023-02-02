@@ -12,11 +12,13 @@ import { useModal } from 'common/hooks'
 
 interface ReceiptUploaderInterface {
 	form: FormInstance
+	disabled: boolean | undefined
 	onUploadReceipt: (data: FormData) => void
 }
 
 const ReceiptUploader: FC<ReceiptUploaderInterface> = ({
 	form,
+	disabled,
 	onUploadReceipt,
 }) => {
 	const { t } = useTranslation()
@@ -110,7 +112,7 @@ const ReceiptUploader: FC<ReceiptUploaderInterface> = ({
 		<Form form={form} component={false}>
 			{/* 此處 form.Item 單純用來儲存 urls , 供設定 api 使用 , 上傳圖片邏輯寫在 Upload內 */}
 			<Form.Item name='receiptUrls' />
-			<Upload {...props} listType='picture-card'>
+			<Upload {...props} listType='picture-card' disabled={disabled}>
 				{fileList.length >= 10 ? null : uploadButton}
 			</Upload>
 			<Modal

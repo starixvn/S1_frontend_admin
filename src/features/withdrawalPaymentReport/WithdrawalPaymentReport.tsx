@@ -187,7 +187,9 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 					groupBy: groupBy ?? '',
 				})
 
-				handleSearch({})
+				handleSearch({
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
 			}
 		}
 		if (!filterLoading) {

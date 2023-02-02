@@ -242,7 +242,11 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 				userName,
 				payoutStatuses: payoutStatuses?.map((status: string) => Number(status)),
 			})
-			handleSearch({ current: Number(pageNumber), pageSize: Number(pageSize) })
+			handleSearch({
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
+			})
 		}
 	}, [])
 

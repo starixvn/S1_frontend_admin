@@ -225,7 +225,11 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				transId,
 				depositId,
 			})
-			handleSearch({ current: Number(pageNumber), pageSize: Number(pageSize) })
+			handleSearch({
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
+			})
 		}
 	}, [])
 

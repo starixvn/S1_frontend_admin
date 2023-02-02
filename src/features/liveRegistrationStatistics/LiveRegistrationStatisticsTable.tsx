@@ -2,21 +2,21 @@ import { FC } from 'react'
 import moment from 'moment'
 import { find, isArray } from 'lodash'
 import { timeFormat } from 'common/utils/format'
-import {
-	Button,
-	Select,
-	Space,
-	Table,
-	TablePaginationConfig,
-	Typography,
-} from 'antd'
+import { Button, Select, Space, TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { SorterResult } from 'antd/es/table/interface'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { AlignType } from 'rc-table/lib/interface'
-import { IRegistrationManagementData } from './type'
-import { DEPOSIT_STATUS_OPTIONS, StatusEnum, STATUS_OPTIONS } from './constants'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
+import { IRegistrationManagementData } from 'features/liveRegistrationStatistics/type'
+import {
+	DEPOSIT_STATUS_OPTIONS,
+	STATUS_OPTIONS,
+	StatusEnum,
+} from 'features/liveRegistrationStatistics/constants'
+import { Table } from 'components'
 
 const { Option } = Select
 
@@ -77,9 +77,16 @@ const LiveRegistrationStatisticsTable: FC<{
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 80,
 			align: 'center' as 'center',
+			render: ({ userName, custId }: IRegistrationManagementData) => (
+				<Typography.Link
+					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+					target='_blank'
+				>
+					{userName}
+				</Typography.Link>
+			),
 		},
 		{
 			title: t('Label_FullName'),
@@ -88,13 +95,6 @@ const LiveRegistrationStatisticsTable: FC<{
 			width: 80,
 			align: 'center' as 'center',
 			render: (accountName: string) => accountName ?? '-',
-		},
-		{
-			title: t('Label_PhoneNo'),
-			key: 'phoneNo',
-			dataIndex: 'phoneNo',
-			width: 80,
-			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Verify'),
@@ -206,7 +206,6 @@ const LiveRegistrationStatisticsTable: FC<{
 	return (
 		<LayoutContent.Card>
 			<Table
-				size='small'
 				loading={loading}
 				columns={columns}
 				dataSource={registrationManagementList}

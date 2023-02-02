@@ -168,7 +168,6 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetAgentListLoading
 
 	useEffect(() => {
-		// init
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
@@ -188,7 +187,6 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 					financialAccountIds,
 					timeZone,
 				} = queryParams
-
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
 					dateRange: [moment(startTime), moment(endTime)],
@@ -202,7 +200,9 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 						: financialAccountList.map(({ financialId }) => financialId),
 				})
 
-				handleSearch({})
+				handleSearch({
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
 			}
 		}
 

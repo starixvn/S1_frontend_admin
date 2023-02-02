@@ -264,6 +264,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		} else if (!filterLoading) {
 			// filter Init

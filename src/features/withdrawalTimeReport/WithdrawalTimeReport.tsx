@@ -77,7 +77,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
 
 		try {
@@ -152,7 +152,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	useEffect(() => {
-		if (!isEmpty(queryParams)) {
+		if (!isEmpty(queryParams) && !isGetStatusListLoading) {
 			const {
 				withdrawalId,
 				currencyIds,
@@ -164,7 +164,6 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				timeZone,
 			} = queryParams
-
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
@@ -176,6 +175,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		} else if (!isGetStatusListLoading && isEmpty(queryParams)) {
 			filterForm.setFieldsValue({

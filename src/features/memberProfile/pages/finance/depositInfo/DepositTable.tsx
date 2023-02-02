@@ -1,13 +1,16 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { Descriptions, TablePaginationConfig, Typography } from 'antd'
+import { Descriptions, TablePaginationConfig, Typography, Tag } from 'antd'
 import moment from 'moment'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
-import { DepositStatusEnum } from 'features/memberProfile/constants'
+import {
+	DepositStatusEnum,
+	DEPOSIT_STATUS_TAGS_COLOR,
+} from 'features/memberProfile/constants'
 
 const { Text } = Typography
 interface DepositTableProps {
@@ -59,8 +62,13 @@ const DepositTable = ({
 			dataIndex: 'status',
 			width: 100,
 			align: 'center' as 'center',
-			render: (status: number) =>
-				statusList.map(({ value, name }) => value === status && name),
+			render: (status: number) => {
+				const color = DEPOSIT_STATUS_TAGS_COLOR[status]
+				return statusList.map(
+					({ value, name }) =>
+						value === status && <Tag color={color}>{name ?? 'N/A'}</Tag>
+				)
+			},
 		},
 		{
 			title: t('Label_DepositType'),

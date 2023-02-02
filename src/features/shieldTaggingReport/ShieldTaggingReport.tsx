@@ -93,16 +93,18 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
+		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
+		currentTimeZoneUtcOffset?: number
 	}) => {
 		if (!siteId) return
 		const { dateRange, platform, triggeredPoints, tags, userName, shieldId } =
 			filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
 		const args = {
 			siteId,
@@ -118,7 +120,7 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 		try {
 			await getShieldTaggingReport(args).unwrap()
-			setQueryParams({ timeZone: timeZoneUtcOffset, ...args })
+			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -205,7 +207,6 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}, [filterLoading])
 
 	useEffect(() => {
-		// init
 		const init = () => {
 			const {
 				startDate,
@@ -220,7 +221,6 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZone,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
-
 			filterForm.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
 				platform: platform
@@ -239,6 +239,7 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		}
 

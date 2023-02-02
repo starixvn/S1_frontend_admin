@@ -84,7 +84,7 @@ const DepositTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
 		try {
 			await getDepositTimeReport({
@@ -152,8 +152,7 @@ const DepositTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	useEffect(() => {
-		// init
-		if (!isEmpty(queryParams)) {
+		if (!isEmpty(queryParams) && !isGetStatusListLoading) {
 			const {
 				startDate,
 				endDate,
@@ -177,6 +176,7 @@ const DepositTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		} else if (!isGetStatusListLoading && isEmpty(queryParams)) {
 			filterForm.setFieldsValue({
