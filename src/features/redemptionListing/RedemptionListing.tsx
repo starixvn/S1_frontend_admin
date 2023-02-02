@@ -30,8 +30,7 @@ const RedemptionListing: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
-		useAuth()
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
@@ -228,7 +227,6 @@ const RedemptionListing: FC<{
 					loading={loading}
 					redemptionListData={redemptionListData}
 					pagination={pagination}
-					editPermission={editPermission}
 					onTableChange={handleTableChange}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 				/>
