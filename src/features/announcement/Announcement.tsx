@@ -280,6 +280,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				<AnnouncementTable
 					loading={tableLoading}
 					pagination={pagination}
+					timeZoneUtcOffset={timeZoneUtcOffset}
 					announcementList={announcementList}
 					editPermission={editPermission}
 					deletePermission={deletePermission}
