@@ -77,16 +77,8 @@ const SetAnnouncementModal = ({
 
 	useEffect(() => {
 		if (!isGetAnnouncementDetailLoading && !isAdd && open) {
-			const {
-				status,
-				statusName,
-				isTest,
-				seq,
-				subject,
-				content,
-				startTime,
-				endTime,
-			} = announcementDetail ?? {}
+			const { status, isTest, seq, subject, content, startTime, endTime } =
+				announcementDetail ?? {}
 			// subject content 型態相同 帶入固定參數判斷
 			const subjectResult = announcementResConverter(subject, 'subject')
 			const contentResult = announcementResConverter(content, 'content')
@@ -94,7 +86,6 @@ const SetAnnouncementModal = ({
 			form.setFieldsValue({
 				dateRange: [moment(startTime), moment(endTime)],
 				status: Boolean(status),
-				statusName,
 				isTest: Boolean(isTest),
 				seq,
 			})
@@ -200,12 +191,6 @@ const SetAnnouncementModal = ({
 						<Col lg={3} md={12} xs={12}>
 							<Form.Item name='seq' label={t('Label_Sort')}>
 								<InputNumber min={0} />
-							</Form.Item>
-						</Col>
-
-						<Col lg={6} md={12} xs={12}>
-							<Form.Item name='statusName' label={t('Label_StatusName')}>
-								<Input allowClear />
 							</Form.Item>
 						</Col>
 
