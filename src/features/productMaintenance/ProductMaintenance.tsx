@@ -28,7 +28,6 @@ import {
 	useDeleteTpMaintenanceMutation,
 } from 'features/productMaintenance/api'
 import {
-	ITpMaintenanceResponse,
 	IFilterForm,
 	IEditForm,
 	IAddForm,
@@ -69,7 +68,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 			data: {
 				data: tpMaintenanceList = [],
 				rowCount: TpMaintenanceListTotal = 0,
-			} = {} as ITpMaintenanceResponse,
+			} = {},
 			isFetching: isGetTpMaintenanceFetching,
 		},
 	] = useLazyGetTpMaintenanceListQuery()
@@ -161,6 +160,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId,
 				tpId: String(tpId),
 				tpGameTypeList:
+					// 全選則送 0 其他以 '1-1,2-6' 這類格式送出 (type-categoryId)
 					tpGameType.length === gameTypeList.length
 						? '0'
 						: tpGameType.join(','),
@@ -259,6 +259,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: timeZoneUtcOffset,
 			})
 		}
 

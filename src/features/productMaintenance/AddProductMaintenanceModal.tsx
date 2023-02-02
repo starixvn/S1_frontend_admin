@@ -85,7 +85,6 @@ const AddProductMaintenanceModal = ({
 			title={t('Label_AddMaintenance')}
 			open={visible}
 			onCancel={onCancel}
-			forceRender
 			afterClose={() => {
 				form.resetFields()
 			}}
@@ -94,7 +93,6 @@ const AddProductMaintenanceModal = ({
 			<Form
 				form={form}
 				layout='vertical'
-				wrapperCol={{ span: 24 }}
 				initialValues={{
 					tpId: first(tpList)?.id,
 					tpGameType: gameTypeList.map(
@@ -104,7 +102,11 @@ const AddProductMaintenanceModal = ({
 			>
 				<Row align='middle' gutter={16}>
 					<Col lg={12} md={12} xs={12}>
-						<Form.Item name='tpId' label={t('Label_Vender')}>
+						<Form.Item
+							name='tpId'
+							rules={[{ required: true }]}
+							label={t('Label_Vender')}
+						>
 							<Select placeholder={t('Label_Select')}>
 								{tpList?.map(({ id, tpDisplayName }) => (
 									<Option key={id} value={id}>
@@ -115,7 +117,18 @@ const AddProductMaintenanceModal = ({
 						</Form.Item>
 					</Col>
 					<Col lg={12} md={12} xs={12}>
-						<Form.Item name='tpGameType' label={t('Label_GameType')}>
+						<Form.Item
+							name='tpGameType'
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_GameType'),
+									}),
+								},
+							]}
+							label={t('Label_GameType')}
+						>
 							{gameTypeSelector()}
 						</Form.Item>
 					</Col>

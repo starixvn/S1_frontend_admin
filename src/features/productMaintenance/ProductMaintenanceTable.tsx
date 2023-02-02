@@ -9,7 +9,7 @@ import {
 import { PermissionInterface } from 'type'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
-import { EditableCellRows, Table } from 'components'
+import { Table } from 'components'
 import {
 	Space,
 	Typography,
@@ -163,7 +163,9 @@ const ProductMaintenanceTable = ({
 						/>
 					</Form.Item>
 				) : (
-					moment(beginDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{moment(beginDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
 				)
 			},
 		},
@@ -179,9 +181,13 @@ const ProductMaintenanceTable = ({
 				}
 			},
 			render: ({ endDate }: ITpMaintenanceData) =>
-				endDate
-					? moment(endDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+				endDate ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{moment(endDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
+				) : (
+					''
+				),
 		},
 		{
 			title: t('Label_UpdateTime'),
@@ -189,9 +195,13 @@ const ProductMaintenanceTable = ({
 			align: 'center' as 'center',
 			width: '15%',
 			render: ({ updateTime }: ITpMaintenanceData) =>
-				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-					: '',
+				updateTime ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
+				) : (
+					''
+				),
 		},
 		{
 			title: t('Label_Updater'),
@@ -209,11 +219,6 @@ const ProductMaintenanceTable = ({
 				<Table
 					loading={loading}
 					columns={columns}
-					components={{
-						body: {
-							cell: EditableCellRows,
-						},
-					}}
 					dataSource={tpMaintenanceList}
 					pagination={pagination as TablePaginationConfig}
 					onChange={onTableChange}
