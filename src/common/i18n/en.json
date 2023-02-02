@@ -1004,5 +1004,9 @@
 	"Label_SearchPage": "Search Page ...",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_PerCount": "Per Count"
+	"Label_PerCount": "Per Count",
+	"Label_PostTime": "Post Time",
+	"Label_NewsInfo": "News Info",
+	"Label_ImageURL": "Image URL",
+	"Label_NewsId": "News ID"
 }
