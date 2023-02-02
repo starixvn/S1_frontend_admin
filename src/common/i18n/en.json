@@ -559,7 +559,7 @@
 		"Label_Running": "Running",
 		"Label_Canceled": "Canceled",
 		"Label_Expiry": "Expiry",
-		"Label_Fulfill": "Fulfill",
+		"Label_Reached": "Reached",
 		"Label_TransferOut": "Transfer Out"
 	},
 	"Label_BaseCurrencyShow": "Base Currency Show",

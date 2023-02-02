@@ -165,13 +165,17 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, userName, sabaId, transId, depositId, ...restValue } =
-			filterForm.getFieldsValue()
+		const {
+			startDate,
+			endDate,
+			userName,
+			sabaId,
+			transId,
+			depositId,
+			adjustTypes,
+			currencyIds,
+		} = queryParams
 
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
-			timeZoneUtcOffset
-		)
 		try {
 			const blob = await exportPaymentAdjustmentReport({
 				startDate,
@@ -180,7 +184,9 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				sabaId: sabaId || null,
 				transId: transId || null,
 				depositId: depositId || null,
-				...restValue,
+				adjustTypes: adjustTypes?.map((type: string) => Number(type)) ?? [],
+				currencyIds:
+					currencyIds?.map((currency: string) => Number(currency)) ?? [],
 			}).unwrap()
 			download(
 				blob,
@@ -219,7 +225,11 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				transId,
 				depositId,
 			})
-			handleSearch({ current: Number(pageNumber), pageSize: Number(pageSize) })
+			handleSearch({
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
+			})
 		}
 	}, [])
 
@@ -264,7 +274,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportPaymentAdjustmentReportLoading}
 				/>
