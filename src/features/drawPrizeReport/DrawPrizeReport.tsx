@@ -140,17 +140,21 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, ...restValue } = filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const {
+			startDate,
+			endDate,
+			currencyIds,
+			eventNames,
+			siteId: querySiteId,
+		} = queryParams
 		try {
 			const blob = await exportDrawPrizeReport({
-				siteId,
+				siteId: querySiteId,
 				startDate,
 				endDate,
-				...restValue,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				eventNames,
 			}).unwrap()
 
 			download(
@@ -213,7 +217,6 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 	useEffect(() => {
 		if (!isGetDrawPrizesEventNamesLoading) {
 			if (!isEmpty(queryParams)) {
-				// init
 				const {
 					startDate,
 					endDate,
@@ -224,7 +227,6 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 					eventNames = [],
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
-
 				filterForm.setFieldsValue({
 					dateRange: [moment(startDate), moment(endDate)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
@@ -234,6 +236,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				handleSearch({
 					current: Number(pageNumber),
 					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timeZone),
 				})
 			} else {
 				filterForm.setFieldsValue({

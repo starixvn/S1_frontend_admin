@@ -127,7 +127,11 @@ const LiveRegistrationStatistics: FC<{
 				orderByProperty,
 				orderByDirection,
 			}).unwrap()
-			setPagination(prev => ({ ...prev, current, pageSize }))
+			setPagination(prev => ({
+				...prev,
+				current,
+				pageSize,
+			}))
 			setQueryParams({
 				...values,
 				affiliatesCode: affiliatesCode || null,
@@ -138,6 +142,7 @@ const LiveRegistrationStatistics: FC<{
 				pageSize,
 				startDate,
 				endDate,
+				timeZone: currentTimeZoneUtcOffset,
 			})
 		} catch (error) {
 			message.error(
@@ -268,7 +273,9 @@ const LiveRegistrationStatistics: FC<{
 			endDate,
 			orderByProperty,
 			orderByDirection,
+			timeZone,
 		} = queryParams
+		onTimeZoneChange(Number(timeZone))
 		searchForm.setFieldsValue({
 			currencyId: Number(currencyId),
 			depositStatus: Number(depositStatus),
@@ -281,10 +288,12 @@ const LiveRegistrationStatistics: FC<{
 			userName,
 			dateRange: [moment(startDate), moment(endDate)],
 		})
+
 		setPagination(prev => ({ ...prev, current: pageNumber, pageSize }))
 		handleSearch({
 			current: Number(pageNumber),
 			pageSize: Number(pageSize),
+			currentTimeZoneUtcOffset: Number(timeZone),
 			orderByProperty,
 			orderByDirection,
 		})

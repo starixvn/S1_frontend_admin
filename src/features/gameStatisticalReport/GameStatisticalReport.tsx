@@ -64,10 +64,11 @@ const GameStatisticalReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleExport = async () => {
 		try {
+			const { startDate: queryStartDate, endDate: queryEndDate } = queryParams
 			const blob = await exportGameStatisticalReport({
 				siteId,
-				startDate,
-				endDate,
+				startDate: queryStartDate,
+				endDate: queryEndDate,
 			}).unwrap()
 			download(
 				blob,
@@ -132,7 +133,7 @@ const GameStatisticalReport = ({ pageTitle }: { pageTitle?: string }) => {
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
 					loading={isExportGameStatisticalReport}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 				/>
 			</AffixButtons>
