@@ -11,6 +11,7 @@ import {
 	Row,
 	Form,
 	Input,
+	Space,
 	Select,
 	Button,
 	Collapse,
@@ -78,7 +79,21 @@ const ProductMaintenanceFilter = ({
 					>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={24} xs={24}>
-								<Form.Item label={t('Label_DateRange')}>
+								<Form.Item
+									// label={t('Label_DateRange')}
+									label={
+										<Space align='center' size={30}>
+											{t('Label_DateRange')}
+											<Form.Item
+												name='isExpired'
+												valuePropName='checked'
+												noStyle
+											>
+												<Checkbox>{t('Label_IsExpired')}</Checkbox>
+											</Form.Item>
+										</Space>
+									}
+								>
 									<Input.Group
 										compact
 										style={{ width: '100%', display: 'flex' }}
@@ -151,13 +166,6 @@ const ProductMaintenanceFilter = ({
 											</Option>
 										))}
 									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={5} md={12} xs={12} offset={1}>
-								<Form.Item name='isExpired' valuePropName='checked' noStyle>
-									<Checkbox style={{ marginBottom: '10px' }}>
-										{t('Label_IsExpired')}
-									</Checkbox>
 								</Form.Item>
 							</Col>
 						</Row>
