@@ -1,13 +1,13 @@
-import { FC } from 'react'
-import { Form, FormInstance, Input } from 'antd'
+import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { TextAreaProps } from 'antd/lib/input'
 
-interface NoteAreaInterface {
-	form: FormInstance
+interface INoteAreaProps extends TextAreaProps {
+	form: any
 }
 const { TextArea } = Input
 
-const NoteArea: FC<NoteAreaInterface> = ({ form }) => {
+const NoteArea = ({ form, ...rest }: INoteAreaProps) => {
 	const { t } = useTranslation()
 	return (
 		<Form form={form} layout='vertical'>
@@ -23,7 +23,7 @@ const NoteArea: FC<NoteAreaInterface> = ({ form }) => {
 					},
 				]}
 			>
-				<TextArea style={{ height: 80 }} />
+				<TextArea style={{ height: 80 }} {...rest} />
 			</Form.Item>
 		</Form>
 	)

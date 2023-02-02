@@ -146,18 +146,21 @@ const DepositAccounting: FC<{
 
 	const handleExport = async () => {
 		try {
-			const { dateRange, currencyIds, userName, transId } =
-				form.getFieldsValue()
-			const [startDate, endDate] = dateRangeToUtcFormatter(
-				dateRange,
-				timeZoneUtcOffset
-			)
-
-			const blob = await exportDepositAccountsFile({
-				siteIds: siteId ? [siteId] : [],
+			const {
+				siteId: querySiteId,
 				startDate,
 				endDate,
 				currencyIds,
+				userName = '',
+				transId = '',
+			} = queryParams
+
+			const blob = await exportDepositAccountsFile({
+				siteIds: querySiteId ? [Number(querySiteId)] : [],
+				startDate,
+				endDate,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				userName,
 				transId,
 			}).unwrap()
@@ -272,7 +275,7 @@ const DepositAccounting: FC<{
 				<AffixButtons.BackToTop />
 
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportDepositAccountsFileLoading}
 				/>

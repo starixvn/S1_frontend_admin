@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Col, Form, Input, message, Row, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -144,7 +144,7 @@ const RedemptionDetail = () => {
 						},
 					]}
 				>
-					<Input />
+					<Input disabled={!editPermission?.canUse} />
 				</Form.Item>
 			</Form>
 		)
@@ -189,7 +189,6 @@ const RedemptionDetail = () => {
 		isGetRedemptionLogLoading ||
 		isSetRedemptionInfoLoading
 
-	if (!editPermission?.canUse) return <Navigate to='/403' />
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title
@@ -214,7 +213,7 @@ const RedemptionDetail = () => {
 						)}
 
 						<Col span={24}>
-							<NoteArea form={form} />
+							<NoteArea form={form} disabled={!editPermission?.canUse} />
 						</Col>
 
 						<Col span={24}>
@@ -229,11 +228,12 @@ const RedemptionDetail = () => {
 						<ReceiptUploader
 							form={form}
 							onUploadReceipt={handleUploadReceiptImage}
+							disabled={!editPermission?.canUse}
 						/>
 					</Col>
 				</Row>
 				<Row gutter={16} style={{ marginTop: '20px' }}>
-					{redemptionDetail && (
+					{redemptionDetail && editPermission?.canUse && (
 						<ButtonGroup
 							status={redemptionDetail.status}
 							onSetRedemptionInfo={handleSetRedemptionInfo}

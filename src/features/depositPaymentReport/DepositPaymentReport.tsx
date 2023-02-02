@@ -147,7 +147,6 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGroupByListLoading || isGateWayListLoading || isGetDepositTypeLoading
 
 	useEffect(() => {
-		// init
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
@@ -179,7 +178,9 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 					groupBy: groupBy ?? '',
 				})
 
-				handleSearch({})
+				handleSearch({
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
 			}
 		}
 		if (!filterLoading) {

@@ -109,7 +109,6 @@ const BonusExport: FC<{
 			eventNames: rawEventNames,
 			...args
 		} = form.getFieldsValue()
-
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
@@ -157,18 +156,19 @@ const BonusExport: FC<{
 	}
 
 	const handleExport = async () => {
+		if (!siteId) return
 		const {
-			dateRange,
-			eventNames: rawEventNames,
-			...args
-		} = form.getFieldsValue()
-
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
-
-		const eventNames = isArray(rawEventNames) ? rawEventNames : [rawEventNames]
+			startDate,
+			endDate,
+			eventNames,
+			currencyIds,
+			eventTypeId = 0,
+			baseCurrencyId = 0,
+			userName = '',
+			tpUserName = '',
+			transId = '',
+			bonusCode = '',
+		} = queryParams
 
 		try {
 			const blob = await exportBonusList({
@@ -176,7 +176,14 @@ const BonusExport: FC<{
 				startDate,
 				endDate,
 				eventNames,
-				...args,
+				currencyIds:
+					currencyIds?.map((currency: string) => Number(currency)) ?? [],
+				baseCurrencyId: Number(baseCurrencyId),
+				eventTypeId: Number(eventTypeId),
+				userName,
+				tpUserName,
+				transId,
+				bonusCode,
 			}).unwrap()
 
 			download(
@@ -266,7 +273,7 @@ const BonusExport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportBonusListLoading}
 				/>

@@ -7,7 +7,6 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment'
 import { PaginationInterface } from 'common/hooks'
 import { ColumnsType } from 'antd/es/table'
-import { PermissionInterface } from 'type'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { find } from 'lodash'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -20,7 +19,6 @@ interface IRedemptionListingTableProps {
 	redemptionListData: IGetRedemptionListData[]
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
-	editPermission?: PermissionInterface
 	timeZoneUtcOffset: number
 }
 
@@ -29,7 +27,6 @@ const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 	timeZoneUtcOffset,
 	redemptionListData,
 	pagination,
-	editPermission,
 	onTableChange,
 }) => {
 	const { t } = useTranslation()
@@ -55,7 +52,6 @@ const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 				})
 				return (
 					<Typography.Link
-						disabled={!editPermission?.canUse}
 						onClick={() => {
 							navigate(
 								`/${NEW_SITE_PREFIX_URL}/${paths.rewardProgram.sub.redemptionDetail.root}/${redemptionId}?${searchParams}`

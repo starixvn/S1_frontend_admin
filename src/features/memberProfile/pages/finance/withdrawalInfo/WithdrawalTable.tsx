@@ -1,13 +1,16 @@
 import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { Descriptions, TablePaginationConfig, Typography } from 'antd'
+import { Descriptions, TablePaginationConfig, Tag, Typography } from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetWithdrawalInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
-import { WithdrawalStatusEnum } from 'features/memberProfile/constants'
+import {
+	WithdrawalStatusEnum,
+	WITHDRAWAL_STATUS_TAGS_COLOR,
+} from 'features/memberProfile/constants'
 
 const { Text } = Typography
 
@@ -60,8 +63,13 @@ const WithdrawalTable = ({
 			dataIndex: 'status',
 			width: 100,
 			align: 'center' as 'center',
-			render: (status: number) =>
-				statusList.map(({ value, name }) => value === status && name),
+			render: (status: number) => {
+				const color = WITHDRAWAL_STATUS_TAGS_COLOR[status]
+				return statusList.map(
+					({ value, name }) =>
+						value === status && <Tag color={color}>{name ?? 'N/A'}</Tag>
+				)
+			},
 		},
 		{
 			title: t('Label_WithdrawalType'),
