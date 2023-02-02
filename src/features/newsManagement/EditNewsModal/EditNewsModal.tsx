@@ -52,7 +52,6 @@ const NewsManagementModal = ({
 
 	const newsId = form.getFieldValue(['newsId'])
 	const isAdd = newsId === 'Add'
-	const switchChecked = form.getFieldValue(['status'])
 
 	const { data: { data: newsById } = {}, isFetching: isGetNewsByIdLoading } =
 		useGetNewsByIdQuery(
@@ -75,13 +74,13 @@ const NewsManagementModal = ({
 			const title = JSONParser({ key: 'title', value: rawTitle })
 			const content = JSONParser({ key: 'content', value: rawContent })
 			const postTime = moment(rawPostTime)
-			const status = rawStatus === 1
+			const status = Boolean(rawStatus === 1)
 
 			form.setFieldsValue({
+				status,
 				newsId,
 				postTime,
 				sort,
-				status,
 				imageUrl,
 				title,
 				content,
@@ -177,8 +176,12 @@ const NewsManagementModal = ({
 						</Col>
 
 						<Col span={12}>
-							<Form.Item name='status' label={t('Label_Status')}>
-								<Switch checked={switchChecked} />
+							<Form.Item
+								name='status'
+								label={t('Label_Status')}
+								valuePropName='checked'
+							>
+								<Switch />
 							</Form.Item>
 						</Col>
 					</Row>
