@@ -15,6 +15,7 @@ import {
 	IGetTpIdData,
 	IGetPaySettingListResponse,
 	ISlotTpData,
+	ITpListData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -100,6 +101,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpList: builder.query<IAxiosResponse<ITpListData[]>, null>({
+			query: data => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getTpIdList: builder.query<IAxiosResponse<IGetTpIdData[]>, null>({
 			query: () => ({
 				url: 'GetAllData/GetTpList',
@@ -144,4 +152,5 @@ export const {
 	useGetTpIdListQuery,
 	useGetPaySettingListQuery,
 	useGetSlotTpListQuery,
+	useGetTpListQuery,
 } = allDataApi
