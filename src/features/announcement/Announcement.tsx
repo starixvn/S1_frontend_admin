@@ -33,6 +33,11 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	// 避免複寫 filter 的時間區間
+	const {
+		timeZoneUtcOffset: timeZoneUtcOffsetModal,
+		onTimeZoneChange: onTimeZoneChangeModal,
+	} = useTimeZone()
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -138,15 +143,15 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleAddAnnouncement = async (
-		currentTimeZoneUtcOffset = timeZoneUtcOffset
+		currentTimeZoneUtcOffset = timeZoneUtcOffsetModal
 	) => {
 		if (!siteId) return
 		try {
-			const { dateRange, seq, status, isTest, statusName, subject, content } =
+			const { dateRange, seq, status, isTest, subject, content } =
 				await editForm.validateFields()
 
 			const [startTime, endTime] = dateRangeToUtcFormatter(
-				[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+				dateRange,
 				currentTimeZoneUtcOffset
 			)
 
@@ -158,7 +163,6 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 						subject: announcementConvert(subject),
 						content: announcementConvert(content),
 						status: Number(status),
-						statusName,
 						isTest: Number(isTest),
 						seq,
 					},
@@ -189,12 +193,12 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleUpdateAnnouncement = async (
-		currentTimeZoneUtcOffset = timeZoneUtcOffset
+		currentTimeZoneUtcOffset = timeZoneUtcOffsetModal
 	) => {
 		if (!siteId) return
 		try {
 			await editForm.validateFields()
-			const { dateRange, id, seq, status, isTest, statusName } =
+			const { dateRange, id, seq, status, isTest } =
 				editForm.getFieldsValue(true)
 
 			const { subject, content } = editForm.getFieldsValue(true)
@@ -210,7 +214,6 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 					subject: announcementConvert(subject),
 					content: announcementConvert(content),
 					status: Number(status),
-					statusName,
 					isTest: Number(isTest),
 					seq,
 				},
@@ -237,9 +240,9 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleSubmitAnnouncement = (isAdd: boolean) => {
 		if (isAdd) {
-			handleAddAnnouncement(timeZoneUtcOffset)
+			handleAddAnnouncement(timeZoneUtcOffsetModal)
 		} else {
-			handleUpdateAnnouncement(timeZoneUtcOffset)
+			handleUpdateAnnouncement(timeZoneUtcOffsetModal)
 		}
 	}
 
@@ -277,6 +280,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				<AnnouncementTable
 					loading={tableLoading}
 					pagination={pagination}
+					timeZoneUtcOffset={timeZoneUtcOffset}
 					announcementList={announcementList}
 					editPermission={editPermission}
 					deletePermission={deletePermission}
@@ -291,8 +295,8 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				form={editForm}
 				loading={isAddAnnouncementLoading || isUpdateAnnouncementLoading}
 				editPermission={editPermission}
-				timeZoneUtcOffset={timeZoneUtcOffset}
-				onTimeZoneChange={onTimeZoneChange}
+				timeZoneUtcOffset={timeZoneUtcOffsetModal}
+				onTimeZoneChange={onTimeZoneChangeModal}
 				onCancel={editModal.onCancel}
 				onFinish={handleSubmitAnnouncement}
 			/>

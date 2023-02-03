@@ -21,7 +21,6 @@ export interface IUpdateAnnouncementArgs {
 		subject: string
 		content: string
 		status: number
-		statusName: string
 		isTest: number
 		seq: number
 	}
@@ -89,7 +88,6 @@ export interface IEditForm {
 	subject: any
 	content: any
 	status: boolean
-	statusName: string
 	isTest: boolean
 	seq: number
 }

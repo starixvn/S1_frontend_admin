@@ -19,6 +19,7 @@ import { IAnnouncementListData } from 'features/announcement/type'
 interface AnnouncementTableProps {
 	loading: boolean
 	pagination: PaginationInterface
+	timeZoneUtcOffset: number
 	announcementList: IAnnouncementListData[]
 	editPermission?: PermissionInterface
 	deletePermission?: PermissionInterface
@@ -32,6 +33,7 @@ const { Text } = Typography
 const AnnouncementTable = ({
 	loading,
 	pagination,
+	timeZoneUtcOffset,
 	announcementList,
 	editPermission,
 	deletePermission,
@@ -144,7 +146,7 @@ const AnnouncementTable = ({
 			render: (startTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{startTime
-						? moment(startTime).utcOffset(startTime).format(timeFormat)
+						? moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Text>
 			),
@@ -157,7 +159,9 @@ const AnnouncementTable = ({
 			width: 180,
 			render: (endTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-					{endTime ? moment(endTime).utcOffset(endTime).format(timeFormat) : ''}
+					{endTime
+						? moment(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						: ''}
 				</Text>
 			),
 		},
@@ -178,7 +182,7 @@ const AnnouncementTable = ({
 			render: (createTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{createTime
-						? moment(createTime).utcOffset(createTime).format(timeFormat)
+						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Text>
 			),
@@ -201,7 +205,7 @@ const AnnouncementTable = ({
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
 						? moment(lastUpdateTime)
-								.utcOffset(lastUpdateTime)
+								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}
 				</Text>
