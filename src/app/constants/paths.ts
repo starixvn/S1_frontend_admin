@@ -89,6 +89,7 @@ const paths = {
 			},
 			newsManage: {
 				root: 'csd/newsManage',
+				functionId: 54,
 			},
 			bannerManage: {
 				root: 'csd/bannerManage',
