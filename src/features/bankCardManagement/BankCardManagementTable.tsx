@@ -2,13 +2,13 @@ import { FC } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { Space, TablePaginationConfig, Typography } from 'antd'
+import { Space, TablePaginationConfig, Typography, Tag } from 'antd'
 import { IGetBankCardListData } from 'features/bankCardManagement/type'
 import { useTranslation } from 'react-i18next'
 import { PermissionInterface } from 'type'
-import { find } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { BANK_ACCOUNT_MANAGEMENT_STATUS_TAGS_COLOR } from 'features/bankCardManagement/constants'
 
 interface IBankCardManagementTableProps {
 	loading: boolean
@@ -108,11 +108,11 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 			width: 60,
 			align: 'center' as 'center',
 			render: (statusValue: number) => {
-				const statusName = find(
-					statusEnumList,
-					status => status.value === statusValue
-				)?.name
-				return statusName ?? 'N/A'
+				const color = BANK_ACCOUNT_MANAGEMENT_STATUS_TAGS_COLOR[statusValue]
+				return statusEnumList.map(
+					({ value, name }) =>
+						value === statusValue && <Tag color={color}>{name ?? 'N/A'}</Tag>
+				)
 			},
 		},
 		{
@@ -252,6 +252,7 @@ const BankCardManagementTable: FC<IBankCardManagementTableProps> = ({
 			render: (sort: number) => sort,
 		},
 	]
+
 	return (
 		<LayoutContent.Card>
 			<Table
