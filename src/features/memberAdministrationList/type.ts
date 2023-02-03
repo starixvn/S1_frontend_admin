@@ -136,6 +136,7 @@ export interface IExportMemberArgs {
 	startDate: '2022-10-05T09:00:01+08:00'
 	endDate: '2022-10-05T09:00:01+08:00'
 	exportTransferWallet: boolean
+	excludeTag: boolean
 }
 
 export interface IForm {
