@@ -102,7 +102,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
-				excludeTag,
+				excludeTag: Boolean(excludeTag),
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
