@@ -133,6 +133,7 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 	}),
 })

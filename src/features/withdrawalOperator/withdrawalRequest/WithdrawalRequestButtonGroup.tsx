@@ -76,7 +76,7 @@ const WithdrawalRequestButtonGroup = ({
 				</Col>
 			)}
 
-			<Col span={6}>
+			<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 				<OperatorButton
 					loading={loading}
 					disabled={!sendMessagePermission?.canUse}
