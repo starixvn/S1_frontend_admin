@@ -1,15 +1,24 @@
 import { rootApi } from 'common/service/rootApi/api'
 
 import {
+	IGetTpGameTypeArgs,
 	IGetTpMaintenanceArgs,
 	IAddTpMaintenanceArgs,
 	IUpdateTpMaintenanceArgs,
 	IDeleteTpMaintenanceArgs,
 	ITpMaintenanceResponse,
+	ITpGameTypeResponse,
 } from 'features/productMaintenance/type'
 
 const productMaintenanceApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
+		getTpGameType: builder.query<ITpGameTypeResponse, IGetTpGameTypeArgs>({
+			query: data => ({
+				url: 'TpMaintenance/GetTpGameType',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getTpMaintenanceList: builder.query<
 			ITpMaintenanceResponse,
 			IGetTpMaintenanceArgs
@@ -49,6 +58,7 @@ const productMaintenanceApi = rootApi.injectEndpoints({
 })
 
 export const {
+	useGetTpGameTypeQuery,
 	useLazyGetTpMaintenanceListQuery,
 	useAddTpMaintenanceMutation,
 	useUpdateTpMaintenanceMutation,
