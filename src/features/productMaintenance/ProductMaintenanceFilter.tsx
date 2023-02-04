@@ -61,7 +61,7 @@ const ProductMaintenanceFilter = ({
 }: IProductMaintenanceProps) => {
 	const { t } = useTranslation()
 
-	const onChangeTpId = () => {
+	const resetTpGameType = () => {
 		form.setFieldsValue({
 			tpGameTypeId: 0,
 		})
@@ -138,7 +138,7 @@ const ProductMaintenanceFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='tpId' label={t('Label_Vender')}>
 									<Select
-										onChange={onChangeTpId}
+										onChange={resetTpGameType}
 										placeholder={t('Label_Select')}
 									>
 										<Option value={0}>{t('Label_SelectAll')}</Option>
