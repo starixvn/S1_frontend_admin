@@ -18,13 +18,11 @@ const OperatorButton = ({
 	return (
 		<Button
 			block
-			shape='round'
-			type='primary'
-			ghost
+			type='text'
 			style={{
 				...style,
-				borderColor: ButtonColorEnum[color],
-				color: ButtonColorEnum[color],
+				backgroundColor: ButtonColorEnum[color],
+				color: 'white',
 			}}
 			{...restProps}
 		>
