@@ -46,7 +46,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const [addForm] = Form.useForm<IAddForm>()
-	const tpIdValue = Form.useWatch('tpId', filterForm)
+	const filterFormTpId = Form.useWatch('tpId', filterForm)
 	const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 	const addProductMaintenanceModal = useModal()
 
@@ -61,7 +61,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: gameTypeList = [] } = {},
 		isLoading: isGetGameTypeLoading,
-	} = useGetTpGameTypeQuery({ tpId: tpIdValue }, { skip: !tpIdValue })
+	} = useGetTpGameTypeQuery({ tpId: filterFormTpId }, { skip: !filterFormTpId })
 
 	const [
 		getTpMaintenanceList,
@@ -268,15 +268,6 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 			init()
 		}
 	}, [])
-
-	// 監測 Vender 的異動
-	useEffect(() => {
-		if (tpIdValue) {
-			filterForm.setFieldsValue({
-				tpGameTypeId: 0,
-			})
-		}
-	}, [tpIdValue])
 
 	return (
 		<LayoutContent.Main>

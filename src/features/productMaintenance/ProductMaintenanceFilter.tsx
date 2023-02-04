@@ -61,6 +61,12 @@ const ProductMaintenanceFilter = ({
 }: IProductMaintenanceProps) => {
 	const { t } = useTranslation()
 
+	const onChangeTpId = () => {
+		form.setFieldsValue({
+			tpGameTypeId: 0,
+		})
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -131,7 +137,10 @@ const ProductMaintenanceFilter = ({
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='tpId' label={t('Label_Vender')}>
-									<Select placeholder={t('Label_Select')}>
+									<Select
+										onChange={onChangeTpId}
+										placeholder={t('Label_Select')}
+									>
 										<Option value={0}>{t('Label_SelectAll')}</Option>
 
 										{tpList?.map(({ id, tpDisplayName }) => (
