@@ -17,11 +17,11 @@ import { AffixButtons } from 'components/AffixButtons'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	useGetTpListQuery,
-	useGetProductsQuery,
 	useGetCategoryQuery,
 } from 'common/service/allDataApi'
 import { message, Form, TablePaginationConfig } from 'antd'
 import {
+	useGetTpGameTypeQuery,
 	useLazyGetTpMaintenanceListQuery,
 	useAddTpMaintenanceMutation,
 	useUpdateTpMaintenanceMutation,
@@ -46,6 +46,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const [addForm] = Form.useForm<IAddForm>()
+	const filterFormTpId = Form.useWatch('tpId', filterForm)
 	const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 	const addProductMaintenanceModal = useModal()
 
@@ -60,7 +61,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: gameTypeList = [] } = {},
 		isLoading: isGetGameTypeLoading,
-	} = useGetProductsQuery(null)
+	} = useGetTpGameTypeQuery({ tpId: filterFormTpId }, { skip: !filterFormTpId })
 
 	const [
 		getTpMaintenanceList,

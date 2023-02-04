@@ -911,13 +911,6 @@ const SmsGenerator = lazy(
 		)
 )
 
-const ProductMaintenance = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
-		)
-)
-
 const BetLimit = lazy(
 	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
 )
@@ -977,6 +970,13 @@ const EditGameExclusion = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
+const ProductMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
 		)
 )
 
@@ -2439,6 +2439,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
 						<EditGameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.Maintenance.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.Maintenance.functionId}
+					>
+						<ProductMaintenance />
 					</AuthRequire>
 				),
 			},
