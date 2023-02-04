@@ -144,7 +144,6 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
-	useGetProductsQuery,
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,

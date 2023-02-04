@@ -1,6 +1,10 @@
 import { Moment } from 'moment'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
+export interface IGetTpGameTypeArgs {
+	tpId: number
+}
+
 export interface IGetTpMaintenanceArgs {
 	siteId: number[]
 	startDate: string
@@ -53,6 +57,15 @@ export interface ITpMaintenanceData {
 	updateUser: string
 	updateTime: string
 }
+
+export interface ITpGameTypeData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+}
+
+export type ITpGameTypeResponse = IAxiosResponse<ITpGameTypeData[]>
 
 export type ITpMaintenanceResponse = IAxiosResponse<ITpMaintenanceData[]>
 
