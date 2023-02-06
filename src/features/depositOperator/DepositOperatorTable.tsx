@@ -12,7 +12,7 @@ import {
 	VisibilityColumnsButton,
 } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numberFormatter, timeFormat, jsonToObject } from 'common/utils/format'
 import {
 	IDepositInfo,
 	IDepositOperatorData,
@@ -45,6 +45,7 @@ const DepositOperatorTable = ({
 	const { t } = useTranslation()
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
 		useVisibilityColumnsButtonHook()
+
 	const baseColumns = [
 		{
 			title: t('Label_TransId'),
@@ -128,10 +129,11 @@ const DepositOperatorTable = ({
 			dataIndex: 'depositInfo',
 			width: 60,
 			align: 'center' as 'center',
-			render: ({ channelName }: IDepositInfo) => {
+			render: (depositInfo: IDepositInfo) => {
+				const { channelName } = jsonToObject(depositInfo) ?? {}
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{channelName}
+						{channelName || '-'}
 					</Typography.Text>
 				)
 			},
@@ -139,10 +141,9 @@ const DepositOperatorTable = ({
 		{
 			title: t('Label_CryptoAmount'),
 			align: 'right' as 'right',
-			render: ({
-				status,
-				depositInfo: { exchangeAmount, actualExchangeAmount },
-			}: IDepositOperatorData) => {
+			render: ({ status, depositInfo }: IDepositOperatorData) => {
+				const { exchangeAmount, actualExchangeAmount } =
+					jsonToObject(depositInfo) ?? {}
 				// * approved 時使用 ActualExchangeAmount，其餘皆用 exchangeAmount
 				const amount = status === 3 ? actualExchangeAmount : exchangeAmount
 				return (
