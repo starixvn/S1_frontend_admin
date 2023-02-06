@@ -12,7 +12,12 @@ import {
 	VisibilityColumnsButton,
 } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { numberFormatter, timeFormat, jsonToObject } from 'common/utils/format'
+import {
+	numberFormatter,
+	timeFormat,
+	jsonToObject,
+	numFormatToDigits,
+} from 'common/utils/format'
 import {
 	IDepositInfo,
 	IDepositOperatorData,
@@ -148,7 +153,8 @@ const DepositOperatorTable = ({
 				const amount = status === 3 ? actualExchangeAmount : exchangeAmount
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{amount && numberFormatter.format(amount)}
+						{/* crypto amount 的小數點不用省略，並且一般情況下不會超過十位 */}
+						{amount && numFormatToDigits(amount, 10)}
 					</Typography.Text>
 				)
 			},
