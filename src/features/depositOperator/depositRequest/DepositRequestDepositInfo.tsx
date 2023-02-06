@@ -18,7 +18,8 @@ import {
 	DepositStatusEnum,
 	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import { timeFormat } from 'common/utils/format'
+import { jsonToObject, timeFormat } from 'common/utils/format'
+
 import { ICalCodeData } from 'common/service/baseDataApi/type'
 import { DEPOSIT_STATUS_TAGS_COLOR } from 'features/depositOperator/constants'
 import {
@@ -72,7 +73,7 @@ const DepositRequestDepositInfo = ({
 		statementTime,
 		fromBankName,
 		fromAccountNo,
-		oDepositInfo,
+		depositInfo: originDepositInfo, // json
 		bonusDescription,
 	},
 	calCodeList,
@@ -95,6 +96,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.CryptoPay ||
 		depositType === DepositTypeEnum.LoadCard ||
 		depositType === DepositTypeEnum.QRPay
+
+	const depositInfo = jsonToObject(originDepositInfo) ?? {}
 
 	return (
 		<Spin spinning={loading}>
@@ -250,7 +253,7 @@ const DepositRequestDepositInfo = ({
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
-								onClick={() => onOpenPaymentInfoModal(oDepositInfo?.payId)}
+								onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
 							>
 								<InfoCircleOutlined style={{ fontSize: '18px' }} />
 							</Button>
