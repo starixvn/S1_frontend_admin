@@ -179,7 +179,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositList',
 		internalFunctionKey: allowedRoles.FinanceDepositList,
 		newAdminPath:
@@ -190,7 +190,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalList',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalList,
 		newAdminPath:
@@ -275,7 +275,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.paymentGateway.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentManage',
 		internalFunctionKey: allowedRoles.FinancePaymentManage,
 		newAdminPath: paths.finance.sub.paymentGateway.root,
@@ -694,7 +694,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.bankFinancialReport.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReportBankFinancialReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/BankFinancialReport',
 		newAdminPath: paths.bankTransfer.sub.bankFinancialReport.root,
 	},
