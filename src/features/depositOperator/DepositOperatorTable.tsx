@@ -151,10 +151,11 @@ const DepositOperatorTable = ({
 					jsonToObject(depositInfo) ?? {}
 				// * approved 時使用 ActualExchangeAmount，其餘皆用 exchangeAmount
 				const amount = status === 3 ? actualExchangeAmount : exchangeAmount
+
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{/* crypto amount 的小數點不用省略，並且一般情況下不會超過十位 */}
-						{amount && numFormatToDigits(amount, 10)}
+						{amount && numFormatToDigits(Number(amount), 10)}
 					</Typography.Text>
 				)
 			},
