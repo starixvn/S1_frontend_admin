@@ -96,11 +96,11 @@ const PaymentManagementTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetPaySettingData) => {
-				const { status, channelId, currencyId } = record
-				const defaultStatus = status === PaymentStatusEnum.True
+				const { status: originStatus, channelId, currencyId } = record
+				const status = originStatus === PaymentStatusEnum.True
 				return (
 					<Switch
-						defaultChecked={defaultStatus}
+						checked={status}
 						disabled={!editPermission?.canUse}
 						onClick={value => {
 							onSetStatus({ channelId, currencyId, status: value })
