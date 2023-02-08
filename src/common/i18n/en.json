@@ -1039,5 +1039,9 @@
 	"Label_Exclude": "exclude",
 	"Label_EditAnnouncement": "Edit Announcement",
 	"Label_StatusName": "Status Name",
-	"Label_AddAnnouncement": "Add Announcement"
+	"Label_AddAnnouncement": "Add Announcement",
+	"Label_TpTypeName": "TpTypeName",
+	"Label_MaintenanceStart": "Mainten Start",
+	"Label_MaintenanceEnd": "Mainten End",
+	"Label_IsExpired": "IsExpired"
 }
