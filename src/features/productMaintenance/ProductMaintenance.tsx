@@ -42,10 +42,16 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const {
+		timeZoneUtcOffset: timeZoneUtcOffsetModal,
+		onTimeZoneChange: onTimeZoneChangeModal,
+	} = useTimeZone()
+
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const [addForm] = Form.useForm<IAddForm>()
+	const addFormTpId = Form.useWatch('tpId', addForm)
 	const filterFormTpId = Form.useWatch('tpId', filterForm)
 	const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 	const addProductMaintenanceModal = useModal()
@@ -62,6 +68,11 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 		data: { data: gameTypeList = [] } = {},
 		isLoading: isGetGameTypeLoading,
 	} = useGetTpGameTypeQuery({ tpId: filterFormTpId }, { skip: !filterFormTpId })
+
+	const {
+		data: { data: addGameTypeList = [] } = {},
+		isFetching: isGetAddGameTypeFetching,
+	} = useGetTpGameTypeQuery({ tpId: addFormTpId }, { skip: !addFormTpId })
 
 	const [
 		getTpMaintenanceList,
@@ -152,7 +163,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 
 		const [beginDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
-			timeZoneUtcOffset
+			timeZoneUtcOffsetModal
 		)
 
 		try {
@@ -162,7 +173,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 				tpId: String(tpId),
 				tpGameTypeList:
 					// 全選則送 0 其他以 '1-1,2-6' 這類格式送出 (type-categoryId)
-					tpGameType.length === gameTypeList.length
+					tpGameType.length === addGameTypeList.length
 						? '0'
 						: tpGameType.join(','),
 				beginDate,
@@ -231,7 +242,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 		isDeleteTpMaintenanceLoading
 
 	const modalLoading =
-		isAddTpMaintenanceLoading || isGetTpLoading || isGetGameTypeLoading
+		isAddTpMaintenanceLoading || isGetTpLoading || isGetAddGameTypeFetching
 
 	useEffect(() => {
 		// init
@@ -269,6 +280,16 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (!isGetAddGameTypeFetching) {
+			addForm.setFieldsValue({
+				tpGameType: addGameTypeList.map(
+					({ type, categoryId }) => `${type}-${categoryId}`
+				),
+			})
+		}
+	}, [isGetAddGameTypeFetching, addFormTpId])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -302,13 +323,13 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 			<AddProductMaintenanceModal
 				loading={modalLoading}
 				form={addForm}
-				timeZoneUtcOffset={timeZoneUtcOffset}
+				timeZoneUtcOffset={timeZoneUtcOffsetModal}
 				tpList={tpList}
-				gameTypeList={gameTypeList}
+				addGameTypeList={addGameTypeList}
 				visible={addProductMaintenanceModal.visible}
 				onCancel={addProductMaintenanceModal.onCancel}
 				onFinish={handleAddProductMaintenance}
-				onTimeZoneChange={onTimeZoneChange}
+				onTimeZoneChange={onTimeZoneChangeModal}
 			/>
 
 			<AffixButtons>
