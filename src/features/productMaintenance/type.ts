@@ -65,9 +65,9 @@ export interface ITpGameTypeData {
 	categoryId: number
 }
 
-export type ITpMaintenanceResponse = IAxiosResponse<ITpMaintenanceData[]>
-
 export type ITpGameTypeResponse = IAxiosResponse<ITpGameTypeData[]>
+
+export type ITpMaintenanceResponse = IAxiosResponse<ITpMaintenanceData[]>
 
 export interface IFilterForm {
 	dateRange: [Moment, Moment]

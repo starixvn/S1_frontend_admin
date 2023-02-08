@@ -911,6 +911,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const ProductMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
+		)
+)
+
 const BetLimit = lazy(
 	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
 )
@@ -970,13 +977,6 @@ const EditGameExclusion = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
-		)
-)
-
-const ProductMaintenance = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
 		)
 )
 
