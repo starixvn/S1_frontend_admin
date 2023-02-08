@@ -42,6 +42,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	// 避免複寫 filter 的時區
 	const {
 		timeZoneUtcOffset: timeZoneUtcOffsetModal,
 		onTimeZoneChange: onTimeZoneChangeModal,
@@ -280,6 +281,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [])
 
+	// 監控 新增Modal 的 gameType 欄位
 	useEffect(() => {
 		if (!isGetAddGameTypeFetching) {
 			addForm.setFieldsValue({
