@@ -279,7 +279,7 @@ const WithdrawalRequestInfo = ({
 			<Item label={`${t('Label_UpdateTime')} (+08:00)`}>
 				{updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(createTime).utcOffset(8).format(timeFormat)}
+						{moment(updateTime).utcOffset(8).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
