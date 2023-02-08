@@ -459,11 +459,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.productManagement.sub.Maintenance.functionId,
+		functionId: paths.productManagement.sub.maintenance.functionId,
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/TpMaintain',
 		internalFunctionKey: allowedRoles.CMSTpMaintain,
-		newAdminPath: paths.productManagement.sub.Maintenance.root,
+		newAdminPath: paths.productManagement.sub.maintenance.root,
 	},
 	{
 		icon: null,

@@ -476,7 +476,7 @@ const paths = {
 	productManagement: {
 		root: 'productManagement',
 		sub: {
-			Maintenance: {
+			maintenance: {
 				root: 'productManagement/Maintenance',
 				functionId: 60,
 			},
