@@ -2345,10 +2345,10 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.Maintenance.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.productManagement.sub.Maintenance.functionId}
+						functionId={paths.productManagement.sub.maintenance.functionId}
 					>
 						<ProductMaintenance />
 					</AuthRequire>

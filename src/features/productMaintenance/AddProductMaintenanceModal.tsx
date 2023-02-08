@@ -1,4 +1,5 @@
 import { first } from 'lodash'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MultipleSelect } from 'components/Select'
 import {
@@ -23,7 +24,7 @@ interface IAddProductMaintenanceModalProps {
 	form: FormInstance
 	timeZoneUtcOffset: number
 	tpList: ITpListData[]
-	gameTypeList: IGetProductsData[]
+	addGameTypeList: IGetProductsData[]
 	visible: boolean
 	onCancel: () => void
 	onFinish: () => void
@@ -38,7 +39,7 @@ const AddProductMaintenanceModal = ({
 	form,
 	timeZoneUtcOffset,
 	tpList,
-	gameTypeList,
+	addGameTypeList,
 	visible,
 	onCancel,
 	onFinish,
@@ -50,7 +51,7 @@ const AddProductMaintenanceModal = ({
 		const onChangeGameType = (newGameTypes: Array<number | string>) => {
 			if (newGameTypes.includes('all')) {
 				form.setFieldsValue({
-					tpGameType: gameTypeList.map(
+					tpGameType: addGameTypeList.map(
 						({ type, categoryId }) => `${type}-${categoryId}`
 					),
 				})
@@ -66,10 +67,9 @@ const AddProductMaintenanceModal = ({
 				onChange={onChangeGameType}
 				placeholder={t('Label_Select')}
 			>
-				{(gameTypeList?.length as number) > 1 && (
-					<Option value='all'>{t('Label_SelectAll')}</Option>
-				)}
-				{gameTypeList?.map(({ type, typeName, categoryId }) => (
+				{/* 舊後台皆有 All 所以沒有判斷長度需大於一 */}
+				<Option value='all'>{t('Label_SelectAll')}</Option>
+				{addGameTypeList?.map(({ type, typeName, categoryId }) => (
 					// 新增的格式為 "type-category ex:1-1"
 					<Option key={`${type}-${categoryId}`} value={`${type}-${categoryId}`}>
 						{typeName}
@@ -78,6 +78,8 @@ const AddProductMaintenanceModal = ({
 			</MultipleSelect>
 		)
 	}
+
+	useEffect(() => {}, [])
 
 	return (
 		<Modal
@@ -95,7 +97,7 @@ const AddProductMaintenanceModal = ({
 				layout='vertical'
 				initialValues={{
 					tpId: first(tpList)?.id,
-					tpGameType: gameTypeList.map(
+					tpGameType: addGameTypeList.map(
 						({ type, categoryId }) => `${type}-${categoryId}`
 					),
 				}}
