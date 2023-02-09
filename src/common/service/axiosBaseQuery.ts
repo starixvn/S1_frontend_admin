@@ -13,6 +13,7 @@ export interface IAxiosResponse<T> {
 }
 
 export interface IAxiosError extends globalThis.Error {
+	data?: any
 	status?: number
 	statusText?: string
 	errorCode?: number
@@ -54,6 +55,7 @@ export const axiosBaseQuery =
 				error.status = status
 				error.statusText = statusText
 				error.errorCode = axiosData?.errorCode
+				error.data = axiosData?.data
 				throw error
 			}
 
@@ -63,6 +65,7 @@ export const axiosBaseQuery =
 
 			return {
 				error: {
+					data: error.data,
 					status: error.status,
 					message: error?.message,
 					errorCode: error?.errorCode,

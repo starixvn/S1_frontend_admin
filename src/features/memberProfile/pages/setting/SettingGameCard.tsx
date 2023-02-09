@@ -3,7 +3,7 @@ import { Card, Col, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { MENU_MAPPING } from 'app/constants/menuMapping'
 import { find } from 'lodash'
-import { OLD_SITE_PREFIX_URL } from 'app/config'
+import { OLD_SITE_PREFIX_URL, NEW_SITE_PREFIX_URL } from 'app/config'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { useActionPermissionsByFunctionId } from 'common/auth'
@@ -22,7 +22,7 @@ const SettingGameCard = () => {
 		})
 
 	// TODO: 等 BetLimit 及 GameExclusion 兩頁翻新之後，這裡需要一起更新路徑
-	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.internalPath
+	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.newAdminPath
 	const gameExclusionPath = find(MENU_MAPPING, { functionId: 62 })?.internalPath
 
 	return (
@@ -30,7 +30,7 @@ const SettingGameCard = () => {
 			<Card title={t('Label_Game')} style={{ height: '100%' }}>
 				<p>
 					{betLimitActionPermissions.viewPermission ? (
-						<Link to={`/${OLD_SITE_PREFIX_URL}/${betLimitPath}`}>
+						<Link to={`/${NEW_SITE_PREFIX_URL}/${betLimitPath}`}>
 							{t('Label_BetLimit')}
 						</Link>
 					) : (

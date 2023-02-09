@@ -62,6 +62,7 @@ const paths = {
 			},
 			tpFailRecordReport: {
 				root: 'csd/tpFailRecordReport',
+				functionId: 61,
 			},
 			personalMsgBatch: {
 				root: 'csd/personalMsgBatch',
@@ -88,6 +89,7 @@ const paths = {
 			},
 			newsManage: {
 				root: 'csd/newsManage',
+				functionId: 54,
 			},
 			bannerManage: {
 				root: 'csd/bannerManage',
@@ -296,9 +298,6 @@ const paths = {
 			appliedBonus: {
 				root: 'marketing/appliedBonus',
 			},
-			pendingBonus: {
-				root: 'marketing/pendingBonus',
-			},
 			rebateInfoReport: {
 				root: 'marketing/rebateInfoReport',
 			},
@@ -332,6 +331,15 @@ const paths = {
 			pointLevelManagement: {
 				root: 'marketing/pointLevelManagement',
 				functionId: 52,
+			},
+			bonus: {
+				root: 'bonus',
+				sub: {
+					pendingBonus: {
+						root: 'marketing/bonus/pendingBonus',
+						functionId: 46,
+					},
+				},
 			},
 		},
 	},
@@ -618,6 +626,10 @@ const paths = {
 	cms: {
 		root: 'cms',
 		sub: {
+			announcement: {
+				root: 'cms/announcement',
+				functionId: 53,
+			},
 			worldCupSetting: {
 				root: 'cms/worldCupSetting',
 				functionId: 114,
