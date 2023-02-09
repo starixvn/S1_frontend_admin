@@ -394,11 +394,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 54,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.newsManage.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/NewsManage',
 		internalFunctionKey: allowedRoles.MarketingNewsManage,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.newsManage.root,
 	},
 	{
 		icon: null,
