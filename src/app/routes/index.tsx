@@ -907,6 +907,10 @@ const SmsGenerator = lazy(
 		)
 )
 
+const BetLimit = lazy(
+	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
+)
+
 const NewsManagement = lazy(
 	() =>
 		import(
@@ -2293,6 +2297,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.betLimit.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
+						<BetLimit />
 					</AuthRequire>
 				),
 			},

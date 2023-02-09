@@ -1005,6 +1005,8 @@
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
+	"Label_EditBetLimit": "Edit Bet Limit",
+	"Label_LimitGroup": "Limit Group",
 	"Label_TotalApprovedCount": "TotalApprovedCount",
 	"Label_TotalApprovedAmount": "TotalApprovedAmount",
 	"Label_SelectStatus": "Select Status",
