@@ -483,11 +483,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 63,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.betLimit.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/UserBetLimit',
 		internalFunctionKey: allowedRoles.CustManageUserBetLimit,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.betLimit.root,
 	},
 	{
 		icon: null,

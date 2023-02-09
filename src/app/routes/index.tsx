@@ -925,6 +925,10 @@ const FailBet = lazy(
 	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
 )
 
+const BetLimit = lazy(
+	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
+)
+
 const NewsManagement = lazy(
 	() =>
 		import(
@@ -2315,10 +2319,36 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.betLimit.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
+						<BetLimit />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
 				element: (
 					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
 						<NewsManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
+				element: (
+					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
+						<NewsManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonus.sub.pendingBonus.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
+					>
+						<PendingBonus />
 					</AuthRequire>
 				),
 			},
