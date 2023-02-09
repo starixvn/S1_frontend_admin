@@ -1011,5 +1011,10 @@
 	"Label_SelectStatus": "Select Status",
 	"Label_EditAnnouncement": "Edit Announcement",
 	"Label_StatusName": "Status Name",
-	"Label_AddAnnouncement": "Add Announcement"
+	"Label_AddAnnouncement": "Add Announcement",
+	"Label_PerCount": "Per Count",
+	"Label_PostTime": "Post Time",
+	"Label_NewsInfo": "News Info",
+	"Label_ImageURL": "Image URL",
+	"Label_NewsId": "News ID"
 }
