@@ -921,6 +921,10 @@ const Announcement = lazy(
 		)
 )
 
+const FailBet = lazy(
+	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2292,6 +2296,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
+						<FailBet />
 					</AuthRequire>
 				),
 			},
