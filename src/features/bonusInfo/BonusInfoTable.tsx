@@ -312,7 +312,7 @@ const BonusInfoTable = ({
 					// @ts-ignore
 					onChange={onTableChange}
 					columns={columns}
-					scroll={{ y: 400, x: undefined }}
+					scroll={{ y: 300, x: undefined }}
 				/>
 			</Panel>
 		</Collapse>
