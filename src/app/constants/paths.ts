@@ -296,9 +296,6 @@ const paths = {
 			appliedBonus: {
 				root: 'marketing/appliedBonus',
 			},
-			pendingBonus: {
-				root: 'marketing/pendingBonus',
-			},
 			rebateInfoReport: {
 				root: 'marketing/rebateInfoReport',
 			},
@@ -332,6 +329,15 @@ const paths = {
 			pointLevelManagement: {
 				root: 'marketing/pointLevelManagement',
 				functionId: 52,
+			},
+			bonus: {
+				root: 'bonus',
+				sub: {
+					pendingBonus: {
+						root: 'marketing/bonus/pendingBonus',
+						functionId: 46,
+					},
+				},
 			},
 		},
 	},
