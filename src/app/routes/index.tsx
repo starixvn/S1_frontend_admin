@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const NewsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
+		)
+)
+
 const FailBet = lazy(
 	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
 )
@@ -2271,6 +2278,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
+				element: (
+					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
+						<NewsManagement />
 					</AuthRequire>
 				),
 			},
