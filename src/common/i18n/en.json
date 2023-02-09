@@ -988,6 +988,7 @@
 	"Label_TriggeredPoint": "Triggered point",
 	"Label_TaggedIssue": "Tagged issue",
 	"Label_Tagged": "Tagged",
+	"Label_LastUpdater": "LastUpdater",
 	"Label_NoOfTagged": "No. of tagged",
 	"Label_HotGameMobilePicUrl": "HotGame Mobile Pic Url",
 	"Label_ProcessResult": "Process Result",
@@ -999,13 +1000,16 @@
 	"Label_AccountStatus": "Account Status",
 	"Label_BatchId": "Batch ID",
 	"Label_EnLangRequiredMsg": "Lang : En is Required",
-	"Label_SelectStatus": "Select Status",
 	"Label_DepositBonus": "Deposit Bonus",
 	"Label_SearchPage": "Search Page ...",
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_PerCount": "Per Count",
 	"Label_TotalApprovedCount": "TotalApprovedCount",
-	"Label_TotalApprovedAmount": "TotalApprovedAmount"
+	"Label_TotalApprovedAmount": "TotalApprovedAmount",
+	"Label_PerCount": "Per Count",
+	"Label_SelectStatus": "Select Status",
+	"Label_EditAnnouncement": "Edit Announcement",
+	"Label_StatusName": "Status Name",
+	"Label_AddAnnouncement": "Add Announcement"
 }

@@ -386,11 +386,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 53,
-		pathMode: 'Internal',
+		functionId: paths.cms.sub.announcement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Message/Announcement',
 		internalFunctionKey: allowedRoles.MessageAnnouncement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.announcement.root,
 	},
 	{
 		icon: null,

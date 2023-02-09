@@ -624,6 +624,10 @@ const paths = {
 	cms: {
 		root: 'cms',
 		sub: {
+			announcement: {
+				root: 'cms/announcement',
+				functionId: 53,
+			},
 			worldCupSetting: {
 				root: 'cms/worldCupSetting',
 				functionId: 114,
