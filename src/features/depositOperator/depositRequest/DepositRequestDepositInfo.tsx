@@ -115,10 +115,15 @@ const DepositRequestDepositInfo = ({
 					<Input.Group compact>
 						<Form.Item noStyle name='amount'>
 							<InputNumber
-								type='number'
 								controls={false}
 								disabled={!editPermission?.canUse || editable !== 'amount'}
 								style={{ width: 'calc(100% - 64px)' }}
+								// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+								formatter={value =>
+									`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+								}
+								// 把 + 過逗號的值再 parser 回來
+								parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 							/>
 						</Form.Item>
 
@@ -229,8 +234,18 @@ const DepositRequestDepositInfo = ({
 							<Form.Item noStyle name='bankId'>
 								<Select
 									disabled={!isApproved}
+									showSearch
+									filterOption={(input, option) => {
+										const isIncludes: boolean = (
+											option!.children as unknown as string
+										)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+
+										return isIncludes
+									}}
 									placeholder={t('Label_Select') + t('Label_CalCode')}
-									style={{ width: 'calc(100% - 64px)' }}
+									style={{ width: 'calc(100% - 30px)' }}
 								>
 									{calCodeList?.map(({ bankId, calCodeName }) => (
 										<Option key={bankId} value={bankId}>
