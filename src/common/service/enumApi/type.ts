@@ -52,6 +52,9 @@ export type EnumNameType =
 	| 'TaggedIssue'
 	| 'PaymentReportGroupByEnum'
 	| 'NewsStatusEnum'
+	| 'PromotionStatusEnum'
+	| 'BonusSummaryType'
+	| 'BonusInfoStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -95,6 +98,9 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
 	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
+	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表
+	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
+	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
 	 */
 	enumName: EnumNameType
 }

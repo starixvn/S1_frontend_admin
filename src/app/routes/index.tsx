@@ -936,6 +936,11 @@ const Announcement = lazy(
 		)
 )
 
+const BonusInfo = lazy(
+	() =>
+		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2331,6 +2336,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
+						<BonusInfo />
 					</AuthRequire>
 				),
 			},
