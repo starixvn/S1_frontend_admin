@@ -43,7 +43,6 @@ const BaseLayout: FC = () => {
 		<Layout hasSider style={{ height: '100vh' }}>
 			<LayoutSideBar
 				collapsed={collapsed}
-				onToggleCollapsed={onToggleCollapsed}
 				onCloseCollapsed={onCloseCollapsed}
 			/>
 

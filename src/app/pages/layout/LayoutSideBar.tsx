@@ -12,11 +12,9 @@ const { Header, Sider } = Layout
 
 const LayoutSideBar = ({
 	collapsed,
-	onToggleCollapsed,
 	onCloseCollapsed,
 }: {
 	collapsed: boolean
-	onToggleCollapsed: () => void
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
@@ -32,7 +30,6 @@ const LayoutSideBar = ({
 			collapsedWidth={mediaMdMatches ? '80' : '0'}
 			collapsible={false}
 			collapsed={collapsed}
-			onCollapse={onToggleCollapsed}
 			style={{
 				overflow: 'auto',
 				height: '100vh',
