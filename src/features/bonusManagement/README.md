@@ -49,7 +49,7 @@
 
 Bonus Type 為 `TierRedepositBonus` 時送出的 bonus amount 必須是 `tierAmountList` , 前端顯示彈窗供使用者設定 list
 
-#### `utils.ts`
+#### `utils.tsx`
 
 - 共用 func 或 資料轉換 func
 - C2S means `Client to Server`

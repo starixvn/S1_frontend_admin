@@ -1023,5 +1023,18 @@
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_IncludeFreeSpins": "Include Free Spins",
+	"Label_NoDraw": "No Draw",
+	"Label_DisplayGroupBreakdownInOriginalCurrency": "Display group breakdown in original currency",
+	"Label_Month": "Month",
+	"Label_Player": "Player",
+	"Label_GGR": "GGR",
+	"Label_PlayerWinLoss": "Player Win Loss",
+	"Label_BetCount": "Bet Count",
+	"Label_AvgBetAmount": "Avg Bet Amount",
+	"Label_Margin": "Margin",
+	"Label_ProgressiveWin": "Progressive Win",
+	"Label_ProgressiveBet": "Progressive Bet",
+	"Label_Commission": "Commission"
 }
