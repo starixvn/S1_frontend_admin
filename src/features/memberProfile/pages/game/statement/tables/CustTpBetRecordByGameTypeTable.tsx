@@ -126,7 +126,7 @@ const CustTpBetRecordByGameTypeTable = ({
 				),
 		},
 		{
-			title: t('Label_SettledDate'),
+			title: t('Label_SettledTime'),
 			key: 'settledDate',
 			dataIndex: 'settledTime',
 			width: 150,
