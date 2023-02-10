@@ -10,7 +10,10 @@ const initCollapsedByPaths = (collapsedPaths: string[]) => {
 
 const useMenuCollapsed = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(
-		initCollapsedByPaths([paths.memberProfile.root])
+		initCollapsedByPaths([
+			paths.memberProfile.root,
+			paths.report.sub.bonusInfoReport.root,
+		])
 	)
 
 	const onToggleCollapsed = () => {
