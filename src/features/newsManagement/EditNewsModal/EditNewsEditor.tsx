@@ -88,7 +88,7 @@ const NewsManagementEditor = ({
 									},
 								]}
 							>
-								<TextArea rows={6} maxLength={300} />
+								<TextArea rows={6} />
 							</Form.Item>
 						</Col>
 					</Row>

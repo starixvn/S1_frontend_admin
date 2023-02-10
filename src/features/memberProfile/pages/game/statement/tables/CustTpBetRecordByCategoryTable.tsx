@@ -10,7 +10,6 @@ const { Text } = Typography
 
 interface ICustTpBetRecordByCategoryTableProps {
 	loading: boolean
-	timeZoneUtcOffset: number
 	custTpBetRecordByCategory: IGetCustTpBetRecordByCategoryIdData[]
 	onDetailClicked: (gameTypeId: number) => void
 }
@@ -19,7 +18,6 @@ const { Summary } = AntdTable
 
 const CustTpBetRecordByCategoryTable = ({
 	loading,
-	timeZoneUtcOffset,
 	custTpBetRecordByCategory,
 	onDetailClicked,
 }: ICustTpBetRecordByCategoryTableProps) => {
@@ -34,9 +32,8 @@ const CustTpBetRecordByCategoryTable = ({
 			render: (settledDate: string) =>
 				settledDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(settledDate)
-							.utcOffset(timeZoneUtcOffset)
-							.format(dateFormat)}
+						{/* settledDate 經過討論不需要額外做 timezone 的處理 */}
+						{moment(settledDate).format(dateFormat)}
 					</Typography.Text>
 				) : (
 					''
