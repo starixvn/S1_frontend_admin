@@ -524,11 +524,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 68,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.videoManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/LatestHighlightVideoManagement',
 		internalFunctionKey: allowedRoles.CMSLatestHighlightVideoManagement,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.videoManagement.root,
 	},
 
 	{

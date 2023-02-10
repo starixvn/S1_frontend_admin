@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const VideoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
 const Iovation = lazy(
 	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
 )
@@ -2301,6 +2308,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.content.sub.videoManagement.functionId}
+					>
+						<VideoManagement />
 					</AuthRequire>
 				),
 			},
