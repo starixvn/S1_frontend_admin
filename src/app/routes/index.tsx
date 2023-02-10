@@ -2355,6 +2355,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.betLimit.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
+						<BetLimit />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
 				element: (
 					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
@@ -2367,6 +2375,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
 						<BetLimit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
+						<FailBet />
 					</AuthRequire>
 				),
 			},
