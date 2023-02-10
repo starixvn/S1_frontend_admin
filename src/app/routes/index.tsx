@@ -907,6 +907,25 @@ const SmsGenerator = lazy(
 		)
 )
 
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
+const BetLimit = lazy(
+	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
+)
+
+const NewsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
+		)
+)
+
+const FailBet = lazy(
+	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
+)
+
 const PendingBonus = lazy(
 	() =>
 		import(
@@ -918,21 +937,6 @@ const Announcement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
-		)
-)
-
-const FailBet = lazy(
-	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
-)
-
-const BetLimit = lazy(
-	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
-)
-
-const NewsManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
 		)
 )
 
@@ -2315,6 +2319,15 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
 						<FailBet />
+					</AuthRequire>
+				),
+			},
+
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
 					</AuthRequire>
 				),
 			},
