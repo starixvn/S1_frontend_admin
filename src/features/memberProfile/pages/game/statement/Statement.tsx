@@ -275,14 +275,12 @@ const Statement = () => {
 					<CustTpBetRecordTable
 						loading={loading}
 						custTpBetRecord={custTpBetRecord}
-						timeZoneUtcOffset={timeZoneUtcOffset}
 						onDetailClicked={handleTpBetRecordTableClicked}
 					/>
 				)}
 				{tableState === GameStatementTableEnum.TPBetRecordByDay && (
 					<CustTpBetRecordByDayTable
 						loading={loading}
-						timeZoneUtcOffset={timeZoneUtcOffset}
 						custTpBetRecordByDay={custTpBetRecordByDay}
 						onDetailClicked={handleTpBetRecordByDayTableClicked}
 					/>
@@ -290,7 +288,6 @@ const Statement = () => {
 				{tableState === GameStatementTableEnum.TPBetRecordByCategory && (
 					<CustTpBetRecordByCategoryTable
 						loading={loading}
-						timeZoneUtcOffset={timeZoneUtcOffset}
 						custTpBetRecordByCategory={custTpBetRecordByCategory}
 						onDetailClicked={handleTpBetRecordByCategoryTableClicked}
 					/>
