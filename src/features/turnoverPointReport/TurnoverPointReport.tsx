@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
-import { IGetVipLevelsResponse } from 'features/redemptionListing/type'
-import { useGetVipLevelQuery } from 'features/redemptionListing/api'
 import { IGetCategoryResponse } from 'features/betList/type'
 import { useGetCategoryQuery } from 'features/betList/api'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -18,7 +16,7 @@ import {
 } from 'common/hooks'
 import { TurnoverPointReportListTable } from 'features/turnoverPointReport/TurnoverPointReportListTable'
 import { TurnoverPointReportFilter } from 'features/turnoverPointReport/TurnoverPointReportFilter'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import {
 	useExportTurnoverPointReportMutation,
 	useLazyGetTurnoverPointReportQuery,
@@ -28,6 +26,7 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { TurnoverPointReportOverviewTable } from 'features/turnoverPointReport/TurnoverPointReportOverviewTable'
 import download from 'downloadjs'
 import moment from 'moment'
+import { useGetVipLevelEnumBySiteIdQuery } from 'common/service/baseDataApi'
 
 const TurnoverPointReport: FC<{
 	pageTitle?: string
@@ -66,13 +65,9 @@ const TurnoverPointReport: FC<{
 	] = useExportTurnoverPointReportMutation()
 
 	const {
-		data: { data: vipLevelsList } = {} as IGetVipLevelsResponse,
+		data: { data: vipLevelsList = [] } = {},
 		isLoading: isGetVipLevelLoading,
-	} = useGetVipLevelQuery(null)
-
-	const filteredVipLevelsList = vipLevelsList?.filter(
-		item => item.siteId === siteId
-	)
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
 	const {
 		data: { data: categoryList } = {} as IGetCategoryResponse,
@@ -142,24 +137,24 @@ const TurnoverPointReport: FC<{
 
 	const handleExport = async () => {
 		const {
-			dateRange,
-			currencyIds,
-			vipLevels,
-			categories,
 			userName = '',
 			sabaId = '',
-		} = form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+			categories,
+			vipLevels,
+			currencyIds,
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const args = {
 				userName,
 				sabaId,
-				categories,
-				vipLevels,
-				currencyIds,
+				categories: categories?.map((category: string) => Number(category)),
+				vipLevels: vipLevels?.map((vipLevel: string) => Number(vipLevel)),
+				currencyIds: currencyIds?.map((currencyId: string) =>
+					Number(currencyId)
+				),
 				startTime,
 				endTime,
 				siteId,
@@ -180,7 +175,7 @@ const TurnoverPointReport: FC<{
 		if (isGetCategoryFetching || isGetVipLevelLoading) return
 		const init = () => {
 			form.setFieldsValue({
-				vipLevels: filteredVipLevelsList?.map(level => level.level),
+				vipLevels: vipLevelsList?.map(({ level }) => level),
 				categories: categoryList?.map(category => category.categoryId),
 			})
 			if (isEmpty(queryParams)) return
@@ -201,11 +196,15 @@ const TurnoverPointReport: FC<{
 				dateRange: [moment(startTime), moment(endTime)],
 				userName,
 				sabaId,
-				currencyIds: currencyIds.map((currencyId: string) =>
-					Number(currencyId)
-				),
-				vipLevels: vipLevels.map((vipLevel: string) => Number(vipLevel)),
-				categories: categories.map((category: string) => Number(category)),
+				currencyIds: isArray(currencyIds)
+					? currencyIds.map((currencyId: string) => Number(currencyId))
+					: [],
+				vipLevels: isArray(vipLevels)
+					? vipLevels.map((vipLevel: string) => Number(vipLevel))
+					: [],
+				categories: isArray(categories)
+					? categories.map((category: string) => Number(category))
+					: [],
 			})
 
 			handleSearch({
@@ -231,7 +230,7 @@ const TurnoverPointReport: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
-				vipLevelsList={filteredVipLevelsList}
+				vipLevelsList={vipLevelsList}
 				onTimeZoneChange={onTimeZoneChange}
 				categories={categoryList}
 			/>
@@ -253,7 +252,7 @@ const TurnoverPointReport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportTurnoverPointReportLoading}
 				/>

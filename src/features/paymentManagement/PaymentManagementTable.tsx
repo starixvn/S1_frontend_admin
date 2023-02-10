@@ -19,6 +19,7 @@ interface IPaymentManagementTableProps {
 	paySettingList: IGetPaySettingData[]
 	globalStatusList: IEnumTypeData[]
 	editPermission?: PermissionInterface
+	setFeePermission?: PermissionInterface
 	typeList: IEnumTypeData[]
 	currencyListBySite: Currency[]
 	pagination: PaginationInterface
@@ -49,6 +50,7 @@ const PaymentManagementTable = ({
 	loading,
 	paySettingList,
 	editPermission,
+	setFeePermission,
 	currencyListBySite,
 	globalStatusList,
 	pagination,
@@ -78,7 +80,7 @@ const PaymentManagementTable = ({
 						{t('Label_Edit')}
 					</Typography.Link>
 					<Typography.Link
-						disabled={!editPermission?.canUse}
+						disabled={!setFeePermission?.canUse}
 						onClick={() => {
 							onEditClick(record, EditModalTypeEnum.FeeSetting)
 						}}
@@ -94,11 +96,11 @@ const PaymentManagementTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetPaySettingData) => {
-				const { status, channelId, currencyId } = record
-				const defaultStatus = status === PaymentStatusEnum.True
+				const { status: originStatus, channelId, currencyId } = record
+				const status = originStatus === PaymentStatusEnum.True
 				return (
 					<Switch
-						defaultChecked={defaultStatus}
+						checked={status}
 						disabled={!editPermission?.canUse}
 						onClick={value => {
 							onSetStatus({ channelId, currencyId, status: value })

@@ -95,3 +95,11 @@ export enum SupportChannelEnum {
 	LocalBank,
 	EWallet,
 }
+
+export enum BankCardListStatusEnum {
+	Initial,
+	Open,
+	Suspend,
+	Closed,
+	Maintenance,
+}

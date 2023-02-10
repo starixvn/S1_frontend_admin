@@ -69,4 +69,5 @@ export const ACTION_NAMES: {
 	71: 'toKycPermission',
 	73: 'sendMessagePermission',
 	74: 'addEditPermission',
+	76: 'setFeePermission',
 }

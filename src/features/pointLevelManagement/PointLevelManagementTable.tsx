@@ -151,6 +151,7 @@ const PointLevelManagementTable = ({
 		<Form form={form} component={false}>
 			<Table
 				loading={loading}
+				style={{ marginTop: '10px', marginBottom: '10px' }}
 				components={{
 					body: {
 						cell: EditableCellRows,

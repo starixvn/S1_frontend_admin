@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -16,10 +16,10 @@ import {
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectRewardsCurrencyListBySite, selectUserSite } from 'common/enum'
+import { useGetVipLevelEnumBySiteIdQuery } from 'common/service/baseDataApi'
 import { RedemptionListingFilter } from './RedemptionListingFilter'
 import {
 	useExportRedemptionListMutation,
-	useGetVipLevelQuery,
 	useLazyGetRedemptionListQuery,
 } from './api'
 import { IGetRedemptionListResponse } from './type'
@@ -30,8 +30,7 @@ const RedemptionListing: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
-		useAuth()
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
@@ -63,7 +62,7 @@ const RedemptionListing: FC<{
 	const {
 		data: { data: vipLevelsList = [] } = {},
 		isLoading: isGetVipLevelLoading,
-	} = useGetVipLevelQuery(null)
+	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -119,21 +118,20 @@ const RedemptionListing: FC<{
 			vipLevels,
 			statuses,
 			currencyIds,
-			dateRange,
-		} = form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+			startTime,
+			endTime,
+		} = queryParams
+
 		try {
 			const blob = await exportRedemptionList({
-				siteId,
+				siteId: Number(siteId),
 				userName,
 				sabaId,
 				transId,
-				vipLevels,
-				statuses,
-				currencyIds,
+				vipLevels: vipLevels?.map((vipLevel: string) => Number(vipLevel)) ?? [],
+				statuses: statuses?.map((status: string) => Number(status)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				startTime,
 				endTime,
 			}).unwrap()
@@ -162,41 +160,53 @@ const RedemptionListing: FC<{
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) return
-			const {
-				timeZone,
-				pageNumber,
-				pageSize,
-				userName = '',
-				sabaId = '',
-				transId = '',
-				vipLevels,
-				statuses,
-				currencyIds,
-				startTime,
-				endTime,
-			} = queryParams
-			onTimeZoneChange(Number(timeZone))
-			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
-				userName,
-				sabaId,
-				transId,
-				vipLevels: vipLevels.map((vipLevel: string) => Number(vipLevel)),
-				statuses: statuses.map((status: string) => Number(status)),
-				currencyIds: currencyIds.map((currencyId: string) =>
-					Number(currencyId)
-				),
-			})
+			if (isEmpty(queryParams)) {
+				form.setFieldsValue({
+					vipLevels: vipLevelsList?.map(({ level }) => level),
+				})
+			} else {
+				const {
+					timeZone,
+					pageNumber,
+					pageSize,
+					userName = '',
+					sabaId = '',
+					transId = '',
+					vipLevels,
+					statuses,
+					currencyIds,
+					startTime,
+					endTime,
+				} = queryParams
+				onTimeZoneChange(Number(timeZone))
+				form.setFieldsValue({
+					dateRange: [moment(startTime), moment(endTime)],
+					userName,
+					sabaId,
+					transId,
+					vipLevels: isArray(vipLevels)
+						? vipLevels.map((vipLevel: string) => Number(vipLevel))
+						: [],
+					statuses: isArray(statuses)
+						? statuses.map((status: string) => Number(status))
+						: [],
+					currencyIds: isArray(currencyIds)
+						? currencyIds.map((currencyId: string) => Number(currencyId))
+						: [],
+				})
 
-			handleSearch({
-				current: Number(pageNumber),
-				pageSize: Number(pageSize),
-				currentTimeZoneUtcOffset: Number(timeZone),
-			})
+				handleSearch({
+					current: Number(pageNumber),
+					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
+			}
 		}
-		init()
-	}, [])
+
+		if (!isGetVipLevelLoading) {
+			init()
+		}
+	}, [isGetVipLevelLoading])
 
 	const loading = isGetVipLevelLoading || isGetRedemptionListLoading
 
@@ -209,7 +219,6 @@ const RedemptionListing: FC<{
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
 				vipLevelsList={vipLevelsList}
-				siteId={siteId}
 				onTimeZoneChange={onTimeZoneChange}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 			/>
@@ -218,7 +227,6 @@ const RedemptionListing: FC<{
 					loading={loading}
 					redemptionListData={redemptionListData}
 					pagination={pagination}
-					editPermission={editPermission}
 					onTableChange={handleTableChange}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 				/>
@@ -232,7 +240,7 @@ const RedemptionListing: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportRedemptionListLoading}
 				/>

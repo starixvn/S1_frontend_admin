@@ -179,7 +179,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.depositOperator.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/DepositList',
 		internalFunctionKey: allowedRoles.FinanceDepositList,
 		newAdminPath:
@@ -190,7 +190,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.finance.sub.depositWithdrawalSector.sub.withdrawalOperator
 				.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/WithdrawalList',
 		internalFunctionKey: allowedRoles.FinanceWithdrawalList,
 		newAdminPath:
@@ -275,7 +275,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.finance.sub.paymentGateway.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Finance/PaymentManage',
 		internalFunctionKey: allowedRoles.FinancePaymentManage,
 		newAdminPath: paths.finance.sub.paymentGateway.root,
@@ -330,11 +330,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 46,
-		pathMode: 'Internal',
+		functionId: paths.marketing.sub.bonus.sub.pendingBonus.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/PendingBonus',
 		internalFunctionKey: allowedRoles.MarketingPendingBonus,
-		newAdminPath: '',
+		newAdminPath: paths.marketing.sub.bonus.sub.pendingBonus.root,
 	},
 	{
 		icon: null,
@@ -386,19 +386,19 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 53,
-		pathMode: 'Internal',
+		functionId: paths.cms.sub.announcement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Message/Announcement',
 		internalFunctionKey: allowedRoles.MessageAnnouncement,
-		newAdminPath: '',
+		newAdminPath: paths.cms.sub.announcement.root,
 	},
 	{
 		icon: null,
-		functionId: 54,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.newsManage.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/NewsManage',
 		internalFunctionKey: allowedRoles.MarketingNewsManage,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.newsManage.root,
 	},
 	{
 		icon: null,
@@ -467,11 +467,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 61,
-		pathMode: 'Internal',
+		functionId: paths.csd.sub.tpFailRecordReport.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/TpFailRecordReport',
 		internalFunctionKey: allowedRoles.CustManageTpFailRecordReport,
-		newAdminPath: '',
+		newAdminPath: paths.csd.sub.tpFailRecordReport.root,
 	},
 	{
 		icon: null,
@@ -483,11 +483,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 63,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.betLimit.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/UserBetLimit',
 		internalFunctionKey: allowedRoles.CustManageUserBetLimit,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.betLimit.root,
 	},
 	{
 		icon: null,
@@ -694,7 +694,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.bankTransfer.sub.bankFinancialReport.functionId,
 		internalFunctionKey: allowedRoles.BankFinancialReportBankFinancialReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'BankFinancial/BankFinancialReport',
 		newAdminPath: paths.bankTransfer.sub.bankFinancialReport.root,
 	},

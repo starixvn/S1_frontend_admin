@@ -1,6 +1,6 @@
+import moment from 'moment'
 import { FC, useEffect } from 'react'
 import { isEmpty } from 'lodash'
-import moment from 'moment'
 import { selectUserSite } from 'common/enum'
 import { useAppSelector } from 'app/store'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -85,7 +85,7 @@ const BlockIp: FC<{
 				startDate,
 				endDate,
 				pageNumber: current,
-				tz: timeZoneUtcOffset,
+				tz: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -129,18 +129,12 @@ const BlockIp: FC<{
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
 
-		setPagination(prev => ({ ...prev, current, pageSize }))
-	}
-
-	useEffect(() => {
-		const { current, pageSize } = pagination
-
 		handleSearch({
 			current,
 			pageSize,
 			currentTimeZoneUtcOffset: timeZoneUtcOffset,
 		})
-	}, [pagination.current, pagination.pageSize])
+	}
 
 	useEffect(() => {
 		const init = () => {

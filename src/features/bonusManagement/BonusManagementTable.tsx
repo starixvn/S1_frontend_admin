@@ -252,8 +252,8 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 		},
 		{
 			title: t('Label_ScratchCode'),
-			key: 'bonusCode',
-			dataIndex: 'bonusCode',
+			key: 'specialCode',
+			dataIndex: 'specialCode',
 			width: 80,
 			align: 'center' as 'center',
 		},

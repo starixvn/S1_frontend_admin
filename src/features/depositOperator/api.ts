@@ -133,6 +133,7 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 	}),
 })
