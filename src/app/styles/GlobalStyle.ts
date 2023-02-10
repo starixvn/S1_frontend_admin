@@ -51,6 +51,9 @@ const GlobalStyle = createGlobalStyle`
     .highlight:focus {
      border-color: #1890ff;
 }
+  .ant-table-column-sorters{
+    word-break: break-word;
+  }
 `
 
 export default GlobalStyle

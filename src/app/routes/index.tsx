@@ -994,6 +994,13 @@ const Announcement = lazy(
 		)
 )
 
+const WinLostReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
+		)
+)
+
 const BatchMemberInfoReport = lazy(
 	() =>
 		import(
@@ -2483,6 +2490,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
+						<WinLostReport />
 					</AuthRequire>
 				),
 			},
