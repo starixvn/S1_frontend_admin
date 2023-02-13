@@ -60,6 +60,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [tableSelectedRowTransIds, setTableSelectedTransIds] = useState<Key[]>(
 		[]
 	)
+	const [collapseActiveKey, setCollapseActiveKey] = useState<number>(1)
 
 	const {
 		data: { data: statusesEnum } = {} as IEnumTypeResponse,
@@ -232,6 +233,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				timeZone: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
+			setCollapseActiveKey(0)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -395,6 +397,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			<DepositOperatorFilter
 				isAllSite={formIsAllSite}
 				form={form}
+				collapseActiveKey={collapseActiveKey}
 				loading={isGetDepositOperatorListFetching}
 				enumLoading={enumLoading}
 				currencyListBySite={currencyListBySite}
@@ -407,6 +410,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				setCollapseActiveKey={setCollapseActiveKey}
 			/>
 			<DepositOperatorTable
 				isAllSite={queryParams?.isAllSite}
