@@ -178,6 +178,14 @@ const VideoManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		init()
 	}, [isGetLangTypeListLoading])
 
+	useEffect(() => {
+		if (currencyIds) {
+			filterForm.setFieldsValue({
+				langIds: filterLangTypeList.map(({ value }) => value),
+			})
+		}
+	}, [currencyIds?.length])
+
 	const loading =
 		isGetVideoListLoading || isUpdateVideoLoading || isGetLangTypeListLoading
 
