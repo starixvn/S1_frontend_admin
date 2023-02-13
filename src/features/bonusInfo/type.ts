@@ -71,6 +71,8 @@ export interface IBonusDetailListData {
 	transactionType: number
 	claimStatus: number
 	completion: number
+	totalWithdrawal: number
+	totalDeposit: number
 }
 
 export interface IFilterForm {

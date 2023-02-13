@@ -75,6 +75,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		isLoading: isGetClaimStatusListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BonusInfoStatusEnum' })
 
+	// TransactionType
+	const { data: { data: transactionTypeList = [] } = {} as IEnumTypeResponse } =
+		useGetEnumTypeQuery({ enumName: 'BonusSummaryTransactionType' })
+
 	const [exportBonusInfo, { isLoading: isExportBonusInfoLoading }] =
 		useExportBonusInfoMutation()
 
@@ -456,6 +460,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					currentBonusCodes={currentBonusCodes}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={bonusDetailPagination}
+					transactionTypeList={transactionTypeList}
 					claimStatusList={claimStatusList}
 					exportExcelPermission={exportExcelPermission}
 					onBonusCodeChange={handleBonusCodeChange}

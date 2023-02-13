@@ -29,6 +29,7 @@ interface IBonusDetailTableProps {
 	bonusDetail: IBonusDetailListData[]
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
+	transactionTypeList: IEnumTypeData[]
 	claimStatusList: IEnumTypeData[]
 	exportExcelPermission?: PermissionInterface
 	onBonusCodeChange: (value: string) => void
@@ -48,6 +49,7 @@ const BonusDetailTable = ({
 	loading,
 	currentBonusCodes,
 	bonusDetail,
+	transactionTypeList,
 	claimStatusList,
 	timeZoneUtcOffset,
 	pagination,
@@ -108,7 +110,14 @@ const BonusDetailTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			sorter: true,
-			render: (transactionType: number) => transactionType || '-',
+			render: (transactionType: number) => {
+				const typeName = find(
+					transactionTypeList,
+					({ value }) => value === transactionType
+				)?.name
+
+				return typeName ?? '-'
+			},
 		},
 		{
 			title: t('Label_TotalDeposit'),
