@@ -907,6 +907,20 @@ const SmsGenerator = lazy(
 		)
 )
 
+const GameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameExclusion' */ 'features/gameExclusion/GameExclusion'
+		)
+)
+
+const EditGameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
 const VideoManagement = lazy(
 	() =>
 		import(
@@ -2308,6 +2322,22 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<GameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}/:custId`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<EditGameExclusion />
 					</AuthRequire>
 				),
 			},

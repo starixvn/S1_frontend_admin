@@ -78,3 +78,10 @@ export interface IGetTpIdData {
 	id: number
 	tpName: string
 }
+
+export interface ISlotTpData {
+	tpId: number
+	tpName: string
+	gameList: null
+	checked: boolean
+}
