@@ -12,6 +12,7 @@ import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
 import React from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
+import { useQueryParams } from 'common/hooks'
 
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
@@ -29,6 +30,8 @@ const WithdrawalRequestMemberInfo = ({
 	onDeviceCountClick,
 }: IWithdrawalRequestMemberInfoProps) => {
 	const { t } = useTranslation()
+	const [queryParams] = useQueryParams()
+
 	const {
 		currency,
 		custId,
@@ -80,6 +83,7 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_NewestBonusClaimed')}>{description}</Item>
 				<Item label={t('Label_MemberId')}>
 					<Typography.Link
+						disabled={queryParams?.isAllSite}
 						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 						target='_blank'
 					>

@@ -28,6 +28,7 @@ import moment from 'moment/moment'
 import { Dispatch, SetStateAction } from 'react'
 
 interface IWithdrawalOperatorFilterProps {
+	isAllSite: boolean
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	collapseActiveKey: number
@@ -63,6 +64,7 @@ const initialDateRange = [
 ]
 
 const WithdrawalOperatorFilter = ({
+	isAllSite,
 	loading,
 	form,
 	collapseActiveKey,
@@ -137,6 +139,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='currencyIds' label={t('Label_Currency')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
@@ -198,6 +201,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='levelStatuses' label={t('Label_VipLevel')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeLevel}
 					placeholder={t('Label_Select')}
 				>
@@ -230,6 +234,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='selectCalCode' label={t('Label_CalCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeCalCode}
 					placeholder={`${t('Label_Select')} ${t('Label_CalCode')}`}
 				>
@@ -263,6 +268,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='selectBankCode' label={t('Label_BankCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeBankCode}
 					placeholder={`${t('Label_Select')}  ${t('Label_BankCode')}`}
 				>
@@ -341,6 +347,16 @@ const WithdrawalOperatorFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
+							{/* 暫時隱藏，等待後端準備好再開啟 */}
+							{/* <Col>
+								<Form.Item
+									name='isAllSite'
+									label='Site'
+									valuePropName='checked'
+								>
+									<Checkbox>{t('Label_AllSite')}</Checkbox>
+								</Form.Item>
+							</Col> */}
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
@@ -354,7 +370,7 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='withdrawalMethod' label={t('Label_Method')}>
-									<Select placeholder={t('Label_Select')}>
+									<Select disabled={isAllSite} placeholder={t('Label_Select')}>
 										{withdrawalMethodList?.map(({ name, value }) => (
 											<Option key={value} value={value}>
 												{name}
@@ -368,12 +384,12 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='withdrawalId' label={t('Label_WithdrawalId')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
@@ -384,6 +400,7 @@ const WithdrawalOperatorFilter = ({
 									>
 										<Form.Item noStyle name='startAmount'>
 											<InputNumber
+												disabled={isAllSite}
 												controls={false}
 												type='number'
 												style={{ width: '45%', textAlign: 'center' }}
@@ -403,6 +420,7 @@ const WithdrawalOperatorFilter = ({
 										/>
 										<Form.Item noStyle name='endAmount'>
 											<InputNumber
+												disabled={isAllSite}
 												controls={false}
 												type='number'
 												style={{
@@ -418,7 +436,7 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>

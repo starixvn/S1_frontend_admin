@@ -140,7 +140,7 @@ const Statement = () => {
 			filterForm.setFieldsValue({
 				selDate: settledDate,
 			})
-			// setTableState(prev => prev + 1)
+			setTableState(prev => prev + 1)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')

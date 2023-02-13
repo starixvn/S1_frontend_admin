@@ -1026,5 +1026,6 @@
 	"Label_NewsId": "News ID",
 	"Label_Language": "Language",
 	"Label_LangId": "LangId",
-	"Label_Exclude": "exclude"
+	"Label_Exclude": "exclude",
+	"Label_AllSite": "All Site"
 }
