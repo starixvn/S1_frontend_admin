@@ -1025,5 +1025,6 @@
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
 	"Label_Language": "Language",
-	"Label_LangId": "LangId"
+	"Label_LangId": "LangId",
+	"Label_Exclude": "exclude"
 }
