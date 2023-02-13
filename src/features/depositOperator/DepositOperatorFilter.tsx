@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction } from 'react'
 import moment from 'moment'
 import {
 	Button,
-	Checkbox,
 	Col,
 	Collapse,
 	DatePicker,
@@ -339,7 +338,8 @@ const DepositOperatorFilter = ({
 										</Input.Group>
 									</Form.Item>
 								</Col>
-								<Col>
+								{/* 暫時隱藏，等待後端準備好再開啟 */}
+								{/* <Col>
 									<Form.Item
 										name='isAllSite'
 										label='Site'
@@ -347,7 +347,7 @@ const DepositOperatorFilter = ({
 									>
 										<Checkbox>{t('Label_AllSite')}</Checkbox>
 									</Form.Item>
-								</Col>
+								</Col> */}
 							</Row>
 
 							<Row align='middle' gutter={16}>
