@@ -28,6 +28,7 @@ import {
 } from 'features/depositOperator/constants'
 
 interface IDepositOperatorTableProps {
+	isAllSite: boolean
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositOperatorList: IDepositOperatorData[]
@@ -40,6 +41,7 @@ interface IDepositOperatorTableProps {
 }
 
 const DepositOperatorTable = ({
+	isAllSite,
 	loading,
 	timeZoneUtcOffset,
 	depositOperatorList,
@@ -57,8 +59,16 @@ const DepositOperatorTable = ({
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ transId }: IDepositOperatorData) => (
-				<Link to={transId}>{transId}</Link>
+				<Link to={isAllSite ? `${transId}?isAllSite=${isAllSite}` : transId}>
+					{transId}
+				</Link>
 			),
+		},
+		{
+			title: t('Label_SiteName'),
+			dataIndex: 'siteName',
+			width: 80,
+			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Operator'),
@@ -284,7 +294,7 @@ const DepositOperatorTable = ({
 		},
 	]
 
-	const columns = onGetVisibilityColumns(baseColumns)
+	const columns = onGetVisibilityColumns(baseColumns as any)
 
 	// * for selection and operation of table
 	const dataSource = depositOperatorList.map(item => ({

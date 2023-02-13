@@ -3,6 +3,8 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { ICurrencyAmountRecordData } from 'features/paymentAdjustment/type'
 import { UploadFile } from 'antd/es/upload/interface'
 
+export const AllSiteId = 0
+
 export interface IExportWithdrawalListArgs {
 	startDate: string
 	endDate: string
@@ -108,6 +110,7 @@ export interface IWithdrawalCommentData {
 }
 
 export type IFilterForm = {
+	isAllSite: boolean
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string
 	currencyIds: number[]

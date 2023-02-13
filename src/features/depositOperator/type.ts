@@ -2,6 +2,8 @@ import { Key } from 'react'
 import { Moment } from 'moment'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
+export const AllSiteId = 0
+
 export enum DepositStatusEnum {
 	Draft = 0,
 	Pending,
@@ -163,6 +165,7 @@ export interface IForm {
 	agent: string
 	depositId: string
 	selectCalCode: number[]
+	isAllSite: boolean
 }
 
 export interface IBatchRejectedDepositTransIdsArgs {
