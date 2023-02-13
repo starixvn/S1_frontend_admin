@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { VIP_LEVELS_COLOR } from 'features/depositOperator/constants'
 
 interface IWithdrawalOperatorTableProps {
+	isAllSite: boolean
 	loading: boolean
 	withdrawalList: IGetWithdrawalData[]
 	timeZoneUtcOffset: number
@@ -28,6 +29,7 @@ interface IWithdrawalOperatorTableProps {
 	onTableChange: (newPagination: TablePaginationConfig) => void
 }
 const WithdrawalOperatorTable = ({
+	isAllSite,
 	loading,
 	withdrawalList,
 	timeZoneUtcOffset,
@@ -45,7 +47,17 @@ const WithdrawalOperatorTable = ({
 			dataIndex: 'transId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (transId: string) => <Link to={transId}>{transId}</Link>,
+			render: (transId: string) => (
+				<Link to={isAllSite ? `${transId}?isAllSite=${isAllSite}` : transId}>
+					{transId}
+				</Link>
+			),
+		},
+		{
+			title: t('Label_SiteName'),
+			dataIndex: 'siteName',
+			width: 80,
+			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Operator'),
@@ -127,9 +139,11 @@ const WithdrawalOperatorTable = ({
 			align: 'center' as 'center',
 			render: (record: IGetWithdrawalData) => {
 				const { custId, userName } = record
+
 				return (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						disabled={isAllSite}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?`}
 						target='_blank'
 					>
 						{userName}

@@ -1019,5 +1019,6 @@
 	"Label_PostTime": "Post Time",
 	"Label_NewsInfo": "News Info",
 	"Label_ImageURL": "Image URL",
-	"Label_NewsId": "News ID"
+	"Label_NewsId": "News ID",
+	"Label_AllSite": "All Site"
 }
