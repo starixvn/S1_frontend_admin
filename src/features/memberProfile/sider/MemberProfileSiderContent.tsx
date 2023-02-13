@@ -57,6 +57,7 @@ const MemberProfileSiderContent = () => {
 		},
 		{
 			skip: !checkAccountName,
+			refetchOnMountOrArgChange: true,
 		}
 	)
 
