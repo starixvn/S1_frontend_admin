@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import moment from 'moment'
 import {
 	Button,
@@ -42,6 +42,7 @@ const initialDateRange = [
 
 interface IDepositOperatorFilterProps {
 	form: FormInstance<IForm>
+	collapseActiveKey: number
 	loading: boolean
 	enumLoading: boolean
 	currencyListBySite: Currency[]
@@ -62,10 +63,12 @@ interface IDepositOperatorFilterProps {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
+	setCollapseActiveKey: Dispatch<SetStateAction<number>>
 }
 
 const DepositOperatorFilter = ({
 	form,
+	collapseActiveKey,
 	loading,
 	enumLoading,
 	currencyListBySite,
@@ -78,8 +81,17 @@ const DepositOperatorFilter = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
+	setCollapseActiveKey,
 }: IDepositOperatorFilterProps) => {
 	const { t } = useTranslation()
+
+	const handleCollapse = (activeKey: number) => {
+		if (activeKey === 0) {
+			setCollapseActiveKey(() => 1)
+		} else {
+			setCollapseActiveKey(() => 0)
+		}
+	}
 
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
@@ -253,7 +265,12 @@ const DepositOperatorFilter = ({
 
 	return (
 		<Spin spinning={enumLoading}>
-			<Collapse defaultActiveKey={1}>
+			<Collapse
+				activeKey={collapseActiveKey}
+				onChange={() => {
+					handleCollapse(collapseActiveKey)
+				}}
+			>
 				<Panel header='' key='1'>
 					<LayoutContent.Card style={{ marginTop: 0 }}>
 						<Form
