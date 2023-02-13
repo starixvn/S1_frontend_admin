@@ -15,7 +15,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { filter, head, includes, isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -45,6 +45,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [queryParams, setQueryParams] = useQueryParams()
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
+	const [collapseActiveKey, setCollapseActiveKey] = useState<number>(1)
 
 	const [
 		getWithdrawalList,
@@ -151,6 +152,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				...restValue,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
+			setCollapseActiveKey(0)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -308,6 +310,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				isAllSite={formIsAllSite}
 				loading={filterLoading}
 				form={filterForm}
+				collapseActiveKey={collapseActiveKey}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				withdrawalMethodList={withdrawalMethodList}
 				withdrawalStatusList={withdrawalStatusList}
@@ -318,6 +321,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 				bankCodeList={filteredBankCodeListByCurrencyIds}
+				setCollapseActiveKey={setCollapseActiveKey}
 			/>
 			{!isEmpty(queryParams) && (
 				<WithdrawalOperatorTable
