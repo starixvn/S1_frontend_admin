@@ -1,6 +1,5 @@
 import {
 	Button,
-	Checkbox,
 	Col,
 	Collapse,
 	DatePicker,
@@ -348,7 +347,8 @@ const WithdrawalOperatorFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
-							<Col>
+							{/* 暫時隱藏，等待後端準備好再開啟 */}
+							{/* <Col>
 								<Form.Item
 									name='isAllSite'
 									label='Site'
@@ -356,7 +356,7 @@ const WithdrawalOperatorFilter = ({
 								>
 									<Checkbox>{t('Label_AllSite')}</Checkbox>
 								</Form.Item>
-							</Col>
+							</Col> */}
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
