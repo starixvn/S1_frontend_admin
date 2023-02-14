@@ -147,3 +147,12 @@ export interface IGetCryptoWalletArgs {
 }
 
 export type ICryptoWalletData = IBankInfoOffState
+
+export interface IGameCasinoByIdData {
+	gameCasinoId: number
+	tpId: number
+	gameId: string
+	name: string
+	cName: string
+	checked: boolean
+}
