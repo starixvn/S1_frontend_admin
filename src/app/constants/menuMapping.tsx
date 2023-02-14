@@ -475,11 +475,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 62,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.gameExclusion.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/DisableUserForGame',
 		internalFunctionKey: allowedRoles.CustManageDisableUserForGame,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.gameExclusion.root,
 	},
 	{
 		icon: null,

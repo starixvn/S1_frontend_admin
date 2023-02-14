@@ -1007,6 +1007,10 @@
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
+	"Label_DisableUserForGame": "Disable User For Game",
+	"Label_SelectedGames": "Selected Games",
+	"Label_GameExclusionConfirmMsg": "Please check result again !",
+	"Label_DisableGames": "Disable Games",
 	"Label_EditBetLimit": "Edit Bet Limit",
 	"Label_LimitGroup": "Limit Group",
 	"Label_TotalApprovedCount": "TotalApprovedCount",
@@ -1020,5 +1024,6 @@
 	"Label_NewsInfo": "News Info",
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
+	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site"
 }
