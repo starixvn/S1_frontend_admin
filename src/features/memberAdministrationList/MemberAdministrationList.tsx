@@ -85,6 +85,7 @@ const MemberAdministrationList = ({
 			currencyIds,
 			userName,
 			tpUserName,
+			excludeTag,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -101,6 +102,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
+				excludeTag: Boolean(excludeTag),
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -123,6 +125,7 @@ const MemberAdministrationList = ({
 				pageNumber: current,
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
+				excludeTag,
 			})
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -171,6 +174,7 @@ const MemberAdministrationList = ({
 			shieldLevel,
 			iovationLevel,
 			deviceId,
+			excludeTag,
 		} = queryParams
 
 		const args: IExportMemberArgs = {
@@ -200,6 +204,7 @@ const MemberAdministrationList = ({
 			startDate,
 			endDate,
 			exportTransferWallet: Boolean(exportTransferWallet),
+			excludeTag: Boolean(excludeTag),
 		}
 
 		try {
