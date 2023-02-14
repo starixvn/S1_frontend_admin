@@ -2363,6 +2363,22 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<GameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}/:custId`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<EditGameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
 				element: (
 					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>

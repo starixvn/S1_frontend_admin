@@ -14,8 +14,8 @@ import {
 	ILangCodesData,
 	IGetTpIdData,
 	IGetPaySettingListResponse,
-	ISlotTpData,
 	ITpListData,
+	ISlotTpData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
