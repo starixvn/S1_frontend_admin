@@ -19,7 +19,11 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { IBonusDetailForm, IFilterForm } from 'features/bonusInfo/type'
+import {
+	IBonusDetailForm,
+	IBonusInfoData,
+	IFilterForm,
+} from 'features/bonusInfo/type'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useEffect, useState } from 'react'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -161,7 +165,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleBonusInfoTableChange = async (
 		newPagination: TablePaginationConfig,
 		_: any,
-		sorter: SorterResult<IGetBetListData>
+		sorter: SorterResult<IBonusInfoData>
 	) => {
 		const {
 			current = PAGINATION.defaultCurrent,

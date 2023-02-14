@@ -3,17 +3,10 @@ import moment from 'moment/moment'
 import { PaginationInterface } from 'common/hooks'
 import { IBonusInfoData } from 'features/bonusInfo/type'
 import { useTranslation } from 'react-i18next'
-import { Table } from 'components'
-import {
-	TablePaginationConfig,
-	Typography,
-	Table as AntdTable,
-	Collapse,
-} from 'antd'
+import { TablePaginationConfig, Typography, Table, Collapse } from 'antd'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
 import { SorterResult } from 'antd/es/table/interface'
-import { IGetBetListData } from 'features/betList/type'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { PermissionInterface } from 'type'
 import { sumTotalObject } from 'common/utils'
@@ -29,13 +22,13 @@ interface IBonusInfoTableProps {
 	onTableChange: (
 		newPagination: TablePaginationConfig,
 		_: any,
-		sorter: SorterResult<IGetBetListData>
+		sorter: SorterResult<IBonusInfoData>
 	) => void
 	onExportClick: () => void
 	onClickBonusCode: (bonusCode: string) => void
 }
 
-const { Summary } = AntdTable
+const { Summary } = Table
 const { Panel } = Collapse
 
 const BonusInfoTable = ({
@@ -247,6 +240,8 @@ const BonusInfoTable = ({
 					loading={loading}
 					pagination={pagination as TablePaginationConfig}
 					dataSource={bonusInfo}
+					size='small'
+					bordered
 					// eslint-disable-next-line react/no-unstable-nested-components
 					summary={pageData => {
 						if (pageData.length <= 1) return null
