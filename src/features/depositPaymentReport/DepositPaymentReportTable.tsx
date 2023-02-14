@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { TablePaginationConfig, Typography } from 'antd'
+import { numberFormatter } from 'common/utils/format'
 import { PAGINATION } from 'common/hooks'
 import { Table } from 'components'
 
@@ -42,7 +43,8 @@ const DepositPaymentReportTable = ({
 			dataIndex: 'totalDepositAmount',
 			width: '15%',
 			align: 'center' as 'center',
-			render: (totalDepositAmount: number) => totalDepositAmount ?? 'N/A',
+			render: (totalDepositAmount: number) =>
+				numberFormatter.format(totalDepositAmount) ?? 'N/A',
 		},
 		{
 			title: t('Label_AverageDepositTime'),
@@ -50,7 +52,8 @@ const DepositPaymentReportTable = ({
 			dataIndex: 'averageDepositAmount',
 			align: 'center' as 'center',
 			width: '15%',
-			render: (averageDepositAmount: number) => averageDepositAmount ?? 'N/A',
+			render: (averageDepositAmount: number) =>
+				numberFormatter.format(averageDepositAmount) ?? 'N/A',
 		},
 		{
 			title: t('Label_FirstDepositCount'),
