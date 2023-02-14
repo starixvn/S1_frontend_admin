@@ -445,6 +445,10 @@ const paths = {
 				root: 'member/shieldTaggingReport',
 				functionId: 137,
 			},
+			iovation: {
+				root: 'member/iovation',
+				functionId: 138,
+			},
 		},
 	},
 	risk: {
