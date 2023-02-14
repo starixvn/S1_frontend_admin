@@ -524,11 +524,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 68,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.videoManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/LatestHighlightVideoManagement',
 		internalFunctionKey: allowedRoles.CMSLatestHighlightVideoManagement,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.videoManagement.root,
 	},
 
 	{
@@ -894,5 +894,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
 		pathMode: 'Internal',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.member.sub.iovation.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.iovation.root,
 	},
 ]
