@@ -380,7 +380,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.pointLevelManagement.functionId,
 		internalFunctionKey: allowedRoles.MarketingPointLevelManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/pointLevelManagement',
 		newAdminPath: paths.marketing.sub.pointLevelManagement.root,
 	},
@@ -892,7 +892,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
 	},
 	{
