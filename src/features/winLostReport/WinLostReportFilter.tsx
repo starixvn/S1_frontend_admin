@@ -17,7 +17,12 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import { dateTypeList, groupByList } from 'features/winLostReport/constants'
+import {
+	DateTypeEnum,
+	dateTypeList,
+	GroupByEnum,
+	groupByList,
+} from 'features/winLostReport/constants'
 import { Currency } from 'common/enum/type'
 import { IGetTpGameTypeData } from 'features/bettingMonitorSetting/type'
 import { MultipleSelect } from 'components/Select'
@@ -126,8 +131,8 @@ const WinLostReportFilter = ({
 						form={form}
 						onFinish={onSearch}
 						initialValues={{
-							dateType: dateTypeList[0].value,
-							groupBy: groupByList[0].value,
+							dateType: DateTypeEnum.SettledDate,
+							groupBy: GroupByEnum.Date,
 							currencyIds: currencyListBySite?.map(
 								({ currencyId }) => currencyId
 							),
@@ -283,24 +288,33 @@ const WinLostReportFilter = ({
 								</Form.Item>
 							</Col>
 						</Row>
-						<Collapse accordion ghost defaultActiveKey={['2']}>
-							<Panel header={t('Label_GroupBy')} key='2'>
-								<Row align='middle' gutter={16}>
-									<Col>
-										<Form.Item name='groupBy' style={{ margin: 0 }}>
-											<Radio.Group>
-												{groupByList?.map(({ value, displayName }) => (
-													<Radio key={value} value={value}>
-														{t(displayName)}
-													</Radio>
-												))}
-											</Radio.Group>
-										</Form.Item>
-									</Col>
-								</Row>
-							</Panel>
-						</Collapse>
-						<Row justify='end' align='middle'>
+						<Row align='middle' gutter={16} style={{ marginTop: '10px' }}>
+							<Col>
+								<Form.Item
+									name='groupBy'
+									label={t('Label_GroupBy')}
+									style={{ margin: 0 }}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_GroupBy'),
+											}),
+										},
+									]}
+								>
+									<Radio.Group>
+										{groupByList?.map(({ value, displayName }) => (
+											<Radio key={value} value={value}>
+												{t(displayName)}
+											</Radio>
+										))}
+									</Radio.Group>
+								</Form.Item>
+							</Col>
+						</Row>
+
+						<Row justify='end' align='middle' style={{ marginTop: '20px' }}>
 							<Col>
 								<Button
 									loading={loading}

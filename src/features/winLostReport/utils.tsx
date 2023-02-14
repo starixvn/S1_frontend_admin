@@ -17,28 +17,32 @@ export const winLossReportConverter = (
 		return []
 	}
 	const cloneWinLossReport = cloneDeep(winLossReport)
-	cloneWinLossReport.forEach(item => {
+	cloneWinLossReport.forEach((item, key) => {
 		const { displayKey, children } = item
-		Object.assign(item, { key: uuidV4() })
+		Object.assign(item, { key: !haveDetail ? uuidV4() : `${key}${displayKey}` })
 		if (displayKey === 'total') {
 			delete item.children
 		} else {
-			children?.forEach((childItem: any) => {
-				const { data } = childItem
-				Object.assign(
-					childItem,
-					!haveDetail
-						? {
-								...data,
-								key: uuidV4(),
-						  }
-						: {
-								...data,
-								key: uuidV4(),
-								children: [],
-						  }
-				)
-				delete childItem.data
+			children?.forEach((childItem: any, childKey: number) => {
+				const { data, displayKey: childDisplayKey } = childItem
+				if (displayKey === childDisplayKey) {
+					delete item.children
+				} else {
+					Object.assign(
+						childItem,
+						!haveDetail
+							? {
+									...data,
+									key: uuidV4(),
+							  }
+							: {
+									...data,
+									key: `${key}${childKey}${data.userName}`,
+									children: [],
+							  }
+					)
+					delete childItem.data
+				}
 			})
 		}
 	})
@@ -62,7 +66,7 @@ export const tableColumnConverter = (tableList: object[]) => {
 			width: 150,
 			fixed: true,
 			render: (displayKey: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+				<Typography.Text style={{ whiteSpace: 'nowrap' }} ellipsis>
 					{displayKey ?? '-'}
 				</Typography.Text>
 			),
@@ -76,19 +80,14 @@ export const tableColumnConverter = (tableList: object[]) => {
 				dataIndex,
 				align: 'right' as AlignType,
 				sorter: true,
-				width: 70,
+				width: 80,
 				render: (data: number | string) =>
 					Number(data) ? (
-						<Typography.Text
-							type={isPositiveNum(data) ? undefined : 'danger'}
-							style={{ whiteSpace: 'nowrap', padding: '5px' }}
-						>
+						<Typography.Text type={isPositiveNum(data) ? undefined : 'danger'}>
 							{numFormatToDigits(Number(data) || 0)}
 						</Typography.Text>
 					) : (
-						<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-							{data ?? '-'}
-						</Typography.Text>
+						<Typography.Text>{data ?? '-'}</Typography.Text>
 					),
 			}
 		})

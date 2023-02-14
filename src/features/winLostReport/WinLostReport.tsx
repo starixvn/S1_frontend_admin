@@ -289,8 +289,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId: querySiteId,
 				starTime,
 				endTime,
-				tpGameTypes,
-				currencyIds,
+				tpGameTypes = [],
+				currencyIds = [],
 				userName,
 				orderBy,
 				orderByProperty,
@@ -428,9 +428,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId: querySiteId,
 				starTime,
 				endTime,
-				tpGameTypes,
-				currencyIds,
-				userName,
+				tpGameTypes = [],
+				currencyIds = [],
 				orderBy,
 				orderByProperty,
 				orderByDirection,
@@ -449,7 +448,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						Number(tpGameType)
 					),
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
-					userName: userName ?? '',
+					userName: record?.userName ?? '',
 					orderBy: Boolean(orderBy),
 					orderByProperty: orderByProperty ?? '',
 					orderByDirection: Number(orderByDirection ?? 0),
@@ -461,10 +460,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				}
 				const { data: { data: detailList = [] } = {} } =
 					await getWinLossByPlayerDetail(args)
-
 				const list = winLossReportConverter(
 					detailList,
-					GroupByEnum.Player === groupBy
+					GroupByEnum.Player === Number(groupBy)
 				)
 
 				tableList?.forEach(({ children }: any) => {
@@ -475,11 +473,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					})
 				})
 
-				const mergedList = winLossReportConverter(
-					tableList ?? [],
-					GroupByEnum.Player === groupBy
-				)
-				setTableList(mergedList)
+				setTableList(tableList)
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -500,9 +494,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					starTime,
 					endTime,
 					timeZone,
-					currencyIds,
+					currencyIds = [],
 					baseCurrencyId,
-					tpGameTypes,
+					tpGameTypes = [],
 					userName,
 					includeFreeSpins,
 					noDraw,
