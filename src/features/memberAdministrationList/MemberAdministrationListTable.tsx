@@ -101,11 +101,13 @@ const MemberAdministrationListTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (tagList: number[]) =>
-				map(tagList, tagId => (
-					<Tag color='blue'>
-						{find(allTagEnums, { id: tagId })?.tagName ?? tagId}
-					</Tag>
-				)),
+				map(tagList, tagId =>
+					find(allTagEnums, { id: tagId }) ? (
+						<Tag color='blue'>{find(allTagEnums, { id: tagId })?.tagName}</Tag>
+					) : (
+						''
+					)
+				),
 		},
 		{
 			title: t('Label_DeviceScore'),
