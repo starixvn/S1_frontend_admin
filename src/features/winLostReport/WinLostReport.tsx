@@ -36,7 +36,7 @@ import { useAppSelector } from 'app/store'
 import { PAGINATION, useAuth, useQueryParams } from 'common/hooks'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { isEmpty } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 
@@ -465,7 +465,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					GroupByEnum.Player === Number(groupBy)
 				)
 
-				tableList?.forEach(({ children }: any) => {
+				const cloneTableList = cloneDeep(tableList)
+				cloneTableList?.forEach(({ children }: any) => {
 					children?.forEach(({ key, children: subChildren }: any) => {
 						if (key === record.key) {
 							subChildren.push(...list)
@@ -473,7 +474,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					})
 				})
 
-				setTableList(tableList)
+				setTableList(cloneTableList)
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')

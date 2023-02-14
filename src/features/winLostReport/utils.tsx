@@ -18,8 +18,10 @@ export const winLossReportConverter = (
 	}
 	const cloneWinLossReport = cloneDeep(winLossReport)
 	cloneWinLossReport.forEach((item, key) => {
-		const { displayKey, children } = item
-		Object.assign(item, { key: !haveDetail ? uuidV4() : `${key}${displayKey}` })
+		const { displayKey, sabaId, children } = item
+		Object.assign(item, {
+			key: !haveDetail ? uuidV4() : `${key}${displayKey}${sabaId}`,
+		})
 		if (displayKey === 'total') {
 			delete item.children
 		} else {
