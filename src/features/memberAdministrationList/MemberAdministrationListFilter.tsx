@@ -2,6 +2,7 @@ import React from 'react'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
 	Button,
+	Checkbox,
 	Col,
 	Collapse,
 	DatePicker,
@@ -147,22 +148,40 @@ const MemberAdministrationListFilter = ({
 			}
 		}
 		return (
-			<Form.Item name='tags' label={t('Label_Tags')}>
-				<MultipleSelect
-					onChange={handleChangeTags}
-					placeholder={t('Label_Select') + t('Label_Tags')}
+			<>
+				<Form.Item
+					name='tags'
+					label={t('Label_Tags')}
+					style={{ width: '100%' }}
 				>
-					{(allTagEnums?.length as number) > 1 && (
-						<Option value={0}>{t('Label_SelectAll')}</Option>
-					)}
+					<MultipleSelect
+						onChange={handleChangeTags}
+						placeholder={t('Label_Select') + t('Label_Tags')}
+					>
+						{(allTagEnums?.length as number) > 1 && (
+							<Option value={0}>{t('Label_SelectAll')}</Option>
+						)}
 
-					{allTagEnums?.map(({ id, tagName }) => (
-						<Option key={id} value={id}>
-							{tagName}
-						</Option>
-					))}
-				</MultipleSelect>
-			</Form.Item>
+						{allTagEnums?.map(({ id, tagName }) => (
+							<Option key={id} value={id}>
+								{tagName}
+							</Option>
+						))}
+					</MultipleSelect>
+				</Form.Item>
+				<Form.Item
+					initialValue={false}
+					name='excludeTag'
+					valuePropName='checked'
+					style={{
+						position: 'absolute',
+						right: '0',
+						top: '-5px',
+					}}
+				>
+					<Checkbox>{t('Label_Exclude')}</Checkbox>
+				</Form.Item>
+			</>
 		)
 	}
 

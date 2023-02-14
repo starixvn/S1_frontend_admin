@@ -65,6 +65,7 @@ export interface IGetMemberListArgs {
 	endDate: string
 	pageNumber: number
 	pageSize: number
+	excludeTag: boolean
 }
 
 export interface IMemberData {
@@ -135,6 +136,7 @@ export interface IExportMemberArgs {
 	startDate: '2022-10-05T09:00:01+08:00'
 	endDate: '2022-10-05T09:00:01+08:00'
 	exportTransferWallet: boolean
+	excludeTag: boolean
 }
 
 export interface IForm {
@@ -160,4 +162,5 @@ export interface IForm {
 	deviceId: null | string
 	exportTransferWallet: boolean | number
 	userType: UserTypeEnum
+	excludeTag: boolean
 }
