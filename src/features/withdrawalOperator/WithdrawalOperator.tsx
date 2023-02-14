@@ -173,7 +173,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		const {
 			startDate,
 			endDate,
-			siteId: querySiteId,
 			startAmount,
 			endAmount,
 			userName = '',
@@ -192,7 +191,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportWithdrawalList({
 				startDate,
 				endDate,
-				siteId: Number(querySiteId),
+				siteId,
 				startAmount: Number(startAmount) || -1,
 				endAmount: Number(endAmount) || -1,
 				userName,
