@@ -53,7 +53,7 @@ const BankCardManagement: FC<{
 	const [filterForm] = Form.useForm<{
 		purposes: Array<number | string>
 		statuses: number[]
-		sysIds: number[]
+		sysIds: Array<number | string>
 		vipLevels: Array<number | string>
 		pointLevels: Array<number | string>
 		supportChannels: Array<number | string>
@@ -154,6 +154,7 @@ const BankCardManagement: FC<{
 			pointLevels: rawPointLevels,
 			vipLevels: rawVipLevels,
 			supportChannels: rawSupportChannels,
+			sysIds: rawSySIds,
 			...args
 		} = filterForm.getFieldsValue()
 
@@ -174,6 +175,9 @@ const BankCardManagement: FC<{
 			? []
 			: rawSupportChannels.map(channel => Number(channel))
 
+		const sysIds = rawSySIds.includes('all')
+			? []
+			: rawSySIds.map(id => Number(id))
 		try {
 			await getBankCardList({
 				siteId,
@@ -182,6 +186,7 @@ const BankCardManagement: FC<{
 				vipLevels,
 				pointLevels,
 				supportChannels,
+				sysIds,
 				pageNumber: current,
 				pageSize,
 				...args,
@@ -193,6 +198,7 @@ const BankCardManagement: FC<{
 				vipLevels,
 				pointLevels,
 				supportChannels,
+				sysIds,
 				pageNumber: current,
 				pageSize,
 				...args,
@@ -324,7 +330,7 @@ const BankCardManagement: FC<{
 					? purposes.map((purpose: string) => Number(purpose))
 					: ['all'],
 				statuses: statuses?.map((status: string) => Number(status)),
-				sysIds: sysIds?.map((sysId: string) => Number(sysId)),
+				sysIds: sysIds ? sysIds.map((sysId: string) => Number(sysId)) : ['all'],
 				vipLevels: vipLevels
 					? vipLevels.map((vipLevel: string) => Number(vipLevel))
 					: ['all'],
@@ -348,12 +354,12 @@ const BankCardManagement: FC<{
 		const isLoading = isGetPointLevelLoading || isGetBankInfoLoading
 		if (!isLoading && isEmpty(withOutSiteIdParams(queryParams))) {
 			filterForm.setFieldsValue({
-				sysIds: bankInfoList?.map(bank => bank.sysId),
 				purposes: ['all'],
 				statuses: statusEnumList?.map(status => status.value),
 				vipLevels: ['all'],
 				pointLevels: ['all'],
 				supportChannels: ['all'],
+				sysIds: ['all'],
 			})
 		}
 	}, [isGetPointLevelLoading, isGetBankInfoLoading])
