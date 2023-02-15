@@ -553,7 +553,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.bonusInfoReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingRebateInfoReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/RebateInfoReport',
 		newAdminPath: paths.report.sub.bonusInfoReport.root,
 	},
