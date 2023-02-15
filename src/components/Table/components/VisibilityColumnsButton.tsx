@@ -66,9 +66,10 @@ const VisibilityColumnsButton = ({
 
 		if (isQueryKey) {
 			const args = queryParams
+			result = filter(visibilityColumns, item => item !== key)
 			setQueryParams({
 				...args,
-				visibilityColumns,
+				visibilityColumns: result,
 			})
 		}
 	}
@@ -92,6 +93,8 @@ const VisibilityColumnsButton = ({
 			handleInit()
 		}
 	}, [])
+	// const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
+	// console.log(queryVisibilityColumns)
 
 	const menuItems: ItemType[] = baseColumns.map(column => ({
 		key: column.title,

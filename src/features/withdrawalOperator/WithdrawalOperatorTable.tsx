@@ -302,6 +302,7 @@ const WithdrawalOperatorTable = ({
 						<VisibilityColumnsButton
 							baseColumns={baseColumns}
 							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+							isQueryKey
 						/>
 					</Space>
 				)}
