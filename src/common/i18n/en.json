@@ -560,7 +560,8 @@
 		"Label_Canceled": "Canceled",
 		"Label_Expiry": "Expiry",
 		"Label_Reached": "Reached",
-		"Label_TransferOut": "Transfer Out"
+		"Label_TransferOut": "Transfer Out",
+		"Label_Fulfill": "Full Fill"
 	},
 	"Label_BaseCurrencyShow": "Base Currency Show",
 	"Label_ReferenceId": "Reference ID",
