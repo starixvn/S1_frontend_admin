@@ -31,12 +31,12 @@ export const useVisibilityColumnsButtonHook = () => {
 const VisibilityColumnsButton = ({
 	baseColumns,
 	onTableVisibilityColumnsChange,
-	isQueryKey,
+	memoried,
 }: {
 	baseColumns: any[]
 	onTableVisibilityColumnsChange: (keys: any[]) => void
 	// 用於判斷是否需要記住前值
-	isQueryKey?: boolean
+	memoried?: boolean
 }) => {
 	const ref = useRef(null)
 	const { t } = useTranslation()
@@ -65,7 +65,7 @@ const VisibilityColumnsButton = ({
 		setVisibilityColumns(result)
 		onTableVisibilityColumnsChange(result)
 
-		if (isQueryKey) {
+		if (memoried) {
 			const args = queryParams
 			result = filter(visibilityColumns, item => item !== key)
 			setQueryParams({
