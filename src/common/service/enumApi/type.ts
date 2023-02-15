@@ -54,9 +54,11 @@ export type EnumNameType =
 	| 'LangType'
 	| 'IovationDeviceType'
 	| 'NewsStatusEnum'
-	| 'LangType'
 	| 'VipStatus'
-	| 'IovationDeviceType'
+	| 'PromotionStatusEnum'
+	| 'BonusSummaryType'
+	| 'BonusInfoStatusEnum'
+	| 'BonusSummaryTransactionType'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -102,9 +104,11 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
-	 * @argument {string}  LangType - 取得 LangType 列表
+	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表
+	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
+	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
+	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
 	 * @argument {string}  VipStatus - 取得Vip狀態列表
-	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 */
 	enumName: EnumNameType
 }
