@@ -13,9 +13,12 @@ import {
 import { PermissionInterface } from 'type'
 import { PaginationInterface } from 'common/hooks'
 import { SorterResult } from 'antd/es/table/interface'
-import { IGetBetListData } from 'features/betList/type'
 import { Table } from 'components'
-import { IBonusDetailForm, IBonusDetailListData } from 'features/bonusInfo/type'
+import {
+	IBonusDetailForm,
+	IBonusDetailListData,
+	IBonusInfoData,
+} from 'features/bonusInfo/type'
 import { find } from 'lodash'
 import moment from 'moment'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
@@ -36,7 +39,7 @@ interface IBonusDetailTableProps {
 	onTableChange: (
 		newPagination: TablePaginationConfig,
 		_: any,
-		sorter: SorterResult<IGetBetListData>
+		sorter: SorterResult<IBonusInfoData>
 	) => void
 	onExportClick: () => void
 }

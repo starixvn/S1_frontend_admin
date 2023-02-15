@@ -24,14 +24,14 @@ import {
 	IBonusInfoData,
 	IFilterForm,
 } from 'features/bonusInfo/type'
-import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useEffect, useState } from 'react'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { GroupByEnum } from 'features/bonusInfo/constants'
 import { isEmpty, uniq } from 'lodash'
 import { BonusInfoTable } from 'features/bonusInfo/BonusInfoTable'
 import { SorterResult } from 'antd/es/table/interface'
-import { IGetBetListData, OrderByTypeEnum } from 'features/betList/type'
+import { OrderByTypeEnum } from 'features/betList/type'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { BonusDetailTable } from 'features/bonusInfo/BonusDetailTable'
 import { AffixButtons } from 'components/AffixButtons'
@@ -64,24 +64,25 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	})
 
 	const {
-		data: { data: bonusStatusList = [] } = {} as IEnumTypeResponse,
+		data: { data: bonusStatusList = [] } = {},
 		isLoading: isGetBonusStatusListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'PromotionStatusEnum' })
 
 	const {
-		data: { data: bonusTypeList = [] } = {} as IEnumTypeResponse,
+		data: { data: bonusTypeList = [] } = {},
 		isLoading: isGetBonusTypeListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BonusSummaryType' })
 
 	// Bonus Info
 	const {
-		data: { data: claimStatusList = [] } = {} as IEnumTypeResponse,
+		data: { data: claimStatusList = [] } = {},
 		isLoading: isGetClaimStatusListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BonusInfoStatusEnum' })
 
 	// TransactionType
-	const { data: { data: transactionTypeList = [] } = {} as IEnumTypeResponse } =
-		useGetEnumTypeQuery({ enumName: 'BonusSummaryTransactionType' })
+	const { data: { data: transactionTypeList = [] } = {} } = useGetEnumTypeQuery(
+		{ enumName: 'BonusSummaryTransactionType' }
+	)
 
 	const [exportBonusInfo, { isLoading: isExportBonusInfoLoading }] =
 		useExportBonusInfoMutation()
@@ -216,10 +217,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportBonusInfo({
 				siteId,
 				bonusCode,
-				bonusTypes: bonusTypes.map((value: string) => Number(value)),
-				bonusStatus: bonusStatus.map((value: string) => Number(value)),
 				startDate,
 				endDate,
+				bonusTypes: bonusTypes.map((value: string) => Number(value)),
+				bonusStatus: bonusStatus.map((value: string) => Number(value)),
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				baseCurrencyId: Number(baseCurrencyId),
@@ -302,7 +303,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleBonusDetailTableChange = async (
 		newPagination: TablePaginationConfig,
 		_: any,
-		sorter: SorterResult<IGetBetListData>
+		sorter: SorterResult<IBonusInfoData>
 	) => {
 		const { bonusCode } = bonusDetailForm.getFieldsValue()
 		const {
@@ -345,12 +346,12 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId,
 				startDate,
 				endDate,
-				claimStatuses: claimStatuses.map((value: string) => Number(value)),
-				currencyIds: currencyIds.map((value: string) => Number(value)),
-				baseCurrencyId: Number(baseCurrencyId),
 				orderBy: true,
 				orderByProperty,
 				orderByDirection,
+				baseCurrencyId: Number(baseCurrencyId),
+				claimStatuses: claimStatuses.map((value: string) => Number(value)),
+				currencyIds: currencyIds.map((value: string) => Number(value)),
 			}).unwrap()
 			download(
 				blob,
@@ -395,17 +396,17 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startDate), moment(endDate)],
 					bonusCode,
+					orderBy: !!orderBy,
+					orderByProperty,
+					groupBy: isGroupByDate ? GroupByEnum.Date : GroupByEnum.BonusCode,
+					orderByDirection: Number(orderByDirection),
+					baseCurrencyId: Number(baseCurrencyId),
+					dateRange: [moment(startDate), moment(endDate)],
 					bonusTypes: bonusTypes.map((value: string) => Number(value)),
 					bonusStatus: bonusStatus.map((value: string) => Number(value)),
 					claimStatuses: claimStatuses.map((value: string) => Number(value)),
 					currencyIds: currencyIds.map((value: string) => Number(value)),
-					baseCurrencyId: Number(baseCurrencyId),
-					groupBy: isGroupByDate ? GroupByEnum.Date : GroupByEnum.BonusCode,
-					orderBy: !!orderBy,
-					orderByProperty,
-					orderByDirection: Number(orderByDirection),
 				})
 
 				handleSearch({
