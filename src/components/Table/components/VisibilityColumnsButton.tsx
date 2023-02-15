@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Dropdown, Menu, MenuProps } from 'antd'
-import { filter, includes } from 'lodash'
+import { filter, includes, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useScrollPosition } from 'common/hooks'
+import { useScrollPosition, useQueryParams } from 'common/hooks'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { ColumnsType } from 'antd/es/table'
 
@@ -31,12 +31,15 @@ export const useVisibilityColumnsButtonHook = () => {
 const VisibilityColumnsButton = ({
 	baseColumns,
 	onTableVisibilityColumnsChange,
+	isQueryKey,
 }: {
 	baseColumns: any[]
 	onTableVisibilityColumnsChange: (keys: any[]) => void
+	isQueryKey?: boolean
 }) => {
 	const ref = useRef(null)
 	const { t } = useTranslation()
+	const [queryParams, setQueryParams] = useQueryParams()
 	const scrollPosition = useScrollPosition()
 	const [isVisible, setIsVisible] = useState(false)
 	const [visibilityColumns, setVisibilityColumns] = useState<string[]>([])
@@ -60,6 +63,14 @@ const VisibilityColumnsButton = ({
 
 		setVisibilityColumns(result)
 		onTableVisibilityColumnsChange(result)
+
+		if (isQueryKey) {
+			const args = queryParams
+			setQueryParams({
+				...args,
+				visibilityColumns,
+			})
+		}
 	}
 
 	const handleInit = () => {
@@ -73,7 +84,13 @@ const VisibilityColumnsButton = ({
 	}, [scrollPosition])
 
 	useEffect(() => {
-		handleInit()
+		const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
+		if (!isEmpty(queryVisibilityColumns)) {
+			setVisibilityColumns(queryVisibilityColumns)
+			onTableVisibilityColumnsChange(queryVisibilityColumns)
+		} else {
+			handleInit()
+		}
 	}, [])
 
 	const menuItems: ItemType[] = baseColumns.map(column => ({

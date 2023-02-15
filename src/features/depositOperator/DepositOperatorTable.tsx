@@ -318,6 +318,7 @@ const DepositOperatorTable = ({
 						<VisibilityColumnsButton
 							baseColumns={baseColumns}
 							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+							isQueryKey
 						/>
 					</Space>
 				)}
