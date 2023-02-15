@@ -35,6 +35,7 @@ const VisibilityColumnsButton = ({
 }: {
 	baseColumns: any[]
 	onTableVisibilityColumnsChange: (keys: any[]) => void
+	// 用於判斷是否需要記住前值
 	isQueryKey?: boolean
 }) => {
 	const ref = useRef(null)
@@ -93,8 +94,6 @@ const VisibilityColumnsButton = ({
 			handleInit()
 		}
 	}, [])
-	// const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
-	// console.log(queryVisibilityColumns)
 
 	const menuItems: ItemType[] = baseColumns.map(column => ({
 		key: column.title,
