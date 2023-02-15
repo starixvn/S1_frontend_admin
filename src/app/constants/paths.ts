@@ -102,6 +102,7 @@ const paths = {
 			},
 			videoManagement: {
 				root: 'csd/videoManagement',
+				functionId: 68,
 			},
 			domainManage: {
 				root: 'csd/domainManage',
@@ -448,6 +449,10 @@ const paths = {
 			shieldTaggingReport: {
 				root: 'member/shieldTaggingReport',
 				functionId: 137,
+			},
+			iovation: {
+				root: 'member/iovation',
+				functionId: 138,
 			},
 		},
 	},

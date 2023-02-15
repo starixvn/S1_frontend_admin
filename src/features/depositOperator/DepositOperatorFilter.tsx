@@ -339,6 +339,7 @@ const DepositOperatorFilter = ({
 										</Input.Group>
 									</Form.Item>
 								</Col>
+
 								<Col>
 									<Form.Item
 										name='isAllSite'

@@ -152,7 +152,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				...restValue,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setCollapseActiveKey(0)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -173,7 +172,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		const {
 			startDate,
 			endDate,
-			siteId: querySiteId,
 			startAmount,
 			endAmount,
 			userName = '',
@@ -192,7 +190,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportWithdrawalList({
 				startDate,
 				endDate,
-				siteId: Number(querySiteId),
+				siteId,
 				startAmount: Number(startAmount) || -1,
 				endAmount: Number(endAmount) || -1,
 				userName,
@@ -232,6 +230,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (!filterLoading && !isEmpty(queryParams)) {
+			setCollapseActiveKey(0)
 			// init Query
 			const {
 				isAllSite = false,

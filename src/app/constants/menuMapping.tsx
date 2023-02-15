@@ -380,7 +380,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.pointLevelManagement.functionId,
 		internalFunctionKey: allowedRoles.MarketingPointLevelManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/pointLevelManagement',
 		newAdminPath: paths.marketing.sub.pointLevelManagement.root,
 	},
@@ -475,11 +475,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 62,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.gameExclusion.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'CustManage/DisableUserForGame',
 		internalFunctionKey: allowedRoles.CustManageDisableUserForGame,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.gameExclusion.root,
 	},
 	{
 		icon: null,
@@ -524,11 +524,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 68,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.videoManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/LatestHighlightVideoManagement',
 		internalFunctionKey: allowedRoles.CMSLatestHighlightVideoManagement,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.videoManagement.root,
 	},
 
 	{
@@ -892,7 +892,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.member.sub.iovation.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.iovation.root,
 	},
 ]

@@ -41,11 +41,26 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 	} = useContext(FilterContext)
 	const bankCodeSelector = () => {
 		const onChangeBanks = (newBanks: Array<number | string>) => {
-			if (newBanks.includes('all')) {
+			if (newBanks.includes('matchAll')) {
+				// 匹配全部
 				form.setFieldsValue({
 					sysIds: bankInfoList?.map(bank => bank.sysId),
 				})
+			} else if (newBanks.length > 1) {
+				if (newBanks[0] === 'all') {
+					// 先選 selectAll 再選其他選項 , 代表不要全選 , 移除 'all'
+					newBanks.splice(0, 1)
+					form.setFieldsValue({
+						sysIds: newBanks,
+					})
+				} else if (newBanks.includes('all')) {
+					// 先選其他選項才按 selectAll = 全選 移除其他選項
+					form.setFieldsValue({
+						sysIds: ['all'],
+					})
+				}
 			} else {
+				// firstPick , Array.length === 1
 				form.setFieldsValue({
 					sysIds: newBanks,
 				})
@@ -57,8 +72,9 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 					onChange={onChangeBanks}
 					placeholder={t('Label_Select')}
 				>
+					<Option value='all'>{t('Label_SelectAll')}</Option>
 					{bankInfoList?.length > 1 && (
-						<Option value='all'>{t('Label_SelectAll')}</Option>
+						<Option value='matchAll'>{t('Label_MatchAll')}</Option>
 					)}
 					{bankInfoList?.map(bank => (
 						<Option key={bank.sysId} value={bank.sysId}>

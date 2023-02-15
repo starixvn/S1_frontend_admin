@@ -907,6 +907,31 @@ const SmsGenerator = lazy(
 		)
 )
 
+const VideoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
+const GameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameExclusion' */ 'features/gameExclusion/GameExclusion'
+		)
+)
+
+const EditGameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
 const BetLimit = lazy(
 	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
 )
@@ -2302,6 +2327,40 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.content.sub.videoManagement.functionId}
+					>
+						<VideoManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<GameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}/:custId`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<EditGameExclusion />
 					</AuthRequire>
 				),
 			},
