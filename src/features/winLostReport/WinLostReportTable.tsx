@@ -1,3 +1,4 @@
+import React from 'react'
 import { Space, Table, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION } from 'common/hooks'
@@ -10,6 +11,8 @@ import {
 interface IWinLostReportTableProps {
 	loading: boolean
 	tableList: object[]
+	expandList: Array<string | number>
+	setExpandList: React.Dispatch<React.SetStateAction<any>>
 	onExpand: (expanded: boolean, record: object) => void
 	onTableChange: (
 		newPagination: TablePaginationConfig,
@@ -21,6 +24,8 @@ interface IWinLostReportTableProps {
 const WinLostReportTable = ({
 	loading,
 	tableList,
+	expandList,
+	setExpandList,
 	onExpand,
 	onTableChange,
 }: IWinLostReportTableProps) => {
@@ -54,6 +59,11 @@ const WinLostReportTable = ({
 				)}
 				expandable={{
 					onExpand: (expanded, record) => onExpand(expanded, record),
+					defaultExpandedRowKeys: [],
+					expandedRowKeys: expandList,
+					onExpandedRowsChange: expandedKeys => {
+						setExpandList(expandedKeys)
+					},
 				}}
 			/>
 		</LayoutContent.Card>

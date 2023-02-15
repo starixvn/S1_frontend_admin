@@ -49,6 +49,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
+	const [expandList, setExpandList] = useState<Array<string | number>>([])
 
 	const {
 		data: { data: tpGameList = [] } = {},
@@ -241,6 +242,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				GroupByEnum.Player === groupBy
 			)
 			setTableList(list)
+			setExpandList([])
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset, groupBy })
 		} catch (error) {
 			message.error(
@@ -565,6 +567,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				<WinLostReportTable
 					loading={loading}
 					tableList={tableList}
+					expandList={expandList}
+					setExpandList={setExpandList}
 					onExpand={expandDetailHandler}
 					onTableChange={handleTableChange}
 				/>
