@@ -152,7 +152,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				...restValue,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setCollapseActiveKey(0)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')

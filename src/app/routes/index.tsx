@@ -2345,6 +2345,24 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.content.sub.videoManagement.functionId}
+					>
+						<VideoManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
 				element: (
 					<AuthRequire

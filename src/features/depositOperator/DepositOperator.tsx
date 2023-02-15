@@ -233,7 +233,6 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				timeZone: currentTimeZoneUtcOffset,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setCollapseActiveKey(0)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
