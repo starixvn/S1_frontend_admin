@@ -1030,5 +1030,9 @@
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_TaggingRestrict": "Tagging Restrict",
+	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
+	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
+	"Label_SameIPRestrictCount": "Same IP restrict count"
 }

@@ -105,7 +105,15 @@ export interface IGetByBonusCodeArgs {
 	bonusCode: string
 }
 
-export interface IGetByBonusCodeData extends IGetBonusListData {}
+export interface IGetByBonusCodeData extends IGetBonusListData {
+	sameDeviceIDRestrict: boolean
+	sameDeviceIDAvailableCount: number
+	sameIPRestrict: boolean
+	sameIPRestrictAvailableCount: number
+	sameRealNameRestrict: boolean
+	sameRealNameRestrictAvailableCount: number
+	blockTagList: number[]
+}
 
 export type IGetByBonusCodeResponse = IAxiosResponse<IGetByBonusCodeData>
 
@@ -141,6 +149,13 @@ export interface ISetArgs {
 		promotionAction: number
 		autoExtend: number
 		specific: ISpecificData[]
+		sameDeviceIDRestrict: boolean
+		sameDeviceIDAvailableCount: number
+		sameIPRestrict: boolean
+		sameIPRestrictAvailableCount: number
+		sameRealNameRestrict: boolean
+		sameRealNameRestrictAvailableCount: number
+		blockTagList: number[]
 	}
 	displayConditionAboutVipLevel: IDisplayCondition
 }
