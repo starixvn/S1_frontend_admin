@@ -1008,15 +1008,12 @@
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
-	"Label_Language": "Language",
-	"Label_LangId": "LangId",
 	"Label_DisableUserForGame": "Disable User For Game",
 	"Label_SelectedGames": "Selected Games",
 	"Label_GameExclusionConfirmMsg": "Please check result again !",
 	"Label_DisableGames": "Disable Games",
 	"Label_TotalApprovedCount": "TotalApprovedCount",
 	"Label_TotalApprovedAmount": "TotalApprovedAmount",
-	"Label_PerCount": "Per Count",
 	"Label_EditBetLimit": "Edit Bet Limit",
 	"Label_LimitGroup": "Limit Group",
 	"Label_SelectStatus": "Select Status",
@@ -1030,5 +1027,8 @@
 	"Label_Language": "Language",
 	"Label_LangId": "LangId",
 	"Label_Exclude": "exclude",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_PerCount": "Per Count",
+	"Label_AddNewWork": "Add New Work",
+	"Label_Gateway": "Gateway"
 }
