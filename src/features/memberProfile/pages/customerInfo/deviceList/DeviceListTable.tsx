@@ -5,7 +5,8 @@ import { find } from 'lodash'
 import { deviceStatusList } from 'features/memberProfile/constants'
 import { Typography } from 'antd'
 import moment from 'moment/moment'
-import { timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
+import { isPositiveNum } from 'common/utils'
 
 interface IDeviceListTableProps {
 	loading: boolean
@@ -49,8 +50,11 @@ const DeviceListTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (risk: number) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{risk}
+				<Typography.Text
+					type={isPositiveNum(risk) ? undefined : 'danger'}
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+				>
+					{numFormatToDigits(risk || 0)}
 				</Typography.Text>
 			),
 		},
@@ -77,7 +81,7 @@ const DeviceListTable = ({
 				const { associateCount, deviceId } = record
 				return (
 					<Typography.Link onClick={() => onAccountClick(deviceId)}>
-						{associateCount}
+						{numFormatToDigits(associateCount || 0)}
 					</Typography.Link>
 				)
 			},

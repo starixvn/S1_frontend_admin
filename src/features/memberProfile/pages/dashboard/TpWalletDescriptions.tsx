@@ -41,7 +41,11 @@ const TpWalletDescriptions = ({
 
 				{tpWalletData?.tpWalletList.map(({ tpName, tpId, balance }) => (
 					<Descriptions.Item label={tpName} key={tpId}>
-						{numFormatToDigits(balance ?? 0)}
+						<Typography.Text
+							type={isPositiveNum(balance) ? undefined : 'danger'}
+						>
+							{numFormatToDigits(balance ?? 0)}
+						</Typography.Text>
 					</Descriptions.Item>
 				))}
 			</Descriptions>
