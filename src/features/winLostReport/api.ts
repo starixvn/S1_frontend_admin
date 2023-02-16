@@ -2,38 +2,30 @@ import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetWinLossByCurrencyArgs,
 	IGetWinLossByCurrencyExportArgs,
-	IGetWinLossByCurrencyResponse,
+	IWinLossByCurrencyResponse,
 	IGetWinLossByDateArgs,
 	IGetWinLossByDateExportArgs,
-	IGetWinLossByDateResponse,
+	IWinLossByDateResponse,
 	IGetWinLossByMonthArgs,
 	IGetWinLossByMonthExportArgs,
-	IGetWinLossByMonthResponse,
+	IWinLossByMonthResponse,
 	IGetWinLossByPlayerArgs,
 	IGetWinLossByPlayerDetailArgs,
-	IGetWinLossByPlayerDetailResponse,
+	IWinLossByPlayerDetailResponse,
 	IGetWinLossByPlayerExportArgs,
-	IGetWinLossByPlayerResponse,
 	IGetWinLossByTpCategoryTypeArgs,
 	IGetWinLossByTpCategoryTypeExportArgs,
-	IGetWinLossByTpCategoryTypeResponse,
+	IWinLossByTpCategoryTypeResponse,
 	IGetWinLossByTpGameTypeArgs,
 	IGetWinLossByTpGameTypeExportArgs,
-	IGetWinLossByTpGameTypeResponse,
+	IWinLossByTpGameTypeResponse,
+	IWinLossByPlayerResponse,
 } from 'features/winLostReport/type'
-import { IGetTpGameTypeResponse } from 'features/bettingMonitorSetting/type'
 
 export const winLostReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getTpGameTypes: builder.query<IGetTpGameTypeResponse, null>({
-			query: data => ({
-				url: 'GetAllData/GetTpGameType',
-				method: 'POST',
-				data,
-			}),
-		}),
 		getWinLossByDate: builder.query<
-			IGetWinLossByDateResponse,
+			IWinLossByDateResponse,
 			IGetWinLossByDateArgs
 		>({
 			query: data => ({
@@ -51,7 +43,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByMonth: builder.query<
-			IGetWinLossByMonthResponse,
+			IWinLossByMonthResponse,
 			IGetWinLossByMonthArgs
 		>({
 			query: data => ({
@@ -69,7 +61,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByTpGameType: builder.query<
-			IGetWinLossByTpGameTypeResponse,
+			IWinLossByTpGameTypeResponse,
 			IGetWinLossByTpGameTypeArgs
 		>({
 			query: data => ({
@@ -90,7 +82,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByTpCategoryType: builder.query<
-			IGetWinLossByTpCategoryTypeResponse,
+			IWinLossByTpCategoryTypeResponse,
 			IGetWinLossByTpCategoryTypeArgs
 		>({
 			query: data => ({
@@ -111,7 +103,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByPlayer: builder.query<
-			IGetWinLossByPlayerResponse,
+			IWinLossByPlayerResponse,
 			IGetWinLossByPlayerArgs
 		>({
 			query: data => ({
@@ -132,7 +124,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByPlayerDetail: builder.query<
-			IGetWinLossByPlayerDetailResponse,
+			IWinLossByPlayerDetailResponse,
 			IGetWinLossByPlayerDetailArgs
 		>({
 			query: data => ({
@@ -142,7 +134,7 @@ export const winLostReportApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getWinLossByCurrency: builder.query<
-			IGetWinLossByCurrencyResponse,
+			IWinLossByCurrencyResponse,
 			IGetWinLossByCurrencyArgs
 		>({
 			query: data => ({
@@ -165,7 +157,6 @@ export const winLostReportApi = rootApi.injectEndpoints({
 	}),
 })
 export const {
-	useGetTpGameTypesQuery,
 	useLazyGetWinLossByDateQuery,
 	useLazyGetWinLossByMonthQuery,
 	useLazyGetWinLossByTpGameTypeQuery,

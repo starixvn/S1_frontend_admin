@@ -10,7 +10,6 @@ import {
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByTpCategoryTypeMutation,
 	useExportWinLossByTpGameTypeMutation,
-	useGetTpGameTypesQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByDateQuery,
 	useLazyGetWinLossByMonthQuery,
@@ -19,6 +18,7 @@ import {
 	useLazyGetWinLossByTpCategoryTypeQuery,
 	useLazyGetWinLossByTpGameTypeQuery,
 } from 'features/winLostReport/api'
+import { useGetProductsQuery } from 'common/service/allDataApi'
 import { IWinLossTableData } from 'features/winLostReport/type'
 import {
 	GroupByEnum,
@@ -59,7 +59,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: tpGameList = [] } = {},
 		isLoading: isGetTpGameListLoading,
-	} = useGetTpGameTypesQuery(null)
+	} = useGetProductsQuery(null)
 
 	const [getWinLossByDate, { isFetching: isGetWinLossByDateFetching }] =
 		useLazyGetWinLossByDateQuery()

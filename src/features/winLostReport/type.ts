@@ -48,28 +48,26 @@ export interface IWinLossTableData extends IWinLossBasicData {
 
 export interface IGetWinLossByDateArgs extends IWinLossBasicArgs {}
 
-export type IGetWinLossByDateResponse = IAxiosResponse<IWinLossTableData[]>
+export type IWinLossByDateResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByDateExportArgs extends IWinLossBasicExportArgs {}
 
 export interface IGetWinLossByMonthArgs extends IWinLossBasicArgs {}
 
-export type IGetWinLossByMonthResponse = IAxiosResponse<IWinLossTableData[]>
+export type IWinLossByMonthResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByMonthExportArgs extends IWinLossBasicExportArgs {}
 
 export interface IGetWinLossByTpGameTypeArgs extends IWinLossBasicArgs {}
 
-export type IGetWinLossByTpGameTypeResponse = IAxiosResponse<
-	IWinLossTableData[]
->
+export type IWinLossByTpGameTypeResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByTpGameTypeExportArgs
 	extends IWinLossBasicExportArgs {}
 
 export interface IGetWinLossByTpCategoryTypeArgs extends IWinLossBasicArgs {}
 
-export type IGetWinLossByTpCategoryTypeResponse = IAxiosResponse<
+export type IWinLossByTpCategoryTypeResponse = IAxiosResponse<
 	IWinLossTableData[]
 >
 
@@ -81,7 +79,7 @@ export interface IGetWinLossByPlayerArgs extends IWinLossBasicArgs {
 	pageSize: number
 }
 
-export type IGetWinLossByPlayerResponse = IAxiosResponse<IWinLossTableData[]>
+export type IWinLossByPlayerResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByPlayerExportArgs
 	extends IWinLossBasicExportArgs {}
@@ -101,13 +99,11 @@ export interface IGetWinLossByPlayerDetailArgs {
 	baseCurrencyId: number
 }
 
-export type IGetWinLossByPlayerDetailResponse = IAxiosResponse<
-	IWinLossTableData[]
->
+export type IWinLossByPlayerDetailResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByCurrencyArgs extends IWinLossBasicArgs {}
 
-export type IGetWinLossByCurrencyResponse = IAxiosResponse<IWinLossTableData[]>
+export type IWinLossByCurrencyResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByCurrencyExportArgs
 	extends IWinLossBasicExportArgs {}
