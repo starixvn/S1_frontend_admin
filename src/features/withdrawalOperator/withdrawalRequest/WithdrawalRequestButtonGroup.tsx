@@ -76,16 +76,18 @@ const WithdrawalRequestButtonGroup = ({
 				</Col>
 			)}
 
-			<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
-				<OperatorButton
-					loading={loading}
-					disabled={!sendMessagePermission?.canUse}
-					onClick={onShowSendMessageModal}
-					color='Blue'
-				>
-					{t('Label_SendMessage')}
-				</OperatorButton>
-			</Col>
+			{sendMessagePermission?.canUse && (
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+					<OperatorButton
+						loading={loading}
+						disabled={!sendMessagePermission?.canUse}
+						onClick={onShowSendMessageModal}
+						color='Blue'
+					>
+						{t('Label_SendMessage')}
+					</OperatorButton>
+				</Col>
+			)}
 
 			{includes(usableActionButton, UsableActionButtonEnum.Draft) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
