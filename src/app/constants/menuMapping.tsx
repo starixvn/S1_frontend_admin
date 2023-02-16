@@ -14,9 +14,8 @@ import {
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
 import { RiUserSettingsLine } from '@react-icons/all-files/ri/RiUserSettingsLine'
-
-import allowedRoles from './allowedRoles'
 import paths from './paths'
+import allowedRoles from './allowedRoles'
 
 const iconStyle: CSSProperties = {
 	fontSize: '20px',
@@ -362,11 +361,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 50,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.vipReview.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipLevelReview',
 		internalFunctionKey: allowedRoles.MarketingVipLevelReview,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.vipReview.root,
 	},
 	{
 		icon: null,
@@ -894,6 +893,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
 	},
 	{
 		icon: null,
