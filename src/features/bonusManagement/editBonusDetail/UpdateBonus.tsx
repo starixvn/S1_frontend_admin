@@ -151,11 +151,11 @@ const UpdateBonus: FC<{
 				promotionAction,
 				isDisplayDate,
 				sameDeviceIDRestrict = false,
-				sameDeviceIDAvailableCount = 0,
+				sameDeviceIDAvailableCount,
 				sameIPRestrict = false,
-				sameIPRestrictAvailableCount = 0,
+				sameIPRestrictAvailableCount,
 				sameRealNameRestrict = false,
-				sameRealNameRestrictAvailableCount = 0,
+				sameRealNameRestrictAvailableCount,
 				blockTagList,
 			} = formData
 
@@ -210,11 +210,12 @@ const UpdateBonus: FC<{
 							}),
 							blockTagList,
 							sameDeviceIDRestrict,
-							sameDeviceIDAvailableCount,
+							sameDeviceIDAvailableCount: sameDeviceIDAvailableCount ?? 0,
 							sameIPRestrict,
-							sameIPRestrictAvailableCount,
+							sameIPRestrictAvailableCount: sameIPRestrictAvailableCount ?? 0,
 							sameRealNameRestrict,
-							sameRealNameRestrictAvailableCount,
+							sameRealNameRestrictAvailableCount:
+								sameRealNameRestrictAvailableCount ?? 0,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
