@@ -1,6 +1,6 @@
 import { Typography } from 'antd'
 import { v4 as uuidV4 } from 'uuid'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, upperFirst } from 'lodash'
 import { AlignType } from 'rc-table/lib/interface'
 import { isPositiveNum } from 'common/utils'
 import { numFormatToDigits } from 'common/utils/format'
@@ -75,9 +75,7 @@ export const tableColumnConverter = (tableList: object[]) => {
 		}
 		tableColumns = columns.map(dataIndex => {
 			return {
-				title: t(
-					i18nKeyInfo[dataIndex.charAt(0).toUpperCase() + dataIndex.slice(1)]
-				),
+				title: t(i18nKeyInfo[upperFirst(dataIndex)]),
 				key: dataIndex,
 				dataIndex,
 				align: 'right' as AlignType,
