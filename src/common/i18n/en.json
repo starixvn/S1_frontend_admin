@@ -1010,6 +1010,8 @@
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
+	"Label_AddNewWork": "Add New Work",
+	"Label_Gateway": "Gateway",
 	"Label_Language": "Language",
 	"Label_LangId": "LangId",
 	"Label_DisableUserForGame": "Disable User For Game",

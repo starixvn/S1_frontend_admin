@@ -630,7 +630,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
@@ -886,7 +886,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
 	{
@@ -894,6 +894,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
 	},
 	{
 		icon: null,
