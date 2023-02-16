@@ -5,6 +5,8 @@ import { IWinLossSummaryData } from 'features/memberProfile/type'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { isPositiveNum } from 'common/utils'
+import { numFormatToDigits } from 'common/utils/format'
 
 interface IWinLossSummaryDescriptionsProps {
 	custId: number
@@ -44,7 +46,13 @@ const WinLossSummaryDescriptions = ({
 				<Descriptions size='small' layout='horizontal' bordered column={1}>
 					{winLossSummaries?.map(summary => (
 						<Descriptions.Item label={summary.name} key={summary.categoryId}>
-							{summary.winlostAmount}
+							<Typography.Text
+								type={
+									isPositiveNum(summary.winlostAmount) ? undefined : 'danger'
+								}
+							>
+								{numFormatToDigits(summary.winlostAmount || 0)}
+							</Typography.Text>
 						</Descriptions.Item>
 					))}
 				</Descriptions>

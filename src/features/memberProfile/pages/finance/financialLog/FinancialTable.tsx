@@ -72,7 +72,15 @@ const FinancialTable = ({
 				const { changeAmount, direction } = records
 				// 後端回傳direction參數:1代表'+' 2代表'-'
 				const sign = direction === 1 ? '+' : '-'
-				return `${sign}${numFormatToDigits(changeAmount)}`
+				return (
+					<Text
+						type={direction === 1 ? undefined : 'danger'}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{sign}
+						{numFormatToDigits(changeAmount)}
+					</Text>
+				)
 			},
 		},
 		{

@@ -105,7 +105,9 @@ const BonusLogTable = ({
 				const sign = direction === ChangeBonusDirectionEnum.Add ? '+' : '-'
 				return (
 					<Typography.Text
-						type={isPositiveNum(changeBonus) ? undefined : 'danger'}
+						type={
+							direction === ChangeBonusDirectionEnum.Add ? undefined : 'danger'
+						}
 						style={{ whiteSpace: 'nowrap' }}
 					>
 						{`${sign} ${numFormatToDigits(changeBonus)}`}
