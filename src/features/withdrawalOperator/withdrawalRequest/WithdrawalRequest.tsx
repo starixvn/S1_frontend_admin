@@ -66,7 +66,8 @@ const WithdrawalRequest = () => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
 	const { timeZoneUtcOffset } = useTimeZone()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, draftPermission } = {} } =
+		useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
 	const navigate = useNavigate()
 	const payInfoModal = useModal()
@@ -644,23 +645,29 @@ const WithdrawalRequest = () => {
 									)}
 							</Col>
 						</Row>
-
-						{editPermission?.canUse && (
-							<WithdrawalRequestComment
-								withdrawalCommentData={withdrawalCommentData}
-								timeZoneUtcOffset={timeZoneUtcOffset}
-							/>
-						)}
-						{editPermission?.canUse && (
-							<WithdrawalRequestButtonGroup
-								loading={loading}
-								usableActionButton={usableActionButton}
-								onSetWithdrawalRequest={handleSetWithdrawalRequest}
-								onSetManualOperator={handleManualOperator}
-								onShowSendMessageModal={onShowSendMessageModal}
-							/>
-						)}
 					</Form>
+					<Form
+						component={false}
+						form={form}
+						initialValues={{
+							comment: '',
+						}}
+						colon={false}
+						layout='vertical'
+						disabled={!draftPermission?.canUse}
+					>
+						<WithdrawalRequestComment
+							withdrawalCommentData={withdrawalCommentData}
+							timeZoneUtcOffset={timeZoneUtcOffset}
+						/>
+					</Form>
+					<WithdrawalRequestButtonGroup
+						loading={loading}
+						usableActionButton={usableActionButton}
+						onSetWithdrawalRequest={handleSetWithdrawalRequest}
+						onSetManualOperator={handleManualOperator}
+						onShowSendMessageModal={onShowSendMessageModal}
+					/>
 					<PayInfoModal
 						visible={payInfoModal.visible}
 						type={currentWithdrawalType}
