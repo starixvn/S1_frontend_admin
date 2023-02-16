@@ -3,6 +3,8 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { ICurrencyAmountRecordData } from 'features/paymentAdjustment/type'
 import { UploadFile } from 'antd/es/upload/interface'
 
+export const AllSiteId = 0
+
 export interface IExportWithdrawalListArgs {
 	startDate: string
 	endDate: string
@@ -108,6 +110,7 @@ export interface IWithdrawalCommentData {
 }
 
 export type IFilterForm = {
+	isAllSite: boolean
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string
 	currencyIds: number[]
@@ -170,4 +173,16 @@ export interface IUploadPictureArgs {
 
 export interface IDeletePictureArgs extends IGetByTransIdArgs {
 	number: number
+}
+
+export interface IWithdrawalReasonMessage {
+	name: string
+	value: number
+}
+
+export interface ISendWithdrawalMessageArgs {
+	siteId: number
+	currencyId: number
+	transId: string
+	after: { status: number; withdrawalId: number; action: number }
 }

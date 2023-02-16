@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { TablePaginationConfig, Typography } from 'antd'
+import { numberFormatter } from 'common/utils/format'
 import { PAGINATION } from 'common/hooks'
 import { Table } from 'components'
 
@@ -42,7 +43,8 @@ const WithdrawalPaymentReportTable = ({
 			dataIndex: 'totalWithdrawalAmount',
 			width: '20%',
 			align: 'center' as 'center',
-			render: (totalWithdrawalAmount: number) => totalWithdrawalAmount ?? 'N/A',
+			render: (totalWithdrawalAmount: number) =>
+				numberFormatter.format(totalWithdrawalAmount) ?? 'N/A',
 		},
 		{
 			title: t('Label_AverageWithdrawalTime'),
@@ -51,7 +53,7 @@ const WithdrawalPaymentReportTable = ({
 			align: 'center' as 'center',
 			width: '20%',
 			render: (averageWithdrawalAmount: number) =>
-				averageWithdrawalAmount ?? 'N/A',
+				numberFormatter.format(averageWithdrawalAmount) ?? 'N/A',
 		},
 		{
 			title: t('Label_AverageProcessingTime'),

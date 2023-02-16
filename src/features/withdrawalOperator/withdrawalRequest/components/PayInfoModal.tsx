@@ -40,6 +40,7 @@ const PayInfoModal = ({
 
 	return (
 		<Modal
+			closable
 			open={visible}
 			footer={false}
 			onCancel={onCancel}

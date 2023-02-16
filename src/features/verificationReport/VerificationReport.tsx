@@ -192,7 +192,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportVerificationRewardReportLoading}
 				/>

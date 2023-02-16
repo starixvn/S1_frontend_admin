@@ -1,7 +1,7 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import React, { Key, useEffect, useState } from 'react'
-import { filter, includes, isEmpty, map, reduce } from 'lodash'
+import { filter, includes, isEmpty, isNumber, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
@@ -32,7 +32,11 @@ import {
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
 } from 'features/depositOperator/api'
-import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
+import {
+	DepositStatusEnum,
+	IForm,
+	AllSiteId,
+} from 'features/depositOperator/type'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
 import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
@@ -44,7 +48,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const {
 		actionPermissions: { exportExcelPermission, rejectPermission } = {},
 	} = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
+	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
+	const formIsAllSite = Form.useWatch('isAllSite', form)
+	const siteId = formIsAllSite ? AllSiteId : originSiteId
+
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -52,6 +60,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [tableSelectedRowTransIds, setTableSelectedTransIds] = useState<Key[]>(
 		[]
 	)
+	const [collapseActiveKey, setCollapseActiveKey] = useState<number>(1)
 
 	const {
 		data: { data: statusesEnum } = {} as IEnumTypeResponse,
@@ -128,7 +137,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
+		if (!isNumber(siteId)) return
 		const {
 			currencyIds = [],
 			statuses = [],
@@ -180,7 +189,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}) => {
-		if (!siteId) return
+		if (!isNumber(siteId)) return
 		resetSelectedTransIds()
 
 		const {
@@ -278,6 +287,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				})
 			} else {
 				const {
+					isAllSite = false,
 					timeZone,
 					currencyIds = [],
 					statuses = [],
@@ -298,6 +308,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				} = queryParams ?? {}
 				onTimeZoneChange(Number(timeZone))
 				form.setFieldsValue({
+					isAllSite,
 					dateRange: [moment(startDate), moment(endDate)],
 					currencyIds: currencyIds?.map((value: string) => Number(value)) ?? [],
 					statuses: statuses?.map((value: string) => Number(value)) ?? [],
@@ -322,6 +333,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					pageSize: Number(pageSize),
 					currentTimeZoneUtcOffset: Number(timeZone),
 				})
+				setCollapseActiveKey(0)
 			}
 		}
 
@@ -329,6 +341,24 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			init()
 		}
 	}, [enumLoading])
+
+	useEffect(() => {
+		if (formIsAllSite) {
+			// * 當 isAllSite = true, 下列條件接設定為 '全選' 的狀態
+			form.setFieldsValue({
+				currencyIds: [],
+				selectPayIds: [],
+				selectBankCode: [],
+				userName: '',
+				depositId: '',
+				startAmount: 0,
+				endAmount: 0,
+				levelStatuses: [],
+				agent: '',
+				selectCalCode: [],
+			})
+		}
+	}, [formIsAllSite])
 
 	const filteredBankCodeListByCurrencyIds = filter(
 		bankCodeList,
@@ -365,7 +395,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
 			<DepositOperatorFilter
+				isAllSite={formIsAllSite}
 				form={form}
+				collapseActiveKey={collapseActiveKey}
 				loading={isGetDepositOperatorListFetching}
 				enumLoading={enumLoading}
 				currencyListBySite={currencyListBySite}
@@ -378,8 +410,10 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
+				setCollapseActiveKey={setCollapseActiveKey}
 			/>
 			<DepositOperatorTable
+				isAllSite={queryParams?.isAllSite}
 				loading={isGetDepositOperatorListFetching}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				depositOperatorList={depositOperatorList}

@@ -15,7 +15,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { filter, head, includes, isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -24,7 +24,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { IFilterForm } from 'features/withdrawalOperator/type'
+import { AllSiteId, IFilterForm } from 'features/withdrawalOperator/type'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { WithdrawalOperatorTable } from 'features/withdrawalOperator/WithdrawalOperatorTable'
 import download from 'downloadjs'
@@ -37,10 +37,15 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
+	const formIsAllSite = Form.useWatch('isAllSite', filterForm)
+	const siteId = formIsAllSite ? AllSiteId : originSiteId
+
+	const [queryParams, setQueryParams] = useQueryParams()
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
+	const [collapseActiveKey, setCollapseActiveKey] = useState<number>(1)
 
 	const [
 		getWithdrawalList,
@@ -164,21 +169,45 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, startAmount, endAmount, withdrawalId, ...restValue } =
-			filterForm.getFieldsValue()
-		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		const {
+			startDate,
+			endDate,
+			startAmount,
+			endAmount,
+			userName = '',
+			withdrawalId,
+			withdrawalMethod = 0,
+			withdrawalTypes,
+			statuses,
+			currencyIds = [],
+			levelStatuses,
+			selectBankCode,
+			selectCalCode,
+			agent = '',
+		} = queryParams
+
 		try {
 			const blob = await exportWithdrawalList({
 				startDate,
 				endDate,
 				siteId,
-				startAmount: startAmount || -1,
-				endAmount: endAmount || -1,
+				startAmount: Number(startAmount) || -1,
+				endAmount: Number(endAmount) || -1,
+				userName,
 				withdrawalId: withdrawalId || null,
-				...restValue,
+				withdrawalMethod: Number(withdrawalMethod),
+				withdrawalTypes:
+					withdrawalTypes?.map((type: string) => Number(type)) ?? [],
+				statuses: statuses?.map((status: string) => Number(status)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				levelStatuses:
+					levelStatuses?.map((status: string) => Number(status)) ?? [],
+				selectBankCode:
+					selectBankCode?.map((bankCode: string) => Number(bankCode)) ?? [],
+				selectCalCode:
+					selectCalCode?.map((calCode: string) => Number(calCode)) ?? [],
+				agent,
 			}).unwrap()
 			download(
 				blob,
@@ -201,8 +230,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (!filterLoading && !isEmpty(queryParams)) {
+			setCollapseActiveKey(0)
 			// init Query
 			const {
+				isAllSite = false,
 				startDate,
 				endDate,
 				startAmount,
@@ -212,7 +243,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber,
 				pageSize,
 				timeZone,
-				currencyIds,
+				currencyIds = [],
 				statuses = [],
 				selectCalCode = [],
 				levelStatuses = [],
@@ -222,6 +253,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
+				isAllSite,
 				withdrawalId,
 				agent,
 				dateRange: [moment(startDate), moment(endDate)],
@@ -239,6 +271,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			handleSearch({
 				current: Number(pageNumber),
 				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
 			})
 		} else if (!filterLoading) {
 			// filter Init
@@ -251,12 +284,32 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	useEffect(() => {
+		if (formIsAllSite) {
+			// * 當 isAllSite = true, 下列條件接設定為 '全選' 的狀態
+			filterForm.setFieldsValue({
+				currencyIds: [],
+				withdrawalMethod: 0,
+				levelStatuses: [],
+				userName: '',
+				withdrawalId: '',
+				startAmount: 0,
+				endAmount: 0,
+				agent: '',
+				selectCalCode: [],
+				selectBankCode: [],
+			})
+		}
+	}, [formIsAllSite])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 			<WithdrawalOperatorFilter
+				isAllSite={formIsAllSite}
 				loading={filterLoading}
 				form={filterForm}
+				collapseActiveKey={collapseActiveKey}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				withdrawalMethodList={withdrawalMethodList}
 				withdrawalStatusList={withdrawalStatusList}
@@ -267,9 +320,11 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 				bankCodeList={filteredBankCodeListByCurrencyIds}
+				setCollapseActiveKey={setCollapseActiveKey}
 			/>
 			{!isEmpty(queryParams) && (
 				<WithdrawalOperatorTable
+					isAllSite={queryParams?.isAllSite}
 					loading={isGetWithdrawalLoading}
 					withdrawalList={withdrawalList}
 					timeZoneUtcOffset={timeZoneUtcOffset}
@@ -286,7 +341,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportWithdrawalListLoading}
 				/>

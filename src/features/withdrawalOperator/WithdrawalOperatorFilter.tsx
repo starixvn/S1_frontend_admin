@@ -1,5 +1,6 @@
 import {
 	Button,
+	Checkbox,
 	Col,
 	Collapse,
 	DatePicker,
@@ -25,10 +26,13 @@ import {
 } from 'common/service/baseDataApi/type'
 import { IFilterForm } from 'features/withdrawalOperator/type'
 import moment from 'moment/moment'
+import { Dispatch, SetStateAction } from 'react'
 
 interface IWithdrawalOperatorFilterProps {
+	isAllSite: boolean
 	loading: boolean
 	form: FormInstance<IFilterForm>
+	collapseActiveKey: number
 	timeZoneUtcOffset: number
 	withdrawalMethodList: IEnumTypeData[]
 	withdrawalStatusList: IEnumTypeData[]
@@ -47,6 +51,7 @@ interface IWithdrawalOperatorFilterProps {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => void
+	setCollapseActiveKey: Dispatch<SetStateAction<number>>
 }
 
 const { Panel } = Collapse
@@ -60,8 +65,10 @@ const initialDateRange = [
 ]
 
 const WithdrawalOperatorFilter = ({
+	isAllSite,
 	loading,
 	form,
+	collapseActiveKey,
 	timeZoneUtcOffset,
 	withdrawalStatusList,
 	withdrawalMethodList,
@@ -72,8 +79,17 @@ const WithdrawalOperatorFilter = ({
 	bankCodeList,
 	onSearch,
 	onTimeZoneChange,
+	setCollapseActiveKey,
 }: IWithdrawalOperatorFilterProps) => {
 	const { t } = useTranslation()
+
+	const handleCollapse = (activeKey: number) => {
+		if (activeKey === 0) {
+			setCollapseActiveKey(() => 1)
+		} else {
+			setCollapseActiveKey(() => 0)
+		}
+	}
 
 	const statusSelector = () => {
 		const onChangeStatus = (newStatus: Array<number | string>) => {
@@ -124,6 +140,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='currencyIds' label={t('Label_Currency')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
@@ -185,6 +202,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='levelStatuses' label={t('Label_VipLevel')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeLevel}
 					placeholder={t('Label_Select')}
 				>
@@ -217,6 +235,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='selectCalCode' label={t('Label_CalCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeCalCode}
 					placeholder={`${t('Label_Select')} ${t('Label_CalCode')}`}
 				>
@@ -250,6 +269,7 @@ const WithdrawalOperatorFilter = ({
 		return (
 			<Form.Item name='selectBankCode' label={t('Label_BankCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					onChange={onChangeBankCode}
 					placeholder={`${t('Label_Select')}  ${t('Label_BankCode')}`}
 				>
@@ -268,7 +288,12 @@ const WithdrawalOperatorFilter = ({
 	}
 
 	return (
-		<Collapse defaultActiveKey={1}>
+		<Collapse
+			activeKey={collapseActiveKey}
+			onChange={() => {
+				handleCollapse(collapseActiveKey)
+			}}
+		>
 			<Panel header='' key='1'>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
@@ -323,6 +348,16 @@ const WithdrawalOperatorFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
+
+							<Col>
+								<Form.Item
+									name='isAllSite'
+									label='Site'
+									valuePropName='checked'
+								>
+									<Checkbox>{t('Label_AllSite')}</Checkbox>
+								</Form.Item>
+							</Col>
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
@@ -336,7 +371,7 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='withdrawalMethod' label={t('Label_Method')}>
-									<Select placeholder={t('Label_Select')}>
+									<Select disabled={isAllSite} placeholder={t('Label_Select')}>
 										{withdrawalMethodList?.map(({ name, value }) => (
 											<Option key={value} value={value}>
 												{name}
@@ -350,12 +385,12 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='withdrawalId' label={t('Label_WithdrawalId')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
@@ -366,6 +401,7 @@ const WithdrawalOperatorFilter = ({
 									>
 										<Form.Item noStyle name='startAmount'>
 											<InputNumber
+												disabled={isAllSite}
 												controls={false}
 												type='number'
 												style={{ width: '45%', textAlign: 'center' }}
@@ -385,6 +421,7 @@ const WithdrawalOperatorFilter = ({
 										/>
 										<Form.Item noStyle name='endAmount'>
 											<InputNumber
+												disabled={isAllSite}
 												controls={false}
 												type='number'
 												style={{
@@ -400,7 +437,7 @@ const WithdrawalOperatorFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Input allowClear />
+									<Input disabled={isAllSite} allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>

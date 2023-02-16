@@ -1,12 +1,16 @@
 import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Typography } from 'antd'
+import { Descriptions, TablePaginationConfig, Tag, Typography } from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetWithdrawalInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
+import {
+	WithdrawalStatusEnum,
+	WITHDRAWAL_STATUS_TAGS_COLOR,
+} from 'features/memberProfile/constants'
 
 const { Text } = Typography
 
@@ -59,8 +63,13 @@ const WithdrawalTable = ({
 			dataIndex: 'status',
 			width: 100,
 			align: 'center' as 'center',
-			render: (status: number) =>
-				statusList.map(({ value, name }) => value === status && name),
+			render: (status: number) => {
+				const color = WITHDRAWAL_STATUS_TAGS_COLOR[status]
+				return statusList.map(
+					({ value, name }) =>
+						value === status && <Tag color={color}>{name ?? 'N/A'}</Tag>
+				)
+			},
 		},
 		{
 			title: t('Label_WithdrawalType'),
@@ -106,15 +115,36 @@ const WithdrawalTable = ({
 			render: (accountName: string) => accountName ?? '-',
 		},
 	]
+
+	const totalApprovedAmount = withdrawalInfoList
+		.filter(
+			withdrawalInfo => withdrawalInfo.status === WithdrawalStatusEnum.Approved
+		)
+		.reduce((acc, cur) => acc + cur.amount, 0)
+
+	const totalApprovedCount = withdrawalInfoList.filter(
+		withdrawalInfo => withdrawalInfo.status === WithdrawalStatusEnum.Approved
+	).length
+
 	return (
-		<Table
-			loading={loading}
-			dataSource={withdrawalInfoList ?? []}
-			style={{ marginTop: '10px', marginBottom: '10px' }}
-			columns={columns}
-			pagination={pagination as TablePaginationConfig}
-			onChange={onTableChange}
-		/>
+		<>
+			<Table
+				loading={loading}
+				dataSource={withdrawalInfoList ?? []}
+				style={{ marginTop: '10px', marginBottom: '10px' }}
+				columns={columns}
+				pagination={pagination as TablePaginationConfig}
+				onChange={onTableChange}
+			/>
+			<Descriptions>
+				<Descriptions.Item label={t('Label_TotalApprovedCount')}>
+					{numFormatToDigits(totalApprovedCount || 0)}
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_TotalApprovedAmount')}>
+					{numFormatToDigits(totalApprovedAmount || 0)}
+				</Descriptions.Item>
+			</Descriptions>
+		</>
 	)
 }
 

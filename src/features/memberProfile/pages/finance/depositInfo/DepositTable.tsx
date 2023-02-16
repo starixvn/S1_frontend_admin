@@ -1,12 +1,16 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { TablePaginationConfig, Typography } from 'antd'
+import { Descriptions, TablePaginationConfig, Typography, Tag } from 'antd'
 import moment from 'moment'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
+import {
+	DepositStatusEnum,
+	DEPOSIT_STATUS_TAGS_COLOR,
+} from 'features/memberProfile/constants'
 
 const { Text } = Typography
 interface DepositTableProps {
@@ -58,8 +62,13 @@ const DepositTable = ({
 			dataIndex: 'status',
 			width: 100,
 			align: 'center' as 'center',
-			render: (status: number) =>
-				statusList.map(({ value, name }) => value === status && name),
+			render: (status: number) => {
+				const color = DEPOSIT_STATUS_TAGS_COLOR[status]
+				return statusList.map(
+					({ value, name }) =>
+						value === status && <Tag color={color}>{name ?? 'N/A'}</Tag>
+				)
+			},
 		},
 		{
 			title: t('Label_DepositType'),
@@ -180,15 +189,34 @@ const DepositTable = ({
 				),
 		},
 	]
+
+	const totalApprovedAmount = depositInfoList
+		.filter(depositInfo => depositInfo.status === DepositStatusEnum.Approved)
+		.reduce((acc, cur) => acc + cur.amount, 0)
+
+	const totalApprovedCount = depositInfoList.filter(
+		depositInfo => depositInfo.status === DepositStatusEnum.Approved
+	).length
+
 	return (
-		<Table
-			loading={loading}
-			dataSource={depositInfoList ?? []}
-			style={{ marginTop: '10px', marginBottom: '10px' }}
-			columns={columns}
-			pagination={pagination as TablePaginationConfig}
-			onChange={onTableChange}
-		/>
+		<>
+			<Table
+				loading={loading}
+				dataSource={depositInfoList ?? []}
+				style={{ marginTop: '10px', marginBottom: '10px' }}
+				columns={columns}
+				pagination={pagination as TablePaginationConfig}
+				onChange={onTableChange}
+			/>
+			<Descriptions>
+				<Descriptions.Item label={t('Label_TotalApprovedCount')}>
+					{numFormatToDigits(totalApprovedCount || 0)}
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_TotalApprovedAmount')}>
+					{numFormatToDigits(totalApprovedAmount || 0)}
+				</Descriptions.Item>
+			</Descriptions>
+		</>
 	)
 }
 

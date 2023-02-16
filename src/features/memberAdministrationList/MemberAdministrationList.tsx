@@ -85,6 +85,7 @@ const MemberAdministrationList = ({
 			currencyIds,
 			userName,
 			tpUserName,
+			excludeTag,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -101,6 +102,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
+				excludeTag: Boolean(excludeTag),
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -114,6 +116,8 @@ const MemberAdministrationList = ({
 				tags: tags.length !== 0 ? tags : null,
 				statuses,
 				vipLevel,
+				userName: userName ? trim(userName) : '',
+				tpUserName: tpUserName ? trim(tpUserName) : '',
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -121,6 +125,7 @@ const MemberAdministrationList = ({
 				pageNumber: current,
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
+				excludeTag,
 			})
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -143,7 +148,7 @@ const MemberAdministrationList = ({
 	}
 
 	const handleExportMember = async () => {
-		if (!siteId || isEmpty(queryParams)) return
+		if (!siteId) return
 
 		const {
 			currencyIds = [],
@@ -169,6 +174,7 @@ const MemberAdministrationList = ({
 			shieldLevel,
 			iovationLevel,
 			deviceId,
+			excludeTag,
 		} = queryParams
 
 		const args: IExportMemberArgs = {
@@ -198,6 +204,7 @@ const MemberAdministrationList = ({
 			startDate,
 			endDate,
 			exportTransferWallet: Boolean(exportTransferWallet),
+			excludeTag: Boolean(excludeTag),
 		}
 
 		try {
@@ -294,7 +301,7 @@ const MemberAdministrationList = ({
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExportMember}
 					loading={isExportMemberLoading}
 				/>
