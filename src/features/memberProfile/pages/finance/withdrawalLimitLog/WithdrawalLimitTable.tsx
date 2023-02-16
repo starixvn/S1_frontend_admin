@@ -42,20 +42,29 @@ const WithdrawalLimitTable = ({
 			key: 'Change',
 			width: 100,
 			align: 'center' as 'center',
-			render: ({
-				changeWithdrawalLimit,
-				beforeWithdrawalLimit,
-				afterWithdrawalLimit,
-			}: {
-				changeWithdrawalLimit: number
-				beforeWithdrawalLimit: number
-				afterWithdrawalLimit: number
-			}) => {
+			render: (record: IGetWithdrawalLimitLogData) => {
+				const {
+					changeWithdrawalLimit,
+					beforeWithdrawalLimit,
+					afterWithdrawalLimit,
+				} = record
 				let sign
 				if (beforeWithdrawalLimit !== afterWithdrawalLimit) {
 					sign = afterWithdrawalLimit > beforeWithdrawalLimit ? '+' : '-'
 				}
-				return `${sign ?? ''}${numFormatToDigits(changeWithdrawalLimit)}`
+				return (
+					<Text
+						type={
+							afterWithdrawalLimit > beforeWithdrawalLimit
+								? undefined
+								: 'danger'
+						}
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					>
+						{sign ?? ''}
+						{numFormatToDigits(changeWithdrawalLimit)}
+					</Text>
+				)
 			},
 		},
 		{
