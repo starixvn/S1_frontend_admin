@@ -630,7 +630,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
@@ -886,7 +886,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
 	{
