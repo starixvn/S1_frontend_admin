@@ -123,6 +123,7 @@ const DepositOperatorTable = ({
 			align: 'center' as 'center',
 			render: ({ custId, userName }: IDepositOperatorData) => (
 				<Typography.Link
+					disabled={isAllSite}
 					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 					target='_blank'
 				>
