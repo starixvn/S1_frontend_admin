@@ -164,7 +164,7 @@ const WinLostReportFilter = ({
 									</Select>
 								</Form.Item>
 							</Col>
-							<Col lg={6} md={12} xs={12}>
+							<Col lg={8} md={12} xs={12}>
 								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
 										compact

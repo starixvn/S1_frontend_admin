@@ -33,7 +33,12 @@ import { AffixButtons } from 'components/AffixButtons'
 import WinLostReportFilter from 'features/winLostReport/WinLostReportFilter'
 import WinLostReportTable from 'features/winLostReport/WinLostReportTable'
 import { useAppSelector } from 'app/store'
-import { PAGINATION, useAuth, useQueryParams } from 'common/hooks'
+import {
+	PAGINATION,
+	useAuth,
+	usePagination,
+	useQueryParams,
+} from 'common/hooks'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { cloneDeep, isEmpty } from 'lodash'
@@ -72,8 +77,13 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		{ isFetching: isGetWinLossByTpCategoryTypeFetching },
 	] = useLazyGetWinLossByTpCategoryTypeQuery()
 
-	const [getWinLossByPlayer, { isFetching: isGetWinLossByPlayerFetching }] =
-		useLazyGetWinLossByPlayerQuery()
+	const [
+		getWinLossByPlayer,
+		{
+			isFetching: isGetWinLossByPlayerFetching,
+			data: { rowCount: paginationTotal = 0 } = {},
+		},
+	] = useLazyGetWinLossByPlayerQuery()
 
 	const [
 		getWinLossByPlayerDetail,
@@ -106,6 +116,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		exportWinLossByCurrency,
 		{ isLoading: isExportWinLossByCurrencyLoading },
 	] = useExportWinLossByCurrencyMutation()
+
+	const [pagination, setPagination] = usePagination({ paginationTotal })
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -140,6 +152,12 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
+
+		const days = moment(endTime).diff(moment(starTime), 'days')
+		if (days > 90) {
+			message.error(t('Label_DateRangeExceedsThreeMonths'))
+			return
+		}
 
 		const args = {
 			siteId,
@@ -244,6 +262,13 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			setTableList(list)
 			setExpandList([])
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset, groupBy })
+			// 除了player之外的group都需一頁呈現,故pageSize預設100,兼容其餘group
+			setPagination(prev => ({
+				...prev,
+				current,
+				pageSize: GroupByEnum.Player === groupBy ? pageSize : 100,
+				disabled: GroupByEnum.Player !== groupBy,
+			}))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -566,6 +591,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			{!isEmpty(queryParams) && tableList.length > 0 && (
 				<WinLostReportTable
 					loading={loading}
+					pagination={pagination}
 					tableList={tableList}
 					expandList={expandList}
 					setExpandList={setExpandList}

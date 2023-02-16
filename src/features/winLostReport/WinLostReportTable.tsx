@@ -1,7 +1,7 @@
 import React from 'react'
 import { Space, Table, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { PAGINATION } from 'common/hooks'
+import { PaginationInterface } from 'common/hooks'
 import { tableColumnConverter } from 'features/winLostReport/utils'
 import {
 	useVisibilityColumnsButtonHook,
@@ -10,6 +10,7 @@ import {
 
 interface IWinLostReportTableProps {
 	loading: boolean
+	pagination: PaginationInterface
 	tableList: object[]
 	expandList: Array<string | number>
 	setExpandList: React.Dispatch<React.SetStateAction<any>>
@@ -23,6 +24,7 @@ interface IWinLostReportTableProps {
 
 const WinLostReportTable = ({
 	loading,
+	pagination,
 	tableList,
 	expandList,
 	setExpandList,
@@ -40,12 +42,7 @@ const WinLostReportTable = ({
 				columns={onGetVisibilityColumns(tableColumnConverter(tableList))}
 				dataSource={tableList}
 				size='small'
-				pagination={
-					{
-						position: PAGINATION.position,
-						pageSize: PAGINATION.defaultPageSize,
-					} as TablePaginationConfig
-				}
+				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 				bordered
 				// eslint-disable-next-line react/no-unstable-nested-components

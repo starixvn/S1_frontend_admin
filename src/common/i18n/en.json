@@ -1036,5 +1036,6 @@
 	"Label_Margin": "Margin",
 	"Label_ProgressiveWin": "Progressive Win",
 	"Label_ProgressiveBet": "Progressive Bet",
-	"Label_Commission": "Commission"
+	"Label_Commission": "Commission",
+	"Label_DateRangeExceedsThreeMonths": "Date range exceeds 3 months."
 }
