@@ -1023,8 +1023,6 @@
 	"Label_SelectedGames": "Selected Games",
 	"Label_GameExclusionConfirmMsg": "Please check result again !",
 	"Label_DisableGames": "Disable Games",
-	"Label_TotalApprovedCount": "TotalApprovedCount",
-	"Label_TotalApprovedAmount": "TotalApprovedAmount",
 	"Label_EditBetLimit": "Edit Bet Limit",
 	"Label_LimitGroup": "Limit Group",
 	"Label_SelectStatus": "Select Status",
@@ -1039,7 +1037,14 @@
 	"Label_LangId": "LangId",
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
+	"Label_AddNewWork": "Add Ne1w Work",
+	"Label_Gateway": "Gateway",
+	"Label_TotalApprovedCount": "TotalApprovedCount",
+	"Label_TotalApprovedAmount": "TotalApprovedAmount",
 	"Label_PerCount": "Per Count",
-	"Label_AddNewWork": "Add New Work",
-	"Label_Gateway": "Gateway"
+	"Label_IsExpired": "IsExpired",
+	"Label_TpTypeName": "TpTypeName",
+	"Label_MaintenanceStart": "MainTen Start",
+	"Label_MaintenanceEnd": "MainTen End",
+	"Label_AddMaintenance": "Add Maintenance"
 }

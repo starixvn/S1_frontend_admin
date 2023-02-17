@@ -15,6 +15,7 @@ import {
 	IGetTpIdData,
 	ISlotTpData,
 	IGetPaySettingListResponse,
+	ITpListData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -100,6 +101,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpList: builder.query<IAxiosResponse<ITpListData[]>, null>({
+			query: data => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// 取得所有 paymentSetting
 		getPaySettingList: builder.query<IGetPaySettingListResponse, null>({
 			query: data => ({
@@ -136,7 +144,6 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
-	useGetProductsQuery,
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
@@ -144,4 +151,5 @@ export const {
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
 	useGetPaySettingListQuery,
+	useGetTpListQuery,
 } = allDataApi
