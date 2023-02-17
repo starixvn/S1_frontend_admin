@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import moment from 'moment'
 import {
 	Button,
@@ -30,6 +30,8 @@ import { IEnumTypeData } from 'common/service/enumApi'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
 import { IGetPayEnumData } from 'common/service/allDataApi'
 import { IForm } from 'features/depositOperator/type'
+import { useQueryParams } from 'common/hooks'
+import { isEmpty } from 'lodash'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -44,7 +46,6 @@ const initialDateRange = [
 interface IDepositOperatorFilterProps {
 	isAllSite: boolean
 	form: FormInstance<IForm>
-	collapseActiveKey: number
 	loading: boolean
 	enumLoading: boolean
 	currencyListBySite: Currency[]
@@ -65,13 +66,11 @@ interface IDepositOperatorFilterProps {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
-	setCollapseActiveKey: Dispatch<SetStateAction<number>>
 }
 
 const DepositOperatorFilter = ({
 	isAllSite,
 	form,
-	collapseActiveKey,
 	loading,
 	enumLoading,
 	currencyListBySite,
@@ -84,17 +83,9 @@ const DepositOperatorFilter = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
-	setCollapseActiveKey,
 }: IDepositOperatorFilterProps) => {
 	const { t } = useTranslation()
-
-	const handleCollapse = (activeKey: number) => {
-		if (activeKey === 0) {
-			setCollapseActiveKey(() => 1)
-		} else {
-			setCollapseActiveKey(() => 0)
-		}
-	}
+	const [queryParams] = useQueryParams()
 
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
@@ -271,15 +262,12 @@ const DepositOperatorFilter = ({
 		)
 	}
 
+	const defaultActiveKey = isEmpty(queryParams) ? 1 : 0
+
 	return (
 		<Spin spinning={enumLoading}>
-			<Collapse
-				activeKey={collapseActiveKey}
-				onChange={() => {
-					handleCollapse(collapseActiveKey)
-				}}
-			>
-				<Panel header='' key='1'>
+			<Collapse defaultActiveKey={defaultActiveKey}>
+				<Panel header='' key='1' forceRender>
 					<LayoutContent.Card style={{ marginTop: 0 }}>
 						<Form
 							layout='vertical'
