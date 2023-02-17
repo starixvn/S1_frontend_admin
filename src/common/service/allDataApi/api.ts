@@ -12,10 +12,10 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	ITpListData,
+	IGetPaySettingListResponse,
 	IGetTpIdData,
 	ISlotTpData,
-	IGetPaySettingListResponse,
-	ITpListData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -148,8 +148,8 @@ export const {
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetTpListQuery,
+	useGetPaySettingListQuery,
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
-	useGetPaySettingListQuery,
-	useGetTpListQuery,
 } = allDataApi
