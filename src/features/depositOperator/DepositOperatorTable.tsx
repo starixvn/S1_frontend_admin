@@ -121,15 +121,17 @@ const DepositOperatorTable = ({
 			title: t('Label_MemberId'),
 			width: 120,
 			align: 'center' as 'center',
-			render: ({ custId, userName }: IDepositOperatorData) => (
-				<Typography.Link
-					disabled={isAllSite}
-					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
-					target='_blank'
-				>
-					{userName}
-				</Typography.Link>
-			),
+			render: ({ custId, userName }: IDepositOperatorData) =>
+				isAllSite ? (
+					<Typography.Text>{userName}</Typography.Text>
+				) : (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				),
 		},
 		{
 			title: t('Label_VipLevel'),
