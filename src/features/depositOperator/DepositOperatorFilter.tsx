@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import {
 	Button,
+	Checkbox,
 	Col,
 	Collapse,
 	DatePicker,
@@ -29,6 +30,8 @@ import { IEnumTypeData } from 'common/service/enumApi'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
 import { IGetPayEnumData } from 'common/service/allDataApi'
 import { IForm } from 'features/depositOperator/type'
+import { useQueryParams } from 'common/hooks'
+import { isEmpty } from 'lodash'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -41,6 +44,7 @@ const initialDateRange = [
 ]
 
 interface IDepositOperatorFilterProps {
+	isAllSite: boolean
 	form: FormInstance<IForm>
 	loading: boolean
 	enumLoading: boolean
@@ -65,6 +69,7 @@ interface IDepositOperatorFilterProps {
 }
 
 const DepositOperatorFilter = ({
+	isAllSite,
 	form,
 	loading,
 	enumLoading,
@@ -80,6 +85,7 @@ const DepositOperatorFilter = ({
 	onTimeZoneChange,
 }: IDepositOperatorFilterProps) => {
 	const { t } = useTranslation()
+	const [queryParams] = useQueryParams()
 
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
@@ -97,6 +103,7 @@ const DepositOperatorFilter = ({
 		return (
 			<Form.Item name='currencyIds' label={t('Label_Currency')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					optionFilterProp='children'
 					onChange={newCurrencyIds => {
 						onChangeCurrency(newCurrencyIds)
@@ -134,6 +141,7 @@ const DepositOperatorFilter = ({
 		return (
 			<Form.Item name='selectPayIds' label={t('Label_PaymentGateway')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					optionFilterProp='children'
 					onChange={onChangePayIds}
 					placeholder={t('Label_Select') + t('Label_PaymentGateway')}
@@ -167,6 +175,7 @@ const DepositOperatorFilter = ({
 		return (
 			<Form.Item name='selectBankCode' label={t('Label_BankCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					optionFilterProp='children'
 					placeholder={t('Label_Select') + t('Label_BankCode')}
 					onChange={onChangeBankCode}
@@ -201,6 +210,7 @@ const DepositOperatorFilter = ({
 		return (
 			<Form.Item name='levelStatuses' label={t('Label_VipLevel')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					optionFilterProp='children'
 					onChange={onVipLevelChange}
 					placeholder={t('Label_Select') + t('Label_VipLevel')}
@@ -233,6 +243,7 @@ const DepositOperatorFilter = ({
 		return (
 			<Form.Item name='selectCalCode' label={t('Label_CalCode')}>
 				<MultipleSelect
+					disabled={isAllSite}
 					optionFilterProp='children'
 					placeholder={t('Label_Select') + t('Label_CalCode')}
 					onChange={onChangeCalCodeList}
@@ -251,10 +262,12 @@ const DepositOperatorFilter = ({
 		)
 	}
 
+	const defaultActiveKey = isEmpty(queryParams) ? 1 : 0
+
 	return (
 		<Spin spinning={enumLoading}>
-			<Collapse defaultActiveKey={1}>
-				<Panel header='' key='1'>
+			<Collapse defaultActiveKey={defaultActiveKey}>
+				<Panel header='' key='1' forceRender>
 					<LayoutContent.Card style={{ marginTop: 0 }}>
 						<Form
 							layout='vertical'
@@ -273,6 +286,7 @@ const DepositOperatorFilter = ({
 								levelStatuses: [],
 								agent: '',
 								depositId: '',
+								isAllSite: false,
 							}}
 							onFinish={() => onSearch({})}
 						>
@@ -311,6 +325,16 @@ const DepositOperatorFilter = ({
 												/>
 											</div>
 										</Input.Group>
+									</Form.Item>
+								</Col>
+
+								<Col>
+									<Form.Item
+										name='isAllSite'
+										label='Site'
+										valuePropName='checked'
+									>
+										<Checkbox>{t('Label_AllSite')}</Checkbox>
 									</Form.Item>
 								</Col>
 							</Row>
@@ -384,13 +408,13 @@ const DepositOperatorFilter = ({
 
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item name='userName' label={t('Label_MemberId')}>
-										<Input allowClear />
+										<Input disabled={isAllSite} allowClear />
 									</Form.Item>
 								</Col>
 
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item name='depositId' label={t('Label_DepositId')}>
-										<Input allowClear />
+										<Input disabled={isAllSite} allowClear />
 									</Form.Item>
 								</Col>
 
@@ -402,6 +426,7 @@ const DepositOperatorFilter = ({
 										>
 											<Form.Item noStyle name='startAmount'>
 												<InputNumber
+													disabled={isAllSite}
 													controls={false}
 													type='number'
 													style={{ width: '45%', textAlign: 'center' }}
@@ -421,6 +446,7 @@ const DepositOperatorFilter = ({
 											/>
 											<Form.Item noStyle name='endAmount'>
 												<InputNumber
+													disabled={isAllSite}
 													controls={false}
 													type='number'
 													style={{
@@ -441,7 +467,7 @@ const DepositOperatorFilter = ({
 
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item name='agent' label={t('Label_Agent')}>
-										<Input allowClear />
+										<Input disabled={isAllSite} allowClear />
 									</Form.Item>
 								</Col>
 

@@ -81,3 +81,39 @@ export interface ITpListData {
 	tpName: string
 	tpDisplayName: string
 }
+
+export interface IGetPaySettingData {
+	currencyId: number
+	payId: number
+	payName: string
+	channelId: number
+	channelName: string
+	groupName: null
+	type: number
+	mode: number
+	minAmount: number
+	maxAmount: number
+	amountRule: number
+	fixedAmountList: number[]
+	pointLevel: number
+	sort: number
+	status: number
+	globalstatus: number
+	method: number
+	chargeFeePercentage: number
+	chargeFeePreCount: number
+	isoCode: string
+}
+
+export type IGetPaySettingListResponse = IAxiosResponse<IGetPaySettingData[]>
+export interface IGetTpIdData {
+	id: number
+	tpName: string
+}
+
+export interface ISlotTpData {
+	tpId: number
+	tpName: string
+	gameList: null
+	checked: boolean
+}

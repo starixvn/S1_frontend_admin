@@ -12,7 +12,12 @@ import {
 	VisibilityColumnsButton,
 } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numberFormatter,
+	timeFormat,
+	jsonToObject,
+	numFormatToDigits,
+} from 'common/utils/format'
 import {
 	IDepositInfo,
 	IDepositOperatorData,
@@ -23,6 +28,7 @@ import {
 } from 'features/depositOperator/constants'
 
 interface IDepositOperatorTableProps {
+	isAllSite: boolean
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositOperatorList: IDepositOperatorData[]
@@ -35,6 +41,7 @@ interface IDepositOperatorTableProps {
 }
 
 const DepositOperatorTable = ({
+	isAllSite,
 	loading,
 	timeZoneUtcOffset,
 	depositOperatorList,
@@ -45,14 +52,23 @@ const DepositOperatorTable = ({
 	const { t } = useTranslation()
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
 		useVisibilityColumnsButtonHook()
+
 	const baseColumns = [
 		{
 			title: t('Label_TransId'),
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ transId }: IDepositOperatorData) => (
-				<Link to={transId}>{transId}</Link>
+				<Link to={isAllSite ? `${transId}?isAllSite=${isAllSite}` : transId}>
+					{transId}
+				</Link>
 			),
+		},
+		{
+			title: t('Label_SiteName'),
+			dataIndex: 'siteName',
+			width: 80,
+			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Operator'),
@@ -107,6 +123,7 @@ const DepositOperatorTable = ({
 			align: 'center' as 'center',
 			render: ({ custId, userName }: IDepositOperatorData) => (
 				<Typography.Link
+					disabled={isAllSite}
 					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 					target='_blank'
 				>
@@ -128,10 +145,11 @@ const DepositOperatorTable = ({
 			dataIndex: 'depositInfo',
 			width: 60,
 			align: 'center' as 'center',
-			render: ({ channelName }: IDepositInfo) => {
+			render: (depositInfo: IDepositInfo) => {
+				const { channelName } = jsonToObject(depositInfo) ?? {}
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{channelName}
+						{channelName || '-'}
 					</Typography.Text>
 				)
 			},
@@ -139,15 +157,16 @@ const DepositOperatorTable = ({
 		{
 			title: t('Label_CryptoAmount'),
 			align: 'right' as 'right',
-			render: ({
-				status,
-				depositInfo: { exchangeAmount, actualExchangeAmount },
-			}: IDepositOperatorData) => {
+			render: ({ status, depositInfo }: IDepositOperatorData) => {
+				const { exchangeAmount, actualExchangeAmount } =
+					jsonToObject(depositInfo) ?? {}
 				// * approved 時使用 ActualExchangeAmount，其餘皆用 exchangeAmount
 				const amount = status === 3 ? actualExchangeAmount : exchangeAmount
+
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{amount && numberFormatter.format(amount)}
+						{/* crypto amount 的小數點不用省略，並且一般情況下不會超過十位 */}
+						{amount && numFormatToDigits(Number(amount), 10)}
 					</Typography.Text>
 				)
 			},
@@ -276,7 +295,7 @@ const DepositOperatorTable = ({
 		},
 	]
 
-	const columns = onGetVisibilityColumns(baseColumns)
+	const columns = onGetVisibilityColumns(baseColumns as any)
 
 	// * for selection and operation of table
 	const dataSource = depositOperatorList.map(item => ({
@@ -300,6 +319,7 @@ const DepositOperatorTable = ({
 						<VisibilityColumnsButton
 							baseColumns={baseColumns}
 							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+							memoried
 						/>
 					</Space>
 				)}

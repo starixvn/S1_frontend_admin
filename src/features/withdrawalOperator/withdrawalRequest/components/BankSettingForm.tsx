@@ -107,9 +107,21 @@ const BankSettingForm = ({
 										rules={[
 											{ required: canUse, message: t('Label_RequiredText') },
 										]}
-										style={{ width: '250px' }}
+										style={{ width: '450px' }}
 									>
-										<Select style={{ width: '100%' }}>
+										<Select
+											style={{ width: '100%' }}
+											showSearch
+											filterOption={(input, option) => {
+												const isIncludes: boolean = (
+													option!.children as unknown as string
+												)
+													.toLowerCase()
+													.includes(input.toLowerCase())
+
+												return isIncludes
+											}}
+										>
 											{localBankList?.map(({ displayName, bankId }) => (
 												<Option value={bankId} key={bankId}>
 													{displayName}
@@ -136,7 +148,6 @@ const BankSettingForm = ({
 										initialValue={name === 0 ? amount : null}
 									>
 										<InputNumber
-											type='number'
 											controls={false}
 											style={{ width: '100%' }}
 											placeholder={t('Label_Amount')}
@@ -144,12 +155,24 @@ const BankSettingForm = ({
 											// 這是來自 Antd 元件的 bug , 解決方法只能使用 type = 'text' , 但 string 不符合這裡要的 type
 											// @ts-ignore
 											onWheel={() => document.activeElement.blur()}
+											// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+											formatter={value =>
+												`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+											}
+											// 把 + 過逗號的值再 parser 回來
+											parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 										/>
 									</Form.Item>
 									<Form.Item
 										{...restField}
 										name={[name, 'chargeFee']}
-										label={name === 0 ? t('Label_ChargeFee') : null}
+										label={
+											name === 0 ? (
+												<div style={{ whiteSpace: 'nowrap' }}>
+													{t('Label_ChargeFee')}
+												</div>
+											) : null
+										}
 										rules={[
 											{
 												required: true,
@@ -164,7 +187,6 @@ const BankSettingForm = ({
 										initialValue={0}
 									>
 										<InputNumber
-											type='number'
 											controls={false}
 											style={{ width: '100%' }}
 											placeholder={t('Label_ChargeFee')}
@@ -172,6 +194,10 @@ const BankSettingForm = ({
 											// 這是來自 Antd 元件的 bug , 解決方法只能使用 type = 'text' , 但 string 不符合這裡要的 type
 											// @ts-ignore
 											onWheel={() => document.activeElement.blur()}
+											formatter={value =>
+												`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+											}
+											parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 										/>
 									</Form.Item>
 									<Form.Item label={name === 0 ? ' ' : null}>

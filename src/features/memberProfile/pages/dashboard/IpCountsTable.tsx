@@ -1,5 +1,6 @@
 import { Table, Typography } from 'antd'
 import { IGetIpCountData } from 'features/memberProfile/type'
+import { numFormatToDigits } from 'common/utils/format'
 
 interface IIpCountsTableProps {
 	loading: boolean
@@ -25,7 +26,7 @@ const IpCountsTable = ({
 				const { loginIp, userCount } = record
 				return (
 					<Typography.Link onClick={() => onAccountClick(loginIp)}>
-						{userCount}
+						{numFormatToDigits(userCount || 0)}
 					</Typography.Link>
 				)
 			},

@@ -17,6 +17,7 @@ import {
 	IGetCryptoPayListArgs,
 	IGetCryptoWalletArgs,
 	ICryptoWalletData,
+	IGameCasinoByIdData,
 } from './type'
 
 export const GET_BANK_INFO_OFF_LIST_ARGS = {
@@ -129,6 +130,16 @@ export const baseDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getGameCasinoByTpId: builder.query<
+			IAxiosResponse<IGameCasinoByIdData[]>,
+			{ tpId: number }
+		>({
+			query: data => ({
+				url: 'BaseData/GetGameCasinoByTpId',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -142,4 +153,5 @@ export const {
 	useGetGameIdByTpIdAndCategoryIdQuery,
 	useGetCryptoPayListQuery,
 	useGetCryptoWalletListQuery,
+	useLazyGetGameCasinoByTpIdQuery,
 } = baseDataApi

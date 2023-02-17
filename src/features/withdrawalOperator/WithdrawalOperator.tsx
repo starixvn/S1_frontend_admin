@@ -15,6 +15,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { SiteIds } from 'app/constants/siteIds'
 import { useEffect } from 'react'
 import { filter, head, includes, isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
@@ -37,9 +38,13 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
+	const formIsAllSite = Form.useWatch('isAllSite', filterForm)
+	const siteId = formIsAllSite ? SiteIds.All : originSiteId
+
+	const [queryParams, setQueryParams] = useQueryParams()
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
 
 	const [
@@ -167,7 +172,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		const {
 			startDate,
 			endDate,
-			siteId: querySiteId,
 			startAmount,
 			endAmount,
 			userName = '',
@@ -175,7 +179,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			withdrawalMethod = 0,
 			withdrawalTypes,
 			statuses,
-			currencyIds,
+			currencyIds = [],
 			levelStatuses,
 			selectBankCode,
 			selectCalCode,
@@ -186,7 +190,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportWithdrawalList({
 				startDate,
 				endDate,
-				siteId: Number(querySiteId),
+				siteId,
 				startAmount: Number(startAmount) || -1,
 				endAmount: Number(endAmount) || -1,
 				userName,
@@ -225,9 +229,23 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetBankCodeListLoading
 
 	useEffect(() => {
-		if (!filterLoading && !isEmpty(queryParams)) {
-			// init Query
+		const initSelector = () => {
+			filterForm.setFieldsValue({
+				statuses: withdrawalStatusList?.map(({ value }) => value),
+				withdrawalTypes: withdrawalTypeList?.map(({ value }) => value),
+				withdrawalMethod: head(withdrawalMethodList)?.value,
+				levelStatuses: vipLevelList?.map(({ level }) => level),
+			})
+		}
+		if (!filterLoading && isEmpty(queryParams)) {
+			initSelector()
+		}
+	}, [filterLoading])
+
+	useEffect(() => {
+		const init = () => {
 			const {
+				isAllSite = false,
 				startDate,
 				endDate,
 				startAmount,
@@ -237,7 +255,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber,
 				pageSize,
 				timeZone,
-				currencyIds,
+				currencyIds = [],
 				statuses = [],
 				selectCalCode = [],
 				levelStatuses = [],
@@ -247,6 +265,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
+				isAllSite,
 				withdrawalId,
 				agent,
 				dateRange: [moment(startDate), moment(endDate)],
@@ -266,21 +285,35 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize: Number(pageSize),
 				currentTimeZoneUtcOffset: Number(timeZone),
 			})
-		} else if (!filterLoading) {
-			// filter Init
-			filterForm.setFieldsValue({
-				statuses: withdrawalStatusList?.map(({ value }) => value),
-				withdrawalTypes: withdrawalTypeList?.map(({ value }) => value),
-				withdrawalMethod: head(withdrawalMethodList)?.value,
-				levelStatuses: vipLevelList?.map(({ level }) => level),
-			})
+		}
+		if (!isEmpty(queryParams)) {
+			init()
 		}
 	}, [filterLoading])
+
+	useEffect(() => {
+		if (formIsAllSite) {
+			// * 當 isAllSite = true, 下列條件接設定為 '全選' 的狀態
+			filterForm.setFieldsValue({
+				currencyIds: [],
+				withdrawalMethod: 0,
+				levelStatuses: [],
+				userName: '',
+				withdrawalId: '',
+				startAmount: 0,
+				endAmount: 0,
+				agent: '',
+				selectCalCode: [],
+				selectBankCode: [],
+			})
+		}
+	}, [formIsAllSite])
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 			<WithdrawalOperatorFilter
+				isAllSite={formIsAllSite}
 				loading={filterLoading}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
@@ -296,6 +329,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			/>
 			{!isEmpty(queryParams) && (
 				<WithdrawalOperatorTable
+					isAllSite={queryParams?.isAllSite}
 					loading={isGetWithdrawalLoading}
 					withdrawalList={withdrawalList}
 					timeZoneUtcOffset={timeZoneUtcOffset}

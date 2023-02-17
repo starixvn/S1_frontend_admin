@@ -163,6 +163,7 @@ export interface IForm {
 	agent: string
 	depositId: string
 	selectCalCode: number[]
+	isAllSite: boolean
 }
 
 export interface IBatchRejectedDepositTransIdsArgs {

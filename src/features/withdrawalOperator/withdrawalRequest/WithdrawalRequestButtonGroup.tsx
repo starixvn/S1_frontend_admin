@@ -16,12 +16,14 @@ interface IButtonGroupProps {
 			| UsableActionButtonEnum.ManualApproved
 			| UsableActionButtonEnum.ManualRejected
 	) => void
+	onShowSendMessageModal: () => void
 }
 const WithdrawalRequestButtonGroup = ({
 	loading,
 	usableActionButton,
 	onSetWithdrawalRequest,
 	onSetManualOperator,
+	onShowSendMessageModal,
 }: IButtonGroupProps) => {
 	const { t } = useTranslation()
 	// 因為太多 permission , 直接在這邊取
@@ -37,11 +39,15 @@ const WithdrawalRequestButtonGroup = ({
 			verifiedPermission,
 			processPermission,
 			toKycPermission,
+			sendMessagePermission,
 		} = {},
 	} = useAuth()
 
 	return (
-		<Row gutter={[16, 16]} style={{ marginTop: '20px', marginBottom: '20px' }}>
+		<Row
+			gutter={[16, 16]}
+			style={{ marginTop: '20px', marginBottom: '20px', paddingRight: '80px' }}
+		>
 			{/* 因為 button 數量變化大，用 flex 自行伸縮排版 */}
 			{includes(usableActionButton, UsableActionButtonEnum.ManualRejected) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
@@ -69,6 +75,19 @@ const WithdrawalRequestButtonGroup = ({
 						}}
 					>
 						{t('Label_Reject')}
+					</OperatorButton>
+				</Col>
+			)}
+
+			{sendMessagePermission?.canUse && (
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+					<OperatorButton
+						loading={loading}
+						disabled={!sendMessagePermission?.canUse}
+						onClick={onShowSendMessageModal}
+						color='Blue'
+					>
+						{t('Label_SendMessage')}
 					</OperatorButton>
 				</Col>
 			)}
