@@ -985,6 +985,13 @@ const BonusInfo = lazy(
 		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
 )
 
+const WinLostReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2432,6 +2439,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
+						<WinLostReport />
 					</AuthRequire>
 				),
 			},

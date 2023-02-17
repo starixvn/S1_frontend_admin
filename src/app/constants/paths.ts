@@ -425,6 +425,10 @@ const paths = {
 				root: 'report/withdrawalPaymentReport',
 				functionId: 136,
 			},
+			winLostReport: {
+				root: 'report/winLostReport',
+				functionId: 79,
+			},
 			bonusInfoReport: {
 				root: 'report/bonusInfoReport',
 				functionId: 72,
