@@ -1,5 +1,6 @@
 export enum SiteIds {
-	Nova88 = 1,
+	All = 0,
+	Nova88,
 	Goal123,
 	Bwing,
 	Soon88,

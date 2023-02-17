@@ -26,13 +26,13 @@ import {
 } from 'common/service/baseDataApi/type'
 import { IFilterForm } from 'features/withdrawalOperator/type'
 import moment from 'moment/moment'
-import { Dispatch, SetStateAction } from 'react'
+import { isEmpty } from 'lodash'
+import { useQueryParams } from 'common/hooks'
 
 interface IWithdrawalOperatorFilterProps {
 	isAllSite: boolean
 	loading: boolean
 	form: FormInstance<IFilterForm>
-	collapseActiveKey: number
 	timeZoneUtcOffset: number
 	withdrawalMethodList: IEnumTypeData[]
 	withdrawalStatusList: IEnumTypeData[]
@@ -51,7 +51,6 @@ interface IWithdrawalOperatorFilterProps {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => void
-	setCollapseActiveKey: Dispatch<SetStateAction<number>>
 }
 
 const { Panel } = Collapse
@@ -68,7 +67,6 @@ const WithdrawalOperatorFilter = ({
 	isAllSite,
 	loading,
 	form,
-	collapseActiveKey,
 	timeZoneUtcOffset,
 	withdrawalStatusList,
 	withdrawalMethodList,
@@ -79,17 +77,9 @@ const WithdrawalOperatorFilter = ({
 	bankCodeList,
 	onSearch,
 	onTimeZoneChange,
-	setCollapseActiveKey,
 }: IWithdrawalOperatorFilterProps) => {
 	const { t } = useTranslation()
-
-	const handleCollapse = (activeKey: number) => {
-		if (activeKey === 0) {
-			setCollapseActiveKey(() => 1)
-		} else {
-			setCollapseActiveKey(() => 0)
-		}
-	}
+	const [queryParams] = useQueryParams()
 
 	const statusSelector = () => {
 		const onChangeStatus = (newStatus: Array<number | string>) => {
@@ -287,14 +277,11 @@ const WithdrawalOperatorFilter = ({
 		)
 	}
 
+	const defaultActiveKey = isEmpty(queryParams) ? 1 : 0
+
 	return (
-		<Collapse
-			activeKey={collapseActiveKey}
-			onChange={() => {
-				handleCollapse(collapseActiveKey)
-			}}
-		>
-			<Panel header='' key='1'>
+		<Collapse defaultActiveKey={defaultActiveKey}>
+			<Panel header='' key='1' forceRender>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
 						form={form}
