@@ -454,6 +454,10 @@ const paths = {
 				root: 'member/iovation',
 				functionId: 138,
 			},
+			vipReview: {
+				root: 'member/vipReview',
+				functionId: 50,
+			},
 		},
 	},
 	risk: {
