@@ -657,7 +657,8 @@
 				"Label_RewardsPointLog": "Rewards Point Log",
 				"Label_CashBackReport": "Cash Back Report",
 				"Label_VipRebateMenu": "Vip Rebate Menu",
-				"Label_PromotionReport": "Promotion Report"
+				"Label_PromotionReport": "Promotion Report",
+				"Label_PromotionFailLog": "Promotion Fail Log"
 			}
 		}
 	},
@@ -1041,5 +1042,11 @@
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_BonusIPDisable": "Bonus IP Disable",
+	"Label_BonusDeviceDisable": "Bonus Device Disable",
+	"Label_BonusRealNameDisable": "Bonus Real Name Disable",
+	"Label_BeforeName": "Before Name",
+	"Label_AfterName": "After Name",
+	"Label_FullNameChangeLog": "Full Name Change Log"
 }

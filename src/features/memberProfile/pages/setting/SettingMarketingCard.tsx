@@ -4,6 +4,8 @@ import {
 	PayoutVerificationRewardOTPTypeEnum,
 	SettingSwitchTypeEnum,
 	ISettingMarketingPermissions,
+	ICustPromotionWhiteData,
+	SettingCustPromotionWitheListEnum,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
@@ -14,8 +16,16 @@ import { isNull } from 'lodash'
 interface ISettingMarketingCardProps {
 	marketingPermissions: ISettingMarketingPermissions
 	custBasicInfo: IGetBasicInfoData
+	custPromotionWhiteData: ICustPromotionWhiteData
 	isSwitchRebatePayoutLoading: boolean
+	// isCustPromotionWhiteLoading: boolean
 	onSwitch: (newSwitchType: SettingSwitchTypeEnum, checked: boolean) => void
+	onSwitchPromotionWhiteList: (
+		newSwitchType: SettingCustPromotionWitheListEnum,
+		checkedIp: boolean,
+		checkedDevice: boolean,
+		checkedRealName: boolean
+	) => void
 	onSetPayoutVerificationReward: (
 		OTPType: PayoutVerificationRewardOTPTypeEnum
 	) => void
@@ -28,14 +38,18 @@ const SettingMarketingCard = ({
 		lockRebatePayoutPermission,
 	},
 	custBasicInfo,
+	custPromotionWhiteData,
 	isSwitchRebatePayoutLoading,
+	// isCustPromotionWhiteLoading,
 	onSwitch,
+	onSwitchPromotionWhiteList,
 	onSetPayoutVerificationReward,
 }: ISettingMarketingCardProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { enableRebate, phoneRewardTime, emailRewardTime } = custBasicInfo
 	const isRebatePayoutStatus = Boolean(enableRebate)
+
 	return (
 		<Col xxl={5} xl={5} lg={12} span={12} style={{ marginBottom: 8 }}>
 			<Card title={t('Label_Marketing')} style={{ height: '100%' }}>
@@ -113,6 +127,63 @@ const SettingMarketingCard = ({
 								checked={isRebatePayoutStatus}
 								onChange={checked =>
 									onSwitch(SettingSwitchTypeEnum.RebatePayout, checked)
+								}
+							/>
+						</Col>
+					</Row>
+				</p>
+				<p>
+					<Row>
+						<Col span={16}>{t('Label_BonusIPDisable')}</Col>
+						<Col span={6} offset={2}>
+							<Switch
+								loading={isSwitchRebatePayoutLoading}
+								checked={custPromotionWhiteData.ipEnable}
+								onChange={checkedIP =>
+									onSwitchPromotionWhiteList(
+										SettingCustPromotionWitheListEnum.ipEnable,
+										checkedIP,
+										custPromotionWhiteData.deviceEnable,
+										custPromotionWhiteData.realNameEnable
+									)
+								}
+							/>
+						</Col>
+					</Row>
+				</p>
+				<p>
+					<Row>
+						<Col span={16}>{t('Label_BonusDeviceDisable')}</Col>
+						<Col span={6} offset={2}>
+							<Switch
+								loading={isSwitchRebatePayoutLoading}
+								checked={custPromotionWhiteData.deviceEnable}
+								onChange={checkedDevice =>
+									onSwitchPromotionWhiteList(
+										SettingCustPromotionWitheListEnum.deviceEnable,
+										custPromotionWhiteData.ipEnable,
+										checkedDevice,
+										custPromotionWhiteData.realNameEnable
+									)
+								}
+							/>
+						</Col>
+					</Row>
+				</p>
+				<p>
+					<Row>
+						<Col span={16}>{t('Label_BonusRealNameDisable')}</Col>
+						<Col span={6} offset={2}>
+							<Switch
+								loading={isSwitchRebatePayoutLoading}
+								checked={custPromotionWhiteData.realNameEnable}
+								onChange={checkedRealName =>
+									onSwitchPromotionWhiteList(
+										SettingCustPromotionWitheListEnum.realNameEnable,
+										custPromotionWhiteData.ipEnable,
+										custPromotionWhiteData.deviceEnable,
+										checkedRealName
+									)
 								}
 							/>
 						</Col>

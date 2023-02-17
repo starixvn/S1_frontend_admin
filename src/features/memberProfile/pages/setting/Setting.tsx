@@ -26,6 +26,8 @@ import {
 	useSwitchRebatePayoutMutation,
 	useSwitchRiskMutation,
 	useKickOutUserMutation,
+	useGetCustPromotionWhiteListDataQuery,
+	useEditCustPromotionWhiteListMutation,
 } from 'features/memberProfile/api'
 import {
 	ISettingFinancePermissions,
@@ -38,6 +40,8 @@ import {
 	SettingSwitchTypeEnum,
 	ISettingMarketingPermissions,
 	ISettingInfoPermissions,
+	ICustPromotionWhiteResponse,
+	SettingCustPromotionWitheListEnum,
 } from 'features/memberProfile/type'
 import copy from 'copy-to-clipboard'
 import SettingInfoCard from './SettingInfoCard'
@@ -129,6 +133,12 @@ const Setting = () => {
 		custId,
 	})
 
+	const {
+		data: { data: custPromotionWhiteData } = {} as ICustPromotionWhiteResponse,
+	} = useGetCustPromotionWhiteListDataQuery({
+		custId,
+	})
+
 	const [editFullName, { isLoading: isEditFullNameLoading }] =
 		useEditFullNameMutation()
 
@@ -178,6 +188,8 @@ const Setting = () => {
 
 	const [setPayoutVerificationReward] = useSetPayoutVerificationRewardMutation()
 
+	const [editCustPromotionWhiteList] = useEditCustPromotionWhiteListMutation()
+
 	const onEditTypeChange = (newEditType: SettingEditTypeEnum | undefined) => {
 		setEditType(newEditType)
 		editModal.onOpen()
@@ -218,6 +230,51 @@ const Setting = () => {
 					await switchRebatePayout({
 						custId,
 						status: checked ? 1 : 0,
+					}).unwrap()
+					break
+				}
+				default:
+					break
+			}
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSwitchPromotionWhiteList = async (
+		newSwitchType: SettingCustPromotionWitheListEnum,
+		checkedIp: boolean,
+		checkedDevice: boolean,
+		checkedRealName: boolean
+	) => {
+		try {
+			switch (newSwitchType) {
+				case SettingCustPromotionWitheListEnum.ipEnable: {
+					await editCustPromotionWhiteList({
+						custId,
+						ipEnable: checkedIp,
+						deviceEnable: checkedDevice,
+						realNameEnable: checkedRealName,
+					}).unwrap()
+					break
+				}
+				case SettingCustPromotionWitheListEnum.deviceEnable: {
+					await editCustPromotionWhiteList({
+						custId,
+						ipEnable: checkedIp,
+						deviceEnable: checkedDevice,
+						realNameEnable: checkedRealName,
+					}).unwrap()
+					break
+				}
+				case SettingCustPromotionWitheListEnum.realNameEnable: {
+					await editCustPromotionWhiteList({
+						custId,
+						ipEnable: checkedIp,
+						deviceEnable: checkedDevice,
+						realNameEnable: checkedRealName,
 					}).unwrap()
 					break
 				}
@@ -484,8 +541,10 @@ const Setting = () => {
 					<SettingMarketingCard
 						marketingPermissions={marketingPermissions}
 						custBasicInfo={custBasicInfo ?? {}}
+						custPromotionWhiteData={custPromotionWhiteData ?? {}}
 						isSwitchRebatePayoutLoading={isSwitchRebatePayoutLoading}
 						onSwitch={handleSwitch}
+						onSwitchPromotionWhiteList={handleSwitchPromotionWhiteList}
 						onSetPayoutVerificationReward={handleSetPayoutVerificationReward}
 					/>
 

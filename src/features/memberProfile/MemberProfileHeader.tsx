@@ -354,6 +354,16 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				{
 					label: (
 						<Link
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/promotionFailLog/${custId}`}
+						>
+							{t('MemberProfile.Menu.Marketing.Label_PromotionFailLog')}
+						</Link>
+					),
+					key: '7',
+				},
+				{
+					label: (
+						<Link
 							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/marketing/rewardsPointLog/${custId}`}
 						>
 							{t('MemberProfile.Menu.Marketing.Label_RewardsPointLog')}
