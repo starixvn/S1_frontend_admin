@@ -35,7 +35,10 @@ const DepositRequestOperatorButtonGroup = ({
 		} = {},
 	} = useAuth()
 	return (
-		<Row gutter={[16, 16]} style={{ marginTop: '20px', marginBottom: '20px' }}>
+		<Row
+			gutter={[16, 16]}
+			style={{ marginTop: '20px', marginBottom: '20px', paddingRight: '80px' }}
+		>
 			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
