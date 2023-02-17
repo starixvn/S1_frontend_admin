@@ -12,12 +12,14 @@ import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
 import React from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
+import { IGetWithdrawalData } from 'features/withdrawalOperator/type'
 import { useCopy, useQueryParams } from 'common/hooks'
 import { CopyOutlined } from '@ant-design/icons'
 
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
 	memberInfo?: IMemberInfo
+	withdrawalDetailData?: IGetWithdrawalData
 	onIpCountClick: (ip: string) => void
 	onDeviceCountClick: (deviceId: string) => void
 }
@@ -27,11 +29,13 @@ const { Item } = Descriptions
 const WithdrawalRequestMemberInfo = ({
 	loading,
 	memberInfo,
+	withdrawalDetailData,
 	onIpCountClick,
 	onDeviceCountClick,
 }: IWithdrawalRequestMemberInfoProps) => {
 	const { t } = useTranslation()
 	const [queryParams] = useQueryParams()
+	const { withdrawlCnt } = withdrawalDetailData ?? {}
 	const { onCopy } = useCopy()
 
 	const {
@@ -116,27 +120,29 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_TotalBonusAmount')}>
 					{numberFormatter.format(totalBonusAmount || 0)}
 				</Item>
+				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
+
+				<Item label={t('Label_TotalDeposit')}>
+					{numberFormatter.format(totalDeposit || 0)}
+				</Item>
 				<Item label={t('Label_MailWalletAmount')}>
 					{numberFormatter.format(mailWalletAmount || 0)}
 				</Item>
-				<Item label={t('Label_TotalDeposit')}>
-					{numberFormatter.format(totalDeposit || 0)}
+
+				<Item label={t('Label_TotalWithdrawal')}>
+					{numberFormatter.format(totalWithdrawal || 0)}
 				</Item>
 				<Item label={t('Label_EligibleWithdrawal')}>
 					{numberFormatter.format(eligibleWithdrawal || 0)}
 				</Item>
-				<Item label={t('Label_TotalWithdrawal')}>
-					{numberFormatter.format(totalWithdrawal || 0)}
+
+				<Item label={t('Label_TotalWinLoss')}>
+					{numberFormatter.format(totalWinLoss || 0)}
 				</Item>
 				<Item label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
-				<Item label={t('Label_TotalWinLoss')}>
-					{numberFormatter.format(totalWinLoss || 0)}
-				</Item>
-				<Item
-					label={t('Label_DOB')}
-				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
+
 				<Item label={t('Label_DeviceAssociateCount')}>
 					<Typography.Link
 						onClick={() => onDeviceCountClick(deviceId)}
@@ -145,9 +151,10 @@ const WithdrawalRequestMemberInfo = ({
 						{associateCount}
 					</Typography.Link>
 				</Item>
-				<Item label={t('Label_IovationStatus')}>
-					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
-				</Item>
+				<Item
+					label={t('Label_DOB')}
+				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
+
 				<Item label={t('Label_IpUserCount')}>
 					<Typography.Link
 						onClick={() => onIpCountClick(loginIp)}
@@ -156,6 +163,11 @@ const WithdrawalRequestMemberInfo = ({
 						{userCount}
 					</Typography.Link>
 				</Item>
+				<Item label={t('Label_IovationStatus')}>
+					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
+				</Item>
+				{/* 排版需要，留空 */}
+				<Item>{` `}</Item>
 				<Item label={t('Label_Tag')}>
 					{tagList.length > 0
 						? tagList?.map(tag => (

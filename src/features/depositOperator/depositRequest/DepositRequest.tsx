@@ -274,6 +274,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 							<DepositRequestMemberInfo
 								loading={isMemberInfoLoading}
 								memberInfo={memberInfo}
+								depositInfo={depositInfo}
 							/>
 
 							{/* //* 給兩個 br 讓 Image 與其他元件同高 */}

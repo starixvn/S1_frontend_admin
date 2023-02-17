@@ -15,6 +15,7 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment/moment'
 import {
 	WITHDRAWAL_STATUS_TAGS_COLOR,
+	WithdrawalStatusEnum,
 	WithdrawalTypeEnum,
 } from 'features/withdrawalOperator/constants'
 import { Link } from 'react-router-dom'
@@ -192,12 +193,16 @@ const WithdrawalOperatorTable = ({
 			dataIndex: 'withdrawalInfo',
 			width: 100,
 			align: 'right' as 'right',
-			render: (withdrawalInfo: string) => {
+			render: (withdrawalInfo: string, record: IGetWithdrawalData) => {
+				const { status } = record
+				const isApproved = status === WithdrawalStatusEnum.Approved
 				if (!isJSON(withdrawalInfo)) return ''
 				const info = JSON.parse(withdrawalInfo)
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{info?.ExchangeAmount ?? ''}
+						{isApproved
+							? info?.ExchangeAmount ?? ''
+							: info?.TempExchangeAmount ?? ''}
 					</Typography.Text>
 				)
 			},
