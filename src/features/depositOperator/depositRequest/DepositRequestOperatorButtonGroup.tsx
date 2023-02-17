@@ -35,9 +35,12 @@ const DepositRequestOperatorButtonGroup = ({
 		} = {},
 	} = useAuth()
 	return (
-		<Row gutter={[16, 16]}>
+		<Row
+			gutter={[16, 16]}
+			style={{ marginTop: '20px', marginBottom: '20px', paddingRight: '80px' }}
+		>
 			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!rejectPermission?.canUse}
@@ -49,19 +52,21 @@ const DepositRequestOperatorButtonGroup = ({
 				</Col>
 			)}
 
-			<Col span={6}>
-				<OperatorButton
-					loading={loading}
-					disabled={!sendMessagePermission?.canUse}
-					onClick={onShowSendMessageModal}
-					color='Blue'
-				>
-					{t('Label_SendMessage')}
-				</OperatorButton>
-			</Col>
+			{sendMessagePermission?.canUse && (
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+					<OperatorButton
+						loading={loading}
+						disabled={!sendMessagePermission?.canUse}
+						onClick={onShowSendMessageModal}
+						color='Blue'
+					>
+						{t('Label_SendMessage')}
+					</OperatorButton>
+				</Col>
+			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.Draft) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!draftPermission?.canUse}
@@ -74,7 +79,7 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.OnHold) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!onHoldPermission?.canUse}
@@ -87,7 +92,7 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.Pending) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!pendingPermission?.canUse}
@@ -100,7 +105,7 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.Approved) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!approvedPermission?.canUse}
@@ -113,7 +118,7 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.ManualApproved) && (
-				<Col span={6}>
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
 						loading={loading}
 						disabled={!manualApprovedPermission?.canUse}

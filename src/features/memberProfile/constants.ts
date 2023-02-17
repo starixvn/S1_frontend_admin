@@ -1,3 +1,8 @@
+import {
+	AllDepositStatusEnum,
+	AllWithdrawalStatusEnum,
+} from 'features/memberProfile/type'
+
 export enum ActStatusEnum {
 	// 判斷是否存過錢
 	unActive = 1,
@@ -159,33 +164,39 @@ export enum PromotionReportStatusEnum {
 	Running = 1,
 	Canceled = 2,
 	Expiry = 3,
-	FullFill = 4,
+	Reached = 4,
 	TransferOut = 5,
 }
 
 export const promotionReportStatusList: Array<{
 	value: number
 	displayName: string
+	color: string
 }> = [
 	{
 		value: PromotionReportStatusEnum.Running,
 		displayName: 'BonusReportStatuses.Label_Running',
+		color: '#00A254',
 	},
 	{
 		value: PromotionReportStatusEnum.Canceled,
 		displayName: 'BonusReportStatuses.Label_Canceled',
+		color: '#FE792F',
 	},
 	{
 		value: PromotionReportStatusEnum.Expiry,
 		displayName: 'BonusReportStatuses.Label_Expiry',
+		color: '#BEBEBE',
 	},
 	{
-		value: PromotionReportStatusEnum.FullFill,
-		displayName: 'BonusReportStatuses.Label_Fulfill',
+		value: PromotionReportStatusEnum.Reached,
+		displayName: 'BonusReportStatuses.Label_Reached',
+		color: '#005EA2',
 	},
 	{
 		value: PromotionReportStatusEnum.TransferOut,
 		displayName: 'BonusReportStatuses.Label_TransferOut',
+		color: '#BEBEBE',
 	},
 ]
 
@@ -250,3 +261,34 @@ export const isPayoutList: Array<{
 	{ value: IsPayoutEnum.true, displayName: 'Label_Yes' },
 	{ value: IsPayoutEnum.false, displayName: 'Label_No' },
 ]
+
+export enum DepositStatusEnum {
+	Approved = 3,
+}
+
+export enum WithdrawalStatusEnum {
+	Approved = 6,
+}
+
+export const DEPOSIT_STATUS_TAGS_COLOR: {
+	[status: number]: string
+} = {
+	[AllDepositStatusEnum.Draft]: '#8B8B8B',
+	[AllDepositStatusEnum.Pending]: '#F97C08',
+	[AllDepositStatusEnum.OnHold]: '#F4B30B',
+	[AllDepositStatusEnum.Canceled]: '#38425B',
+	[AllDepositStatusEnum.Approved]: '#3EA62E',
+	[AllDepositStatusEnum.Rejected]: '#C70707',
+}
+
+export const WITHDRAWAL_STATUS_TAGS_COLOR: { [status: number]: string } = {
+	[AllWithdrawalStatusEnum.Draft]: '#8B8B8B',
+	[AllWithdrawalStatusEnum.Pending]: '#F97C08',
+	[AllWithdrawalStatusEnum.OnHold]: '#F4B30B',
+	[AllWithdrawalStatusEnum.Verify]: '#2DA7EC',
+	[AllWithdrawalStatusEnum.Process]: '#0747A6',
+	[AllWithdrawalStatusEnum.Cancelled]: '#38425B',
+	[AllWithdrawalStatusEnum.Approved]: '#3EA62E',
+	[AllWithdrawalStatusEnum.Rejected]: '#C70707',
+	[AllWithdrawalStatusEnum.ToKyc]: '#9957EC',
+}

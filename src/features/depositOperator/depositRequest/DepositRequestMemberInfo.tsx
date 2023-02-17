@@ -9,6 +9,7 @@ import {
 } from 'features/depositOperator/constants'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { useQueryParams } from 'common/hooks'
 
 interface IDepositRequestMemberInfoProps {
 	loading: boolean
@@ -20,6 +21,7 @@ const DepositRequestMemberInfo = ({
 	memberInfo,
 }: IDepositRequestMemberInfoProps) => {
 	const { t } = useTranslation()
+	const [queryParams] = useQueryParams()
 	const {
 		currency,
 		custId,
@@ -54,6 +56,7 @@ const DepositRequestMemberInfo = ({
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_MemberId')}>
 					<Typography.Link
+						disabled={queryParams?.isAllSite}
 						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 						target='_blank'
 					>

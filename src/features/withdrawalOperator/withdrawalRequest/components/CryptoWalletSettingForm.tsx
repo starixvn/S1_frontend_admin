@@ -54,7 +54,7 @@ const CryptoWalletSettingForm = ({
 				layout='vertical'
 				form={form}
 				disabled={!canUse}
-				style={{ width: '80%', marginTop: '20px' }}
+				style={{ width: '95%', marginTop: '20px' }}
 			>
 				<Row align='middle' gutter={16}>
 					<Col span={15}>

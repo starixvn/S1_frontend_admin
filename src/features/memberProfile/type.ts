@@ -1130,3 +1130,30 @@ export interface ICheckDuplicateNameData {
 export type IGetCheckDuplicateNameResponse = IAxiosResponse<
 	ICheckDuplicateNameData[]
 >
+
+export enum AllDepositStatusEnum {
+	Draft = 0,
+	Pending,
+	Paid,
+	Approved,
+	Rejected,
+	Canceled,
+	Expired,
+	OnHold,
+	Adjustment,
+	Error,
+	ManualApproved = 9999,
+}
+
+export enum AllWithdrawalStatusEnum {
+	Draft,
+	Pending,
+	OnHold,
+	Verify,
+	Process,
+	Cancelled,
+	Approved,
+	Rejected,
+	ToKyc,
+	Error = 99,
+}

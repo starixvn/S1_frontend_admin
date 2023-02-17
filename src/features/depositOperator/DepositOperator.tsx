@@ -1,13 +1,14 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import React, { Key, useEffect, useState } from 'react'
-import { filter, includes, isEmpty, map, reduce } from 'lodash'
+import { filter, includes, isEmpty, isNumber, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { DepositTypeEnum } from 'type'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import { SiteIds } from 'app/constants/siteIds'
 import {
 	PAGINATION,
 	useAuth,
@@ -44,7 +45,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const {
 		actionPermissions: { exportExcelPermission, rejectPermission } = {},
 	} = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
+	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
+	const formIsAllSite = Form.useWatch('isAllSite', form)
+	const siteId = formIsAllSite ? SiteIds.All : originSiteId
+
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -128,7 +133,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
+		if (!isNumber(siteId)) return
 		const {
 			currencyIds = [],
 			statuses = [],
@@ -180,10 +185,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		pageSize = PAGINATION.defaultPageSize,
 		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}) => {
-		if (!siteId) return
+		if (!isNumber(originSiteId)) return
 		resetSelectedTransIds()
 
 		const {
+			isAllSite,
 			dateRange,
 			selectPayIds,
 			startAmount,
@@ -198,7 +204,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 		try {
 			await getDepositOperatorList({
-				siteId,
+				siteId: isAllSite ? SiteIds.All : originSiteId,
 				startDate,
 				endDate,
 				pageNumber: current,
@@ -212,6 +218,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
 			setQueryParams({
+				isAllSite,
 				startDate,
 				endDate,
 				pageNumber: current,
@@ -265,70 +272,92 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isGetCalCodeListFetching
 
 	useEffect(() => {
-		const init = () => {
-			if (isEmpty(queryParams)) {
-				form.setFieldsValue({
-					currencyIds:
-						currencyListBySite?.map(({ currencyId }) => currencyId) ?? [],
-					statuses: [DepositStatusEnum.Pending],
-					selectPayIds: [],
-					selectBankCode: [],
-					depositTypes: [DepositTypeEnum.LocalBanking],
-					levelStatuses: vipLevelEnum?.map(({ level }) => level),
-				})
-			} else {
-				const {
-					timeZone,
-					currencyIds = [],
-					statuses = [],
-					selectPayId = [],
-					depositTypes = [],
-					selectBankCode = [],
-					userName = '',
-					depositId = null,
-					startAmount = null,
-					endAmount = null,
-					levelStatuses = [],
-					agent = '',
-					selectCalCode = [],
-					pageNumber,
-					pageSize,
-					startDate,
-					endDate,
-				} = queryParams ?? {}
-				onTimeZoneChange(Number(timeZone))
-				form.setFieldsValue({
-					dateRange: [moment(startDate), moment(endDate)],
-					currencyIds: currencyIds?.map((value: string) => Number(value)) ?? [],
-					statuses: statuses?.map((value: string) => Number(value)) ?? [],
-					selectPayIds:
-						selectPayId?.map((value: string) => Number(value)) ?? [],
-					depositTypes:
-						depositTypes?.map((value: string) => Number(value)) ?? [],
-					selectBankCode:
-						selectBankCode?.map((value: string) => Number(value)) ?? [],
-					userName,
-					depositId,
-					startAmount: Number(startAmount),
-					endAmount: Number(endAmount),
-					levelStatuses:
-						levelStatuses?.map((value: string) => Number(value)) ?? [],
-					agent,
-					selectCalCode:
-						selectCalCode?.map((value: string) => Number(value)) ?? [],
-				})
-				handleSearch({
-					current: Number(pageNumber),
-					pageSize: Number(pageSize),
-					currentTimeZoneUtcOffset: Number(timeZone),
-				})
-			}
+		const initSelector = () => {
+			form.setFieldsValue({
+				currencyIds:
+					currencyListBySite?.map(({ currencyId }) => currencyId) ?? [],
+				statuses: [DepositStatusEnum.Pending],
+				selectPayIds: [],
+				selectBankCode: [],
+				depositTypes: [DepositTypeEnum.LocalBanking],
+				levelStatuses: vipLevelEnum?.map(({ level }) => level),
+			})
 		}
-
-		if (!enumLoading) {
-			init()
+		if (!enumLoading && isEmpty(queryParams)) {
+			initSelector()
 		}
 	}, [enumLoading])
+
+	useEffect(() => {
+		const init = () => {
+			const {
+				isAllSite = false,
+				timeZone,
+				currencyIds = [],
+				statuses = [],
+				selectPayId = [],
+				depositTypes = [],
+				selectBankCode = [],
+				userName = '',
+				depositId = null,
+				startAmount = null,
+				endAmount = null,
+				levelStatuses = [],
+				agent = '',
+				selectCalCode = [],
+				pageNumber,
+				pageSize,
+				startDate,
+				endDate,
+			} = queryParams ?? {}
+			onTimeZoneChange(Number(timeZone))
+			form.setFieldsValue({
+				isAllSite,
+				dateRange: [moment(startDate), moment(endDate)],
+				currencyIds: currencyIds?.map((value: string) => Number(value)) ?? [],
+				statuses: statuses?.map((value: string) => Number(value)) ?? [],
+				selectPayIds: selectPayId?.map((value: string) => Number(value)) ?? [],
+				depositTypes: depositTypes?.map((value: string) => Number(value)) ?? [],
+				selectBankCode:
+					selectBankCode?.map((value: string) => Number(value)) ?? [],
+				userName,
+				depositId,
+				startAmount: Number(startAmount),
+				endAmount: Number(endAmount),
+				levelStatuses:
+					levelStatuses?.map((value: string) => Number(value)) ?? [],
+				agent,
+				selectCalCode:
+					selectCalCode?.map((value: string) => Number(value)) ?? [],
+			})
+			handleSearch({
+				current: Number(pageNumber),
+				pageSize: Number(pageSize),
+				currentTimeZoneUtcOffset: Number(timeZone),
+			})
+		}
+		if (!isEmpty(queryParams)) {
+			init()
+		}
+	}, [])
+
+	useEffect(() => {
+		if (formIsAllSite) {
+			// * 當 isAllSite = true, 下列條件接設定為 '全選' 的狀態
+			form.setFieldsValue({
+				currencyIds: [],
+				selectPayIds: [],
+				selectBankCode: [],
+				userName: '',
+				depositId: '',
+				startAmount: 0,
+				endAmount: 0,
+				levelStatuses: [],
+				agent: '',
+				selectCalCode: [],
+			})
+		}
+	}, [formIsAllSite])
 
 	const filteredBankCodeListByCurrencyIds = filter(
 		bankCodeList,
@@ -365,6 +394,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
 			<DepositOperatorFilter
+				isAllSite={formIsAllSite}
 				form={form}
 				loading={isGetDepositOperatorListFetching}
 				enumLoading={enumLoading}
@@ -380,6 +410,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 			/>
 			<DepositOperatorTable
+				isAllSite={queryParams?.isAllSite}
 				loading={isGetDepositOperatorListFetching}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				depositOperatorList={depositOperatorList}

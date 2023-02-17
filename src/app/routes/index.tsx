@@ -907,6 +907,72 @@ const SmsGenerator = lazy(
 		)
 )
 
+const VipReview = lazy(
+	() =>
+		import(/* webpackChunkName: 'VipReview' */ 'features/vipReview/VipReview')
+)
+
+const ModifyPaymentFeeLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ModifyPaymentFeeLog' */ 'features/modifyPaymentFeeLog/ModifyPaymentFeeLog'
+		)
+)
+
+const VideoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
+const GameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'GameExclusion' */ 'features/gameExclusion/GameExclusion'
+		)
+)
+
+const EditGameExclusion = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
+const BetLimit = lazy(
+	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
+)
+
+const NewsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
+		)
+)
+
+const FailBet = lazy(
+	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
+)
+
+const PendingBonus = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PendingBonus' */ 'features/pendingBonus/PendingBonus'
+		)
+)
+
+const Announcement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2243,6 +2309,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.announcement.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.announcement.functionId}>
+						<Announcement />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.tagManagement.root}`,
 				element: (
 					<AuthRequire functionId={paths.member.sub.tagManagement.functionId}>
@@ -2260,6 +2334,94 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.vipReview.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.vipReview.functionId}>
+						<VipReview />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.modifyPaymentFeeLog.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId
+						}
+					>
+						<ModifyPaymentFeeLog />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.content.sub.videoManagement.functionId}
+					>
+						<VideoManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
+						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<GameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}/:custId`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
+						<EditGameExclusion />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.betLimit.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
+						<BetLimit />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
+				element: (
+					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
+						<NewsManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
+						<FailBet />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonus.sub.pendingBonus.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
+					>
+						<PendingBonus />
 					</AuthRequire>
 				),
 			},

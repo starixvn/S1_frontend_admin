@@ -18,7 +18,8 @@ import {
 	DepositStatusEnum,
 	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import { timeFormat } from 'common/utils/format'
+import { jsonToObject, timeFormat } from 'common/utils/format'
+
 import { ICalCodeData } from 'common/service/baseDataApi/type'
 import { DEPOSIT_STATUS_TAGS_COLOR } from 'features/depositOperator/constants'
 import {
@@ -72,7 +73,7 @@ const DepositRequestDepositInfo = ({
 		statementTime,
 		fromBankName,
 		fromAccountNo,
-		oDepositInfo,
+		depositInfo: originDepositInfo, // json
 		bonusDescription,
 	},
 	calCodeList,
@@ -96,6 +97,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.LoadCard ||
 		depositType === DepositTypeEnum.QRPay
 
+	const depositInfo = jsonToObject(originDepositInfo) ?? {}
+
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
@@ -112,10 +115,15 @@ const DepositRequestDepositInfo = ({
 					<Input.Group compact>
 						<Form.Item noStyle name='amount'>
 							<InputNumber
-								type='number'
 								controls={false}
 								disabled={!editPermission?.canUse || editable !== 'amount'}
 								style={{ width: 'calc(100% - 64px)' }}
+								// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+								formatter={value =>
+									`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+								}
+								// 把 + 過逗號的值再 parser 回來
+								parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 							/>
 						</Form.Item>
 
@@ -226,8 +234,18 @@ const DepositRequestDepositInfo = ({
 							<Form.Item noStyle name='bankId'>
 								<Select
 									disabled={!isApproved}
+									showSearch
+									filterOption={(input, option) => {
+										const isIncludes: boolean = (
+											option!.children as unknown as string
+										)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+
+										return isIncludes
+									}}
 									placeholder={t('Label_Select') + t('Label_CalCode')}
-									style={{ width: 'calc(100% - 64px)' }}
+									style={{ width: 'calc(100% - 30px)' }}
 								>
 									{calCodeList?.map(({ bankId, calCodeName }) => (
 										<Option key={bankId} value={bankId}>
@@ -250,7 +268,7 @@ const DepositRequestDepositInfo = ({
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
-								onClick={() => onOpenPaymentInfoModal(oDepositInfo?.payId)}
+								onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
 							>
 								<InfoCircleOutlined style={{ fontSize: '18px' }} />
 							</Button>

@@ -1,5 +1,5 @@
 import { PaginationInterface } from 'common/hooks'
-import { Popconfirm, Row, TablePaginationConfig, Typography } from 'antd'
+import { Popconfirm, Row, TablePaginationConfig, Typography, Tag } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import {
@@ -270,12 +270,12 @@ const PromotionReportTable = ({
 				const statusName = find(
 					promotionReportStatusList,
 					status => status.value === bonusInfoStatus
-				)?.displayName
-				return statusName ? (
+				)
+				const { displayName, color } = statusName!
+				return displayName && color ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{`${t(statusName)} - ${moment(updateTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}`}
+						<Tag color={color}>{t(displayName) ?? 'N/A'}</Tag>-
+						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

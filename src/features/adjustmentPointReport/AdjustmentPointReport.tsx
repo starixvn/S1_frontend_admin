@@ -121,22 +121,20 @@ const AdjustmentPointReport: FC<{
 			transId = '',
 			vipLevels,
 			currencyIds,
-			dateRange,
+			startTime,
+			endTime,
 			adjustTypes,
-		} = form.getFieldsValue()
-		const [startTime, endTime] = dateRangeToUtcFormatter(
-			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
-		)
+		} = queryParams
 		try {
 			const blob = await exportAdjustmentPointReport({
 				siteId,
 				userName,
 				sabaId,
 				transId,
-				vipLevels,
-				currencyIds,
-				adjustTypes,
+				vipLevels: vipLevels?.map((vipLevel: string) => Number(vipLevel)) ?? [],
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				adjustTypes: adjustTypes?.map((type: string) => Number(type)) ?? [],
 				startTime,
 				endTime,
 			}).unwrap()
@@ -241,7 +239,7 @@ const AdjustmentPointReport: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportAdjustmentPointReportLoading}
 				/>

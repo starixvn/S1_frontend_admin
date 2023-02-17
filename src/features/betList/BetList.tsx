@@ -155,6 +155,7 @@ const BetList: FC<{
 				currencyIds,
 			})
 		}
+
 		try {
 			const args: IGetBetListArgs = {
 				siteIds: [siteId],
@@ -225,7 +226,7 @@ const BetList: FC<{
 	}
 
 	const handleExport = async () => {
-		if (isEmpty(queryParams) || !siteId) return
+		if (!siteId) return
 		const {
 			currencyIds,
 			tags = [],
@@ -380,7 +381,7 @@ const BetList: FC<{
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExport}
 					loading={isExportBetListLoading}
 				/>

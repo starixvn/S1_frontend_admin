@@ -108,6 +108,7 @@ export interface IWithdrawalCommentData {
 }
 
 export type IFilterForm = {
+	isAllSite: boolean
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string
 	currencyIds: number[]
@@ -170,4 +171,16 @@ export interface IUploadPictureArgs {
 
 export interface IDeletePictureArgs extends IGetByTransIdArgs {
 	number: number
+}
+
+export interface IWithdrawalReasonMessage {
+	name: string
+	value: number
+}
+
+export interface ISendWithdrawalMessageArgs {
+	siteId: number
+	currencyId: number
+	transId: string
+	after: { status: number; withdrawalId: number; action: number }
 }

@@ -11,7 +11,6 @@ const { Text } = Typography
 interface ICustTpBetRecordTableProps {
 	loading: boolean
 	custTpBetRecord: IGetCustTpBetRecordData[]
-	timeZoneUtcOffset: number
 	onDetailClicked: (settledDate: string) => void
 }
 
@@ -20,7 +19,6 @@ const { Summary } = AntdTable
 const CustTpBetRecordTable = ({
 	loading,
 	custTpBetRecord,
-	timeZoneUtcOffset,
 	onDetailClicked,
 }: ICustTpBetRecordTableProps) => {
 	// 第一層
@@ -35,9 +33,8 @@ const CustTpBetRecordTable = ({
 			render: (settledDate: string) => {
 				return settledDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(settledDate)
-							.utcOffset(timeZoneUtcOffset)
-							.format(dateFormat)}
+						{/* settledDate 經過討論不需要額外做 timezone 的處理 */}
+						{moment(settledDate).format(dateFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -234,12 +231,24 @@ const CustTpBetRecordTable = ({
 								{runningTickets ? numFormatToDigits(runningTickets) : 0}
 							</Summary.Cell>
 							<Summary.Cell index={8} align='center'>
-								{winLoss ? numFormatToDigits(winLoss) : 0}
+								<Text
+									type={isPositiveNum(winLoss) ? undefined : 'danger'}
+									style={{ whiteSpace: 'nowrap', padding: '5px' }}
+								>
+									{winLoss ? numFormatToDigits(winLoss) : 0}
+								</Text>
 							</Summary.Cell>
 							<Summary.Cell index={9} align='center'>
-								{winLossExcludeBonus
-									? numFormatToDigits(winLossExcludeBonus)
-									: 0}
+								<Text
+									type={
+										isPositiveNum(winLossExcludeBonus) ? undefined : 'danger'
+									}
+									style={{ whiteSpace: 'nowrap', padding: '5px' }}
+								>
+									{winLossExcludeBonus
+										? numFormatToDigits(winLossExcludeBonus)
+										: 0}
+								</Text>
 							</Summary.Cell>
 						</Summary.Row>
 					)

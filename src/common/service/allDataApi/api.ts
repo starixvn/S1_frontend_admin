@@ -12,6 +12,9 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	IGetPaySettingListResponse,
+	IGetTpIdData,
+	ISlotTpData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -97,6 +100,26 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpIdList: builder.query<IAxiosResponse<IGetTpIdData[]>, null>({
+			query: () => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+			}),
+		}),
+		getSlotTpList: builder.query<IAxiosResponse<ISlotTpData[]>, null>({
+			query: () => ({
+				url: 'GetAllData/GetSlotTpList',
+				method: 'POST',
+			}),
+		}),
+		// 取得所有 paymentSetting
+		getPaySettingList: builder.query<IGetPaySettingListResponse, null>({
+			query: data => ({
+				url: 'GetAllData/GetPaySetting',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -118,4 +141,7 @@ export const {
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetPaySettingListQuery,
+	useGetTpIdListQuery,
+	useGetSlotTpListQuery,
 } = allDataApi
