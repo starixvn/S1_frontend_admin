@@ -1,4 +1,4 @@
-import { Descriptions, Spin, Tag, Typography } from 'antd'
+import { Descriptions, Row, Spin, Tag, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
@@ -9,7 +9,9 @@ import {
 } from 'features/depositOperator/constants'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
-import { useQueryParams } from 'common/hooks'
+import { useCopy, useQueryParams } from 'common/hooks'
+import { CopyOutlined } from '@ant-design/icons'
+import React from 'react'
 
 interface IDepositRequestMemberInfoProps {
 	loading: boolean
@@ -21,6 +23,8 @@ const DepositRequestMemberInfo = ({
 	memberInfo,
 }: IDepositRequestMemberInfoProps) => {
 	const { t } = useTranslation()
+	const { onCopy } = useCopy()
+
 	const [queryParams] = useQueryParams()
 	const {
 		currency,
@@ -55,13 +59,21 @@ const DepositRequestMemberInfo = ({
 					{currency || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_MemberId')}>
-					<Typography.Link
-						disabled={queryParams?.isAllSite}
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
-						target='_blank'
-					>
-						{userName || '-'}
-					</Typography.Link>
+					<Row justify='space-between'>
+						<Typography.Link
+							disabled={queryParams?.isAllSite}
+							href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+							target='_blank'
+						>
+							{userName || '-'}
+						</Typography.Link>
+						<Typography.Link
+							disabled={!userName}
+							onClick={() => onCopy(String(userName))}
+						>
+							<CopyOutlined style={{ fontSize: '1rem' }} />
+						</Typography.Link>
+					</Row>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_FullName')}>
 					{accountName || '-'}

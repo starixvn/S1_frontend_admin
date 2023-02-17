@@ -15,7 +15,8 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-import { useEffect, useState } from 'react'
+import { SiteIds } from 'app/constants/siteIds'
+import { useEffect } from 'react'
 import { filter, head, includes, isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -24,7 +25,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { AllSiteId, IFilterForm } from 'features/withdrawalOperator/type'
+import { IFilterForm } from 'features/withdrawalOperator/type'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { WithdrawalOperatorTable } from 'features/withdrawalOperator/WithdrawalOperatorTable'
 import download from 'downloadjs'
@@ -41,11 +42,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
 	const formIsAllSite = Form.useWatch('isAllSite', filterForm)
-	const siteId = formIsAllSite ? AllSiteId : originSiteId
+	const siteId = formIsAllSite ? SiteIds.All : originSiteId
 
 	const [queryParams, setQueryParams] = useQueryParams()
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
-	const [collapseActiveKey, setCollapseActiveKey] = useState<number>(1)
 
 	const [
 		getWithdrawalList,
@@ -128,6 +128,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
+
+		// 用於記錄 Column 下拉選單
+		const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
+
 		try {
 			await getWithdrawalList({
 				startDate,
@@ -150,6 +154,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
 				...restValue,
+				visibilityColumns: !isEmpty(queryVisibilityColumns)
+					? queryVisibilityColumns
+					: null,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -229,9 +236,21 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetBankCodeListLoading
 
 	useEffect(() => {
-		if (!filterLoading && !isEmpty(queryParams)) {
-			setCollapseActiveKey(0)
-			// init Query
+		const initSelector = () => {
+			filterForm.setFieldsValue({
+				statuses: withdrawalStatusList?.map(({ value }) => value),
+				withdrawalTypes: withdrawalTypeList?.map(({ value }) => value),
+				withdrawalMethod: head(withdrawalMethodList)?.value,
+				levelStatuses: vipLevelList?.map(({ level }) => level),
+			})
+		}
+		if (!filterLoading && isEmpty(queryParams)) {
+			initSelector()
+		}
+	}, [filterLoading])
+
+	useEffect(() => {
+		const init = () => {
 			const {
 				isAllSite = false,
 				startDate,
@@ -273,14 +292,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize: Number(pageSize),
 				currentTimeZoneUtcOffset: Number(timeZone),
 			})
-		} else if (!filterLoading) {
-			// filter Init
-			filterForm.setFieldsValue({
-				statuses: withdrawalStatusList?.map(({ value }) => value),
-				withdrawalTypes: withdrawalTypeList?.map(({ value }) => value),
-				withdrawalMethod: head(withdrawalMethodList)?.value,
-				levelStatuses: vipLevelList?.map(({ level }) => level),
-			})
+		}
+		if (!isEmpty(queryParams)) {
+			init()
 		}
 	}, [filterLoading])
 
@@ -309,7 +323,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				isAllSite={formIsAllSite}
 				loading={filterLoading}
 				form={filterForm}
-				collapseActiveKey={collapseActiveKey}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				withdrawalMethodList={withdrawalMethodList}
 				withdrawalStatusList={withdrawalStatusList}
@@ -320,7 +333,6 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 				bankCodeList={filteredBankCodeListByCurrencyIds}
-				setCollapseActiveKey={setCollapseActiveKey}
 			/>
 			{!isEmpty(queryParams) && (
 				<WithdrawalOperatorTable

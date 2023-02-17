@@ -1,4 +1,4 @@
-import { Descriptions, Spin, Tag, Typography } from 'antd'
+import { Descriptions, Row, Spin, Tag, Typography } from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,8 @@ import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
 import React from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
-import { useQueryParams } from 'common/hooks'
+import { useCopy, useQueryParams } from 'common/hooks'
+import { CopyOutlined } from '@ant-design/icons'
 
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
@@ -31,6 +32,7 @@ const WithdrawalRequestMemberInfo = ({
 }: IWithdrawalRequestMemberInfoProps) => {
 	const { t } = useTranslation()
 	const [queryParams] = useQueryParams()
+	const { onCopy } = useCopy()
 
 	const {
 		currency,
@@ -82,13 +84,21 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_Currency')}>{currency}</Item>
 				<Item label={t('Label_NewestBonusClaimed')}>{description}</Item>
 				<Item label={t('Label_MemberId')}>
-					<Typography.Link
-						disabled={queryParams?.isAllSite}
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
-						target='_blank'
-					>
-						{userName}
-					</Typography.Link>
+					<Row justify='space-between'>
+						<Typography.Link
+							disabled={queryParams?.isAllSite}
+							href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+							target='_blank'
+						>
+							{userName}
+						</Typography.Link>
+						<Typography.Link
+							disabled={!userName}
+							onClick={() => onCopy(String(userName))}
+						>
+							<CopyOutlined style={{ fontSize: '1rem' }} />
+						</Typography.Link>
+					</Row>
 				</Item>
 				<Item label={t('Label_BonusStatus')}>
 					{t(BONUS_STATUS[bonusInfoStatus])}

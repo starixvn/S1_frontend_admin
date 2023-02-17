@@ -230,6 +230,10 @@ const paths = {
 						root: 'finance/setting/adjustmentLimitation',
 						functionId: 43,
 					},
+					modifyPaymentFeeLog: {
+						root: 'finance/setting/modifyPaymentFeeLog',
+						functionId: 139,
+					},
 				},
 			},
 			depositWithdrawalSector: {
@@ -449,6 +453,10 @@ const paths = {
 			iovation: {
 				root: 'member/iovation',
 				functionId: 138,
+			},
+			vipReview: {
+				root: 'member/vipReview',
+				functionId: 50,
 			},
 		},
 	},

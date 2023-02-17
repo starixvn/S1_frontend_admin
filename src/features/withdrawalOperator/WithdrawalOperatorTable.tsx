@@ -140,9 +140,10 @@ const WithdrawalOperatorTable = ({
 			render: (record: IGetWithdrawalData) => {
 				const { custId, userName } = record
 
-				return (
+				return isAllSite ? (
+					<Typography.Text>{userName}</Typography.Text>
+				) : (
 					<Typography.Link
-						disabled={isAllSite}
 						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?`}
 						target='_blank'
 					>
@@ -302,6 +303,7 @@ const WithdrawalOperatorTable = ({
 						<VisibilityColumnsButton
 							baseColumns={baseColumns}
 							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+							memoried
 						/>
 					</Space>
 				)}
