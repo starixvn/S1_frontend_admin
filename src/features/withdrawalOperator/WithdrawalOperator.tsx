@@ -122,8 +122,15 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		const { dateRange, startAmount, endAmount, withdrawalId, ...restValue } =
-			filterForm.getFieldsValue()
+		const {
+			isAllSite,
+			dateRange,
+			startAmount,
+			endAmount,
+			withdrawalId,
+			...restValue
+		} = filterForm.getFieldsValue()
+
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
@@ -134,9 +141,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 
 		try {
 			await getWithdrawalList({
+				siteId: isAllSite ? SiteIds.All : originSiteId,
 				startDate,
 				endDate,
-				siteId,
 				startAmount: startAmount || -1,
 				endAmount: endAmount || -1,
 				withdrawalId: withdrawalId || null,
@@ -145,6 +152,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				...restValue,
 			}).unwrap()
 			setQueryParams({
+				isAllSite,
 				startDate,
 				endDate,
 				startAmount,
@@ -296,7 +304,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!isEmpty(queryParams)) {
 			init()
 		}
-	}, [filterLoading])
+	}, [])
 
 	useEffect(() => {
 		if (formIsAllSite) {
