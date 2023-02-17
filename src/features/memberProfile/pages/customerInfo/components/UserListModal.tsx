@@ -10,6 +10,8 @@ interface IpListUserModalProps {
 	userList: IGetIpUserListData[]
 	visible: boolean
 	onCancel: () => void
+	// getCheckDuplicateName api 功能專用
+	clearCache?: boolean
 }
 
 // 因在 customerInfo 內有重複使用到 , 故獨立放在 components
@@ -19,6 +21,7 @@ const UserListModal = ({
 	userList,
 	visible,
 	onCancel,
+	clearCache = true,
 }: IpListUserModalProps) => {
 	const { t } = useTranslation()
 
@@ -32,10 +35,10 @@ const UserListModal = ({
 	}, [loading])
 
 	useEffect(() => {
-		if (!visible) {
+		if (!visible && clearCache) {
 			setTimeout(() => setModalListState([]), 500)
 		}
-	}, [visible])
+	}, [visible, clearCache])
 
 	return (
 		<Modal
