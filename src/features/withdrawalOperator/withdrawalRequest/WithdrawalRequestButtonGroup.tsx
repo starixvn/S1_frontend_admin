@@ -44,7 +44,10 @@ const WithdrawalRequestButtonGroup = ({
 	} = useAuth()
 
 	return (
-		<Row gutter={[16, 16]} style={{ marginTop: '20px', marginBottom: '20px' }}>
+		<Row
+			gutter={[16, 16]}
+			style={{ marginTop: '20px', marginBottom: '20px', paddingRight: '80px' }}
+		>
 			{/* 因為 button 數量變化大，用 flex 自行伸縮排版 */}
 			{includes(usableActionButton, UsableActionButtonEnum.ManualRejected) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
