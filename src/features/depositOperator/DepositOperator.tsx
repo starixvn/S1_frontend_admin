@@ -202,6 +202,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			currentTimeZoneUtcOffset
 		)
 
+		// 用於記錄 Column 下拉選單
+		const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
+
 		try {
 			await getDepositOperatorList({
 				siteId: isAllSite ? SiteIds.All : originSiteId,
@@ -229,6 +232,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				depositId: depositId || null,
 				...rest,
 				timeZone: currentTimeZoneUtcOffset,
+				visibilityColumns: !isEmpty(queryVisibilityColumns)
+					? queryVisibilityColumns
+					: null,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
