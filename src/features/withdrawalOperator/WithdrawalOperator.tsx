@@ -128,6 +128,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
+
+		// 用於記錄 Column 下拉選單
+		const { visibilityColumns: queryVisibilityColumns = [] } = queryParams
+
 		try {
 			await getWithdrawalList({
 				startDate,
@@ -150,6 +154,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
 				...restValue,
+				visibilityColumns: !isEmpty(queryVisibilityColumns)
+					? queryVisibilityColumns
+					: null,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
