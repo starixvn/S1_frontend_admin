@@ -28,7 +28,7 @@ const PromotionFailLog = () => {
 		if (!custId) return
 		const { dateRange } = filterForm.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
 		)
 		try {

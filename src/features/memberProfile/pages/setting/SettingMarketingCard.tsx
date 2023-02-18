@@ -18,7 +18,6 @@ interface ISettingMarketingCardProps {
 	custBasicInfo: IGetBasicInfoData
 	custPromotionWhiteData: ICustPromotionWhiteData
 	isSwitchRebatePayoutLoading: boolean
-	// isCustPromotionWhiteLoading: boolean
 	onSwitch: (newSwitchType: SettingSwitchTypeEnum, checked: boolean) => void
 	onSwitchPromotionWhiteList: (
 		newSwitchType: SettingCustPromotionWitheListEnum,
@@ -40,7 +39,6 @@ const SettingMarketingCard = ({
 	custBasicInfo,
 	custPromotionWhiteData,
 	isSwitchRebatePayoutLoading,
-	// isCustPromotionWhiteLoading,
 	onSwitch,
 	onSwitchPromotionWhiteList,
 	onSetPayoutVerificationReward,
@@ -137,7 +135,7 @@ const SettingMarketingCard = ({
 						<Col span={16}>{t('Label_BonusIPDisable')}</Col>
 						<Col span={6} offset={2}>
 							<Switch
-								loading={isSwitchRebatePayoutLoading}
+								//  目前 api 3個switch做一起 先不綁 loading
 								checked={custPromotionWhiteData.ipEnable}
 								onChange={checkedIP =>
 									onSwitchPromotionWhiteList(
@@ -156,7 +154,7 @@ const SettingMarketingCard = ({
 						<Col span={16}>{t('Label_BonusDeviceDisable')}</Col>
 						<Col span={6} offset={2}>
 							<Switch
-								loading={isSwitchRebatePayoutLoading}
+								//  目前 api 3個switch做一起 先不綁 loading
 								checked={custPromotionWhiteData.deviceEnable}
 								onChange={checkedDevice =>
 									onSwitchPromotionWhiteList(
@@ -175,7 +173,7 @@ const SettingMarketingCard = ({
 						<Col span={16}>{t('Label_BonusRealNameDisable')}</Col>
 						<Col span={6} offset={2}>
 							<Switch
-								loading={isSwitchRebatePayoutLoading}
+								//  目前 api 3個switch做一起 先不綁 loading
 								checked={custPromotionWhiteData.realNameEnable}
 								onChange={checkedRealName =>
 									onSwitchPromotionWhiteList(
