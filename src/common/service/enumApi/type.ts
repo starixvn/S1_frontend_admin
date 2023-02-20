@@ -51,6 +51,7 @@ export type EnumNameType =
 	| 'ShieldRiskTagged'
 	| 'TaggedIssue'
 	| 'PaymentReportGroupByEnum'
+	| 'VipStatus'
 	| 'LangType'
 	| 'IovationDeviceType'
 	| 'NewsStatusEnum'
@@ -101,6 +102,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  TriggeredPoints - 取得 TriggerPoints 列表
 	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
 	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
+	 * @argument {string}  VipStatus - 取得Vip狀態列表
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表

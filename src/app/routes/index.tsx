@@ -706,6 +706,13 @@ const MemberProfilePromotionReport = lazy(
 		)
 )
 
+const MemberProfilePromotionFailLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PromotionFailLog' */ 'features/memberProfile/pages/marketing/promotionFailLog/PromotionFailLog'
+		)
+)
+
 const MemberProfileThirdPartyAccounts = lazy(
 	() =>
 		import(
@@ -2050,6 +2057,14 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
+						path: 'marketing/promotionFailLog/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfilePromotionFailLog />
+							</AuthRequire>
+						),
+					},
+					{
 						path: 'marketing/cashBackReport/:custId',
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
@@ -2353,6 +2368,26 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.vipReview.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.vipReview.functionId}>
+						<VipReview />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.modifyPaymentFeeLog.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId
+						}
+					>
+						<ModifyPaymentFeeLog />
 					</AuthRequire>
 				),
 			},

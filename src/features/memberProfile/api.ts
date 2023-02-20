@@ -99,6 +99,13 @@ import {
 	IGetWithdrawalLimitLogArgs,
 	IGetCheckDuplicateNameArgs,
 	IGetCheckDuplicateNameResponse,
+	IPromotionReceiveFailLogData,
+	IGetPromotionReceiveFailLogArgs,
+	ICustPromotionWhiteData,
+	IGetCustPromotionWhiteListArgs,
+	IEditCustPromotionWhiteArgs,
+	ICustRealNameChangeLogData,
+	IGetCustRealNameChangeLogArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -111,6 +118,7 @@ export const memberProfileApi = createApi({
 		'SetSMSInfo',
 		'SetVipLevel',
 		'SetPromotionReport',
+		'CustPromotionWhiteList',
 	],
 	endpoints: builder => ({
 		// sider基本資料
@@ -749,6 +757,17 @@ export const memberProfileApi = createApi({
 			}),
 			invalidatesTags: ['SetPromotionReport'],
 		}),
+		// Marketing => Promotion Fail Log
+		getPromotionReceiveFailLog: builder.query<
+			IAxiosResponse<IPromotionReceiveFailLogData[]>,
+			IGetPromotionReceiveFailLogArgs
+		>({
+			query: data => ({
+				url: 'Member/GetPromotionReceiveFailLog',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getDeviceUserList: builder.query<
 			IGetIpUserListResponse,
 			IGetDeviceUserListArgs
@@ -995,6 +1014,38 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getCustPromotionWhiteListData: builder.query<
+			IAxiosResponse<ICustPromotionWhiteData>,
+			IGetCustPromotionWhiteListArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustPromotionWhiteList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['CustPromotionWhiteList'],
+		}),
+		editCustPromotionWhiteList: builder.mutation<
+			void,
+			IEditCustPromotionWhiteArgs
+		>({
+			query: data => ({
+				url: 'Member/EditCustPromotionWhiteList',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['CustPromotionWhiteList'],
+		}),
+		getCustRealNameChangeLog: builder.query<
+			IAxiosResponse<ICustRealNameChangeLogData[]>,
+			IGetCustRealNameChangeLogArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustRealNameChangeLog',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -1083,4 +1134,8 @@ export const {
 	useLazyGetVipRebateDetailQuery,
 	useGetCheckDuplicateNameQuery,
 	useLazyGetCheckDuplicateNameQuery,
+	useGetCustPromotionWhiteListDataQuery,
+	useEditCustPromotionWhiteListMutation,
+	useLazyGetPromotionReceiveFailLogQuery,
+	useGetCustRealNameChangeLogQuery,
 } = memberProfileApi

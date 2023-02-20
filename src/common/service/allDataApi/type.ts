@@ -82,11 +82,6 @@ export interface ITpListData {
 	tpDisplayName: string
 }
 
-export interface IGetTpIdData {
-	id: number
-	tpName: string
-}
-
 export interface IGetPaySettingData {
 	currencyId: number
 	payId: number
@@ -111,6 +106,11 @@ export interface IGetPaySettingData {
 }
 
 export type IGetPaySettingListResponse = IAxiosResponse<IGetPaySettingData[]>
+
+export interface IGetTpIdData {
+	id: number
+	tpName: string
+}
 
 export interface ISlotTpData {
 	tpId: number
