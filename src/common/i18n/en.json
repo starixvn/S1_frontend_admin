@@ -1081,5 +1081,7 @@
 	"Label_TaggingRestrict": "Tagging Restrict",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
-	"Label_SameIPRestrictCount": "Same IP restrict count"
+	"Label_SameIPRestrictCount": "Same IP restrict count",
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log"
 }
