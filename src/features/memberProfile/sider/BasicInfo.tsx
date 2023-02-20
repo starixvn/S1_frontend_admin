@@ -1,4 +1,7 @@
-import { IGetBasicInfoData } from 'features/memberProfile/type'
+import {
+	IGetBasicInfoData,
+	ICheckDuplicateNameData,
+} from 'features/memberProfile/type'
 import {
 	Avatar,
 	Col,
@@ -35,8 +38,10 @@ const StyledText = styled(Text)`
 interface IBasicInfoProps {
 	lineUnbindingPermission: PermissionInterface | undefined
 	custBasicInfo: IGetBasicInfoData
+	checkDuplicateNameList: ICheckDuplicateNameData[]
 	onCustPhotoClick: () => void
 	onLineUnbind: () => void
+	onAccountClick: () => void
 }
 
 const StyleIcon = styled.div`
@@ -53,8 +58,10 @@ const OnlineTag = styled(Tag)`
 const BasicInfo = ({
 	lineUnbindingPermission,
 	custBasicInfo,
+	checkDuplicateNameList,
 	onCustPhotoClick,
 	onLineUnbind,
+	onAccountClick,
 }: IBasicInfoProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
@@ -185,7 +192,17 @@ const BasicInfo = ({
 			{/* Info 內容 */}
 			<Space direction='vertical'>
 				<Row>
-					<StyledText>{`${t('Label_FullName')} : ${accountName}`}</StyledText>
+					<StyledText>
+						{`${t('Label_FullName')} : ${accountName}`}
+						<Typography.Link
+							onClick={onAccountClick}
+							style={{ marginLeft: 10 }}
+						>
+							{/* 無資料則不顯示 */}
+							{checkDuplicateNameList.length > 0 &&
+								checkDuplicateNameList.length}
+						</Typography.Link>
+					</StyledText>
 				</Row>
 				<Row>
 					<StyledText>{`${t('Label_Status')} : ${getStatusName()}`}</StyledText>
