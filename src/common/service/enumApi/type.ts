@@ -57,6 +57,7 @@ export type EnumNameType =
 	| 'NewsStatusEnum'
 	| 'BlockCryptoStatus'
 	| 'CustCryptoWalletDetailSatatus'
+	| 'DepositReceiptCreateFromEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -105,6 +106,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
 	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
 	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
+	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 */
 	enumName: EnumNameType
 }
