@@ -91,6 +91,9 @@ export interface ActionPermissions {
 	sendMessagePermission: PermissionInterface
 	addEditPermission: PermissionInterface
 	setFeePermission: PermissionInterface
+	uploadReceiptPermission: PermissionInterface
+	deleteReceiptPermission: PermissionInterface
+	checkReceiptPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

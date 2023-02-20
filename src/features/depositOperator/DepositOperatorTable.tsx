@@ -118,6 +118,13 @@ const DepositOperatorTable = ({
 			),
 		},
 		{
+			title: t('Label_CheckBy'),
+			dataIndex: 'checkReceiptBy',
+			width: 80,
+			align: 'center' as 'center',
+			render: (checkReceiptBy: string | null) => checkReceiptBy ?? '-',
+		},
+		{
 			title: t('Label_MemberId'),
 			width: 120,
 			align: 'center' as 'center',
@@ -135,7 +142,6 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_VipLevel'),
-
 			width: 120,
 			align: 'center' as 'center',
 			render: ({ vipLevel, vipLevelName }: IDepositOperatorData) => (

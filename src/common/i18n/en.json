@@ -1047,5 +1047,6 @@
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
-	"Label_Summary": "Summary"
+	"Label_Summary": "Summary",
+	"Label_CheckBy": "Check By"
 }

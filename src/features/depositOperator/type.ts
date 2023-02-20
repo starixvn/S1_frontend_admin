@@ -147,6 +147,8 @@ export interface IDepositOperatorData {
 	fromBankCode: string
 	fromBankName: string
 	bonusDescription: string
+	checkReceipt: number
+	checkReceiptBy: string | null
 }
 
 export interface IForm {
@@ -240,3 +242,30 @@ export interface ISendDepositReasonMessageArgs {
 	actualDeposit: number
 	after: { depositId: number; status: number }
 }
+
+export interface ICheckDepositReceiptArgs {
+	transId: string
+}
+
+export interface IDeleteReceiptArgs {
+	siteId: number
+	custId: number
+	receiptNo: number
+	transId: string
+}
+
+export interface IDepositReceiptByTransIdData {
+	receipt: {
+		contentType: string
+		enableRangeProcessing: false
+		entityTag: null
+		fileContents: string
+		fileDownloadName: string
+		lastModified: null
+	}
+	receiptNo: number
+	creator: string
+	createTime: string
+}
+
+export type IDepositReceiptByTransIdResponse = IDepositReceiptByTransIdData[]

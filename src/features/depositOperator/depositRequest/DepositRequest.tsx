@@ -1,29 +1,22 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import {
-	Col,
-	Divider,
-	Image,
-	PageHeader,
-	Row,
-	Spin,
-	Form,
-	message,
-	Modal,
-} from 'antd'
+import { Col, Divider, PageHeader, Row, Form, message, Modal } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
+	useCheckDepositReceiptMutation,
+	useDeleteReceiptMutation,
 	useGetDepositCommentsByTransIdQuery,
 	useGetDepositInfoByTransIdQuery,
+	useGetDepositReceiptByTransIdQuery,
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,
 	useSetDepositStatusMutation,
+	useUploadReceiptMutation,
 } from 'features/depositOperator/api'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
-import { noImageFallBack } from 'app/constants/images'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { useAuth, useCopy } from 'common/hooks'
@@ -39,10 +32,9 @@ import {
 	DepositStatusEnum,
 	ISetDepositStatusArgs,
 	ISetAmountByTransIdArgs,
-	IDepositRequestFrom,
 	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import useReceiptImage from 'features/depositOperator/depositRequest/hooks/useReceiptImage'
+import { RcFile } from 'antd/es/upload'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
 import DepositRequestComments from 'features/depositOperator/depositRequest/DepositRequestComments'
 import DepositRequestMemberInfo from 'features/depositOperator/depositRequest/DepositRequestMemberInfo'
@@ -50,25 +42,31 @@ import DepositRequestOperatorButtonGroup from 'features/depositOperator/depositR
 import DepositRequestPaymentInfoDescriptions from 'features/depositOperator/depositRequest/DepositRequestPaymentInfoDescriptions'
 import DepositRequestBankInfoDescriptions from 'features/depositOperator/depositRequest/DepositRequestBankInfoDescriptions'
 import useMemberInfo from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
+import { UploadFile } from 'antd/es/upload/interface'
 import { DepositTypeEnum } from 'type'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
+import { ReceiptUploader } from 'features/depositOperator/components/ReceiptUploader'
 import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
 
 const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const {
+		actionPermissions: {
+			editPermission,
+			uploadReceiptPermission,
+			deleteReceiptPermission,
+		} = {},
+	} = useAuth()
 
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [form] = Form.useForm<IDepositRequestFrom>()
+	const [form] = Form.useForm()
 	const { onCopy } = useCopy()
-
 	const {
 		data: { data: depositInfo = {} as IDepositOperatorData } = {},
 		isFetching: isDepositInfoLoading,
 	} = useGetDepositInfoByTransIdQuery({ transId })
-
 	const { data: { data: bankInfoOffList = [] } = {} } =
 		useGetBankInfoOffListQuery(
 			{
@@ -85,7 +83,10 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		custId: depositInfo?.custId,
 	})
 
-	const { receiptImg, isReceiptImgLoading } = useReceiptImage({ transId })
+	const {
+		data: depositReceiptByTransIdList = [],
+		isFetching: isGetDepositReceiptByTransIdLoading,
+	} = useGetDepositReceiptByTransIdQuery({ transId })
 
 	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
 		useGetCalCodeListQuery(
@@ -124,6 +125,15 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		setDepositManualApproval,
 		{ isLoading: isSetDepositManualApprovalLoading },
 	] = useSetDepositManualApprovalMutation()
+
+	const [checkDepositReceipt, { isLoading: isCheckDepositReceiptLoading }] =
+		useCheckDepositReceiptMutation()
+
+	const [uploadReceipt, { isLoading: isUploadReceiptLoading }] =
+		useUploadReceiptMutation()
+
+	const [deleteReceipt, { isLoading: isDeleteReceiptLoading }] =
+		useDeleteReceiptMutation()
 
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
@@ -224,11 +234,61 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleCheckDepositReceipt = async () => {
+		if (!transId) return
+		try {
+			const args = {
+				transId,
+			}
+			await checkDepositReceipt(args).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleUploadImage = async (image: RcFile) => {
+		if (!siteId || !transId) return
+		const { custId } = depositInfo
+		try {
+			const formData = new FormData()
+			formData.append('SiteId', siteId.toString())
+			formData.append('Receipt', image as RcFile)
+			formData.append('CustId', custId.toString())
+			formData.append('TransId', transId.toString())
+			await uploadReceipt(formData).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleDeleteImage = async (receiptNo: number) => {
+		if (!siteId || !transId) return
+		const { custId } = depositInfo
+		try {
+			const args = {
+				siteId,
+				custId,
+				receiptNo,
+				transId,
+			}
+			await deleteReceipt(args).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const depositLoading =
 		isDepositInfoLoading ||
 		isGetCalCodeListFetching ||
 		isSetAmountByTransIdLoading ||
-		isGetPaymentListFetching
+		isGetPaymentListFetching ||
+		isGetDepositReceiptByTransIdLoading
 
 	useEffect(() => {
 		if (depositLoading) return
@@ -241,6 +301,32 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			statementTime: moment(statementTime),
 		})
 	}, [depositLoading])
+
+	const imageInit = async () => {
+		const initFileList: UploadFile[] = []
+		depositReceiptByTransIdList?.forEach(item => {
+			const { receiptNo, receipt } = item
+			// const base64Response = await getBase64(receipt as unknown as RcFile)
+
+			const file: UploadFile = {
+				uid: String(item.receiptNo),
+				name: `receipt${receiptNo}`,
+				status: 'done',
+				url: 'https://ailab-payment.s3-ap-southeast-1.amazonaws.com/withdrawal/WD136237_2.png',
+			}
+
+			initFileList.push(file)
+		})
+		form.setFieldsValue({
+			fileList: initFileList,
+		})
+	}
+
+	useEffect(() => {
+		if (!isGetDepositReceiptByTransIdLoading && depositReceiptByTransIdList) {
+			imageInit()
+		}
+	}, [isGetDepositReceiptByTransIdLoading])
 
 	return (
 		<LayoutContent.Main>
@@ -270,6 +356,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								onOpenPaymentInfoModal={onOpenPaymentInfoModal}
 							/>
 						</Col>
+
 						<Col xxl={12} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestMemberInfo
 								loading={isMemberInfoLoading}
@@ -277,17 +364,17 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								depositInfo={depositInfo}
 							/>
 
-							{/* //* 給兩個 br 讓 Image 與其他元件同高 */}
-							<br />
-							<br />
-
-							<Spin spinning={isReceiptImgLoading}>
-								<Image
-									width='25%'
-									src={receiptImg}
-									fallback={noImageFallBack}
-								/>
-							</Spin>
+							<ReceiptUploader
+								loading={depositLoading}
+								form={form}
+								depositReceiptByTransIdList={depositReceiptByTransIdList}
+								status={DepositStatusEnum.Pending}
+								editPermission={editPermission}
+								uploadReceiptPermission={uploadReceiptPermission}
+								deleteReceiptPermission={deleteReceiptPermission}
+								onUploadImage={handleUploadImage}
+								onDeleteImage={handleDeleteImage}
+							/>
 						</Col>
 
 						<Col span={24}>
@@ -303,11 +390,17 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				<Divider />
 				<DepositRequestOperatorButtonGroup
 					loading={
-						isSetDepositStatusLoading || isSetDepositManualApprovalLoading
+						isSetDepositStatusLoading ||
+						isSetDepositManualApprovalLoading ||
+						isCheckDepositReceiptLoading ||
+						isUploadReceiptLoading ||
+						isDeleteReceiptLoading
 					}
+					isCheckReceipt={Boolean(depositInfo?.checkReceipt)}
 					usableActionButtons={depositInfo?.usableActionButton ?? []}
 					onSetDepositStatus={handleSetDepositStatus}
 					onShowSendMessageModal={onShowSendMessageModal}
+					onCheckDepositReceipt={handleCheckDepositReceipt}
 				/>
 
 				{/* // * 預留空間以防止 OperatorButton 及 AffixButton 黏在一起 */}
