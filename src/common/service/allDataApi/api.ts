@@ -12,6 +12,7 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	ITpListData,
 	IGetPaySettingListResponse,
 	IGetTpIdData,
 	ISlotTpData,
@@ -100,6 +101,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpList: builder.query<IAxiosResponse<ITpListData[]>, null>({
+			query: data => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getTpIdList: builder.query<IAxiosResponse<IGetTpIdData[]>, null>({
 			query: () => ({
 				url: 'GetAllData/GetTpList',
@@ -136,11 +144,11 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
-	useGetProductsQuery,
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetTpListQuery,
 	useGetPaySettingListQuery,
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,

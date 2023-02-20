@@ -497,6 +497,10 @@ const paths = {
 	productManagement: {
 		root: 'productManagement',
 		sub: {
+			maintenance: {
+				root: 'productManagement/Maintenance',
+				functionId: 60,
+			},
 			slotGameCategory: {
 				root: 'productManagement/slotGameCategory',
 				functionId: 126,
