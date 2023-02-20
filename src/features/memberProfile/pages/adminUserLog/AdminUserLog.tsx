@@ -99,7 +99,7 @@ const AdminUserLog = () => {
 
 	return (
 		<>
-			<LayoutContent.Title title='Admin User Log' />
+			<LayoutContent.Title title={t('Label_AdminUserLog')} />
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<AdminUserLogFilter
 					form={filterForm}

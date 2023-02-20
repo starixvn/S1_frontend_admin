@@ -1042,5 +1042,6 @@
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
-	"Label_Menu": "Menu"
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log"
 }
