@@ -1077,5 +1077,9 @@
 	"Label_BonusRealNameDisable": "Bonus Real Name Disable",
 	"Label_BeforeName": "Before Name",
 	"Label_AfterName": "After Name",
-	"Label_FullNameChangeLog": "Full Name Change Log"
+	"Label_FullNameChangeLog": "Full Name Change Log",
+	"Label_TaggingRestrict": "Tagging Restrict",
+	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
+	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
+	"Label_SameIPRestrictCount": "Same IP restrict count"
 }

@@ -32,6 +32,14 @@
 - 當 isDisplayDate 未打勾時
   1. 參數 'Display Date' 送 null 給後端。
   2. BonusDetailSubForm.tsx 的 bannerUrl、title、description 需為非必填。
+  
+- 當 `bonusType` 為 `FreeBet` , `Frist deposit ` 時支援以下選項
+  1. Same Device ID restrict
+  2. Same IP restrict
+  3. Same Real Name restrict
+- 以上每組都包含一個 count 計次 inputNumber , `bonusType = freebet` 時 `SameIPRestrict`要預設開啟
+
+
 
 #### Banner Info
 
