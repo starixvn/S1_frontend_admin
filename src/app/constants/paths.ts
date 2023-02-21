@@ -26,6 +26,10 @@ const paths = {
 				root: 'customerSupport/memberAdministrationList',
 				functionId: memberAdminFunctionId,
 			},
+			batchMemberInfoReport: {
+				root: 'customerSupport/batchMemberInfoReport',
+				functionId: 141,
+			},
 			operatorService: {
 				root: 'customerSupport/operatorService',
 				sub: {
