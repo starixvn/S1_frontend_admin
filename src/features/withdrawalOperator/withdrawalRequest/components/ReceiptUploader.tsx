@@ -41,13 +41,15 @@ const ReceiptUploader = ({
 			WithdrawalStatusEnum.Cancelled,
 		]) && uploadReceiptPermission?.canUse
 
+	// Approved 之前判斷能否 upload , Approved 之後判斷能否 delete
 	const canDelete =
-		multiEqual(status, [
-			WithdrawalStatusEnum.Process,
-			WithdrawalStatusEnum.Approved,
-			WithdrawalStatusEnum.Rejected,
-			WithdrawalStatusEnum.Cancelled,
-		]) && deleteReceiptPermission?.canUse
+		status === WithdrawalStatusEnum.Process
+			? uploadReceiptPermission?.canUse
+			: multiEqual(status, [
+					WithdrawalStatusEnum.Approved,
+					WithdrawalStatusEnum.Rejected,
+					WithdrawalStatusEnum.Cancelled,
+			  ]) && deleteReceiptPermission?.canUse
 
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
