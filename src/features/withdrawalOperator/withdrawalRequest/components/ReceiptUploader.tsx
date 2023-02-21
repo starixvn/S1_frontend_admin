@@ -43,6 +43,7 @@ const ReceiptUploader = ({
 
 	const canDelete =
 		multiEqual(status, [
+			WithdrawalStatusEnum.Process,
 			WithdrawalStatusEnum.Approved,
 			WithdrawalStatusEnum.Rejected,
 			WithdrawalStatusEnum.Cancelled,
