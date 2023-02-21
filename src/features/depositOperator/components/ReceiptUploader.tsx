@@ -31,7 +31,6 @@ interface IReceiptUploaderProps {
 	form: FormInstance
 	depositReceiptByTransIdList: IDepositReceiptByTransIdData[]
 	depositReceiptCreateFromEnum: IEnumTypeData[]
-	editPermission?: PermissionInterface
 	uploadReceiptPermission?: PermissionInterface
 	deleteReceiptPermission?: PermissionInterface
 	status: DepositStatusEnum
@@ -47,7 +46,6 @@ const ReceiptUploader = ({
 	depositReceiptCreateFromEnum,
 	status,
 	timeZoneUtcOffset,
-	editPermission,
 	uploadReceiptPermission,
 	deleteReceiptPermission,
 	onUploadImage,
@@ -57,8 +55,7 @@ const ReceiptUploader = ({
 	// 判斷當前狀態能否使用
 	const canEdit =
 		multiEqual(status, [DepositStatusEnum.Pending, DepositStatusEnum.OnHold]) &&
-		uploadReceiptPermission?.canUse &&
-		editPermission?.canUse
+		uploadReceiptPermission?.canUse
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch('fileList', form)
 	// previewState

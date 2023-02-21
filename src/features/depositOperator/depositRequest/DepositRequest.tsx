@@ -380,7 +380,6 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								depositReceiptCreateFromEnum={depositReceiptCreateFromEnum}
 								status={DepositStatusEnum.Pending}
 								timeZoneUtcOffset={timeZoneUtcOffset}
-								editPermission={editPermission}
 								uploadReceiptPermission={uploadReceiptPermission}
 								deleteReceiptPermission={deleteReceiptPermission}
 								onUploadImage={handleUploadImage}
