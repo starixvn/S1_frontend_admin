@@ -9,6 +9,7 @@ import {
 } from 'features/depositOperator/constants'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { IDepositOperatorData } from 'features/depositOperator/type'
 import { useCopy, useQueryParams } from 'common/hooks'
 import { CopyOutlined } from '@ant-design/icons'
 import React from 'react'
@@ -16,11 +17,13 @@ import React from 'react'
 interface IDepositRequestMemberInfoProps {
 	loading: boolean
 	memberInfo: IMemberInfo | undefined
+	depositInfo: IDepositOperatorData
 }
 
 const DepositRequestMemberInfo = ({
 	loading,
 	memberInfo,
+	depositInfo: { depositCnt },
 }: IDepositRequestMemberInfoProps) => {
 	const { t } = useTranslation()
 	const { onCopy } = useCopy()
@@ -88,6 +91,9 @@ const DepositRequestMemberInfo = ({
 				<Descriptions.Item label={t('Label_Deposited')}>
 					{actStatus === ActStatusEnum.Active && t('Label_Yes')}
 					{actStatus === ActStatusEnum.unActive && t('Label_No')}
+				</Descriptions.Item>
+				<Descriptions.Item label={t('Label_DepositCount')}>
+					{depositCnt || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_MailWalletAmount')}>
 					{numberFormatter.format(mailWalletAmount || 0)}

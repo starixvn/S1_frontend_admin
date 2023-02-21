@@ -2372,6 +2372,16 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.maintenance.functionId}
+					>
+						<ProductMaintenance />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.vipReview.root}`,
 				element: (
 					<AuthRequire functionId={paths.member.sub.vipReview.functionId}>
