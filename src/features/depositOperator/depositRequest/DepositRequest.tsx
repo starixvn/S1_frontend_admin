@@ -306,13 +306,14 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		const initFileList: UploadFile[] = []
 		depositReceiptByTransIdList?.forEach(item => {
 			const { receiptNo, receipt } = item
-			// const base64Response = await getBase64(receipt as unknown as RcFile)
+			const { contentType, fileContents } = receipt
+			const url = `data:${contentType};base64,${fileContents}`
 
 			const file: UploadFile = {
 				uid: String(item.receiptNo),
 				name: `receipt${receiptNo}`,
 				status: 'done',
-				url: 'https://ailab-payment.s3-ap-southeast-1.amazonaws.com/withdrawal/WD136237_2.png',
+				url,
 			}
 
 			initFileList.push(file)
