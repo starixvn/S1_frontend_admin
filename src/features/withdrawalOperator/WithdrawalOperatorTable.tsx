@@ -14,9 +14,9 @@ import { isJSON } from 'common/utils'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment/moment'
 import {
+	AccountTypeEnum,
 	WITHDRAWAL_STATUS_TAGS_COLOR,
 	WithdrawalStatusEnum,
-	WithdrawalTypeEnum,
 } from 'features/withdrawalOperator/constants'
 import { Link } from 'react-router-dom'
 import { VIP_LEVELS_COLOR } from 'features/depositOperator/constants'
@@ -176,13 +176,10 @@ const WithdrawalOperatorTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (record: IGetWithdrawalData) => {
-				const { channelName, withdrawalType } = record
+				const { channelName, accountType } = record
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{withdrawalType === WithdrawalTypeEnum.CryptoPay ||
-						withdrawalType === WithdrawalTypeEnum.CryptoWallet
-							? channelName || '-'
-							: '-'}
+						{accountType === AccountTypeEnum.Crypto ? channelName || '-' : '-'}
 					</Typography.Text>
 				)
 			},
