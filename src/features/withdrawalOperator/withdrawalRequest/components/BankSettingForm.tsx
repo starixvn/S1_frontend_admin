@@ -53,6 +53,7 @@ const BankSettingForm = ({
 		multiEqual(status, [
 			WithdrawalStatusEnum.Verify,
 			WithdrawalStatusEnum.Approved,
+			WithdrawalStatusEnum.Process,
 		]) && editPermission?.canUse
 
 	// 計算當前的 amount 加總
