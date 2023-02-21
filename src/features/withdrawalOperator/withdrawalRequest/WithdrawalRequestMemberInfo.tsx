@@ -100,7 +100,7 @@ const WithdrawalRequestMemberInfo = ({
 							disabled={!userName}
 							onClick={() => onCopy(String(userName))}
 						>
-							<CopyOutlined style={{ fontSize: '1rem' }} />
+							<CopyOutlined style={{ fontSize: '1.5rem' }} />
 						</Typography.Link>
 					</Row>
 				</Item>
