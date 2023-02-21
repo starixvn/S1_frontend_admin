@@ -46,6 +46,7 @@ import { UploadFile } from 'antd/es/upload/interface'
 import { DepositTypeEnum } from 'type'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 import { ReceiptUploader } from 'features/depositOperator/components/ReceiptUploader'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
 
 const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
@@ -63,10 +64,17 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
 	const { onCopy } = useCopy()
+
+	const {
+		data: { data: depositReceiptCreateFromEnum } = {} as IEnumTypeResponse,
+		isFetching: isDepositReceiptCreateFromEnumLoading,
+	} = useGetEnumTypeQuery({ enumName: 'DepositReceiptCreateFromEnum' })
+
 	const {
 		data: { data: depositInfo = {} as IDepositOperatorData } = {},
 		isFetching: isDepositInfoLoading,
 	} = useGetDepositInfoByTransIdQuery({ transId })
+
 	const { data: { data: bankInfoOffList = [] } = {} } =
 		useGetBankInfoOffListQuery(
 			{
@@ -288,7 +296,8 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isGetCalCodeListFetching ||
 		isSetAmountByTransIdLoading ||
 		isGetPaymentListFetching ||
-		isGetDepositReceiptByTransIdLoading
+		isGetDepositReceiptByTransIdLoading ||
+		isDepositReceiptCreateFromEnumLoading
 
 	useEffect(() => {
 		if (depositLoading) return
@@ -305,13 +314,12 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const imageInit = async () => {
 		const initFileList: UploadFile[] = []
 		depositReceiptByTransIdList?.forEach(item => {
-			const { receiptNo, receipt } = item
+			const { receiptNo, receipt, creator, createTime, createFrom } = item
 			const { contentType, fileContents } = receipt
 			const url = `data:${contentType};base64,${fileContents}`
-
 			const file: UploadFile = {
 				uid: String(item.receiptNo),
-				name: `receipt${receiptNo}`,
+				name: `receipt${receiptNo}&${creator}&${createTime}&${createFrom}`,
 				status: 'done',
 				url,
 			}
@@ -369,7 +377,9 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								loading={depositLoading}
 								form={form}
 								depositReceiptByTransIdList={depositReceiptByTransIdList}
+								depositReceiptCreateFromEnum={depositReceiptCreateFromEnum}
 								status={DepositStatusEnum.Pending}
+								timeZoneUtcOffset={timeZoneUtcOffset}
 								editPermission={editPermission}
 								uploadReceiptPermission={uploadReceiptPermission}
 								deleteReceiptPermission={deleteReceiptPermission}

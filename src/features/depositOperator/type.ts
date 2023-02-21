@@ -38,6 +38,11 @@ export enum VipLevelEnum {
 	NovaClub,
 }
 
+export enum DepositReceiptCreateFromEnum {
+	User = 1,
+	BackendUser,
+}
+
 export interface IGetDepositOperatorListArgs {
 	siteId: number
 	startDate: string | null
@@ -266,6 +271,7 @@ export interface IDepositReceiptByTransIdData {
 	receiptNo: number
 	creator: string
 	createTime: string
+	createFrom: number
 }
 
 export type IDepositReceiptByTransIdResponse = IDepositReceiptByTransIdData[]

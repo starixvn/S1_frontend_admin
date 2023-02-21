@@ -141,7 +141,7 @@ const DepositRequestOperatorButtonGroup = ({
 							loading={loading}
 							disabled={!checkReceiptPermission?.canUse}
 							onClick={onCheckDepositReceipt}
-							color='Purple'
+							color='Pink'
 						>
 							{t('Label_Check')}
 						</OperatorButton>
@@ -154,7 +154,7 @@ const DepositRequestOperatorButtonGroup = ({
 							loading={loading}
 							disabled={!checkReceiptPermission?.canUse}
 							onClick={onCheckDepositReceipt}
-							color='Purple'
+							color='Pink'
 						>
 							{t('Label_Check')}
 						</OperatorButton>

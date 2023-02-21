@@ -56,6 +56,7 @@ const DepositOperatorTable = ({
 	const baseColumns = [
 		{
 			title: t('Label_TransId'),
+			key: 'transId',
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ transId }: IDepositOperatorData) => (
@@ -66,18 +67,21 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_SiteName'),
+			key: 'siteName',
 			dataIndex: 'siteName',
 			width: 80,
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Operator'),
+			key: 'operator',
 			dataIndex: 'operator',
 			width: 80,
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Status'),
+			key: 'status',
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ status, statusName }: IDepositOperatorData) => {
@@ -87,6 +91,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_DepositType'),
+			key: 'depositType',
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ depositTypeName }: IDepositOperatorData) =>
@@ -94,6 +99,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_isKyc'),
+			key: 'isKyc',
 			dataIndex: 'isKyc',
 			align: 'center' as 'center',
 			render: (isKyc: string) => (
@@ -106,6 +112,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_isRisk'),
+			key: 'isRisk',
 			dataIndex: 'isRisk',
 			width: 60,
 			align: 'center' as 'center',
@@ -119,6 +126,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_CheckBy'),
+			key: 'checkBy',
 			dataIndex: 'checkReceiptBy',
 			width: 80,
 			align: 'center' as 'center',
@@ -126,6 +134,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_MemberId'),
+			key: 'custId',
 			width: 120,
 			align: 'center' as 'center',
 			render: ({ custId, userName }: IDepositOperatorData) =>
@@ -142,6 +151,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_VipLevel'),
+			key: 'vipLevel',
 			width: 120,
 			align: 'center' as 'center',
 			render: ({ vipLevel, vipLevelName }: IDepositOperatorData) => (
@@ -150,6 +160,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_NetWork'),
+			key: 'netWork',
 			dataIndex: 'depositInfo',
 			width: 60,
 			align: 'center' as 'center',
@@ -164,6 +175,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_CryptoAmount'),
+			key: 'cryptoAmount',
 			align: 'right' as 'right',
 			render: ({ status, depositInfo }: IDepositOperatorData) => {
 				const { exchangeAmount, actualExchangeAmount } =
@@ -181,11 +193,13 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_Currency'),
+			key: 'currency',
 			dataIndex: 'isoCode',
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Amount'),
+			key: 'amount',
 			dataIndex: 'amount',
 			width: 60,
 			align: 'right' as 'right',
@@ -193,6 +207,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_ActualDeposit'),
+			key: 'actualDeposit',
 			dataIndex: 'actualDeposit',
 			width: 60,
 			align: 'right' as 'right',
@@ -200,6 +215,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_BankName'),
+			key: 'bankName',
 			dataIndex: 'bankName',
 			width: 60,
 			align: 'center' as 'center',
@@ -211,6 +227,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_CalCode'),
+			key: 'calCode',
 			dataIndex: 'calCode',
 			width: 60,
 			align: 'center' as 'center',
@@ -222,6 +239,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_Channel'),
+			key: 'channel',
 			dataIndex: 'channelName',
 			width: 60,
 			align: 'center' as 'center',
@@ -233,6 +251,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_Receipt'),
+			key: 'receipt',
 			dataIndex: 'receipt',
 			width: 60,
 			align: 'center' as 'center',
@@ -240,6 +259,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_CreateTime'),
+			key: 'createTime',
 			dataIndex: 'createTime',
 			width: 120,
 			align: 'center' as 'center',
@@ -253,6 +273,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_FlowEndTime'),
+			key: 'flowEndTime',
 			dataIndex: 'flowEndTime',
 			width: 120,
 			align: 'center' as 'center',
@@ -268,6 +289,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_UpdateTime'),
+			key: 'updateTime',
 			dataIndex: 'updateTime',
 			width: 120,
 			align: 'center' as 'center',
@@ -281,6 +303,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_StatementTime'),
+			key: 'statementTime',
 			dataIndex: 'statementTime',
 			width: 120,
 			align: 'center' as 'center',
@@ -296,6 +319,7 @@ const DepositOperatorTable = ({
 		},
 		{
 			title: t('Label_DepositCount'),
+			key: 'depositCount',
 			dataIndex: 'depositCnt',
 			width: 60,
 			align: 'center' as 'center',

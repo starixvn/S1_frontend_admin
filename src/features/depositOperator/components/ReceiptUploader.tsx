@@ -1,8 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
-import { Card, Form, FormInstance, Modal, Spin, Upload } from 'antd'
+import {
+	Card,
+	Descriptions,
+	Form,
+	FormInstance,
+	Modal,
+	Spin,
+	Upload,
+} from 'antd'
+import moment from 'moment/moment'
 import { PlusOutlined } from '@ant-design/icons'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { getBase64, normFileForFormImageItem } from 'common/utils/image'
 import { findIndex } from 'lodash'
 import { useModal, usePasteEffect } from 'common/hooks'
@@ -10,18 +19,23 @@ import { RcFile } from 'antd/es/upload'
 import { multiEqual } from 'common/utils'
 import { PermissionInterface } from 'type'
 import {
+	DepositReceiptCreateFromEnum,
 	DepositStatusEnum,
 	IDepositReceiptByTransIdData,
 } from 'features/depositOperator/type'
+import { timeFormat } from 'common/utils/format'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IReceiptUploaderProps {
 	loading: boolean
 	form: FormInstance
 	depositReceiptByTransIdList: IDepositReceiptByTransIdData[]
+	depositReceiptCreateFromEnum: IEnumTypeData[]
 	editPermission?: PermissionInterface
 	uploadReceiptPermission?: PermissionInterface
 	deleteReceiptPermission?: PermissionInterface
 	status: DepositStatusEnum
+	timeZoneUtcOffset: number
 	onUploadImage: (result: RcFile) => void
 	onDeleteImage: (number: number) => void
 }
@@ -30,7 +44,9 @@ const ReceiptUploader = ({
 	loading,
 	form,
 	depositReceiptByTransIdList,
+	depositReceiptCreateFromEnum,
 	status,
+	timeZoneUtcOffset,
 	editPermission,
 	uploadReceiptPermission,
 	deleteReceiptPermission,
@@ -42,7 +58,6 @@ const ReceiptUploader = ({
 	const canEdit =
 		multiEqual(status, [DepositStatusEnum.Pending, DepositStatusEnum.OnHold]) &&
 		uploadReceiptPermission?.canUse &&
-		deleteReceiptPermission?.canUse &&
 		editPermission?.canUse
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch('fileList', form)
@@ -50,6 +65,7 @@ const ReceiptUploader = ({
 	const previewModal = useModal()
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewAlt, setPreviewAlt] = useState('')
+	const [previewText, setPreviewText] = useState('')
 
 	// Paste Upload 綁定
 	usePasteEffect(async (result, kind) => {
@@ -63,11 +79,28 @@ const ReceiptUploader = ({
 		accept: 'image/*',
 		listType: 'picture-card',
 		onRemove: async file => {
-			const { uid } = file
+			const { uid, name } = file
 			const deleteNum = depositReceiptByTransIdList.find(
 				({ receiptNo }) => receiptNo === Number(uid)
 			)?.receiptNo
-			await onDeleteImage(Number(deleteNum))
+			const createFrom = name.split('&')[3]
+			if (
+				(multiEqual(status, [
+					DepositStatusEnum.Approved,
+					DepositStatusEnum.Canceled,
+					DepositStatusEnum.Rejected,
+				]) &&
+					Number(createFrom) === DepositReceiptCreateFromEnum.BackendUser &&
+					deleteReceiptPermission?.canUse) ||
+				(!multiEqual(status, [
+					DepositStatusEnum.Approved,
+					DepositStatusEnum.Canceled,
+					DepositStatusEnum.Rejected,
+				]) &&
+					Number(createFrom) === DepositReceiptCreateFromEnum.BackendUser)
+			) {
+				await onDeleteImage(Number(deleteNum))
+			}
 			// 不做 刪除動畫 , 直接打 api , 透過 api refetch 更新 picList
 			return false
 		},
@@ -78,8 +111,10 @@ const ReceiptUploader = ({
 			}
 			setPreviewImage(file.url || (file.preview as string))
 			setPreviewAlt(
-				file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1)
+				file.name.split('&')[0] ||
+					file.url!.substring(file.url!.lastIndexOf('/') + 1)
 			)
+			setPreviewText(file.name)
 			previewModal.onOpen()
 		},
 		onChange: async ({ file, fileList: newFileList }) => {
@@ -97,6 +132,34 @@ const ReceiptUploader = ({
 			<div style={{ marginTop: 8 }}>{t('Label_Receipt')}</div>
 		</div>
 	)
+
+	const footerText = () => {
+		const creator = previewText.split('&')[1]
+		const createTime = previewText.split('&')[2]
+		const createFromNum = previewText.split('&')[3]
+		const createFrom = depositReceiptCreateFromEnum?.find(
+			({ value }) => value === Number(createFromNum)
+		)?.name
+		return (
+			<Descriptions layout='horizontal' bordered size='small' column={10}>
+				<Descriptions.Item
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					label={t('Label_Creator')}
+				>
+					{createFrom ?? ''}
+					{creator ? `(${creator})` : ''}
+				</Descriptions.Item>
+				<Descriptions.Item
+					style={{ whiteSpace: 'nowrap', padding: '5px' }}
+					label={t('Label_CreateTime')}
+				>
+					{createTime
+						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						: ''}
+				</Descriptions.Item>
+			</Descriptions>
+		)
+	}
 
 	return (
 		<Spin spinning={loading}>
@@ -122,7 +185,7 @@ const ReceiptUploader = ({
 				<Modal
 					open={previewModal.visible}
 					title={false}
-					footer={null}
+					footer={footerText()}
 					onCancel={previewModal.onCancel}
 				>
 					<img alt={previewAlt} style={{ width: '100%' }} src={previewImage} />
