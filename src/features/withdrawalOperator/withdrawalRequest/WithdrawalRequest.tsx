@@ -66,8 +66,14 @@ const WithdrawalRequest = () => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
 	const { timeZoneUtcOffset } = useTimeZone()
-	const { actionPermissions: { editPermission, draftPermission } = {} } =
-		useAuth()
+	const {
+		actionPermissions: {
+			editPermission,
+			draftPermission,
+			uploadReceiptPermission,
+			deleteReceiptPermission,
+		} = {},
+	} = useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
 	const navigate = useNavigate()
 	const payInfoModal = useModal()
@@ -566,19 +572,18 @@ const WithdrawalRequest = () => {
 			<LayoutContent.Title title={t('Label_WithdrawalRequest')} />
 			<Spin spinning={loading}>
 				<LayoutContent.Card>
-					<Form
-						component={false}
-						form={form}
-						initialValues={{
-							comment: '',
-							withdrawalType: WithdrawalTypeEnum.Undefined,
-						}}
-						colon={false}
-						layout='vertical'
-						disabled={!editPermission?.canUse}
-					>
-						<Row gutter={16}>
-							<Col xl={10} lg={24} md={24} xs={24}>
+					<Row gutter={16}>
+						<Col xl={10} lg={24} md={24} xs={24}>
+							<Form
+								component={false}
+								form={form}
+								initialValues={{
+									withdrawalType: WithdrawalTypeEnum.Undefined,
+								}}
+								colon={false}
+								layout='vertical'
+								disabled={!editPermission?.canUse}
+							>
 								<WithdrawalRequestInfo
 									form={form}
 									timeZoneUtcOffset={timeZoneUtcOffset}
@@ -589,24 +594,35 @@ const WithdrawalRequest = () => {
 									onlinePayList={onlinePayList}
 									onPayInfoClicked={handlePayInfoClicked}
 								/>
-								{multiEqual(currentStatus, [
-									WithdrawalStatusEnum.Approved,
-									WithdrawalStatusEnum.Process,
-								]) &&
-									multiEqual(currentWithdrawalType, [
-										WithdrawalTypeEnum.LocalBank,
-										WithdrawalTypeEnum.CryptoWallet,
-									]) && (
-										<ReceiptUploader
-											loading={updateReceiptLoading}
-											form={form}
-											status={currentStatus}
-											editPermission={editPermission}
-											onUploadImage={handleUploadImage}
-											onDeleteImage={handleDeleteImage}
-										/>
-									)}
-							</Col>
+							</Form>
+							{multiEqual(currentStatus, [
+								WithdrawalStatusEnum.Approved,
+								WithdrawalStatusEnum.Process,
+								WithdrawalStatusEnum.Rejected,
+								WithdrawalStatusEnum.Cancelled,
+							]) &&
+								multiEqual(currentWithdrawalType, [
+									WithdrawalTypeEnum.LocalBank,
+									WithdrawalTypeEnum.CryptoWallet,
+								]) && (
+									<ReceiptUploader
+										loading={updateReceiptLoading}
+										form={form}
+										status={currentStatus}
+										uploadReceiptPermission={uploadReceiptPermission}
+										deleteReceiptPermission={deleteReceiptPermission}
+										onUploadImage={handleUploadImage}
+										onDeleteImage={handleDeleteImage}
+									/>
+								)}
+						</Col>
+						<Form
+							component={false}
+							form={form}
+							colon={false}
+							layout='vertical'
+							disabled={!editPermission?.canUse}
+						>
 							<Col xl={14} lg={24} md={24} xs={24}>
 								<WithdrawalRequestMemberInfo
 									loading={isMemberInfoLoading}
@@ -644,8 +660,8 @@ const WithdrawalRequest = () => {
 										/>
 									)}
 							</Col>
-						</Row>
-					</Form>
+						</Form>
+					</Row>
 					<Form
 						component={false}
 						form={form}

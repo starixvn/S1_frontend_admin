@@ -15,7 +15,8 @@ import { PermissionInterface } from 'type'
 interface IReceiptUploaderProps {
 	loading: boolean
 	form: FormInstance<IWithdrawalRequestForm>
-	editPermission?: PermissionInterface
+	uploadReceiptPermission?: PermissionInterface
+	deleteReceiptPermission?: PermissionInterface
 	status: WithdrawalStatusEnum
 	onUploadImage: (imageBase64: string) => void
 	onDeleteImage: (number: number) => void
@@ -25,17 +26,27 @@ const ReceiptUploader = ({
 	loading,
 	form,
 	status,
-	editPermission,
+	uploadReceiptPermission,
+	deleteReceiptPermission,
 	onUploadImage,
 	onDeleteImage,
 }: IReceiptUploaderProps) => {
 	const { t } = useTranslation()
 	// 判斷當前狀態能否使用
-	const canEdit =
+	const canUpdate =
 		multiEqual(status, [
 			WithdrawalStatusEnum.Process,
 			WithdrawalStatusEnum.Approved,
-		]) && editPermission?.canUse
+			WithdrawalStatusEnum.Rejected,
+			WithdrawalStatusEnum.Cancelled,
+		]) && uploadReceiptPermission?.canUse
+
+	const canDelete =
+		multiEqual(status, [
+			WithdrawalStatusEnum.Approved,
+			WithdrawalStatusEnum.Rejected,
+			WithdrawalStatusEnum.Cancelled,
+		]) && deleteReceiptPermission?.canUse
 
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
@@ -47,7 +58,7 @@ const ReceiptUploader = ({
 
 	// Paste Upload 綁定
 	usePasteEffect(async (result, kind) => {
-		if (kind === 'file' && canEdit) {
+		if (kind === 'file' && canUpdate) {
 			const base64Image = await getBase64(result as RcFile)
 			onUploadImage(base64Image)
 		}
@@ -57,13 +68,23 @@ const ReceiptUploader = ({
 		fileList: formFileList || [],
 		accept: 'image/*',
 		listType: 'picture-card',
-		onRemove: async file => {
-			const { name, uid } = file
-			// 他的 file name 命名原則為 : "WD135730_1.png" , 故取 _ 後的數字為 number , 假如取不到才改拿 uid
-			// uid 為 response 的陣列 index
-			const deleteNumber = name.split(/[._]/, 2).pop() || uid
-			await onDeleteImage(Number(deleteNumber))
-			// 不做 刪除動畫 , 直接打 api , 透過 api refetch 更新 picList
+		// 控制是否顯示各 Icon
+		showUploadList: { showRemoveIcon: !!canDelete },
+		onRemove: file => {
+			Modal.confirm({
+				title: t('Label_SureToDelete'),
+				onCancel: () => false,
+				onOk: async () => {
+					const { name, uid } = file
+					// 他的 file name 命名原則為 : "WD135730_1.png" , 故取 _ 後的數字為 number , 假如取不到才改拿 uid
+					// uid 為 response 的陣列 index
+					const deleteNumber = name.split(/[._]/, 2).pop() || uid
+					await onDeleteImage(Number(deleteNumber))
+					// 不做 刪除動畫 , 直接打 api , 透過 api refetch 更新 picList
+					return false
+				},
+			})
+			// 控制權交給 Modal
 			return false
 		},
 		beforeUpload: () => false,
@@ -102,15 +123,15 @@ const ReceiptUploader = ({
 				size='small'
 				className='highlight'
 				// 給予 tabIndex , 可使 <div/> focusable , 不可編輯就不賦值
-				tabIndex={canEdit ? 0 : undefined}
+				tabIndex={canUpdate ? 0 : undefined}
 			>
-				<Form form={form} component={false} disabled={!canEdit}>
+				<Form form={form} component={false}>
 					<Form.Item
 						name='fileList'
 						valuePropName='fileList'
 						getValueFromEvent={normFileForFormImageItem}
 					>
-						<Upload {...props}>{canEdit ? uploadButton : null}</Upload>
+						<Upload {...props}>{canUpdate ? uploadButton : null}</Upload>
 					</Form.Item>
 				</Form>
 
