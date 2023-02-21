@@ -54,12 +54,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { transId } = useParams()
 	const {
 		actionPermissions: {
-			editPermission,
 			uploadReceiptPermission,
 			deleteReceiptPermission,
+			setAmountPermission,
 		} = {},
 	} = useAuth()
-
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
@@ -354,7 +353,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						<Col xxl={12} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestDepositInfo
 								form={form}
-								editPermission={editPermission}
+								setAmountPermission={setAmountPermission}
 								loading={depositLoading}
 								timeZoneUtcOffset={timeZoneUtcOffset}
 								depositInfo={depositInfo}

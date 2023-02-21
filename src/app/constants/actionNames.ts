@@ -73,4 +73,5 @@ export const ACTION_NAMES: {
 	77: 'uploadReceiptPermission',
 	78: 'deleteReceiptPermission',
 	79: 'checkReceiptPermission',
+	81: 'setAmountPermission',
 }
