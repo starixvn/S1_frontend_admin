@@ -133,7 +133,7 @@ const BetList: FC<{
 			tpUserName = '',
 			refNo = '',
 			gameType = 0,
-			category = '',
+			category: rawCategory = '',
 			game = '',
 			title = '',
 			matchID = '',
@@ -155,6 +155,9 @@ const BetList: FC<{
 				currencyIds,
 			})
 		}
+
+		// api 接受參數 category 字串中不可有空白字元
+		const category = rawCategory.replace(/ /g, '')
 
 		try {
 			const args: IGetBetListArgs = {
