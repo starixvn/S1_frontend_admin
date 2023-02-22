@@ -51,7 +51,7 @@ const ShieldTaggingReportTable = ({
 		},
 
 		{
-			title: t('Label_UserName'),
+			title: t('Label_MemberId'),
 			key: 'userName',
 			dataIndex: 'userName',
 			width: 100,
