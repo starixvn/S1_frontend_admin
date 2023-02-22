@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { UploadFile } from 'antd/es/upload/interface'
 
 export interface IGetBatchMemberInfoReportArgs {
 	siteId?: number
@@ -23,6 +24,7 @@ export type IBatchMemberInfoReportResponse = IAxiosResponse<
 
 export interface IForm {
 	memo: string
+	fileList: UploadFile[]
 }
 
 export enum BatchMemberInfoReportStatusColorEnums {

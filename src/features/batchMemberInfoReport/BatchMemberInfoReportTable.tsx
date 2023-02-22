@@ -97,19 +97,13 @@ const BatchMemberInfoReportTable = ({
 					BATCH_MEMBER_INFO_DOWNLOAD_STATUS,
 					downloadName => downloadName.value === status
 				)
-				const { isDanger, displayName, isLoading, isDisabled } = downloadStatus!
-				return (
-					<Button
-						type='primary'
-						shape='round'
-						target='_blank'
-						href={url}
-						danger={isDanger}
-						loading={isLoading}
-						disabled={isDisabled}
-					>
+				const { displayName } = downloadStatus!
+				return status === 1 ? (
+					<Button type='primary' shape='round' target='_blank' href={url}>
 						{t(displayName) ?? 'N/A'}
 					</Button>
+				) : (
+					<Typography.Text>{t(displayName)}</Typography.Text>
 				)
 			},
 		},

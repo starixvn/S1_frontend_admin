@@ -1052,5 +1052,6 @@
 	"Label_BatchMemberInfoReport": "Batch Member Info Report",
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
-	"Label_Summary": "Summary"
+	"Label_Summary": "Summary",
+	"Label_Processing": "Processing"
 }

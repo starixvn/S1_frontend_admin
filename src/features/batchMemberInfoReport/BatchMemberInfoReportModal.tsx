@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import {
@@ -10,11 +9,12 @@ import {
 	Modal,
 	Row,
 	Typography,
-	Upload,
 	FormInstance,
 } from 'antd'
 import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
+import { xlsxMimeType } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
 import { IForm } from 'features/batchMemberInfoReport/type'
+import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
 
 interface IBatchMemberInfoReportModalProps {
 	form: FormInstance<IForm>
@@ -32,27 +32,22 @@ const BatchMemberInfoReportModal = ({
 	onCancel,
 }: IBatchMemberInfoReportModalProps) => {
 	const { t } = useTranslation()
-	const [fileList, setFileList] = useState<UploadFile[]>([])
-	const xlsxMimeType =
-		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-
+	const fileList = Form.useWatch('fileList', form)
 	const props: UploadProps = {
 		onRemove: () => {
-			setFileList([])
+			form.setFieldsValue({
+				fileList: [],
+			})
 		},
 		accept: xlsxMimeType,
 		beforeUpload: file => {
-			setFileList([file])
+			form.setFieldsValue({
+				fileList: [file],
+			})
 			return false
 		},
 		fileList,
 	}
-
-	useEffect(() => {
-		if (!visible) {
-			setFileList([])
-		}
-	}, [visible])
 
 	return (
 		<Modal
@@ -66,6 +61,9 @@ const BatchMemberInfoReportModal = ({
 			cancelText={t('Label_Cancel')}
 			confirmLoading={loading}
 			onCancel={onCancel}
+			afterClose={() => {
+				form.resetFields()
+			}}
 			onOk={() => {
 				onFinish(fileList)
 			}}
@@ -94,8 +92,10 @@ const BatchMemberInfoReportModal = ({
 						</Button>
 					</Link>
 				</Col>
-				<Col span={12} offset={1}>
-					<Form layout='vertical' form={form} size='middle'>
+			</Row>
+			<Form layout='vertical' size='middle' form={form}>
+				<Row align='middle' justify='center' gutter={16}>
+					<Col span={12}>
 						<Form.Item
 							name='memo'
 							label={t('Label_Memo')}
@@ -110,21 +110,23 @@ const BatchMemberInfoReportModal = ({
 						>
 							<Input allowClear />
 						</Form.Item>
-					</Form>
-				</Col>
-				<Col span={12} offset={1}>
-					<Typography.Text>
-						{t('Label_Upload', { key: t('Label_File') })}
-					</Typography.Text>
-				</Col>
-				<Col span={12} offset={1}>
-					<Button icon={<UploadOutlined />} block>
-						<Upload {...props} maxCount={1}>
-							{t('Label_SelectFile')}
-						</Upload>
-					</Button>
-				</Col>
-			</Row>
+					</Col>
+				</Row>
+				<Row align='middle' justify='center' gutter={16}>
+					<Col span={12}>
+						<Typography.Text>
+							{t('Label_Upload', { key: t('Label_File') })}
+						</Typography.Text>
+
+						<StyleUpload {...props}>
+							<Button icon={<UploadOutlined />}>
+								{t('Label_Upload', { key: t('Label_File') })}
+							</Button>
+						</StyleUpload>
+						<Form.Item name='fileList' noStyle />
+					</Col>
+				</Row>
+			</Form>
 		</Modal>
 	)
 }
