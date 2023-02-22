@@ -609,10 +609,11 @@ const WithdrawalRequest = () => {
 							</Col>
 							<Col xl={14} lg={24} md={24} xs={24}>
 								<WithdrawalRequestMemberInfo
+									memberInfo={memberInfo}
+									withdrawalDetailData={withdrawalDetailData}
 									loading={isMemberInfoLoading}
 									onIpCountClick={handleIpCountClick}
 									onDeviceCountClick={handleDeviceCountClick}
-									memberInfo={memberInfo}
 								/>
 								{/* Local Bank 的拆單功能獨立做成 Form 表單放於此處  */}
 								{multiEqual(currentStatus, [
