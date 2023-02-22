@@ -69,7 +69,6 @@ const WithdrawalRequestInfo = ({
 		accountNo = '',
 		accountName,
 		ifscCode,
-		withdrawlCnt,
 		updateTime,
 		flowEndTime,
 		transId,
@@ -186,7 +185,7 @@ const WithdrawalRequestInfo = ({
 						disabled={!amount}
 						onClick={() => onCopy(String(amount))}
 					>
-						<CopyOutlined style={{ fontSize: '1rem' }} />
+						<CopyOutlined style={{ fontSize: '1.5rem' }} />
 					</Typography.Link>
 				</Row>
 			</Item>
@@ -204,7 +203,7 @@ const WithdrawalRequestInfo = ({
 								disabled={!cryptoAmount}
 								onClick={() => onCopy(String(cryptoAmount))}
 							>
-								<CopyOutlined style={{ fontSize: '1rem' }} />
+								<CopyOutlined style={{ fontSize: '1.5rem' }} />
 							</Typography.Link>
 						)}
 					</Row>
@@ -240,7 +239,7 @@ const WithdrawalRequestInfo = ({
 								disabled={!eWalletName}
 								onClick={() => onCopy(eWalletName as string)}
 							>
-								<CopyOutlined style={{ fontSize: '1rem' }} />
+								<CopyOutlined style={{ fontSize: '1.5rem' }} />
 							</Typography.Link>
 						</Row>
 					</Item>
@@ -255,7 +254,7 @@ const WithdrawalRequestInfo = ({
 							disabled={!bankName}
 							onClick={() => onCopy(bankName)}
 						>
-							<CopyOutlined style={{ fontSize: '1rem' }} />
+							<CopyOutlined style={{ fontSize: '1.5rem' }} />
 						</Typography.Link>
 					</Row>
 				</Item>
@@ -268,14 +267,13 @@ const WithdrawalRequestInfo = ({
 						disabled={!accountNo}
 						onClick={() => onCopy(accountNo)}
 					>
-						<CopyOutlined style={{ fontSize: '1rem' }} />
+						<CopyOutlined style={{ fontSize: '1.5rem' }} />
 					</Typography.Link>
 				</Row>
 			</Item>
 			<Item label={t('Label_AccountName')}>{accountName}</Item>
 			<Item label={t('Label_RefId')}>{refId || '-'}</Item>
 			<Item label={t('Label_IFSCode')}>{ifscCode ?? '-'}</Item>
-			<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
 			<Item label={`${t('Label_UpdateTime')} (+08:00)`}>
 				{updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>

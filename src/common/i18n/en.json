@@ -1048,5 +1048,6 @@
 	"Label_ImageURL": "Image URL",
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_Summary": "Summary"
 }
