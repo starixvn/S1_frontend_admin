@@ -909,7 +909,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.customerSupport.sub.batchMemberInfoReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.customerSupport.sub.batchMemberInfoReport.root,
 	},
 ]
