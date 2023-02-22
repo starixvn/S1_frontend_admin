@@ -14,29 +14,17 @@ export const BATCH_MEMBER_INFO_REPORT_STATUS_TAGS_COLOR: {
 export const BATCH_MEMBER_INFO_DOWNLOAD_STATUS: Array<{
 	value: number
 	displayName: string
-	isDanger: boolean
-	isLoading: boolean
-	isDisabled: boolean
 }> = [
 	{
 		value: BatchMemberInfoReportDownloadStatusEnums.Pending,
-		displayName: 'Label_Loading',
-		isDanger: false,
-		isLoading: true,
-		isDisabled: false,
+		displayName: 'Label_Processing',
 	},
 	{
 		value: BatchMemberInfoReportDownloadStatusEnums.Finished,
-		displayName: 'Label_Downloaded',
-		isDanger: false,
-		isLoading: false,
-		isDisabled: false,
+		displayName: 'Label_DownloadStatus',
 	},
 	{
 		value: BatchMemberInfoReportDownloadStatusEnums.Failed,
 		displayName: 'System.Label_Failed',
-		isDanger: true,
-		isLoading: false,
-		isDisabled: true,
 	},
 ]

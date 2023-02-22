@@ -24,8 +24,6 @@ const BatchMemberInfoReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { actionPermissions: { addBatchPermission } = {} } = useAuth()
 	const [form] = Form.useForm<IForm>()
-	const memo = Form.useWatch('memo', form)
-
 	const batchMemberInfoReportModal = useModal()
 
 	const {
@@ -44,20 +42,26 @@ const BatchMemberInfoReport = ({ pageTitle }: { pageTitle?: string }) => {
 	] = useImportBatchMemberInfoReportMutation()
 
 	const handleBatchMemberInfoReportFinished = async (file: UploadFile[]) => {
-		if (!siteId || file.length === 0) return
-		const formData = new FormData()
-		formData.append('SiteId', siteId.toString())
-		formData.append('File', file[0] as RcFile)
-		formData.append('Memo', memo)
-		try {
-			await importBatchMemberInfoReport(formData).unwrap()
-			form.resetFields()
-			batchMemberInfoReportModal.onCancel()
-			message.success(t('System.Label_Success'))
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
+		if (!siteId) return
+		const { memo, fileList } = await form.validateFields()
+		// 因為 fileList 沒有渲染在畫面上 所以用 message.error show error
+
+		if (!fileList) {
+			message.error(t('Label_Required', { key: t('Label_File') }))
+		} else {
+			const formData = new FormData()
+			formData.append('SiteId', siteId.toString())
+			formData.append('File', file[0] as RcFile)
+			formData.append('Memo', memo)
+			try {
+				await importBatchMemberInfoReport(formData).unwrap()
+				batchMemberInfoReportModal.onCancel()
+				message.success(t('System.Label_Success'))
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
 		}
 	}
 
@@ -78,7 +82,6 @@ const BatchMemberInfoReport = ({ pageTitle }: { pageTitle?: string }) => {
 				onFinish={handleBatchMemberInfoReportFinished}
 				onCancel={() => {
 					batchMemberInfoReportModal.onCancel()
-					form.resetFields()
 				}}
 			/>
 

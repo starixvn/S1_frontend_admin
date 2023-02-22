@@ -1052,6 +1052,7 @@
 	"Label_BatchMemberInfoReport": "Batch Member Info Report",
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
+	"Label_Processing": "Processing",
 	"Label_Menu": "Menu",
 	"Label_AdminUserLog": "Admin User Log",
 	"Label_Summary": "Summary"
