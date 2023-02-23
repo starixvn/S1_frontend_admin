@@ -1046,5 +1046,8 @@
 	"Label_TotalApprovedCount": "TotalApprovedCount",
 	"Label_TotalApprovedAmount": "TotalApprovedAmount",
 	"Label_PerCount": "Per Count",
+	"Label_AllSite": "All Site",
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log",
 	"Label_Summary": "Summary"
 }

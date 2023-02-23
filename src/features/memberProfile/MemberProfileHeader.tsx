@@ -37,8 +37,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 			financeLogPermission,
 			gameLogPermission,
 			marketingLogPermission,
-			// TODO
-			// adminUserLogPermission,
+			adminUserLogPermission,
 		} = {},
 	} = useAuth()
 
@@ -454,18 +453,16 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				</Link>
 			),
 		},
-		//  TODO
-		// * 要記得綁定 adminUserLogPermission 權限
-		// {
-		// 	key: 7,
-		// 	label: (
-		// 		<Link
-		// 			to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
-		// 		>
-		// 			{t('MemberProfile.Menu.Label_AdminUserLog')}
-		// 		</Link>
-		// 	),
-		// },
+		Boolean(adminUserLogPermission?.canUse) && {
+			key: 7,
+			label: (
+				<Link
+					to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/adminUserLog/${custId}`}
+				>
+					{t('MemberProfile.Menu.Label_AdminUserLog')}
+				</Link>
+			),
+		},
 	].filter(Boolean)
 
 	return (
