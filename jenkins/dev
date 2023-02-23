@@ -5,40 +5,63 @@ pipeline {
         env = 'dev'
         platform= 'admin'
         node_modules_exists = fileExists 'node_modules'
+        harbor_registry = '13.213.82.69/desktop/admin-dev'
     }
     stages {
-        stage('Install dependencies') {   
-            when {
-                anyOf {
-                    changeset "package-lock.json"
-                    expression { node_modules_exists == 'false' }
-                }
-            }
-            steps {
-                sh 'npm ci'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
-        stage('Zip'){
-            steps {
-                dir("build"){
-                    script {
-                        env.commitHash = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
+        stage('多線程處理') {
+            // 多線程處理兩個 build
+            parallel{
+                stage("Start"){
+                    stages{
+                        stage('Install dependencies') {
+                            when {
+                                anyOf {
+                                    changeset "package-lock.json"
+                                    expression { node_modules_exists == 'false' }
+                                }
+                            }
+                            steps {
+                                sh 'npm ci'
+                            }
                     }
-                    sh 'zip -r ${platform}-${env}-${commitHash} *'
-                    sh 'curl -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://172.31.28.233:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
-                    sh 'echo admin-${env}-${commitHash}'
+                        stage("NPM build"){
+                            steps {
+                                sh 'npm run build'
+                            }
+                        }
+                        stage('Zip'){
+                            steps {
+                                dir("build"){
+                                    script {
+                                        env.commitHash = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
+                                    }
+                                    sh 'zip -r ${platform}-${env}-${commitHash} *'
+                                    sh 'curl -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://172.31.28.233:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
+                                    sh 'echo admin-${env}-${commitHash}'
+                                }
+                            }
+                        }
+                        stage('Deploy') {
+                            steps {
+                                sh 'ansible-playbook -i host.yml deploy.yml --extra-vars "commitId=${commitHash} host=${platform} env=${env}"'
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        stage('Deploy') {
-             steps {
-                sh 'ansible-playbook -i host.yml deploy.yml --extra-vars "commitId=${commitHash} host=${platform} env=${env}"'
+                stage('DockerBuild') {
+                    agent { node { label 'Build' } }
+                        steps{
+                            script {
+                                env.version = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
+                            }
+                            sh 'sudo docker build -t ${harbor_registry}:${version} .'
+                            sh 'sudo docker login 13.213.82.69 -u admin -p 1ye7Bu46'
+                            sh 'sudo docker push ${harbor_registry}:${version}'
+                            sh 'sudo docker rmi ${harbor_registry}:${version}'
+                        }
+
+                }
             }
         }
     }
-}
+}         
