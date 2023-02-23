@@ -907,6 +907,13 @@ const SmsGenerator = lazy(
 		)
 )
 
+const ProductMaintenance = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ProductMaintenance' */ 'features/productMaintenance/ProductMaintenance'
+		)
+)
+
 const VipReview = lazy(
 	() =>
 		import(/* webpackChunkName: 'VipReview' */ 'features/vipReview/VipReview')
@@ -2334,6 +2341,16 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.maintenance.functionId}
+					>
+						<ProductMaintenance />
 					</AuthRequire>
 				),
 			},

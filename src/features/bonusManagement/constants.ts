@@ -12,13 +12,15 @@ export const statusList: ListType = [
 ]
 
 export enum DevicesEnum {
-	All = 1,
+	All,
+	MatchAll,
 	Web,
 	App,
 }
 
 export const devicesList: ListType = [
 	{ value: DevicesEnum.All, displayName: 'Label_All' },
+	{ value: DevicesEnum.MatchAll, displayName: 'Label_MatchAll' },
 	{ value: DevicesEnum.Web, displayName: 'Label_Web' },
 	{ value: DevicesEnum.App, displayName: 'Label_App' },
 ]

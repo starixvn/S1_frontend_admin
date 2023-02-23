@@ -7,6 +7,7 @@ import {
 } from 'components'
 import { ICurrencyAmountRecord } from 'features/bonusReport/type'
 import { numberFormatter } from 'common/utils/format'
+import { Collapse } from 'antd'
 
 interface IDepositOperatorOverviewTableProps {
 	loading: boolean
@@ -17,6 +18,8 @@ interface IDepositOperatorOverviewTableProps {
 	}
 }
 
+const { Panel } = Collapse
+
 const DepositOperatorOverviewTable = ({
 	loading,
 	currencyAmountRecordList,
@@ -25,26 +28,30 @@ const DepositOperatorOverviewTable = ({
 	const { t } = useTranslation()
 
 	return (
-		<LayoutContent.Card>
-			<OverviewDescriptions loading={loading}>
-				{renderOverviewDescriptionsItems('', [
-					t('Label_Record'),
-					t('Label_DepositAmount'),
-				])}
+		<Collapse defaultActiveKey={0}>
+			<Panel header={t('Label_Summary')} key='1'>
+				<LayoutContent.Card style={{ margin: 0 }}>
+					<OverviewDescriptions loading={loading}>
+						{renderOverviewDescriptionsItems('', [
+							t('Label_Record'),
+							t('Label_DepositAmount'),
+						])}
 
-				{currencyAmountRecordList.map(({ currency, record, amount }) =>
-					renderOverviewDescriptionsItems(currency, [
-						numberFormatter.format(record),
-						numberFormatter.format(amount),
-					])
-				)}
+						{currencyAmountRecordList.map(({ currency, record, amount }) =>
+							renderOverviewDescriptionsItems(currency, [
+								numberFormatter.format(record),
+								numberFormatter.format(amount),
+							])
+						)}
 
-				{renderOverviewDescriptionsItems(t('Label_Total'), [
-					numberFormatter.format(recordTotal),
-					numberFormatter.format(amountTotal),
-				])}
-			</OverviewDescriptions>
-		</LayoutContent.Card>
+						{renderOverviewDescriptionsItems(t('Label_Total'), [
+							numberFormatter.format(recordTotal),
+							numberFormatter.format(amountTotal),
+						])}
+					</OverviewDescriptions>
+				</LayoutContent.Card>
+			</Panel>
+		</Collapse>
 	)
 }
 

@@ -1008,6 +1008,11 @@
 	"Label_TransferAll": "Transfer All",
 	"Label_PreferLanguages": "Prefer Languages",
 	"Label_FeeSetting": "SetFee",
+	"Label_IsExpired": "IsExpired",
+	"Label_TpTypeName": "TpTypeName",
+	"Label_MaintenanceStart": "MainTen Start",
+	"Label_MaintenanceEnd": "MainTen End",
+	"Label_AddMaintenance": "Add Maintenance",
 	"Label_Upgrade": "Upgrade",
 	"Label_Downgrade": "Downgrade",
 	"Label_CurrentVipLevel": "CurrentVipLevel",
@@ -1043,5 +1048,6 @@
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
 	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log"
+	"Label_AdminUserLog": "Admin User Log",
+	"Label_Summary": "Summary"
 }
