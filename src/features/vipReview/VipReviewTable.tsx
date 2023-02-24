@@ -332,7 +332,14 @@ const VipReviewTable = ({
 			dataIndex: 'settleTime',
 			width: 120,
 			align: 'center' as 'center',
-			render: (settleTime: any) => settleTime ?? '-',
+			render: (settleTime: any) =>
+				settleTime ? (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{moment(settleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</Typography.Text>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_LastestQualifiedTime'),
