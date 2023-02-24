@@ -5,6 +5,7 @@ import {
 	Descriptions,
 	Form,
 	FormInstance,
+	Image,
 	Modal,
 	Spin,
 	Upload,
@@ -63,6 +64,7 @@ const ReceiptUploader = ({
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewAlt, setPreviewAlt] = useState('')
 	const [previewText, setPreviewText] = useState('')
+	const [isOpenImage, setIsOpenImage] = useState(false)
 
 	// Paste Upload 綁定
 	usePasteEffect(async (result, kind) => {
@@ -113,6 +115,7 @@ const ReceiptUploader = ({
 			)
 			setPreviewText(file.name)
 			previewModal.onOpen()
+			setIsOpenImage(true)
 		},
 		onChange: async ({ file, fileList: newFileList }) => {
 			const index = findIndex(newFileList, item => item.uid === file.uid)
@@ -184,8 +187,16 @@ const ReceiptUploader = ({
 					title={false}
 					footer={footerText()}
 					onCancel={previewModal.onCancel}
+					forceRender
 				>
-					<img alt={previewAlt} style={{ width: '100%' }} src={previewImage} />
+					<Image
+						alt={previewAlt}
+						style={{
+							width: '100%',
+							display: `${isOpenImage ? 'block' : 'none'}`,
+						}}
+						src={previewImage}
+					/>
 				</Modal>
 			</Card>
 		</Spin>
