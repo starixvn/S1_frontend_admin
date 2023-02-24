@@ -315,6 +315,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		depositReceiptByTransIdList?.forEach(item => {
 			const { receiptNo, receipt, creator, createTime, createFrom } = item
 			const { contentType, fileContents } = receipt
+			// 後端回傳格式非url,故在這做base64Image轉換
 			const url = `data:${contentType};base64,${fileContents}`
 			const file: UploadFile = {
 				uid: String(item.receiptNo),
