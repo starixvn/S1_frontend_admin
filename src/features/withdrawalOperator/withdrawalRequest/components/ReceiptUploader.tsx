@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
-import { Card, Form, FormInstance, Modal, Spin, Upload } from 'antd'
+import { Card, Form, FormInstance, Spin, Upload, Image } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useRef, useState } from 'react'
 import { getBase64, normFileForFormImageItem } from 'common/utils/image'
 import { findIndex } from 'lodash'
-import { useModal, usePasteEffect } from 'common/hooks'
+import { usePasteEffect } from 'common/hooks'
 import { RcFile } from 'antd/es/upload'
 import { IWithdrawalRequestForm } from 'features/withdrawalOperator/type'
 import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
@@ -41,7 +41,7 @@ const ReceiptUploader = ({
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
 
 	// previewState
-	const previewModal = useModal()
+	const [imageState, setImageState] = useState(false)
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewAlt, setPreviewAlt] = useState('')
 
@@ -75,7 +75,7 @@ const ReceiptUploader = ({
 			setPreviewAlt(
 				file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1)
 			)
-			previewModal.onOpen()
+			setImageState(true)
 		},
 		onChange: async ({ file, fileList: newFileList }) => {
 			const index = findIndex(newFileList, item => item.uid === file.uid)
@@ -113,15 +113,15 @@ const ReceiptUploader = ({
 						<Upload {...props}>{canEdit ? uploadButton : null}</Upload>
 					</Form.Item>
 				</Form>
-
-				<Modal
-					open={previewModal.visible}
-					title={false}
-					footer={null}
-					onCancel={previewModal.onCancel}
-				>
-					<img alt={previewAlt} style={{ width: '100%' }} src={previewImage} />
-				</Modal>
+				<Image
+					alt={previewAlt}
+					style={{ width: '100%', display: 'none' }}
+					src={previewImage}
+					preview={{
+						visible: imageState,
+						onVisibleChange: visible => setImageState(visible),
+					}}
+				/>
 			</Card>
 		</Spin>
 	)

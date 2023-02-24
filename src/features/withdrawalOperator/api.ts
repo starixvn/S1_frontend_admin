@@ -1,8 +1,12 @@
 import { rootApi } from 'common/service/rootApi/api'
 import {
+	IAdjustmentWithdrawalData,
+	ICustomerAssociateBankUserData,
 	IDeletePictureArgs,
 	IExportWithdrawalListArgs,
+	IGetAdjustmentLogArgs,
 	IGetByTransIdArgs,
+	IGetCustomerAssociateBankUserArgs,
 	IGetWithdrawalData,
 	IGetWithdrawalListArgs,
 	IGetWithdrawalResponse,
@@ -135,6 +139,27 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		// 取得限額調整紀錄
+		getAdjustmentLimitLog: builder.query<
+			IAdjustmentWithdrawalData,
+			IGetAdjustmentLogArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetAdjustmentWithdrawalLimitLog',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getAssociateBankUser: builder.query<
+			IAxiosResponse<ICustomerAssociateBankUserData[]>,
+			IGetCustomerAssociateBankUserArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustomerAssociateBankUser',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -151,4 +176,6 @@ export const {
 	useDeletePictureMutation,
 	useGetWithdrawalReasonMessagesQuery,
 	useSetWithdrawalMessageMutation,
+	useGetAdjustmentLimitLogQuery,
+	useGetAssociateBankUserQuery,
 } = withdrawalOperatorApi

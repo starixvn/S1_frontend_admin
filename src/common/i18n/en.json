@@ -94,7 +94,6 @@
 	"Label_Memo": "Memo",
 	"Label_AddBlockIp": "Add Block Ip",
 	"Label_InputCurrentIpAddress": "please input current ip address",
-	"Label_Amount": "Amount",
 	"Label_AccountNo": "Acc. No.",
 	"Label_ApprovedTime": "Approved Time",
 	"Label_LatestUpdateOperator": "Latest Update Operator",
@@ -1047,7 +1046,12 @@
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
+	"Label_Summary": "Summary",
+	"Label_AssociateAccountCount": "Associate Account Count",
+	"Label_TotalAdjustmentAmount": "Total Adjustment Amount",
+	"Label_TotalWithdrawalAdjustmentRecord": "Total Withdrawal Adjustment Record",
+	"Label_AdjustmentRecord": "Adjustment Record",
+	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
 	"Label_AdminUserLog": "Admin User Log",
-	"Label_Summary": "Summary"
 }

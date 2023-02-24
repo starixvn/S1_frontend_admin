@@ -184,3 +184,34 @@ export interface ISendWithdrawalMessageArgs {
 	transId: string
 	after: { status: number; withdrawalId: number; action: number }
 }
+
+export interface IGetAdjustmentLogArgs {
+	startDate: string
+	endDate: string
+	custId: number
+}
+
+export type IAdjustmentLogLimitData = {
+	mainType: number
+	amount: number
+	memo: string
+	refTransId: string
+	creator: string
+	createTime: string
+}
+
+export interface IAdjustmentWithdrawalData {
+	adjustmentWithdrawalLimitLogList: IAdjustmentLogLimitData[]
+	totalAmount: number
+}
+
+export interface IGetCustomerAssociateBankUserArgs {
+	custId: number
+}
+
+export interface ICustomerAssociateBankUserData {
+	custId: number
+	userName: string
+	paymentName: string
+	associateNo: string
+}
