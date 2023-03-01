@@ -6,18 +6,18 @@ import {
 	useGetWithdrawalReasonMessagesQuery,
 	useSetWithdrawalMessageMutation,
 } from 'features/withdrawalOperator/api'
+import { WithdrawalStatusEnum } from 'features/withdrawalOperator/constants'
 
 const { Option } = Select
 const { confirm } = Modal
 
 const useSendReasonMessageHook = ({
-	args: { currencyId, transId, withdrawalId, withdrawalType },
+	args: { currencyId, transId, withdrawalId },
 }: {
 	args: {
 		currencyId: number
 		transId: string
 		withdrawalId: number
-		withdrawalType: number
 	}
 }) => {
 	const { t } = useTranslation()
@@ -38,7 +38,7 @@ const useSendReasonMessageHook = ({
 				siteId,
 				currencyId,
 				transId,
-				after: { status, withdrawalId, action: withdrawalType },
+				after: { status, withdrawalId, action: WithdrawalStatusEnum.Draft },
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 		} catch (error) {

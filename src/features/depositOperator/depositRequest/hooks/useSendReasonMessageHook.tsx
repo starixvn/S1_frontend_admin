@@ -1,25 +1,24 @@
 import { Form, message, Modal, Select } from 'antd'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { DepositTypeEnum } from 'features/depositLimitation/type'
 import {
 	useGetDepositReasonMessagesQuery,
 	useSetDepositReasonMessageMutation,
 } from 'features/depositOperator/api'
 import { useTranslation } from 'react-i18next'
+import { DepositStatusEnum } from 'features/depositOperator/type'
 
 const { Option } = Select
 const { confirm } = Modal
 
 const useSendReasonMessageHook = ({
-	args: { currencyId, transId, depositId, actualDeposit, depositType },
+	args: { currencyId, transId, depositId, actualDeposit },
 }: {
 	args: {
 		currencyId: number
 		transId: string
 		depositId: number
 		actualDeposit: number
-		depositType: DepositTypeEnum
 	}
 }) => {
 	const { t } = useTranslation()
@@ -40,9 +39,12 @@ const useSendReasonMessageHook = ({
 				siteId,
 				currencyId,
 				transId,
-				actualDeposit,
-				action: depositType,
-				after: { depositId, status },
+				after: {
+					depositId,
+					status,
+					action: DepositStatusEnum.Draft,
+					actualDeposit,
+				},
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
