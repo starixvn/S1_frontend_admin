@@ -167,12 +167,12 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 			const { messages } = editForm.getFieldsValue(true)
 			const formData = new FormData()
 			formData.append('optSite', String(siteId))
-			formData.append('currency', String(currencyId))
 			formData.append('isPopup', String(isPopup))
 			formData.append('personalMsg', JSON.stringify(messages))
 			if (method === MethodEnum.BatchUpload) {
 				formData.append('excelUpload', fileList[0].originFileObj as RcFile)
 			} else {
+				formData.append('currency', String(currencyId))
 				formData.append('accountStatus', String(accountStatus))
 			}
 			// fetch api
