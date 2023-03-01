@@ -22,8 +22,8 @@ import {
 import moment, { Moment } from 'moment/moment'
 import {
 	BonusTypeEnum,
-	DevicesEnum,
-	devicesList,
+	devicesDetailList,
+	DevicesDetailEnum,
 	PeriodTypeEnum,
 	periodTypeList,
 	PromotionActionEnum,
@@ -137,7 +137,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						bonusType: BonusTypeEnum.Null,
 						sameByActive: false,
 						mainFormActive: false,
-						promotionDeviceType: DevicesEnum.All,
+						promotionDeviceType: DevicesDetailEnum.All,
 						walletType: WalletTypeEnum?.Transfer,
 						selectedVipLevel: ['all'],
 						periodType: PeriodTypeEnum.Daily,
@@ -403,7 +403,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						<Col lg={8} md={12} xs={12}>
 							<Form.Item name='promotionDeviceType' label={t('Label_Device')}>
 								<Select>
-									{devicesList?.map(device => (
+									{devicesDetailList?.map(device => (
 										<Option key={device.value} value={device.value}>
 											{t(device.displayName)}
 										</Option>
