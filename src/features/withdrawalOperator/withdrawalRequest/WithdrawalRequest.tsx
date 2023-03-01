@@ -210,7 +210,6 @@ const WithdrawalRequest = () => {
 			currencyId,
 			transId: withdrawalTransId,
 			withdrawalId,
-			withdrawalType: responseWithdrawalType,
 		},
 	})
 
