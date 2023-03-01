@@ -25,6 +25,18 @@ export const devicesList: ListType = [
 	{ value: DevicesEnum.App, displayName: 'Label_App' },
 ]
 
+export enum DevicesDetailEnum {
+	All = 1,
+	Web,
+	App,
+}
+
+export const devicesDetailList: ListType = [
+	{ value: DevicesDetailEnum.All, displayName: 'Label_All' },
+	{ value: DevicesDetailEnum.Web, displayName: 'Label_Web' },
+	{ value: DevicesDetailEnum.App, displayName: 'Label_App' },
+]
+
 export enum WalletTypeEnum {
 	All = -1,
 	Transfer,
