@@ -1077,7 +1077,6 @@
 	"Label_BatchMemberInfoReport": "Batch Member Info Report",
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
-	"Label_Summary": "Summary",
 	"Label_Processing": "Processing",
 	"Label_BonusIPDisable": "Bonus IP Disable",
 	"Label_BonusDeviceDisable": "Bonus Device Disable",
@@ -1090,5 +1089,7 @@
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
 	"Label_SameIPRestrictCount": "Same IP restrict count",
 	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log"
+	"Label_AdminUserLog": "Admin User Log",
+	"Label_Summary": "Summary",
+	"Label_CheckBy": "Check By"
 }

@@ -60,6 +60,7 @@ export type EnumNameType =
 	| 'BonusSummaryType'
 	| 'BonusInfoStatusEnum'
 	| 'BonusSummaryTransactionType'
+	| 'DepositReceiptCreateFromEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -111,6 +112,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
 	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
 	 * @argument {string}  VipStatus - 取得Vip狀態列表
+	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 */
 	enumName: EnumNameType
 }

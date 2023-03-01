@@ -11,6 +11,9 @@ import {
 	IDepositOperatorResponse,
 	IDepositReasonMessage,
 	ISendDepositReasonMessageArgs,
+	ICheckDepositReceiptArgs,
+	IDeleteReceiptArgs,
+	IDepositReceiptByTransIdResponse,
 } from 'features/depositOperator/type'
 
 export const depositOperatorApi = rootApi.injectEndpoints({
@@ -58,14 +61,14 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 		}),
 		// * 取得存款收據圖片
 		getDepositReceiptByTransId: builder.query<
-			Blob,
+			IDepositReceiptByTransIdResponse,
 			{ transId: string | undefined }
 		>({
 			query: ({ transId }) => ({
 				url: `Deposit/GetReceiptByTransId?transId=${transId}`,
 				method: 'GET',
-				responseType: 'blob',
 			}),
+			providesTags: ['POST'],
 		}),
 		getDepositCommentsByTransId: builder.query<
 			IAxiosResponse<IDepositCommentData[]>,
@@ -135,6 +138,37 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		checkDepositReceipt: builder.mutation<
+			IAxiosResponse<null>,
+			ICheckDepositReceiptArgs
+		>({
+			query: data => ({
+				url: 'Deposit/CheckDepositReceipt',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
+		deleteReceipt: builder.mutation<IAxiosResponse<null>, IDeleteReceiptArgs>({
+			query: data => ({
+				url: 'Deposit/DeleteReceipt',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
+		uploadReceipt: builder.mutation<IAxiosResponse<null>, FormData>({
+			query: data => ({
+				url: 'Deposit/UploadReceipt',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+			invalidatesTags: ['POST'],
+		}),
 	}),
 })
 
@@ -150,4 +184,7 @@ export const {
 	useSetDepositManualApprovalMutation,
 	useGetDepositReasonMessagesQuery,
 	useSetDepositReasonMessageMutation,
+	useCheckDepositReceiptMutation,
+	useDeleteReceiptMutation,
+	useUploadReceiptMutation,
 } = depositOperatorApi
