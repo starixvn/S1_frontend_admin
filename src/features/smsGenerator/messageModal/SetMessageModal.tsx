@@ -186,35 +186,43 @@ const SetMessageModal = ({
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col lg={8} md={24} xs={24}>
-							<Form.Item
-								name='currencyId'
-								label={
-									<Space align='center' size='middle'>
-										{t('Label_Currency')}
-										<Form.Item name='isPopup' noStyle valuePropName='checked'>
-											<Checkbox>{t('Label_Popup')}</Checkbox>
-										</Form.Item>
-									</Space>
-								}
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_Currency'),
-										}),
-									},
-								]}
-							>
-								<Select placeholder={t('Label_Select') + t('Label_Currency')}>
-									{currencyListBySite.map(({ currencyId, isoCode }) => (
-										<Option key={currencyId} value={currencyId}>
-											{isoCode}
-										</Option>
-									))}
-								</Select>
-							</Form.Item>
-						</Col>
+						{formMethod === MethodEnum.ByUserStatus ? (
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='currencyId'
+									label={
+										<Space align='center' size='middle'>
+											{t('Label_Currency')}
+											<Form.Item name='isPopup' noStyle valuePropName='checked'>
+												<Checkbox>{t('Label_Popup')}</Checkbox>
+											</Form.Item>
+										</Space>
+									}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Currency'),
+											}),
+										},
+									]}
+								>
+									<Select placeholder={t('Label_Select') + t('Label_Currency')}>
+										{currencyListBySite.map(({ currencyId, isoCode }) => (
+											<Option key={currencyId} value={currencyId}>
+												{isoCode}
+											</Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
+						) : (
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item name='isPopup' noStyle valuePropName='checked'>
+									<Checkbox>{t('Label_Popup')}</Checkbox>
+								</Form.Item>
+							</Col>
+						)}
 					</Row>
 
 					{formMethod === MethodEnum.ByUserStatus && (
