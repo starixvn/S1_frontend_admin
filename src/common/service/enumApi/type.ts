@@ -55,6 +55,7 @@ export type EnumNameType =
 	| 'LangType'
 	| 'IovationDeviceType'
 	| 'NewsStatusEnum'
+	| 'DirectionEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -101,6 +102,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
+	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 */
 	enumName: EnumNameType
 }

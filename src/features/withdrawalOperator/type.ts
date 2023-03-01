@@ -195,6 +195,7 @@ export type IAdjustmentLogLimitData = {
 	mainType: number
 	amount: number
 	memo: string
+	reasonId: number
 	refTransId: string
 	creator: string
 	createTime: string

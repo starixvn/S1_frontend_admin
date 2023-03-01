@@ -68,6 +68,8 @@ import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRe
 import { useSendReasonMessageHook } from 'features/withdrawalOperator/withdrawalRequest/hooks/useSendReasonMessageHook'
 import moment from 'moment/moment'
 import { AdjustmentLimitLogModal } from 'features/withdrawalOperator/withdrawalRequest/components/AdjustmentLimitLogModal'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { useGetWithdrawalAdjustmentReasonListQuery } from 'features/withdrawalAdjustment/api'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
@@ -267,6 +269,13 @@ const WithdrawalRequest = () => {
 
 	const { adjustmentWithdrawalLimitLogList: adjustmentLimitList = [] } =
 		adjustmentWithdrawalData ?? {}
+
+	const { data: { data: directionEnumList = [] } = {} } = useGetEnumTypeQuery({
+		enumName: 'DirectionEnum',
+	})
+
+	const { data: { data: reasonList = [] } = {} } =
+		useGetWithdrawalAdjustmentReasonListQuery(null)
 
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
@@ -781,8 +790,10 @@ const WithdrawalRequest = () => {
 					{/* 增加兩個 br 使 button 不會與 AffixButton 重疊 */}
 					<AdjustmentLimitLogModal
 						loading={isGetAdjustmentWithdrawalLoading}
-						adjustmentLimitList={adjustmentLimitList}
 						visible={adjustmentLimitLogModal.visible}
+						reasonList={reasonList}
+						adjustmentLimitList={adjustmentLimitList}
+						directionEnumList={directionEnumList}
 						onCancel={adjustmentLimitLogModal.onCancel}
 					/>
 					<br />

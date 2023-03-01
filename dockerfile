@@ -11,4 +11,5 @@ RUN npm run build
 FROM nginx:1.18.0
 WORKDIR /app
 COPY --from=build-step /build/build .
+COPY nginx /etc/nginx/conf.d/
 EXPOSE 5071
