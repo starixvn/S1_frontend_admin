@@ -30,6 +30,10 @@ import { IEnumTypeData } from 'common/service/enumApi'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
 import { IGetPayEnumData } from 'common/service/allDataApi'
 import { IForm } from 'features/depositOperator/type'
+import {
+	DATE_TYPE_OPTIONS,
+	DateTypeEnum,
+} from 'features/depositOperator/constants'
 import { useQueryParams } from 'common/hooks'
 import { isEmpty } from 'lodash'
 
@@ -287,10 +291,22 @@ const DepositOperatorFilter = ({
 								agent: '',
 								depositId: '',
 								isAllSite: false,
+								dateType: DateTypeEnum.CreateTime,
 							}}
 							onFinish={() => onSearch({})}
 						>
 							<Row align='middle' gutter={16}>
+								<Col lg={8} md={24} xs={24}>
+									<Form.Item name='dateType' label={t('Label_DateType')}>
+										<Select placeholder='select'>
+											{DATE_TYPE_OPTIONS.map(option => (
+												<Option key={option.value} value={option.value}>
+													{t(option.displayKey)}
+												</Option>
+											))}
+										</Select>
+									</Form.Item>
+								</Col>
 								<Col lg={8} md={24} xs={24}>
 									<Form.Item label={t('Label_DateRange')}>
 										<Input.Group

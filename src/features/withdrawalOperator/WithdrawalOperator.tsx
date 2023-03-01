@@ -32,6 +32,7 @@ import download from 'downloadjs'
 import moment from 'moment/moment'
 import { WithdrawalOperatorOverviewTable } from 'features/withdrawalOperator/WithdrawalOperatorOverviewTable'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
+import { DateTypeEnum } from 'features/withdrawalOperator/constants'
 
 const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -123,6 +124,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const {
+			dateType,
 			isAllSite,
 			dateRange,
 			startAmount,
@@ -149,6 +151,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				withdrawalId: withdrawalId || null,
 				pageNumber: current,
 				pageSize,
+				dateType,
 				...restValue,
 			}).unwrap()
 			setQueryParams({
@@ -199,6 +202,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			selectBankCode,
 			selectCalCode,
 			agent = '',
+			dateType,
 		} = queryParams
 
 		try {
@@ -223,6 +227,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				selectCalCode:
 					selectCalCode?.map((calCode: string) => Number(calCode)) ?? [],
 				agent,
+				dateType: Number(dateType),
 			}).unwrap()
 			download(
 				blob,
@@ -277,6 +282,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				selectBankCode = [],
 				withdrawalTypes = [],
 				withdrawalMethod,
+				dateType = DateTypeEnum.CreateTime,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
@@ -294,6 +300,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				withdrawalTypes: withdrawalTypes.map((type: string) => Number(type)),
 				withdrawalMethod:
 					Number(withdrawalMethod) || head(withdrawalMethodList)?.value,
+				dateType: Number(dateType),
 			})
 			handleSearch({
 				current: Number(pageNumber),

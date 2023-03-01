@@ -67,3 +67,13 @@ export enum PurposeEnum {
 	Deposit = 1,
 	Withdrawal,
 }
+
+export enum DateTypeEnum {
+	CreateTime = 1,
+	FlowEndTime,
+}
+
+export const DATE_TYPE_OPTIONS = [
+	{ displayKey: 'Label_CreateTime', value: DateTypeEnum.CreateTime },
+	{ displayKey: 'Label_FlowEndTime', value: DateTypeEnum.FlowEndTime },
+]
