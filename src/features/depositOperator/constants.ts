@@ -38,8 +38,8 @@ export const DEVICE_ALLOW_STATUS_DISPLAY_KEYS: { [key: string]: string } = {
 }
 
 export enum DateTypeEnum {
+	CreateTime = 1,
 	StatementTime,
-	CreateTime,
 }
 
 export const DATE_TYPE_OPTIONS = [
