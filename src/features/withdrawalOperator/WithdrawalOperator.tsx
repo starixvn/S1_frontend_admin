@@ -164,6 +164,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber: current,
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
+				dateType,
 				...restValue,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
 					? queryVisibilityColumns

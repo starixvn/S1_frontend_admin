@@ -235,6 +235,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				startAmount,
 				endAmount,
 				depositId: depositId || null,
+				dateType,
 				...rest,
 				timeZone: currentTimeZoneUtcOffset,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
