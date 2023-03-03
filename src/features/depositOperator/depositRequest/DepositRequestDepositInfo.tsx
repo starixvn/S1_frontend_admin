@@ -36,7 +36,7 @@ const { Option } = Select
 
 interface IDepositRequestDepositInfoProps {
 	form: FormInstance
-	setAmountPermission: PermissionInterface | undefined
+	editPermission: PermissionInterface | undefined
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositInfo: IDepositOperatorData
@@ -49,7 +49,7 @@ interface IDepositRequestDepositInfoProps {
 
 const DepositRequestDepositInfo = ({
 	form,
-	setAmountPermission,
+	editPermission,
 	loading,
 	timeZoneUtcOffset,
 	depositInfo: {
@@ -86,6 +86,11 @@ const DepositRequestDepositInfo = ({
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
+	const isEditAmount = !(
+		status === DepositStatusEnum.Rejected ||
+		status === DepositStatusEnum.Approved ||
+		status === DepositStatusEnum.Canceled
+	)
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
 	const isShowPaymentInfoModalButton =
@@ -115,7 +120,7 @@ const DepositRequestDepositInfo = ({
 						<Form.Item noStyle name='amount'>
 							<InputNumber
 								controls={false}
-								disabled={!setAmountPermission?.canUse || editable !== 'amount'}
+								disabled={!editPermission?.canUse || editable !== 'amount'}
 								style={{ width: 'calc(100% - 64px)' }}
 								// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
 								formatter={value =>
@@ -157,7 +162,7 @@ const DepositRequestDepositInfo = ({
 									onClick={() => onCopy(String(amount))}
 								/>
 								<Button
-									disabled={!setAmountPermission?.canUse}
+									disabled={!editPermission?.canUse || !isEditAmount}
 									onClick={() => setEditable('amount')}
 									type='link'
 									icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
