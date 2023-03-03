@@ -1,6 +1,8 @@
 import moment from 'moment'
-import { Space, Table, TablePaginationConfig, Tag } from 'antd'
+import { Space, Table, TablePaginationConfig, Tag, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { isJSON } from 'common/utils'
 import { numberFormatter, timeFormat } from 'common/utils/format'
@@ -119,9 +121,19 @@ const BonusReportTable = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IBonusReportData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_Currency'),

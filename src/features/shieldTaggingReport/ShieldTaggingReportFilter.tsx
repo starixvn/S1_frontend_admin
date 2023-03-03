@@ -151,7 +151,7 @@ const ShieldTaggingReportFilter = ({
 					<Form layout='vertical' size='middle' form={form} onFinish={onSearch}>
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
-								<Form.Item>
+								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
 										compact
 										style={{ width: '100%', display: 'flex' }}

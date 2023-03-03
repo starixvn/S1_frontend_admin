@@ -5,6 +5,8 @@ import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { PermissionInterface } from 'type'
 import { IDepositAccountsState } from './type'
@@ -64,9 +66,19 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IDepositAccountsState) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_DepositAmount'),
