@@ -53,18 +53,18 @@ const ShieldTaggingReportTable = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (userName: string, record: IShieldTaggingReportData) => {
-				const { custId } = record
-				return (
+			render: ({ userName, custId }: IShieldTaggingReportData) => {
+				return userName ? (
 					<Typography.Link
 						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 						target='_blank'
 					>
 						{userName}
 					</Typography.Link>
+				) : (
+					'-'
 				)
 			},
 		},

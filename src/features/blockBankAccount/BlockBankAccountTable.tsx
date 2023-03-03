@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
@@ -8,6 +8,8 @@ import { Table } from 'components'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { PAGINATION } from 'common/hooks'
 import { useIsMounted } from 'usehooks-ts'
 import { PermissionInterface } from 'type'
@@ -127,8 +129,18 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
+			render: ({ custId, userName }: IBlockBankAccState) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_Status'),
