@@ -6,7 +6,6 @@ import { TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
-
 import { numberFormatter } from 'common/utils/format'
 import { ColumnsType } from 'antd/es/table'
 import { IReferralReportData } from 'features/referralReport/type'
@@ -48,9 +47,19 @@ const ReferralReportTable: FC<IReferralReportTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IReferralReportData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_Invitation'),

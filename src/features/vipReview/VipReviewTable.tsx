@@ -2,6 +2,8 @@ import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import {
 	Table,
 	useVisibilityColumnsButtonHook,
@@ -82,10 +84,19 @@ const VipReviewTable = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (userName: string) => userName ?? '-',
+			render: ({ custId, userName }: IUpgradeData | IDowngradeData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_CurrentVipLevel'),

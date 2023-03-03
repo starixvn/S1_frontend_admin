@@ -3,6 +3,8 @@ import { PaginationInterface } from 'common/hooks'
 import { Button, TablePaginationConfig, Typography } from 'antd'
 import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { timeFormat } from 'common/utils/format'
 import { isPayoutList } from 'features/memberProfile/constants'
 import { useTranslation } from 'react-i18next'
@@ -38,10 +40,19 @@ const VipRebateReportTable = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'MemberId',
-			dataIndex: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (userName: string) => userName ?? '-',
+			render: ({ custId, userName }: IVipRebateInfoData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_VipLevel'),

@@ -2,6 +2,8 @@ import { FC } from 'react'
 import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { IGetBonusListData } from 'features/bonusExport/type'
 import { useTranslation } from 'react-i18next'
@@ -43,13 +45,19 @@ const BonusExportTable: FC<IBonusExportTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			align: 'center' as 'center',
-			render: (userName: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{userName ?? ''}
-				</Typography.Text>
-			),
+			render: ({ custId, userName }: IGetBonusListData) =>
+				userName ? (
+					<Typography.Link
+						style={{ whiteSpace: 'nowrap', padding: '5px' }}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_TpUserName'),
