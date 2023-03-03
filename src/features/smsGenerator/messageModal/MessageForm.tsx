@@ -54,7 +54,7 @@ const MessageForm = ({ form, langCode, disabled }: IMessageFormProps) => {
 								},
 							]}
 						>
-							<Input />
+							<Input maxLength={50} />
 						</Form.Item>
 					</Col>
 				)}
@@ -69,7 +69,7 @@ const MessageForm = ({ form, langCode, disabled }: IMessageFormProps) => {
 							},
 						]}
 					>
-						<Input />
+						<Input maxLength={100} />
 					</Form.Item>
 				</Col>
 				<Col span={24}>
