@@ -10,7 +10,7 @@ interface IpListUserModalProps {
 	userList: IGetIpUserListData[]
 	visible: boolean
 	onCancel: () => void
-	// getCheckDuplicateName api 功能專用
+	// 不會自動清除刪除 Modal 內的資料，預設為 True
 	clearCache?: boolean
 }
 
