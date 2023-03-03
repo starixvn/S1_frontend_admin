@@ -42,9 +42,19 @@ const MemberListTable: FC<IMemberListTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IGetMemberListData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_SabaId'),
