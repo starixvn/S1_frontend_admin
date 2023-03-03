@@ -36,7 +36,7 @@ const { Option } = Select
 
 interface IDepositRequestDepositInfoProps {
 	form: FormInstance
-	editPermission: PermissionInterface | undefined
+	setAmountPermission: PermissionInterface | undefined
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositInfo: IDepositOperatorData
@@ -49,7 +49,7 @@ interface IDepositRequestDepositInfoProps {
 
 const DepositRequestDepositInfo = ({
 	form,
-	editPermission,
+	setAmountPermission,
 	loading,
 	timeZoneUtcOffset,
 	depositInfo: {
@@ -120,7 +120,7 @@ const DepositRequestDepositInfo = ({
 						<Form.Item noStyle name='amount'>
 							<InputNumber
 								controls={false}
-								disabled={!editPermission?.canUse || editable !== 'amount'}
+								disabled={!setAmountPermission?.canUse || editable !== 'amount'}
 								style={{ width: 'calc(100% - 64px)' }}
 								// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
 								formatter={value =>
@@ -162,7 +162,7 @@ const DepositRequestDepositInfo = ({
 									onClick={() => onCopy(String(amount))}
 								/>
 								<Button
-									disabled={!editPermission?.canUse || !isEditAmount}
+									disabled={!setAmountPermission?.canUse || !isEditAmount}
 									onClick={() => setEditable('amount')}
 									type='link'
 									icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
