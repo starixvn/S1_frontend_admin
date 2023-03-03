@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
@@ -13,6 +13,8 @@ import {
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { selectCurrencyListBySite } from 'common/enum'
 import { PermissionInterface } from 'type'
 import { IBlockEWalletAccData } from './type'
@@ -115,9 +117,19 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 120,
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IBlockEWalletAccData) =>
+				userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				),
 		},
 		{
 			title: t('Label_Status'),

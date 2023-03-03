@@ -1,8 +1,11 @@
+import React from 'react'
 import moment from 'moment'
 import { TablePaginationConfig, Typography } from 'antd'
 import { find } from 'lodash'
 import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
@@ -41,9 +44,16 @@ const OtpVerificationReportTable = ({
 		},
 		{
 			title: t('Label_MemberId'),
-			dataIndex: 'userName',
 			key: 'userName',
 			align: 'center' as 'center',
+			render: ({ custId, userName }: IOtpReportData) => (
+				<Typography.Link
+					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+					target='_blank'
+				>
+					{userName}
+				</Typography.Link>
+			),
 		},
 		{
 			title: t('Label_PhoneNumber'),
