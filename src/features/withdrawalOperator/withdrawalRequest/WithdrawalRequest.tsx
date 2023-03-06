@@ -807,6 +807,7 @@ const WithdrawalRequest = () => {
 					<AdjustmentLimitLogModal
 						loading={isGetAdjustmentWithdrawalLoading}
 						visible={adjustmentLimitLogModal.visible}
+						timeZoneUtcOffset={timeZoneUtcOffset}
 						reasonList={reasonList}
 						adjustmentLimitList={adjustmentLimitList}
 						directionEnumList={directionEnumList}
