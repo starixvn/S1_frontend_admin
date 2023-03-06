@@ -6,26 +6,28 @@ import { numberFormatter } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { find } from 'lodash'
 import { IGetReasonListData } from 'features/withdrawalAdjustment/type'
+import moment from 'moment/moment'
 
 interface IAdjustmentLimitLogModalProps {
 	loading: boolean
+	visible: boolean
+	timeZoneUtcOffset: number
 	reasonList: IGetReasonListData[]
 	adjustmentLimitList: IAdjustmentLogLimitData[]
 	directionEnumList: IEnumTypeData[]
-	visible: boolean
 	onCancel: () => void
 }
 
 const AdjustmentLimitLogModal = ({
 	loading,
 	visible,
+	timeZoneUtcOffset,
 	reasonList,
 	adjustmentLimitList,
 	directionEnumList,
 	onCancel,
 }: IAdjustmentLimitLogModalProps) => {
 	const { t } = useTranslation()
-
 	const columns = [
 		{
 			title: t('Label_AdjustType'),
@@ -72,6 +74,17 @@ const AdjustmentLimitLogModal = ({
 			render: (memo: string) => memo || 'N/A',
 		},
 		{
+			title: t('Label_CreateTime'),
+			key: 'createTime',
+			dataIndex: 'createTime',
+			width: 140,
+			align: 'center' as 'center',
+			render: (createTime: string) =>
+				moment(createTime)
+					.utcOffset(timeZoneUtcOffset)
+					.format('YYYY-MM-DD  HH:mm:ss'),
+		},
+		{
 			title: t('Label_Operator'),
 			key: 'creator',
 			dataIndex: 'creator',
@@ -88,7 +101,7 @@ const AdjustmentLimitLogModal = ({
 			title={
 				<div style={{ textAlign: 'center' }}>{t('Label_AdjustmentRecord')}</div>
 			}
-			width='40vw'
+			width='50vw'
 		>
 			<Table
 				pagination={false}
