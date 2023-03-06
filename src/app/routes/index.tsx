@@ -980,6 +980,13 @@ const Announcement = lazy(
 		)
 )
 
+const BatchMemberInfoReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BatchMemberInfoReport' */ 'features/batchMemberInfoReport/BatchMemberInfoReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2476,6 +2483,18 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.batchMemberInfoReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.batchMemberInfoReport.functionId
+						}
+					>
+						<BatchMemberInfoReport />
 					</AuthRequire>
 				),
 			},

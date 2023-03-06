@@ -1049,5 +1049,11 @@
 	"Label_AllSite": "All Site",
 	"Label_Menu": "Menu",
 	"Label_AdminUserLog": "Admin User Log",
+	"Label_DownloadStatus": "Download",
+	"Label_UploadTime": "Upload Time",
+	"Label_BatchMemberInfoReport": "Batch Member Info Report",
+	"Label_Downloaded": "Downloaded",
+	"Label_Loading": "Loading...",
+	"Label_Processing": "Processing",
 	"Label_Summary": "Summary"
 }
