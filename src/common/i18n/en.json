@@ -1051,5 +1051,7 @@
 	"Label_CryptoWalletAddress": "Crypto Wallet Address",
 	"Label_AddBlockCryptoWallet": "Add Block Crypto Wallet",
 	"Label_CryptoType": "Crypto Type",
-	"Label_Network": "Network"
+	"Label_Network": "Network",
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log"
 }

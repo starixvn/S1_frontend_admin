@@ -13,7 +13,7 @@ pipeline {
                     env.version = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
                 }
                 sh 'sudo docker build -t ${registry}:${version} .'
-                sh 'sudo docker login 13.213.82.69 -u admin -p 1ye7Bu46'
+                sh 'sudo docker login 13.213.82.69 -u jenkins -p 06ftJ0Ds'
                 sh 'sudo docker push ${registry}:${version}'
                 sh 'sudo docker rmi ${registry}:${version}'
             }

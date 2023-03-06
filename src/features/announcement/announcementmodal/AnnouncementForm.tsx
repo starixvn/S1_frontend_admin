@@ -62,7 +62,7 @@ const AnnouncementForm = ({
 							},
 						]}
 					>
-						<TextArea rows={6} maxLength={300} />
+						<TextArea rows={6} maxLength={600} />
 					</Form.Item>
 				</Col>
 			</Row>

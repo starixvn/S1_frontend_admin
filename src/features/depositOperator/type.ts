@@ -236,7 +236,10 @@ export interface ISendDepositReasonMessageArgs {
 	siteId: number
 	currencyId: number
 	transId: string
-	action: number
-	actualDeposit: number
-	after: { depositId: number; status: number }
+	after: {
+		depositId: number
+		status: number
+		action: number
+		actualDeposit: number
+	}
 }
