@@ -980,6 +980,13 @@ const Announcement = lazy(
 		)
 )
 
+const BlockCryptoWallet = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BlockCryptoWallet' */ 'features/blockCryptoWallet/BlockCryptoWallet'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2439,6 +2446,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.risk.sub.blockCryptoWallet.root}`,
+				element: (
+					<AuthRequire functionId={paths.risk.sub.blockCryptoWallet.functionId}>
+						<BlockCryptoWallet />
 					</AuthRequire>
 				),
 			},
