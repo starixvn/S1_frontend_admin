@@ -1,7 +1,7 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from 'common/service/rootApi/api'
 import {
-	IGetCryptoInfoData,
+	ICryptoInfoData,
 	IBlockCryptoWalletData,
 	IGetBlockCryptoWalletArgs,
 	ICryptoWalletGetByAddress,
@@ -12,7 +12,7 @@ import {
 
 export const blockCryptoWalletApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getCryptoInfoData: builder.query<IAxiosResponse<IGetCryptoInfoData>, void>({
+		getCryptoInfoData: builder.query<IAxiosResponse<ICryptoInfoData>, void>({
 			query: data => ({
 				url: `GetAllData/GetCryptoInfoData`,
 				method: 'POST',
