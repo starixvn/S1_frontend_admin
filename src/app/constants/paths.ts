@@ -433,6 +433,10 @@ const paths = {
 				root: 'report/bonusInfoReport',
 				functionId: 72,
 			},
+			winLostReport: {
+				root: 'report/winLostReport',
+				functionId: 79,
+			},
 		},
 	},
 	member: {
