@@ -11,7 +11,7 @@ export interface ICryptoNetwork {
 	network: string
 }
 
-export interface IGetCryptoInfoData {
+export interface ICryptoInfoData {
 	cryptoCurrency: ICryptoCurrency[]
 	cryptoNetwork: ICryptoNetwork[]
 }
