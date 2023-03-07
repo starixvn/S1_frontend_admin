@@ -483,6 +483,10 @@ const paths = {
 				root: 'Risk/BlockIp',
 				functionId: 71,
 			},
+			blockCryptoWallet: {
+				root: 'Risk/BlockCryptoWallet',
+				functionId: 142,
+			},
 		},
 	},
 	bankTransfer: {

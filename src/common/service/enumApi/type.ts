@@ -61,6 +61,8 @@ export type EnumNameType =
 	| 'BonusSummaryTransactionType'
 	| 'DepositReceiptCreateFromEnum'
 	| 'DirectionEnum'
+	| 'BlockCryptoStatus'
+	| 'CustCryptoWalletDetailSatatus'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -113,6 +115,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  VipStatus - 取得Vip狀態列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
+	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
+	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 */
 	enumName: EnumNameType
 }

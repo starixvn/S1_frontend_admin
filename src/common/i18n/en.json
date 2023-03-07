@@ -1092,8 +1092,12 @@
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
 	"Label_SameIPRestrictCount": "Same IP restrict count",
-	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log",
+	"Label_CheckBy": "Check By",
 	"Label_Summary": "Summary",
-	"Label_CheckBy": "Check By"
+	"Label_CryptoWalletAddress": "Crypto Wallet Address",
+	"Label_AddBlockCryptoWallet": "Add Block Crypto Wallet",
+	"Label_CryptoType": "Crypto Type",
+	"Label_Network": "Network",
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log"
 }
