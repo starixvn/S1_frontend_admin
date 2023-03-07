@@ -429,6 +429,10 @@ const paths = {
 				root: 'report/withdrawalPaymentReport',
 				functionId: 136,
 			},
+			bonusInfoReport: {
+				root: 'report/bonusInfoReport',
+				functionId: 72,
+			},
 		},
 	},
 	member: {
