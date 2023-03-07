@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { Popconfirm, Typography } from 'antd'
 import moment from 'moment'
-import { timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PermissionInterface } from 'type'
 
 interface IPListTableProps {
@@ -92,7 +92,7 @@ const IpListTable = ({
 				const { count, loginIp } = record
 				return (
 					<Typography.Link onClick={() => onAccountClick(loginIp)}>
-						{count}
+						{numFormatToDigits(count || 0)}
 					</Typography.Link>
 				)
 			},

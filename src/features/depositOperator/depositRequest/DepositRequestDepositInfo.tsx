@@ -67,7 +67,6 @@ const DepositRequestDepositInfo = ({
 		accountNo,
 		refId,
 		payName,
-		depositCnt,
 		flowEndTime,
 		updateTime,
 		statementTime,
@@ -87,6 +86,11 @@ const DepositRequestDepositInfo = ({
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
+	const isEditAmount = !(
+		status === DepositStatusEnum.Rejected ||
+		status === DepositStatusEnum.Approved ||
+		status === DepositStatusEnum.Canceled
+	)
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
 	const isShowPaymentInfoModalButton =
@@ -154,14 +158,14 @@ const DepositRequestDepositInfo = ({
 							<>
 								<Button
 									type='link'
-									icon={<CopyOutlined />}
+									icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
 									onClick={() => onCopy(String(amount))}
 								/>
 								<Button
-									disabled={!editPermission?.canUse}
+									disabled={!editPermission?.canUse || !isEditAmount}
 									onClick={() => setEditable('amount')}
 									type='link'
-									icon={<FormOutlined />}
+									icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
 								/>
 							</>
 						)}
@@ -202,7 +206,7 @@ const DepositRequestDepositInfo = ({
 									disabled={!bankName}
 									type='link'
 									style={{ padding: '0px' }}
-									icon={<CopyOutlined />}
+									icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
 									onClick={() => onCopy(String(bankName))}
 								/>
 							</Row>
@@ -214,7 +218,7 @@ const DepositRequestDepositInfo = ({
 									disabled={!accountName}
 									type='link'
 									style={{ padding: '0px' }}
-									icon={<CopyOutlined />}
+									icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
 									onClick={() => onCopy(String(accountName))}
 								/>
 							</Row>
@@ -225,7 +229,7 @@ const DepositRequestDepositInfo = ({
 								<Button
 									type='link'
 									style={{ padding: '0px' }}
-									icon={<InfoCircleOutlined style={{ fontSize: '18px' }} />}
+									icon={<InfoCircleOutlined style={{ fontSize: '1.5rem' }} />}
 									onClick={() => onOpenBankInfoModal(accountNo)}
 								/>
 							</Row>
@@ -274,9 +278,6 @@ const DepositRequestDepositInfo = ({
 							</Button>
 						)}
 					</Row>
-				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_DepositCount')}>
-					{depositCnt || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_FlowEndTime')}>
 					{flowEndTime &&

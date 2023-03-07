@@ -7,6 +7,8 @@ import { Table } from 'components'
 import moment from 'moment/moment'
 import { IShieldTaggingReportData } from 'features/shieldTaggingReport/type'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
+import paths from 'app/constants/paths'
 
 interface IShieldTaggingReportTableProps {
 	loading: boolean
@@ -49,16 +51,22 @@ const ShieldTaggingReportTable = ({
 		},
 
 		{
-			title: t('Label_UserName'),
+			title: t('Label_MemberId'),
 			key: 'userName',
-			dataIndex: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (userName: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{userName ?? '-'}
-				</Typography.Text>
-			),
+			render: ({ userName, custId }: IShieldTaggingReportData) => {
+				return userName ? (
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						target='_blank'
+					>
+						{userName}
+					</Typography.Link>
+				) : (
+					'-'
+				)
+			},
 		},
 		{
 			title: t('Label_ShieldId'),

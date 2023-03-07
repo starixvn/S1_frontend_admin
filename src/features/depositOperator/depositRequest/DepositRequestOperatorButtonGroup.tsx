@@ -35,7 +35,10 @@ const DepositRequestOperatorButtonGroup = ({
 		} = {},
 	} = useAuth()
 	return (
-		<Row gutter={[16, 16]} style={{ marginTop: '20px', marginBottom: '20px' }}>
+		<Row
+			gutter={[16, 16]}
+			style={{ marginTop: '20px', marginBottom: '20px', paddingRight: '80px' }}
+		>
 			{includes(usableActionButtons, UsableActionButtonEnum.Rejected) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 					<OperatorButton
@@ -49,16 +52,18 @@ const DepositRequestOperatorButtonGroup = ({
 				</Col>
 			)}
 
-			<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
-				<OperatorButton
-					loading={loading}
-					disabled={!sendMessagePermission?.canUse}
-					onClick={onShowSendMessageModal}
-					color='Blue'
-				>
-					{t('Label_SendMessage')}
-				</OperatorButton>
-			</Col>
+			{sendMessagePermission?.canUse && (
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+					<OperatorButton
+						loading={loading}
+						disabled={!sendMessagePermission?.canUse}
+						onClick={onShowSendMessageModal}
+						color='Blue'
+					>
+						{t('Label_SendMessage')}
+					</OperatorButton>
+				</Col>
+			)}
 
 			{includes(usableActionButtons, UsableActionButtonEnum.Draft) && (
 				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>

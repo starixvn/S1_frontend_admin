@@ -4,7 +4,7 @@ import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { useTranslation } from 'react-i18next'
 import { find, map } from 'lodash'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { Table, TablePaginationConfig, Tag, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { LayoutContent } from 'app/pages/layout'
@@ -157,7 +157,7 @@ const MemberAdministrationListTable = ({
 			dataIndex: 'balance',
 			width: 120,
 			align: 'center' as 'center',
-			render: (balance: number) => numberFormatter.format(balance),
+			render: (balance: number) => numFormatToDigits(balance),
 		},
 		{
 			title: t('Label_BonusWallet'),
@@ -165,7 +165,7 @@ const MemberAdministrationListTable = ({
 			dataIndex: 'bonus',
 			width: 120,
 			align: 'center' as 'center',
-			render: (bonus: number) => numberFormatter.format(bonus),
+			render: (bonus: number) => numFormatToDigits(bonus),
 		},
 		{
 			title: t('Label_LastActivityIP'),

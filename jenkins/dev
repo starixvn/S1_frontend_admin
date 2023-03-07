@@ -1,43 +1,27 @@
 pipeline {
-    agent any
-    tools {nodejs "nodejs"}
-    environment{
-        env = 'dev'
-        platform= 'admin'
-        node_modules_exists = fileExists 'node_modules'
+    agent none
+    environment {
+        env = 'Development'
+        registry = '13.213.82.69/desktop/admin-dev'
+        ansible_path = '/var/jenkins_home/ansible/frontend'
     }
     stages {
-        stage('Install dependencies') {   
-            when {
-                anyOf {
-                    changeset "package-lock.json"
-                    expression { node_modules_exists == 'false' }
-                }
-            }
-            steps {
-                sh 'npm ci'
-            }
-        }
         stage('Build') {
+            agent { node { label 'Build' } }
             steps {
-                sh 'npm run build'
-            }
-        }
-        stage('Zip'){
-            steps {
-                dir("build"){
-                    script {
-                        env.commitHash = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
-                    }
-                    sh 'zip -r ${platform}-${env}-${commitHash} *'
-                    sh 'curl -v -u admin:123456 --upload-file ${platform}-${env}-${commitHash}.zip http://172.31.28.233:8081/repository/artifacts/Backend/${env}/admin-${env}-${commitHash}.zip'
-                    sh 'echo admin-${env}-${commitHash}'
+                script {
+                    env.version = sh (script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
                 }
+                sh 'sudo docker build -t ${registry}:${version} .'
+                sh 'sudo docker login 13.213.82.69 -u jenkins -p 06ftJ0Ds'
+                sh 'sudo docker push ${registry}:${version}'
+                sh 'sudo docker rmi ${registry}:${version}'
             }
         }
         stage('Deploy') {
-             steps {
-                sh 'ansible-playbook -i host.yml deploy.yml --extra-vars "commitId=${commitHash} host=${platform} env=${env}"'
+            agent { node { label 'master' } }
+            steps {
+                sh 'ansible-playbook -i ${ansible_path}/DEV.AWS.yml ${ansible_path}/deploy.docker.yml --extra-vars "host=linux-dev docker_name=dev_adminweb ver=desktop/admin-dev:${version} env=${env} docker_ports=5071:5071,443:443 volume=/nginx/admin:/etc/nginx/conf.d"'
             }
         }
     }

@@ -12,6 +12,8 @@ import {
 	IGateWayData,
 	IGateWayArgs,
 	ILangCodesData,
+	ITpListData,
+	IGetPaySettingListResponse,
 	IGetTpIdData,
 	ISlotTpData,
 } from './type'
@@ -99,6 +101,13 @@ export const allDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getTpList: builder.query<IAxiosResponse<ITpListData[]>, null>({
+			query: data => ({
+				url: 'GetAllData/GetTpList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getTpIdList: builder.query<IAxiosResponse<IGetTpIdData[]>, null>({
 			query: () => ({
 				url: 'GetAllData/GetTpList',
@@ -109,6 +118,14 @@ export const allDataApi = rootApi.injectEndpoints({
 			query: () => ({
 				url: 'GetAllData/GetSlotTpList',
 				method: 'POST',
+			}),
+		}),
+		// 取得所有 paymentSetting
+		getPaySettingList: builder.query<IGetPaySettingListResponse, null>({
+			query: data => ({
+				url: 'GetAllData/GetPaySetting',
+				method: 'POST',
+				data,
 			}),
 		}),
 	}),
@@ -127,11 +144,12 @@ export const {
 	useGetVipLevelQuery,
 	useGetBankInfoSysQuery,
 	useGetCategoryQuery,
-	useGetProductsQuery,
 	useGetPromotionListQuery,
 	useGetPayEnumListQuery,
 	useGetGateWayQuery,
 	useGetLangCodesQuery,
+	useGetTpListQuery,
+	useGetPaySettingListQuery,
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
 } = allDataApi

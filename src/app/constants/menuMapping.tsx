@@ -14,9 +14,8 @@ import {
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
 import { RiUserSettingsLine } from '@react-icons/all-files/ri/RiUserSettingsLine'
-
-import allowedRoles from './allowedRoles'
 import paths from './paths'
+import allowedRoles from './allowedRoles'
 
 const iconStyle: CSSProperties = {
 	fontSize: '20px',
@@ -362,11 +361,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 50,
-		pathMode: 'Internal',
+		functionId: paths.member.sub.vipReview.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipLevelReview',
 		internalFunctionKey: allowedRoles.MarketingVipLevelReview,
-		newAdminPath: '',
+		newAdminPath: paths.member.sub.vipReview.root,
 	},
 	{
 		icon: null,
@@ -380,7 +379,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.marketing.sub.pointLevelManagement.functionId,
 		internalFunctionKey: allowedRoles.MarketingPointLevelManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/pointLevelManagement',
 		newAdminPath: paths.marketing.sub.pointLevelManagement.root,
 	},
@@ -459,11 +458,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 60,
-		pathMode: 'Internal',
+		functionId: paths.productManagement.sub.maintenance.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/TpMaintain',
 		internalFunctionKey: allowedRoles.CMSTpMaintain,
-		newAdminPath: '',
+		newAdminPath: paths.productManagement.sub.maintenance.root,
 	},
 	{
 		icon: null,
@@ -524,11 +523,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 68,
-		pathMode: 'Internal',
+		functionId: paths.content.sub.videoManagement.functionId,
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/LatestHighlightVideoManagement',
 		internalFunctionKey: allowedRoles.CMSLatestHighlightVideoManagement,
-		newAdminPath: '',
+		newAdminPath: paths.content.sub.videoManagement.root,
 	},
 
 	{
@@ -630,7 +629,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.depositPaymentReport.functionId,
 		internalFunctionKey: allowedRoles.ReportDepositReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
 	},
@@ -886,13 +885,25 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
 	},
 	{
 		icon: null,
 		functionId: paths.member.sub.shieldTaggingReport.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.shieldTaggingReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
+	},
+	{
+		icon: null,
+		functionId: paths.member.sub.iovation.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.iovation.root,
 	},
 ]

@@ -102,6 +102,7 @@ const paths = {
 			},
 			videoManagement: {
 				root: 'csd/videoManagement',
+				functionId: 68,
 			},
 			domainManage: {
 				root: 'csd/domainManage',
@@ -228,6 +229,10 @@ const paths = {
 					adjustmentLimitation: {
 						root: 'finance/setting/adjustmentLimitation',
 						functionId: 43,
+					},
+					modifyPaymentFeeLog: {
+						root: 'finance/setting/modifyPaymentFeeLog',
+						functionId: 139,
 					},
 				},
 			},
@@ -449,6 +454,14 @@ const paths = {
 				root: 'member/shieldTaggingReport',
 				functionId: 137,
 			},
+			iovation: {
+				root: 'member/iovation',
+				functionId: 138,
+			},
+			vipReview: {
+				root: 'member/vipReview',
+				functionId: 50,
+			},
 		},
 	},
 	risk: {
@@ -488,6 +501,10 @@ const paths = {
 	productManagement: {
 		root: 'productManagement',
 		sub: {
+			maintenance: {
+				root: 'productManagement/Maintenance',
+				functionId: 60,
+			},
 			slotGameCategory: {
 				root: 'productManagement/slotGameCategory',
 				functionId: 126,

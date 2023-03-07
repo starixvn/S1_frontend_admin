@@ -60,12 +60,14 @@ import {
 	useGetCryptoWalletListQuery,
 	useGetOnlinePayListQuery,
 } from 'common/service/baseDataApi'
+import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
 	const { transId } = useParams()
 	const { timeZoneUtcOffset } = useTimeZone()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, draftPermission } = {} } =
+		useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
 	const navigate = useNavigate()
 	const payInfoModal = useModal()
@@ -97,6 +99,8 @@ const WithdrawalRequest = () => {
 		accountType,
 		status: currentStatus,
 		withdrawalType: responseWithdrawalType,
+		transId: withdrawalTransId,
+		withdrawalId,
 	} = withdrawalDetailData ?? {}
 
 	// 某些階段不能更改 WithdrawalType , 要吃 api 給的 withdrawalType , 因為沒有生成 WithdrawalType 實體 , 所以 useWatch 取不到任何值
@@ -194,6 +198,14 @@ const WithdrawalRequest = () => {
 			isFetching: isGetDeviceUserLoading,
 		},
 	] = useLazyGetDeviceUserListQuery()
+
+	const { onShowSendMessageModal } = useSendReasonMessageHook({
+		args: {
+			currencyId,
+			transId: withdrawalTransId,
+			withdrawalId,
+		},
+	})
 
 	// 顯示 bankInfo
 	const handlePayInfoClicked = (
@@ -596,10 +608,11 @@ const WithdrawalRequest = () => {
 							</Col>
 							<Col xl={14} lg={24} md={24} xs={24}>
 								<WithdrawalRequestMemberInfo
+									memberInfo={memberInfo}
+									withdrawalDetailData={withdrawalDetailData}
 									loading={isMemberInfoLoading}
 									onIpCountClick={handleIpCountClick}
 									onDeviceCountClick={handleDeviceCountClick}
-									memberInfo={memberInfo}
 								/>
 								{/* Local Bank 的拆單功能獨立做成 Form 表單放於此處  */}
 								{multiEqual(currentStatus, [
@@ -632,22 +645,29 @@ const WithdrawalRequest = () => {
 									)}
 							</Col>
 						</Row>
-
-						{editPermission?.canUse && (
-							<WithdrawalRequestComment
-								withdrawalCommentData={withdrawalCommentData}
-								timeZoneUtcOffset={timeZoneUtcOffset}
-							/>
-						)}
-						{editPermission?.canUse && (
-							<WithdrawalRequestButtonGroup
-								loading={loading}
-								usableActionButton={usableActionButton}
-								onSetWithdrawalRequest={handleSetWithdrawalRequest}
-								onSetManualOperator={handleManualOperator}
-							/>
-						)}
 					</Form>
+					<Form
+						component={false}
+						form={form}
+						initialValues={{
+							comment: '',
+						}}
+						colon={false}
+						layout='vertical'
+						disabled={!draftPermission?.canUse}
+					>
+						<WithdrawalRequestComment
+							withdrawalCommentData={withdrawalCommentData}
+							timeZoneUtcOffset={timeZoneUtcOffset}
+						/>
+					</Form>
+					<WithdrawalRequestButtonGroup
+						loading={loading}
+						usableActionButton={usableActionButton}
+						onSetWithdrawalRequest={handleSetWithdrawalRequest}
+						onSetManualOperator={handleManualOperator}
+						onShowSendMessageModal={onShowSendMessageModal}
+					/>
 					<PayInfoModal
 						visible={payInfoModal.visible}
 						type={currentWithdrawalType}
