@@ -307,7 +307,7 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					({ currencyId }) => currencyId
 				),
 				network: cryptoInfoData?.cryptoNetwork.map(({ network }) => network),
-				status: blockStatusEnumList[0].value,
+				status: blockStatusEnumList[0]?.value,
 			})
 		}
 	}, [isGetStatusListLoading, isGetCryptoInfoDataLoading])
@@ -355,9 +355,7 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			<AffixButtons>
 				<AffixButtons.Create
 					disabled={!editPermission?.canUse}
-					onClick={() => {
-						addModal.onOpen()
-					}}
+					onClick={addModal.onOpen}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
