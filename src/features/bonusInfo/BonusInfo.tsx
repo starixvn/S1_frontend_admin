@@ -21,20 +21,22 @@ import {
 } from 'common/hooks'
 import {
 	IBonusDetailForm,
+	IBonusDetailListData,
 	IBonusInfoData,
 	IFilterForm,
 } from 'features/bonusInfo/type'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useEffect, useState } from 'react'
-import { dateRangeToUtcFormatter } from 'common/utils'
+import { dateRangeToUtcFormatter, utcFormatter } from 'common/utils'
 import { GroupByEnum } from 'features/bonusInfo/constants'
-import { isEmpty, uniq } from 'lodash'
+import { isEmpty, orderBy as lodashOrderBy, uniq } from 'lodash'
 import { BonusInfoTable } from 'features/bonusInfo/BonusInfoTable'
 import { SorterResult } from 'antd/es/table/interface'
 import { OrderByTypeEnum } from 'features/betList/type'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { BonusDetailTable } from 'features/bonusInfo/BonusDetailTable'
 import { AffixButtons } from 'components/AffixButtons'
+import { dateFormat } from 'common/utils/format'
 
 const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -48,8 +50,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [bonusDetailForm] = Form.useForm<IBonusDetailForm>()
 	// 當前搜出來的資料所含的 bonusCodes
 	const [currentBonusCodes, setCurrentBonusCodes] = useState<string[]>([])
+	// 當前搜出來的資料所含的 date，只有 groupByDate 時會用到
+	const [currentDates, setCurrentDates] = useState<string[]>([])
 	// 僅用來控制 detail table 是否顯示
 	const [showDetails, setShowDetails] = useState<boolean>(false)
+	// 用 state 控制當前顯示的 table 類型，需要用 state 儲存的主要原因是希望在 handle search 之後才做畫面的更動
+	const [formGroupByDate, setFormGroupByDate] = useState<boolean>(false)
+	// bonusDetail 的資料接出來處理，因為下拉異動之後需要清除資料
+	const [bonusDetail, setBonusDetail] = useState<IBonusDetailListData[]>([])
 
 	const [
 		getBonusInfo,
@@ -91,7 +99,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [
 		getBonusDetail,
 		{
-			data: { data: bonusDetail = [], rowCount: bonusDetailTotal = 0 } = {},
+			data: { rowCount: bonusDetailTotal = 0 } = {},
 			isFetching: isGetBonusDetailLoading,
 		},
 	] = useLazyGetBonusDetailQuery()
@@ -155,6 +163,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset })
 			setPagination(prev => ({ ...prev, current, pageSize }))
+			setFormGroupByDate(groupBy === GroupByEnum.Date)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -238,12 +247,59 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleClickBonusCode = (bonusCode: string) => {
-		setCurrentBonusCodes(
-			uniq(bonusInfo.map(({ bonusCode: dataBonusCode }) => dataBonusCode))
-		)
+	const handleClickBonusCode = (record: IBonusInfoData) => {
+		const { bonusCode, recordDate } = record
+		// groupBy Date 時會用到 recordDate 這個參數
+		bonusDetailForm.setFieldsValue({
+			bonusCode,
+			recordDate: moment(recordDate).format(dateFormat),
+		})
+		if (formGroupByDate) {
+			// 篩出特定時間的 bonusCode => 排序
+			setCurrentBonusCodes(
+				uniq(
+					bonusInfo
+						.filter(
+							({ recordDate: dataRecordDate }) =>
+								moment(dataRecordDate).format(dateFormat) ===
+								moment(recordDate).format(dateFormat)
+						)
+						.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+				)
+			)
+			// 先取所有時間 => 去重 => 排序
+			setCurrentDates(
+				lodashOrderBy(
+					uniq(
+						bonusInfo.map(({ recordDate: dataRecordDate }) =>
+							moment(dataRecordDate).format(dateFormat)
+						)
+					)
+				)
+			)
+		} else {
+			setCurrentBonusCodes(
+				uniq(bonusInfo.map(({ bonusCode: dataBonusCode }) => dataBonusCode))
+			)
+		}
+
 		handleGetBonusDetail({ bonusCode })
 		setShowDetails(true)
+	}
+
+	const handleRecordDateChange = (date: string) => {
+		const newBonusCodes = uniq(
+			bonusInfo
+				.filter(
+					({ recordDate: dataRecordDate }) =>
+						moment(dataRecordDate).format(dateFormat) === date
+				)
+				.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+		)
+		bonusDetailForm.resetFields(['bonusCode'])
+		setCurrentBonusCodes(newBonusCodes)
+		// 清除 table 資料，待下次選擇 bonusCode
+		setBonusDetail([])
 	}
 
 	// getBonusDetail
@@ -270,16 +326,27 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			currencyIds = [],
 			baseCurrencyId = 0,
 		} = queryParams
+		// groupBy Date 時要用這個時間
+		const { recordDate } = bonusDetailForm.getFieldsValue(true)
 		try {
 			bonusDetailForm.setFieldsValue({
-				bonusCode,
 				orderByProperty,
 				orderByDirection,
 			})
-			await getBonusDetail({
+			const { data: bonusDetailData = [] } = await getBonusDetail({
 				siteId,
-				startDate,
-				endDate,
+				startDate: formGroupByDate
+					? utcFormatter({
+							date: moment(recordDate).startOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: startDate,
+				endDate: formGroupByDate
+					? utcFormatter({
+							date: moment(recordDate).endOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: endDate,
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				baseCurrencyId: Number(baseCurrencyId),
@@ -291,6 +358,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				orderByProperty,
 				orderByDirection,
 			}).unwrap()
+			setBonusDetail(bonusDetailData)
 			setBonusDetailPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -338,14 +406,25 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			currencyIds = [],
 			baseCurrencyId = 0,
 		} = queryParams
-		const { bonusCode, orderByProperty, orderByDirection } =
+		// 要額外處理 groupByDate
+		const { bonusCode, orderByProperty, orderByDirection, recordDate } =
 			bonusDetailForm.getFieldsValue(true)
 		try {
 			const blob = await exportBonusDetail({
 				bonusCode,
 				siteId,
-				startDate,
-				endDate,
+				startDate: formGroupByDate
+					? utcFormatter({
+							date: moment(recordDate).startOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: startDate,
+				endDate: formGroupByDate
+					? utcFormatter({
+							date: moment(recordDate).endOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: endDate,
 				orderBy: true,
 				orderByProperty,
 				orderByDirection,
@@ -446,6 +525,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			{!isEmpty(queryParams) && (
 				<BonusInfoTable
 					loading={isGetBonusInfoLoading || isExportBonusInfoLoading}
+					isGroupByDate={formGroupByDate}
 					bonusInfo={bonusInfo}
 					bonusTypeList={bonusTypeList}
 					bonusStatusList={bonusStatusList}
@@ -461,8 +541,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				<BonusDetailTable
 					form={bonusDetailForm}
 					loading={isGetBonusDetailLoading || isExportBonusDetailLoading}
+					isGroupByDate={formGroupByDate}
 					bonusDetail={bonusDetail}
 					currentBonusCodes={currentBonusCodes}
+					currentDates={currentDates}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					pagination={bonusDetailPagination}
 					transactionTypeList={transactionTypeList}
@@ -471,6 +553,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					onBonusCodeChange={handleBonusCodeChange}
 					onTableChange={handleBonusDetailTableChange}
 					onExportClick={handleExportBonusDetail}
+					onRecordDateChange={handleRecordDateChange}
 				/>
 			)}
 			<AffixButtons>

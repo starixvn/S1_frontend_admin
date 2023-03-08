@@ -93,4 +93,5 @@ export interface IBonusDetailForm {
 	bonusCode: string
 	orderByProperty: string
 	orderByDirection: number
+	recordDate: string
 }
