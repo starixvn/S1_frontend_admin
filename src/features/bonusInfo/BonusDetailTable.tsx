@@ -28,7 +28,9 @@ import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButt
 interface IBonusDetailTableProps {
 	form: FormInstance<IBonusDetailForm>
 	loading: boolean
+	isGroupByDate: boolean
 	currentBonusCodes: string[]
+	currentDates: string[]
 	bonusDetail: IBonusDetailListData[]
 	timeZoneUtcOffset: number
 	pagination: PaginationInterface
@@ -42,6 +44,7 @@ interface IBonusDetailTableProps {
 		sorter: SorterResult<IBonusInfoData>
 	) => void
 	onExportClick: () => void
+	onRecordDateChange: (date: string) => void
 }
 
 const { Panel } = Collapse
@@ -50,7 +53,9 @@ const { Option } = Select
 const BonusDetailTable = ({
 	form,
 	loading,
+	isGroupByDate,
 	currentBonusCodes,
+	currentDates,
 	bonusDetail,
 	transactionTypeList,
 	claimStatusList,
@@ -60,6 +65,7 @@ const BonusDetailTable = ({
 	onBonusCodeChange,
 	onTableChange,
 	onExportClick,
+	onRecordDateChange,
 }: IBonusDetailTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
@@ -186,6 +192,17 @@ const BonusDetailTable = ({
 				)}
 				<Form form={form}>
 					<Row gutter={16}>
+						{isGroupByDate && (
+							<Col span={6}>
+								<Form.Item name='recordDate' label={t('Label_Date')}>
+									<Select onChange={date => onRecordDateChange(date)}>
+										{currentDates.map(value => (
+											<Option value={value}>{value}</Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
+						)}
 						<Col span={6}>
 							<Form.Item name='bonusCode' label={t('Label_BonusCode')}>
 								<Select onChange={onBonusCodeChange}>

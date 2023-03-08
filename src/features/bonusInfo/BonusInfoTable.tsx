@@ -1,4 +1,4 @@
-import { find } from 'lodash'
+import { cloneDeep, find } from 'lodash'
 import moment from 'moment/moment'
 import { PaginationInterface } from 'common/hooks'
 import { IBonusInfoData } from 'features/bonusInfo/type'
@@ -13,6 +13,7 @@ import { sumTotalObject } from 'common/utils'
 
 interface IBonusInfoTableProps {
 	loading: boolean
+	isGroupByDate: boolean
 	bonusInfo: IBonusInfoData[]
 	bonusTypeList: IEnumTypeData[]
 	bonusStatusList: IEnumTypeData[]
@@ -25,7 +26,7 @@ interface IBonusInfoTableProps {
 		sorter: SorterResult<IBonusInfoData>
 	) => void
 	onExportClick: () => void
-	onClickBonusCode: (bonusCode: string) => void
+	onClickBonusCode: (record: IBonusInfoData) => void
 }
 
 const { Summary } = Table
@@ -33,6 +34,7 @@ const { Panel } = Collapse
 
 const BonusInfoTable = ({
 	loading,
+	isGroupByDate,
 	bonusInfo,
 	bonusTypeList,
 	bonusStatusList,
@@ -62,14 +64,16 @@ const BonusInfoTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			sorter: true,
-			render: (bonusCode: string) =>
-				bonusCode ? (
-					<Typography.Link onClick={() => onClickBonusCode(bonusCode)}>
+			render: (bonusCode: string, record: IBonusInfoData) => {
+				if (isGroupByDate) return bonusCode || ''
+				return bonusCode ? (
+					<Typography.Link onClick={() => onClickBonusCode(record)}>
 						{bonusCode}
 					</Typography.Link>
 				) : (
 					''
-				),
+				)
+			},
 		},
 		{
 			title: t('Label_BonusType'),
@@ -224,6 +228,32 @@ const BonusInfoTable = ({
 				totalWithdrawal ? numFormatToDigits(totalWithdrawal) : 0,
 		},
 	]
+
+	const mergedColumn = () => {
+		const cloneColumns = cloneDeep(columns)
+		if (isGroupByDate) {
+			cloneColumns.unshift({
+				title: t('Label_Date'),
+				key: 'recordDate',
+				dataIndex: 'recordDate',
+				width: 80,
+				align: 'center' as 'center',
+				sorter: true,
+				render: (recordDate: string, record: IBonusInfoData) =>
+					recordDate ? (
+						<Typography.Link onClick={() => onClickBonusCode(record)}>
+							{moment(recordDate)
+								.utcOffset(timeZoneUtcOffset)
+								.format(dateFormat)}
+						</Typography.Link>
+					) : (
+						''
+					),
+			})
+		}
+		return cloneColumns
+	}
+
 	return (
 		<Collapse
 			defaultActiveKey={1}
@@ -265,7 +295,11 @@ const BonusInfoTable = ({
 									<Summary.Cell index={1} align='center'>
 										{t('Label_Total')}
 									</Summary.Cell>
-									<Summary.Cell index={2} colSpan={5} align='center'>
+									<Summary.Cell
+										index={2}
+										colSpan={isGroupByDate ? 6 : 5}
+										align='center'
+									>
 										-
 									</Summary.Cell>
 									<Summary.Cell index={7} align='center'>
@@ -306,7 +340,7 @@ const BonusInfoTable = ({
 					}}
 					// @ts-ignore
 					onChange={onTableChange}
-					columns={columns}
+					columns={mergedColumn()}
 					scroll={{ y: 300, x: undefined }}
 				/>
 			</Panel>
