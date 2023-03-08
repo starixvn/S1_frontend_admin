@@ -93,18 +93,9 @@ const BlockCryptoWalletFilter = ({
 	}
 
 	const statusSelector = () => {
-		const handleChangeStatus = (newStatus: number) => {
-			form.setFieldsValue({
-				status: newStatus,
-			})
-		}
-
 		return (
 			<Form.Item name='status' label={t('Label_Status')}>
-				<Select
-					placeholder={t('Label_Select') + t('Label_Status')}
-					onChange={handleChangeStatus}
-				>
+				<Select placeholder={t('Label_Select') + t('Label_Status')}>
 					{blockStatusEnumList?.map(({ name, value }) => (
 						<Option key={value} value={value}>
 							{name}
