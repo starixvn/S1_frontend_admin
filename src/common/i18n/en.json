@@ -1055,5 +1055,9 @@
 	"Label_Processing": "Processing",
 	"Label_Menu": "Menu",
 	"Label_AdminUserLog": "Admin User Log",
-	"Label_Summary": "Summary"
+	"Label_Summary": "Summary",
+	"Label_TaggingRestrict": "Tagging Restrict",
+	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
+	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
+	"Label_SameIPRestrictCount": "Same IP restrict count"
 }
