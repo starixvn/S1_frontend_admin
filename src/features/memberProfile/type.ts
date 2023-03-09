@@ -341,6 +341,12 @@ export enum SettingSwitchTypeEnum {
 	RebatePayout = 'RebatePayout',
 }
 
+export enum SettingCustPromotionWitheListEnum {
+	ipEnable = 'ipEnable',
+	deviceEnable = 'deviceEnable',
+	realNameEnable = 'realNameEnable',
+}
+
 export interface ISettingForm {
 	fullName: string
 	email: string
@@ -468,6 +474,32 @@ export interface IGetIpUserListData {
 }
 
 export type IGetIpUserListResponse = IAxiosResponse<IGetIpUserListData[]>
+
+// Marketing => Setting 頁面 裡的 Marketing
+
+export interface IGetCustPromotionWhiteListArgs {
+	custId: number
+}
+
+export interface ICustPromotionWhiteData {
+	custId: number
+	siteId: number
+	userName: string
+	ipEnable: boolean
+	deviceEnable: boolean
+	realNameEnable: boolean
+	operator: string
+}
+
+export type ICustPromotionWhiteResponse =
+	IAxiosResponse<ICustPromotionWhiteData>
+
+export interface IEditCustPromotionWhiteArgs {
+	custId: number
+	ipEnable: boolean
+	deviceEnable: boolean
+	realNameEnable: boolean
+}
 
 // Marketing => Bonus Log
 export interface IGetBonusLogArgs {
@@ -607,6 +639,25 @@ export interface IGetPromotionReportData {
 	cancelBonusAmount: number
 	expiredCancel: boolean
 	depositInfo: string
+}
+
+// Marketing => PromotionFailLog
+
+export interface IGetPromotionReceiveFailLogArgs {
+	custId: number
+	startTime: string
+	endTime: string
+}
+
+export interface IPromotionReceiveFailLogData {
+	bonusCode: string
+	promotionTypeName: string
+	createTime: string
+	errorCode: string
+	errorReason: string
+	siteId: number
+	custId: number
+	currencyId: number
 }
 
 // Promotion Report Cancel
@@ -1090,6 +1141,18 @@ export interface ISettingInfoPermissions {
 	editBirthdayPermission: PermissionInterface | undefined
 	editAddressPermission: PermissionInterface | undefined
 	editTagPermission: PermissionInterface | undefined
+}
+
+// FullName Log歷史紀錄
+export interface IGetCustRealNameChangeLogArgs {
+	custId: number
+}
+
+export interface ICustRealNameChangeLogData {
+	beforeName: string
+	afterName: string
+	updateTime: string
+	operator: string
 }
 
 export interface ISettingRiskPermissions {

@@ -706,6 +706,13 @@ const MemberProfilePromotionReport = lazy(
 		)
 )
 
+const MemberProfilePromotionFailLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PromotionFailLog' */ 'features/memberProfile/pages/marketing/promotionFailLog/PromotionFailLog'
+		)
+)
+
 const MemberProfileThirdPartyAccounts = lazy(
 	() =>
 		import(
@@ -977,6 +984,13 @@ const Announcement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
+		)
+)
+
+const BatchMemberInfoReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BatchMemberInfoReport' */ 'features/batchMemberInfoReport/BatchMemberInfoReport'
 		)
 )
 
@@ -2038,6 +2052,14 @@ const routes: RouteObject[] = [
 						),
 					},
 					{
+						path: 'marketing/promotionFailLog/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfilePromotionFailLog />
+							</AuthRequire>
+						),
+					},
+					{
 						path: 'marketing/cashBackReport/:custId',
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
@@ -2439,6 +2461,18 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
 					>
 						<PendingBonus />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.batchMemberInfoReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.batchMemberInfoReport.functionId
+						}
+					>
+						<BatchMemberInfoReport />
 					</AuthRequire>
 				),
 			},

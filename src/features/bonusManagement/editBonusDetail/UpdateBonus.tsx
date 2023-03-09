@@ -45,6 +45,7 @@ import {
 	StatusEnum,
 	WalletTypeEnum,
 } from 'features/bonusManagement/constants'
+import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
 
 const UpdateBonus: FC<{
 	pageTitle?: string
@@ -107,6 +108,8 @@ const UpdateBonus: FC<{
 		},
 	] = useLazyGetByBonusCodeQuery()
 
+	const { data: { data: tagList = [] } = {} } = useGetAllTagQuery()
+
 	const [setBonus, { isLoading: isSetBonusLoading }] = useSetBonusMutation()
 
 	const handleGetBonusDetail = async () => {
@@ -147,6 +150,13 @@ const UpdateBonus: FC<{
 				tpId,
 				promotionAction,
 				isDisplayDate,
+				sameDeviceIDRestrict = false,
+				sameDeviceIDAvailableCount,
+				sameIPRestrict = false,
+				sameIPRestrictAvailableCount,
+				sameRealNameRestrict = false,
+				sameRealNameRestrictAvailableCount,
+				blockTagList,
 			} = formData
 
 			// 時區一律設定成 +0
@@ -198,6 +208,14 @@ const UpdateBonus: FC<{
 								categoryId: Number(categoryId),
 								tpId: Number(tpId),
 							}),
+							blockTagList,
+							sameDeviceIDRestrict,
+							sameDeviceIDAvailableCount: sameDeviceIDAvailableCount ?? 0,
+							sameIPRestrict,
+							sameIPRestrictAvailableCount: sameIPRestrictAvailableCount ?? 0,
+							sameRealNameRestrict,
+							sameRealNameRestrictAvailableCount:
+								sameRealNameRestrictAvailableCount ?? 0,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
@@ -270,6 +288,13 @@ const UpdateBonus: FC<{
 				displayTo,
 				tpId,
 				promotionAction,
+				blockTagList,
+				sameDeviceIDRestrict,
+				sameDeviceIDAvailableCount,
+				sameIPRestrict,
+				sameIPRestrictAvailableCount,
+				sameRealNameRestrict,
+				sameRealNameRestrictAvailableCount,
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
@@ -309,6 +334,13 @@ const UpdateBonus: FC<{
 				walletType,
 				expiryDays,
 				tpId,
+				blockTagList,
+				sameDeviceIDRestrict,
+				sameDeviceIDAvailableCount,
+				sameIPRestrict,
+				sameIPRestrictAvailableCount,
+				sameRealNameRestrict,
+				sameRealNameRestrictAvailableCount,
 				selectedVipLevel: displayConditionResponseConverter(
 					promotionDisplayCondition
 				),
@@ -440,6 +472,7 @@ const UpdateBonus: FC<{
 					<Col lg={12} xs={24}>
 						<BonusDetailMainForm
 							loading={loading}
+							tagList={tagList}
 							bonusTypeList={bonusTypeList}
 							vipLevelList={vipLevelList}
 							isEdit={isEdit}

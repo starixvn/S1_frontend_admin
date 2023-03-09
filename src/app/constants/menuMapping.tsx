@@ -906,4 +906,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.member.sub.iovation.root,
 	},
+	{
+		icon: null,
+		functionId: paths.customerSupport.sub.batchMemberInfoReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.customerSupport.sub.batchMemberInfoReport.root,
+	},
 ]
