@@ -99,13 +99,13 @@ import {
 	IGetWithdrawalLimitLogArgs,
 	IGetCheckDuplicateNameArgs,
 	IGetCheckDuplicateNameResponse,
-	IPromotionReceiveFailLogData,
-	IGetPromotionReceiveFailLogArgs,
-	ICustPromotionWhiteData,
 	IGetCustPromotionWhiteListArgs,
 	IEditCustPromotionWhiteArgs,
-	ICustRealNameChangeLogData,
+	ICustPromotionWhiteData,
 	IGetCustRealNameChangeLogArgs,
+	ICustRealNameChangeLogData,
+	IGetPromotionReceiveFailLogArgs,
+	IPromotionReceiveFailLogData,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({

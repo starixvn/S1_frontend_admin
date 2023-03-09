@@ -2609,6 +2609,18 @@ const routes: RouteObject[] = [
 					</AuthRequire>
 				),
 			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.batchMemberInfoReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.batchMemberInfoReport.functionId
+						}
+					>
+						<BatchMemberInfoReport />
+					</AuthRequire>
+				),
+			},
 		],
 	},
 	{
