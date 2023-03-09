@@ -1047,6 +1047,12 @@
 	"Label_NewsId": "News ID",
 	"Label_Exclude": "exclude",
 	"Label_AllSite": "All Site",
+	"Label_DownloadStatus": "Download",
+	"Label_UploadTime": "Upload Time",
+	"Label_BatchMemberInfoReport": "Batch Member Info Report",
+	"Label_Downloaded": "Downloaded",
+	"Label_Loading": "Loading...",
+	"Label_Processing": "Processing",
 	"Label_Menu": "Menu",
 	"Label_AdminUserLog": "Admin User Log",
 	"Label_Summary": "Summary"
