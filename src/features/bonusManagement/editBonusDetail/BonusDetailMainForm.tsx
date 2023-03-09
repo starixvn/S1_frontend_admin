@@ -5,7 +5,6 @@ import {
 	DatePicker,
 	Form,
 	Input,
-	InputNumber,
 	Row,
 	Select,
 	Space,
@@ -36,11 +35,14 @@ import { IVipLevelsData } from 'common/service/allDataApi'
 import { head } from 'lodash'
 import { multiEqual } from 'features/bonusManagement/utils'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
+import { ITagData } from 'features/memberAdministrationList/type'
+import { InputNumber } from 'components'
 
 interface IBonusDetailMainForm {
 	loading: boolean
 	bonusTypeList: IGetPromotionTypeData[]
 	vipLevelList: IVipLevelsData[]
+	tagList: ITagData[]
 	isEdit: boolean
 }
 
@@ -51,6 +53,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	loading,
 	bonusTypeList,
 	vipLevelList,
+	tagList,
 	isEdit,
 }) => {
 	const { t } = useTranslation()
@@ -67,6 +70,11 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	const isSpecialCode = Form.useWatch('isSpecial', form)
 	// * isDisplayDate 可以決定前台是否顯示該 Bonus, 當沒有打勾時前台的 Bonus 會被隱藏
 	const isDisplayDate = Form.useWatch('isDisplayDate', form)
+
+	// 監聽三個 checkbox , 供 count input disable 設定
+	const isSameIPRestrict = Form.useWatch('sameIPRestrict', form)
+	const isSameDeviceIDRestrict = Form.useWatch('sameDeviceIDRestrict', form)
+	const isSameRealNameRestrict = Form.useWatch('sameRealNameRestrict', form)
 
 	const vipLevelSelect = () => {
 		const onChangeVipLevel = (newLevel: Array<number | string>) => {
@@ -109,6 +117,39 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 		)
 	}
 
+	const tagsSelect = () => {
+		const handleChangeTags = (newTags: number[]) => {
+			if (newTags.includes(0)) {
+				form?.setFieldsValue({
+					blockTagList: tagList?.map(({ id }) => id),
+				})
+			} else {
+				form?.setFieldsValue({
+					blockTagList: newTags,
+				})
+			}
+		}
+		return (
+			<Form.Item
+				name='blockTagList'
+				label={t('Label_TaggingRestrict')}
+				style={{ width: '100%' }}
+			>
+				<MultipleSelect onChange={handleChangeTags}>
+					{(tagList?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{tagList?.map(({ id, tagName }) => (
+						<Option key={id} value={id}>
+							{tagName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	useEffect(() => {
 		// 如果有勾選 sameByActive , 則兩個欄位 value 都一樣
 		if (sameByActive) {
@@ -144,6 +185,10 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						promotionAction: PromotionActionEnum.Detail,
 						autoExtend: false,
 						isDisplayDate: true,
+						blockTagList: [],
+						sameIPRestrict: false,
+						sameDeviceIDRestrict: false,
+						sameRealNameRestrict: false,
 					}}
 					disabled={!editPermission?.canUse}
 				>
@@ -198,7 +243,18 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 								<Select
 									placeholder={t('Label_Select')}
 									disabled={isEdit}
-									onChange={() => {
+									onChange={value => {
+										if (value === BonusTypeEnum.FreeBet) {
+											form?.setFieldsValue({
+												sameIPRestrict: true,
+												sameIPRestrictAvailableCount: 1,
+											})
+										} else {
+											form?.resetFields([
+												'sameIPRestrict',
+												'sameIPRestrictAvailableCount',
+											])
+										}
 										// 只有 Manual 可以設定 promotionAction 其餘預設都是 detail
 										form?.setFieldsValue({
 											promotionAction: PromotionActionEnum.Detail,
@@ -391,11 +447,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<InputNumber
-									type='number'
-									controls={false}
-									style={{ width: '100%' }}
-								/>
+								<InputNumber />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -428,21 +480,128 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<InputNumber
-									type='number'
-									controls={false}
-									style={{ width: '100%' }}
-								/>
+								<InputNumber />
 							</Form.Item>
 						</Col>
 					</Row>
+					{multiEqual(currentBonusType as number, [
+						BonusTypeEnum.FirstDeposit as number,
+						BonusTypeEnum.FreeBet as number,
+					]) && (
+						<>
+							<Row gutter={16} align='middle'>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name='sameDeviceIDAvailableCount'
+										label={
+											<Form.Item
+												name='sameDeviceIDRestrict'
+												valuePropName='checked'
+												noStyle
+											>
+												<Checkbox
+													onChange={e => {
+														const value = e.target.checked
+														if (value) {
+															form?.setFieldsValue({
+																sameDeviceIDAvailableCount: 1,
+															})
+														} else {
+															form?.setFieldsValue({
+																sameDeviceIDAvailableCount: null,
+															})
+														}
+													}}
+												>
+													{t('Label_SameDeviceIDRestrictCount')}
+												</Checkbox>
+											</Form.Item>
+										}
+									>
+										<InputNumber disabled={!isSameDeviceIDRestrict} />
+									</Form.Item>
+								</Col>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name='sameRealNameRestrictAvailableCount'
+										label={
+											<Form.Item
+												name='sameRealNameRestrict'
+												valuePropName='checked'
+												noStyle
+											>
+												<Checkbox
+													onChange={e => {
+														const value = e.target.checked
+														if (value) {
+															form?.setFieldsValue({
+																sameRealNameRestrictAvailableCount: 1,
+															})
+														} else {
+															form?.setFieldsValue({
+																sameRealNameRestrictAvailableCount: null,
+															})
+														}
+													}}
+												>
+													{t('Label_SameRealNameRestrictCount')}
+												</Checkbox>
+											</Form.Item>
+										}
+									>
+										<InputNumber disabled={!isSameRealNameRestrict} />
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={16} align='middle'>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name='sameIPRestrictAvailableCount'
+										label={
+											<Form.Item
+												name='sameIPRestrict'
+												valuePropName='checked'
+												noStyle
+											>
+												<Checkbox
+													onChange={e => {
+														const value = e.target.checked
+														if (value) {
+															form?.setFieldsValue({
+																sameIPRestrictAvailableCount: 1,
+															})
+														} else {
+															form?.setFieldsValue({
+																sameIPRestrictAvailableCount: null,
+															})
+														}
+													}}
+												>
+													{t('Label_SameIPRestrictCount')}
+												</Checkbox>
+											</Form.Item>
+										}
+									>
+										<InputNumber disabled={!isSameIPRestrict} />
+									</Form.Item>
+								</Col>
+							</Row>
+						</>
+					)}
 					{/* Rebate type 不可選以下三者  */}
 					{currentBonusType !== BonusTypeEnum.Rebate && (
-						<Row>
-							<Col lg={16} md={16} sm={16}>
-								{vipLevelSelect()}
-							</Col>
-						</Row>
+						<>
+							<Row>
+								<Col lg={16} md={16} sm={16}>
+									{vipLevelSelect()}
+								</Col>
+							</Row>
+							<Row>
+								<Col lg={16} md={16} xs={16}>
+									{tagsSelect()}
+								</Col>
+							</Row>
+						</>
 					)}
 					{currentBonusType !== BonusTypeEnum.Rebate && (
 						<Row gutter={16}>
