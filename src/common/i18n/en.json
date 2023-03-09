@@ -657,7 +657,8 @@
 				"Label_RewardsPointLog": "Rewards Point Log",
 				"Label_CashBackReport": "Cash Back Report",
 				"Label_VipRebateMenu": "Vip Rebate Menu",
-				"Label_PromotionReport": "Promotion Report"
+				"Label_PromotionReport": "Promotion Report",
+				"Label_PromotionFailLog": "Promotion Fail Log"
 			}
 		}
 	},
@@ -1059,5 +1060,11 @@
 	"Label_TaggingRestrict": "Tagging Restrict",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
-	"Label_SameIPRestrictCount": "Same IP restrict count"
+	"Label_SameIPRestrictCount": "Same IP restrict count",
+	"Label_BonusIPDisable": "Bonus IP Disable",
+	"Label_BonusDeviceDisable": "Bonus Device Disable",
+	"Label_BonusRealNameDisable": "Bonus Real Name Disable",
+	"Label_BeforeName": "Before Name",
+	"Label_AfterName": "After Name",
+	"Label_FullNameChangeLog": "Full Name Change Log"
 }

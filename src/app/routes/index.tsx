@@ -706,6 +706,13 @@ const MemberProfilePromotionReport = lazy(
 		)
 )
 
+const MemberProfilePromotionFailLog = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PromotionFailLog' */ 'features/memberProfile/pages/marketing/promotionFailLog/PromotionFailLog'
+		)
+)
+
 const MemberProfileThirdPartyAccounts = lazy(
 	() =>
 		import(
@@ -2041,6 +2048,14 @@ const routes: RouteObject[] = [
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfilePromotionReport />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'marketing/promotionFailLog/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfilePromotionFailLog />
 							</AuthRequire>
 						),
 					},
