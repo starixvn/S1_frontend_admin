@@ -30,6 +30,7 @@ interface IBonusInfoFilterProps {
 	filterLoading: boolean
 	form: FormInstance<IFilterForm>
 	currencyListBySite: Currency[]
+	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
 	bonusStatusList: IEnumTypeData[]
 	bonusTypeList: IEnumTypeData[]
@@ -47,6 +48,7 @@ const BonusInfoFilter = ({
 	filterLoading,
 	form,
 	currencyListBySite,
+	currencyListByAllSite,
 	timeZoneUtcOffset,
 	bonusStatusList,
 	bonusTypeList,
@@ -249,7 +251,7 @@ const BonusInfoFilter = ({
 											<Option key={0} value={0}>
 												{t('Label_OriginalCurrency')}
 											</Option>
-											{currencyListBySite?.map(({ currencyId, isoCode }) => (
+											{currencyListByAllSite?.map(({ currencyId, isoCode }) => (
 												<Option key={currencyId} value={currencyId}>
 													{isoCode}
 												</Option>

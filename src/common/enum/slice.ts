@@ -20,6 +20,7 @@ export interface EnumState {
 	adminUserCurrencyList: number[]
 	rewardsCurrencyList: number[]
 	vipCurrencyList: number[]
+	allSiteEnableCurrencyList: number[]
 }
 
 const initialState: EnumState = {
@@ -32,6 +33,7 @@ const initialState: EnumState = {
 	adminUserCurrencyList: [],
 	rewardsCurrencyList: [],
 	vipCurrencyList: [],
+	allSiteEnableCurrencyList: [],
 }
 
 const enumSlice = createSlice({
@@ -59,6 +61,7 @@ const enumSlice = createSlice({
 					siteCurrencyList,
 					rewardsCurrencyList,
 					vipCurrencyList,
+					allSiteEnableCurrencyList,
 				} = action.payload as IAllEnumState
 
 				state.userSiteList = userSiteList
@@ -68,6 +71,7 @@ const enumSlice = createSlice({
 				state.adminUserCurrencyList = siteCurrencyList
 				state.rewardsCurrencyList = rewardsCurrencyList
 				state.vipCurrencyList = vipCurrencyList
+				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
 				state.status = 'succeeded'
 			}),
 })
@@ -78,6 +82,16 @@ export const selectCurrencyListBySite = (state: RootState) => {
 	// returns the currency of the site
 	return filter(allCurrencyList, currency =>
 		some(adminUserCurrencyList, iCurrency => iCurrency === currency.currencyId)
+	)
+}
+
+export const selectAllSiteEnableCurrencyList = (state: RootState) => {
+	const { allCurrencyList, allSiteEnableCurrencyList } = state.allEnum
+	return filter(allCurrencyList, currency =>
+		some(
+			allSiteEnableCurrencyList,
+			iCurrency => iCurrency === currency.currencyId
+		)
 	)
 }
 
