@@ -3,7 +3,11 @@ import moment from 'moment/moment'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyListBySite,
+	selectUserSite,
+} from 'common/enum'
 import { BonusInfoFilter } from 'features/bonusInfo/BonusInfoFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -45,6 +49,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const [filterForm] = Form.useForm<IFilterForm>()
 	// 存放 bonusDetail Table 的資料
 	const [bonusDetailForm] = Form.useForm<IBonusDetailForm>()
@@ -511,6 +516,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				filterLoading={filterLoading}
 				form={filterForm}
 				currencyListBySite={currencyListBySite}
+				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				claimStatusList={claimStatusList}
 				bonusStatusList={bonusStatusList}
