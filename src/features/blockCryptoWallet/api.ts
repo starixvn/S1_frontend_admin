@@ -8,6 +8,7 @@ import {
 	ICryptoWalletGetByAddressArgs,
 	IBlockCryptoWalletSetArgs,
 	IReleaseCryptoWalletArgs,
+	IGetCryptoListByCustIdArgs,
 } from 'features/blockCryptoWallet/type'
 
 export const blockCryptoWalletApi = rootApi.injectEndpoints({
@@ -63,6 +64,17 @@ export const blockCryptoWalletApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		getCryptoListByCustId: builder.query<
+			IAxiosResponse<IBlockCryptoWalletData[]>,
+			IGetCryptoListByCustIdArgs
+		>({
+			query: data => ({
+				url: `CustomerManage/GetCryptoList`,
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['POST'],
+		}),
 	}),
 })
 
@@ -72,4 +84,5 @@ export const {
 	useLazyCryptoWalletGetByAddressQuery,
 	useBlockCryptoWalletSetMutation,
 	useReleaseCryptoWalletMutation,
+	useLazyGetCryptoListByCustIdQuery,
 } = blockCryptoWalletApi

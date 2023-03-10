@@ -256,6 +256,16 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 					),
 					key: '12',
 				},
+				{
+					label: (
+						<Link
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/finance/cryptoWalletList/${custId}`}
+						>
+							{t('MemberProfile.Menu.Finance.Label_CryptoWalletList')}
+						</Link>
+					),
+					key: '13',
+				},
 			]}
 		/>
 	)

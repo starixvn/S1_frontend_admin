@@ -642,7 +642,8 @@
 				"Label_EWalletInfoLog": "E-Wallet Info Log",
 				"Label_CryptoInfoLog": "Crypto Info Log",
 				"Label_BankList": "Bank List",
-				"Label_EWalletList": "E-Wallet List"
+				"Label_EWalletList": "E-Wallet List",
+				"Label_CryptoWalletList": "Crypto Wallet List"
 			},
 			"Game": {
 				"Label_Statement": "Statement",

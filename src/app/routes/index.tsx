@@ -597,6 +597,13 @@ const MemberProfileEWalletList = lazy(
 		)
 )
 
+const MemberProfileCryptoWalletList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/cryptoWalletList/CryptoWalletList'
+		)
+)
+
 // *  MemberProfile > Game 類別
 const MemberProfileGameStatement = lazy(
 	() =>
@@ -1981,6 +1988,14 @@ const routes: RouteObject[] = [
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileEWalletList />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'finance/cryptoWalletList/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfileCryptoWalletList />
 							</AuthRequire>
 						),
 					},
