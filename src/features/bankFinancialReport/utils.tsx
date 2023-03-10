@@ -3,7 +3,7 @@ import {
 	ITableColumnsInfo,
 } from 'features/bankFinancialReport/type'
 import { assign, cloneDeep } from 'lodash'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { v4 as uuidV4 } from 'uuid'
 import { AlignType } from 'rc-table/lib/interface'
 import { isPositiveNum } from 'common/utils'
@@ -22,10 +22,10 @@ export class TableConverter {
 				render: (data: number) => {
 					const renderData = data ?? 0
 					return isPositiveNum(renderData) ? (
-						numberFormatter.format(renderData)
+						numFormatToDigits(renderData)
 					) : (
 						<Typography.Text type='danger'>
-							{numberFormatter.format(renderData)}
+							{numFormatToDigits(renderData)}
 						</Typography.Text>
 					)
 				},

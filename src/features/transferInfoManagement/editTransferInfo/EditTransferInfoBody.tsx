@@ -105,6 +105,54 @@ const EditTransferInfoBody = ({
 		fileList,
 	}
 
+	const handleFromChannel = (fromChannelValue: number) => {
+		// 選 PSP 和 CryptoWallet 時 多移除 fromSysId
+		if (
+			fromChannelValue === TransferChannelEnum.PSP ||
+			fromChannelValue === TransferChannelEnum.CryptoWallet
+		) {
+			form.resetFields([
+				'fromSysId',
+				'fromAccountDisplayName',
+				'fromAccountNo',
+				'fromAgent',
+				'fromPayName',
+				'fromPayId',
+			])
+		}
+		form.resetFields([
+			'fromAccountDisplayName',
+			'fromAccountNo',
+			'fromAgent',
+			'fromPayName',
+			'fromPayId',
+		])
+	}
+
+	const handleToChannel = (ToChannelValue: number) => {
+		// 選 PSP 和 CryptoWallet 時 多移除 toSysId
+		if (
+			ToChannelValue === TransferChannelEnum.PSP ||
+			ToChannelValue === TransferChannelEnum.CryptoWallet
+		) {
+			form.resetFields([
+				'toSysId',
+				'toAccountDisplayName',
+				'toAccountNo',
+				'toAgent',
+				'toPayName',
+				'toPayId',
+			])
+		}
+		form.resetFields([
+			'toAccountDisplayName',
+			'toAccountNo',
+			'toAgent',
+			'toPayName',
+			'toPayId',
+		])
+	}
+
 	useEffect(() => {
 		if (!initReceiptUrl) return
 		const initFileList: UploadFile[] = [
@@ -181,15 +229,7 @@ const EditTransferInfoBody = ({
 								>
 									<Select
 										placeholder={t('Label_Select') + t('Label_Channel')}
-										onChange={() => {
-											form.resetFields([
-												'fromAccountDisplayName',
-												'fromAccountNo',
-												'fromAgent',
-												'fromPayName',
-												'fromPayId',
-											])
-										}}
+										onChange={handleFromChannel}
 									>
 										{transferChannelList?.map(channel => (
 											<Option key={channel.value} value={channel.value}>
@@ -207,7 +247,10 @@ const EditTransferInfoBody = ({
 									label={t('Label_BankCode')}
 									rules={[
 										{
-											required: true,
+											required:
+												(fromChannel !== TransferChannelEnum.PSP &&
+													fromChannel !== TransferChannelEnum.CryptoWallet) ||
+												false,
 											message: t('Label_Required', {
 												key: t('Label_BankCode'),
 											}),
@@ -216,7 +259,12 @@ const EditTransferInfoBody = ({
 								>
 									<Select
 										placeholder={t('Label_Select') + t('Label_BankCode')}
-										disabled={!fromCurrencyId}
+										disabled={
+											// channel 是PSP 和 CryptoWallet 的時候 disabled
+											!fromCurrencyId ||
+											fromChannel === TransferChannelEnum.PSP ||
+											fromChannel === TransferChannelEnum.CryptoWallet
+										}
 										onChange={() => {
 											form.resetFields([
 												'fromAccountDisplayName',
@@ -266,17 +314,28 @@ const EditTransferInfoBody = ({
 												})
 											}
 										}}
-										// 以上三者都有值時才開放選擇
-										disabled={!fromSysId || !fromChannel || !fromCurrencyId}
+										// 以上三者都有值時才開放選擇 但如果選 channel 或 PSP 則會開啟
+										disabled={
+											(fromChannel !== TransferChannelEnum.PSP &&
+												fromChannel !== TransferChannelEnum.CryptoWallet &&
+												!fromSysId) ||
+											!fromChannel ||
+											!fromCurrencyId
+										}
 									>
 										{/* 全符合才 show  , 編輯時只顯示 status === 2  */}
 										{accountList
-											?.filter(
-												raw =>
-													raw.status === 2 &&
-													raw.channel === fromChannel &&
-													raw.currencyId === fromCurrencyId &&
-													raw.sysId === fromSysId
+											?.filter(raw =>
+												// channel 是 PSP 或 CryptoWallet 時 不篩 BankCode
+												fromChannel === TransferChannelEnum.PSP ||
+												fromChannel === TransferChannelEnum.CryptoWallet
+													? raw.status === 2 &&
+													  raw.channel === fromChannel &&
+													  raw.currencyId === fromCurrencyId
+													: raw.status === 2 &&
+													  raw.channel === fromChannel &&
+													  raw.currencyId === fromCurrencyId &&
+													  raw.sysId === fromSysId
 											)
 											.map(account => (
 												<Option
@@ -328,18 +387,7 @@ const EditTransferInfoBody = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='fromFee'
-									label={t('Label_Fee')}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_Fee'),
-											}),
-										},
-									]}
-								>
+								<Form.Item name='fromFee' label={t('Label_Fee')}>
 									<InputNumber
 										type='number'
 										controls={false}
@@ -402,15 +450,7 @@ const EditTransferInfoBody = ({
 								>
 									<Select
 										placeholder={t('Label_Select') + t('Label_Channel')}
-										onChange={() => {
-											form.resetFields([
-												'toAccountDisplayName',
-												'toAccountNo',
-												'toAgent',
-												'toPayName',
-												'toPayId',
-											])
-										}}
+										onChange={handleToChannel}
 									>
 										{transferChannelList?.map(channel => (
 											<Option key={channel.value} value={channel.value}>
@@ -428,7 +468,10 @@ const EditTransferInfoBody = ({
 									label={t('Label_BankCode')}
 									rules={[
 										{
-											required: true,
+											required:
+												(toChannel !== TransferChannelEnum.PSP &&
+													toChannel !== TransferChannelEnum.CryptoWallet) ||
+												false,
 											message: t('Label_Required', {
 												key: t('Label_BankCode'),
 											}),
@@ -437,7 +480,12 @@ const EditTransferInfoBody = ({
 								>
 									<Select
 										placeholder={t('Label_Select') + t('Label_BankCode')}
-										disabled={!toCurrencyId}
+										disabled={
+											// channel 是PSP 和 CryptoWallet 的時候 disabled
+											!toCurrencyId ||
+											toChannel === TransferChannelEnum.CryptoWallet ||
+											toChannel === TransferChannelEnum.PSP
+										}
 										onChange={() => {
 											form.resetFields([
 												'toAccountDisplayName',
@@ -487,15 +535,27 @@ const EditTransferInfoBody = ({
 												})
 											}
 										}}
-										disabled={!toSysId || !toChannel || !toCurrencyId}
+										disabled={
+											// 以上三者都有值時才開放選擇 但如果選 channel 或 PSP 則會開啟
+											(toChannel !== TransferChannelEnum.PSP &&
+												toChannel !== TransferChannelEnum.CryptoWallet &&
+												!toSysId) ||
+											!toChannel ||
+											!toCurrencyId
+										}
 									>
 										{accountList
-											?.filter(
-												raw =>
-													raw.status === 2 &&
-													raw.currencyId === toCurrencyId &&
-													raw.channel === toChannel &&
-													raw.sysId === toSysId
+											?.filter(raw =>
+												// channel 是 PSP 或 CryptoWallet 時 不篩 BankCode
+												toChannel === TransferChannelEnum.PSP ||
+												toChannel === TransferChannelEnum.CryptoWallet
+													? raw.status === 2 &&
+													  raw.currencyId === toCurrencyId &&
+													  raw.channel === toChannel
+													: raw.status === 2 &&
+													  raw.currencyId === toCurrencyId &&
+													  raw.channel === toChannel &&
+													  raw.sysId === toSysId
 											)
 											.map(account => (
 												<Option
@@ -547,18 +607,7 @@ const EditTransferInfoBody = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='toFee'
-									label={t('Label_Fee')}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_Fee'),
-											}),
-										},
-									]}
-								>
+								<Form.Item name='toFee' label={t('Label_Fee')}>
 									<InputNumber
 										type='number'
 										controls={false}
