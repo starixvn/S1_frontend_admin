@@ -39,7 +39,11 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyListBySite,
+	selectUserSite,
+} from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -51,6 +55,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
@@ -584,6 +589,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={loading}
 				tpGameList={tpGameList}
 				currencyListBySite={currencyListBySite}
+				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
