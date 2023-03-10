@@ -74,6 +74,27 @@ export const tableColumnConverter = (tableList: object[]) => {
 			),
 		}
 		tableColumns = columns.map(dataIndex => {
+			if (dataIndex === 'margin') {
+				return {
+					title: t(i18nKeyInfo[upperFirst(dataIndex)]),
+					key: dataIndex,
+					dataIndex,
+					align: 'right' as AlignType,
+					sorter: true,
+					width: 80,
+					render: (data: number | string) =>
+						Number(data) ? (
+							<Typography.Text
+								style={{ whiteSpace: 'nowrap' }}
+								type={isPositiveNum(data) ? undefined : 'danger'}
+							>
+								{numFormatToDigits(Number(data) * 100 || 0)}%
+							</Typography.Text>
+						) : (
+							<Typography.Text>{data ?? '-'}</Typography.Text>
+						),
+				}
+			}
 			return {
 				title: t(i18nKeyInfo[upperFirst(dataIndex)]),
 				key: dataIndex,
@@ -83,7 +104,10 @@ export const tableColumnConverter = (tableList: object[]) => {
 				width: 80,
 				render: (data: number | string) =>
 					Number(data) ? (
-						<Typography.Text type={isPositiveNum(data) ? undefined : 'danger'}>
+						<Typography.Text
+							style={{ whiteSpace: 'nowrap' }}
+							type={isPositiveNum(data) ? undefined : 'danger'}
+						>
 							{numFormatToDigits(Number(data) || 0)}
 						</Typography.Text>
 					) : (
