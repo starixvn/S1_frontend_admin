@@ -38,6 +38,7 @@ interface IWinLostReportFilterProps {
 	loading: boolean
 	tpGameList: IGetTpGameTypeData[]
 	currencyListBySite: Currency[]
+	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -56,6 +57,7 @@ const WinLostReportFilter = ({
 	loading,
 	tpGameList,
 	currencyListBySite,
+	currencyListByAllSite,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onSearch,
@@ -136,7 +138,7 @@ const WinLostReportFilter = ({
 							currencyIds: currencyListBySite?.map(
 								({ currencyId }) => currencyId
 							),
-							baseCurrencyId: currencyListBySite[0].currencyId,
+							baseCurrencyId: currencyListByAllSite[0]?.currencyId,
 							includeFreeSpins: true,
 							noDraw: true,
 						}}
@@ -231,7 +233,7 @@ const WinLostReportFilter = ({
 									]}
 								>
 									<Select placeholder={t('Label_Select')}>
-										{currencyListBySite?.map(({ currencyId, isoCode }) => (
+										{currencyListByAllSite?.map(({ currencyId, isoCode }) => (
 											<Option key={currencyId} value={currencyId}>
 												{isoCode}
 											</Option>

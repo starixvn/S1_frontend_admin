@@ -29,4 +29,5 @@ export interface IAdminUserCurrency {
 	siteCurrencyList: number[]
 	rewardsCurrencyList: number[]
 	vipCurrencyList: number[]
+	allSiteEnableCurrencyList: number[]
 }
