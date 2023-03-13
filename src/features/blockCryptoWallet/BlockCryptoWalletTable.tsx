@@ -98,6 +98,8 @@ const BlockCryptoWalletTable = ({
 					({ currencyName }) => currencyName === cryptoType
 				)?.currencyId
 
+				const isAddWallet = custId === 0
+
 				return (
 					<Space>
 						<Typography.Link
@@ -106,23 +108,25 @@ const BlockCryptoWalletTable = ({
 							{blockStatusText}
 						</Typography.Link>
 
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							disabled={!deletePermission?.canUse}
-							onConfirm={() =>
-								onReleaseCryptoWallet({
-									address,
-									network,
-									currencyId,
-									cryptoCurrencyId,
-									custId,
-								})
-							}
-						>
-							<Typography.Link disabled={!deletePermission?.canUse}>
-								{t('Label_Release')}
-							</Typography.Link>
-						</Popconfirm>
+						{!isAddWallet && (
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								disabled={!deletePermission?.canUse}
+								onConfirm={() =>
+									onReleaseCryptoWallet({
+										address,
+										network,
+										currencyId,
+										cryptoCurrencyId,
+										custId,
+									})
+								}
+							>
+								<Typography.Link disabled={!deletePermission?.canUse}>
+									{t('Label_Release')}
+								</Typography.Link>
+							</Popconfirm>
+						)}
 					</Space>
 				)
 			},
@@ -142,13 +146,15 @@ const BlockCryptoWalletTable = ({
 			align: 'center' as 'center',
 			render: (record: IBlockCryptoWalletData) => {
 				const { userName, custId } = record
-				return (
+				return custId ? (
 					<Typography.Link
 						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
 						target='_blank'
 					>
 						{userName}
 					</Typography.Link>
+				) : (
+					'-'
 				)
 			},
 		},
@@ -165,7 +171,7 @@ const BlockCryptoWalletTable = ({
 					({ value }) => value === status
 				)?.name
 
-				return emptyStatus ? '' : custStatus
+				return emptyStatus ? '-' : custStatus
 			},
 		},
 		{
@@ -181,12 +187,14 @@ const BlockCryptoWalletTable = ({
 			width: 80,
 			align: 'center' as 'center',
 			dataIndex: 'cryptoType',
+			render: (cryptoType: string) => cryptoType ?? '-',
 		},
 		{
 			title: t('Label_Network'),
 			width: 80,
 			align: 'center' as 'center',
 			dataIndex: 'network',
+			render: (network: string) => network ?? '-',
 		},
 		{
 			title: t('Label_WalletAddress'),
@@ -198,30 +206,46 @@ const BlockCryptoWalletTable = ({
 		{
 			title: t('Label_CreateTime'),
 			key: 'createTime',
-			dataIndex: 'createTime',
 			width: 120,
 			align: 'center' as 'center',
-			render: (createTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-						: ''}
-				</Typography.Text>
-			),
+			render: (data: { createTime: string; custId: number }) => {
+				const { createTime, custId } = data
+				const isAddWallet = custId === 0
+
+				return isAddWallet ? (
+					'-'
+				) : (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{createTime
+							? moment(createTime)
+									.utcOffset(timeZoneUtcOffset)
+									.format(timeFormat)
+							: ''}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: t('Label_UpdateTime'),
 			key: 'updateTime',
-			dataIndex: 'updateTime',
 			width: 120,
 			align: 'center' as 'center',
-			render: (updateTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
-						: ''}
-				</Typography.Text>
-			),
+			render: (data: { updateTime: string; blockUpdateTime: string }) => {
+				const { updateTime, blockUpdateTime } = data
+				const actionUpdateTime = moment(blockUpdateTime).isAfter(updateTime)
+					? blockUpdateTime
+					: updateTime
+
+				return (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+						{updateTime
+							? moment(actionUpdateTime)
+									.utcOffset(timeZoneUtcOffset)
+									.format(timeFormat)
+							: ''}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: t('Label_Updater'),
