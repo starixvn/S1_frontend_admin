@@ -73,13 +73,17 @@ export interface IBlockCryptoWalletSetArgs {
 
 export interface IReleaseCryptoWalletArgs {
 	siteId?: number
-	currencyId: number
+	currencyId?: number
 	before: {
 		address: string
 		network: string
 		currencyId?: number
 		custId: number
 	}
+}
+
+export interface IGetCryptoListByCustIdArgs {
+	custId: number
 }
 
 export type IFilterForm = {
