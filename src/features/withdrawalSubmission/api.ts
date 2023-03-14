@@ -1,9 +1,11 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from 'common/service/rootApi/api'
 import {
+	IExchangeInfoData,
 	IGetBankListArgs,
 	IGetBankListResponse,
 	IGetCryptoInfoResponse,
+	IGetExchangeInfoArgs,
 	IGetPaymentTypeResponse,
 	ISubmitArgs,
 } from 'features/withdrawalSubmission/type'
@@ -39,6 +41,16 @@ export const withdrawalSubmissionApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		getExchangeInfo: builder.query<
+			IAxiosResponse<IExchangeInfoData>,
+			IGetExchangeInfoArgs
+		>({
+			query: data => ({
+				url: 'Withdrawal/GetExchangeInfo',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -47,4 +59,5 @@ export const {
 	useGetPaymentTypeQuery,
 	useGetCryptoInfoQuery,
 	useSubmitWithdrawalMutation,
+	useLazyGetExchangeInfoQuery,
 } = withdrawalSubmissionApi
