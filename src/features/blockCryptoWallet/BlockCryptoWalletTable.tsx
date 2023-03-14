@@ -19,10 +19,11 @@ import {
 
 interface IBlockCryptoWalletTableProps {
 	loading: boolean
+	editPermission?: PermissionInterface
+	deletePermission?: PermissionInterface
 	timeZoneUtcOffset: number
 	blockStatusEnumList: IEnumTypeData[]
 	blockCryptoWalletList: IBlockCryptoWalletData[]
-	deletePermission?: PermissionInterface
 	cryptoCurrencyList: ICryptoCurrency[]
 	onBlockCryptoWallet: ({
 		address,
@@ -48,10 +49,11 @@ interface IBlockCryptoWalletTableProps {
 
 const BlockCryptoWalletTable = ({
 	loading,
+	editPermission,
+	deletePermission,
 	timeZoneUtcOffset,
 	blockCryptoWalletList,
 	blockStatusEnumList,
-	deletePermission,
 	cryptoCurrencyList,
 	onBlockCryptoWallet,
 	onReleaseCryptoWallet,
@@ -103,6 +105,7 @@ const BlockCryptoWalletTable = ({
 				return (
 					<Space>
 						<Typography.Link
+							disabled={!editPermission?.canUse}
 							onClick={() => onBlockCryptoWallet({ blockStatus, address })}
 						>
 							{blockStatusText}
