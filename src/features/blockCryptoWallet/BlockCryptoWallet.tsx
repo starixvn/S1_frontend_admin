@@ -336,6 +336,7 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			{!isEmpty(queryParams) && (
 				<BlockCryptoWalletTable
 					loading={loading}
+					editPermission={editPermission}
 					deletePermission={deletePermission}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					cryptoCurrencyList={cryptoInfoData?.cryptoCurrency ?? []}
