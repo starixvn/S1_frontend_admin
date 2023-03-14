@@ -19,7 +19,11 @@ import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import moment from 'moment/moment'
-import { numFormatToDigits, timeFormat } from 'common/utils/format'
+import {
+	numberFormatter,
+	numFormatToDigits,
+	timeFormat,
+} from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 
 const { Option } = Select
@@ -96,6 +100,7 @@ const FinancialLogsTable = ({
 			dataIndex: 'afterAmount',
 			key: 'afterAmount',
 			align: 'center' as 'center',
+			render: (afterAmount: number) => numberFormatter.format(afterAmount),
 		},
 	]
 
