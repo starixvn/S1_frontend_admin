@@ -81,13 +81,18 @@ const SetMessageModal = ({
 
 	// 編輯時拿 messageDetail 裡的 currencyId 新增時拿用戶選得的 formCurrencyId
 	const currencyIdSelected = !formCurrencyId
-		? messageDetail.currencyId
+		? messageDetail?.currencyId
 		: formCurrencyId
 
-	const { data: { data: langCodes = [] } = {} } = useGetLanguageListQuery({
-		siteId,
-		currencyId: currencyIdSelected,
-	})
+	const { data: { data: langCodes = [] } = {} } = useGetLanguageListQuery(
+		{
+			siteId,
+			currencyId: currencyIdSelected,
+		},
+		{
+			skip: currencyIdSelected === undefined,
+		}
+	)
 
 	const uploadProps: UploadProps = {
 		onRemove: () => {
