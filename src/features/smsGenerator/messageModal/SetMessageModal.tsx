@@ -17,6 +17,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { Currency } from 'common/enum/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { useGetMessageDetailQuery } from 'features/smsGenerator/api'
 import {
 	accountStatusList,
@@ -60,6 +61,7 @@ const SetMessageModal = ({
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const batchId = form.getFieldValue(['batchId'])
 	const formMethod = Form.useWatch('method', form)
+	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
 	const isAdd = batchId === 'Add'
 
@@ -80,6 +82,15 @@ const SetMessageModal = ({
 	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
 
 	const { iLangList: langCodes = [] } = infos ?? {}
+
+	// 用Currency篩選 底下的 LangCodes Tabs
+	const { data: { data: langCodesSelected = [] } = {} } =
+		useGetLanguageListQuery({
+			siteId,
+			currencyId: formCurrencyId,
+		})
+
+	const showLangCode = formCurrencyId ? langCodesSelected : langCodes
 
 	const uploadProps: UploadProps = {
 		onRemove: () => {
@@ -312,9 +323,9 @@ const SetMessageModal = ({
 				</Spin>
 			)}
 			{/* 訊息編輯 Tab */}
-			{langCodes?.length > 0 && (
+			{showLangCode?.length > 0 && (
 				<MessageTabs
-					langCodes={langCodes}
+					langCodes={showLangCode}
 					form={form}
 					editPermission={editPermission}
 				/>
