@@ -1,23 +1,28 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IGetDepositInfoResponse } from 'features/memberProfile/type'
+import {
+	AllDepositStatusEnum,
+	IGetDepositInfoResponse,
+} from 'features/memberProfile/type'
 import { LayoutContent } from 'app/pages/layout'
 import { DepositFilter } from 'features/memberProfile/pages/finance/depositInfo/DepositFilter'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { Form, message, TablePaginationConfig } from 'antd'
+import { Descriptions, Form, message, TablePaginationConfig } from 'antd'
 import { useParams } from 'react-router-dom'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useLazyGetDepositInfoQuery } from 'features/memberProfile/api'
 import DepositTable from 'features/memberProfile/pages/finance/depositInfo/DepositTable'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
-import { head } from 'lodash'
-import { PAGINATION, usePagination } from 'common/hooks'
+import { head, isEmpty } from 'lodash'
+import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
 import moment from 'moment'
+import { numFormatToDigits } from 'common/utils/format'
 
 const DepositInfo = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<{
 		status: number
 		dateRange: [moment.Moment, moment.Moment]
@@ -28,14 +33,17 @@ const DepositInfo = () => {
 		{
 			data: {
 				data: depositInfoList = [],
-				rowCount: custDepositInfoTotal = 0,
+				rowCount: depositRowCount = 0,
+				totalApproveRow: depositApproveRowCount = 0,
+				totalAmount: depositTotalAmount = 0,
+				totalApproveAmount: depositApproveAmount = 0,
 			} = {} as IGetDepositInfoResponse,
 			isFetching: isGetDepositInfoLoading,
 		},
 	] = useLazyGetDepositInfoQuery()
 
 	const [pagination, setPagination] = usePagination({
-		paginationTotal: custDepositInfoTotal,
+		paginationTotal: depositRowCount,
 	})
 
 	const {
@@ -51,9 +59,11 @@ const DepositInfo = () => {
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
+		currentTimeZoneUtcOffset = timeZoneUtcOffset,
 	}: {
 		current?: number | undefined
 		pageSize?: number | undefined
+		currentTimeZoneUtcOffset?: number
 	}) => {
 		if (!custId) return
 		const { dateRange, status } = filterForm.getFieldsValue()
@@ -62,15 +72,21 @@ const DepositInfo = () => {
 			timeZoneUtcOffset
 		)
 		try {
-			await getDepositInfo({
+			const args = {
 				pageNumber: current,
 				pageSize,
 				custId: Number(custId),
 				startDate,
 				endDate,
 				status,
-			}).unwrap()
+			}
+			await getDepositInfo(args).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
+			setQueryParams({
+				...args,
+				status: String(status),
+				timeZone: currentTimeZoneUtcOffset,
+			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -84,12 +100,34 @@ const DepositInfo = () => {
 		await handleSearch({
 			current,
 			pageSize,
+			currentTimeZoneUtcOffset: timeZoneUtcOffset,
 		})
 	}
 
 	useEffect(() => {
 		if (custId) {
-			handleSearch({})
+			if (!isEmpty(queryParams) && !isGetStatusListLoading) {
+				const {
+					pageNumber,
+					pageSize,
+					startDate,
+					endDate,
+					status: queryStatus,
+					timeZone,
+				} = queryParams
+				onTimeZoneChange(Number(timeZone))
+				filterForm.setFieldsValue({
+					dateRange: [moment(startDate), moment(endDate)],
+					status: statusList?.find(status => status === queryStatus)?.value,
+				})
+				handleSearch({
+					current: Number(pageNumber),
+					pageSize: Number(pageSize),
+					currentTimeZoneUtcOffset: Number(timeZone),
+				})
+			} else {
+				handleSearch({})
+			}
 		}
 	}, [custId])
 
@@ -125,6 +163,50 @@ const DepositInfo = () => {
 					statusList={statusList}
 					typeList={typeList}
 				/>
+				{Number(queryParams.status) === AllDepositStatusEnum.Draft ||
+				Number(queryParams.status) === AllDepositStatusEnum.Approved ? (
+					<Descriptions size='middle' column={2} bordered>
+						<Descriptions.Item
+							label={t('Label_TotalCount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositRowCount || 0)}
+						</Descriptions.Item>
+						<Descriptions.Item
+							label={t('Label_TotalAmount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositTotalAmount || 0)}
+						</Descriptions.Item>
+						<Descriptions.Item
+							label={t('Label_TotalApprovedCount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositApproveRowCount || 0)}
+						</Descriptions.Item>
+						<Descriptions.Item
+							label={t('Label_TotalApprovedAmount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositApproveAmount || 0)}
+						</Descriptions.Item>
+					</Descriptions>
+				) : (
+					<Descriptions size='middle' column={2} bordered>
+						<Descriptions.Item
+							label={t('Label_TotalCount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositRowCount || 0)}
+						</Descriptions.Item>
+						<Descriptions.Item
+							label={t('Label_TotalAmount')}
+							style={{ whiteSpace: 'nowrap' }}
+						>
+							{numFormatToDigits(depositTotalAmount || 0)}
+						</Descriptions.Item>
+					</Descriptions>
+				)}
 			</LayoutContent.Card>
 		</>
 	)
