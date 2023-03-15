@@ -55,6 +55,8 @@ export type EnumNameType =
 	| 'LangType'
 	| 'IovationDeviceType'
 	| 'NewsStatusEnum'
+	| 'BlockCryptoStatus'
+	| 'CustCryptoWalletDetailSatatus'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -101,6 +103,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
+	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
+	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 */
 	enumName: EnumNameType
 }

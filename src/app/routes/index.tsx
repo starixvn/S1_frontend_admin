@@ -597,6 +597,13 @@ const MemberProfileEWalletList = lazy(
 		)
 )
 
+const MemberProfileCryptoWalletList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MemberProfile' */ 'features/memberProfile/pages/finance/cryptoWalletList/CryptoWalletList'
+		)
+)
+
 // *  MemberProfile > Game 類別
 const MemberProfileGameStatement = lazy(
 	() =>
@@ -991,6 +998,13 @@ const BatchMemberInfoReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BatchMemberInfoReport' */ 'features/batchMemberInfoReport/BatchMemberInfoReport'
+		)
+)
+
+const BlockCryptoWallet = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BlockCryptoWallet' */ 'features/blockCryptoWallet/BlockCryptoWallet'
 		)
 )
 
@@ -1977,6 +1991,14 @@ const routes: RouteObject[] = [
 							</AuthRequire>
 						),
 					},
+					{
+						path: 'finance/cryptoWalletList/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfileCryptoWalletList />
+							</AuthRequire>
+						),
+					},
 					// * Game 類別
 					{
 						path: 'game/statement/:custId',
@@ -2473,6 +2495,14 @@ const routes: RouteObject[] = [
 						}
 					>
 						<BatchMemberInfoReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.risk.sub.blockCryptoWallet.root}`,
+				element: (
+					<AuthRequire functionId={paths.risk.sub.blockCryptoWallet.functionId}>
+						<BlockCryptoWallet />
 					</AuthRequire>
 				),
 			},
