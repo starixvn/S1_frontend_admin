@@ -60,6 +60,8 @@ export type EnumNameType =
 	| 'BonusSummaryType'
 	| 'BonusInfoStatusEnum'
 	| 'BonusSummaryTransactionType'
+	| 'BlockCryptoStatus'
+	| 'CustCryptoWalletDetailSatatus'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -111,6 +113,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
 	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
 	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
+	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
+	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 */
 	enumName: EnumNameType
 }
