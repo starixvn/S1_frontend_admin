@@ -12,6 +12,7 @@ import {
 	Spin,
 } from 'antd'
 import { IEditForm, IMessageDetailData } from 'features/smsGenerator/type'
+import { first } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
@@ -34,7 +35,6 @@ import { MessageTabs } from 'features/smsGenerator/messageModal/MessageTabs'
 import { useEffect } from 'react'
 import { messagesResConverter } from 'features/smsGenerator/utils'
 import { PermissionInterface } from 'type'
-import { useGetLangCodesQuery } from 'common/service/allDataApi'
 
 interface ISetMessageModalProps {
 	open: boolean
@@ -79,18 +79,15 @@ const SetMessageModal = ({
 		}
 	)
 
-	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
+	// 編輯時拿 messageDetail 裡的 currencyId 新增時拿用戶選得的 formCurrencyId
+	const currencyIdSelected = !formCurrencyId
+		? messageDetail.currencyId
+		: formCurrencyId
 
-	const { iLangList: langCodes = [] } = infos ?? {}
-
-	// 用Currency篩選 底下的 LangCodes Tabs
-	const { data: { data: langCodesSelected = [] } = {} } =
-		useGetLanguageListQuery({
-			siteId,
-			currencyId: formCurrencyId,
-		})
-
-	const showLangCode = formCurrencyId ? langCodesSelected : langCodes
+	const { data: { data: langCodes = [] } = {} } = useGetLanguageListQuery({
+		siteId,
+		currencyId: currencyIdSelected,
+	})
 
 	const uploadProps: UploadProps = {
 		onRemove: () => {
@@ -171,6 +168,7 @@ const SetMessageModal = ({
 					initialValues={{
 						method: MethodEnum.ByUserStatus,
 						isPopup: false,
+						currencyId: first(currencyListBySite)?.currencyId,
 					}}
 					disabled={!editPermission?.canUse}
 				>
@@ -323,9 +321,9 @@ const SetMessageModal = ({
 				</Spin>
 			)}
 			{/* 訊息編輯 Tab */}
-			{showLangCode?.length > 0 && (
+			{langCodes?.length > 0 && (
 				<MessageTabs
-					langCodes={showLangCode}
+					langCodes={langCodes}
 					form={form}
 					editPermission={editPermission}
 				/>
