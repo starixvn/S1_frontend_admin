@@ -642,7 +642,8 @@
 				"Label_EWalletInfoLog": "E-Wallet Info Log",
 				"Label_CryptoInfoLog": "Crypto Info Log",
 				"Label_BankList": "Bank List",
-				"Label_EWalletList": "E-Wallet List"
+				"Label_EWalletList": "E-Wallet List",
+				"Label_CryptoWalletList": "Crypto Wallet List"
 			},
 			"Game": {
 				"Label_Statement": "Statement",
@@ -1068,5 +1069,9 @@
 	"Label_BonusRealNameDisable": "Bonus Real Name Disable",
 	"Label_BeforeName": "Before Name",
 	"Label_AfterName": "After Name",
-	"Label_FullNameChangeLog": "Full Name Change Log"
+	"Label_FullNameChangeLog": "Full Name Change Log",
+	"Label_CryptoWalletAddress": "Crypto Wallet Address",
+	"Label_AddBlockCryptoWallet": "Add Block Crypto Wallet",
+	"Label_CryptoType": "Crypto Type",
+	"Label_Network": "Network"
 }
