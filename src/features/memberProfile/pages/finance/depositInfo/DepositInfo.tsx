@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
 	AllDepositStatusEnum,
@@ -13,8 +13,8 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useLazyGetDepositInfoQuery } from 'features/memberProfile/api'
 import DepositTable from 'features/memberProfile/pages/finance/depositInfo/DepositTable'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
-import { head, isEmpty } from 'lodash'
-import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
+import { head } from 'lodash'
+import { PAGINATION, usePagination } from 'common/hooks'
 import moment from 'moment'
 import { numFormatToDigits } from 'common/utils/format'
 
@@ -22,7 +22,7 @@ const DepositInfo = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const [queryParams, setQueryParams] = useQueryParams()
+	const [isShowTotalApprove, setIsShowTotalApprove] = useState(false)
 	const [filterForm] = Form.useForm<{
 		status: number
 		dateRange: [moment.Moment, moment.Moment]
@@ -69,7 +69,7 @@ const DepositInfo = () => {
 		const { dateRange, status } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
-			timeZoneUtcOffset
+			currentTimeZoneUtcOffset
 		)
 		try {
 			const args = {
@@ -82,11 +82,10 @@ const DepositInfo = () => {
 			}
 			await getDepositInfo(args).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setQueryParams({
-				...args,
-				status: String(status),
-				timeZone: currentTimeZoneUtcOffset,
-			})
+			setIsShowTotalApprove(
+				status === AllDepositStatusEnum.Draft ||
+					status === AllDepositStatusEnum.Approved
+			)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -106,28 +105,7 @@ const DepositInfo = () => {
 
 	useEffect(() => {
 		if (custId) {
-			if (!isEmpty(queryParams) && !isGetStatusListLoading) {
-				const {
-					pageNumber,
-					pageSize,
-					startDate,
-					endDate,
-					status: queryStatus,
-					timeZone,
-				} = queryParams
-				onTimeZoneChange(Number(timeZone))
-				filterForm.setFieldsValue({
-					dateRange: [moment(startDate), moment(endDate)],
-					status: statusList?.find(status => status === queryStatus)?.value,
-				})
-				handleSearch({
-					current: Number(pageNumber),
-					pageSize: Number(pageSize),
-					currentTimeZoneUtcOffset: Number(timeZone),
-				})
-			} else {
-				handleSearch({})
-			}
+			handleSearch({})
 		}
 	}, [custId])
 
@@ -163,8 +141,7 @@ const DepositInfo = () => {
 					statusList={statusList}
 					typeList={typeList}
 				/>
-				{Number(queryParams.status) === AllDepositStatusEnum.Draft ||
-				Number(queryParams.status) === AllDepositStatusEnum.Approved ? (
+				{isShowTotalApprove ? (
 					<Descriptions size='middle' column={2} bordered>
 						<Descriptions.Item
 							label={t('Label_TotalCount')}
