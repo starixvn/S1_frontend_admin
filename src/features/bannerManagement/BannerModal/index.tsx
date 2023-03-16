@@ -138,7 +138,7 @@ const BannerModal = ({
 				specific: formSpecific,
 			} = form.getFieldsValue(true)
 			const [formStartTime, formEndTime] = dateRangeToUtcFormatter(
-				[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+				dateRange,
 				timeZoneUtcOffset
 			)
 			const detailStr = coverSpecificToObjString(formSpecific)
