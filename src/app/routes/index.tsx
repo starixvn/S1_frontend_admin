@@ -2537,6 +2537,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.risk.sub.blockCryptoWallet.root}`,
+				element: (
+					<AuthRequire functionId={paths.risk.sub.blockCryptoWallet.functionId}>
+						<BlockCryptoWallet />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
 				element: (
 					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
