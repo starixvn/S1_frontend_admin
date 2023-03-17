@@ -1,16 +1,13 @@
 import moment from 'moment'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import { Descriptions, TablePaginationConfig, Tag, Typography } from 'antd'
+import { TablePaginationConfig, Tag, Typography } from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetWithdrawalInfoData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
-import {
-	WithdrawalStatusEnum,
-	WITHDRAWAL_STATUS_TAGS_COLOR,
-} from 'features/memberProfile/constants'
+import { WITHDRAWAL_STATUS_TAGS_COLOR } from 'features/memberProfile/constants'
 
 const { Text } = Typography
 
@@ -116,35 +113,15 @@ const WithdrawalTable = ({
 		},
 	]
 
-	const totalApprovedAmount = withdrawalInfoList
-		.filter(
-			withdrawalInfo => withdrawalInfo.status === WithdrawalStatusEnum.Approved
-		)
-		.reduce((acc, cur) => acc + cur.amount, 0)
-
-	const totalApprovedCount = withdrawalInfoList.filter(
-		withdrawalInfo => withdrawalInfo.status === WithdrawalStatusEnum.Approved
-	).length
-
 	return (
-		<>
-			<Table
-				loading={loading}
-				dataSource={withdrawalInfoList ?? []}
-				style={{ marginTop: '10px', marginBottom: '10px' }}
-				columns={columns}
-				pagination={pagination as TablePaginationConfig}
-				onChange={onTableChange}
-			/>
-			<Descriptions>
-				<Descriptions.Item label={t('Label_TotalApprovedCount')}>
-					{numFormatToDigits(totalApprovedCount || 0)}
-				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_TotalApprovedAmount')}>
-					{numFormatToDigits(totalApprovedAmount || 0)}
-				</Descriptions.Item>
-			</Descriptions>
-		</>
+		<Table
+			loading={loading}
+			dataSource={withdrawalInfoList ?? []}
+			style={{ marginTop: '10px', marginBottom: '10px' }}
+			columns={columns}
+			pagination={pagination as TablePaginationConfig}
+			onChange={onTableChange}
+		/>
 	)
 }
 
