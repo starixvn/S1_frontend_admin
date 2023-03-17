@@ -5,7 +5,8 @@ export const PAGINATION = {
 	defaultPageSize: 25,
 	position: ['topLeft'],
 	pageSizeOptions: [10, 25, 50, 100, 200, 300],
-	hideOnSinglePage: true,
+	hideOnSinglePage: false,
+	showSizeChanger: true,
 }
 
 export interface PaginationInterface {
@@ -14,6 +15,8 @@ export interface PaginationInterface {
 	total: number
 	position: string[]
 	pageSizeOptions: number[]
+	hideOnSinglePage: boolean
+	showSizeChanger: boolean
 }
 
 const usePagination = ({
@@ -30,15 +33,24 @@ const usePagination = ({
 		total: 0,
 		position: PAGINATION.position,
 		pageSizeOptions: PAGINATION.pageSizeOptions,
+		hideOnSinglePage: PAGINATION.hideOnSinglePage,
+		showSizeChanger: PAGINATION.showSizeChanger,
 	})
 
 	useEffect(() => {
 		setPagination(prev => {
 			const { current, pageSize } = prev
 
+			const isShowSizeChanger = paginationTotal > PAGINATION.defaultPageSize
+
 			const newCurrent = paginationTotal % pageSize ? current : 1
 
-			return { ...prev, total: paginationTotal, current: newCurrent }
+			return {
+				...prev,
+				total: paginationTotal,
+				current: newCurrent,
+				showSizeChanger: isShowSizeChanger,
+			}
 		})
 	}, [paginationTotal])
 
