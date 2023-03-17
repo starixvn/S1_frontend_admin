@@ -15,6 +15,7 @@ import {
 import { SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import TimeZoneSelect from 'components/TimeZoneSelect'
+import { AllDepositStatusEnum } from 'features/memberProfile/type'
 
 interface DepositFilterProps {
 	statusList: { name?: string; value?: number }[]
@@ -43,7 +44,15 @@ const DepositFilter = ({
 	const { t } = useTranslation()
 	const { Option } = Select
 	return (
-		<Form layout='vertical' size='middle' form={form} onFinish={onSearch}>
+		<Form
+			layout='vertical'
+			size='middle'
+			form={form}
+			onFinish={onSearch}
+			initialValues={{
+				status: AllDepositStatusEnum.Draft,
+			}}
+		>
 			<Row align='middle' gutter={16}>
 				<Col span={10}>
 					<Form.Item label={t('Label_DateRange')}>

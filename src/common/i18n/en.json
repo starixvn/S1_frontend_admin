@@ -1036,6 +1036,8 @@
 	"Label_DisableGames": "Disable Games",
 	"Label_EditBetLimit": "Edit Bet Limit",
 	"Label_LimitGroup": "Limit Group",
+	"Label_TotalCount": "Total Count",
+	"Label_TotalAmount": "Total Amount",
 	"Label_TotalApprovedCount": "TotalApprovedCount",
 	"Label_TotalApprovedAmount": "TotalApprovedAmount",
 	"Label_SelectStatus": "Select Status",
