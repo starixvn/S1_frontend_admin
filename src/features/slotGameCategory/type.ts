@@ -65,3 +65,12 @@ export type ITableColumnsInfo = {
 	title: string
 	dataIndex: string
 }
+
+export type ISlotCategoryListData = {
+	id: number
+	name: string
+}
+
+export type IGetSlotCategoryListResponse = IAxiosResponse<
+	ISlotCategoryListData[]
+>
