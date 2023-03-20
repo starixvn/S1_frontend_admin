@@ -10,17 +10,19 @@ import {
 	Switch,
 	TablePaginationConfig,
 	Typography,
+	Spin,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment/moment'
 import { timeFormat } from 'common/utils/format'
-import { ITableColumnsInfo } from 'features/slotGameCategory/type'
+import {
+	ITableColumnsInfo,
+	IGetSlotCategoryListResponse,
+} from 'features/slotGameCategory/type'
 import { PermissionInterface } from 'type'
 import { PaginationInterface } from 'common/hooks'
-import {
-	SlotCategoryEnum,
-	slotGameCategoryList,
-} from 'features/slotGameCategory/constants'
+import { useGetSlotCategoryListQuery } from 'features/slotGameCategory/api'
+import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 
 interface ISlotGameCategoryTableProps {
 	loading: boolean
@@ -58,6 +60,12 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
+
+	const {
+		data: { data: slotCategoryList = [] } = {} as IGetSlotCategoryListResponse,
+		isLoading: isGetSlotCategoryListLoading,
+	} = useGetSlotCategoryListQuery(null)
+
 	const columnsRenderer = (
 		target: any[],
 		currencyColumns: ITableColumnsInfo[]
@@ -160,19 +168,21 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				}}
 				style={{ marginTop: '10px' }}
 			>
-				<Row align='middle'>
-					<Col span={8}>
-						<Form.Item name='categoryId' label={t('Label_SetCategory')}>
-							<Select>
-								{slotGameCategoryList?.map(category => (
-									<Option value={category.value} key={category.value}>
-										{t(category.displayName)}
-									</Option>
-								))}
-							</Select>
-						</Form.Item>
-					</Col>
-				</Row>
+				<Spin spinning={isGetSlotCategoryListLoading}>
+					<Row align='middle'>
+						<Col span={8}>
+							<Form.Item name='categoryId' label={t('Label_SetCategory')}>
+								<Select>
+									{slotCategoryList?.map(category => (
+										<Option value={category.id} key={category.id}>
+											{category.name}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+						</Col>
+					</Row>
+				</Spin>
 			</Form>
 
 			<Table
