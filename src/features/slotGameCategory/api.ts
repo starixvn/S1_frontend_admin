@@ -7,6 +7,7 @@ import {
 	IGetTpListResponse,
 	ISetGameCategoryArgs,
 	ISetSlotGameArgs,
+	IGetSlotCategoryListResponse,
 } from 'features/slotGameCategory/type'
 
 export const slotGameCategoryApi = rootApi.injectEndpoints({
@@ -51,6 +52,13 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getSlotCategoryList: builder.query<IGetSlotCategoryListResponse, null>({
+			query: data => ({
+				url: 'SlotGamesManagement/GetSlotCategoryList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -60,4 +68,5 @@ export const {
 	useLazyGetSlotGameCategoryListQuery,
 	useSetSlotGameMutation,
 	useSetSlotGameCategoryMutation,
+	useGetSlotCategoryListQuery,
 } = slotGameCategoryApi
