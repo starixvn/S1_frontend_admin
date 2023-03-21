@@ -69,6 +69,13 @@ export const bankCardManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		checkQrCodeImg: builder.mutation<IAxiosResponse<null>, FormData>({
+			query: data => ({
+				url: 'Common/CheckQrCodeImg',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -79,4 +86,5 @@ export const {
 	useGetBankInfoQuery,
 	useGetAgentListQuery,
 	useGetQrCodeUrlMutation,
+	useCheckQrCodeImgMutation,
 } = bankCardManagementApi
