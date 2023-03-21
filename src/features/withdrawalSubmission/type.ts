@@ -72,6 +72,8 @@ export interface ISubmitArgs {
 	accountHolderName: string
 	amount: number
 	memo: string
+	exchangeRate?: number
+	exchangeAmount?: number
 }
 
 export type LocalAccountNoSelectValue = {
@@ -82,4 +84,36 @@ export type CryptoAccountNoSelectValue = {
 	network: string
 	currencyName: string
 	usdtAddress: string
+}
+
+export interface IGetExchangeInfoArgs {
+	cryptoCurrencyName: string
+	network: string
+	amount: number
+	currencyId: number
+}
+
+export interface IExchangeInfoData {
+	rate: number
+	exchangeAmount: number
+	timestamp: number
+}
+
+export interface IFilterForm {
+	userName: string
+	sabaId: string
+}
+
+export interface IWithdrawalForm {
+	paymentId: number
+	channel: string
+	isExistBankCard: number
+	accountNo: string
+	bankName: string | number
+	accountHolderName: string
+	eligibleWithdrawal: number
+	amount: number
+	memo: string
+	rate: number
+	exchangeAmount: number
 }
