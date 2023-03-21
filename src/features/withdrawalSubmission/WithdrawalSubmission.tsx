@@ -6,14 +6,16 @@ import {
 	useGetCryptoInfoQuery,
 	useGetPaymentTypeQuery,
 	useLazyGetBankListQuery,
+	useLazyGetExchangeInfoQuery,
 	useSubmitWithdrawalMutation,
 } from 'features/withdrawalSubmission/api'
 import {
 	CryptoAccountNoSelectValue,
+	IFilterForm,
 	IGetBankListResponse,
 	IGetCryptoInfoResponse,
-	IGetPaymentTypeResponse,
 	ISubmitArgs,
+	IWithdrawalForm,
 	LocalAccountNoSelectValue,
 } from 'features/withdrawalSubmission/type'
 import { WithdrawalSubmissionFilter } from 'features/withdrawalSubmission/WithdrawalSubmissionFilter'
@@ -23,7 +25,7 @@ import {
 	IChannelValue,
 } from 'features/withdrawalSubmission/converter'
 import { useAuth, useQueryParams } from 'common/hooks'
-import { isEmpty } from 'lodash'
+import { isEmpty, split } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
@@ -40,25 +42,12 @@ const WithdrawalSubmission: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 
-	const [filterForm] = Form.useForm<{
-		userName: string
-		sabaId: string
-	}>()
+	const [filterForm] = Form.useForm<IFilterForm>()
 
-	const [withdrawalForm] = Form.useForm<{
-		paymentId: number
-		channel: string
-		isExistBankCard: number
-		accountNo: string
-		bankName: string | number
-		accountHolderName: string
-		eligibleWithdrawal: number
-		amount: number
-		memo: string
-	}>()
+	const [withdrawalForm] = Form.useForm<IWithdrawalForm>()
 
 	const {
-		data: { data: paymentTypeList } = {} as IGetPaymentTypeResponse,
+		data: { data: paymentTypeList = [] } = {},
 		isLoading: isGetPaymentTypeLoading,
 	} = useGetPaymentTypeQuery(null)
 
@@ -79,6 +68,9 @@ const WithdrawalSubmission: FC<{
 
 	const [submitWithdrawal, { isLoading: isSubmitWithdrawalLoading }] =
 		useSubmitWithdrawalMutation()
+
+	const [getExchangeInfo, { isFetching: isGetExchangeInfoLoading }] =
+		useLazyGetExchangeInfoQuery()
 
 	const handleSearch = async () => {
 		const args = filterForm.getFieldsValue()
@@ -107,6 +99,8 @@ const WithdrawalSubmission: FC<{
 			memo,
 			bankName,
 			channel,
+			rate,
+			exchangeAmount,
 		} = await withdrawalForm.validateFields()
 		const { custId } = custBankData
 
@@ -150,6 +144,8 @@ const WithdrawalSubmission: FC<{
 					cryptoCurrencyId,
 					cryptoNetwork,
 					accountNo: usdtAddress,
+					exchangeRate: rate,
+					exchangeAmount,
 				}
 				arg = { ...arg, ...restArgs }
 			} else {
@@ -157,6 +153,8 @@ const WithdrawalSubmission: FC<{
 					cryptoCurrencyId,
 					cryptoNetwork,
 					accountNo: rawAccountNo,
+					exchangeRate: rate,
+					exchangeAmount,
 				}
 				arg = { ...arg, ...restArgs }
 			}
@@ -165,6 +163,34 @@ const WithdrawalSubmission: FC<{
 			const response = await submitWithdrawal(arg).unwrap()
 			withdrawalForm.resetFields()
 			message.success(response.message || t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleCheckCryptoAmount = async () => {
+		const { channel, amount } = withdrawalForm.getFieldsValue()
+		const { currencyId } = custBankData
+		// displayName 的組成： "currency - network"
+		// 拆解 displayName 來取得 api 需要的資料
+		const { displayName } = JSON.parse(channel)
+		// 0 為 cryptoCurrencyName , 1 為 network
+		const cryptoValue = split(displayName, '-')
+		// 防呆，解出來沒有兩個值就不打 api
+		if (cryptoValue?.length !== 2) return
+		try {
+			const { data: { exchangeAmount, rate } = {} } = await getExchangeInfo({
+				cryptoCurrencyName: cryptoValue[0],
+				network: cryptoValue[1],
+				currencyId,
+				amount,
+			}).unwrap()
+			withdrawalForm.setFieldsValue({
+				rate,
+				exchangeAmount,
+			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -189,7 +215,8 @@ const WithdrawalSubmission: FC<{
 		isGetPaymentTypeLoading ||
 		isGetCryptoInfoLoading ||
 		isGetBankListLoading ||
-		isSubmitWithdrawalLoading
+		isSubmitWithdrawalLoading ||
+		isGetExchangeInfoLoading
 
 	return (
 		<LayoutContent.Main>
@@ -206,6 +233,7 @@ const WithdrawalSubmission: FC<{
 					paymentTypeList={paymentTypeList}
 					custBankList={custBankData}
 					channelList={channelList}
+					onCheckCryptoAmount={handleCheckCryptoAmount}
 				/>
 			)}
 			<AffixButtons>

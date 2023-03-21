@@ -1,11 +1,12 @@
 import { FC, useEffect } from 'react'
+import { find } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	Typography,
 	Col,
 	Form,
 	FormInstance,
 	Input,
-	InputNumber,
 	Row,
 	Select,
 	Spin,
@@ -26,7 +27,7 @@ import {
 	IChannelValue,
 } from 'features/withdrawalSubmission/converter'
 import { numberFormatter } from 'common/utils/format'
-import { find } from 'lodash'
+import { InputNumber } from 'components'
 
 interface IWithdrawalSubmissionFormProps {
 	loading: boolean
@@ -34,6 +35,7 @@ interface IWithdrawalSubmissionFormProps {
 	paymentTypeList: IGetPaymentTypeData[]
 	custBankList: IGetBankListData
 	channelList: ChannelType
+	onCheckCryptoAmount: () => void
 }
 
 const { Option } = Select
@@ -44,11 +46,13 @@ const WithdrawalSubmissionForm: FC<IWithdrawalSubmissionFormProps> = ({
 	paymentTypeList,
 	custBankList,
 	channelList,
+	onCheckCryptoAmount,
 }) => {
 	const { t } = useTranslation()
 	const usedCard = Form.useWatch('isExistBankCard', form)
 	const payment = Form.useWatch('paymentId', form)
 	const currentCryptoChannel = Form.useWatch('channel', form)
+	const currentAmount = Form.useWatch('amount', form)
 
 	const {
 		eligibleWithdrawal,
@@ -58,6 +62,9 @@ const WithdrawalSubmissionForm: FC<IWithdrawalSubmissionFormProps> = ({
 		localBankSysList,
 	} = custBankList ?? {}
 
+	const handleResetExchangeInfo = () => {
+		form.resetFields(['rate', 'exchangeAmount'])
+	}
 	const handleResetInfo = () => {
 		form.resetFields(['accountNo', 'bankName', 'channel'])
 	}
@@ -69,6 +76,7 @@ const WithdrawalSubmissionForm: FC<IWithdrawalSubmissionFormProps> = ({
 		form.setFieldsValue({
 			bankName: displayName,
 		})
+		handleResetExchangeInfo()
 	}
 
 	const accountNoRenderer = () => {
@@ -286,17 +294,17 @@ const WithdrawalSubmissionForm: FC<IWithdrawalSubmissionFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					<Row>
+					<Row gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
 								name='eligibleWithdrawal'
 								label={t('Label_EligibleWithdrawal')}
 							>
-								<InputNumber style={{ width: '100%' }} disabled />
+								<Input disabled />
 							</Form.Item>
 						</Col>
 					</Row>
-					<Row>
+					<Row gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
 								name='amount'
@@ -310,11 +318,66 @@ const WithdrawalSubmissionForm: FC<IWithdrawalSubmissionFormProps> = ({
 									},
 								]}
 							>
-								<InputNumber style={{ width: '100%' }} type='number' />
+								<InputNumber onChange={handleResetExchangeInfo} />
 							</Form.Item>
+							{/* fix在右上角 */}
+							{payment === PaymentEnum.Crypto && (
+								<Form.Item
+									style={{
+										position: 'absolute',
+										right: '7px',
+										top: '-5px',
+									}}
+								>
+									<Typography.Link
+										disabled={!currentCryptoChannel || !currentAmount}
+										onClick={onCheckCryptoAmount}
+									>
+										{t('Label_CheckCryptoAmount')}
+									</Typography.Link>
+								</Form.Item>
+							)}
 						</Col>
+						{payment === PaymentEnum.Crypto && (
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='rate'
+									label={t('Label_ExchangeRate')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_PleaseCheckCryptoAmount'),
+										},
+									]}
+								>
+									<InputNumber disabled />
+								</Form.Item>
+							</Col>
+						)}
 					</Row>
-					<Row>
+					{payment === PaymentEnum.Crypto && (
+						<Row gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='exchangeAmount'
+									label={t('Label_CryptoAmount')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_PleaseCheckCryptoAmount'),
+										},
+									]}
+								>
+									<InputNumber
+										disabled
+										style={{ width: '100%' }}
+										type='number'
+									/>
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+					<Row gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
 								name='memo'
