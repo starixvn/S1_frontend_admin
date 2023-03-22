@@ -12,16 +12,27 @@ import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
 import React from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
-import { IGetWithdrawalData } from 'features/withdrawalOperator/type'
+import {
+	IAdjustmentLogLimitData,
+	ICustomerAssociateBankUserData,
+	IGetWithdrawalData,
+} from 'features/withdrawalOperator/type'
 import { useCopy, useQueryParams } from 'common/hooks'
 import { CopyOutlined } from '@ant-design/icons'
+import { ICheckDuplicateNameData } from 'features/memberProfile/type'
 
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
 	memberInfo?: IMemberInfo
 	withdrawalDetailData?: IGetWithdrawalData
+	checkDuplicateNameList: ICheckDuplicateNameData[]
+	associateBankUserList: ICustomerAssociateBankUserData[]
+	adjustmentLimitList: IAdjustmentLogLimitData[]
 	onIpCountClick: (ip: string) => void
 	onDeviceCountClick: (deviceId: string) => void
+	onDuplicateAccountClick: () => void
+	onAssociateBankUserClick: () => void
+	onAdjustmentLimitClick: () => void
 }
 
 const { Item } = Descriptions
@@ -30,8 +41,14 @@ const WithdrawalRequestMemberInfo = ({
 	loading,
 	memberInfo,
 	withdrawalDetailData,
+	checkDuplicateNameList,
+	associateBankUserList,
+	adjustmentLimitList,
 	onIpCountClick,
 	onDeviceCountClick,
+	onDuplicateAccountClick,
+	onAssociateBankUserClick,
+	onAdjustmentLimitClick,
 }: IWithdrawalRequestMemberInfoProps) => {
 	const { t } = useTranslation()
 	const [queryParams] = useQueryParams()
@@ -71,6 +88,8 @@ const WithdrawalRequestMemberInfo = ({
 		totalWithdrawal,
 		totalBonusAmount,
 		totalDeposit,
+		totalAdjustment,
+		accountName,
 	} = memberInfo ?? {}
 
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
@@ -107,42 +126,67 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_BonusStatus')}>
 					{t(BONUS_STATUS[bonusInfoStatus])}
 				</Item>
-				<Item label={t('Label_VipLevel')}>
-					<Tag color={vipLevelColor}>{levelName || '-'}</Tag>
+				<Item label={t('Label_FullName')}>
+					<Row justify='space-between'>
+						<Typography.Text>{accountName}</Typography.Text>
+						<Typography.Link
+							onClick={onDuplicateAccountClick}
+							disabled={checkDuplicateNameList.length === 0}
+						>
+							{checkDuplicateNameList.length}
+						</Typography.Link>
+					</Row>
 				</Item>
 				<Item label={t('Label_BonusAmount')}>
 					{numberFormatter.format(bonusAmount)}
+				</Item>
+				<Item label={t('Label_VipLevel')}>
+					<Tag color={vipLevelColor}>{levelName || '-'}</Tag>
+				</Item>
+
+				<Item label={t('Label_TotalBonusAmount')}>
+					{numberFormatter.format(totalBonusAmount || 0)}
 				</Item>
 				<Item label={t('Label_Deposited')}>
 					{actStatus === ActStatusEnum.Active && t('Label_Yes')}
 					{actStatus === ActStatusEnum.unActive && t('Label_No')}
 				</Item>
-				<Item label={t('Label_TotalBonusAmount')}>
-					{numberFormatter.format(totalBonusAmount || 0)}
-				</Item>
-				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
 
 				<Item label={t('Label_TotalDeposit')}>
 					{numberFormatter.format(totalDeposit || 0)}
 				</Item>
+				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
+				<Item label={t('Label_TotalWithdrawal')}>
+					{numberFormatter.format(totalWithdrawal || 0)}
+				</Item>
 				<Item label={t('Label_MailWalletAmount')}>
 					{numberFormatter.format(mailWalletAmount || 0)}
 				</Item>
-
-				<Item label={t('Label_TotalWithdrawal')}>
-					{numberFormatter.format(totalWithdrawal || 0)}
+				<Item label={t('Label_TotalAdjustmentAmount')}>
+					{numberFormatter.format(totalAdjustment || 0)}
 				</Item>
 				<Item label={t('Label_EligibleWithdrawal')}>
 					{numberFormatter.format(eligibleWithdrawal || 0)}
 				</Item>
-
-				<Item label={t('Label_TotalWinLoss')}>
-					{numberFormatter.format(totalWinLoss || 0)}
+				<Item label={t('Label_TotalWithdrawalAdjustmentRecord')}>
+					<Typography.Link
+						onClick={onAdjustmentLimitClick}
+						disabled={adjustmentLimitList.length === 0}
+					>
+						{adjustmentLimitList.length}
+					</Typography.Link>
 				</Item>
+
 				<Item label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
+				<Item label={t('Label_TotalWinLoss')}>
+					{numberFormatter.format(totalWinLoss || 0)}
+				</Item>
 
+				<Item
+					label={t('Label_DOB')}
+				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
 				<Item label={t('Label_DeviceAssociateCount')}>
 					<Typography.Link
 						onClick={() => onDeviceCountClick(deviceId)}
@@ -151,10 +195,9 @@ const WithdrawalRequestMemberInfo = ({
 						{associateCount}
 					</Typography.Link>
 				</Item>
-				<Item
-					label={t('Label_DOB')}
-				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
-
+				<Item label={t('Label_IovationStatus')}>
+					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
+				</Item>
 				<Item label={t('Label_IpUserCount')}>
 					<Typography.Link
 						onClick={() => onIpCountClick(loginIp)}
@@ -163,11 +206,6 @@ const WithdrawalRequestMemberInfo = ({
 						{userCount}
 					</Typography.Link>
 				</Item>
-				<Item label={t('Label_IovationStatus')}>
-					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
-				</Item>
-				{/* 排版需要，留空 */}
-				<Item>{` `}</Item>
 				<Item label={t('Label_Tag')}>
 					{tagList.length > 0
 						? tagList?.map(tag => (
@@ -181,8 +219,14 @@ const WithdrawalRequestMemberInfo = ({
 						  ))
 						: '-'}
 				</Item>
-				{/* 排版需要，留空 */}
-				<Item>{` `}</Item>
+				<Item label={t('Label_AssociateAccountCount')}>
+					<Typography.Link
+						onClick={onAssociateBankUserClick}
+						disabled={associateBankUserList.length === 0}
+					>
+						{associateBankUserList.length}
+					</Typography.Link>
+				</Item>
 				<Item label={t('Label_isKyc')}>
 					{isKyc ? t('Label_Yes') : t('Label_No')}
 				</Item>

@@ -94,7 +94,6 @@
 	"Label_Memo": "Memo",
 	"Label_AddBlockIp": "Add Block Ip",
 	"Label_InputCurrentIpAddress": "please input current ip address",
-	"Label_Amount": "Amount",
 	"Label_AccountNo": "Acc. No.",
 	"Label_ApprovedTime": "Approved Time",
 	"Label_LatestUpdateOperator": "Latest Update Operator",
@@ -1034,6 +1033,7 @@
 	"Label_LimitGroup": "Limit Group",
 	"Label_TotalCount": "Total Count",
 	"Label_TotalAmount": "Total Amount",
+
 	"Label_SelectStatus": "Select Status",
 	"Label_EditAnnouncement": "Edit Announcement",
 	"Label_StatusName": "Status Name",
@@ -1081,9 +1081,6 @@
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
 	"Label_Processing": "Processing",
-	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log",
-	"Label_Summary": "Summary",
 	"Label_TaggingRestrict": "Tagging Restrict",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
@@ -1099,5 +1096,13 @@
 	"Label_CryptoWalletAddress": "Crypto Wallet Address",
 	"Label_AddBlockCryptoWallet": "Add Block Crypto Wallet",
 	"Label_CryptoType": "Crypto Type",
-	"Label_Network": "Network"
+	"Label_Network": "Network",
+	"Label_Summary": "Summary",
+	"Label_AssociateAccountCount": "Associate Account Count",
+	"Label_TotalAdjustmentAmount": "Total Adjustment Amount",
+	"Label_TotalWithdrawalAdjustmentRecord": "Total Withdrawal Adjustment Record",
+	"Label_AdjustmentRecord": "Adjustment Record",
+	"Label_Amount": "Amount",
+	"Label_Menu": "Menu",
+	"Label_AdminUserLog": "Admin User Log"
 }
