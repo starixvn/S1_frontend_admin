@@ -70,4 +70,6 @@ export const ACTION_NAMES: {
 	73: 'sendMessagePermission',
 	74: 'addEditPermission',
 	76: 'setFeePermission',
+	77: 'uploadReceiptPermission',
+	78: 'deleteReceiptPermission',
 }
