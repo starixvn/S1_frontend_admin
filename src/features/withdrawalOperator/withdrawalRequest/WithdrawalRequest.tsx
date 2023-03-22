@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Col, Form, message, Row, Spin } from 'antd'
 import {
 	useDeletePictureMutation,
+	useGetAdjustmentLimitLogQuery,
+	useGetAssociateBankUserQuery,
 	useGetReceiptPictureQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
@@ -19,6 +21,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { WithdrawalRequestButtonGroup } from 'features/withdrawalOperator/withdrawalRequest/WithdrawalRequestButtonGroup'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
+	IAdjustmentWithdrawalData,
 	IGetWithdrawalData,
 	IPayInfo,
 	IWithdrawalAccounting,
@@ -36,7 +39,7 @@ import { useEffect, useState } from 'react'
 import { useAuth, useModal } from 'common/hooks'
 import { PayInfoModal } from 'features/withdrawalOperator/withdrawalRequest/components/PayInfoModal'
 import { hashPayInfo } from 'features/withdrawalOperator/utils'
-import { multiEqual } from 'common/utils'
+import { multiEqual, utcFormatter } from 'common/utils'
 import { BankSettingForm } from 'features/withdrawalOperator/withdrawalRequest/components/BankSettingForm'
 import { find, head, isEqual, reduce } from 'lodash'
 import { UsableActionButtonEnum } from 'features/depositOperator/type'
@@ -44,6 +47,7 @@ import { ReceiptUploader } from 'features/withdrawalOperator/withdrawalRequest/c
 import { UploadFile } from 'antd/es/upload/interface'
 import { IGetIpUserListResponse } from 'features/memberProfile/type'
 import {
+	useGetCheckDuplicateNameQuery,
 	useLazyGetDeviceUserListQuery,
 	useLazyGetIpUserQuery,
 } from 'features/memberProfile/api'
@@ -60,7 +64,12 @@ import {
 	useGetCryptoWalletListQuery,
 	useGetOnlinePayListQuery,
 } from 'common/service/baseDataApi'
-import { useSendReasonMessageHook } from './hooks/useSendReasonMessageHook'
+import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRequest/components/AssociateBankModal'
+import { useSendReasonMessageHook } from 'features/withdrawalOperator/withdrawalRequest/hooks/useSendReasonMessageHook'
+import moment from 'moment/moment'
+import { AdjustmentLimitLogModal } from 'features/withdrawalOperator/withdrawalRequest/components/AdjustmentLimitLogModal'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { useGetWithdrawalAdjustmentReasonListQuery } from 'features/withdrawalAdjustment/api'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
@@ -81,6 +90,12 @@ const WithdrawalRequest = () => {
 	const ipUserListModal = useModal()
 	// deviceList 關聯彈窗
 	const deviceUserModal = useModal()
+	// duplicate FullName 關聯彈窗
+	const duplicateNameModal = useModal()
+	// Associate Bank 關聯彈窗
+	const associateBankUserModal = useModal()
+	// AdjustmentList 關聯彈窗
+	const adjustmentLimitLogModal = useModal()
 
 	// 當前 form 選的 withdrawalType
 	const formWithdrawalType = Form.useWatch('withdrawalType', form)
@@ -124,6 +139,8 @@ const WithdrawalRequest = () => {
 	const { memberInfo, isMemberInfoLoading } = useMemberInfo({
 		custId,
 	})
+
+	const { accountName } = memberInfo ?? {}
 
 	// 更新狀態
 	const [setWithdrawalStatus, { isLoading: isSetWithdrawalStatusLoading }] =
@@ -204,6 +221,67 @@ const WithdrawalRequest = () => {
 			isFetching: isGetDeviceUserLoading,
 		},
 	] = useLazyGetDeviceUserListQuery()
+
+	const {
+		data: { data: checkDuplicateNameList = [] } = {},
+		isFetching: isGetCheckDuplicateNameListFetching,
+	} = useGetCheckDuplicateNameQuery(
+		{
+			custId: Number(custId),
+			fullName: accountName,
+		},
+		{
+			skip: !accountName,
+			// 因為要先預打 api 取得當前數量，在不影響使用者的情況下每30秒自動更新
+			pollingInterval: 30000,
+		}
+	)
+
+	const {
+		data: { data: associateBankUserList = [] } = {},
+		isFetching: isGetAssociateBankUserList,
+	} = useGetAssociateBankUserQuery(
+		{
+			custId: Number(custId),
+		},
+		{
+			skip: !custId,
+			// 因為要先預打 api 取得當前數量，在不影響使用者的情況下每30秒自動更新
+			pollingInterval: 30000,
+		}
+	)
+	// 取得近七日 Adjustment Amount Limitation，這隻 api 結構長得跟其他隻不一樣，所以這樣寫
+	const {
+		data: adjustmentWithdrawalData = {} as IAdjustmentWithdrawalData,
+		isFetching: isGetAdjustmentWithdrawalLoading,
+	} = useGetAdjustmentLimitLogQuery(
+		{
+			startDate: utcFormatter({
+				date: moment().subtract(7, 'day').startOf('day'),
+				utcOffset: timeZoneUtcOffset,
+			}),
+			endDate: utcFormatter({
+				date: moment().endOf('day'),
+				utcOffset: timeZoneUtcOffset,
+			}),
+			custId: Number(custId),
+		},
+		{
+			skip: !custId,
+			// 因為要先預打 api 取得當前數量，在不影響使用者的情況下每30秒自動更新
+			pollingInterval: 30000,
+		}
+	)
+
+	const { adjustmentWithdrawalLimitLogList: adjustmentLimitList = [] } =
+		adjustmentWithdrawalData ?? {}
+
+	const { data: { data: directionEnumList = [] } = {} } = useGetEnumTypeQuery({
+		enumName: 'DirectionEnum',
+	})
+
+	const { data: { data: reasonList = [] } = {} } =
+		useGetWithdrawalAdjustmentReasonListQuery(null)
 
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
@@ -627,8 +705,14 @@ const WithdrawalRequest = () => {
 									memberInfo={memberInfo}
 									withdrawalDetailData={withdrawalDetailData}
 									loading={isMemberInfoLoading}
+									checkDuplicateNameList={checkDuplicateNameList}
+									associateBankUserList={associateBankUserList}
+									adjustmentLimitList={adjustmentLimitList}
 									onIpCountClick={handleIpCountClick}
 									onDeviceCountClick={handleDeviceCountClick}
+									onDuplicateAccountClick={duplicateNameModal.onOpen}
+									onAssociateBankUserClick={associateBankUserModal.onOpen}
+									onAdjustmentLimitClick={adjustmentLimitLogModal.onOpen}
 								/>
 								{/* Local Bank 的拆單功能獨立做成 Form 表單放於此處  */}
 								{multiEqual(currentStatus, [
@@ -704,7 +788,31 @@ const WithdrawalRequest = () => {
 						visible={deviceUserModal.visible}
 						onCancel={deviceUserModal.onCancel}
 					/>
+					{/* DuplicateFullName */}
+					<UserListModal
+						loading={isGetCheckDuplicateNameListFetching}
+						userList={checkDuplicateNameList}
+						visible={duplicateNameModal.visible}
+						onCancel={duplicateNameModal.onCancel}
+						clearCache={false}
+					/>
+					{/* Associate Bank  */}
+					<AssociateBankUserModal
+						loading={isGetAssociateBankUserList}
+						associateBankUserList={associateBankUserList}
+						visible={associateBankUserModal.visible}
+						onCancel={associateBankUserModal.onCancel}
+					/>
 					{/* 增加兩個 br 使 button 不會與 AffixButton 重疊 */}
+					<AdjustmentLimitLogModal
+						loading={isGetAdjustmentWithdrawalLoading}
+						visible={adjustmentLimitLogModal.visible}
+						timeZoneUtcOffset={timeZoneUtcOffset}
+						reasonList={reasonList}
+						adjustmentLimitList={adjustmentLimitList}
+						directionEnumList={directionEnumList}
+						onCancel={adjustmentLimitLogModal.onCancel}
+					/>
 					<br />
 					<br />
 				</LayoutContent.Card>

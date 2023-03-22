@@ -26,6 +26,7 @@ export interface IMemberInfo extends IGetBasicInfoData {
 	totalDeposit: number | undefined
 	totalWithdrawal: number | undefined
 	totalWinLoss: number
+	totalAdjustment: number | undefined
 }
 
 const useMemberInfo = ({ custId }: { custId: number }) => {
@@ -66,8 +67,11 @@ const useMemberInfo = ({ custId }: { custId: number }) => {
 		{ skip: !custId }
 	)
 
-	const { balance: mailWalletAmount, eligibleWithdrawal } =
-		walletBalanceInfo ?? {}
+	const {
+		balance: mailWalletAmount,
+		eligibleWithdrawal,
+		totalAdjustment,
+	} = walletBalanceInfo ?? {}
 
 	const {
 		totalBonusClaimed: totalBonusAmount,
@@ -98,6 +102,7 @@ const useMemberInfo = ({ custId }: { custId: number }) => {
 		totalDeposit,
 		totalWithdrawal,
 		totalWinLoss,
+		totalAdjustment,
 	} as IMemberInfo
 
 	const loading =
