@@ -1104,5 +1104,6 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log"
+	"Label_AdminUserLog": "Admin User Log",
+	"Label_CheckBy": "Check By"
 }
