@@ -56,6 +56,7 @@ export interface IGetDepositOperatorListArgs {
 	currencyIds: number[]
 	levelStatuses: number[]
 	agent: string
+	dateType: number
 }
 
 export interface ICurrencyAmountRecord {
@@ -164,6 +165,7 @@ export interface IForm {
 	depositId: string
 	selectCalCode: number[]
 	isAllSite: boolean
+	dateType: number
 }
 
 export interface IBatchRejectedDepositTransIdsArgs {
@@ -186,6 +188,7 @@ export interface IExportDepositArgs {
 	currencyIds: number[]
 	levelStatuses: number[]
 	agent: string
+	dateType: number
 }
 
 export interface IDepositRequestFrom {
