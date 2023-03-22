@@ -19,6 +19,7 @@ export interface IExportWithdrawalListArgs {
 	selectBankCode: number[]
 	selectCalCode: number[]
 	agent: string
+	dateType: number
 }
 
 export interface IGetWithdrawalListArgs extends IExportWithdrawalListArgs {
@@ -122,6 +123,7 @@ export type IFilterForm = {
 	withdrawalMethod: number
 	withdrawalId: string
 	agent: string
+	dateType: number
 }
 
 export type IWithdrawalAccounting = {

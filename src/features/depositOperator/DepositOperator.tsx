@@ -34,6 +34,7 @@ import {
 	useExportDepositMutation,
 } from 'features/depositOperator/api'
 import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
+import { DateTypeEnum } from 'features/depositOperator/constants'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
 import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
@@ -149,6 +150,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			selectCalCode = [],
 			startDate,
 			endDate,
+			dateType,
 		} = queryParams ?? {}
 		try {
 			const blob = await exportDeposit({
@@ -168,6 +170,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				currencyIds: map(currencyIds, value => Number(value)) ?? [],
 				levelStatuses: map(levelStatuses, value => Number(value)) ?? [],
 				agent,
+				dateType: Number(dateType),
 			}).unwrap()
 			download(
 				blob,
@@ -189,6 +192,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		resetSelectedTransIds()
 
 		const {
+			dateType,
 			isAllSite,
 			dateRange,
 			selectPayIds,
@@ -217,6 +221,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				startAmount: startAmount || -1,
 				endAmount: endAmount || -1,
 				depositId: depositId || null,
+				dateType,
 				...rest,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -230,6 +235,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				startAmount,
 				endAmount,
 				depositId: depositId || null,
+				dateType,
 				...rest,
 				timeZone: currentTimeZoneUtcOffset,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
@@ -315,6 +321,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				pageSize,
 				startDate,
 				endDate,
+				dateType = DateTypeEnum.CreateTime,
 			} = queryParams ?? {}
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -335,6 +342,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				agent,
 				selectCalCode:
 					selectCalCode?.map((value: string) => Number(value)) ?? [],
+				dateType: Number(dateType),
 			})
 			handleSearch({
 				current: Number(pageNumber),
