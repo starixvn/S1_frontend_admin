@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
-import { Card, Form, FormInstance, Spin, Upload, Image } from 'antd'
+import { Card, Form, FormInstance, Spin, Upload, Image, Modal } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useRef, useState } from 'react'
 import { getBase64, normFileForFormImageItem } from 'common/utils/image'
