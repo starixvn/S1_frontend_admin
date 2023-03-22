@@ -6,6 +6,7 @@ export type ButtonColor =
 	| 'Black'
 	| 'Purple'
 	| 'Green'
+	| 'Pink'
 
 export enum ButtonColorEnum {
 	Blue = '#1890FF',
@@ -15,4 +16,5 @@ export enum ButtonColorEnum {
 	Black = '#313C54',
 	Purple = '#9150E3',
 	Green = '#2CAFA5',
+	Pink = '#df42ea',
 }
