@@ -38,6 +38,11 @@ export enum VipLevelEnum {
 	NovaClub,
 }
 
+export enum DepositReceiptCreateFromEnum {
+	User = 1,
+	BackendUser,
+}
+
 export interface IGetDepositOperatorListArgs {
 	siteId: number
 	startDate: string | null
@@ -56,6 +61,7 @@ export interface IGetDepositOperatorListArgs {
 	currencyIds: number[]
 	levelStatuses: number[]
 	agent: string
+	dateType: number
 }
 
 export interface ICurrencyAmountRecord {
@@ -147,6 +153,8 @@ export interface IDepositOperatorData {
 	fromBankCode: string
 	fromBankName: string
 	bonusDescription: string
+	checkReceipt: number
+	checkReceiptBy: string | null
 }
 
 export interface IForm {
@@ -164,6 +172,7 @@ export interface IForm {
 	depositId: string
 	selectCalCode: number[]
 	isAllSite: boolean
+	dateType: number
 }
 
 export interface IBatchRejectedDepositTransIdsArgs {
@@ -186,6 +195,7 @@ export interface IExportDepositArgs {
 	currencyIds: number[]
 	levelStatuses: number[]
 	agent: string
+	dateType: number
 }
 
 export interface IDepositRequestFrom {
@@ -243,3 +253,31 @@ export interface ISendDepositReasonMessageArgs {
 		actualDeposit: number
 	}
 }
+
+export interface ICheckDepositReceiptArgs {
+	transId: string
+}
+
+export interface IDeleteReceiptArgs {
+	siteId: number
+	custId: number
+	receiptNo: number
+	transId: string
+}
+
+export interface IDepositReceiptByTransIdData {
+	receipt: {
+		contentType: string
+		enableRangeProcessing: false
+		entityTag: null
+		fileContents: string
+		fileDownloadName: string
+		lastModified: null
+	}
+	receiptNo: number
+	creator: string
+	createTime: string
+	createFrom: number
+}
+
+export type IDepositReceiptByTransIdResponse = IDepositReceiptByTransIdData[]

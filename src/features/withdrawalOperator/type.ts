@@ -19,6 +19,7 @@ export interface IExportWithdrawalListArgs {
 	selectBankCode: number[]
 	selectCalCode: number[]
 	agent: string
+	dateType: number
 }
 
 export interface IGetWithdrawalListArgs extends IExportWithdrawalListArgs {
@@ -122,6 +123,7 @@ export type IFilterForm = {
 	withdrawalMethod: number
 	withdrawalId: string
 	agent: string
+	dateType: number
 }
 
 export type IWithdrawalAccounting = {
@@ -183,4 +185,36 @@ export interface ISendWithdrawalMessageArgs {
 	currencyId: number
 	transId: string
 	after: { status: number; withdrawalId: number; action: number }
+}
+
+export interface IGetAdjustmentLogArgs {
+	startDate: string
+	endDate: string
+	custId: number
+}
+
+export type IAdjustmentLogLimitData = {
+	mainType: number
+	amount: number
+	memo: string
+	reasonId: number
+	refTransId: string
+	creator: string
+	createTime: string
+}
+
+export interface IAdjustmentWithdrawalData {
+	adjustmentWithdrawalLimitLogList: IAdjustmentLogLimitData[]
+	totalAmount: number
+}
+
+export interface IGetCustomerAssociateBankUserArgs {
+	custId: number
+}
+
+export interface ICustomerAssociateBankUserData {
+	custId: number
+	userName: string
+	paymentName: string
+	associateNo: string
 }

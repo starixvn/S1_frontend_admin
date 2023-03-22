@@ -42,6 +42,7 @@ const CryptoWalletSettingForm = ({
 	const canUse = multiEqual(status, [
 		WithdrawalStatusEnum.Verify,
 		WithdrawalStatusEnum.Approved,
+		WithdrawalStatusEnum.Process,
 	])
 	const currentSelId = Form.useWatch('cryptoWallet', form)
 	return (
