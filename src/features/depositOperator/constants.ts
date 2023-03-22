@@ -30,8 +30,19 @@ export enum DeviceListAllowEnum {
 	Deny = 'D',
 	Review = 'R',
 }
+
 export const DEVICE_ALLOW_STATUS_DISPLAY_KEYS: { [key: string]: string } = {
 	[DeviceListAllowEnum.Allow]: 'Label_Allow',
 	[DeviceListAllowEnum.Deny]: 'Label_Deny',
 	[DeviceListAllowEnum.Review]: 'Label_Review',
 }
+
+export enum DateTypeEnum {
+	CreateTime = 1,
+	StatementTime,
+}
+
+export const DATE_TYPE_OPTIONS = [
+	{ displayKey: 'Label_CreateTime', value: DateTypeEnum.CreateTime },
+	{ displayKey: 'Label_StatementTime', value: DateTypeEnum.StatementTime },
+]
