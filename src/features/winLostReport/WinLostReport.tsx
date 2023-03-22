@@ -154,10 +154,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
-
 		const days = moment(endTime).diff(moment(starTime), 'days')
 		if (days > 90) {
 			message.error(t('Label_DateRangeExceedsThreeMonths'))

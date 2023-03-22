@@ -994,6 +994,13 @@ const Announcement = lazy(
 		)
 )
 
+const WinLostReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
+		)
+)
+
 const BatchMemberInfoReport = lazy(
 	() =>
 		import(
@@ -1004,13 +1011,6 @@ const BatchMemberInfoReport = lazy(
 const BonusInfo = lazy(
 	() =>
 		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
-)
-
-const WinLostReport = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
-		)
 )
 
 const BlockCryptoWallet = lazy(
@@ -2536,6 +2536,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
+						<WinLostReport />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.batchMemberInfoReport.root}`,
 				element: (
 					<AuthRequire
@@ -2560,14 +2568,6 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
 						<BonusInfo />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
-				element: (
-					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
-						<WinLostReport />
 					</AuthRequire>
 				),
 			},
