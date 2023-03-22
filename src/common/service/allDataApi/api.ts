@@ -151,6 +151,6 @@ export const {
 	useGetPaySettingListQuery,
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
-	useGetTpListQuery,
 	useGetProductsQuery,
+	useGetTpListQuery,
 } = allDataApi
