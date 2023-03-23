@@ -23,7 +23,7 @@ import {
 	useGetCategoryListQuery,
 	useGetSampleFileMutation,
 	useGetVipLevelQuery,
-	useLazyGetMemberListQuery,
+	useLazyGetRewardMemberListQuery,
 	useSetManualRewardPointMutation,
 	useUploadBatchPointMutation,
 } from './api'
@@ -60,7 +60,7 @@ const MemberList: FC<{
 		isLoading: isGetVipLevelLoading,
 	} = useGetVipLevelQuery({ siteId })
 	const [
-		getMemberList,
+		getRewardMemberList,
 		{
 			data: {
 				data: memberList,
@@ -68,7 +68,7 @@ const MemberList: FC<{
 			} = {} as IGetMemberListResponse,
 			isFetching: isGetMemberListLoading,
 		},
-	] = useLazyGetMemberListQuery()
+	] = useLazyGetRewardMemberListQuery()
 
 	const {
 		data: { data: categoryList } = {} as IGetCategoryResponse,
@@ -113,7 +113,7 @@ const MemberList: FC<{
 			)
 		} else {
 			try {
-				await getMemberList({
+				await getRewardMemberList({
 					siteId,
 					currencyIds,
 					vipLevels,
@@ -227,7 +227,7 @@ const MemberList: FC<{
 				userName,
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				vipLevels: vipLevels.map((value: string) => Number(value)),
-				tpUserName,
+				sabaId: tpUserName,
 			})
 			handleFilterSearch({
 				current: Number(pageNumber),
