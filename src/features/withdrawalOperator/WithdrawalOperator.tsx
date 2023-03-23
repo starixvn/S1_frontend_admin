@@ -48,6 +48,9 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
 
+	const isMoreThanThreeDays =
+		moment(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
+
 	const [
 		getWithdrawalList,
 		{
@@ -59,7 +62,8 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			isFetching: isGetWithdrawalLoading,
 		},
 	] = useLazyGetWithdrawalListQuery({
-		pollingInterval: 15000,
+		// * 如果超過三天即關閉 pollingInterval
+		pollingInterval: isMoreThanThreeDays ? 0 : 15000,
 	})
 
 	const [pagination, setPagination] = usePagination({

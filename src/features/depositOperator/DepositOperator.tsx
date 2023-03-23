@@ -43,6 +43,7 @@ import DepositOperatorOverviewTable from './DepositOperatorOverviewTable'
 const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const [form] = Form.useForm<IForm>()
+
 	const {
 		actionPermissions: { exportExcelPermission, rejectPermission } = {},
 	} = useAuth()
@@ -52,6 +53,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const siteId = formIsAllSite ? SiteIds.All : originSiteId
 
 	const [queryParams, setQueryParams] = useQueryParams()
+
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const formCurrencyIds = Form.useWatch('currencyIds', form)
@@ -103,6 +105,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			}
 		)
 
+	const isMoreThanThreeDays =
+		moment(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
+
 	const [
 		getDepositOperatorList,
 		{
@@ -114,7 +119,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			isFetching: isGetDepositOperatorListFetching,
 		},
 	] = useLazyGetDepositOperatorListQuery({
-		pollingInterval: 15000,
+		// * 如果超過三天即關閉 pollingInterval
+		pollingInterval: isMoreThanThreeDays ? 0 : 15000,
 	})
 
 	const [
@@ -205,6 +211,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
+
+		// 259199
 
 		// 用於記錄 Column 下拉選單
 		const { visibilityColumns: queryVisibilityColumns = [] } = queryParams

@@ -86,11 +86,7 @@ const DepositRequestDepositInfo = ({
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
-	const isEditAmount = !(
-		status === DepositStatusEnum.Rejected ||
-		status === DepositStatusEnum.Approved ||
-		status === DepositStatusEnum.Canceled
-	)
+
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
 	const isShowPaymentInfoModalButton =
@@ -162,7 +158,7 @@ const DepositRequestDepositInfo = ({
 									onClick={() => onCopy(String(amount))}
 								/>
 								<Button
-									disabled={!setAmountPermission?.canUse || !isEditAmount}
+									disabled={!setAmountPermission?.canUse}
 									onClick={() => setEditable('amount')}
 									type='link'
 									icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
