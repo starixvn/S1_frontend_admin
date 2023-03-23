@@ -663,6 +663,10 @@ const paths = {
 				root: 'cms/siteMaintenance',
 				functionId: 117,
 			},
+			leaderboardExtraPoint: {
+				root: 'cms/leaderboardExtraPoint',
+				functionId: 144,
+			},
 			urlManagement: {
 				root: 'cms/urlManagement',
 				sub: {
