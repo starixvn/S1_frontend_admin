@@ -165,21 +165,6 @@ const PromotionReportTable = ({
 			),
 		},
 		{
-			title: t('Label_LockedAmount'),
-			key: 'lockedAmount',
-			dataIndex: 'lockedAmount',
-			width: 80,
-			align: 'center' as 'center',
-			render: (lockedAmount: number) => (
-				<Text
-					type={isPositiveNum(lockedAmount) ? undefined : 'danger'}
-					style={{ whiteSpace: 'nowrap', padding: '5px' }}
-				>
-					{numFormatToDigits(lockedAmount || 0)}
-				</Text>
-			),
-		},
-		{
 			title: `${t('Label_Rollover')} / ${t('Label_WinOver')}`,
 			key: 'turnOver',
 			dataIndex: 'custRollOver',
