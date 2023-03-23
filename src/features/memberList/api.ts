@@ -12,7 +12,10 @@ import {
 
 export const memberListApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getMemberList: builder.query<IGetMemberListResponse, IGetMemberListArgs>({
+		getRewardMemberList: builder.query<
+			IGetMemberListResponse,
+			IGetMemberListArgs
+		>({
 			query: data => ({
 				url: 'StorePoint/GetMemberList',
 				method: 'POST',
@@ -79,7 +82,7 @@ export const {
 	useGetSampleFileMutation,
 	useGetCategoryListQuery,
 	useGetVipLevelQuery,
-	useLazyGetMemberListQuery,
+	useLazyGetRewardMemberListQuery,
 	useLazyGetMemberRewardPointLogQuery,
 	useSetManualRewardPointMutation,
 } = memberListApi
