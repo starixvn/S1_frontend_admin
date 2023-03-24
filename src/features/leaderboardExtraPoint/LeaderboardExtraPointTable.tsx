@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
-import { timeFormat } from 'common/utils/format'
+import { timeFormat, numberFormatter } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
@@ -76,7 +76,8 @@ const LeaderboardExtraPointTable = ({
 			dataIndex: 'extraPoint',
 			align: 'center' as 'center',
 			width: '10%',
-			render: (extraPoint: string) => extraPoint ?? 'N/A',
+			render: (extraPoint: number) =>
+				numberFormatter.format(extraPoint) ?? 'N/A',
 		},
 		{
 			title: t('Label_CreateTime'),

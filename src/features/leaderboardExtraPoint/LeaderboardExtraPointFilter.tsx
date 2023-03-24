@@ -27,7 +27,7 @@ interface ILeaderboardExtraPointFilterProps {
 	form: FormInstance
 	currencyListBySite: Currency[]
 	timeZoneUtcOffset: number
-	LeaderBoardCategoryList: ILeaderBoardCategoryEnumData[]
+	leaderBoardCategoryList: ILeaderBoardCategoryEnumData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
@@ -49,7 +49,7 @@ const LeaderboardExtraPointFilter = ({
 	form,
 	currencyListBySite,
 	timeZoneUtcOffset,
-	LeaderBoardCategoryList,
+	leaderBoardCategoryList,
 	onTimeZoneChange,
 	onSearch,
 }: ILeaderboardExtraPointFilterProps) => {
@@ -59,7 +59,7 @@ const LeaderboardExtraPointFilter = ({
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(item => item.currencyId),
+					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 				})
 			} else {
 				form.setFieldsValue({
@@ -68,7 +68,11 @@ const LeaderboardExtraPointFilter = ({
 			}
 		}
 		return (
-			<Form.Item name='currencyIds' label={t('Label_Currency')}>
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[{ required: true }]}
+			>
 				<MultipleSelect
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
@@ -91,7 +95,7 @@ const LeaderboardExtraPointFilter = ({
 		const onChangeCategory = (newCategoryIds: number[]) => {
 			if (newCategoryIds.includes(0)) {
 				form.setFieldsValue({
-					categoryIds: LeaderBoardCategoryList?.map(item => item.value),
+					categoryIds: leaderBoardCategoryList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
@@ -100,16 +104,20 @@ const LeaderboardExtraPointFilter = ({
 			}
 		}
 		return (
-			<Form.Item name='categoryIds' label={t('Label_Currency')}>
+			<Form.Item
+				name='categoryIds'
+				label={t('Label_Category')}
+				rules={[{ required: true }]}
+			>
 				<MultipleSelect
 					onChange={onChangeCategory}
 					placeholder={t('Label_Select')}
 				>
-					{(LeaderBoardCategoryList?.length as number) > 1 && (
+					{(leaderBoardCategoryList?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
 
-					{LeaderBoardCategoryList?.map(({ value, name }) => (
+					{leaderBoardCategoryList?.map(({ value, name }) => (
 						<Option key={value} value={value}>
 							{name}
 						</Option>

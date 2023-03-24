@@ -1,16 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { IAddForm } from 'features/leaderboardExtraPoint/type'
+import { IAddForm, IExtraPointData } from 'features/leaderboardExtraPoint/type'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
 import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
 import { Button, Col, Modal, Row, Typography, Form, FormInstance } from 'antd'
 import { xlsxMimeType } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
+import BatchLogTable from 'features/leaderboardExtraPoint/modal/BatchLogTable'
 
 interface ILeaderboardExtraPointBatchModalProps {
 	loading: boolean
 	visible: boolean
+	uploadSuccess: boolean
 	form: FormInstance<IAddForm>
+	batchLog: IExtraPointData[]
 	onFinish: (file: UploadFile[]) => void
 	onCancel: () => void
 }
@@ -18,7 +21,9 @@ interface ILeaderboardExtraPointBatchModalProps {
 const LeaderboardExtraPointBatchModal = ({
 	loading,
 	visible,
+	uploadSuccess,
 	form,
+	batchLog,
 	onFinish,
 	onCancel,
 }: ILeaderboardExtraPointBatchModalProps) => {
@@ -97,6 +102,9 @@ const LeaderboardExtraPointBatchModal = ({
 					</Col>
 				</Row>
 			</Form>
+			{batchLog.length > 0 && !uploadSuccess && (
+				<BatchLogTable batchLog={batchLog} />
+			)}
 		</Modal>
 	)
 }

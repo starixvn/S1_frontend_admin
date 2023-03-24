@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment/moment'
 import download from 'downloadjs'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -24,10 +24,13 @@ import {
 	useExportLeaderboardExtraPointMutation,
 	useAddLeaderboardExtraPointMutation,
 } from 'features/leaderboardExtraPoint/api'
-import { IFilterForm } from 'features/leaderboardExtraPoint/type'
+import {
+	IFilterForm,
+	IExtraPointData,
+} from 'features/leaderboardExtraPoint/type'
 import LeaderboardExtraPointFilter from 'features/leaderboardExtraPoint/LeaderboardExtraPointFilter'
 import LeaderboardExtraPointTable from 'features/leaderboardExtraPoint/LeaderboardExtraPointTable'
-import LeaderboardExtraPointBatchModal from 'features/leaderboardExtraPoint/LeaderboardExtraPointBatchModal'
+import LeaderboardExtraPointBatchModal from 'features/leaderboardExtraPoint/modal/LeaderboardExtraPointBatchModal'
 
 const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -37,8 +40,10 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { addPermission, exportExcelPermission } = {} } =
 		useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const [filterForm] = Form.useForm<IFilterForm>()
+	const [uploadSuccess, setUploadSuccess] = useState(false)
+	const [batchLog, setBatchLog] = useState<IExtraPointData[]>([])
 	const [addForm] = Form.useForm()
+	const [filterForm] = Form.useForm<IFilterForm>()
 	const leaderboardExtraPointBatchModal = useModal()
 
 	const [
@@ -46,21 +51,21 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 		{
 			data: {
 				data: leaderboardExtraPointList = [],
-				rowCount: leaderboardTotal = 0,
+				rowCount: leaderboardExtraPointTotal = 0,
 			} = {},
 			isFetching: isGetLeaderboardExtraPointFetching,
 		},
 	] = useLazyGetLeaderboardExtraPointQuery()
 
 	const {
-		data: { data: LeaderBoardCategoryList = [] } = {},
+		data: { data: leaderBoardCategoryList = [] } = {},
 		isLoading: isGetLeaderBoardCategoryLoading,
 	} = useGetEnumTypeQuery({
 		enumName: 'LeaderBoardCategoryEnum',
 	})
 
 	const [pagination, setPagination] = usePagination({
-		paginationTotal: leaderboardTotal,
+		paginationTotal: leaderboardExtraPointTotal,
 	})
 
 	const [
@@ -129,7 +134,12 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleExport = async () => {
 		if (!siteId) return
-		const { startDate, endDate, currencyIds, categoryIds } = queryParams
+		const {
+			startDate,
+			endDate,
+			currencyIds = [],
+			categoryIds = [],
+		} = queryParams
 
 		const args = {
 			siteId,
@@ -154,7 +164,9 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleAddLeaderboardExtraPoint = async (fileList: UploadFile[]) => {
 		if (!siteId) return
-
+		// 這裡如果直接進 error 會有沒有 errorMessage BatchLogTable 還停留在上個資料的情況
+		// 故每次 submit 前先清除
+		setBatchLog([])
 		// 因為 fileList 沒有渲染在畫面上 所以用 message.error show error
 		if (isEmpty(fileList)) {
 			message.error(t('Label_Required', { key: t('Label_File') }))
@@ -163,9 +175,24 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 			formData.append('siteId', siteId.toString())
 			formData.append('excelUpload', fileList[0] as RcFile)
 			try {
-				await addLeaderboardExtraPoint(formData).unwrap()
-				leaderboardExtraPointBatchModal.onCancel()
-				message.success(t('System.Label_Success'))
+				const addLeaderboardExtraPointList = await addLeaderboardExtraPoint(
+					formData
+				).unwrap()
+				setBatchLog(addLeaderboardExtraPointList)
+				let isOk = true
+				addLeaderboardExtraPointList.forEach(({ errorCode }) => {
+					if (errorCode !== 0) {
+						isOk = false
+					}
+				})
+				if (isOk) {
+					setUploadSuccess(true)
+					message.success(t('System.Label_Success'))
+					leaderboardExtraPointBatchModal.onCancel()
+				} else {
+					setUploadSuccess(false)
+					message.error(t('System.Label_Failed'))
+				}
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -176,6 +203,15 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const loading =
 		isGetLeaderboardExtraPointFetching || isGetLeaderBoardCategoryLoading
+
+	useEffect(() => {
+		if (!loading) {
+			filterForm.setFieldsValue({
+				currencyIds: currencyListBySite.map(({ currencyId }) => currencyId),
+				categoryIds: leaderBoardCategoryList.map(({ value }) => value),
+			})
+		}
+	}, [isGetLeaderBoardCategoryLoading])
 
 	useEffect(() => {
 		const init = () => {
@@ -217,7 +253,7 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				currencyListBySite={currencyListBySite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				LeaderBoardCategoryList={LeaderBoardCategoryList}
+				leaderBoardCategoryList={leaderBoardCategoryList}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
@@ -232,19 +268,24 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 			)}
 
 			<LeaderboardExtraPointBatchModal
-				loading={isAddLeaderboardExtraPointLoading}
 				form={addForm}
+				uploadSuccess={uploadSuccess}
+				loading={isAddLeaderboardExtraPointLoading}
+				batchLog={batchLog}
 				visible={leaderboardExtraPointBatchModal.visible}
 				onFinish={handleAddLeaderboardExtraPoint}
-				onCancel={() => leaderboardExtraPointBatchModal.onCancel()}
+				onCancel={() => {
+					leaderboardExtraPointBatchModal.onCancel()
+					setBatchLog([])
+				}}
 			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				<AffixButtons.FileExport
-					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
-					onClick={handleExport}
 					loading={isExportLeaderboardExtraPointLoading}
+					onClick={handleExport}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 				/>
 				<AffixButtons.AddBatch
 					onClick={leaderboardExtraPointBatchModal.onOpen}
