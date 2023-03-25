@@ -21,6 +21,14 @@ const bonusInfoApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 用來拿 summary 的 api
+		getInfoSummary: builder.query<IBonusInfoData, IGetBonusInfoArgs>({
+			query: data => ({
+				url: 'MpaBonusInfoReport/GetInfoDataSummary',
+				method: 'POST',
+				data,
+			}),
+		}),
 		exportBonusInfo: builder.mutation<Blob, IExportBonusInfoArgs>({
 			query: data => ({
 				url: 'MpaBonusInfoReport/ExportInfoData',
@@ -52,6 +60,7 @@ const bonusInfoApi = rootApi.injectEndpoints({
 
 export const {
 	useLazyGetBonusInfoQuery,
+	useLazyGetInfoSummaryQuery,
 	useExportBonusInfoMutation,
 	useLazyGetBonusDetailQuery,
 	useExportBonusDetailMutation,
