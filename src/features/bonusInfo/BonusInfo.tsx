@@ -16,6 +16,7 @@ import {
 	useExportBonusInfoMutation,
 	useLazyGetBonusDetailQuery,
 	useLazyGetBonusInfoQuery,
+	useLazyGetInfoSummaryQuery,
 } from 'features/bonusInfo/api'
 import {
 	PAGINATION,
@@ -75,6 +76,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: bonusInfoTotal,
 	})
+
+	const [
+		getInfoSummary,
+		{
+			data: bonusSummary = {} as IBonusInfoData,
+			isFetching: isGetBonusSummaryLoading,
+		},
+	] = useLazyGetInfoSummaryQuery()
 
 	const {
 		data: { data: bonusStatusList = [] } = {},
@@ -163,6 +172,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 		try {
 			await getBonusInfo({
+				siteId,
+				...args,
+			}).unwrap()
+			await getInfoSummary({
 				siteId,
 				...args,
 			}).unwrap()
@@ -530,9 +543,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			/>
 			{!isEmpty(queryParams) && (
 				<BonusInfoTable
-					loading={isGetBonusInfoLoading || isExportBonusInfoLoading}
+					loading={
+						isGetBonusInfoLoading ||
+						isExportBonusInfoLoading ||
+						isGetBonusSummaryLoading
+					}
 					isGroupByDate={formGroupByDate}
 					bonusInfo={bonusInfo}
+					bonusSummary={bonusSummary}
 					bonusTypeList={bonusTypeList}
 					bonusStatusList={bonusStatusList}
 					exportExcelPermission={exportExcelPermission}

@@ -9,12 +9,12 @@ import { dateFormat, numFormatToDigits } from 'common/utils/format'
 import { SorterResult } from 'antd/es/table/interface'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { PermissionInterface } from 'type'
-import { sumTotalObject } from 'common/utils'
 
 interface IBonusInfoTableProps {
 	loading: boolean
 	isGroupByDate: boolean
 	bonusInfo: IBonusInfoData[]
+	bonusSummary: IBonusInfoData
 	bonusTypeList: IEnumTypeData[]
 	bonusStatusList: IEnumTypeData[]
 	exportExcelPermission?: PermissionInterface
@@ -36,6 +36,7 @@ const BonusInfoTable = ({
 	loading,
 	isGroupByDate,
 	bonusInfo,
+	bonusSummary,
 	bonusTypeList,
 	bonusStatusList,
 	exportExcelPermission,
@@ -273,11 +274,7 @@ const BonusInfoTable = ({
 					size='small'
 					bordered
 					// eslint-disable-next-line react/no-unstable-nested-components
-					summary={pageData => {
-						if (pageData.length <= 1) return null
-						const totalData: IBonusInfoData = sumTotalObject(
-							pageData as object[]
-						)
+					summary={() => {
 						const {
 							runningCount,
 							cancelCount,
@@ -288,7 +285,8 @@ const BonusInfoTable = ({
 							ggr,
 							totalDeposit,
 							totalWithdrawal,
-						} = totalData
+						} = bonusSummary
+
 						return (
 							<Summary fixed>
 								<Summary.Row style={{ background: '#fafafa' }}>
@@ -327,11 +325,11 @@ const BonusInfoTable = ({
 									<Summary.Cell index={13} align='center'>
 										{ggr ? numFormatToDigits(ggr) : 0}
 									</Summary.Cell>
-									{/* 怪怪的 bug 這裡 index 不能給 14 他會自動加入 colSpan={2} , 給 14以外就沒事  */}
-									<Summary.Cell index={15} align='center'>
+									{/* 根據 isGroupByDate 調整  */}
+									<Summary.Cell index={isGroupByDate ? 14 : 15} align='center'>
 										{totalDeposit ? numFormatToDigits(totalDeposit) : 0}
 									</Summary.Cell>
-									<Summary.Cell index={16} align='center'>
+									<Summary.Cell index={isGroupByDate ? 15 : 16} align='center'>
 										{totalWithdrawal ? numFormatToDigits(totalWithdrawal) : 0}
 									</Summary.Cell>
 								</Summary.Row>
