@@ -191,7 +191,6 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 					leaderboardExtraPointBatchModal.onCancel()
 				} else {
 					setUploadSuccess(false)
-					message.error(t('System.Label_Failed'))
 				}
 			} catch (error) {
 				message.error(

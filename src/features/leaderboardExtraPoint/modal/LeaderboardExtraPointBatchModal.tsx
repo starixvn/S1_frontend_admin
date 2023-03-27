@@ -64,35 +64,41 @@ const LeaderboardExtraPointBatchModal = ({
 			width='45%'
 		>
 			<Form layout='vertical' size='middle' form={form}>
-				<Row align='middle' justify='center' gutter={[16, 8]}>
+				<Row
+					align='middle'
+					justify='center'
+					gutter={16}
+					style={{ marginBottom: 8 }}
+				>
 					<Col span={24} style={{ textAlign: 'center' }}>
 						<Typography.Text>
 							{t('Label_Download', { key: t('Label_TemplateFile') })}
 						</Typography.Text>
 					</Col>
-					<Col span={24} style={{ textAlign: 'center', marginBottom: 24 }}>
+				</Row>
+				<Row justify='center' gutter={16}>
+					<Col span={8} style={{ textAlign: 'center', marginBottom: 24 }}>
 						<Link
 							to='/exampleFile/LeaderboardExtraPoint.xlsx'
 							download='LeaderboardExtraPoint.xlsx'
 							target='_blank'
 							style={{ color: 'white' }}
 						>
-							<Button
-								style={{ maxWidth: '200px' }}
-								type='primary'
-								icon={<DownloadOutlined />}
-								block
-							>
+							<Button type='primary' icon={<DownloadOutlined />} block>
 								{t('Label_TemplateFile')}
 							</Button>
 						</Link>
 					</Col>
-					<Col span={24} style={{ textAlign: 'center' }}>
+				</Row>
+				<Row justify='center' gutter={16} style={{ marginBottom: 8 }}>
+					<Col span={8} style={{ textAlign: 'center' }}>
 						<Typography.Text>
 							{t('Label_Upload', { key: t('Label_File') })}
 						</Typography.Text>
 					</Col>
-					<Col style={{ textAlign: 'center' }}>
+				</Row>
+				<Row justify='center' gutter={16}>
+					<Col span={8} style={{ textAlign: 'center' }}>
 						<StyleUpload {...props}>
 							<Button icon={<UploadOutlined />}>
 								{t('Label_Upload', { key: t('Label_File') })}
@@ -101,6 +107,7 @@ const LeaderboardExtraPointBatchModal = ({
 						<Form.Item name='fileList' noStyle />
 					</Col>
 				</Row>
+				<br />
 			</Form>
 			{batchLog.length > 0 && !uploadSuccess && (
 				<BatchLogTable batchLog={batchLog} />
