@@ -1097,7 +1097,6 @@
 	"Label_CryptoWalletAddress": "Crypto Wallet Address",
 	"Label_AddBlockCryptoWallet": "Add Block Crypto Wallet",
 	"Label_CryptoType": "Crypto Type",
-	"Label_Network": "Network",
 	"Label_Summary": "Summary",
 	"Label_AssociateAccountCount": "Associate Account Count",
 	"Label_TotalAdjustmentAmount": "Total Adjustment Amount",
@@ -1105,5 +1104,7 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_CheckBy": "Check By"
+	"Label_CheckBy": "Check By",
+	"Label_Network": "Network",
+	"Label_PayGroup": "Pay Group"
 }

@@ -41,6 +41,7 @@ export interface IGetBankCardListData {
 	sort: number
 	lastUpdateTime: string
 	lastUpdater: null | string
+	groupId: number
 }
 
 export type IGetBankCardListResponse = IAxiosResponse<IGetBankCardListData[]>
@@ -59,6 +60,7 @@ export interface ISetBankCardArgs {
 	status: number
 	supportChannels: number[]
 	qrCodeUrl: string | null
+	groupId?: number
 }
 
 export interface IGetPointLevelListArgs {
@@ -94,6 +96,7 @@ export type IGetQrCodeUrlResponse = IAxiosResponse<{ qrCodeUrl: string }>
 export enum SupportChannelEnum {
 	LocalBank,
 	EWallet,
+	QRPay,
 }
 
 export enum BankCardListStatusEnum {
@@ -102,4 +105,34 @@ export enum BankCardListStatusEnum {
 	Suspend,
 	Closed,
 	Maintenance,
+}
+
+export interface IModalForm {
+	currency: number
+	bankName: string
+	accountName: string
+	accountNo: string
+	minAmount: number
+	maxAmount: number
+	dailyLimitAmount: number
+	purpose: string
+	vipLevels: number[]
+	status: number
+	pointLevels: number[]
+	supportChannels: number[]
+	qrCodeUrl: string | null
+	sort: number
+	memo: string
+	groupId: number
+}
+
+export interface IFilterForm {
+	purposes: Array<number | string>
+	statuses: number[]
+	sysIds: Array<number | string>
+	vipLevels: Array<number | string>
+	pointLevels: Array<number | string>
+	supportChannels: Array<number | string>
+	agent: string
+	accountNo: string
 }

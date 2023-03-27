@@ -118,3 +118,11 @@ export interface ISlotTpData {
 	gameList: null
 	checked: boolean
 }
+
+export type ILocalPaySettingData = {
+	currencyId: number
+	sysId: number
+	groupId: number
+	groupName: string
+	type: number
+}

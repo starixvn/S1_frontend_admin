@@ -17,14 +17,18 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
-import { IVipLevelsData } from 'common/service/allDataApi'
-import { useGetQrCodeUrlMutation } from 'features/bankCardManagement/api'
+import { ILocalPaySettingData, IVipLevelsData } from 'common/service/allDataApi'
+import {
+	useCheckQrCodeImgMutation,
+	useGetQrCodeUrlMutation,
+} from 'features/bankCardManagement/api'
 import { DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { RcFile } from 'antd/es/upload'
-import { includes, isNull } from 'lodash'
+import { isNull } from 'lodash'
 import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { multiIncludes } from 'common/utils'
 
 interface IEditBankCardModal {
 	loading: boolean
@@ -36,6 +40,7 @@ interface IEditBankCardModal {
 	vipLevelList: IVipLevelsData[]
 	statusEnumList: IEnumTypeData[]
 	supportChannelsList: IEnumTypeData[]
+	localPaySettingList: ILocalPaySettingData[]
 	pointLevelList: number[]
 }
 
@@ -51,19 +56,21 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 	vipLevelList,
 	statusEnumList,
 	pointLevelList,
+	localPaySettingList,
 	supportChannelsList,
 }) => {
 	const { t } = useTranslation()
 	const [getQrCodeUrl] = useGetQrCodeUrlMutation()
+	const [checkQrCodeImg] = useCheckQrCodeImgMutation()
 	const [fileList, setFileList] = useState<UploadFile[]>([])
 	const supportChannels = Form.useWatch('supportChannels', form)
 
 	// 上傳 QRCode 將Url 填入 form表單
 	const handleUploadQrCode = async (formData: FormData) => {
 		try {
+			await checkQrCodeImg(formData).unwrap()
 			const { data } = await getQrCodeUrl(formData).unwrap()
 			const { qrCodeUrl } = data
-
 			if (isNull(qrCodeUrl)) {
 				// manual Error , erase FileList
 				message.error(t('Label_QrCodeErrorMsg'))
@@ -96,6 +103,7 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 		onPreview: () => false,
 		// 上傳行為處理在此
 		onChange: async ({ fileList: [file] }) => {
+			if (!file) return
 			// uploading 狀態
 			file.status = 'uploading'
 			setFileList([file])
@@ -103,7 +111,8 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 				const formData = new FormData()
 				formData.append('File', file.originFileObj as RcFile)
 				await handleUploadQrCode(formData)
-				file.status = 'done'
+				file.status = 'success'
+				setFileList([file])
 			} catch (error) {
 				// 清空 list
 				setFileList([])
@@ -355,6 +364,32 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 							</StyleUpload>
 						</Form.Item>
 					</Col>
+					{/* 只有 EWallet 跟 QRPay 可以選 PayGroup  */}
+					{multiIncludes(supportChannels, [
+						SupportChannelEnum.EWallet,
+						SupportChannelEnum.QRPay,
+					]) && (
+						<Col span={12}>
+							<Form.Item
+								name='groupId'
+								label={t('Label_PayGroup')}
+								rules={[
+									{
+										required: true,
+										message: '',
+									},
+								]}
+							>
+								<Select>
+									{localPaySettingList?.map(({ groupId, groupName }) => (
+										<Option key={groupId} value={groupId}>
+											{groupName}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+						</Col>
+					)}
 				</Row>
 				<Row gutter={16}>
 					<Col span={24}>
@@ -364,7 +399,11 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 							label={
 								<Space>
 									{t('Label_QrCodeUrl')}
-									{!includes(supportChannels, SupportChannelEnum.EWallet) && (
+									{/* 只有 localBank 可以刪除 url */}
+									{!multiIncludes(supportChannels, [
+										SupportChannelEnum.EWallet,
+										SupportChannelEnum.QRPay,
+									]) && (
 										<Typography.Link
 											onClick={() => {
 												form.setFieldsValue({
@@ -379,10 +418,10 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 							}
 							rules={[
 								{
-									required: includes(
-										supportChannels,
-										SupportChannelEnum.EWallet
-									),
+									required: multiIncludes(supportChannels, [
+										SupportChannelEnum.EWallet,
+										SupportChannelEnum.QRPay,
+									]),
 									message: t('Label_Required', {
 										key: t('Label_QrCodeUrl'),
 									}),
