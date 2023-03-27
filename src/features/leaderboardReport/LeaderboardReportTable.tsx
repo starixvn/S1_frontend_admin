@@ -68,7 +68,6 @@ const LeaderboardReportTable = ({
 				loading={loading}
 				columns={columns}
 				dataSource={leaderboardReportList}
-				size='large'
 				pagination={false}
 			/>
 		</LayoutContent.Card>
