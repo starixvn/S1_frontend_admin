@@ -65,6 +65,7 @@ export type EnumNameType =
 	| 'CustCryptoWalletDetailSatatus'
 	| 'DirectionEnum'
 	| 'DepositReceiptCreateFromEnum'
+	| 'LeaderBoardCategoryEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -121,6 +122,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
+	 * @argument {string}  LeaderBoardCategoryEnum - 取得 LeaderBoardCategory 列表
 	 */
 	enumName: EnumNameType
 }

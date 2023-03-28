@@ -437,6 +437,10 @@ const paths = {
 				root: 'report/bonusInfoReport',
 				functionId: 72,
 			},
+			leaderboardReport: {
+				root: 'report/leaderboardReport',
+				functionId: 143,
+			},
 		},
 	},
 	member: {

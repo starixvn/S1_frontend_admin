@@ -1104,7 +1104,10 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_CheckBy": "Check By",
 	"Label_Network": "Network",
-	"Label_PayGroup": "Pay Group"
+	"Label_PayGroup": "Pay Group",
+	"Label_CheckBy": "Check By",
+	"Label_Ranking": "Ranking",
+	"Label_Points": "Points",
+	"Label_MonthRequire": "Month is Required"
 }
