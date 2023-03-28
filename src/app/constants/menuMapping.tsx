@@ -921,7 +921,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.leaderboardExtraPoint.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.leaderboardExtraPoint.root,
 	},
 ]
