@@ -1020,6 +1020,12 @@ const BlockCryptoWallet = lazy(
 		)
 )
 
+const LeaderboardExtraPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LeaderboardExtraPoint' */ 'features/leaderboardExtraPoint/LeaderboardExtraPoint'
+		)
+)
 const LeaderboardReport = lazy(
 	() =>
 		import(
@@ -2666,6 +2672,16 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.leaderboardReport.functionId}
 					>
 						<LeaderboardReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.leaderboardExtraPoint.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.cms.sub.leaderboardExtraPoint.functionId}
+					>
+						<LeaderboardExtraPoint />
 					</AuthRequire>
 				),
 			},
