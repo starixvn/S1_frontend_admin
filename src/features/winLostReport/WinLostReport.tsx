@@ -241,7 +241,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						result = await getWinLossByPlayer({
 							...args,
 							pageNumber: current,
-							pageSize,
+							// payload 傳pageSize api回傳資料數為 pageSize+1 ,故這邊-1
+							pageSize: pageSize - 1,
 						}).unwrap()
 					} catch (error) {
 						message.error(
