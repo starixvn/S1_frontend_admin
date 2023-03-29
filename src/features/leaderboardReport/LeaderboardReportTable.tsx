@@ -2,7 +2,7 @@ import { Table } from 'components'
 import { Typography } from 'antd'
 import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
 import { ILeaderboardReportData } from 'features/leaderboardReport/type'
@@ -58,7 +58,7 @@ const LeaderboardReportTable = ({
 			dataIndex: 'points',
 			align: 'center' as 'center',
 			width: '30%',
-			render: (points: number) => numberFormatter.format(points) ?? 'N/A',
+			render: (points: number) => numFormatToDigits(points || 0),
 		},
 	]
 
