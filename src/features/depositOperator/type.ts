@@ -108,6 +108,7 @@ export interface IDepositOperatorData {
 	depositTypeName: string
 	currencyId: number
 	isoCode: string
+	network: string | null
 	custId: number
 	userName: string | null
 	email: string | null
