@@ -251,9 +251,7 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={loading}
 				form={filterForm}
 				currencyListBySite={currencyListBySite}
-				timeZoneUtcOffset={timeZoneUtcOffset}
 				leaderBoardCategoryList={leaderBoardCategoryList}
-				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
 			{!isEmpty(queryParams) && (
