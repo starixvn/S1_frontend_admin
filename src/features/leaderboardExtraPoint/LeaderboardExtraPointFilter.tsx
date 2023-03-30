@@ -17,7 +17,6 @@ import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
-import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import { ILeaderBoardCategoryEnumData } from 'features/leaderboardExtraPoint/type'
@@ -26,9 +25,7 @@ interface ILeaderboardExtraPointFilterProps {
 	loading: boolean
 	form: FormInstance
 	currencyListBySite: Currency[]
-	timeZoneUtcOffset: number
 	leaderBoardCategoryList: ILeaderBoardCategoryEnumData[]
-	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
 		pageSize,
@@ -48,9 +45,7 @@ const LeaderboardExtraPointFilter = ({
 	loading,
 	form,
 	currencyListBySite,
-	timeZoneUtcOffset,
 	leaderBoardCategoryList,
-	onTimeZoneChange,
 	onSearch,
 }: ILeaderboardExtraPointFilterProps) => {
 	const { t } = useTranslation()
@@ -165,12 +160,7 @@ const LeaderboardExtraPointFilter = ({
 													])}
 												/>
 											</Form.Item>
-											<div>
-												<TimeZoneSelect
-													value={timeZoneUtcOffset}
-													onChange={onTimeZoneChange}
-												/>
-											</div>
+											{/* active Date 沒有分秒區別 參數一樣帶+8 不選時區  */}
 										</Input.Group>
 									</Form.Item>
 								</Col>

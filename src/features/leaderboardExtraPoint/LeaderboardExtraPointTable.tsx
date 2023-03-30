@@ -57,9 +57,11 @@ const LeaderboardExtraPointTable = ({
 			dataIndex: 'activeDate',
 			align: 'center' as 'center',
 			width: '15%',
+			// active Date 這裡 timezone 預設帶 +8 但後端不會用到
+			// active Date 沒有分秒區別 只顯示年月日
 			render: (activeDate: string) =>
 				activeDate
-					? moment(activeDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? moment(activeDate).utcOffset(timeZoneUtcOffset).format('YYYY-MM-DD')
 					: '',
 		},
 		{
