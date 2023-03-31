@@ -18,10 +18,7 @@ import {
 	jsonToObject,
 	numFormatToDigits,
 } from 'common/utils/format'
-import {
-	IDepositInfo,
-	IDepositOperatorData,
-} from 'features/depositOperator/type'
+import { IDepositOperatorData } from 'features/depositOperator/type'
 import {
 	DEPOSIT_STATUS_TAGS_COLOR,
 	VIP_LEVELS_COLOR,
@@ -161,14 +158,13 @@ const DepositOperatorTable = ({
 		{
 			title: t('Label_NetWork'),
 			key: 'netWork',
-			dataIndex: 'depositInfo',
+
 			width: 60,
 			align: 'center' as 'center',
-			render: (depositInfo: IDepositInfo) => {
-				const { channelName } = jsonToObject(depositInfo) ?? {}
+			render: ({ network }: IDepositOperatorData) => {
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{channelName || '-'}
+						{network || '-'}
 					</Typography.Text>
 				)
 			},
