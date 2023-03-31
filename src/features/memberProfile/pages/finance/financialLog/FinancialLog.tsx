@@ -102,8 +102,8 @@ const FinancialLog = () => {
 			timeZoneUtcOffset
 		)
 		const args = {
-			// * export 功能只有單頁，因此 pageNumber:1、pageSize:-1 帶固定的值
-			pageNumber: 1,
+			// * export 功能只有單頁，因此 pageNumber 帶固定的值
+			pageNumber: pagination.current,
 			pageSize: -1,
 			custId: Number(custId),
 			startDate,
