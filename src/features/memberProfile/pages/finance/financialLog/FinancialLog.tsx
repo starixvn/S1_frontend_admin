@@ -102,9 +102,9 @@ const FinancialLog = () => {
 			timeZoneUtcOffset
 		)
 		const args = {
-			// * export 功能只有單頁，因此 pageNumber 固定帶 -1
+			// * pageNumber、pageSize 固定帶 -1 api 則會吐全部筆數資料回單頁 excel
 			pageNumber: -1,
-			pageSize: pagination.pageSize,
+			pageSize: -1,
 			custId: Number(custId),
 			startDate,
 			endDate,
