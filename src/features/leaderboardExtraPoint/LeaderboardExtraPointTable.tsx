@@ -73,7 +73,7 @@ const LeaderboardExtraPointTable = ({
 			render: (categoryName: number) => categoryName || '-',
 		},
 		{
-			title: t('Label_ExtraPoint'),
+			title: t('Label_ValidTurnover'),
 			key: 'extraPoint',
 			dataIndex: 'extraPoint',
 			align: 'center' as 'center',
