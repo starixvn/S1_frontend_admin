@@ -921,6 +921,42 @@ const SmsGenerator = lazy(
 		)
 )
 
+const MpaMarketing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MpaMarketing' */ 'features/marketing/Marketing'
+		)
+)
+
+// *  marketing > DepositAmount 列表
+const DepositAmount = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositAmount' */ 'features/marketing/depositAmount/DepositAmount'
+		)
+)
+
+// *  marketing > WithdrawalAmount 列表
+const WithdrawalAmount = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalAmount' */ 'features/marketing/withdrawalAmount/WithdrawalAmount'
+		)
+)
+
+// *  marketing > NRU 列表
+const Nru = lazy(
+	() => import(/* webpackChunkName: 'Nru' */ 'features/marketing/nru/Nru')
+)
+
+// *  marketing > BonusAmountClaimed 列表
+const BonusAmountClaimed = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusAmountClaimed' */ 'features/marketing/bonusAmountClaimed/BonusAmountClaimed'
+		)
+)
+
 const ProductMaintenance = lazy(
 	() =>
 		import(
@@ -2385,6 +2421,56 @@ const routes: RouteObject[] = [
 						}
 					>
 						<SmsGenerator />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<MpaMarketing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.depositAmount.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<DepositAmount />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.withdrawalAmount.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<WithdrawalAmount />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.nru.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<Nru />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.bonusClaimedInfo.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<BonusAmountClaimed />
 					</AuthRequire>
 				),
 			},
