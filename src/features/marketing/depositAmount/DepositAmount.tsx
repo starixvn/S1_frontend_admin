@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { useEffect } from 'react'
 import download from 'downloadjs'
-import { isEmpty } from 'lodash'
+import { isEmpty, omit } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -73,28 +73,28 @@ const DepositAmount = () => {
 	}
 
 	const {
-		isCompared: removeIsCompared,
-		timezone: deleteTimeZone,
-		...newQueryData
-	} = queryData
-
-	const {
 		data: {
 			data: marketingDepositSummaryData = {} as IMarketingDepositSummaryData,
 		} = {},
 		isFetching: isMarketingDepositSummaryFetching,
-	} = useGetMarketingDepositSummaryDataQuery(newQueryData, {
-		skip: isEmpty(queryParams),
-	})
+	} = useGetMarketingDepositSummaryDataQuery(
+		omit(queryData, ['isCompared', 'timezone']),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const {
 		data: {
 			data: marketingDepositSignUpUrlSummaryData = {} as IMarketingDepositSignUpUrlSummaryData,
 		} = {},
 		isFetching: isMarketingDepositSignUpUrlSummaryFetching,
-	} = useGetMarketingDepositSignUpUrlSummaryDataQuery(newQueryData, {
-		skip: isEmpty(queryParams),
-	})
+	} = useGetMarketingDepositSignUpUrlSummaryDataQuery(
+		omit(queryData, ['isCompared', 'timezone']),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const [
 		getMarketingDepositSignUpUrlDetailList,
@@ -128,7 +128,7 @@ const DepositAmount = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時在 使用者做 sort 排序
+		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時 使用者做 sort 排序
 		if (!siteId || isEmpty(queryParams)) return
 
 		const args = {
@@ -188,9 +188,11 @@ const DepositAmount = () => {
 
 	const handleExport = async () => {
 		if (!siteId) return
-		const { timezone: removeTimeZone, ...exportQueryData } = queryData
+
 		try {
-			const blob = await exportMarketingDepositReport(exportQueryData).unwrap()
+			const blob = await exportMarketingDepositReport(
+				omit(queryData, ['timezone'])
+			).unwrap()
 			download(
 				blob,
 				`MarketingReport_DepositAmount_${moment().format(
@@ -219,9 +221,14 @@ const DepositAmount = () => {
 			<MarketingTableLayout>
 				{/* Summary */}
 				<MarketingTableLayout.Summary
-					onExportClick={handleExport}
-					exportExcelPermission={exportExcelPermission}
 					hasQueryParams={!isEmpty(queryParams)}
+					exportExcelPermission={exportExcelPermission}
+					onExportClick={handleExport}
+					// title 欄位需要參數
+					title={t('Label_DepositAmount')}
+					baseCurrencyId={Number(baseCurrencyId)}
+					startDate={startDate}
+					endDate={endDate}
 				>
 					<DepositSummaryTable
 						loading={isMarketingDepositSummaryFetching}

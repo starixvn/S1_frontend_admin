@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isEmpty } from 'lodash'
+import { isEmpty, omit } from 'lodash'
 import { useEffect } from 'react'
 import download from 'downloadjs'
 import { useAppSelector } from 'app/store'
@@ -50,8 +50,8 @@ const Nru = () => {
 		isCompared = false,
 		timezone = timeZoneUtcOffset,
 		// NRU Amount 預設
-		orderBy = false,
-		orderByProperty = '',
+		orderBy = true,
+		orderByProperty = 'bonusCode',
 		orderByDirection = OrderByTypeEnum.ascend as number,
 	} = queryParams
 
@@ -71,37 +71,37 @@ const Nru = () => {
 	}
 
 	const {
-		orderBy: removeOrderBy,
-		orderByProperty: removeOrderByProperty,
-		orderByDirection: removeOrderByDirection,
-		timezone: deleteTimeZone,
-		...NruReportQueryData
-	} = queryData
-
-	const {
 		data: { data: marketingNruReportData = {} as IMarketingNruReportData } = {},
 		isFetching: isMarketingNruReportFetching,
-	} = useGetMarketingNruReportQuery(NruReportQueryData, {
-		skip: isEmpty(queryParams),
-	})
-
-	const {
-		orderBy: deleteOrderBy,
-		orderByProperty: deleteOrderByProperty,
-		orderByDirection: deleteOrderByDirection,
-		isCompared: deleteIsCompared,
-		comparedStartDate: deleteComparedStartDate,
-		comparedEndDate: deleteComparedEndDate,
-		timezone: removeTimeZone,
-		...NruBonusReportQueryData
-	} = queryData
+	} = useGetMarketingNruReportQuery(
+		omit(queryData, [
+			'orderBy',
+			'orderByProperty',
+			'orderByDirection',
+			'timezone',
+		]),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const {
 		data: { data: marketingNruBonusReportData = [] } = {},
 		isFetching: isMarketingNruBonusReportFetching,
-	} = useGetMarketingNruBonusReportQuery(NruBonusReportQueryData, {
-		skip: isEmpty(queryParams),
-	})
+	} = useGetMarketingNruBonusReportQuery(
+		omit(queryData, [
+			'orderBy',
+			'orderByProperty',
+			'orderByDirection',
+			'isCompared',
+			'comparedStartDate',
+			'comparedEndDate',
+			'timezone',
+		]),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const [
 		getMarketingNruBonusDetailReportList,
@@ -134,7 +134,7 @@ const Nru = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時在 使用者做 sort 排序
+		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時 使用者做 sort 排序
 		if (!siteId || isEmpty(queryParams)) return
 
 		const args = {
@@ -197,9 +197,10 @@ const Nru = () => {
 	const handleExport = async () => {
 		if (!siteId) return
 
-		const { timezone: eliminateTimeZone, ...exportQueryData } = queryData
 		try {
-			const blob = await exportMarketingNruReport(exportQueryData).unwrap()
+			const blob = await exportMarketingNruReport(
+				omit(queryData, ['timezone'])
+			).unwrap()
 			download(
 				blob,
 				`MarketingReport_NewlyRegisterUsers_${moment().format('YYYYMMDD')}.xlsx`
@@ -226,9 +227,14 @@ const Nru = () => {
 			<LayoutContent.Title title={t('Label_NewlyRegisteredUsers')} />
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
-					onExportClick={handleExport}
-					exportExcelPermission={exportExcelPermission}
 					hasQueryParams={!isEmpty(queryParams)}
+					exportExcelPermission={exportExcelPermission}
+					onExportClick={handleExport}
+					// title 欄位需要參數
+					title={t('Label_NewlyRegisteredUsers')}
+					baseCurrencyId={Number(baseCurrencyId)}
+					startDate={startDate}
+					endDate={endDate}
 				>
 					<NruSummaryReportTable
 						loading={isMarketingNruReportFetching}

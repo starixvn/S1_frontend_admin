@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isEmpty } from 'lodash'
+import { isEmpty, omit } from 'lodash'
 import download from 'downloadjs'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -48,8 +48,8 @@ const BonusAmountClaimed = () => {
 		isCompared = false,
 		timezone = timeZoneUtcOffset,
 		// Bonus Amount Claimed 預設
-		orderBy = false,
-		orderByProperty = '',
+		orderBy = true,
+		orderByProperty = 'bonusAmountClaim',
 		orderByDirection = OrderByTypeEnum.ascend as number,
 	} = queryParams
 
@@ -69,21 +69,21 @@ const BonusAmountClaimed = () => {
 	}
 
 	const {
-		orderBy: removeOrderBy,
-		orderByProperty: removeOrderByProperty,
-		orderByDirection: removeOrderByDirection,
-		timezone: deleteTimeZone,
-		...BonusAmountClaimedQueryData
-	} = queryData
-
-	const {
 		data: {
 			data: marketingBonusAmountClaimedData = {} as IBonusAmountClaimedReportData,
 		} = {},
 		isFetching: isMarketingBonusAmountClaimedFetching,
-	} = useGetMarketingBonusAmountClaimedDataQuery(BonusAmountClaimedQueryData, {
-		skip: isEmpty(queryParams),
-	})
+	} = useGetMarketingBonusAmountClaimedDataQuery(
+		omit(queryData, [
+			'orderBy',
+			'orderByProperty',
+			'orderByDirection',
+			'timezone',
+		]),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const [
 		getMarketingBonusAmountClaimedDetailList,
@@ -117,7 +117,7 @@ const BonusAmountClaimed = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時在 使用者做 sort 排序
+		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時 使用者做 sort 排序
 		if (!siteId || isEmpty(queryParams)) return
 
 		const args = {
@@ -179,9 +179,11 @@ const BonusAmountClaimed = () => {
 
 	const handleExport = async () => {
 		if (!siteId) return
-		const { timezone: removeTimeZone, ...exportQueryData } = queryData
+
 		try {
-			const blob = await exportMarketingDepositReport(exportQueryData).unwrap()
+			const blob = await exportMarketingDepositReport(
+				omit(queryData, ['timezone'])
+			).unwrap()
 			download(
 				blob,
 				`MarketingReport_BonusAmountClaimed_${moment().format('YYYYMMDD')}.xlsx`
@@ -209,9 +211,14 @@ const BonusAmountClaimed = () => {
 
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
-					onExportClick={handleExport}
-					exportExcelPermission={exportExcelPermission}
 					hasQueryParams={!isEmpty(queryParams)}
+					exportExcelPermission={exportExcelPermission}
+					onExportClick={handleExport}
+					// title 欄位需要參數
+					title={t('Label_BonusAmountClaimed')}
+					baseCurrencyId={Number(baseCurrencyId)}
+					startDate={startDate}
+					endDate={endDate}
 				>
 					<BonusAmountClaimedCurrencySumTable
 						loading={isMarketingBonusAmountClaimedFetching}

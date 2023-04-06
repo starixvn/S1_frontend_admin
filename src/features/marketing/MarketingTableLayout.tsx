@@ -1,8 +1,12 @@
+import { find } from 'lodash'
+import moment from 'moment'
 import { ReactNode } from 'react'
-import { Collapse } from 'antd'
+import { Collapse, Card } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { PermissionInterface } from 'type'
+import { selectAllSiteEnableCurrencyList } from 'common/enum'
 import { ExcelExportButton } from 'features/marketing/components/ExcelExportButton'
 
 interface IMpaMarketingLayoutTableProps {
@@ -11,9 +15,14 @@ interface IMpaMarketingLayoutTableProps {
 
 interface ISummaryTableProps {
 	children?: ReactNode
-	onExportClick?: () => void
 	exportExcelPermission?: PermissionInterface
 	hasQueryParams?: boolean
+	onExportClick?: () => void
+	// title 需要參數
+	title?: string
+	baseCurrencyId?: number
+	startDate?: string
+	endDate?: string
 }
 
 interface IDetailTableProps {
@@ -24,36 +33,55 @@ const { Panel } = Collapse
 
 const SummaryTable = ({
 	children,
-	onExportClick,
 	exportExcelPermission,
 	hasQueryParams = false,
+	onExportClick,
+	// title 需要參數
+	title,
+	baseCurrencyId,
+	startDate,
+	endDate,
 }: ISummaryTableProps) => {
 	const { t } = useTranslation()
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
+	const baseCurrency = find(currencyListByAllSite, [
+		'currencyId',
+		baseCurrencyId,
+	])?.isoCode
+
 	return (
-		<Collapse defaultActiveKey={1} expandIconPosition='start'>
-			<Panel
-				extra={
-					hasQueryParams ? (
+		<Card
+			title={`${title}, ${moment(startDate).format('YYYY-MM-DD')}-${moment(
+				endDate
+			).format('YYYY-MM-DD')}, ${t('Label_ViewIn')} ${
+				!baseCurrencyId ? '' : baseCurrency
+			}`}
+		>
+			<Collapse defaultActiveKey={1}>
+				<Panel header={t('Label_Summary')} key='1'>
+					{hasQueryParams ? (
 						<ExcelExportButton
 							onClick={onExportClick}
 							disabled={!exportExcelPermission?.canUse}
 						/>
-					) : null
-				}
-				header={t('Label_Summary')}
-				key='1'
-			>
-				<LayoutContent.Card>{children}</LayoutContent.Card>
-			</Panel>
-		</Collapse>
+					) : null}
+					<LayoutContent.Card style={{ margin: 0 }}>
+						{children}
+					</LayoutContent.Card>
+				</Panel>
+			</Collapse>
+		</Card>
 	)
 }
 const DetailTable = ({ children }: IDetailTableProps) => {
 	const { t } = useTranslation()
+
 	return (
 		<Collapse style={{ marginTop: 36, marginBottom: 36 }} defaultActiveKey={1}>
 			<Panel header={t('Label_Detail')} key='2'>
-				<LayoutContent.Card>{children}</LayoutContent.Card>
+				<LayoutContent.Card style={{ margin: 0 }}>
+					{children}
+				</LayoutContent.Card>
 			</Panel>
 		</Collapse>
 	)

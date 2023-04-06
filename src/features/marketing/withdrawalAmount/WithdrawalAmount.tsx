@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isEmpty } from 'lodash'
+import { isEmpty, omit } from 'lodash'
 import download from 'downloadjs'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -68,19 +68,16 @@ const WithdrawalAmount = () => {
 	}
 
 	const {
-		isCompared: removeIsCompared,
-		timezone: deleteTimeZone,
-		...newQueryData
-	} = queryData
-
-	const {
 		data: {
 			data: mpaMarketingWithdrawalSummaryData = {} as IMarketingWithdrawalSummaryData,
 		} = {},
 		isFetching: isMpaMarketingWithdrawalSummaryFetching,
-	} = useGetMarketingWithdrawalSummaryQuery(newQueryData, {
-		skip: isEmpty(queryParams),
-	})
+	} = useGetMarketingWithdrawalSummaryQuery(
+		omit(queryData, ['isCompared', 'timezone']),
+		{
+			skip: isEmpty(queryParams),
+		}
+	)
 
 	const [
 		getMpaMarketingWithdrawalDetailList,
@@ -114,7 +111,7 @@ const WithdrawalAmount = () => {
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時在 使用者做 sort 排序
+		// 加 isEmpty(queryParams) 判斷是防止 渲染空table時 使用者做 sort 排序
 		if (!siteId || isEmpty(queryParams)) return
 
 		const args = {
@@ -175,10 +172,9 @@ const WithdrawalAmount = () => {
 	const handleExport = async () => {
 		if (!siteId) return
 
-		const { timezone: removeTimeZone, ...exportQueryData } = queryData
 		try {
 			const blob = await exportMpaMarketingWithdrawalReport(
-				exportQueryData
+				omit(queryData, ['timezone'])
 			).unwrap()
 			download(
 				blob,
@@ -208,9 +204,14 @@ const WithdrawalAmount = () => {
 			<MpaMarketingTableLayout>
 				{/* Summary */}
 				<MpaMarketingTableLayout.Summary
-					onExportClick={handleExport}
-					exportExcelPermission={exportExcelPermission}
 					hasQueryParams={!isEmpty(queryParams)}
+					exportExcelPermission={exportExcelPermission}
+					onExportClick={handleExport}
+					// title 欄位需要參數
+					title={t('Label_WithdrawalAmount')}
+					baseCurrencyId={Number(baseCurrencyId)}
+					startDate={startDate}
+					endDate={endDate}
 				>
 					<WithdrawalSummaryTable
 						loading={isMpaMarketingWithdrawalSummaryFetching}
