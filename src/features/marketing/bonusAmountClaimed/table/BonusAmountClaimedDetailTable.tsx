@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
+import { Table } from 'components'
 import {
 	numberFormatter,
 	numFormatToDigits,
@@ -8,7 +9,7 @@ import {
 } from 'common/utils/format'
 import type { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
-import { TablePaginationConfig, Typography, Table } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
 import {
 	IBonusAmountClaimedDetailReportData,
 	IMarketingDepositSignUpDetailData,

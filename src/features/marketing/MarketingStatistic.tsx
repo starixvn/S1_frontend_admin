@@ -46,7 +46,7 @@ const MarketingStatistic = ({
 					) : (
 						<LayoutContent.Card style={{ margin: 0 }}>
 							<Row gutter={[16, 16]}>
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -86,7 +86,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -131,7 +131,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -171,7 +171,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -235,7 +235,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -299,7 +299,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/nru?${searchParams}`}
 										target='_blank'
@@ -370,7 +370,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -434,7 +434,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/depositAmount?${searchParams}`}
 										target='_blank'
@@ -504,7 +504,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/withdrawalAmount?${searchParams}`}
 										target='_blank'
@@ -574,7 +574,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/bonusAmountClaimed?${searchParams}`}
 										target='_blank'
@@ -644,7 +644,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
+								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{

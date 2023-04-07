@@ -56,11 +56,13 @@ const SummaryTable = ({
 			).format('YYYY-MM-DD')}, ${t('Label_ViewIn')} ${
 				!baseCurrencyId ? '' : baseCurrency
 			}`}
+			bodyStyle={{ padding: 0 }}
 		>
 			<Collapse defaultActiveKey={1}>
 				<Panel header={t('Label_Summary')} key='1'>
 					{hasQueryParams ? (
 						<ExcelExportButton
+							style={{ marginTop: 60 }}
 							onClick={onExportClick}
 							disabled={!exportExcelPermission?.canUse}
 						/>

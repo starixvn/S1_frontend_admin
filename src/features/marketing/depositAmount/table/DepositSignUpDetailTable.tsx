@@ -2,8 +2,9 @@ import moment from 'moment/moment'
 import { useTranslation } from 'react-i18next'
 import type { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
-import { TablePaginationConfig, Table, Typography } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
+import { Table } from 'components'
 import {
 	numFormatToDigits,
 	timeFormat,
