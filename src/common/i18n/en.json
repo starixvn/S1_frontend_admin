@@ -1081,6 +1081,7 @@
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
 	"Label_Processing": "Processing",
+	"Label_AdminUserLog": "Admin User Log",
 	"Label_TaggingRestrict": "Tagging Restrict",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
@@ -1104,6 +1105,8 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_AdminUserLog": "Admin User Log",
-	"Label_CheckBy": "Check By"
+	"Label_CheckBy": "Check By",
+	"Label_Ranking": "Ranking",
+	"Label_Points": "Points",
+	"Label_MonthRequire": "Month is Required"
 }

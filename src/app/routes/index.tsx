@@ -1020,6 +1020,13 @@ const BlockCryptoWallet = lazy(
 		)
 )
 
+const LeaderboardReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LeaderboardReport' */ 'features/leaderboardReport/LeaderboardReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2568,6 +2575,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
 						<BonusInfo />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.leaderboardReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.leaderboardReport.functionId}
+					>
+						<LeaderboardReport />
 					</AuthRequire>
 				),
 			},

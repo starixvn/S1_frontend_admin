@@ -158,7 +158,6 @@ const DepositOperatorTable = ({
 		{
 			title: t('Label_NetWork'),
 			key: 'netWork',
-
 			width: 60,
 			align: 'center' as 'center',
 			render: ({ network }: IDepositOperatorData) => {
