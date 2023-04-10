@@ -334,7 +334,7 @@ const TransferAccountManagementForm: FC<
 								onChange={newValues =>
 									onEnumApiMultipleSelectChange(
 										newValues,
-										transferChannelEnum,
+										transferAccountPurposeEnum,
 										form,
 										'purposes'
 									)
