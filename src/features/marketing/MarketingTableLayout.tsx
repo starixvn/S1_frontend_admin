@@ -14,15 +14,15 @@ interface IMpaMarketingLayoutTableProps {
 }
 
 interface ISummaryTableProps {
-	children?: ReactNode
-	exportExcelPermission?: PermissionInterface
-	hasQueryParams?: boolean
-	onExportClick?: () => void
+	children: ReactNode
+	exportExcelPermission: PermissionInterface
+	hasQueryParams: boolean
+	onExportClick: () => void
 	// title 需要參數
-	title?: string
-	baseCurrencyId?: number
-	startDate?: string
-	endDate?: string
+	title: string
+	baseCurrencyId: number
+	startDate: string
+	endDate: string
 }
 
 interface IDetailTableProps {

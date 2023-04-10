@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { isEmpty, omit } from 'lodash'
 import download from 'downloadjs'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -37,6 +37,7 @@ const BonusAmountClaimed = () => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const isInitRef = useRef(false)
 
 	const {
 		startDate,
@@ -72,7 +73,8 @@ const BonusAmountClaimed = () => {
 		data: {
 			data: marketingBonusAmountClaimedData = {} as IBonusAmountClaimedReportData,
 		} = {},
-		isFetching: isMarketingBonusAmountClaimedFetching,
+		isLoading: isMarketingBonusAmountClaimedLoading,
+		isSuccess: isMarketingBonusAmountClaimedSuccess,
 	} = useGetMarketingBonusAmountClaimedDataQuery(
 		omit(queryData, [
 			'orderBy',
@@ -81,7 +83,8 @@ const BonusAmountClaimed = () => {
 			'timezone',
 		]),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
@@ -104,7 +107,7 @@ const BonusAmountClaimed = () => {
 	})
 
 	// 因有 sort & page 所以用 lazyQuery 處理 MarketingBonusAmountClaimedDetail Api
-	const fetchMarketingBonusAmountClaimedDetail = async ({
+	const handleGetMarketingBonusAmountClaimedDetail = async ({
 		orderByProp = false,
 		orderByPropertyProp = '',
 		orderByDirectionProp = OrderByTypeEnum.ascend as number,
@@ -162,7 +165,7 @@ const BonusAmountClaimed = () => {
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
 		if (sorter.order) {
-			await fetchMarketingBonusAmountClaimedDetail({
+			await handleGetMarketingBonusAmountClaimedDetail({
 				orderByProp: true,
 				orderByPropertyProp: sorter.field as string,
 				orderByDirectionProp: orderDirectionConverter(sorter.order as string),
@@ -170,7 +173,7 @@ const BonusAmountClaimed = () => {
 				pageSize,
 			})
 		} else {
-			await fetchMarketingBonusAmountClaimedDetail({
+			await handleGetMarketingBonusAmountClaimedDetail({
 				current,
 				pageSize,
 			})
@@ -198,12 +201,18 @@ const BonusAmountClaimed = () => {
 	// 因MarketingBonusAmountClaimedDetail 用 lazyQuery 需進行第一次初次渲染
 	useEffect(() => {
 		const init = () => {
-			fetchMarketingBonusAmountClaimedDetail({})
+			handleGetMarketingBonusAmountClaimedDetail({})
 		}
 		if (!isEmpty(queryParams)) {
 			init()
 		}
 	}, [])
+
+	useEffect(() => {
+		if (isMarketingBonusAmountClaimedSuccess) {
+			isInitRef.current = true
+		}
+	}, [isMarketingBonusAmountClaimedSuccess])
 
 	return (
 		<LayoutContent.Main>
@@ -212,7 +221,7 @@ const BonusAmountClaimed = () => {
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
 					hasQueryParams={!isEmpty(queryParams)}
-					exportExcelPermission={exportExcelPermission}
+					exportExcelPermission={exportExcelPermission!}
 					onExportClick={handleExport}
 					// title 欄位需要參數
 					title={t('Label_BonusAmountClaimed')}
@@ -221,11 +230,11 @@ const BonusAmountClaimed = () => {
 					endDate={endDate}
 				>
 					<BonusAmountClaimedCurrencySumTable
-						loading={isMarketingBonusAmountClaimedFetching}
+						loading={isMarketingBonusAmountClaimedLoading}
 						marketingBonusAmountClaimedData={marketingBonusAmountClaimedData}
 					/>
 					<BonusAmountClaimedBonusTable
-						loading={isMarketingBonusAmountClaimedFetching}
+						loading={isMarketingBonusAmountClaimedLoading}
 						marketingBonusAmountClaimedData={marketingBonusAmountClaimedData}
 					/>
 				</MarketingTableLayout.Summary>

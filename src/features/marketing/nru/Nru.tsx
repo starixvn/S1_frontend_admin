@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { isEmpty, omit } from 'lodash'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -39,6 +39,7 @@ const Nru = () => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
+	const isInitRef = useRef(false)
 
 	const {
 		startDate,
@@ -72,7 +73,8 @@ const Nru = () => {
 
 	const {
 		data: { data: marketingNruReportData = {} as IMarketingNruReportData } = {},
-		isFetching: isMarketingNruReportFetching,
+		isLoading: isMarketingNruReportLoading,
+		isSuccess: isMarketingNruReportSuccess,
 	} = useGetMarketingNruReportQuery(
 		omit(queryData, [
 			'orderBy',
@@ -81,13 +83,15 @@ const Nru = () => {
 			'timezone',
 		]),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
 	const {
 		data: { data: marketingNruBonusReportData = [] } = {},
-		isFetching: isMarketingNruBonusReportFetching,
+		isLoading: isMarketingNruBonusReportLoading,
+		isSuccess: isMarketingNruBonusReportSuccess,
 	} = useGetMarketingNruBonusReportQuery(
 		omit(queryData, [
 			'orderBy',
@@ -99,7 +103,8 @@ const Nru = () => {
 			'timezone',
 		]),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
@@ -121,7 +126,7 @@ const Nru = () => {
 	})
 
 	// 因有 sort & page 所以用 lazyQuery 處理 MarketingNruBonusDetailReport Api
-	const fetchMarketingNruBonusDetailReport = async ({
+	const handleGetMarketingNruBonusDetailReport = async ({
 		orderByProp = false,
 		orderByPropertyProp = '',
 		orderByDirectionProp = OrderByTypeEnum.ascend as number,
@@ -179,7 +184,7 @@ const Nru = () => {
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
 		if (sorter.order) {
-			await fetchMarketingNruBonusDetailReport({
+			await handleGetMarketingNruBonusDetailReport({
 				orderByProp: true,
 				orderByPropertyProp: sorter.field as string,
 				orderByDirectionProp: orderDirectionConverter(sorter.order as string),
@@ -187,7 +192,7 @@ const Nru = () => {
 				pageSize,
 			})
 		} else {
-			await fetchMarketingNruBonusDetailReport({
+			await handleGetMarketingNruBonusDetailReport({
 				current,
 				pageSize,
 			})
@@ -215,12 +220,18 @@ const Nru = () => {
 	//  因GetMpaMarketingWithdrawalDetail 用 lazyQuery 需進行第一次初次渲染
 	useEffect(() => {
 		const init = () => {
-			fetchMarketingNruBonusDetailReport({})
+			handleGetMarketingNruBonusDetailReport({})
 		}
 		if (!isEmpty(queryParams)) {
 			init()
 		}
 	}, [])
+
+	useEffect(() => {
+		if (isMarketingNruReportSuccess && isMarketingNruBonusReportSuccess) {
+			isInitRef.current = true
+		}
+	}, [isMarketingNruReportSuccess, isMarketingNruBonusReportSuccess])
 
 	return (
 		<LayoutContent.Main>
@@ -228,7 +239,7 @@ const Nru = () => {
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
 					hasQueryParams={!isEmpty(queryParams)}
-					exportExcelPermission={exportExcelPermission}
+					exportExcelPermission={exportExcelPermission!}
 					onExportClick={handleExport}
 					// title 欄位需要參數
 					title={t('Label_NewlyRegisteredUsers')}
@@ -237,15 +248,15 @@ const Nru = () => {
 					endDate={endDate}
 				>
 					<NruSummaryReportTable
-						loading={isMarketingNruReportFetching}
+						loading={isMarketingNruReportLoading}
 						marketingNruReportData={marketingNruReportData}
 					/>
 					<NruReportTable
-						loading={isMarketingNruReportFetching}
+						loading={isMarketingNruReportLoading}
 						marketingNruReportData={marketingNruReportData}
 					/>
 					<NruBonusReportTable
-						loading={isMarketingNruBonusReportFetching}
+						loading={isMarketingNruBonusReportLoading}
 						marketingNruBonusReportData={marketingNruBonusReportData}
 					/>
 				</MarketingTableLayout.Summary>

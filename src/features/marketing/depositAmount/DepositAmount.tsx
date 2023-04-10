@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
 import { isEmpty, omit } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -39,6 +39,7 @@ const DepositAmount = () => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const isInitRef = useRef(false)
 
 	const {
 		startDate,
@@ -76,11 +77,13 @@ const DepositAmount = () => {
 		data: {
 			data: marketingDepositSummaryData = {} as IMarketingDepositSummaryData,
 		} = {},
-		isFetching: isMarketingDepositSummaryFetching,
+		isLoading: isMarketingDepositSummaryLoading,
+		isSuccess: isMarketingDepositSummarySuccess,
 	} = useGetMarketingDepositSummaryDataQuery(
 		omit(queryData, ['isCompared', 'timezone']),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
@@ -88,11 +91,13 @@ const DepositAmount = () => {
 		data: {
 			data: marketingDepositSignUpUrlSummaryData = {} as IMarketingDepositSignUpUrlSummaryData,
 		} = {},
-		isFetching: isMarketingDepositSignUpUrlSummaryFetching,
+		isLoading: isMarketingDepositSignUpUrlSummaryLoading,
+		isSuccess: isMarketingDepositSignUpUrlSummarySuccess,
 	} = useGetMarketingDepositSignUpUrlSummaryDataQuery(
 		omit(queryData, ['isCompared', 'timezone']),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
@@ -115,7 +120,7 @@ const DepositAmount = () => {
 	})
 
 	// 因有 sort & page 所以用 lazyQuery 處理 MarketingDepositSignUpUrlDetail Api
-	const fetchMarketingDepositSignUpUrlDetail = async ({
+	const handleGetMarketingDepositSignUpUrlDetail = async ({
 		orderByProp = false,
 		orderByPropertyProp = '',
 		orderByDirectionProp = OrderByTypeEnum.ascend as number,
@@ -171,7 +176,7 @@ const DepositAmount = () => {
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
 		if (sorter.order) {
-			await fetchMarketingDepositSignUpUrlDetail({
+			await handleGetMarketingDepositSignUpUrlDetail({
 				orderByProp: true,
 				orderByPropertyProp: sorter.field as string,
 				orderByDirectionProp: orderDirectionConverter(sorter.order as string),
@@ -179,7 +184,7 @@ const DepositAmount = () => {
 				pageSize,
 			})
 		} else {
-			await fetchMarketingDepositSignUpUrlDetail({
+			await handleGetMarketingDepositSignUpUrlDetail({
 				current,
 				pageSize,
 			})
@@ -208,12 +213,24 @@ const DepositAmount = () => {
 	// 因GetMarketingDepositSignUpUrlDetail 用 lazyQuery 需進行第一次初次渲染
 	useEffect(() => {
 		const init = () => {
-			fetchMarketingDepositSignUpUrlDetail({})
+			handleGetMarketingDepositSignUpUrlDetail({})
 		}
 		if (!isEmpty(queryParams)) {
 			init()
 		}
 	}, [])
+
+	useEffect(() => {
+		if (
+			isMarketingDepositSummarySuccess &&
+			isMarketingDepositSignUpUrlSummarySuccess
+		) {
+			isInitRef.current = true
+		}
+	}, [
+		isMarketingDepositSummarySuccess,
+		isMarketingDepositSignUpUrlSummarySuccess,
+	])
 
 	return (
 		<LayoutContent.Main>
@@ -222,7 +239,7 @@ const DepositAmount = () => {
 				{/* Summary */}
 				<MarketingTableLayout.Summary
 					hasQueryParams={!isEmpty(queryParams)}
-					exportExcelPermission={exportExcelPermission}
+					exportExcelPermission={exportExcelPermission!}
 					onExportClick={handleExport}
 					// title 欄位需要參數
 					title={t('Label_DepositAmount')}
@@ -231,11 +248,11 @@ const DepositAmount = () => {
 					endDate={endDate}
 				>
 					<DepositSummaryTable
-						loading={isMarketingDepositSummaryFetching}
+						loading={isMarketingDepositSummaryLoading}
 						marketingDepositSummaryData={marketingDepositSummaryData}
 					/>
 					<DepositSignUpUrlSummaryTable
-						loading={isMarketingDepositSignUpUrlSummaryFetching}
+						loading={isMarketingDepositSignUpUrlSummaryLoading}
 						marketingDepositSignUpUrlSummaryData={
 							marketingDepositSignUpUrlSummaryData
 						}

@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { isEmpty, omit } from 'lodash'
 import download from 'downloadjs'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -36,6 +36,7 @@ const WithdrawalAmount = () => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const isInitRef = useRef(false)
 
 	const {
 		startDate,
@@ -71,11 +72,13 @@ const WithdrawalAmount = () => {
 		data: {
 			data: mpaMarketingWithdrawalSummaryData = {} as IMarketingWithdrawalSummaryData,
 		} = {},
-		isFetching: isMpaMarketingWithdrawalSummaryFetching,
+		isLoading: isMpaMarketingWithdrawalSummaryLoading,
+		isSuccess: isMpaMarketingWithdrawalSummarySuccess,
 	} = useGetMarketingWithdrawalSummaryQuery(
 		omit(queryData, ['isCompared', 'timezone']),
 		{
-			skip: isEmpty(queryParams),
+			// 用isInitRef 監聽 確保 Detail Table 以外的Api不會重打
+			skip: isEmpty(queryParams) || isInitRef.current,
 		}
 	)
 
@@ -98,7 +101,7 @@ const WithdrawalAmount = () => {
 	})
 
 	// 因有 sort & page 所以用 lazyQuery 處理 MpaMarketingWithdrawalDetail Api
-	const fetchMpaMarketingWithdrawalDetail = async ({
+	const handleGetMpaMarketingWithdrawalDetail = async ({
 		orderByProp = false,
 		orderByPropertyProp = '',
 		orderByDirectionProp = OrderByTypeEnum.ascend as number,
@@ -154,7 +157,7 @@ const WithdrawalAmount = () => {
 			pageSize = PAGINATION.defaultPageSize,
 		} = newPagination
 		if (sorter.order) {
-			await fetchMpaMarketingWithdrawalDetail({
+			await handleGetMpaMarketingWithdrawalDetail({
 				orderByProp: true,
 				orderByPropertyProp: sorter.field as string,
 				orderByDirectionProp: orderDirectionConverter(sorter.order as string),
@@ -162,7 +165,7 @@ const WithdrawalAmount = () => {
 				pageSize,
 			})
 		} else {
-			await fetchMpaMarketingWithdrawalDetail({
+			await handleGetMpaMarketingWithdrawalDetail({
 				current,
 				pageSize,
 			})
@@ -190,12 +193,18 @@ const WithdrawalAmount = () => {
 	//  因GetMpaMarketingWithdrawalDetail 用 lazyQuery 需進行第一次初次渲染
 	useEffect(() => {
 		const init = () => {
-			fetchMpaMarketingWithdrawalDetail({})
+			handleGetMpaMarketingWithdrawalDetail({})
 		}
 		if (!isEmpty(queryParams)) {
 			init()
 		}
 	}, [])
+
+	useEffect(() => {
+		if (isMpaMarketingWithdrawalSummarySuccess) {
+			isInitRef.current = true
+		}
+	}, [isMpaMarketingWithdrawalSummarySuccess])
 
 	return (
 		<LayoutContent.Main>
@@ -205,7 +214,7 @@ const WithdrawalAmount = () => {
 				{/* Summary */}
 				<MpaMarketingTableLayout.Summary
 					hasQueryParams={!isEmpty(queryParams)}
-					exportExcelPermission={exportExcelPermission}
+					exportExcelPermission={exportExcelPermission!}
 					onExportClick={handleExport}
 					// title 欄位需要參數
 					title={t('Label_WithdrawalAmount')}
@@ -214,7 +223,7 @@ const WithdrawalAmount = () => {
 					endDate={endDate}
 				>
 					<WithdrawalSummaryTable
-						loading={isMpaMarketingWithdrawalSummaryFetching}
+						loading={isMpaMarketingWithdrawalSummaryLoading}
 						marketingWithdrawalSummaryData={mpaMarketingWithdrawalSummaryData}
 					/>
 				</MpaMarketingTableLayout.Summary>

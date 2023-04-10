@@ -46,7 +46,7 @@ const MarketingStatistic = ({
 					) : (
 						<LayoutContent.Card style={{ margin: 0 }}>
 							<Row gutter={[16, 16]}>
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -86,7 +86,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -131,7 +131,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -171,7 +171,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -207,7 +207,7 @@ const MarketingStatistic = ({
 													)}
 												</Text>
 											</Col>
-											{/* 有選 Compare Date, api 回傳是 null  */}
+											{/* 沒有選 Compare Date, api 回傳是 null  */}
 											{!isNull(
 												performanceHighlightData.depositUsersComparedRate
 											) && (
@@ -235,7 +235,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -271,7 +271,7 @@ const MarketingStatistic = ({
 													)}
 												</Text>
 											</Col>
-											{/* 有選 Compare Date, api 回傳是 null  */}
+											{/* 沒有選 Compare Date, api 回傳是 null  */}
 											{!isNull(
 												performanceHighlightData.activeUsersComparedRate
 											) && (
@@ -299,7 +299,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/nru?${searchParams}`}
 										target='_blank'
@@ -343,7 +343,7 @@ const MarketingStatistic = ({
 														)}
 													</Text>
 												</Col>
-												{/* 有選 Compare Date, api 回傳是 null  */}
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
 												{!isNull(performanceHighlightData.nruComparedRate) && (
 													<Col span={24} style={{ marginTop: 12 }}>
 														<Row
@@ -370,7 +370,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -406,7 +406,7 @@ const MarketingStatistic = ({
 													)}
 												</Text>
 											</Col>
-											{/* 有選 Compare Date, api 回傳是 null  */}
+											{/* 沒有選 Compare Date, api 回傳是 null  */}
 											{!isNull(
 												performanceHighlightData.activeNRUComparedRate
 											) && (
@@ -434,7 +434,7 @@ const MarketingStatistic = ({
 									</Card>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/depositAmount?${searchParams}`}
 										target='_blank'
@@ -475,7 +475,7 @@ const MarketingStatistic = ({
 														)}
 													</Text>
 												</Col>
-												{/* 有選 Compare Date, api 回傳是 null  */}
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
 												{!isNull(
 													performanceHighlightData.depositAmountComparedRate
 												) && (
@@ -504,7 +504,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/withdrawalAmount?${searchParams}`}
 										target='_blank'
@@ -545,7 +545,7 @@ const MarketingStatistic = ({
 														)}
 													</Text>
 												</Col>
-												{/* 有選 Compare Date, api 回傳是 null  */}
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
 												{!isNull(
 													performanceHighlightData.withdrawalAmountComparedRate
 												) && (
@@ -574,7 +574,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
 										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/bonusAmountClaimed?${searchParams}`}
 										target='_blank'
@@ -615,7 +615,7 @@ const MarketingStatistic = ({
 														)}
 													</Text>
 												</Col>
-												{/* 有選 Compare Date, api 回傳是 null  */}
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
 												{!isNull(
 													performanceHighlightData.bonusAmountClaimedComparedRate
 												) && (
@@ -644,7 +644,7 @@ const MarketingStatistic = ({
 									</Link>
 								</Col>
 
-								<Col span={4} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Card
 										bodyStyle={{ padding: '10px' }}
 										style={{
@@ -680,7 +680,7 @@ const MarketingStatistic = ({
 													)}
 												</Text>
 											</Col>
-											{/* 有選 Compare Date, api 回傳是 null  */}
+											{/* 沒有選 Compare Date, api 回傳是 null  */}
 											{!isNull(
 												performanceHighlightData.netCashAmountComparedRate
 											) && (
