@@ -405,7 +405,6 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						isUploadReceiptLoading ||
 						isDeleteReceiptLoading
 					}
-					isCheckReceipt={Boolean(depositInfo?.checkReceipt)}
 					usableActionButtons={depositInfo?.usableActionButton ?? []}
 					onSetDepositStatus={handleSetDepositStatus}
 					onShowSendMessageModal={onShowSendMessageModal}
