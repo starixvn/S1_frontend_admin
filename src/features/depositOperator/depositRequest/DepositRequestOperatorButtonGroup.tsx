@@ -11,7 +11,6 @@ import { useAuth } from 'common/hooks'
 
 interface IDepositRequestOperatorButtonGroupProps {
 	loading?: boolean
-	isCheckReceipt: boolean
 	usableActionButtons: number[]
 	onSetDepositStatus: (status: DepositStatusEnum) => void
 	onShowSendMessageModal: () => void
@@ -20,7 +19,6 @@ interface IDepositRequestOperatorButtonGroupProps {
 
 const DepositRequestOperatorButtonGroup = ({
 	loading,
-	isCheckReceipt,
 	usableActionButtons,
 	onSetDepositStatus,
 	onShowSendMessageModal,
@@ -135,7 +133,7 @@ const DepositRequestOperatorButtonGroup = ({
 				</Col>
 			)}
 			{includes(usableActionButtons, UsableActionButtonEnum.Pending) &&
-				!isCheckReceipt && (
+				checkReceiptPermission?.canUse && (
 					<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 						<OperatorButton
 							loading={loading}
@@ -147,8 +145,9 @@ const DepositRequestOperatorButtonGroup = ({
 						</OperatorButton>
 					</Col>
 				)}
+
 			{includes(usableActionButtons, UsableActionButtonEnum.OnHold) &&
-				!isCheckReceipt && (
+				checkReceiptPermission?.canUse && (
 					<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 						<OperatorButton
 							loading={loading}
