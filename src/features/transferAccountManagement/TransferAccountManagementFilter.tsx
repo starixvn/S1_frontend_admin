@@ -171,7 +171,7 @@ const TransferAccountManagementFilter: FC<
 										onChange={newValues =>
 											onEnumApiMultipleSelectChange(
 												newValues,
-												transferChannelEnum,
+												transferAccountStatusEnum,
 												form,
 												'status'
 											)
