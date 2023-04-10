@@ -1105,6 +1105,8 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
+	"Label_EmailVerifiedTime": "Email Verified Time",
+	"Label_PhoneVerifiedTime": "Phone Verified Time",
 	"Label_CheckBy": "Check By",
 	"Label_Ranking": "Ranking",
 	"Label_Points": "Points",
