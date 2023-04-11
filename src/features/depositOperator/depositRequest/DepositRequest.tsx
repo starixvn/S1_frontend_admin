@@ -34,7 +34,6 @@ import {
 	ISetAmountByTransIdArgs,
 	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import { RcFile } from 'antd/es/upload'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
 import DepositRequestComments from 'features/depositOperator/depositRequest/DepositRequestComments'
 import DepositRequestMemberInfo from 'features/depositOperator/depositRequest/DepositRequestMemberInfo'
@@ -254,16 +253,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleUploadImage = async (image: RcFile) => {
+	const handleUploadImage = async (image: string) => {
 		if (!siteId || !transId) return
 		const { custId } = depositInfo
 		try {
-			const formData = new FormData()
-			formData.append('SiteId', siteId.toString())
-			formData.append('Receipt', image as RcFile)
-			formData.append('CustId', custId.toString())
-			formData.append('TransId', transId.toString())
-			await uploadReceipt(formData).unwrap()
+			await uploadReceipt({ siteId, custId, transId, receipt: image }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -313,14 +307,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		const initFileList: UploadFile[] = []
 		depositReceiptByTransIdList?.forEach(item => {
 			const { receiptNo, receipt, creator, createTime, createFrom } = item
-			const { contentType, fileContents } = receipt
-			// 後端回傳格式非url,故在這做base64Image轉換
-			const url = `data:${contentType};base64,${fileContents}`
 			const file: UploadFile = {
 				uid: String(item.receiptNo),
 				name: `receipt${receiptNo}&${creator}&${createTime}&${createFrom}`,
 				status: 'done',
-				url,
+				url: receipt,
 			}
 
 			initFileList.push(file)
