@@ -102,7 +102,7 @@ const EditForm: FC<IEditFormProps> = ({
 					form={form}
 					initialValues={{
 						gameId: 1,
-						tpId: 1,
+						tpId: 41,
 					}}
 				>
 					<Row align='middle' gutter={16}>
