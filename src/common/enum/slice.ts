@@ -73,6 +73,7 @@ const enumSlice = createSlice({
 				state.vipCurrencyList = vipCurrencyList
 				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
 				state.status = 'succeeded'
+				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
 			}),
 })
 
