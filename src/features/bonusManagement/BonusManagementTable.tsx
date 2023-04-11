@@ -123,7 +123,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 				return (
 					<Space style={{ padding: '5px' }} size='middle'>
 						<Typography.Link
-							disabled={!editPermission?.canUse || !isSpecial}
+							disabled={!isSpecial}
 							onClick={() => {
 								navigate(
 									`/${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonusManagement.root}/scratchCard/${specialCode}`
