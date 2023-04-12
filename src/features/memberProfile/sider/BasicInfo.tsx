@@ -11,6 +11,7 @@ import {
 	Space,
 	Tag,
 	Typography,
+	Popover,
 } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { BsFillImageFill, BsCashStack } from 'react-icons/bs'
@@ -93,6 +94,8 @@ const BasicInfo = ({
 		vipLogo,
 		custLineProfile,
 		userLang,
+		emailVerifyTime,
+		phoneVerifyTime,
 	} = custBasicInfo ?? {}
 
 	const { userId: lineUserId, createTime: lineBindingTime } =
@@ -144,18 +147,42 @@ const BasicInfo = ({
 					</StyleIcon>
 				</Col>
 				<Col>
-					<StyleIcon>
-						<AiOutlineMail
-							color={emailVerified ? '#FB9C02' : 'rgba(175,174,175,0.4)'}
-						/>
-					</StyleIcon>
+					{emailVerified ? (
+						<Popover
+							content={moment(emailVerifyTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format('YYYY-MM-DD  HH:mm:ss')}
+							title={t('Label_EmailVerifiedTime')}
+							trigger='hover'
+						>
+							<StyleIcon>
+								<AiOutlineMail color='#FB9C02' />
+							</StyleIcon>
+						</Popover>
+					) : (
+						<StyleIcon>
+							<AiOutlineMail color='rgba(175,174,175,0.4)' />
+						</StyleIcon>
+					)}
 				</Col>
 				<Col>
-					<StyleIcon>
-						<FaMobileAlt
-							color={phoneVerified ? 'black' : 'rgba(175,174,175,0.4)'}
-						/>
-					</StyleIcon>
+					{phoneVerified ? (
+						<Popover
+							content={moment(phoneVerifyTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format('YYYY-MM-DD  HH:mm:ss')}
+							title={t('Label_PhoneVerifiedTime')}
+							trigger='hover'
+						>
+							<StyleIcon>
+								<FaMobileAlt color='black' />
+							</StyleIcon>
+						</Popover>
+					) : (
+						<StyleIcon>
+							<FaMobileAlt color='rgba(175,174,175,0.4)' />
+						</StyleIcon>
+					)}
 				</Col>
 				<Col>
 					<StyleIcon>

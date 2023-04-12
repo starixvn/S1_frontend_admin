@@ -98,6 +98,8 @@ export interface IGetBasicInfoData {
 	phoneRewardTime: string
 	emailRewardTime: string
 	userLang: string
+	phoneVerifyTime: string
+	emailVerifyTime: string
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
