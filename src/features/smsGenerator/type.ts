@@ -17,6 +17,7 @@ export interface IMessageData {
 	isPopup: boolean
 	title: string
 	content: string
+	currencyId: number
 	// Json
 	message: string
 	status: number
