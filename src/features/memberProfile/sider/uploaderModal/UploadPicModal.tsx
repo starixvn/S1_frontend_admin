@@ -35,7 +35,7 @@ const UploadPicModal = ({
 
 	const props: UploadProps = {
 		accept: 'image/*',
-		maxCount: 5,
+		maxCount: 10,
 		onRemove: () => {
 			setFileList([])
 		},
@@ -74,13 +74,17 @@ const UploadPicModal = ({
 			open={visible}
 			title={t('Label_IdentificationCard')}
 			onCancel={onCancel}
-			footer={[
-				<Button icon={<UploadOutlined />} loading={uploading}>
-					<Upload {...props}>
-						{t('Label_Upload', { key: t('Label_Image') })}
-					</Upload>
-				</Button>,
-			]}
+			footer={
+				fileList.length < 10
+					? [
+							<Button icon={<UploadOutlined />} loading={uploading}>
+								<Upload {...props}>
+									{t('Label_Upload', { key: t('Label_Image') })}
+								</Upload>
+							</Button>,
+					  ]
+					: false
+			}
 		>
 			<Spin spinning={custPhotoListLoading}>
 				<div

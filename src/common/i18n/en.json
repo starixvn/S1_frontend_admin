@@ -1080,5 +1080,7 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_CheckBy": "Check By"
+	"Label_CheckBy": "Check By",
+	"Label_EmailVerifiedTime": "Email Verified Time",
+	"Label_PhoneVerifiedTime": "Phone Verified Time"
 }
