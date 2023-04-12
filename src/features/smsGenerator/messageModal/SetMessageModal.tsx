@@ -12,11 +12,13 @@ import {
 	Spin,
 } from 'antd'
 import { IEditForm, IMessageDetailData } from 'features/smsGenerator/type'
+import { first } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { Currency } from 'common/enum/type'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { useGetLanguageListQuery } from 'common/service/permissionApi/api'
 import { useGetMessageDetailQuery } from 'features/smsGenerator/api'
 import {
 	accountStatusList,
@@ -33,7 +35,6 @@ import { MessageTabs } from 'features/smsGenerator/messageModal/MessageTabs'
 import { useEffect } from 'react'
 import { messagesResConverter } from 'features/smsGenerator/utils'
 import { PermissionInterface } from 'type'
-import { useGetLangCodesQuery } from 'common/service/allDataApi'
 
 interface ISetMessageModalProps {
 	open: boolean
@@ -60,6 +61,7 @@ const SetMessageModal = ({
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const batchId = form.getFieldValue(['batchId'])
 	const formMethod = Form.useWatch('method', form)
+	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formFileList = Form.useWatch<UploadFile[]>('fileList', form)
 	const isAdd = batchId === 'Add'
 
@@ -77,9 +79,20 @@ const SetMessageModal = ({
 		}
 	)
 
-	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
+	// 編輯時拿 messageDetail 裡的 currencyId 新增時拿用戶選得的 formCurrencyId
+	const currencyIdSelected = !formCurrencyId
+		? messageDetail?.currencyId
+		: formCurrencyId
 
-	const { iLangList: langCodes = [] } = infos ?? {}
+	const { data: { data: langCodes = [] } = {} } = useGetLanguageListQuery(
+		{
+			siteId,
+			currencyId: currencyIdSelected,
+		},
+		{
+			skip: currencyIdSelected === undefined,
+		}
+	)
 
 	const uploadProps: UploadProps = {
 		onRemove: () => {
@@ -160,6 +173,7 @@ const SetMessageModal = ({
 					initialValues={{
 						method: MethodEnum.ByUserStatus,
 						isPopup: false,
+						currencyId: first(currencyListBySite)?.currencyId,
 					}}
 					disabled={!editPermission?.canUse}
 				>
