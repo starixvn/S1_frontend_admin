@@ -87,10 +87,14 @@ const SetMessageModal = ({
 	const { data: { data: langCodes = [] } = {} } = useGetLanguageListQuery(
 		{
 			siteId,
-			currencyId: currencyIdSelected,
+			currencyId:
+				formMethod === MethodEnum.BatchUpload ? 0 : currencyIdSelected,
 		},
 		{
-			skip: currencyIdSelected === undefined,
+			skip:
+				// currencyIdSelected 有可能是0 必須帶 undefined
+				currencyIdSelected === undefined &&
+				formMethod !== MethodEnum.BatchUpload,
 		}
 	)
 
