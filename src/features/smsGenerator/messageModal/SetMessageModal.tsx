@@ -144,7 +144,7 @@ const SetMessageModal = ({
 			open={open}
 			onCancel={onCancel}
 			onOk={() => onFinish(isAdd)}
-			width='60vw'
+			width='65vw'
 			confirmLoading={loading}
 			// 這裡之所以又要 afterClose 又要destroyOnClose 原因在於這個 modal 內有很多 tinyEditor 的 tab , 關閉時直接 destroy掉整個元件避免一些無法預期的錯誤
 			// 且為了正確觸發 form 的初始化，故每次關閉便移除整個元件
