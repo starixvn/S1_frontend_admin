@@ -1,6 +1,7 @@
 import { FormInstance, Tabs } from 'antd'
 import { MessageForm } from 'features/smsGenerator/messageModal/MessageForm'
 import { PermissionInterface } from 'type'
+import { v4 as uuidV4 } from 'uuid'
 
 interface IMessageTabsProps {
 	langCodes: string[]
@@ -16,7 +17,7 @@ const MessageTabs = ({
 	const items = langCodes?.map(langCode => {
 		return {
 			label: langCode,
-			key: langCode,
+			key: uuidV4(),
 			children: (
 				<MessageForm
 					form={form}
