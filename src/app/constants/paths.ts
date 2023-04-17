@@ -429,6 +429,10 @@ const paths = {
 				root: 'report/withdrawalPaymentReport',
 				functionId: 136,
 			},
+			leaderboardReport: {
+				root: 'report/leaderboardReport',
+				functionId: 143,
+			},
 		},
 	},
 	member: {
