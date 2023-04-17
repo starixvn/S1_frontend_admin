@@ -918,4 +918,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.risk.sub.blockCryptoWallet.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.leaderboardReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.leaderboardReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.leaderboardExtraPoint.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.leaderboardExtraPoint.root,
+	},
 ]

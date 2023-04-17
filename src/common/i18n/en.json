@@ -1082,7 +1082,13 @@
 	"Label_AdjustmentRecord": "Adjustment Record",
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
-	"Label_CheckBy": "Check By",
 	"Label_EmailVerifiedTime": "Email Verified Time",
-	"Label_PhoneVerifiedTime": "Phone Verified Time"
+	"Label_PhoneVerifiedTime": "Phone Verified Time",
+	"Label_CheckBy": "Check By",
+	"Label_Ranking": "Ranking",
+	"Label_Points": "Points",
+	"Label_Month": "Month",
+	"Label_MonthRequire": "Month is Required",
+	"Label_ExtraPoint": "Extra Point",
+	"Label_AddExtraPoint": "Add ExtraPoint"
 }

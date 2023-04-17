@@ -429,6 +429,10 @@ const paths = {
 				root: 'report/withdrawalPaymentReport',
 				functionId: 136,
 			},
+			leaderboardReport: {
+				root: 'report/leaderboardReport',
+				functionId: 143,
+			},
 		},
 	},
 	member: {
@@ -662,6 +666,10 @@ const paths = {
 			siteMaintenance: {
 				root: 'cms/siteMaintenance',
 				functionId: 117,
+			},
+			leaderboardExtraPoint: {
+				root: 'cms/leaderboardExtraPoint',
+				functionId: 144,
 			},
 			urlManagement: {
 				root: 'cms/urlManagement',
