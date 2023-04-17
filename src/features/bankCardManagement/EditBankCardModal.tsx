@@ -252,6 +252,46 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 		)
 	}
 
+	const groupIdSelector = () => {
+		const handleChangeGroupId = (newId: Array<number | string>) => {
+			if (newId.includes('all')) {
+				form.setFieldsValue({
+					groupIds: localPaySettingList?.map(({ groupId }) => groupId),
+				})
+			} else {
+				form.setFieldsValue({
+					groupIds: newId,
+				})
+			}
+		}
+		return (
+			<Form.Item
+				name='groupIds'
+				label={t('Label_PayGroup')}
+				rules={[
+					{
+						required: true,
+						message: '',
+					},
+				]}
+			>
+				<MultipleSelect
+					onChange={handleChangeGroupId}
+					placeholder={t('Label_Select') + t('Label_PayGroup')}
+				>
+					{(localPaySettingList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+					{localPaySettingList?.map(({ groupId, groupName }) => (
+						<Option key={groupId} value={groupId}>
+							{groupName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	useEffect(() => {
 		if (!visible) {
 			setFileList([])
@@ -368,28 +408,7 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 					{multiIncludes(supportChannels, [
 						SupportChannelEnum.EWallet,
 						SupportChannelEnum.QRPay,
-					]) && (
-						<Col span={12}>
-							<Form.Item
-								name='groupId'
-								label={t('Label_PayGroup')}
-								rules={[
-									{
-										required: true,
-										message: '',
-									},
-								]}
-							>
-								<Select>
-									{localPaySettingList?.map(({ groupId, groupName }) => (
-										<Option key={groupId} value={groupId}>
-											{groupName}
-										</Option>
-									))}
-								</Select>
-							</Form.Item>
-						</Col>
-					)}
+					]) && <Col span={12}>{groupIdSelector()}</Col>}
 				</Row>
 				<Row gutter={16}>
 					<Col span={24}>

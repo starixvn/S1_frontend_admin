@@ -41,7 +41,7 @@ export interface IGetBankCardListData {
 	sort: number
 	lastUpdateTime: string
 	lastUpdater: null | string
-	groupId: number
+	groupIds: number[]
 }
 
 export type IGetBankCardListResponse = IAxiosResponse<IGetBankCardListData[]>
@@ -60,7 +60,7 @@ export interface ISetBankCardArgs {
 	status: number
 	supportChannels: number[]
 	qrCodeUrl: string | null
-	groupId?: number
+	groupIds?: number[]
 }
 
 export interface IGetPointLevelListArgs {
@@ -123,7 +123,7 @@ export interface IModalForm {
 	qrCodeUrl: string | null
 	sort: number
 	memo: string
-	groupId: number
+	groupIds: number[]
 }
 
 export interface IFilterForm {

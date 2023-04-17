@@ -227,7 +227,7 @@ const BankCardManagement: FC<{
 			supportChannels,
 			qrCodeUrl,
 			sysId,
-			groupId,
+			groupIds,
 		} = record
 
 		setLocalPaySetting(
@@ -263,7 +263,7 @@ const BankCardManagement: FC<{
 			supportChannels,
 			qrCodeUrl,
 			// 畫面上不顯示 groupId 為 0 的資料，若為 0 則視為沒選
-			groupId: groupId === 0 ? undefined : groupId,
+			groupIds,
 		})
 		editBankModal.onOpen()
 	}
@@ -282,7 +282,7 @@ const BankCardManagement: FC<{
 			memo,
 			supportChannels,
 			qrCodeUrl,
-			groupId,
+			groupIds,
 		} = await modalForm.validateFields()
 		const { financialAccountId } = modalRecord
 		try {
@@ -300,7 +300,7 @@ const BankCardManagement: FC<{
 				sort,
 				supportChannels,
 				qrCodeUrl,
-				groupId: groupId ?? 0,
+				groupIds,
 			}).unwrap()
 
 			message.success(response.message ?? t('System.Label_Success'))
