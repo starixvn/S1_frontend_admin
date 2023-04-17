@@ -1086,5 +1086,7 @@
 	"Label_Ranking": "Ranking",
 	"Label_Points": "Points",
 	"Label_Month": "Month",
-	"Label_MonthRequire": "Month is Required"
+	"Label_MonthRequire": "Month is Required",
+	"Label_ExtraPoint": "Extra Point",
+	"Label_AddExtraPoint": "Add ExtraPoint"
 }
