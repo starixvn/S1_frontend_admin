@@ -6,6 +6,7 @@ export enum CurrencyEnum {
 	IDR = 15,
 	VND = 51,
 	INR = 61,
+	KH_USD = 72,
 	BDT = 74,
 }
 
@@ -30,6 +31,7 @@ export enum LangIdEnum {
 	hi,
 	my,
 	bd,
+	kh,
 }
 
 // * 各幣別所支援的 語系
@@ -42,6 +44,7 @@ export const langIdsByCurrency: { [currency: number]: number[] } = {
 	[CurrencyEnum.CNY]: [LangIdEnum.en, LangIdEnum.cs],
 	[CurrencyEnum.VND]: [LangIdEnum.en, LangIdEnum.vn],
 	[CurrencyEnum.USD]: [LangIdEnum.en],
+	[CurrencyEnum.KH_USD]: [LangIdEnum.en, LangIdEnum.kh],
 }
 
 /**
