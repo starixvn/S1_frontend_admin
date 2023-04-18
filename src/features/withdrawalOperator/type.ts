@@ -87,6 +87,8 @@ export interface IGetWithdrawalData {
 	agent: string
 	usableActionButton: number[]
 	withdrawalAccountingModels: IWithdrawalAccounting[]
+	onUser: string
+	processWayName: string
 }
 
 export interface IGetWithdrawalResponse
@@ -217,4 +219,8 @@ export interface ICustomerAssociateBankUserData {
 	userName: string
 	paymentName: string
 	associateNo: string
+}
+
+export type IReceiveArgs = {
+	transId: string
 }

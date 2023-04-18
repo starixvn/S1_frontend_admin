@@ -1,17 +1,21 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Col, Form, message, Row, Spin } from 'antd'
+import { Col, Form, message, Modal, Row, Spin } from 'antd'
 import {
+	useCheckLockWithdrawalExistsMutation,
 	useDeletePictureMutation,
 	useGetAdjustmentLimitLogQuery,
 	useGetAssociateBankUserQuery,
 	useGetReceiptPictureQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
+	useLockWithdrawalMutation,
 	useManualApprovalMutation,
 	useManualRejectMutation,
+	useSetLockWithdrawalUserMutation,
 	useSetWithdrawalStatusMutation,
+	useUnLockWithdrawalMutation,
 	useUploadPictureMutation,
 } from 'features/withdrawalOperator/api'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -62,6 +66,7 @@ import {
 	useGetBankInfoOffListQuery,
 	useGetCryptoPayListQuery,
 	useGetCryptoWalletListQuery,
+	useGetEwalletListQuery,
 	useGetOnlinePayListQuery,
 } from 'common/service/baseDataApi'
 import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRequest/components/AssociateBankModal'
@@ -70,6 +75,7 @@ import moment from 'moment/moment'
 import { AdjustmentLimitLogModal } from 'features/withdrawalOperator/withdrawalRequest/components/AdjustmentLimitLogModal'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useGetWithdrawalAdjustmentReasonListQuery } from 'features/withdrawalAdjustment/api'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
@@ -81,6 +87,7 @@ const WithdrawalRequest = () => {
 			draftPermission,
 			uploadReceiptPermission,
 			deleteReceiptPermission,
+			forceProceed,
 		} = {},
 	} = useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
@@ -196,6 +203,12 @@ const WithdrawalRequest = () => {
 			{ currencyId, purpose: PurposeEnum.Withdrawal },
 			{ skip: !currencyId }
 		)
+	const { data: { data: eWalletList = [] } = {} } = useGetEwalletListQuery(
+		{
+			currencyId,
+		},
+		{ skip: !currencyId }
+	)
 
 	const { data: { data: cryptoWalletList = [] } = {} } =
 		useGetCryptoWalletListQuery(
@@ -283,6 +296,23 @@ const WithdrawalRequest = () => {
 	const { data: { data: reasonList = [] } = {} } =
 		useGetWithdrawalAdjustmentReasonListQuery(null)
 
+	// 領單流程
+	// 領單
+	const [lockWithdrawal, { isLoading: isLockWithdrawalLoading }] =
+		useLockWithdrawalMutation()
+
+	// 退單
+	const [unLockWithdrawal, { isLoading: isUnLockWithdrawalLoading }] =
+		useUnLockWithdrawalMutation()
+
+	const [setLockWithdrawalUser, { isLoading: isSetLockWithdrawalUserLoading }] =
+		useSetLockWithdrawalUserMutation()
+
+	const [
+		checkLockWithdrawalExists,
+		{ isLoading: isCheckLockWithdrawalExistsLoading },
+	] = useCheckLockWithdrawalExistsMutation()
+
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
 			currencyId,
@@ -345,6 +375,7 @@ const WithdrawalRequest = () => {
 							WithdrawalStatusEnum.Approved,
 						])
 					) {
+						await handleUnLock()
 						navigate(-1)
 					}
 				} catch (error) {
@@ -381,6 +412,7 @@ const WithdrawalRequest = () => {
 						WithdrawalStatusEnum.Approved,
 					])
 				) {
+					await handleUnLock()
 					navigate(-1)
 				}
 			} catch (error) {
@@ -476,6 +508,7 @@ const WithdrawalRequest = () => {
 						WithdrawalStatusEnum.Approved,
 					])
 				) {
+					await handleUnLock()
 					navigate(-1)
 				}
 			} catch (error) {
@@ -498,6 +531,7 @@ const WithdrawalRequest = () => {
 			case UsableActionButtonEnum.ManualApproved:
 				try {
 					await manualApproval({ transId }).unwrap()
+					await handleUnLock()
 					navigate(-1)
 				} catch (error) {
 					message.error(
@@ -509,6 +543,7 @@ const WithdrawalRequest = () => {
 			case UsableActionButtonEnum.ManualRejected:
 				try {
 					await manualReject({ transId }).unwrap()
+					await handleUnLock()
 					navigate(-1)
 				} catch (error) {
 					message.error(
@@ -567,6 +602,48 @@ const WithdrawalRequest = () => {
 		})
 	}
 
+	// 領單流程
+	const handleReceive = async () => {
+		if (!transId) return
+		if (forceProceed?.canUse) {
+			// 主管級要多做 check
+			try {
+				// 檢查
+				await checkLockWithdrawalExists({ transId }).unwrap()
+				// 沒人領過 => 直接領單
+				await lockWithdrawal({ transId }).unwrap()
+			} catch (error) {
+				Modal.confirm({
+					title: t('Label_ReceiveConfirmMsg'),
+					icon: <ExclamationCircleOutlined />,
+					async onOk() {
+						await setLockWithdrawalUser({ transId }).unwrap()
+					},
+					onCancel() {},
+				})
+			}
+		} else {
+			try {
+				await lockWithdrawal({ transId }).unwrap()
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
+		}
+	}
+
+	const handleUnLock = async () => {
+		if (!transId) return
+		try {
+			await unLockWithdrawal({ transId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	//  顯示 ip 關聯帳號彈窗
 	const handleIpCountClick = async (ip: string) => {
 		ipUserListModal.onOpen()
@@ -598,7 +675,11 @@ const WithdrawalRequest = () => {
 		isMemberInfoLoading ||
 		isSetWithdrawalStatusLoading ||
 		isManualApprovalLoading ||
-		isManualRejectLoading
+		isManualRejectLoading ||
+		isLockWithdrawalLoading ||
+		isUnLockWithdrawalLoading ||
+		isSetLockWithdrawalUserLoading ||
+		isCheckLockWithdrawalExistsLoading
 
 	const updateReceiptLoading =
 		isUploadReceiptLoading || isGetReceiptListLoading || isDeleteReceiptLoading
@@ -666,6 +747,7 @@ const WithdrawalRequest = () => {
 									timeZoneUtcOffset={timeZoneUtcOffset}
 									withdrawalDetailData={withdrawalDetailData}
 									localBankList={localBankList}
+									eWalletList={eWalletList}
 									cryptoPayList={cryptoPayList}
 									cryptoWalletList={cryptoWalletList}
 									onlinePayList={onlinePayList}
@@ -767,6 +849,7 @@ const WithdrawalRequest = () => {
 						onSetWithdrawalRequest={handleSetWithdrawalRequest}
 						onSetManualOperator={handleManualOperator}
 						onShowSendMessageModal={onShowSendMessageModal}
+						onReceive={handleReceive}
 					/>
 					<PayInfoModal
 						visible={payInfoModal.visible}
@@ -818,7 +901,12 @@ const WithdrawalRequest = () => {
 				</LayoutContent.Card>
 				<AffixButtons>
 					<AffixButtons.BackToTop />
-					<AffixButtons.GoBackRoute />
+					<AffixButtons.GoBackRoute
+						onClick={async () => {
+							await handleUnLock()
+							navigate(-1)
+						}}
+					/>
 				</AffixButtons>
 			</Spin>
 		</LayoutContent.Main>

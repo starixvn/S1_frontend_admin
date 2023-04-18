@@ -37,6 +37,7 @@ interface IWithdrawalInfoDescriptionsProps {
 	timeZoneUtcOffset: number
 	withdrawalDetailData?: IGetWithdrawalData
 	localBankList: IBankInfoOffState[]
+	eWalletList: IOnlinePayData[]
 	cryptoPayList: ICryptoPayData[]
 	onlinePayList: IOnlinePayData[]
 	cryptoWalletList: ICryptoWalletData[]
@@ -54,6 +55,7 @@ const WithdrawalRequestInfo = ({
 	withdrawalDetailData,
 	cryptoWalletList,
 	cryptoPayList,
+	eWalletList,
 	onlinePayList,
 	localBankList,
 	onPayInfoClicked,
@@ -108,6 +110,7 @@ const WithdrawalRequestInfo = ({
 	const hasOnlinePayment = onlinePayList?.length > 0
 	const hasCryptoPay = cryptoPayList?.length > 0
 	const hasCryptoWallet = cryptoWalletList?.length > 0
+	const hasEWallet = eWalletList?.length > 0
 
 	// WithdrawalType 下拉選單邏輯寫在這
 	const getWithdrawalTypeOptions = () => {
@@ -144,6 +147,16 @@ const WithdrawalRequestInfo = ({
 					</Option>
 				)
 			}
+			if (hasEWallet) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.OnlinePayment}
+						key={WithdrawalTypeEnum.OnlinePayment}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
+					</Option>
+				)
+			}
 		} else {
 			if (hasLocalBank) {
 				result.push(
@@ -169,6 +182,30 @@ const WithdrawalRequestInfo = ({
 		return result
 	}
 
+	const getPaymentOptions = () => {
+		if (type === WithdrawalTypeEnum.OnlinePayment) {
+			if (isEWallet) {
+				// ewallet
+				return eWalletList?.map(({ payId, payName }) => (
+					<Option value={payId} key={payId}>
+						{payName}
+					</Option>
+				))
+			}
+			// onlinePayment
+			return onlinePayList?.map(({ payId, payName }) => (
+				<Option value={payId} key={payId}>
+					{payName}
+				</Option>
+			))
+		}
+		// cryptoPay
+		return cryptoPayList?.map(({ payId, payName }) => (
+			<Option value={payId} key={payId}>
+				{payName}
+			</Option>
+		))
+	}
 	return (
 		<Descriptions
 			bordered
@@ -379,28 +416,29 @@ const WithdrawalRequestInfo = ({
 										placeholder={t('Label_Select') + t('Label_Pay')}
 										style={{ width: 'calc(100% - 64px)' }}
 									>
-										{type === WithdrawalTypeEnum.OnlinePayment
-											? onlinePayList?.map(({ payId, payName }) => (
-													<Option value={payId} key={payId}>
-														{payName}
-													</Option>
-											  ))
-											: cryptoPayList?.map(({ payId, payName }) => (
-													<Option value={payId} key={payId}>
-														{payName}
-													</Option>
-											  ))}
+										{getPaymentOptions()}
 									</Select>
 								</Form.Item>
 								<Typography.Link
 									onClick={() => {
 										if (type === WithdrawalTypeEnum.OnlinePayment) {
-											const record = find(
-												onlinePayList,
-												item => item.payId === currentSelId
-											)
-											if (record !== undefined) {
-												onPayInfoClicked(record)
+											if (isEWallet) {
+												// eWallet
+												const record = find(
+													eWalletList,
+													item => item.payId === currentSelId
+												)
+												if (record !== undefined) {
+													onPayInfoClicked(record)
+												}
+											} else {
+												const record = find(
+													onlinePayList,
+													item => item.payId === currentSelId
+												)
+												if (record !== undefined) {
+													onPayInfoClicked(record)
+												}
 											}
 										} else if (type === WithdrawalTypeEnum.CryptoPay) {
 											const record = find(

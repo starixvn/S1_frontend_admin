@@ -50,7 +50,14 @@ const GlobalStyle = createGlobalStyle`
     // *  onFocus 時的 outline , 用於 WithdrawalOperator/ReceiptUploader 
     .highlight:focus {
      border-color: #1890ff;
-}
+    }
+    // withdrawalOperator 用的 row backGroundColor 
+    .gray-background {
+     background-color: #B8B8B8;
+    }
+    .gray-background > .ant-table-cell-row-hover {
+     background-color: transparent !important;
+    }
 `
 
 export default GlobalStyle
