@@ -329,6 +329,18 @@ const WithdrawalRequest = () => {
 		payInfoModal.onOpen()
 	}
 
+	// 執行退單
+	const handleUnLock = async () => {
+		if (!transId) return
+		try {
+			await unLockWithdrawal({ transId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const handleSetWithdrawalRequest = async (action: WithdrawalStatusEnum) => {
 		if (!transId) return
 		const { withdrawalInfo } = withdrawalDetailData
@@ -630,17 +642,6 @@ const WithdrawalRequest = () => {
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
 			}
-		}
-	}
-
-	const handleUnLock = async () => {
-		if (!transId) return
-		try {
-			await unLockWithdrawal({ transId }).unwrap()
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
 		}
 	}
 
