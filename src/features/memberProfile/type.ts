@@ -1047,6 +1047,11 @@ export interface IGetCustTpBetRecordByGameTypeArgs
 	gameTypeId: number
 }
 
+export type IExportCustTpBetRecordByGameTypeArgs = Omit<
+	IGetCustTpBetRecordByGameTypeArgs,
+	'pageNumber' | 'pageSize'
+>
+
 export interface IGetCustTpBetRecordByGameTypeData {
 	transId: string
 	bonusId: number
