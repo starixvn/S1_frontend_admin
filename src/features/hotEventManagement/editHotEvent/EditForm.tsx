@@ -270,8 +270,14 @@ const EditForm: FC<IEditFormProps> = ({
 								]}
 							>
 								<Select
+									showSearch
 									placeholder={t('Label_SelectGroup')}
 									onChange={() => form.resetFields(['homeTeamNameId'])}
+									filterOption={(input, option) =>
+										(option!.children as unknown as string)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
 								>
 									{sportLeaguesList?.map(league => (
 										<Option
@@ -298,8 +304,14 @@ const EditForm: FC<IEditFormProps> = ({
 								]}
 							>
 								<Select
+									showSearch
 									placeholder={t('Label_SelectGroup')}
 									onChange={() => form.resetFields(['awayTeamNameId'])}
+									filterOption={(input, option) =>
+										(option!.children as unknown as string)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
 								>
 									{sportLeaguesList?.map(league => (
 										<Option
@@ -328,8 +340,14 @@ const EditForm: FC<IEditFormProps> = ({
 								]}
 							>
 								<Select
+									showSearch
 									placeholder={t('Label_SelectTeam')}
 									disabled={!homeLeague}
+									filterOption={(input, option) =>
+										(option!.children as unknown as string)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
 								>
 									{homeTeamList?.map(team => (
 										<Option key={team.teamId} value={team.teamId}>
@@ -353,8 +371,14 @@ const EditForm: FC<IEditFormProps> = ({
 								]}
 							>
 								<Select
+									showSearch
 									placeholder={t('Label_SelectTeam')}
 									disabled={!awayLeague}
+									filterOption={(input, option) =>
+										(option!.children as unknown as string)
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
 								>
 									{awayTeamList?.map(team => (
 										<Option key={team.teamId} value={team.teamId}>
