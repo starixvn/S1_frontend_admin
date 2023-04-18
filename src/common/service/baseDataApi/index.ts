@@ -140,6 +140,16 @@ export const baseDataApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getEwalletList: builder.query<
+			IAxiosResponse<IOnlinePayData[]>,
+			{ currencyId: number }
+		>({
+			query: data => ({
+				url: 'BaseData/GetEWalletPayList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -154,4 +164,5 @@ export const {
 	useGetCryptoPayListQuery,
 	useGetCryptoWalletListQuery,
 	useLazyGetGameCasinoByTpIdQuery,
+	useGetEwalletListQuery,
 } = baseDataApi

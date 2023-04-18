@@ -66,7 +66,13 @@ const WithdrawalOperatorTable = ({
 			dataIndex: 'operator',
 			width: 100,
 			align: 'center' as 'center',
-			render: (operator: string) => operator ?? '-',
+			render: (operator: string, record: IGetWithdrawalData) => {
+				const { onUser } = record
+				if (onUser) {
+					return onUser
+				}
+				return operator ?? '-'
+			},
 		},
 		{
 			title: t('Label_Status'),
@@ -298,6 +304,7 @@ const WithdrawalOperatorTable = ({
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 				dataSource={withdrawalList ?? []}
+				rowClassName={record => (record.onUser ? 'gray-background' : '')}
 				columns={columns}
 				// eslint-disable-next-line react/no-unstable-nested-components
 				title={() => (

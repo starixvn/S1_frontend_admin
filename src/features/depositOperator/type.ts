@@ -27,6 +27,7 @@ export enum UsableActionButtonEnum {
 	Verified = 69,
 	Process = 70,
 	ToKyc = 71,
+	Receive = 72,
 }
 
 export enum VipLevelEnum {
