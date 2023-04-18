@@ -43,7 +43,7 @@ import { useEffect, useState } from 'react'
 import { useAuth, useModal } from 'common/hooks'
 import { PayInfoModal } from 'features/withdrawalOperator/withdrawalRequest/components/PayInfoModal'
 import { hashPayInfo } from 'features/withdrawalOperator/utils'
-import { multiEqual, utcFormatter } from 'common/utils'
+import { isJSON, multiEqual, utcFormatter } from 'common/utils'
 import { BankSettingForm } from 'features/withdrawalOperator/withdrawalRequest/components/BankSettingForm'
 import { find, head, isEqual, reduce } from 'lodash'
 import { UsableActionButtonEnum } from 'features/depositOperator/type'
@@ -129,7 +129,13 @@ const WithdrawalRequest = () => {
 		withdrawalType: responseWithdrawalType,
 		transId: withdrawalTransId,
 		withdrawalId,
+		withdrawalInfo: rawWithdrawalInfo,
 	} = withdrawalDetailData ?? {}
+
+	// EWallet 用 withdrawalInfo 內的 EWalletSysId
+	const { EWalletSysId = null } = isJSON(rawWithdrawalInfo)
+		? JSON.parse(rawWithdrawalInfo)
+		: {}
 
 	// 某些階段不能更改 WithdrawalType , 要吃 api 給的 withdrawalType , 因為沒有生成 WithdrawalType 實體 , 所以 useWatch 取不到任何值
 	const currentWithdrawalType = formWithdrawalType || responseWithdrawalType
@@ -206,8 +212,11 @@ const WithdrawalRequest = () => {
 	const { data: { data: eWalletList = [] } = {} } = useGetEwalletListQuery(
 		{
 			currencyId,
+			custId,
+			sysId: EWalletSysId as number,
+			amount,
 		},
-		{ skip: !currencyId }
+		{ skip: !currencyId || !EWalletSysId }
 	)
 
 	const { data: { data: cryptoWalletList = [] } = {} } =
@@ -385,6 +394,7 @@ const WithdrawalRequest = () => {
 						multiEqual(action, [
 							WithdrawalStatusEnum.Rejected,
 							WithdrawalStatusEnum.Approved,
+							WithdrawalStatusEnum.Verify,
 						])
 					) {
 						await handleUnLock()
@@ -422,6 +432,7 @@ const WithdrawalRequest = () => {
 					multiEqual(action, [
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
+						WithdrawalStatusEnum.Verify,
 					])
 				) {
 					await handleUnLock()
@@ -518,6 +529,7 @@ const WithdrawalRequest = () => {
 					multiEqual(action, [
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
+						WithdrawalStatusEnum.Verify,
 					])
 				) {
 					await handleUnLock()

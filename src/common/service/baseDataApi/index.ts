@@ -142,7 +142,7 @@ export const baseDataApi = rootApi.injectEndpoints({
 		}),
 		getEwalletList: builder.query<
 			IAxiosResponse<IOnlinePayData[]>,
-			{ currencyId: number }
+			IGetOnlinePayListArgs
 		>({
 			query: data => ({
 				url: 'BaseData/GetEWalletPayList',
