@@ -11,7 +11,6 @@ import {
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
-import { FinancialTypeEnum } from 'features/memberProfile/constants'
 import { useTranslation } from 'react-i18next'
 import { find } from 'lodash'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -25,13 +24,14 @@ import {
 	timeFormat,
 } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { MultipleSelect } from 'components/Select'
 
 const { Option } = Select
 
 interface IFinancialLogsTableProps {
 	custId: number
 	form: FormInstance<{
-		financialType: number
+		financialType: number[]
 	}>
 	loading: boolean
 	dataSource: IFinancialLogData[]
@@ -104,6 +104,32 @@ const FinancialLogsTable = ({
 		},
 	]
 
+	const typeSelector = () => {
+		const onChangeType = (newType: Array<number | string>) => {
+			if (newType.includes('all')) {
+				form.setFieldsValue({
+					financialType: typeList?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					financialType: newType,
+				})
+			}
+		}
+		return (
+			<MultipleSelect onChange={onChangeType} style={{ width: 180 }}>
+				{(typeList?.length as number) > 1 && (
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+				)}
+				{typeList.map(({ name, value }) => (
+					<Option key={name} value={value}>
+						{name}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
+
 	return (
 		<>
 			<Row align='middle' justify='space-between' style={{ height: '36px' }}>
@@ -114,19 +140,10 @@ const FinancialLogsTable = ({
 				</Col>
 
 				<Col>
-					<Form
-						form={form}
-						initialValues={{ financialType: FinancialTypeEnum.ALl }}
-					>
+					<Form form={form}>
 						<Space>
 							<Form.Item name='financialType' noStyle>
-								<Select style={{ width: 180 }}>
-									{typeList.map(({ name, value }) => (
-										<Option key={value} value={value}>
-											{name}
-										</Option>
-									))}
-								</Select>
+								{typeSelector()}
 							</Form.Item>
 
 							<Button

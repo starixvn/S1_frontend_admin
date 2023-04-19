@@ -36,7 +36,7 @@ import {
 import { PAGINATION, useModal, usePagination } from 'common/hooks'
 import { dateRangeToUtcFormatter, isPositiveNum } from 'common/utils'
 import { useEffect } from 'react'
-import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { AffixButtons } from 'components/AffixButtons'
 import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
 import FinancialLogsTable from './FinancialLogsTable'
@@ -55,17 +55,23 @@ const Dashboard = () => {
 	const { custId: originCustId } = useParams()
 	const custId = Number(originCustId)
 	const { timeZoneUtcOffset } = useTimeZone()
-	const [financialLogsForm] = Form.useForm<{ financialType: number }>()
+	const [financialLogsForm] = Form.useForm<{ financialType: number[] }>()
 
 	// ipUser 關聯彈窗
 	const ipUserListModal = useModal()
 	// deviceList 關聯彈窗
 	const deviceUserModal = useModal()
 
-	const {
-		data: { data: typeList = [] } = {} as IEnumTypeResponse,
-		isLoading: isGetTypeListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'FinancialType' })
+	const { data: typeList = [], isLoading: isGetTypeListLoading } =
+		useGetEnumTypeQuery(
+			{ enumName: 'FinancialType' },
+			{
+				selectFromResult: ({ data: { data = [] } = {}, isLoading }) => {
+					const filterData = data.filter(({ name }) => name !== 'All')
+					return { data: filterData, isLoading }
+				},
+			}
+		)
 
 	const {
 		data: { data: todayInfoData } = {},
@@ -151,7 +157,6 @@ const Dashboard = () => {
 		pageSize = PAGINATION.defaultPageSize,
 	}) => {
 		const { financialType } = financialLogsForm.getFieldsValue()
-
 		// * 只抓 3 天的資料顯示
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[moment().subtract(2, 'days').startOf('day'), moment().endOf('day')],
@@ -162,11 +167,11 @@ const Dashboard = () => {
 			pageNumber: current,
 			pageSize,
 			custId,
-			financialType,
 			startDate,
 			endDate,
 			// 空字串表示全部搜尋
 			refTransId: '',
+			financialTypeList: financialType.includes(0) ? [0] : financialType ?? [],
 		}).unwrap()
 
 		setFinancialLogsPagination(prev => ({ ...prev, current, pageSize }))
@@ -212,8 +217,13 @@ const Dashboard = () => {
 		isGetBonusWalletInfoFetching || isGetBonusWalletDetailFetching
 
 	useEffect(() => {
-		handleFinancialLogsSearch({})
-	}, [])
+		if (!isGetTypeListLoading) {
+			financialLogsForm.setFieldsValue({
+				financialType: typeList?.map(({ value }) => value),
+			})
+			handleFinancialLogsSearch({})
+		}
+	}, [isGetTypeListLoading])
 
 	return (
 		<>
