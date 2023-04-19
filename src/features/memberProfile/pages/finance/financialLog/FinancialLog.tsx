@@ -16,9 +16,7 @@ import { FinancialFilter } from 'features/memberProfile/pages/finance/financialL
 import { AffixButtons } from 'components/AffixButtons'
 import download from 'downloadjs'
 import moment from 'moment'
-import { AdjustTypeEnum } from 'features/memberProfile/constants'
-import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
-import { head } from 'lodash'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const FinancialLog = () => {
 	const { t } = useTranslation()
@@ -27,7 +25,7 @@ const FinancialLog = () => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [filterForm] = Form.useForm<{
 		dateRange: [moment.Moment, moment.Moment]
-		type: AdjustTypeEnum
+		type: number[]
 		refTransId: string
 	}>()
 
@@ -45,10 +43,16 @@ const FinancialLog = () => {
 	const [exportFinancialLog, { isLoading: isExportFinancialLogLoading }] =
 		useExportFinancialLogMutation()
 
-	const {
-		data: { data: typeList = [] } = {} as IEnumTypeResponse,
-		isLoading: isGetTypeListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'FinancialType' })
+	const { data: typeList = [], isLoading: isGetTypeListLoading } =
+		useGetEnumTypeQuery(
+			{ enumName: 'FinancialType' },
+			{
+				selectFromResult: ({ data: { data = [] } = {}, isLoading }) => {
+					const filterData = data.filter(({ name }) => name !== 'All')
+					return { data: filterData, isLoading }
+				},
+			}
+		)
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: financialLogsTotal,
@@ -62,21 +66,24 @@ const FinancialLog = () => {
 		pageSize?: number | undefined
 	}) => {
 		if (!custId) return
-		const { dateRange, type, refTransId = '' } = filterForm.getFieldsValue()
+		const {
+			dateRange,
+			type = [],
+			refTransId = '',
+		} = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			timeZoneUtcOffset
 		)
-
 		try {
 			await getFinancialLogs({
 				pageNumber: current,
 				pageSize,
 				custId: Number(custId),
-				financialType: type,
 				startDate,
 				endDate,
 				refTransId,
+				financialTypeList: type.includes(0) ? [0] : type,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
@@ -96,20 +103,21 @@ const FinancialLog = () => {
 	}
 
 	const handleExport = async () => {
-		const { dateRange, type, refTransId = '' } = filterForm.getFieldsValue()
+		const {
+			dateRange,
+			type = [],
+			refTransId = '',
+		} = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			timeZoneUtcOffset
 		)
 		const args = {
-			// * pageNumber、pageSize 固定帶 -1 api 則會吐全部筆數資料回單頁 excel
-			pageNumber: -1,
-			pageSize: -1,
 			custId: Number(custId),
 			startDate,
 			endDate,
 			refTransId,
-			financialType: type,
+			financialTypeList: type.includes(0) ? [0] : type,
 		}
 		try {
 			const blob = await exportFinancialLog(args).unwrap()
@@ -133,7 +141,7 @@ const FinancialLog = () => {
 	useEffect(() => {
 		if (!isGetTypeListLoading && typeList.length > 0) {
 			filterForm.setFieldsValue({
-				type: head(typeList)?.value,
+				type: typeList.map(({ value }) => value),
 			})
 		}
 	}, [isGetTypeListLoading])
