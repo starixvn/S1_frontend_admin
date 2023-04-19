@@ -2586,6 +2586,16 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.leaderboardReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.leaderboardReport.functionId}
+					>
+						<LeaderboardReport />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.leaderboardExtraPoint.root}`,
 				element: (
 					<AuthRequire
