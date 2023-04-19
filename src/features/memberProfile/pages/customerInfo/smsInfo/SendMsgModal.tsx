@@ -30,7 +30,7 @@ const SendMsgModal = ({
 	langCode,
 }: ISendMsgModalProps) => {
 	const { t } = useTranslation()
-	const formPopup = Form.useWatch('isPopup', form)
+	const formIsPopup = Form.useWatch('isPopup', form)
 	const onHtmlStateChange = (newHtml: string) => {
 		form.setFieldsValue({
 			content: newHtml,
@@ -88,7 +88,7 @@ const SendMsgModal = ({
 							<Input allowClear />
 						</Form.Item>
 					</Col>
-					{formPopup && (
+					{formIsPopup && (
 						<Col span={24}>
 							<Form.Item
 								name='popupMessage'
