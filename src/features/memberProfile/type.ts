@@ -296,8 +296,8 @@ export interface IGetFinancialLogArgs {
 	custId: number
 	startDate: string
 	endDate: string
-	financialType: number
 	refTransId: string
+	financialTypeList: number[]
 }
 
 export interface IFinancialLogData {
@@ -865,13 +865,11 @@ export type IGetTransferInfoResponse = IAxiosResponse<IGetTransferInfoData[]>
 
 // financial Log 頁面
 export interface IExportFinancialLogArgs {
-	pageNumber: number
-	pageSize: number
 	custId: number
 	startDate: string
 	endDate: string
 	refTransId: string
-	financialType: number
+	financialTypeList: number[]
 }
 
 // bankInfo Log 頁面
