@@ -1,4 +1,14 @@
-import { Col, Form, FormInstance, Input, Modal, Row, Typography } from 'antd'
+import {
+	Checkbox,
+	Col,
+	Form,
+	FormInstance,
+	Input,
+	Modal,
+	Row,
+	Space,
+	Typography,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import { TinymceEditor } from 'components'
 
@@ -20,6 +30,7 @@ const SendMsgModal = ({
 	langCode,
 }: ISendMsgModalProps) => {
 	const { t } = useTranslation()
+	const formIsPopup = Form.useWatch('isPopup', form)
 	const onHtmlStateChange = (newHtml: string) => {
 		form.setFieldsValue({
 			content: newHtml,
@@ -48,6 +59,7 @@ const SendMsgModal = ({
 				form={form}
 				layout='vertical'
 				initialValues={{
+					isPopup: false,
 					title: '',
 					content: '',
 				}}
@@ -56,7 +68,14 @@ const SendMsgModal = ({
 					<Col span={24}>
 						<Form.Item
 							name='title'
-							label={t('Label_Subject')}
+							label={
+								<Space align='center' size='middle'>
+									{t('Label_Subject')}
+									<Form.Item name='isPopup' noStyle valuePropName='checked'>
+										<Checkbox>{t('Label_Popup')}</Checkbox>
+									</Form.Item>
+								</Space>
+							}
 							rules={[
 								{
 									required: true,
@@ -69,6 +88,22 @@ const SendMsgModal = ({
 							<Input allowClear />
 						</Form.Item>
 					</Col>
+					{formIsPopup && (
+						<Col span={24}>
+							<Form.Item
+								name='popupMessage'
+								label={t('Label_PopupMessage')}
+								rules={[
+									{
+										required: true,
+										message: '',
+									},
+								]}
+							>
+								<Input maxLength={50} />
+							</Form.Item>
+						</Col>
+					)}
 				</Row>
 				<Row justify='center' align='middle'>
 					<Form.Item
@@ -78,7 +113,7 @@ const SendMsgModal = ({
 							{
 								required: true,
 								message: t('Label_Required', {
-									key: t('content'),
+									key: t('Label_content'),
 								}),
 							},
 						]}

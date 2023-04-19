@@ -1146,5 +1146,6 @@
 	"Label_ExtraPoint": "Extra Point",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_Receive": "Receive",
-	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?"
+	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
+	"Label_content": "content"
 }

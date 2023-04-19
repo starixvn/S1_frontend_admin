@@ -439,6 +439,8 @@ export interface ISendPersonalMsgArgs {
 	custId: number
 	title: string
 	content: string
+	isPopup: boolean
+	popupMessage: string
 }
 
 export interface IDeletePersonalMsgArgs {
