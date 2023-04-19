@@ -114,6 +114,8 @@ const WithdrawalRequest = () => {
 			// 因為不想要有 undefined 出現 , 所以這裡直接 as 賦型
 		} = {} as IAxiosResponse<IGetWithdrawalData>,
 		isFetching: isGetWithdrawalDataLoading,
+		// 手動 refetch , 特殊情形手動 refetch , 避免 api 撈太快未取到最新資料
+		refetch: refetchGetByTransId,
 	} = useGetWithdrawalByTransIdQuery({ transId })
 
 	const {
@@ -636,12 +638,16 @@ const WithdrawalRequest = () => {
 				await checkLockWithdrawalExists({ transId }).unwrap()
 				// 沒人領過 => 直接領單
 				await lockWithdrawal({ transId }).unwrap()
+				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+				refetchGetByTransId()
 			} catch (error) {
 				Modal.confirm({
 					title: t('Label_ReceiveConfirmMsg'),
 					icon: <ExclamationCircleOutlined />,
 					async onOk() {
 						await setLockWithdrawalUser({ transId }).unwrap()
+						// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+						refetchGetByTransId()
 					},
 					onCancel() {},
 				})
@@ -649,6 +655,8 @@ const WithdrawalRequest = () => {
 		} else {
 			try {
 				await lockWithdrawal({ transId }).unwrap()
+				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+				refetchGetByTransId()
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')

@@ -168,7 +168,6 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['POST'],
 		}),
 		// 退單
 		unLockWithdrawal: builder.mutation<IAxiosResponse<null>, IReceiveArgs>({
@@ -187,7 +186,6 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 					method: 'POST',
 					data,
 				}),
-				invalidatesTags: ['POST'],
 			}
 		),
 		// check 單 , 主管級才需要確認
@@ -200,7 +198,6 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['POST'],
 		}),
 	}),
 })
