@@ -16,6 +16,7 @@ import { SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { MultipleSelect } from 'components/Select'
 
 interface FinancialFilterProps {
 	loading: boolean
@@ -43,6 +44,32 @@ const FinancialFilter = ({
 }: FinancialFilterProps) => {
 	const { t } = useTranslation()
 	const { Option } = Select
+	const typeSelector = () => {
+		const onChangeType = (newType: Array<number | string>) => {
+			if (newType.includes('all')) {
+				form.setFieldsValue({
+					type: typeList?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					type: newType,
+				})
+			}
+		}
+		return (
+			<MultipleSelect onChange={onChangeType}>
+				{(typeList?.length as number) > 1 && (
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+				)}
+				{typeList.map(({ name, value }) => (
+					<Option key={value} value={value}>
+						{name}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
+
 	return (
 		<Form layout='vertical' size='middle' form={form} onFinish={onSearch}>
 			<Row align='middle' gutter={16}>
@@ -80,14 +107,19 @@ const FinancialFilter = ({
 					</Form.Item>
 				</Col>
 				<Col span={6}>
-					<Form.Item name='type' label={t('Label_Type')}>
-						<Select>
-							{typeList.map(({ name, value }) => (
-								<Option key={name} value={value}>
-									{name}
-								</Option>
-							))}
-						</Select>
+					<Form.Item
+						name='type'
+						label={t('Label_Type')}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_Type'),
+								}),
+							},
+						]}
+					>
+						{typeSelector()}
 					</Form.Item>
 				</Col>
 				<Col span={4}>
