@@ -1088,5 +1088,6 @@
 	"Label_Month": "Month",
 	"Label_MonthRequire": "Month is Required",
 	"Label_ExtraPoint": "Extra Point",
-	"Label_AddExtraPoint": "Add ExtraPoint"
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_hideForUnLogin": "Hide For UnLogin"
 }
