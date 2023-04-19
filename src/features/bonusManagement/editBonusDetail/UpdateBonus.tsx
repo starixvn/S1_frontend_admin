@@ -157,6 +157,7 @@ const UpdateBonus: FC<{
 				sameRealNameRestrict = false,
 				sameRealNameRestrictAvailableCount,
 				blockTagList,
+				hideForUnlogin,
 			} = formData
 
 			// 時區一律設定成 +0
@@ -216,6 +217,7 @@ const UpdateBonus: FC<{
 							sameRealNameRestrict,
 							sameRealNameRestrictAvailableCount:
 								sameRealNameRestrictAvailableCount ?? 0,
+							hideForUnlogin,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
@@ -295,6 +297,7 @@ const UpdateBonus: FC<{
 				sameIPRestrictAvailableCount,
 				sameRealNameRestrict,
 				sameRealNameRestrictAvailableCount,
+				hideForUnlogin,
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
@@ -344,6 +347,7 @@ const UpdateBonus: FC<{
 				selectedVipLevel: displayConditionResponseConverter(
 					promotionDisplayCondition
 				),
+				hideForUnlogin,
 			})
 			parsedSpecific?.forEach(specificData => {
 				// subForm init

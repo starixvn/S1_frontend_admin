@@ -1147,5 +1147,6 @@
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_content": "content"
+	"Label_content": "content",
+	"Label_hideForUnLogin": "Hide For UnLogin"
 }
