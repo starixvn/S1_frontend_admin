@@ -197,7 +197,16 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='tpId' label={t('Label_Provider')}>
-									<Select placeholder={t('Label_Select')} allowClear>
+									<Select
+										showSearch
+										placeholder={t('Label_Select')}
+										allowClear
+										filterOption={(input, option) =>
+											(option!.children as unknown as string)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+									>
 										{providers?.map(item => (
 											<Option key={item.tpName} value={item.id}>
 												{item.tpName}
@@ -208,7 +217,16 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='gameType' label={t('Label_Product')}>
-									<Select placeholder={t('Label_Select')} allowClear>
+									<Select
+										showSearch
+										placeholder={t('Label_Select')}
+										allowClear
+										filterOption={(input, option) =>
+											(option!.children as unknown as string)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+									>
 										{products?.map(item => (
 											<Option key={item.typeName} value={item.type}>
 												{item.typeName}
@@ -219,7 +237,16 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='category' label={t('Label_Category')}>
-									<Select placeholder={t('Label_Select')} allowClear>
+									<Select
+										showSearch
+										placeholder={t('Label_Select')}
+										allowClear
+										filterOption={(input, option) =>
+											(option!.children as unknown as string)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+									>
 										{categories?.map(item => (
 											<Option key={item.categoryName} value={item.categoryName}>
 												{item.categoryName}
