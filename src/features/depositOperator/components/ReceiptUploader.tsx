@@ -36,7 +36,7 @@ interface IReceiptUploaderProps {
 	deleteReceiptPermission?: PermissionInterface
 	status: DepositStatusEnum
 	timeZoneUtcOffset: number
-	onUploadImage: (result: RcFile) => void
+	onUploadImage: (imageBase64: string) => void
 	onDeleteImage: (number: number) => void
 }
 
@@ -68,7 +68,8 @@ const ReceiptUploader = ({
 	// Paste Upload 綁定
 	usePasteEffect(async (result, kind) => {
 		if (kind === 'file' && canEdit) {
-			onUploadImage(result as RcFile)
+			const base64Image = await getBase64(result as RcFile)
+			onUploadImage(base64Image)
 		}
 	}, componentRef)
 
@@ -119,8 +120,8 @@ const ReceiptUploader = ({
 			const index = findIndex(newFileList, item => item.uid === file.uid)
 			// 複製一個 uploadFile , 和初始List 出來 , 以便調整 status 狀態
 			const currentFile = newFileList[index]
-			// const image = await getBase64(currentFile.originFileObj as RcFile)
-			await onUploadImage(currentFile.originFileObj as RcFile)
+			const image = await getBase64(currentFile.originFileObj as RcFile)
+			await onUploadImage(image)
 		},
 	}
 

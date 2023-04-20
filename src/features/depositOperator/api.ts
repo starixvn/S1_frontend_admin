@@ -14,6 +14,7 @@ import {
 	ICheckDepositReceiptArgs,
 	IDeleteReceiptArgs,
 	IDepositReceiptByTransIdResponse,
+	IUploadReceiptArgs,
 } from 'features/depositOperator/type'
 
 export const depositOperatorApi = rootApi.injectEndpoints({
@@ -157,15 +158,11 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		uploadReceipt: builder.mutation<IAxiosResponse<null>, FormData>({
+		uploadReceipt: builder.mutation<IAxiosResponse<null>, IUploadReceiptArgs>({
 			query: data => ({
 				url: 'Deposit/UploadReceipt',
 				method: 'POST',
 				data,
-				headers: {
-					'content-type':
-						'multipart/form-data; boundary=<calculated when request is sent>',
-				},
 			}),
 			invalidatesTags: ['POST'],
 		}),
