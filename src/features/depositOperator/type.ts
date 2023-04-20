@@ -266,15 +266,15 @@ export interface IDeleteReceiptArgs {
 	transId: string
 }
 
+export interface IUploadReceiptArgs {
+	siteId: number
+	custId: number
+	transId: string
+	receipt: string
+}
+
 export interface IDepositReceiptByTransIdData {
-	receipt: {
-		contentType: string
-		enableRangeProcessing: false
-		entityTag: null
-		fileContents: string
-		fileDownloadName: string
-		lastModified: null
-	}
+	receipt: string
 	receiptNo: number
 	creator: string
 	createTime: string
