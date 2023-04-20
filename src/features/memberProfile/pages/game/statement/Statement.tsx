@@ -1,5 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import {
+	useExportCustTpBetRecordByCategoryMutation,
+	useExportCustTpBetRecordByDayMutation,
+	useExportCustTpBetRecordByGameTypeMutation,
+	useExportCustTpBetRecordMutation,
 	useLazyGetCustTpBetRecordByCategoryQuery,
 	useLazyGetCustTpBetRecordByDayQuery,
 	useLazyGetCustTpBetRecordByGameTypeQuery,
@@ -19,6 +23,7 @@ import { CustTpBetRecordByDayTable } from 'features/memberProfile/pages/game/sta
 import { CustTpBetRecordByCategoryTable } from 'features/memberProfile/pages/game/statement/tables/CustTpBetRecordByCategoryTable'
 import {
 	PAGINATION,
+	useAuth,
 	useModal,
 	usePagination,
 	useQueryParams,
@@ -27,10 +32,14 @@ import { CustTpBetRecordByGameTypeTable } from 'features/memberProfile/pages/gam
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { IGetTpBetRecordDetailData } from 'features/memberProfile/type'
 import { TpBetRecordDetailModal } from 'features/memberProfile/pages/game/statement/tables/TpBetRecordDetailModal'
+import { AffixButtons } from 'components/AffixButtons'
+import download from 'downloadjs'
+import moment from 'moment/moment'
 
 const Statement = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { startDate: queryStartDate, endDate: queryEndDate } = queryParams
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -51,6 +60,9 @@ const Statement = () => {
 		},
 	] = useLazyGetCustTpBetRecordQuery()
 
+	const [exportCustTpBetRecord, { isLoading: isExportCustTpBetRecordLoading }] =
+		useExportCustTpBetRecordMutation()
+
 	// 第二層 , 取得客戶指定日期紀錄
 	const [
 		getCustTpBetRecordByDay,
@@ -60,6 +72,11 @@ const Statement = () => {
 		},
 	] = useLazyGetCustTpBetRecordByDayQuery()
 
+	const [
+		exportCustTpBetRecordByDay,
+		{ isLoading: isExportCustTpBetRecordByDayLoading },
+	] = useExportCustTpBetRecordByDayMutation()
+
 	// 第三層 , 取得客戶指定 Category 紀錄
 	const [
 		getCustTpBetRecordByCategory,
@@ -68,6 +85,11 @@ const Statement = () => {
 			isFetching: isGetCustRecordByCategoryLoading,
 		},
 	] = useLazyGetCustTpBetRecordByCategoryQuery()
+
+	const [
+		exportCustTpBetRecordByCategory,
+		{ isLoading: isExportCustTpBetRecordByCategoryLoading },
+	] = useExportCustTpBetRecordByCategoryMutation()
 
 	// 第四層 , 取得客戶指定 GameType 紀錄
 	const [
@@ -80,6 +102,11 @@ const Statement = () => {
 			isFetching: isGetCustRecordByGameTypeLoading,
 		},
 	] = useLazyGetCustTpBetRecordByGameTypeQuery()
+
+	const [
+		exportCustTpBetRecordByGameType,
+		{ isLoading: isExportCustTpBetRecordByGameTypeLoading },
+	] = useExportCustTpBetRecordByGameTypeMutation()
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: tpBetRecordByGameTypeTotal,
@@ -258,6 +285,126 @@ const Statement = () => {
 		}
 	}
 
+	const handleExport = async () => {
+		switch (tableState) {
+			case GameStatementTableEnum.TPBetRecord: {
+				if (!custId) return
+				const { dateRange } = filterForm.getFieldsValue()
+				const [startDate, endDate] = dateRangeToUtcFormatter(
+					dateRange,
+					timeZoneUtcOffset
+				)
+				try {
+					const blob = await exportCustTpBetRecord({
+						custId: Number(custId),
+						startDate,
+						endDate,
+					}).unwrap()
+					download(
+						blob,
+						`ExportCustTPBetRecord_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			}
+			case GameStatementTableEnum.TPBetRecordByDay: {
+				const { selDate } = filterForm.getFieldsValue(true)
+				const [startDate, endDate] = getInRangeDate({
+					targetDate: selDate,
+					dateRange: [queryStartDate, queryEndDate],
+					timeZoneUtcOffset,
+				})
+				try {
+					const blob = await exportCustTpBetRecordByDay({
+						custId: Number(custId),
+						startDate,
+						endDate,
+						selDate,
+					}).unwrap()
+					download(
+						blob,
+						`ExportCustTPBetRecordByDay_${moment().format(
+							'YYYYMMDDHHmmss'
+						)}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			}
+			case GameStatementTableEnum.TPBetRecordByCategory: {
+				if (!currentCategoryId) return
+				const { selDate } = filterForm.getFieldsValue(true)
+				const [startDate, endDate] = getInRangeDate({
+					targetDate: selDate,
+					dateRange: [queryStartDate, queryEndDate],
+					timeZoneUtcOffset,
+				})
+				try {
+					const blob = await exportCustTpBetRecordByCategory({
+						custId: Number(custId),
+						selDate,
+						startDate,
+						endDate,
+						categoryId: currentCategoryId,
+					}).unwrap()
+					download(
+						blob,
+						`ExportCustTPBetRecordByCategory_${moment().format(
+							'YYYYMMDDHHmmss'
+						)}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			}
+			case GameStatementTableEnum.TPBetRecordByGameType: {
+				const { selDate, gameTypeId } = filterForm.getFieldsValue(true)
+				const [startDate, endDate] = getInRangeDate({
+					targetDate: selDate,
+					dateRange: [queryStartDate, queryEndDate],
+					timeZoneUtcOffset,
+				})
+				try {
+					const blob = await exportCustTpBetRecordByGameType({
+						custId: Number(custId),
+						startDate,
+						endDate,
+						selDate,
+						gameTypeId,
+					}).unwrap()
+					download(
+						blob,
+						`ExportCustTPBetRecordByGameType_${moment().format(
+							'YYYYMMDDHHmmss'
+						)}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			}
+			default: {
+				break
+			}
+		}
+	}
+
 	const loading =
 		isGetCustTpBetRecordLoading ||
 		isGetTpBetRecordDetailLoading ||
@@ -318,6 +465,19 @@ const Statement = () => {
 					visible={tpBetRecordDetailModal.visible}
 					onCancel={tpBetRecordDetailModal.onCancel}
 				/>
+				<AffixButtons>
+					<AffixButtons.BackToTop />
+					<AffixButtons.FileExport
+						disabled={!exportExcelPermission?.canUse}
+						onClick={handleExport}
+						loading={
+							isExportCustTpBetRecordLoading ||
+							isExportCustTpBetRecordByDayLoading ||
+							isExportCustTpBetRecordByCategoryLoading ||
+							isExportCustTpBetRecordByGameTypeLoading
+						}
+					/>
+				</AffixButtons>
 			</LayoutContent.Card>
 		</>
 	)

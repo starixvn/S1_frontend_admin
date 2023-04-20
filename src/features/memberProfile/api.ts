@@ -106,6 +106,7 @@ import {
 	ICustRealNameChangeLogData,
 	IGetPromotionReceiveFailLogArgs,
 	IPromotionReceiveFailLogData,
+	IExportCustTpBetRecordByGameTypeArgs,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -938,6 +939,15 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// 第一層 , export
+		exportCustTpBetRecord: builder.mutation<Blob, IGetCustTpBetRecordArgs>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 		// 第二層 , 取得客戶指定日期紀錄
 		getCustTpBetRecordByDay: builder.query<
 			IAxiosResponse<IGetCustTpBetRecordByDayData[]>,
@@ -947,6 +957,18 @@ export const memberProfileApi = createApi({
 				url: 'CustomerManage/GetCustTpBetRecordByDay',
 				method: 'POST',
 				data,
+			}),
+		}),
+		// 第二層 , export
+		exportCustTpBetRecordByDay: builder.mutation<
+			Blob,
+			IGetCustTpBetRecordByDayArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordByDayExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
 			}),
 		}),
 		// 第三層 , 取得客戶指定 category 紀錄
@@ -960,6 +982,18 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// 第三層 , export
+		exportCustTpBetRecordByCategory: builder.mutation<
+			Blob,
+			IGetCustTpBetRecordByCategoryIdArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordByCategoryIdExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 		// 第四層 , 取得客戶指定 GameType 紀錄
 		getCustTpBetRecordByGameType: builder.query<
 			IAxiosResponse<IGetCustTpBetRecordByGameTypeData[]>,
@@ -969,6 +1003,18 @@ export const memberProfileApi = createApi({
 				url: 'CustomerManage/GetCustTpBetRecordDetailByGameType',
 				method: 'POST',
 				data,
+			}),
+		}),
+		// 第四層 , Export
+		exportCustTpBetRecordByGameType: builder.mutation<
+			Blob,
+			IExportCustTpBetRecordByGameTypeArgs
+		>({
+			query: data => ({
+				url: 'CustomerManage/GetCustTpBetRecordDetailByGameTypeExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
 			}),
 		}),
 		// 第五層 , 取得第三方細單
@@ -1138,4 +1184,8 @@ export const {
 	useEditCustPromotionWhiteListMutation,
 	useLazyGetPromotionReceiveFailLogQuery,
 	useGetCustRealNameChangeLogQuery,
+	useExportCustTpBetRecordMutation,
+	useExportCustTpBetRecordByDayMutation,
+	useExportCustTpBetRecordByCategoryMutation,
+	useExportCustTpBetRecordByGameTypeMutation,
 } = memberProfileApi
