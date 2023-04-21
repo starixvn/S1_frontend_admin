@@ -335,6 +335,7 @@
 	"Label_Agent": "Agent",
 	"Label_Pay": "Pay",
 	"Label_DisplayName": "Display Name",
+	"Label_FrontendDisplayName": "Frontend Display Name",
 	"Label_Creator": "Creator",
 	"Label_Update": "Updater",
 	"Label_InitialAmount": "Initial Amount",
