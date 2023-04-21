@@ -103,6 +103,7 @@ const TransferAccountManagementForm: FC<
 					agent: '',
 					accountCode: '',
 					displayName: '',
+					frontendDisplayName: '',
 					initialAmount: null,
 					initialTime: '',
 					maxBalanceAlertAmount: null,
@@ -407,6 +408,25 @@ const TransferAccountManagementForm: FC<
 							<Input allowClear />
 						</Form.Item>
 					</Col>
+					{formChannel === ChannelEnum.CryptoWallet && (
+						<Col lg={8} md={12} xs={24}>
+							<Form.Item
+								name='frontendDisplayName'
+								label={t('Label_FrontendDisplayName')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_FrontendDisplayName'),
+										}),
+									},
+								]}
+							>
+								<Input allowClear />
+							</Form.Item>
+						</Col>
+					)}
+
 					<Col lg={8} md={12} xs={24}>
 						<Form.Item
 							name='initialAmount'
