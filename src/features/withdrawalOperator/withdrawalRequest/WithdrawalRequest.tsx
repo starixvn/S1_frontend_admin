@@ -391,15 +391,15 @@ const WithdrawalRequest = () => {
 						withdrawalType,
 						withdrawalAccountingModels,
 					}).unwrap()
-					// Reject 和 Approved 才跳回上一頁
+					// 跳回上一頁
 					if (
 						multiEqual(action, [
 							WithdrawalStatusEnum.Rejected,
 							WithdrawalStatusEnum.Approved,
 							WithdrawalStatusEnum.Verify,
+							WithdrawalStatusEnum.Pending,
 						])
 					) {
-						await handleUnLock()
 						navigate(-1)
 					}
 				} catch (error) {
@@ -429,15 +429,15 @@ const WithdrawalRequest = () => {
 					withdrawalType,
 					withdrawalAccountingModels: [withdrawalAccountingData],
 				}).unwrap()
-				// Reject 和 Approved 才跳回上一頁
+				// 跳回上一頁
 				if (
 					multiEqual(action, [
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
 						WithdrawalStatusEnum.Verify,
+						WithdrawalStatusEnum.Pending,
 					])
 				) {
-					await handleUnLock()
 					navigate(-1)
 				}
 			} catch (error) {
@@ -532,9 +532,9 @@ const WithdrawalRequest = () => {
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
 						WithdrawalStatusEnum.Verify,
+						WithdrawalStatusEnum.Pending,
 					])
 				) {
-					await handleUnLock()
 					navigate(-1)
 				}
 			} catch (error) {
@@ -557,7 +557,6 @@ const WithdrawalRequest = () => {
 			case UsableActionButtonEnum.ManualApproved:
 				try {
 					await manualApproval({ transId }).unwrap()
-					await handleUnLock()
 					navigate(-1)
 				} catch (error) {
 					message.error(
@@ -569,7 +568,6 @@ const WithdrawalRequest = () => {
 			case UsableActionButtonEnum.ManualRejected:
 				try {
 					await manualReject({ transId }).unwrap()
-					await handleUnLock()
 					navigate(-1)
 				} catch (error) {
 					message.error(
