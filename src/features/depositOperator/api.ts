@@ -70,6 +70,7 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 				method: 'GET',
 			}),
 			providesTags: ['POST'],
+			keepUnusedDataFor: 1,
 		}),
 		getDepositCommentsByTransId: builder.query<
 			IAxiosResponse<IDepositCommentData[]>,
