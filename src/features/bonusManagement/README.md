@@ -28,18 +28,15 @@
 - 畫面右下區塊為 各個 `Specific` 內的 `details` , 對應檔案為 `BannerInfoEditTab` 和其子元件
 - `MainForm` 和 `SubForm` 主要用 `BonusType` 做條件渲染 , 找尋特定 BonusType 行為可直接搜該 Type 名稱
 - 所有有顯示的 Bonus Type 可搜尋 `constants.ts` 內的 `BonusTypeEnum`
-- 在特定 `bonusType` 為 `FreeBet` , `RetentionFreeBet` 時 設定 `amount Type` 為 `Amount` (預設為 `percentage`)
+- 在特定 `bonusType` 為 `FreeBet` , `RetentionFreeBet`, `DeviceBonus` 時 設定 `amount Type` 為 `Amount` (預設為 `percentage`)
 - 當 isDisplayDate 未打勾時
   1. 參數 'Display Date' 送 null 給後端。
   2. BonusDetailSubForm.tsx 的 bannerUrl、title、description 需為非必填。
-  
-- 當 `bonusType` 為 `FreeBet` , `Frist deposit ` 時支援以下選項
+- 當 `bonusType` 為 `FreeBet` , `First deposit `, `DeviceBonus` 時支援以下選項
   1. Same Device ID restrict
   2. Same IP restrict
   3. Same Real Name restrict
 - 以上每組都包含一個 count 計次 inputNumber , `bonusType = freebet` 時 `SameIPRestrict`要預設開啟
-
-
 
 #### Banner Info
 

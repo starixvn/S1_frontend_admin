@@ -193,20 +193,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 
 		if (
 			currentBonusType === BonusTypeEnum.FreeBet ||
-			currentBonusType === BonusTypeEnum.RetentionFreeBet
-		) {
-			form?.setFieldsValue({
-				specific: {
-					[isoCode]: {
-						bonusType: AmountTypeEnum.Amount,
-					},
-				},
-			})
-		}
-
-		if (
-			currentBonusType === BonusTypeEnum.FreeBet ||
-			currentBonusType === BonusTypeEnum.RetentionFreeBet
+			currentBonusType === BonusTypeEnum.RetentionFreeBet ||
+			currentBonusType === BonusTypeEnum.DeviceBonus
 		) {
 			form?.setFieldsValue({
 				specific: {
@@ -266,6 +254,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					{multiEqual(currentBonusType as number, [
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
+						BonusTypeEnum.DeviceBonus as number,
 					]) && (
 						<>
 							<Row gutter={16}>
