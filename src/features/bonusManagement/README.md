@@ -36,7 +36,7 @@
   1. Same Device ID restrict
   2. Same IP restrict
   3. Same Real Name restrict
-- 以上每組都包含一個 count 計次 inputNumber , `bonusType = freebet` 時 `SameIPRestrict`要預設開啟
+- 以上每組都包含一個 count 計次 inputNumber , `bonusType = FreeBet`與 `DeviceBonus` 時 `SameIPRestrict`要預設開啟
 
 #### Banner Info
 
