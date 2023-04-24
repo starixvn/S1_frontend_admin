@@ -1093,5 +1093,11 @@
 	"Label_content": "content",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ActiveInactiveAll": "Active/Inactive All"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_LiveStreaming": "LiveStreaming",
+	"Label_RegisterMember": "RegisterMember",
+	"Label_AffiliateId": "Affiliate ID",
+	"Label_CountryCode": "Country Code",
+	"Label_MailWrongFormat": "Email address format incorrect"
 }

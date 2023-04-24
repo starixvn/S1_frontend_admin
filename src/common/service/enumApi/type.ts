@@ -60,6 +60,7 @@ export type EnumNameType =
 	| 'DirectionEnum'
 	| 'DepositReceiptCreateFromEnum'
 	| 'LeaderBoardCategoryEnum'
+	| 'MemberTypeEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -111,6 +112,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 * @argument {string}  LeaderBoardCategoryEnum - 取得 LeaderBoardCategory 列表
+	 * @argument {string}  MemberTypeEnum - 取得 MemberTypeEnum 列表
 	 */
 	enumName: EnumNameType
 }

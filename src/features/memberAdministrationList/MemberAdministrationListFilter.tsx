@@ -27,7 +27,6 @@ import {
 	SHIELD_LEVEL_ENUM_OPTIONS,
 	STATUS_ENUM_OPTIONS,
 	DATE_TYPE_ENUM_OPTIONS,
-	USER_TYPE_ENUM_OPTIONS,
 	StatueEnum,
 	IdentityEnum,
 	IovationLevelEnum,
@@ -35,7 +34,7 @@ import {
 	DateTypeEnum,
 	UserTypeEnum,
 } from './constants'
-import { IForm, ITagData, IVipLevelData } from './type'
+import { IForm, ITagData, IVipLevelData, IMemberTypeData } from './type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -48,6 +47,7 @@ interface IMemberAdministrationListFilterProps {
 	currencyListBySite: Currency[]
 	allTagEnums: ITagData[]
 	vipLevelEnums: IVipLevelData[]
+	memberTypeEnums: IMemberTypeData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
@@ -66,6 +66,7 @@ const MemberAdministrationListFilter = ({
 	currencyListBySite,
 	allTagEnums,
 	vipLevelEnums,
+	memberTypeEnums,
 	onTimeZoneChange,
 	onSearch,
 }: IMemberAdministrationListFilterProps) => {
@@ -460,13 +461,14 @@ const MemberAdministrationListFilter = ({
 											<Select
 												placeholder={t('Label_Select') + t('Label_MemberType')}
 											>
-												{USER_TYPE_ENUM_OPTIONS?.map(
-													({ value, displayKey }) => (
-														<Option key={value} value={value}>
-															{t(displayKey)}
-														</Option>
-													)
+												{(memberTypeEnums?.length as number) > 1 && (
+													<Option value={0}>{t('Label_SelectAll')}</Option>
 												)}
+												{memberTypeEnums?.map(({ value, name }) => (
+													<Option key={value} value={value}>
+														{name}
+													</Option>
+												))}
 											</Select>
 										</Form.Item>
 									</Col>

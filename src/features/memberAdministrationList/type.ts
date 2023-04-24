@@ -111,6 +111,11 @@ export interface IVipLevelData {
 	levelName: string
 }
 
+export interface IMemberTypeData {
+	name: string
+	value: number
+}
+
 export interface IExportMemberArgs {
 	siteId: number
 	currencyId: number[]
@@ -163,4 +168,36 @@ export interface IForm {
 	exportTransferWallet: boolean | number
 	userType: UserTypeEnum
 	excludeTag: boolean
+}
+
+export interface IGetRegisterMemberArgs {
+	siteId: number
+	userName: string
+	userpwd: string
+	memberType: number
+	email: string
+	currencyId: number
+	areaCode: string
+	phoneNo: string
+	affCode: string
+}
+
+export interface IAddForm {
+	userName: string
+	userpwd: string
+	memberType: number
+	email: string
+	currencyId: number
+	areaCode: string
+	phoneNo: string
+	affCode: string
+}
+
+export interface IAreaCode {
+	AreaCode: string
+	Pattern: string
+	Length: number
+	MaxLength: number
+	Name: string
+	Abbr: string
 }

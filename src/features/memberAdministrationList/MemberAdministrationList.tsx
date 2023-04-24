@@ -10,22 +10,26 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
+	useModal,
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
 import { isArray, isEmpty, trim } from 'lodash'
 import download from 'downloadjs'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import {
 	useLazyGetMemberListQuery,
 	useGetAllTagQuery,
 	useGetVipLevelSettingsQuery,
 	useExportMemberMutation,
+	useGetRegisterMemberMutation,
 } from './api'
 import MemberAdministrationListFilter from './MemberAdministrationListFilter'
 import MemberAdministrationListTable from './MemberAdministrationListTable'
+import MemberAdministrationModal from './MemberAdministrationModal'
 import { IdentityEnum, DateTypeEnum, UserTypeEnum } from './constants'
-import { IForm, IMemberResponse, IExportMemberArgs } from './type'
+import { IForm, IAddForm, IMemberResponse, IExportMemberArgs } from './type'
 
 const MemberAdministrationList = ({
 	pageTitle = '',
@@ -39,6 +43,8 @@ const MemberAdministrationList = ({
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm<IForm>()
+	const [addForm] = Form.useForm<IAddForm>()
+	const registerMemberModal = useModal()
 
 	const [
 		getMemberList,
@@ -54,12 +60,19 @@ const MemberAdministrationList = ({
 	const [exportMember, { isLoading: isExportMemberLoading }] =
 		useExportMemberMutation()
 
+	const [registerMember, { isLoading: isRegisterMemberLoading }] =
+		useGetRegisterMemberMutation()
+
 	const { data: { data: allTagEnums = [] } = {} } = useGetAllTagQuery()
 
 	const { data: { data: vipLevelEnums = [] } = {} } =
 		useGetVipLevelSettingsQuery({
 			siteId,
 		})
+
+	const { data: { data: memberTypeEnums = [] } = {} } = useGetEnumTypeQuery({
+		enumName: 'MemberTypeEnum',
+	})
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: memberListPaginationTotal,
@@ -217,6 +230,40 @@ const MemberAdministrationList = ({
 		}
 	}
 
+	const handleRegisterMember = async () => {
+		if (!siteId) return
+		const {
+			userName,
+			userpwd,
+			memberType,
+			email,
+			currencyId,
+			areaCode,
+			phoneNo,
+			affCode,
+		} = await addForm.validateFields()
+
+		try {
+			const response = await registerMember({
+				siteId,
+				userName,
+				userpwd,
+				memberType,
+				email,
+				currencyId,
+				areaCode,
+				phoneNo,
+				affCode,
+			}).unwrap()
+			message.success(response?.message || t('System.Label_Success'))
+			registerMemberModal.onCancel()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (isEmpty(queryParams)) return
@@ -287,6 +334,7 @@ const MemberAdministrationList = ({
 				currencyListBySite={currencyListBySite}
 				allTagEnums={allTagEnums}
 				vipLevelEnums={vipLevelEnums}
+				memberTypeEnums={memberTypeEnums}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
@@ -298,8 +346,24 @@ const MemberAdministrationList = ({
 				pagination={pagination}
 				onTableChange={handleTableChange}
 			/>
+
+			<MemberAdministrationModal
+				loading={false}
+				form={addForm}
+				memberTypeEnums={memberTypeEnums}
+				currencyListBySite={currencyListBySite}
+				visible={registerMemberModal.visible}
+				onCancel={registerMemberModal.onCancel}
+				onFinish={handleRegisterMember}
+			/>
+
 			<AffixButtons>
 				<AffixButtons.BackToTop />
+				<AffixButtons.Create
+					loading={isRegisterMemberLoading}
+					onClick={registerMemberModal.onOpen}
+					disabled={!exportExcelPermission?.canUse}
+				/>
 				<AffixButtons.FileExport
 					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExportMember}
