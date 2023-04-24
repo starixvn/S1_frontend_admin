@@ -292,7 +292,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 									</Form.Item>
 								</Col>
 							</Row>
-							{currentBonusType === BonusTypeEnum.FreeBet ? (
+							{currentBonusType === BonusTypeEnum.FreeBet ||
+							currentBonusType === BonusTypeEnum.DeviceBonus ? (
 								<Row>
 									<Col span={8}>
 										<Form.Item
