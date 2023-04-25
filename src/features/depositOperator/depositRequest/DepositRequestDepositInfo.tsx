@@ -74,6 +74,7 @@ const DepositRequestDepositInfo = ({
 		fromAccountNo,
 		depositInfo: originDepositInfo, // json
 		bonusDescription,
+		oDepositInfo,
 	},
 	calCodeList,
 	onCopy,
@@ -259,7 +260,7 @@ const DepositRequestDepositInfo = ({
 				)}
 
 				<Descriptions.Item label={t('Label_RefId')}>
-					{refId || '-'}
+					{refId || oDepositInfo?.code || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Payment')}>
 					<Row align='middle' justify='space-between'>
