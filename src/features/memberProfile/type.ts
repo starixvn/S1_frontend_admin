@@ -100,6 +100,7 @@ export interface IGetBasicInfoData {
 	userLang: string
 	phoneVerifyTime: string
 	emailVerifyTime: string
+	exclusive: number
 	sabaId: string
 }
 
@@ -342,6 +343,7 @@ export enum SettingSwitchTypeEnum {
 	PhoneVerified = 'PhoneVerified',
 	EmailVerified = 'EmailVerified',
 	RebatePayout = 'RebatePayout',
+	ExclusiveVIP = 'ExclusiveVIP',
 }
 
 export enum SettingCustPromotionWitheListEnum {
