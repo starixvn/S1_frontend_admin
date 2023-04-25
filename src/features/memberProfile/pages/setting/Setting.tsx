@@ -92,6 +92,7 @@ const Setting = () => {
 			phoneVerifiedRewardPermission,
 			emailVerifiedRewardPermission,
 			lockRebatePayoutPermission,
+			exclusiveVipPermission,
 		} = {},
 	} = useAuth()
 
@@ -126,6 +127,7 @@ const Setting = () => {
 		phoneVerifiedRewardPermission,
 		emailVerifiedRewardPermission,
 		lockRebatePayoutPermission,
+		exclusiveVipPermission,
 	}
 
 	const { custId: originCustId } = useParams()

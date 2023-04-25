@@ -96,6 +96,7 @@ export interface ActionPermissions {
 	checkReceiptPermission: PermissionInterface
 	setAmountPermission: PermissionInterface
 	forceProceed: PermissionInterface
+	exclusiveVipPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

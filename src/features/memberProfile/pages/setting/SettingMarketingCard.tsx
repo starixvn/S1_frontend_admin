@@ -36,6 +36,7 @@ const SettingMarketingCard = ({
 		phoneVerifiedRewardPermission,
 		emailVerifiedRewardPermission,
 		lockRebatePayoutPermission,
+		exclusiveVipPermission,
 	},
 	custBasicInfo,
 	custPromotionWhiteData,
@@ -197,6 +198,7 @@ const SettingMarketingCard = ({
 							<Switch
 								checked={Boolean(exclusive)}
 								loading={isSwitchVipAutomationLoading}
+								disabled={!exclusiveVipPermission?.canUse}
 								onChange={checked =>
 									onSwitch(SettingSwitchTypeEnum.ExclusiveVIP, checked)
 								}

@@ -1188,6 +1188,7 @@ export interface ISettingMarketingPermissions {
 	phoneVerifiedRewardPermission: PermissionInterface | undefined
 	emailVerifiedRewardPermission: PermissionInterface | undefined
 	lockRebatePayoutPermission: PermissionInterface | undefined
+	exclusiveVipPermission: PermissionInterface | undefined
 }
 
 export interface IGetCheckDuplicateNameArgs {
