@@ -99,6 +99,8 @@ export interface IODepositInfo {
 	currencyId?: number
 	payId?: number
 	ver?: number
+	code?: string
+	isLocalPay?: boolean
 }
 
 export interface IDepositOperatorData {
