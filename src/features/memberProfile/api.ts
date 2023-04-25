@@ -644,6 +644,20 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		switchVipAutomationExclusion: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				enable: boolean
+			}
+		>({
+			query: data => ({
+				url: 'Member/VipAutomationExclusion',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
 		// 取得 bonusLog
 		getBonusLog: builder.query<IGetBonusLogResponse, IGetBonusLogArgs>({
 			query: data => ({
@@ -1188,4 +1202,5 @@ export const {
 	useExportCustTpBetRecordByDayMutation,
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
+	useSwitchVipAutomationExclusionMutation,
 } = memberProfileApi
