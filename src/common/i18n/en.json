@@ -1112,5 +1112,7 @@
 	"Label_Points": "Points",
 	"Label_MonthRequire": "Month is Required",
 	"Label_ExtraPoint": "Extra Point",
-	"Label_AddExtraPoint": "Add ExtraPoint"
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_Receive": "Receive",
+	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?"
 }

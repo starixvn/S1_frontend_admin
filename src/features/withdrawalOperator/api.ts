@@ -11,6 +11,7 @@ import {
 	IGetWithdrawalListArgs,
 	IGetWithdrawalResponse,
 	IManualOperatorArgs,
+	IReceiveArgs,
 	ISendWithdrawalMessageArgs,
 	ISetWithdrawalStatusArgs,
 	IUploadPictureArgs,
@@ -160,6 +161,44 @@ export const withdrawalOperatorApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		// 領單
+		lockWithdrawal: builder.mutation<IAxiosResponse<null>, IReceiveArgs>({
+			query: data => ({
+				url: 'WithdrawalReceive/LockWithdrawal',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 退單
+		unLockWithdrawal: builder.mutation<IAxiosResponse<null>, IReceiveArgs>({
+			query: data => ({
+				url: 'WithdrawalReceive/UnLockWithdrawal',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
+		// 蓋單
+		setLockWithdrawalUser: builder.mutation<IAxiosResponse<null>, IReceiveArgs>(
+			{
+				query: data => ({
+					url: 'WithdrawalReceive/SetLockWithdrawalUser',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
+		// check 單 , 主管級才需要確認
+		checkLockWithdrawalExists: builder.mutation<
+			IAxiosResponse<null>,
+			IReceiveArgs
+		>({
+			query: data => ({
+				url: 'WithdrawalReceive/LockWithdrawalExists',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -178,4 +217,8 @@ export const {
 	useSetWithdrawalMessageMutation,
 	useGetAdjustmentLimitLogQuery,
 	useGetAssociateBankUserQuery,
+	useLockWithdrawalMutation,
+	useUnLockWithdrawalMutation,
+	useSetLockWithdrawalUserMutation,
+	useCheckLockWithdrawalExistsMutation,
 } = withdrawalOperatorApi
