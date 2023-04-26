@@ -17,6 +17,7 @@ interface IButtonGroupProps {
 			| UsableActionButtonEnum.ManualRejected
 	) => void
 	onShowSendMessageModal: () => void
+	onReceive: () => void
 }
 const WithdrawalRequestButtonGroup = ({
 	loading,
@@ -24,6 +25,7 @@ const WithdrawalRequestButtonGroup = ({
 	onSetWithdrawalRequest,
 	onSetManualOperator,
 	onShowSendMessageModal,
+	onReceive,
 }: IButtonGroupProps) => {
 	const { t } = useTranslation()
 	// 因為太多 permission , 直接在這邊取
@@ -40,6 +42,7 @@ const WithdrawalRequestButtonGroup = ({
 			processPermission,
 			toKycPermission,
 			sendMessagePermission,
+			editPermission,
 		} = {},
 	} = useAuth()
 
@@ -103,6 +106,19 @@ const WithdrawalRequestButtonGroup = ({
 						}}
 					>
 						{t('Label_Draft')}
+					</OperatorButton>
+				</Col>
+			)}
+
+			{includes(usableActionButton, UsableActionButtonEnum.Receive) && (
+				<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+					<OperatorButton
+						color='Brown'
+						loading={loading}
+						disabled={!editPermission?.canUse}
+						onClick={onReceive}
+					>
+						{t('Label_Receive')}
 					</OperatorButton>
 				</Col>
 			)}
