@@ -15,6 +15,8 @@ import {
 	IDeleteReceiptArgs,
 	IDepositReceiptByTransIdResponse,
 	IUploadReceiptArgs,
+	ICryptoAmountCalculationArgs,
+	ICryptoAmountData,
 } from 'features/depositOperator/type'
 
 export const depositOperatorApi = rootApi.injectEndpoints({
@@ -78,6 +80,17 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 		>({
 			query: data => ({
 				url: 'Deposit/GetCommentByTransId',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['POST'],
+		}),
+		getCryptoAmountCalculation: builder.query<
+			IAxiosResponse<ICryptoAmountData>,
+			ICryptoAmountCalculationArgs
+		>({
+			query: data => ({
+				url: 'Common/CryptoAmountCalculation',
 				method: 'POST',
 				data,
 			}),
@@ -177,6 +190,7 @@ export const {
 	useGetDepositInfoByTransIdQuery,
 	useGetDepositReceiptByTransIdQuery,
 	useGetDepositCommentsByTransIdQuery,
+	useLazyGetCryptoAmountCalculationQuery,
 	useSetDepositStatusMutation,
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,

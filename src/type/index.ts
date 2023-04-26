@@ -146,4 +146,5 @@ export enum DepositTypeEnum {
 	LoadCard,
 	QRPay,
 	BankAutoChannel,
+	CryptoWallet,
 }
