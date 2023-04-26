@@ -96,6 +96,8 @@ export interface ActionPermissions {
 	checkReceiptPermission: PermissionInterface
 	setAmountPermission: PermissionInterface
 	forceProceed: PermissionInterface
+	registerMemberPermission: PermissionInterface
+	setLiveStreamingGamePermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

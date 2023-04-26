@@ -75,4 +75,6 @@ export const ACTION_NAMES: {
 	79: 'checkReceiptPermission',
 	81: 'setAmountPermission',
 	83: 'forceProceed',
+	84: 'registerMemberPermission',
+	85: 'setLiveStreamingGamePermission',
 }

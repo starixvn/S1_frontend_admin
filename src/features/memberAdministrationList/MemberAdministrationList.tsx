@@ -28,7 +28,7 @@ import {
 import MemberAdministrationListFilter from './MemberAdministrationListFilter'
 import MemberAdministrationListTable from './MemberAdministrationListTable'
 import MemberAdministrationModal from './MemberAdministrationModal'
-import { IdentityEnum, DateTypeEnum, UserTypeEnum } from './constants'
+import { IdentityEnum, DateTypeEnum } from './constants'
 import { IForm, IAddForm, IMemberResponse, IExportMemberArgs } from './type'
 
 const MemberAdministrationList = ({
@@ -37,7 +37,9 @@ const MemberAdministrationList = ({
 	pageTitle?: string
 }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
+	const {
+		actionPermissions: { exportExcelPermission, registerMemberPermission } = {},
+	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
@@ -70,7 +72,10 @@ const MemberAdministrationList = ({
 			siteId,
 		})
 
-	const { data: { data: memberTypeEnums = [] } = {} } = useGetEnumTypeQuery({
+	const {
+		data: { data: memberTypeEnums = [] } = {},
+		isLoading: isMemberTypeEnumsLoading,
+	} = useGetEnumTypeQuery({
 		enumName: 'MemberTypeEnum',
 	})
 
@@ -99,6 +104,7 @@ const MemberAdministrationList = ({
 			userName,
 			tpUserName,
 			excludeTag,
+			userType,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -116,6 +122,7 @@ const MemberAdministrationList = ({
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
 				excludeTag: Boolean(excludeTag),
+				userType,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -131,6 +138,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
+				userType,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -176,7 +184,7 @@ const MemberAdministrationList = ({
 			vipLevel,
 			accountName,
 			dateType,
-			userType,
+			userType = [],
 			exportTransferWallet,
 			loginIp,
 			email,
@@ -212,7 +220,7 @@ const MemberAdministrationList = ({
 			shieldLevel,
 			iovationLevel,
 			deviceId,
-			userType: Number(userType) || UserTypeEnum.All,
+			userType: isArray(userType) ? userType.map(value => Number(value)) : [],
 			dateType: Number(dateType) || DateTypeEnum.All,
 			startDate,
 			endDate,
@@ -252,7 +260,7 @@ const MemberAdministrationList = ({
 				email,
 				currencyId,
 				areaCode,
-				phoneNo,
+				phoneNo: String(phoneNo),
 				affCode,
 			}).unwrap()
 			message.success(response?.message || t('System.Label_Success'))
@@ -263,6 +271,16 @@ const MemberAdministrationList = ({
 			)
 		}
 	}
+
+	const loading = isGetMemberListFetching || isMemberTypeEnumsLoading
+
+	useEffect(() => {
+		if (!loading) {
+			form.setFieldsValue({
+				userType: memberTypeEnums.map(({ value }) => value),
+			})
+		}
+	}, [isMemberTypeEnumsLoading])
 
 	useEffect(() => {
 		const init = () => {
@@ -283,7 +301,7 @@ const MemberAdministrationList = ({
 				tags,
 				vipLevel,
 				dateType,
-				userType,
+				userType = [],
 				exportTransferWallet,
 				...values
 			} = queryParams
@@ -304,7 +322,7 @@ const MemberAdministrationList = ({
 				vipLevel: isArray(vipLevel) ? vipLevel.map(level => Number(level)) : [],
 				identity: Number(identity) || IdentityEnum.All,
 				dateType: Number(dateType) || DateTypeEnum.All,
-				userType: Number(userType) || UserTypeEnum.All,
+				userType: isArray(userType) ? userType.map(value => Number(value)) : [],
 				userName,
 				tpUserName: sabaId,
 				affiliateName,
@@ -321,8 +339,6 @@ const MemberAdministrationList = ({
 
 		init()
 	}, [])
-
-	const loading = isGetMemberListFetching
 
 	return (
 		<LayoutContent.Main>
@@ -362,7 +378,7 @@ const MemberAdministrationList = ({
 				<AffixButtons.Create
 					loading={isRegisterMemberLoading}
 					onClick={registerMemberModal.onOpen}
-					disabled={!exportExcelPermission?.canUse}
+					disabled={!registerMemberPermission?.canUse}
 				/>
 				<AffixButtons.FileExport
 					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}

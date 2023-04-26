@@ -218,6 +218,38 @@ const MemberAdministrationListFilter = ({
 		)
 	}
 
+	const memberTypeSelector = () => {
+		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
+			if (newMemberTypes.includes(0)) {
+				form.setFieldsValue({
+					userType: memberTypeEnums?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					userType: newMemberTypes,
+				})
+			}
+		}
+		return (
+			<Form.Item name='userType' label={t('Label_MemberType')}>
+				<MultipleSelect
+					onChange={handleChangeMemberType}
+					placeholder={t('Label_Select') + t('Label_MemberType')}
+				>
+					{(memberTypeEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{memberTypeEnums?.map(({ value, name }) => (
+						<Option key={value} value={value}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -248,7 +280,7 @@ const MemberAdministrationListFilter = ({
 							iovationLevel: IovationLevelEnum.All,
 							dateType: DateTypeEnum.All,
 							exportTransferWallet: 0,
-							userType: UserTypeEnum.All,
+							userType: memberTypeEnums?.map(({ value }) => value),
 							deviceId: null,
 						}}
 						onFinish={() => onSearch({})}
@@ -457,20 +489,7 @@ const MemberAdministrationListFilter = ({
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
-										<Form.Item name='userType' label={t('Label_MemberType')}>
-											<Select
-												placeholder={t('Label_Select') + t('Label_MemberType')}
-											>
-												{(memberTypeEnums?.length as number) > 1 && (
-													<Option value={0}>{t('Label_SelectAll')}</Option>
-												)}
-												{memberTypeEnums?.map(({ value, name }) => (
-													<Option key={value} value={value}>
-														{name}
-													</Option>
-												))}
-											</Select>
-										</Form.Item>
+										{memberTypeSelector()}
 									</Col>
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item

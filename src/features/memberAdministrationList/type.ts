@@ -30,7 +30,7 @@ import {
  * * int shieldLevel: 1: High Risk, 2: Low Risk
  * * int iovationLevel: 1:D, 2:B, 3:R, 4:A
  * * string deviceId: 裝置Id
- * * int userType: 會員的身分, 1:Normal(一般人), 2: Affiliate (代理)
+ * * int userType: 會員的身分, 1:Normal(一般人), 2: Affiliate (代理) 3.LiveStreaming(直播主)
  * * int dateType: 1: Register Date, 2: Status Update Date, 3: Tag Update Date
  * * datetime startDate: 起始時間
  * * datetime endDate: 結束時間
@@ -58,7 +58,7 @@ export interface IGetMemberListArgs {
 	shieldLevel: ShieldLevelEnum
 	iovationLevel: IovationLevelEnum
 	deviceId: null | string
-	userType: UserTypeEnum
+	userType: UserTypeEnum[]
 	dateType: DateTypeEnum
 	exportTransferWallet: boolean | number
 	startDate: string
@@ -136,7 +136,7 @@ export interface IExportMemberArgs {
 	shieldLevel: ShieldLevelEnum
 	iovationLevel: IovationLevelEnum
 	deviceId: null | string
-	userType: UserTypeEnum
+	userType: UserTypeEnum[]
 	dateType: DateTypeEnum
 	startDate: '2022-10-05T09:00:01+08:00'
 	endDate: '2022-10-05T09:00:01+08:00'
@@ -166,7 +166,7 @@ export interface IForm {
 	dateType: DateTypeEnum
 	deviceId: null | string
 	exportTransferWallet: boolean | number
-	userType: UserTypeEnum
+	userType: UserTypeEnum[]
 	excludeTag: boolean
 }
 
@@ -191,13 +191,4 @@ export interface IAddForm {
 	areaCode: string
 	phoneNo: string
 	affCode: string
-}
-
-export interface IAreaCode {
-	AreaCode: string
-	Pattern: string
-	Length: number
-	MaxLength: number
-	Name: string
-	Abbr: string
 }
