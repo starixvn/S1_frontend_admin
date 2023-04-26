@@ -40,6 +40,8 @@ const SmsInfo = () => {
 	const sendMsgModal = useModal()
 
 	const [msgForm] = Form.useForm<{
+		isPopup: boolean
+		popupMessage: string
 		title: string
 		content: string
 	}>()
@@ -117,13 +119,19 @@ const SmsInfo = () => {
 
 	const handleSendMsg = async () => {
 		if (!custId) return
-		const { title, content } = await msgForm.validateFields()
+		const { title, content, isPopup } = await msgForm.validateFields()
+		// 這裡單獨用 getFieldsValue(true) 取 messages value 因 popupMessage 有可能不顯示在畫面上
+		// isPopup 不選送空字串
+		const { popupMessage = '' } = msgForm.getFieldsValue(true)
+
 		try {
 			await sendPersonalMsg({
 				siteId,
 				custId: Number(custId),
 				title,
 				content,
+				isPopup,
+				popupMessage,
 			}).unwrap()
 			sendMsgModal.onCancel()
 			// set timeout 200 ms 使資料在 Modal Close 動畫跑完後才做清除動作
