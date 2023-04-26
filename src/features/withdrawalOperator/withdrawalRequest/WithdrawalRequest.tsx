@@ -149,6 +149,7 @@ const WithdrawalRequest = () => {
 	const {
 		data: { data: withdrawalCommentData = [] } = {},
 		isFetching: isGetWithdrawalCommentLoading,
+		refetch: refetchComment,
 	} = useGetWithdrawalCommentQuery({ transId })
 
 	const { memberInfo, isMemberInfoLoading } = useMemberInfo({
@@ -638,6 +639,7 @@ const WithdrawalRequest = () => {
 				await lockWithdrawal({ transId }).unwrap()
 				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
 				refetchGetByTransId()
+				refetchComment()
 			} catch (error) {
 				Modal.confirm({
 					title: t('Label_ReceiveConfirmMsg'),
@@ -646,6 +648,7 @@ const WithdrawalRequest = () => {
 						await setLockWithdrawalUser({ transId }).unwrap()
 						// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
 						refetchGetByTransId()
+						refetchComment()
 					},
 					onCancel() {},
 				})
@@ -655,6 +658,7 @@ const WithdrawalRequest = () => {
 				await lockWithdrawal({ transId }).unwrap()
 				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
 				refetchGetByTransId()
+				refetchComment()
 			} catch (error) {
 				message.error(
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
