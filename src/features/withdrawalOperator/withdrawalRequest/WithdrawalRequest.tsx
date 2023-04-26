@@ -1,17 +1,21 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Col, Form, message, Row, Spin } from 'antd'
+import { Col, Form, message, Modal, Row, Spin } from 'antd'
 import {
+	useCheckLockWithdrawalExistsMutation,
 	useDeletePictureMutation,
 	useGetAdjustmentLimitLogQuery,
 	useGetAssociateBankUserQuery,
 	useGetReceiptPictureQuery,
 	useGetWithdrawalByTransIdQuery,
 	useGetWithdrawalCommentQuery,
+	useLockWithdrawalMutation,
 	useManualApprovalMutation,
 	useManualRejectMutation,
+	useSetLockWithdrawalUserMutation,
 	useSetWithdrawalStatusMutation,
+	useUnLockWithdrawalMutation,
 	useUploadPictureMutation,
 } from 'features/withdrawalOperator/api'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -39,7 +43,7 @@ import { useEffect, useState } from 'react'
 import { useAuth, useModal } from 'common/hooks'
 import { PayInfoModal } from 'features/withdrawalOperator/withdrawalRequest/components/PayInfoModal'
 import { hashPayInfo } from 'features/withdrawalOperator/utils'
-import { multiEqual, utcFormatter } from 'common/utils'
+import { isJSON, multiEqual, utcFormatter } from 'common/utils'
 import { BankSettingForm } from 'features/withdrawalOperator/withdrawalRequest/components/BankSettingForm'
 import { find, head, isEqual, reduce } from 'lodash'
 import { UsableActionButtonEnum } from 'features/depositOperator/type'
@@ -62,6 +66,7 @@ import {
 	useGetBankInfoOffListQuery,
 	useGetCryptoPayListQuery,
 	useGetCryptoWalletListQuery,
+	useGetEwalletListQuery,
 	useGetOnlinePayListQuery,
 } from 'common/service/baseDataApi'
 import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRequest/components/AssociateBankModal'
@@ -70,6 +75,7 @@ import moment from 'moment/moment'
 import { AdjustmentLimitLogModal } from 'features/withdrawalOperator/withdrawalRequest/components/AdjustmentLimitLogModal'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useGetWithdrawalAdjustmentReasonListQuery } from 'features/withdrawalAdjustment/api'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 const WithdrawalRequest = () => {
 	const { t } = useTranslation()
@@ -81,6 +87,7 @@ const WithdrawalRequest = () => {
 			draftPermission,
 			uploadReceiptPermission,
 			deleteReceiptPermission,
+			forceProceed,
 		} = {},
 	} = useAuth()
 	const [form] = Form.useForm<IWithdrawalRequestForm>()
@@ -107,6 +114,8 @@ const WithdrawalRequest = () => {
 			// 因為不想要有 undefined 出現 , 所以這裡直接 as 賦型
 		} = {} as IAxiosResponse<IGetWithdrawalData>,
 		isFetching: isGetWithdrawalDataLoading,
+		// 手動 refetch , 特殊情形手動 refetch , 避免 api 撈太快未取到最新資料
+		refetch: refetchGetByTransId,
 	} = useGetWithdrawalByTransIdQuery({ transId })
 
 	const {
@@ -122,7 +131,13 @@ const WithdrawalRequest = () => {
 		withdrawalType: responseWithdrawalType,
 		transId: withdrawalTransId,
 		withdrawalId,
+		withdrawalInfo: rawWithdrawalInfo,
 	} = withdrawalDetailData ?? {}
+
+	// EWallet 用 withdrawalInfo 內的 EWalletSysId
+	const { EWalletSysId = null } = isJSON(rawWithdrawalInfo)
+		? JSON.parse(rawWithdrawalInfo)
+		: {}
 
 	// 某些階段不能更改 WithdrawalType , 要吃 api 給的 withdrawalType , 因為沒有生成 WithdrawalType 實體 , 所以 useWatch 取不到任何值
 	const currentWithdrawalType = formWithdrawalType || responseWithdrawalType
@@ -196,6 +211,15 @@ const WithdrawalRequest = () => {
 			{ currencyId, purpose: PurposeEnum.Withdrawal },
 			{ skip: !currencyId }
 		)
+	const { data: { data: eWalletList = [] } = {} } = useGetEwalletListQuery(
+		{
+			currencyId,
+			custId,
+			sysId: EWalletSysId as number,
+			amount,
+		},
+		{ skip: !currencyId || !EWalletSysId }
+	)
 
 	const { data: { data: cryptoWalletList = [] } = {} } =
 		useGetCryptoWalletListQuery(
@@ -283,6 +307,23 @@ const WithdrawalRequest = () => {
 	const { data: { data: reasonList = [] } = {} } =
 		useGetWithdrawalAdjustmentReasonListQuery(null)
 
+	// 領單流程
+	// 領單
+	const [lockWithdrawal, { isLoading: isLockWithdrawalLoading }] =
+		useLockWithdrawalMutation()
+
+	// 退單
+	const [unLockWithdrawal, { isLoading: isUnLockWithdrawalLoading }] =
+		useUnLockWithdrawalMutation()
+
+	const [setLockWithdrawalUser, { isLoading: isSetLockWithdrawalUserLoading }] =
+		useSetLockWithdrawalUserMutation()
+
+	const [
+		checkLockWithdrawalExists,
+		{ isLoading: isCheckLockWithdrawalExistsLoading },
+	] = useCheckLockWithdrawalExistsMutation()
+
 	const { onShowSendMessageModal } = useSendReasonMessageHook({
 		args: {
 			currencyId,
@@ -297,6 +338,18 @@ const WithdrawalRequest = () => {
 	) => {
 		setPayInfo(hashPayInfo(currentWithdrawalType, record))
 		payInfoModal.onOpen()
+	}
+
+	// 執行退單
+	const handleUnLock = async () => {
+		if (!transId) return
+		try {
+			await unLockWithdrawal({ transId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	const handleSetWithdrawalRequest = async (action: WithdrawalStatusEnum) => {
@@ -338,11 +391,13 @@ const WithdrawalRequest = () => {
 						withdrawalType,
 						withdrawalAccountingModels,
 					}).unwrap()
-					// Reject 和 Approved 才跳回上一頁
+					// 跳回上一頁
 					if (
 						multiEqual(action, [
 							WithdrawalStatusEnum.Rejected,
 							WithdrawalStatusEnum.Approved,
+							WithdrawalStatusEnum.Verify,
+							WithdrawalStatusEnum.Pending,
 						])
 					) {
 						navigate(-1)
@@ -374,11 +429,13 @@ const WithdrawalRequest = () => {
 					withdrawalType,
 					withdrawalAccountingModels: [withdrawalAccountingData],
 				}).unwrap()
-				// Reject 和 Approved 才跳回上一頁
+				// 跳回上一頁
 				if (
 					multiEqual(action, [
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
+						WithdrawalStatusEnum.Verify,
+						WithdrawalStatusEnum.Pending,
 					])
 				) {
 					navigate(-1)
@@ -474,6 +531,8 @@ const WithdrawalRequest = () => {
 					multiEqual(action, [
 						WithdrawalStatusEnum.Rejected,
 						WithdrawalStatusEnum.Approved,
+						WithdrawalStatusEnum.Verify,
+						WithdrawalStatusEnum.Pending,
 					])
 				) {
 					navigate(-1)
@@ -567,6 +626,43 @@ const WithdrawalRequest = () => {
 		})
 	}
 
+	// 領單流程
+	const handleReceive = async () => {
+		if (!transId) return
+		if (forceProceed?.canUse) {
+			// 主管級要多做 check
+			try {
+				// 檢查
+				await checkLockWithdrawalExists({ transId }).unwrap()
+				// 沒人領過 => 直接領單
+				await lockWithdrawal({ transId }).unwrap()
+				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+				refetchGetByTransId()
+			} catch (error) {
+				Modal.confirm({
+					title: t('Label_ReceiveConfirmMsg'),
+					icon: <ExclamationCircleOutlined />,
+					async onOk() {
+						await setLockWithdrawalUser({ transId }).unwrap()
+						// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+						refetchGetByTransId()
+					},
+					onCancel() {},
+				})
+			}
+		} else {
+			try {
+				await lockWithdrawal({ transId }).unwrap()
+				// 這裡都手動 query 避免 api 撈太快沒撈到最新資料
+				refetchGetByTransId()
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
+		}
+	}
+
 	//  顯示 ip 關聯帳號彈窗
 	const handleIpCountClick = async (ip: string) => {
 		ipUserListModal.onOpen()
@@ -598,7 +694,11 @@ const WithdrawalRequest = () => {
 		isMemberInfoLoading ||
 		isSetWithdrawalStatusLoading ||
 		isManualApprovalLoading ||
-		isManualRejectLoading
+		isManualRejectLoading ||
+		isLockWithdrawalLoading ||
+		isUnLockWithdrawalLoading ||
+		isSetLockWithdrawalUserLoading ||
+		isCheckLockWithdrawalExistsLoading
 
 	const updateReceiptLoading =
 		isUploadReceiptLoading || isGetReceiptListLoading || isDeleteReceiptLoading
@@ -666,6 +766,7 @@ const WithdrawalRequest = () => {
 									timeZoneUtcOffset={timeZoneUtcOffset}
 									withdrawalDetailData={withdrawalDetailData}
 									localBankList={localBankList}
+									eWalletList={eWalletList}
 									cryptoPayList={cryptoPayList}
 									cryptoWalletList={cryptoWalletList}
 									onlinePayList={onlinePayList}
@@ -767,6 +868,7 @@ const WithdrawalRequest = () => {
 						onSetWithdrawalRequest={handleSetWithdrawalRequest}
 						onSetManualOperator={handleManualOperator}
 						onShowSendMessageModal={onShowSendMessageModal}
+						onReceive={handleReceive}
 					/>
 					<PayInfoModal
 						visible={payInfoModal.visible}
@@ -818,7 +920,12 @@ const WithdrawalRequest = () => {
 				</LayoutContent.Card>
 				<AffixButtons>
 					<AffixButtons.BackToTop />
-					<AffixButtons.GoBackRoute />
+					<AffixButtons.GoBackRoute
+						onClick={async () => {
+							await handleUnLock()
+							navigate(-1)
+						}}
+					/>
 				</AffixButtons>
 			</Spin>
 		</LayoutContent.Main>
