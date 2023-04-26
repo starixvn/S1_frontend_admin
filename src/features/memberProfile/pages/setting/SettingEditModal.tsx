@@ -25,6 +25,8 @@ const SettingEditModal = ({
 }: ISettingEditModalProps) => {
 	const { t } = useTranslation()
 
+	// * 關掉此規則，讓使用者可以填寫空白格
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const noSpacesAllowedValidator = (_: any, value: any) =>
 		!includes(value, ' ')
 			? Promise.resolve()
@@ -201,9 +203,9 @@ const SettingEditModal = ({
 									}),
 								},
 								// * line 1 如果有空白鍵會導致 api error
-								{
-									validator: noSpacesAllowedValidator,
-								},
+								// {
+								// 	validator: noSpacesAllowedValidator,
+								// },
 								{ max: 10, message: ' ' },
 							]}
 						>
