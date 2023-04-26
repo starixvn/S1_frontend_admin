@@ -5,10 +5,12 @@ import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import {
 	useDeletePersonalMsgMutation,
+	useGetBasicInfoQuery,
 	useLazyGetSmsInfoQuery,
 	useSendPersonalMsgMutation,
 } from 'features/memberProfile/api'
 import {
+	IGetBasicInfoResponse,
 	IGetSMSInfoData,
 	IGetSmsInfoResponse,
 } from 'features/memberProfile/type'
@@ -18,7 +20,6 @@ import { useEffect, useState } from 'react'
 import { SmsInfoTable } from 'features/memberProfile/pages/customerInfo/smsInfo/SmsInfoTable'
 import { SmsInfoDetailModal } from 'features/memberProfile/pages/customerInfo/smsInfo/SmsInfoDetailModal'
 import { SendMsgModal } from 'features/memberProfile/pages/customerInfo/smsInfo/SendMsgModal'
-import { head } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 
@@ -56,6 +57,11 @@ const SmsInfo = () => {
 			isFetching: isGetSmsInfoLoading,
 		},
 	] = useLazyGetSmsInfoQuery()
+
+	const { data: { data: custBasicInfo } = {} as IGetBasicInfoResponse } =
+		useGetBasicInfoQuery({
+			custId: Number(custId),
+		})
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: smsInfoTotal,
@@ -195,7 +201,7 @@ const SmsInfo = () => {
 				}}
 				onFinish={handleSendMsg}
 				form={msgForm}
-				langCode={head(smsInfo)?.langId ?? ''}
+				langCode={custBasicInfo?.userLang ?? ''}
 			/>
 
 			<AffixButtons>
