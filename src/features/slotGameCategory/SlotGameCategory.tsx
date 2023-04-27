@@ -44,7 +44,6 @@ const SlotGameCategory: FC<{
 	const [tableDataSource, setTableDataSource] = useState<any[]>([])
 	// 當前 response 需要新增的 Table Columns 資訊
 	const [columnInfos, setColumnsInfo] = useState<ITableColumnsInfo[]>([])
-	const [isAllActive, setIsAllActive] = useState(false)
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
@@ -210,6 +209,30 @@ const SlotGameCategory: FC<{
 			const mutationData = assign(rawSource[sourceIndex], {
 				[dataIndex]: Number(status),
 			})
+
+			if (!status) {
+				assign(mutationData, {
+					activeInactiveAll: false,
+				})
+			} else {
+				let isActiveAll = true
+				const filteredObj: { [key: string]: any } = Object.keys(mutationData)
+					.filter((key: string) => key.includes('isoCode'))
+					.reduce((newObj: { [key: string]: any }, key: string) => {
+						newObj[key] = mutationData[key]
+						return newObj
+					}, {})
+				Object.values(filteredObj).forEach((value: number) => {
+					if (value !== 1) {
+						isActiveAll = false
+					}
+				})
+				if (isActiveAll) {
+					assign(mutationData, {
+						activeInactiveAll: true,
+					})
+				}
+			}
 			setTableDataSource(assign(rawSource, mutationData))
 		} catch (error) {
 			message.error(
@@ -220,14 +243,16 @@ const SlotGameCategory: FC<{
 
 	const handleSetAllCurrencyStatus = async ({
 		slotGameId,
+		activeInactiveAll,
 	}: {
 		slotGameId: number
+		activeInactiveAll: boolean
 	}) => {
 		try {
 			await setSlotGameAllCurrency({
 				siteId: Number(siteId),
 				slotGameId,
-				status: isAllActive ? 0 : 1,
+				status: activeInactiveAll ? 1 : 0,
 			}).unwrap()
 
 			// 更動儲存在前端的資料
@@ -237,10 +262,12 @@ const SlotGameCategory: FC<{
 				source => source.id === slotGameId
 			)
 			columnInfos.forEach(({ dataIndex }) =>
-				assign(rawSource[sourceIndex], { [dataIndex]: isAllActive ? 0 : 1 })
+				assign(rawSource[sourceIndex], {
+					[dataIndex]: activeInactiveAll ? 1 : 0,
+				})
 			)
+			assign(rawSource[sourceIndex], { activeInactiveAll })
 
-			setIsAllActive(!isAllActive)
 			setTableDataSource(rawSource)
 		} catch (error) {
 			message.error(

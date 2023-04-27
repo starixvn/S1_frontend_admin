@@ -43,7 +43,13 @@ interface ISlotGameCategoryTableProps {
 		status: boolean
 		dataIndex: string
 	}) => void
-	setAllStatus: ({ slotGameId }: { slotGameId: number }) => void
+	setAllStatus: ({
+		slotGameId,
+		activeInactiveAll,
+	}: {
+		slotGameId: number
+		activeInactiveAll: boolean
+	}) => void
 	categoryForm: FormInstance
 }
 
@@ -142,13 +148,15 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 			key: 'activeInactiveAll',
 			align: 'center' as 'center',
 			render: (record: any) => {
-				const { id: slotGameId } = record
+				const { id: slotGameId, activeInactiveAll } = record
 				return (
 					<Switch
+						checked={activeInactiveAll}
 						disabled={!editPermission?.canUse}
 						onChange={() => {
 							setAllStatus({
 								slotGameId,
+								activeInactiveAll: !activeInactiveAll,
 							})
 						}}
 					/>
