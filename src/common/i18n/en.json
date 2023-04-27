@@ -1151,5 +1151,7 @@
 	"Label_content": "content",
 	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_AddExtraPoint": "Add ExtraPoint",
-	"Label_ExclusiveVIP": "Exclusive VIP"
+	"Label_ExclusiveVIP": "Exclusive VIP",
+	"Label_ToCryptoAccount": "To Crypto Account",
+	"Label_FrontDisplayName": "Front Display Name"
 }
