@@ -95,6 +95,7 @@ export interface ActionPermissions {
 	deleteReceiptPermission: PermissionInterface
 	checkReceiptPermission: PermissionInterface
 	setAmountPermission: PermissionInterface
+	editAutoWithdrawalRulePermission: PermissionInterface
 	forceProceed: PermissionInterface
 }
 export interface PermissionInterface {

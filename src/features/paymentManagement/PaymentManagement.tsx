@@ -23,6 +23,10 @@ import {
 	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
+	useGetAutoWithdrawalRuleListQuery,
+	useSetAutoWithdrawalRuleMutation,
+	useAddAutoWithdrawalRuleMutation,
+	useDeleteAutoWithdrawalRuleMutation,
 } from 'features/paymentManagement/api'
 import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManagementFilter'
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
@@ -36,6 +40,8 @@ import {
 	IGetPaySettingData,
 	ILoginInfoForm,
 	PaymentStatusEnum,
+	IEditAutoWithdrawalRuleForm,
+	IAddAutoWithdrawalRuleForm,
 } from 'features/paymentManagement/type'
 import { useEffect, useRef } from 'react'
 import { isEmpty } from 'lodash'
@@ -45,6 +51,8 @@ import { EditPaymentModal } from 'features/paymentManagement/modals/EditPaymentM
 import { FixedAmountConverter } from 'features/paymentManagement/utils'
 import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginInfoModal'
 import { CryptoSettingModal } from 'features/paymentManagement/modals/CryptoSettingModal'
+import { AutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AutoWithdrawalRuleModal'
+import { AddAutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AddAutoWithdrawalRuleModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -53,6 +61,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			editPermission,
 			editInfoPermission,
 			setFeePermission,
+			editAutoWithdrawalRulePermission,
 		} = {},
 	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -70,12 +79,21 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const editPaySettingModal = useModal()
 	const editLoginInfoModal = useModal()
 	const cryptoInfoModal = useModal()
+	const autoWithdrawalRuleModal = useModal()
+	const addAutoWithdrawalRuleModal = useModal()
 
 	const [editForm] = Form.useForm<IEditForm>()
 
 	const [filterForm] = Form.useForm<IFilterForm>()
 
 	const [loginInfoForm] = Form.useForm<ILoginInfoForm>()
+
+	// 編輯 Auto Withdrawal Rule Form
+	const [editAutoWithdrawalRuleForm] =
+		Form.useForm<IEditAutoWithdrawalRuleForm>()
+
+	// 新增 Auto Withdrawal Rule Form
+	const [addAutoWithdrawalRuleForm] = Form.useForm<IAddAutoWithdrawalRuleForm>()
 
 	// Method 下拉選單
 	const {
@@ -166,6 +184,23 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [setCryptoInfo, { isLoading: isSetCryptoInfoLoading }] =
 		useSetCryptoInfoMutation()
+
+	// autoWithdrawalRule 相關
+	const {
+		data: { data: autoWithdrawalRuleList = [] } = {},
+		isFetching: isGetAutoWithdrawalRuleLoading,
+	} = useGetAutoWithdrawalRuleListQuery({ siteId })
+
+	const [setAutoWithdrawalRule, { isLoading: isSetAutoWithdrawalRuleLoading }] =
+		useSetAutoWithdrawalRuleMutation()
+
+	const [addAutoWithdrawalRule, { isLoading: isAddAutoWithdrawalRuleLoading }] =
+		useAddAutoWithdrawalRuleMutation()
+
+	const [
+		deleteAutoWithdrawalRule,
+		{ isLoading: isDeleteAutoWithdrawalRuleLoading },
+	] = useDeleteAutoWithdrawalRuleMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -456,6 +491,86 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	// 設定 Auto Withdrawal Rule
+	const handleSetAutoWithdrawalRule = async (
+		id: number,
+		setEditingKey: (type: undefined) => void
+	) => {
+		const {
+			withdrawalAmount,
+			accountWithdrawalCount,
+			status,
+			tags,
+			vipLevels,
+			withdrawalTypes,
+		} = await editAutoWithdrawalRuleForm.validateFields()
+
+		const payload = {
+			id,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			// status 1: open, 0: close
+			status: status ? 1 : 0,
+			vipLevels,
+			tags,
+			withdrawalTypes,
+		}
+
+		try {
+			await setAutoWithdrawalRule(payload).unwrap()
+			setEditingKey(undefined)
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 新增 Auto Withdrawal Rule
+	const handleAddAutoWithdrawalRule = async () => {
+		const {
+			currencyId,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			tags,
+			vipLevels,
+			withdrawalTypes,
+		} = await addAutoWithdrawalRuleForm.validateFields()
+
+		const payload = {
+			siteId,
+			currencyId,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			vipLevels,
+			tags,
+			withdrawalTypes,
+		}
+
+		try {
+			await addAutoWithdrawalRule(payload).unwrap()
+			message.success(t('System.Label_Success'))
+			addAutoWithdrawalRuleModal.onCancel()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 刪除 Auto Withdrawal Rule
+	const handleDeleteAutoWithdrawalRule = async (id: number) => {
+		try {
+			await deleteAutoWithdrawalRule({ id }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -495,6 +610,10 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetPayListLoading
 
 	const cryptoLoading = isGetCryptoInfoLoading || isSetCryptoInfoLoading
+	const autoWithdrawalRuleLoading =
+		isGetAutoWithdrawalRuleLoading ||
+		isSetAutoWithdrawalRuleLoading ||
+		isDeleteAutoWithdrawalRuleLoading
 
 	return (
 		<LayoutContent.Main>
@@ -511,6 +630,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onSearch={handleSearch}
 				onSetCryptoInfoClicked={cryptoInfoModal.onOpen}
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
+				onAutoWithdrawalRuleClicked={autoWithdrawalRuleModal.onOpen}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -575,6 +695,25 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onCancel={cryptoInfoModal.onCancel}
 				cryptoInfo={cryptoInfo}
 				onSetCryptoInfo={handleSetCryptoInfo}
+			/>
+			<AutoWithdrawalRuleModal
+				form={editAutoWithdrawalRuleForm}
+				visible={autoWithdrawalRuleModal.visible}
+				editPermission={editAutoWithdrawalRulePermission}
+				dataFetchingLoading={autoWithdrawalRuleLoading}
+				autoWithdrawalRuleList={autoWithdrawalRuleList}
+				onCancel={autoWithdrawalRuleModal.onCancel}
+				onAddClick={addAutoWithdrawalRuleModal.onOpen}
+				onSetAutoWithdrawalRule={handleSetAutoWithdrawalRule}
+				onDeleteAutoWithdrawalRule={handleDeleteAutoWithdrawalRule}
+			/>
+			<AddAutoWithdrawalRuleModal
+				form={addAutoWithdrawalRuleForm}
+				visible={addAutoWithdrawalRuleModal.visible}
+				dataFetchingLoading={isAddAutoWithdrawalRuleLoading}
+				autoWithdrawalRuleList={autoWithdrawalRuleList}
+				onCancel={addAutoWithdrawalRuleModal.onCancel}
+				onSubmit={handleAddAutoWithdrawalRule}
 			/>
 		</LayoutContent.Main>
 	)
