@@ -13,6 +13,7 @@ import {
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,
 	useSetDepositStatusMutation,
+	useUnCheckDepositReceiptMutation,
 	useUploadReceiptMutation,
 } from 'features/depositOperator/api'
 import { useAppSelector } from 'app/store'
@@ -135,6 +136,9 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [checkDepositReceipt, { isLoading: isCheckDepositReceiptLoading }] =
 		useCheckDepositReceiptMutation()
 
+	const [unCheckDepositReceipt, { isLoading: isUnCheckDepositReceiptLoading }] =
+		useUnCheckDepositReceiptMutation()
+
 	const [uploadReceipt, { isLoading: isUploadReceiptLoading }] =
 		useUploadReceiptMutation()
 
@@ -246,6 +250,17 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				transId,
 			}
 			await checkDepositReceipt(args).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleUnCheckDepositReceipt = async () => {
+		if (!transId) return
+		try {
+			await unCheckDepositReceipt({ transId }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -394,13 +409,16 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						isSetDepositManualApprovalLoading ||
 						isCheckDepositReceiptLoading ||
 						isUploadReceiptLoading ||
-						isDeleteReceiptLoading
+						isDeleteReceiptLoading ||
+						isUnCheckDepositReceiptLoading
 					}
 					depositStatus={depositInfo?.status}
+					checkReceipt={depositInfo?.checkReceipt}
 					usableActionButtons={depositInfo?.usableActionButton ?? []}
 					onSetDepositStatus={handleSetDepositStatus}
 					onShowSendMessageModal={onShowSendMessageModal}
 					onCheckDepositReceipt={handleCheckDepositReceipt}
+					unCheckDepositReceipt={handleUnCheckDepositReceipt}
 				/>
 
 				{/* // * 預留空間以防止 OperatorButton 及 AffixButton 黏在一起 */}
