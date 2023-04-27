@@ -84,6 +84,7 @@ const WithdrawalRequestInfo = ({
 		refId,
 		eWalletName,
 		withdrawalInfo: rawWithdrawalInfo,
+		processWayName,
 	} = withdrawalDetailData ?? {}
 
 	const withdrawalInfo = isJSON(rawWithdrawalInfo)
@@ -248,6 +249,11 @@ const WithdrawalRequestInfo = ({
 			)}
 			<Item label={t('Label_Status')}>
 				<Tag color={color}>{statusName || '-'}</Tag>
+			</Item>
+			<Item label={t('Label_ProcessWay')}>
+				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+					{processWayName ?? '-'}
+				</Typography.Text>
 			</Item>
 			<Item label={t('Label_CreateTime')}>
 				{createTime ? (

@@ -1158,5 +1158,6 @@
 	"Label_CR": "CR",
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
-	"Label_RetentionRate": "Retention Rate"
+	"Label_RetentionRate": "Retention Rate",
+	"Label_ProcessWay": "Process Way"
 }
