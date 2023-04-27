@@ -157,6 +157,7 @@ const UpdateBonus: FC<{
 				sameRealNameRestrict = false,
 				sameRealNameRestrictAvailableCount,
 				blockTagList,
+				hideForUnlogin,
 			} = formData
 
 			// 時區一律設定成 +0
@@ -168,6 +169,13 @@ const UpdateBonus: FC<{
 				[displayDate[0], displayDate[1]],
 				0
 			)
+
+			const handleGetTpId = () => {
+				if (promotionType === BonusTypeEnum.Rebate) return null
+				if (categoryId === 0) return 0
+				return tpId
+			}
+
 			// 在送單時才驗證時間，displayDate 結束不可超過 periodDate結束時間
 			if (displayToTime > periodToTime) {
 				message.error(t('Label_BonusManagementDisplayTimeErrorMsg'))
@@ -193,7 +201,7 @@ const UpdateBonus: FC<{
 								promotionType === BonusTypeEnum.Rebate ? 0 : categoryId,
 							walletType:
 								promotionType === BonusTypeEnum.Rebate ? null : walletType,
-							tpId: promotionType === BonusTypeEnum.Rebate ? null : tpId,
+							tpId: handleGetTpId(),
 							periodFromTime,
 							periodToTime,
 							// * 當未勾選 isDisplayDate 則 displayFromTime、displayToTime 皆送 null 給後端
@@ -216,6 +224,7 @@ const UpdateBonus: FC<{
 							sameRealNameRestrict,
 							sameRealNameRestrictAvailableCount:
 								sameRealNameRestrictAvailableCount ?? 0,
+							hideForUnlogin,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
@@ -295,6 +304,7 @@ const UpdateBonus: FC<{
 				sameIPRestrictAvailableCount,
 				sameRealNameRestrict,
 				sameRealNameRestrictAvailableCount,
+				hideForUnlogin,
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
@@ -344,6 +354,7 @@ const UpdateBonus: FC<{
 				selectedVipLevel: displayConditionResponseConverter(
 					promotionDisplayCondition
 				),
+				hideForUnlogin,
 			})
 			parsedSpecific?.forEach(specificData => {
 				// subForm init

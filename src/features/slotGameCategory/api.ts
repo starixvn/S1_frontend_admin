@@ -8,6 +8,7 @@ import {
 	ISetGameCategoryArgs,
 	ISetSlotGameArgs,
 	IGetSlotCategoryListResponse,
+	ISlotGameAllCurrencyArgs,
 } from 'features/slotGameCategory/type'
 
 export const slotGameCategoryApi = rootApi.injectEndpoints({
@@ -59,6 +60,13 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		setSlotGameAllCurrency: builder.mutation<null, ISlotGameAllCurrencyArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/SetSlotGameAllCurrency',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -69,4 +77,5 @@ export const {
 	useSetSlotGameMutation,
 	useSetSlotGameCategoryMutation,
 	useGetSlotCategoryListQuery,
+	useSetSlotGameAllCurrencyMutation,
 } = slotGameCategoryApi

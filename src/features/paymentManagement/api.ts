@@ -16,6 +16,12 @@ import {
 	IGetCryptoInfoData,
 	ISetCryptoInfoArgs,
 	ISetPaySettingChargeFeeArgs,
+	IAutoWithdrawalRuleData,
+	IGetAutoWithdrawalRuleArgs,
+	IAddAutoWithdrawalRuleArgs,
+	ISetAutoWithdrawalRuleArgs,
+	IDeleteAutoWithdrawalRuleArgs,
+	IWithdrawalTypeData,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -26,6 +32,7 @@ export const paymentManagementApi = createApi({
 		'SetPaySetting',
 		'SetBankStatus',
 		'SetCryptoStatus',
+		'SetAutoWithdrawalRule',
 	],
 	endpoints: builder => ({
 		// 取得global status 列表
@@ -140,6 +147,65 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetPaySetting'],
 		}),
+		// 取得自動提款規則列表
+		getAutoWithdrawalRuleList: builder.query<
+			IAxiosResponse<IAutoWithdrawalRuleData[]>,
+			IGetAutoWithdrawalRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoWithdrawalRule/GetDataList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetAutoWithdrawalRule'],
+		}),
+		// 新增自動提款規則
+		AddAutoWithdrawalRule: builder.mutation<
+			IAxiosResponse<null>,
+			IAddAutoWithdrawalRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoWithdrawalRule/Create',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoWithdrawalRule'],
+		}),
+		// 更新自動提款規則
+		setAutoWithdrawalRule: builder.mutation<
+			IAxiosResponse<null>,
+			ISetAutoWithdrawalRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoWithdrawalRule/Set',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoWithdrawalRule'],
+		}),
+		// 刪除自動提款規則
+		deleteAutoWithdrawalRule: builder.mutation<
+			IAxiosResponse<null>,
+			IDeleteAutoWithdrawalRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoWithdrawalRule/Delete',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoWithdrawalRule'],
+		}),
+		// 取得自動提款的提款類型列表
+		getWithdrawalTypeList: builder.query<
+			IAxiosResponse<IWithdrawalTypeData[]>,
+			null
+		>({
+			query: data => ({
+				url: 'AutoWithdrawalRule/WithdrawalType',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -155,4 +221,9 @@ export const {
 	useGetCryptoInfoQuery,
 	useSetCryptoInfoMutation,
 	useSetChargeFeeMutation,
+	useGetAutoWithdrawalRuleListQuery,
+	useAddAutoWithdrawalRuleMutation,
+	useSetAutoWithdrawalRuleMutation,
+	useDeleteAutoWithdrawalRuleMutation,
+	useGetWithdrawalTypeListQuery,
 } = paymentManagementApi
