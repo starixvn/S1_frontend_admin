@@ -180,3 +180,72 @@ export enum EditModalTypeEnum {
 	Edit,
 	FeeSetting,
 }
+
+export interface IAutoWithdrawalRuleData {
+	currencyId: number
+	isoCode: string
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	withdrawalTypes: number[]
+	id: number
+	status: number
+	createTime: string
+	createUser: string
+	lastUpdateTime: string
+	lastUpdateUser: string
+}
+
+export interface IGetAutoWithdrawalRuleArgs {
+	siteId?: number
+}
+
+export interface IAddAutoWithdrawalRuleArgs {
+	siteId?: number
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	withdrawalTypes: number[]
+}
+
+export interface ISetAutoWithdrawalRuleArgs {
+	id: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	status: number
+	vipLevels: number[]
+	tags: number[]
+	withdrawalTypes: number[]
+}
+
+export interface IDeleteAutoWithdrawalRuleArgs {
+	id: number
+}
+
+export interface IWithdrawalTypeData {
+	name: string
+	value: number
+}
+
+export type IEditAutoWithdrawalRuleForm = {
+	id: number
+	status: number
+	currencyName: string
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	withdrawalTypes: number[]
+}
+
+export type IAddAutoWithdrawalRuleForm = {
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	withdrawalTypes: number[]
+}
