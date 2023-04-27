@@ -43,6 +43,7 @@ interface ISlotGameCategoryTableProps {
 		status: boolean
 		dataIndex: string
 	}) => void
+	setAllStatus: ({ slotGameId }: { slotGameId: number }) => void
 	categoryForm: FormInstance
 }
 
@@ -57,6 +58,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	pagination,
 	onTableChange,
 	setStatus,
+	setAllStatus,
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
@@ -97,7 +99,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				},
 			}
 			// 依照
-			target.splice(3 + index, 0, insertItem)
+			target.splice(4 + index, 0, insertItem)
 		})
 		return target
 	}
@@ -134,6 +136,24 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					{cName ?? '-'}
 				</Typography.Text>
 			),
+		},
+		{
+			title: t('Label_ActiveInactiveAll'),
+			key: 'activeInactiveAll',
+			align: 'center' as 'center',
+			render: (record: any) => {
+				const { id: slotGameId } = record
+				return (
+					<Switch
+						disabled={!editPermission?.canUse}
+						onChange={() => {
+							setAllStatus({
+								slotGameId,
+							})
+						}}
+					/>
+				)
+			},
 		},
 		{
 			title: t('Label_LastOperator'),

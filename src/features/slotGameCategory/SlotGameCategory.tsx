@@ -7,6 +7,7 @@ import {
 	useGetTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
+	useSetSlotGameAllCurrencyMutation,
 	useSetSlotGameCategoryMutation,
 	useSetSlotGameMutation,
 } from 'features/slotGameCategory/api'
@@ -43,6 +44,7 @@ const SlotGameCategory: FC<{
 	const [tableDataSource, setTableDataSource] = useState<any[]>([])
 	// 當前 response 需要新增的 Table Columns 資訊
 	const [columnInfos, setColumnsInfo] = useState<ITableColumnsInfo[]>([])
+	const [isAllActive, setIsAllActive] = useState(false)
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
@@ -67,6 +69,11 @@ const SlotGameCategory: FC<{
 
 	const [setSlotGame, { isLoading: isSetSlotGameLoading }] =
 		useSetSlotGameMutation()
+
+	const [
+		setSlotGameAllCurrency,
+		{ isLoading: isSetSlotGameAllCurrencyLoading },
+	] = useSetSlotGameAllCurrencyMutation()
 
 	const [
 		getSlotGameCategoryList,
@@ -211,6 +218,37 @@ const SlotGameCategory: FC<{
 		}
 	}
 
+	const handleSetAllCurrencyStatus = async ({
+		slotGameId,
+	}: {
+		slotGameId: number
+	}) => {
+		try {
+			await setSlotGameAllCurrency({
+				siteId: Number(siteId),
+				slotGameId,
+				status: isAllActive ? 0 : 1,
+			}).unwrap()
+
+			// 更動儲存在前端的資料
+			const rawSource = cloneDeep(tableDataSource)
+			const sourceIndex = findIndex(
+				rawSource,
+				source => source.id === slotGameId
+			)
+			columnInfos.forEach(({ dataIndex }) =>
+				assign(rawSource[sourceIndex], { [dataIndex]: isAllActive ? 0 : 1 })
+			)
+
+			setIsAllActive(!isAllActive)
+			setTableDataSource(rawSource)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		if (currentCategoryId !== undefined) {
 			handleSearch({})
@@ -260,7 +298,8 @@ const SlotGameCategory: FC<{
 		isGetSlotGameListLoading ||
 		isSetSlotGameLoading ||
 		isGetSlotGameCategoryListLoading ||
-		isSetSlotGameCategoryLoading
+		isSetSlotGameCategoryLoading ||
+		isSetSlotGameAllCurrencyLoading
 
 	return (
 		<LayoutContent.Main>
@@ -281,6 +320,7 @@ const SlotGameCategory: FC<{
 					pagination={pagination}
 					onTableChange={handleTableChange}
 					setStatus={handleSetStatus}
+					setAllStatus={handleSetAllCurrencyStatus}
 					categoryForm={categoryForm}
 				/>
 			)}
