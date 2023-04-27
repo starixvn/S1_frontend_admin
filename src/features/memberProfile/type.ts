@@ -101,6 +101,7 @@ export interface IGetBasicInfoData {
 	phoneVerifyTime: string
 	emailVerifyTime: string
 	exclusive: number
+	sabaId: string
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
