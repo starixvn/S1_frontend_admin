@@ -1228,3 +1228,22 @@ export enum AllWithdrawalStatusEnum {
 	ToKyc,
 	Error = 99,
 }
+
+export interface ISetCustTpGameTypeSettingArgs {
+	custId: number
+	setDataType: number
+	tpGameTypes: number[]
+}
+
+export interface IAddLiveStreamingGameForm {
+	tpId: number
+	tpGameTypes: number[]
+}
+
+export interface IAddLiveStreamingGameTableData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+	tpName?: string
+}

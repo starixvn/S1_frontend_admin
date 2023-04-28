@@ -222,16 +222,16 @@ const MemberAdministrationListFilter = ({
 		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
 			if (newMemberTypes.includes(0)) {
 				form.setFieldsValue({
-					userType: memberTypeEnums?.map(({ value }) => value),
+					userTypes: memberTypeEnums?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					userType: newMemberTypes,
+					userTypes: newMemberTypes,
 				})
 			}
 		}
 		return (
-			<Form.Item name='userType' label={t('Label_MemberType')}>
+			<Form.Item name='userTypes' label={t('Label_MemberType')}>
 				<MultipleSelect
 					onChange={handleChangeMemberType}
 					placeholder={t('Label_Select') + t('Label_MemberType')}
@@ -280,7 +280,7 @@ const MemberAdministrationListFilter = ({
 							iovationLevel: IovationLevelEnum.All,
 							dateType: DateTypeEnum.All,
 							exportTransferWallet: 0,
-							userType: memberTypeEnums?.map(({ value }) => value),
+							userTypes: memberTypeEnums?.map(({ value }) => value),
 							deviceId: null,
 						}}
 						onFinish={() => onSearch({})}

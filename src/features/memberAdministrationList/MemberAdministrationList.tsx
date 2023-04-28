@@ -104,7 +104,7 @@ const MemberAdministrationList = ({
 			userName,
 			tpUserName,
 			excludeTag,
-			userType,
+			userTypes,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -122,7 +122,7 @@ const MemberAdministrationList = ({
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
 				excludeTag: Boolean(excludeTag),
-				userType,
+				userTypes,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -138,7 +138,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
-				userType,
+				userTypes,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -184,7 +184,7 @@ const MemberAdministrationList = ({
 			vipLevel,
 			accountName,
 			dateType,
-			userType = [],
+			userTypes = [],
 			exportTransferWallet,
 			loginIp,
 			email,
@@ -220,7 +220,9 @@ const MemberAdministrationList = ({
 			shieldLevel,
 			iovationLevel,
 			deviceId,
-			userType: isArray(userType) ? userType.map(value => Number(value)) : [],
+			userTypes: isArray(userTypes)
+				? userTypes.map(value => Number(value))
+				: [],
 			dateType: Number(dateType) || DateTypeEnum.All,
 			startDate,
 			endDate,
@@ -254,7 +256,7 @@ const MemberAdministrationList = ({
 		try {
 			const response = await registerMember({
 				siteId,
-				userName,
+				userName: trim(userName),
 				userpwd,
 				memberType,
 				email,
@@ -277,7 +279,7 @@ const MemberAdministrationList = ({
 	useEffect(() => {
 		if (!loading) {
 			form.setFieldsValue({
-				userType: memberTypeEnums.map(({ value }) => value),
+				userTypes: memberTypeEnums.map(({ value }) => value),
 			})
 		}
 	}, [isMemberTypeEnumsLoading])
@@ -301,7 +303,7 @@ const MemberAdministrationList = ({
 				tags,
 				vipLevel,
 				dateType,
-				userType = [],
+				userTypes = [],
 				exportTransferWallet,
 				...values
 			} = queryParams
@@ -322,7 +324,9 @@ const MemberAdministrationList = ({
 				vipLevel: isArray(vipLevel) ? vipLevel.map(level => Number(level)) : [],
 				identity: Number(identity) || IdentityEnum.All,
 				dateType: Number(dateType) || DateTypeEnum.All,
-				userType: isArray(userType) ? userType.map(value => Number(value)) : [],
+				userTypes: isArray(userTypes)
+					? userTypes.map(value => Number(value))
+					: [],
 				userName,
 				tpUserName: sabaId,
 				affiliateName,

@@ -587,7 +587,7 @@ const Setting = () => {
 						onSetPayoutVerificationReward={handleSetPayoutVerificationReward}
 					/>
 
-					<SettingGameCard />
+					<SettingGameCard custId={custId} />
 				</Row>
 			</LayoutContent.Card>
 

@@ -1102,5 +1102,7 @@
 	"Label_MailWrongFormat": "Email address format incorrect",
 	"Label_PasswordLengthLimit": "Password must be 6-15 characters, contain alphanumeric.",
 	"Label_AccountStatusMustSelected": "Account Status Must be Selected",
-	"Label_PhoneNumberErrorTip": "Phone number you entered is incorrect, should be between {{digitalArea}} digits"
+	"Label_PhoneNumberErrorTip": "Phone number you entered is incorrect, should be between {{digitalArea}} digits",
+	"Label_LiveStreamingGame": "Live Streaming Game",
+	"Label_TpCategory": "Tp Category"
 }
