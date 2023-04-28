@@ -417,6 +417,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								loading={depositLoading}
 								timeZoneUtcOffset={timeZoneUtcOffset}
 								depositInfo={depositInfo}
+								userActualCryptoAmount={userActualCryptoAmount}
 								calCodeList={calCodeList}
 								onCopy={onCopy}
 								onSetAmountByTransId={handleSetAmountByTransId}
