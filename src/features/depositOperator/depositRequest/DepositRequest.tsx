@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Divider, PageHeader, Row, Form, message, Modal } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
@@ -66,6 +66,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
 	const { onCopy } = useCopy()
+	const [userActualCryptoAmount, setUserActualCryptoAmount] = useState(0)
 
 	const {
 		data: { data: depositReceiptCreateFromEnum } = {} as IEnumTypeResponse,
@@ -193,13 +194,13 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 		let args: ISetDepositStatusArgs
 		if (depositType === DepositTypeEnum.CryptoWallet) {
-			const { cryptoAmount } = form.getFieldsValue()
+			const { actualCryptoAmount } = form.getFieldsValue()
 			args = {
 				action: status,
 				actualDeposit,
 				comment,
 				transId,
-				actualCryptoAmount: cryptoAmount,
+				actualCryptoAmount,
 			}
 		} else {
 			args = {
@@ -245,18 +246,22 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		if (!siteId || !transId) return
 
 		if (depositType === DepositTypeEnum.CryptoWallet) {
-			afterAmount = form.getFieldValue('cryptoAmount')
-			const { exchangeAmount = 0, exchangeRate = 0 } =
-				jsonToObject(jsonDepositInfo) ?? {}
+			afterAmount = form.getFieldValue('actualCryptoAmount')
+			const { exchangeRate = 0 } = jsonToObject(jsonDepositInfo) ?? {}
 			try {
 				const args: ICryptoAmountCalculationArgs = {
 					currencyId: depositInfo.currencyId,
 					exchangeRate,
-					cryptoAmount: exchangeAmount,
+					cryptoAmount: afterAmount,
 				}
 				const {
 					data: { amount },
 				} = await getCryptoAmountCalculation(args).unwrap()
+				setUserActualCryptoAmount(afterAmount)
+				form.setFieldsValue({
+					actualAmount: amount,
+				})
+
 				calculateAmount = amount
 			} catch (error) {
 				message.error(
@@ -364,10 +369,14 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		} = depositInfo
 
 		if (depositType === DepositTypeEnum.CryptoWallet) {
-			const { exchangeAmount } = jsonToObject(jsonDepositInfo) ?? {}
+			const { exchangeAmount, actualExchangeAmount } =
+				jsonToObject(jsonDepositInfo) ?? {}
 			form.setFieldsValue({
 				bankId,
-				cryptoAmount: exchangeAmount,
+				actualCryptoAmount:
+					userActualCryptoAmount !== 0
+						? userActualCryptoAmount
+						: actualExchangeAmount ?? exchangeAmount,
 				statementTime: moment(statementTime),
 			})
 		} else {

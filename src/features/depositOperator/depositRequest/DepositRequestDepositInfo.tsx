@@ -31,6 +31,7 @@ import {
 } from '@ant-design/icons'
 import { red, green } from '@ant-design/colors'
 import { DepositTypeEnum, PermissionInterface } from 'type'
+import { formatNumber } from 'features/depositOperator/utils'
 
 const { Option } = Select
 
@@ -55,6 +56,7 @@ const DepositRequestDepositInfo = ({
 	depositInfo: {
 		transId,
 		amount,
+		actualDeposit,
 		status,
 		statusName,
 		createTime,
@@ -123,7 +125,7 @@ const DepositRequestDepositInfo = ({
 								alignItems: 'center',
 							}}
 						>
-							<text>{amount || '-'}</text>
+							<text>{formatNumber(amount) || '-'}</text>
 							<Button
 								type='link'
 								icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
@@ -140,9 +142,16 @@ const DepositRequestDepositInfo = ({
 									}
 									style={{ width: 'calc(100% - 64px)' }}
 									// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
-									formatter={value =>
-										`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-									}
+									formatter={value => {
+										const [integer, decimal] = `${value}`.split('.')
+										const formattedInteger = integer.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+										)
+										return decimal
+											? `${formattedInteger}.${decimal}`
+											: formattedInteger
+									}}
 									// 把 + 過逗號的值再 parser 回來
 									parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 								/>
@@ -188,11 +197,18 @@ const DepositRequestDepositInfo = ({
 						</Input.Group>
 					)}
 				</Descriptions.Item>
+
 				{isCryptoWallet && (
 					<>
-						<Descriptions.Item label={t('Label_CryptoAmount')}>
+						<Descriptions.Item label={t('Label_ActualAmount')}>
+							<Form.Item name='actualAmount'>
+								{formatNumber(actualDeposit)}
+							</Form.Item>
+						</Descriptions.Item>
+
+						<Descriptions.Item label={t('Label_ActualCryptoAmount')}>
 							<Input.Group compact>
-								<Form.Item noStyle name='cryptoAmount'>
+								<Form.Item noStyle name='actualCryptoAmount'>
 									<InputNumber
 										controls={false}
 										disabled={
@@ -200,9 +216,16 @@ const DepositRequestDepositInfo = ({
 										}
 										style={{ width: 'calc(100% - 64px)' }}
 										// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
-										formatter={value =>
-											`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-										}
+										formatter={value => {
+											const [integer, decimal] = `${value}`.split('.')
+											const formattedInteger = integer.replace(
+												/\B(?=(\d{3})+(?!\d))/g,
+												','
+											)
+											return decimal
+												? `${formattedInteger}.${decimal}`
+												: formattedInteger
+										}}
 										// 把 + 過逗號的值再 parser 回來
 										parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 									/>
@@ -222,7 +245,7 @@ const DepositRequestDepositInfo = ({
 										<Button
 											onClick={() => {
 												form.setFieldsValue({
-													cryptoAmount: depositInfo.exchangeAmount,
+													actualCryptoAmount: depositInfo.exchangeAmount,
 												})
 												setEditable(undefined)
 											}}
@@ -239,6 +262,9 @@ const DepositRequestDepositInfo = ({
 									/>
 								)}
 							</Input.Group>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_CryptoAmount')}>
+							{formatNumber(Number(depositInfo.exchangeAmount))}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_ExchangeRate')}>
 							{depositInfo.exchangeRate || '-'}

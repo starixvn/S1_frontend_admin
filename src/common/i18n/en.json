@@ -1089,7 +1089,6 @@
 	"Label_IncludeFreeSpins": "Include Free Spins",
 	"Label_NoDraw": "No Draw",
 	"Label_DisplayGroupBreakdownInOriginalCurrency": "Display group breakdown in original currency",
-	"Label_Month": "Month",
 	"Label_Player": "Player",
 	"Label_GGR": "GGR",
 	"Label_PlayerWinLoss": "Player Win Loss",
@@ -1150,9 +1149,10 @@
 	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_ExclusiveVIP": "Exclusive VIP",
-	"Label_ToCryptoAccount": "To Crypto Account",
-	"Label_FrontDisplayName": "Front Display Name",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ProcessWay": "Process Way"
+	"Label_ToCryptoAccount": "To Crypto Account",
+	"Label_FrontDisplayName": "Front Display Name",
+	"Label_ProcessWay": "Process Way",
+	"Label_ActualAmount": "Actual Amount"
 }
