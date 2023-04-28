@@ -54,7 +54,7 @@ const GlobalStyle = createGlobalStyle`
   .ant-table-column-sorters{
     word-break: break-word;
   }
-    }
+    
     // withdrawalOperator 用的 row backGroundColor 
     .gray-background {
      background-color: #B8B8B8;
