@@ -41,6 +41,7 @@ interface IDepositRequestDepositInfoProps {
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositInfo: IDepositOperatorData
+	userActualCryptoAmount: number
 	calCodeList: ICalCodeData[]
 	onCopy: (value: string) => Promise<void>
 	onSetAmountByTransId: () => void
@@ -80,6 +81,7 @@ const DepositRequestDepositInfo = ({
 		bonusDescription,
 		oDepositInfo,
 	},
+	userActualCryptoAmount,
 	calCodeList,
 	onCopy,
 	onSetAmountByTransId,
@@ -126,11 +128,6 @@ const DepositRequestDepositInfo = ({
 							}}
 						>
 							<text>{formatNumber(amount) || '-'}</text>
-							<Button
-								type='link'
-								icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
-								onClick={() => onCopy(String(amount))}
-							/>
 						</div>
 					) : (
 						<Input.Group compact>
@@ -201,9 +198,16 @@ const DepositRequestDepositInfo = ({
 				{isCryptoWallet && (
 					<>
 						<Descriptions.Item label={t('Label_ActualAmount')}>
-							<Form.Item name='actualAmount'>
-								{formatNumber(actualDeposit)}
-							</Form.Item>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<Form.Item noStyle name='actualAmount'>
+									{formatNumber(actualDeposit)}
+								</Form.Item>
+								<Button
+									type='link'
+									icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
+									onClick={() => onCopy(String(actualDeposit))}
+								/>
+							</div>
 						</Descriptions.Item>
 
 						<Descriptions.Item label={t('Label_ActualCryptoAmount')}>
@@ -254,12 +258,28 @@ const DepositRequestDepositInfo = ({
 										/>
 									</>
 								) : (
-									<Button
-										disabled={!setAmountPermission?.canUse}
-										onClick={() => setEditable('amount')}
-										type='link'
-										icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
-									/>
+									<>
+										<Button
+											disabled={!setAmountPermission?.canUse}
+											onClick={() => setEditable('amount')}
+											type='link'
+											icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
+										/>
+										<Button
+											type='link'
+											icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
+											onClick={() =>
+												onCopy(
+													String(
+														userActualCryptoAmount !== 0
+															? userActualCryptoAmount
+															: depositInfo.actualExchangeAmount ??
+																	depositInfo.exchangeAmount
+													)
+												)
+											}
+										/>
+									</>
 								)}
 							</Input.Group>
 						</Descriptions.Item>
