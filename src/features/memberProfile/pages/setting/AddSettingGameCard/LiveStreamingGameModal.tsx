@@ -68,6 +68,7 @@ const LiveStreamingGameModal = ({
 			onCancel={onCancel}
 			afterClose={() => {
 				form.resetFields()
+				setFilterResult([])
 			}}
 			onOk={onFinish}
 		>

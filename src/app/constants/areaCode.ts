@@ -24,7 +24,7 @@ export const LIMIT_COUNTRY_NUM: { [index: string]: string } = {
 	'+62': '10-13',
 	'+91': '10',
 	'+86': '10-11',
-	'+880': '9',
+	'+880': '10',
 }
 
 export const AREA_CODE_OPTIONS: { [index: string]: IAreaCode } = {

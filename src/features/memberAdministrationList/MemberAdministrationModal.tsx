@@ -213,7 +213,7 @@ const MemberAdministrationModal = ({
 										const { areaCode, phoneNo } = form.getFieldsValue()
 										// USD KHUSD 目前沒有驗證
 										const phoneLengthRegx =
-											/^\+60[0-9]{9,10}$|\+62[0-9]{10,13}$|\+86[0-9]{10,11}$|\+91[0-9]{10}$|\+66[0-9]{9}$|\+880[0-9]{9}$/
+											/^\+60[0-9]{9,10}$|\+62[0-9]{10,13}$|\+86[0-9]{10,11}$|\+91[0-9]{10}$|\+66[0-9]{9}$|\+880[0-9]{10}$/
 
 										// 因這裡後台不做跟前台一樣的選完 currency 才出現 phone Number
 										// 所以會先判斷是否有選 account status 才能判斷每個國家的電話長度
