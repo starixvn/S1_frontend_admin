@@ -1154,5 +1154,8 @@
 	"Label_ToCryptoAccount": "To Crypto Account",
 	"Label_FrontDisplayName": "Front Display Name",
 	"Label_ProcessWay": "Process Way",
-	"Label_ActualAmount": "Actual Amount"
+	"Label_ActualAmount": "Actual Amount",
+	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
+	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
+	"Label_Tagging": "Tagging"
 }
