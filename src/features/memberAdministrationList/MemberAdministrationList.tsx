@@ -257,7 +257,7 @@ const MemberAdministrationList = ({
 			const response = await registerMember({
 				siteId,
 				userName: trim(userName),
-				userpwd,
+				userpwd: trim(userpwd),
 				memberType,
 				email,
 				currencyId,

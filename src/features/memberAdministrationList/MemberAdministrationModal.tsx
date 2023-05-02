@@ -47,6 +47,7 @@ const MemberAdministrationModal = ({
 		form.setFieldsValue({
 			areaCode:
 				AREA_CODE_OPTIONS[CURRENCY_TO_AREA_CODE[newCurrencyId]]?.AreaCode,
+			phoneNo: undefined,
 		})
 	}
 

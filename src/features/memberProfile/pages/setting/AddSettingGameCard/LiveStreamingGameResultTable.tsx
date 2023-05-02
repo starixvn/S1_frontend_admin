@@ -20,7 +20,7 @@ const LiveStreamingGameResultTable = ({
 	const { t } = useTranslation()
 
 	const gameTypeListForm = Form.useWatch('tpGameTypes', form)
-
+	// 渲染選取 gameTypes 的陣列
 	const tableResults = !isUndefined(gameTypeListForm)
 		? gameTypeListForm.map(
 				newGameTypeItem => filter(filterResult, ['type', newGameTypeItem])[0]
