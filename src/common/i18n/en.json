@@ -1157,5 +1157,6 @@
 	"Label_ActualAmount": "Actual Amount",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
-	"Label_Tagging": "Tagging"
+	"Label_Tagging": "Tagging",
+	"Label_ActiveInactiveAll": "Active/Inactive All"
 }
