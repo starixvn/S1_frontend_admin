@@ -96,6 +96,8 @@ const BasicInfo = ({
 		userLang,
 		emailVerifyTime,
 		phoneVerifyTime,
+		sabaId,
+		levelName,
 	} = custBasicInfo ?? {}
 
 	const { userId: lineUserId, createTime: lineBindingTime } =
@@ -123,12 +125,14 @@ const BasicInfo = ({
 			{/* 使用者頭像與資訊 */}
 			<Row gutter={8} align='middle'>
 				<Col span={10}>
-					<Avatar
-						shape='square'
-						size={64}
-						icon={<UserOutlined />}
-						src={vipLogo}
-					/>
+					<Popover content={levelName}>
+						<Avatar
+							shape='square'
+							size={64}
+							icon={<UserOutlined />}
+							src={vipLogo}
+						/>
+					</Popover>
 				</Col>
 				<Col span={14}>
 					<Space direction='vertical' style={{ padding: '5px' }}>
@@ -230,6 +234,9 @@ const BasicInfo = ({
 								checkDuplicateNameList.length}
 						</Typography.Link>
 					</StyledText>
+				</Row>
+				<Row>
+					<StyledText>{`${t('Label_SabaId')} : ${sabaId}`}</StyledText>
 				</Row>
 				<Row>
 					<StyledText>{`${t('Label_Status')} : ${getStatusName()}`}</StyledText>
