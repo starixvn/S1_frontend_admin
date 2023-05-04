@@ -1113,6 +1113,7 @@
 	"Label_Points": "Points",
 	"Label_MonthRequire": "Month is Required",
 	"Label_ExtraPoint": "Extra Point",
+	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_content": "content",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_Receive": "Receive",
