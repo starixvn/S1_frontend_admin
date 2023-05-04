@@ -13,9 +13,12 @@ export const slotGameResponseConverter = (
 ) => {
 	const result: any[] = []
 	const columnsInfo: ITableColumnsInfo[] = []
+
 	slotGameList.forEach(game => {
 		const { currencyStatusList, ...rest } = game
 		const gameItem = { ...rest }
+		let isAllActive = true
+
 		currencyStatusList.forEach(currencyStatus => {
 			const { currencyId, status } = currencyStatus
 			const currentIsoCode = find(
@@ -23,6 +26,9 @@ export const slotGameResponseConverter = (
 				cur => cur.currencyId === currencyId
 			)?.isoCode
 			if (currentIsoCode) {
+				if (!status) {
+					isAllActive = false
+				}
 				const dataIndex = JSON.stringify({
 					isoCode: currentIsoCode,
 					currencyId,
@@ -40,7 +46,13 @@ export const slotGameResponseConverter = (
 				})
 			}
 		})
+
+		assign(gameItem, {
+			activeInactiveAll: isAllActive,
+		})
+
 		result.push(gameItem)
 	})
+
 	return { dataSource: result, tableColumns: columnsInfo }
 }
