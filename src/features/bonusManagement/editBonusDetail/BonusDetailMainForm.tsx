@@ -193,15 +193,26 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 					disabled={!editPermission?.canUse}
 				>
 					<Row>
-						<Form.Item
-							name='mainFormActive'
-							valuePropName='checked'
-							style={{ marginBottom: '10px' }}
-						>
-							<Checkbox disabled={!editPermission?.canUse}>
-								{t('Label_Active')}
-							</Checkbox>
-						</Form.Item>
+						<Space>
+							<Form.Item
+								name='mainFormActive'
+								valuePropName='checked'
+								style={{ marginBottom: '10px' }}
+							>
+								<Checkbox disabled={!editPermission?.canUse}>
+									{t('Label_Active')}
+								</Checkbox>
+							</Form.Item>
+							<Form.Item
+								name='hideForUnlogin'
+								valuePropName='checked'
+								style={{ marginBottom: '10px' }}
+							>
+								<Checkbox disabled={!editPermission?.canUse}>
+									{t('Label_hideForUnLogin')}
+								</Checkbox>
+							</Form.Item>
+						</Space>
 					</Row>
 					<Row gutter={16}>
 						<Col lg={8} md={8} sm={12}>

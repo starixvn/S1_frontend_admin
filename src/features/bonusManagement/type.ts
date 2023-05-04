@@ -113,6 +113,7 @@ export interface IGetByBonusCodeData extends IGetBonusListData {
 	sameRealNameRestrict: boolean
 	sameRealNameRestrictAvailableCount: number
 	blockTagList: number[]
+	hideForUnlogin: boolean
 }
 
 export type IGetByBonusCodeResponse = IAxiosResponse<IGetByBonusCodeData>
@@ -156,6 +157,7 @@ export interface ISetArgs {
 		sameRealNameRestrict: boolean
 		sameRealNameRestrictAvailableCount: number
 		blockTagList: number[]
+		hideForUnlogin: boolean
 	}
 	displayConditionAboutVipLevel: IDisplayCondition
 }
