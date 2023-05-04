@@ -74,3 +74,9 @@ export type ISlotCategoryListData = {
 export type IGetSlotCategoryListResponse = IAxiosResponse<
 	ISlotCategoryListData[]
 >
+
+export interface ISlotGameAllCurrencyArgs {
+	siteId: number
+	slotGameId: number
+	status: number
+}
