@@ -244,7 +244,10 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									placeholder={t('Label_Select')}
 									disabled={isEdit}
 									onChange={value => {
-										if (value === BonusTypeEnum.FreeBet) {
+										if (
+											value === BonusTypeEnum.FreeBet ||
+											value === BonusTypeEnum.DeviceBonus
+										) {
 											form?.setFieldsValue({
 												sameIPRestrict: true,
 												sameIPRestrictAvailableCount: 1,
@@ -275,6 +278,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 							BonusTypeEnum.FirstDeposit as number,
 							BonusTypeEnum.ReDeposit as number,
 							BonusTypeEnum.FreeBet as number,
+							BonusTypeEnum.DeviceBonus as number,
 						]) && (
 							<Col lg={14} md={14} sm={14}>
 								<Form.Item
@@ -291,7 +295,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 												</Checkbox>
 											</Form.Item>
 											{/* 是 freeBet 然後 有勾specialCode 才可以設定 newMember  */}
-											{currentBonusType === BonusTypeEnum.FreeBet &&
+											{(currentBonusType === BonusTypeEnum.FreeBet ||
+												currentBonusType === BonusTypeEnum.DeviceBonus) &&
 												isSpecialCode && (
 													<Form.Item
 														name='onlyRegistered'
@@ -375,6 +380,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						</Col>
 						{multiEqual(currentBonusType as number, [
 							BonusTypeEnum.ReDeposit as number,
+							BonusTypeEnum.DeviceBonus as number,
 						]) && (
 							<Col lg={6} md={6} sm={6}>
 								<Form.Item name='periodType' label={t('Label_PeriodType')}>
@@ -487,6 +493,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 					{multiEqual(currentBonusType as number, [
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
+						BonusTypeEnum.DeviceBonus as number,
 					]) && (
 						<>
 							<Row gutter={16} align='middle'>
