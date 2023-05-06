@@ -1235,15 +1235,54 @@ export interface ISetCustTpGameTypeSettingArgs {
 	tpGameTypes: number[]
 }
 
+export interface IGetCustTpGameTypeSettingArgs {
+	custId: number
+	getDataTypes: number[]
+}
+
+export interface ICustTpGameTypeSettingData {
+	noShow: boolean
+	noPlay: boolean
+	tpId: number
+	tpName: string
+	gameType: number
+	gameTypeName: string
+}
+
 export interface IAddLiveStreamingGameForm {
 	tpId: number
 	tpGameTypes: number[]
 }
 
-export interface IAddLiveStreamingGameTableData {
+export interface IAddLiveStreamingGameData {
 	type: number
 	typeName: string
 	tpId: number
 	categoryId: number
 	tpName?: string
 }
+
+export interface ILiveStreamingGameTableData {
+	tpId: number
+	tpName: string
+	tpGames: IAddLiveStreamingGameData[]
+}
+
+export interface ISelectedGameTypes {
+	gamesTypes: number[]
+}
+
+export interface IAddLiveStreamingForm {
+	selectedGameTypes: ISelectedGameTypes
+	tpId: number[]
+}
+
+export type ILiveStreamingInfo = {
+	tpId: number
+	tpName: string
+	selectedGameTypeNames: number[]
+}
+
+export type ICustTpGameTypeSettingResponse = IAxiosResponse<
+	ICustTpGameTypeSettingData[]
+>

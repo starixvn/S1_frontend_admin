@@ -108,6 +108,8 @@ import {
 	IPromotionReceiveFailLogData,
 	IExportCustTpBetRecordByGameTypeArgs,
 	ISetCustTpGameTypeSettingArgs,
+	IGetCustTpGameTypeSettingArgs,
+	ICustTpGameTypeSettingResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -1104,6 +1106,17 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// 取得 LiveStreamingGame
+		getCustTpGameTypeSetting: builder.query<
+			ICustTpGameTypeSettingResponse,
+			IGetCustTpGameTypeSettingArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustTpGameTypeSetting',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -1200,5 +1213,6 @@ export const {
 	useExportCustTpBetRecordByDayMutation,
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
-	useSetCustTpGameTypeSettingMutation,
+	// useSetCustTpGameTypeSettingMutation,
+	useLazyGetCustTpGameTypeSettingQuery,
 } = memberProfileApi

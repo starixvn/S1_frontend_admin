@@ -1104,5 +1104,6 @@
 	"Label_AccountStatusMustSelected": "Account Status Must be Selected",
 	"Label_PhoneNumberErrorTip": "Phone number you entered is incorrect, should be between {{digitalArea}} digits",
 	"Label_LiveStreamingGame": "Live Streaming Game",
-	"Label_TpCategory": "Tp Category"
+	"Label_TpCategory": "Tp Category",
+	"Label_LiveStreamingGameType": "LiveStreamingGameType"
 }
