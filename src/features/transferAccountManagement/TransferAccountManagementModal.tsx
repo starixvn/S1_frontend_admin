@@ -59,15 +59,15 @@ const TransferAccountManagementModal: FC<
 
 	const handleSubmit = async () => {
 		const { initialTime, ...values } = await form.validateFields()
-
+		const { siteId: recordSiteId } = form.getFieldsValue(true)
 		try {
 			const response = await setBankTransferAccount({
 				id: Number(editId),
-				siteId,
 				initialTime: utcFormatter({
 					date: initialTime as Moment,
 					utcOffset: timeZoneUtcOffset,
 				}),
+				siteId: recordSiteId,
 				...values,
 			}).unwrap()
 
