@@ -186,6 +186,15 @@ const TransferAccountManagement: FC<{
 		}
 	}, [enumLoading])
 
+	useEffect(() => {
+		if (siteId && bankTransferAccounts.length > 0) {
+			const currentRecordSiteId = bankTransferAccounts[0].siteId
+			if (siteId !== currentRecordSiteId) {
+				handleSearch()
+			}
+		}
+	}, [siteId])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
