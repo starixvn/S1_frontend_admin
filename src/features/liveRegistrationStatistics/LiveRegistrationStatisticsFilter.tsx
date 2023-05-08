@@ -13,7 +13,7 @@ import {
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { isFunction } from 'lodash'
-
+import { dateRangeToUtcFormatter } from 'common/utils'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
@@ -70,17 +70,35 @@ const LiveRegistrationStatisticsFilter: FC<
 			countStart: REFRESH_DATA_COUNT,
 		})
 
+	const verifyDate = () => {
+		const { dateRange } = form.getFieldsValue()
+
+		const [startDate, endDate] = dateRangeToUtcFormatter(
+			dateRange && [dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			timeZoneUtcOffset
+		)
+
+		// 同天ㄧ定於 15 天 不用精確到小時
+		return moment(endDate).diff(moment(startDate), 'day') < 15
+	}
+
 	// * 計時器時間到時送出 callback
 	useEffect(() => {
-		if (refreshCount === 0 && isFunction(countDownOverCallBack)) {
+		if (
+			verifyDate() &&
+			refreshCount === 0 &&
+			isFunction(countDownOverCallBack)
+		) {
 			countDownOverCallBack()
 		}
 	}, [refreshCount])
 
 	// * 計時器時間到時重置計時器
 	useEffect(() => {
-		resetCountdown()
-		startCountdown()
+		if (verifyDate()) {
+			resetCountdown()
+			startCountdown()
+		}
 	}, [loading])
 
 	useEffect(() => {
@@ -270,7 +288,9 @@ const LiveRegistrationStatisticsFilter: FC<
 									htmlType='submit'
 									type='primary'
 								>
-									{`${t('Label_Search')} (${refreshCount})`}
+									{verifyDate()
+										? `${t('Label_Search')} (${refreshCount})`
+										: t('Label_Search')}
 								</Button>
 							</Col>
 						</Row>
