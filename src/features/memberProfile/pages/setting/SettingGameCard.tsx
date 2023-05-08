@@ -36,7 +36,10 @@ const SettingGameCard = ({ custId }: ISettingGameCardProps) => {
 
 	const liveStreamingGameModal = useModal()
 
-	const [setCustTpGameTypeSetting] = useSetCustTpGameTypeSettingMutation()
+	const [
+		setCustTpGameTypeSetting,
+		{ isLoading: isSetCustTpGameTypeSettingLoading },
+	] = useSetCustTpGameTypeSettingMutation()
 
 	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.newAdminPath
 	const gameExclusionPath = find(MENU_MAPPING, { functionId: 62 })?.newAdminPath
@@ -102,7 +105,7 @@ const SettingGameCard = ({ custId }: ISettingGameCardProps) => {
 
 			<LiveStreamingGameModal
 				custId={custId}
-				loading={false}
+				loading={isSetCustTpGameTypeSettingLoading}
 				form={addForm}
 				visible={liveStreamingGameModal.visible}
 				onCancel={liveStreamingGameModal.onCancel}

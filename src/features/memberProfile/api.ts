@@ -123,6 +123,7 @@ export const memberProfileApi = createApi({
 		'SetVipLevel',
 		'SetPromotionReport',
 		'CustPromotionWhiteList',
+		'liveStreamingGame',
 	],
 	endpoints: builder => ({
 		// sider基本資料
@@ -1105,6 +1106,7 @@ export const memberProfileApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['liveStreamingGame'],
 		}),
 		// 取得 LiveStreamingGame
 		getCustTpGameTypeSetting: builder.query<
@@ -1116,6 +1118,7 @@ export const memberProfileApi = createApi({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['liveStreamingGame'],
 		}),
 	}),
 })

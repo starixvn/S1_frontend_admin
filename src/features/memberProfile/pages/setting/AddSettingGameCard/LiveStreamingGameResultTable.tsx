@@ -67,10 +67,9 @@ const LiveStreamingGameResultTable = ({
 
 					const { gameTypes: gameIds = [] } = value as { gameTypes: number[] }
 
-					// console.log(gameIds)
 					if (currentTp) {
 						const { tpGames, tpName, tpId } = currentTp
-						// 將 gameId 轉換成 Name 顯示
+						// 將 gameId 轉換成 gameTypeName 顯示
 						const selectedGameTypeNames = gameIds.map(
 							id => find(tpGames, ({ type }) => id === type)!.typeName
 						)

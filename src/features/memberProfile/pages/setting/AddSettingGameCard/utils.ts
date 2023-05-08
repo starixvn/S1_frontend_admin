@@ -39,7 +39,7 @@ export const LiveStreamingGameReqConverter = (
 	selectedGameTypes: Record<string, ISelectedGameTypes>
 ) => {
 	const tpGameTypes: number[] = []
-	// 初始化
+
 	Object.values(selectedGameTypes)?.map(({ gameTypes }) =>
 		gameTypes.map(gameTypeId => tpGameTypes.push(gameTypeId))
 	)

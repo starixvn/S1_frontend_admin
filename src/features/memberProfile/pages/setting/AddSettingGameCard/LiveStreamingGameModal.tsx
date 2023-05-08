@@ -35,9 +35,9 @@ const LiveStreamingGameModal = ({
 	const [selectedResult, setSelectedResult] = useState<
 		ILiveStreamingGameTableData[]
 	>([])
-	// 前次資料
+	// 前次資料(監測 useEffect 初始化)
 	const prevTps = useRef<number[]>([])
-	// 當前資料
+	// 前次資料(監測 tpId onChange異動)
 	const onChangeTpId = useRef<number[]>([])
 	const selectedTps = Form.useWatch<number[]>('tpId', form)
 
@@ -51,7 +51,10 @@ const LiveStreamingGameModal = ({
 		},
 	})
 
-	const [getCustTpGameTypeSetting] = useLazyGetCustTpGameTypeSettingQuery()
+	const [
+		getCustTpGameTypeSetting,
+		{ isFetching: isGetCustTpGameTypeSettingFetching },
+	] = useLazyGetCustTpGameTypeSettingQuery()
 
 	// 編輯模式初始化
 	const handleGetCustTpGameTypeSetting = async () => {
@@ -80,6 +83,7 @@ const LiveStreamingGameModal = ({
 	}
 
 	const handleVender = (newTpIds: number[]) => {
+		// 綁在初始化條件上 避免在 onChange 時影響 useEffect 裡的初始化
 		onChangeTpId.current = newTpIds
 		// 篩出新增的 id
 		const newId = newTpIds?.filter(id => !includes(selectedTps, id))
@@ -95,7 +99,8 @@ const LiveStreamingGameModal = ({
 			})
 
 			if (selectedVender.length > 0) {
-				const selectedTpId = selectedVender[0].tpId
+				// 已經是在同個 gameType底下 故取 tpId 與 tpName 時抓第一個取值就行
+				const selectedTpId = first(selectedVender)?.tpId
 				const selectedTpName = first(
 					filter(tpList, ['id', selectedTpId])
 				)?.tpName
@@ -162,7 +167,7 @@ const LiveStreamingGameModal = ({
 				}
 			}
 		}
-
+		// 確認 isEmpty(onChangeTpId.current) 是為了避免在 onChange 時打 handleSyncSelectedTps 進行初始化
 		if (selectedTps !== undefined && isEmpty(onChangeTpId.current)) {
 			handleSyncSelectedTps()
 		}
@@ -171,7 +176,7 @@ const LiveStreamingGameModal = ({
 	return (
 		<Modal
 			confirmLoading={loading}
-			width='70vw'
+			width='80vw'
 			title={
 				<div style={{ textAlign: 'center' }}>
 					{t('Label_LiveStreamingGame')}
@@ -181,7 +186,10 @@ const LiveStreamingGameModal = ({
 			onCancel={onCancel}
 			afterClose={() => {
 				form.resetFields()
+				// 清空舊資料避免重複初始化
 				setSelectedResult([])
+				// 清空 ref TpId 保持每次打開都能正確初始化
+				onChangeTpId.current = []
 			}}
 			onOk={onFinish}
 		>
@@ -194,7 +202,7 @@ const LiveStreamingGameModal = ({
 			{(selectedTps?.length || prevTps.current.length) > 0 && (
 				<Form form={form} component={false}>
 					<LiveStreamingGameTypeForm
-						loading={loading}
+						loading={isGetCustTpGameTypeSettingFetching}
 						form={form}
 						selectedResult={selectedResult}
 					/>

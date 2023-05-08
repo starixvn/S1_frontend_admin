@@ -1249,11 +1249,6 @@ export interface ICustTpGameTypeSettingData {
 	gameTypeName: string
 }
 
-export interface IAddLiveStreamingGameForm {
-	tpId: number
-	tpGameTypes: number[]
-}
-
 export interface IAddLiveStreamingGameData {
 	type: number
 	typeName: string
