@@ -78,7 +78,7 @@ const LiveRegistrationStatisticsFilter: FC<
 			timeZoneUtcOffset
 		)
 
-		// 同天ㄧ定於 15 天 不用精確到小時
+		// 同天ㄧ定大於15 天 不用精確到小時
 		return moment(endDate).diff(moment(startDate), 'day') < 15
 	}
 
