@@ -19,6 +19,7 @@ export const LangObj: { [key: string]: number } = {
 	hi: 6,
 	my: 7,
 	bd: 8,
+	kh: 9,
 }
 
 // 因對應api返回小駝峰字串,故這邊enum皆為小駝峰
