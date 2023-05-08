@@ -66,6 +66,7 @@ const ResultTable = ({ form, selectedTpGames }: ISelectedInfoProps) => {
 						const selectedGameNames = gameIds.map(
 							id => find(tpGames, ({ gameId }) => id === gameId)!.name
 						)
+
 						if (selectedGameNames.length > 0) {
 							setResult(prev => {
 								const clonePrev = cloneDeep(prev)
@@ -75,6 +76,7 @@ const ResultTable = ({ form, selectedTpGames }: ISelectedInfoProps) => {
 									({ tpName: targetName }) => targetName === tpName
 								)
 								// 有舊值改舊值
+
 								if (existedData) {
 									existedData.selectedGameNames = selectedGameNames
 									return clonePrev

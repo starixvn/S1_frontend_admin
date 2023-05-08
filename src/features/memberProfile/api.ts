@@ -1213,6 +1213,6 @@ export const {
 	useExportCustTpBetRecordByDayMutation,
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
-	// useSetCustTpGameTypeSettingMutation,
+	useSetCustTpGameTypeSettingMutation,
 	useLazyGetCustTpGameTypeSettingQuery,
 } = memberProfileApi

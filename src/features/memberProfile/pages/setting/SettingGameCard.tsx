@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Col, Form, Typography } from 'antd'
+import { Card, Col, Form, Typography, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { MENU_MAPPING } from 'app/constants/menuMapping'
 import { find } from 'lodash'
@@ -9,9 +9,10 @@ import paths from 'app/constants/paths'
 import { useAuth, useModal } from 'common/hooks'
 import { useActionPermissionsByFunctionId } from 'common/auth'
 import LiveStreamingGameModal from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameModal'
-// import { useSetCustTpGameTypeSettingMutation } from 'features/memberProfile/api'
-// import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
+import { useSetCustTpGameTypeSettingMutation } from 'features/memberProfile/api'
+import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
 import { IAddLiveStreamingForm } from 'features/memberProfile/type'
+import { LiveStreamingGameReqConverter } from 'features/memberProfile/pages/setting/AddSettingGameCard/utils'
 
 interface ISettingGameCardProps {
 	custId: number
@@ -35,40 +36,31 @@ const SettingGameCard = ({ custId }: ISettingGameCardProps) => {
 
 	const liveStreamingGameModal = useModal()
 
-	// const [setCustTpGameTypeSetting] = useSetCustTpGameTypeSettingMutation()
+	const [setCustTpGameTypeSetting] = useSetCustTpGameTypeSettingMutation()
 
 	const betLimitPath = find(MENU_MAPPING, { functionId: 63 })?.newAdminPath
 	const gameExclusionPath = find(MENU_MAPPING, { functionId: 62 })?.newAdminPath
 
 	const handleSetLiveStreamingGame = async () => {
-		// form 裡的 tpId 純做篩選顯示用 api 用不到
-		// const { selectedGameTypes } = await addForm.validateFields()
-		// if (Object.values(selectedGameTypes).length > 0) {
-		// const tpGameTypes = Object.values(selectedGameTypes).map(
-		// 	({ gameTypes }) => {
-		// 		return console.log(gameTypes)
-		// 	}
-		// )
-		// let tpGameTypes: any = []
-		// Object.values(selectedGameTypes).map(values =>
-		// 	tpGameTypes.push(values?.gameTypes.map(({value}):any => value))
-		// )
-		// console.log(tpGameTypes)
-		// }
-		// try {
-		// 	const response = await setCustTpGameTypeSetting({
-		// 		custId,
-		// 		// 帶 api 裡的定值 IsPlay
-		// 		setDataType: CustTpGameTypeSettingEnum.IsPlay,
-		// 		tpGameTypes,
-		// 	}).unwrap()
-		// 	message.success(response?.message || t('System.Label_Success'))
-		// 	liveStreamingGameModal.onCancel()
-		// } catch (error) {
-		// 	message.error(
-		// 		(error as Error)?.message || t('System.Label_NotExpectedServerError')
-		// 	)
-		// }
+		// form 裡的 tpId 純做篩選顯示用
+		const { selectedGameTypes } = await addForm.validateFields()
+
+		const { tpGameTypes } = LiveStreamingGameReqConverter(selectedGameTypes)
+
+		try {
+			const response = await setCustTpGameTypeSetting({
+				custId,
+				// 帶 api 裡的定值 IsPlay
+				setDataType: CustTpGameTypeSettingEnum.IsPlay,
+				tpGameTypes,
+			}).unwrap()
+			message.success(response?.message || t('System.Label_Success'))
+			liveStreamingGameModal.onCancel()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	return (

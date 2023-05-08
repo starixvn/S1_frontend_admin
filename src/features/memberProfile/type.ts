@@ -1269,18 +1269,18 @@ export interface ILiveStreamingGameTableData {
 }
 
 export interface ISelectedGameTypes {
-	gamesTypes: number[]
+	gameTypes: number[]
 }
 
 export interface IAddLiveStreamingForm {
-	selectedGameTypes: ISelectedGameTypes
+	selectedGameTypes: Record<string, ISelectedGameTypes>
 	tpId: number[]
 }
 
 export type ILiveStreamingInfo = {
 	tpId: number
 	tpName: string
-	selectedGameTypeNames: number[]
+	selectedGameTypeNames: string[]
 }
 
 export type ICustTpGameTypeSettingResponse = IAxiosResponse<

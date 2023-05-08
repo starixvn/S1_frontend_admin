@@ -1,5 +1,8 @@
 import { assign, find, includes } from 'lodash'
-import { ICustTpGameTypeSettingData } from 'features/memberProfile/type'
+import {
+	ICustTpGameTypeSettingData,
+	ISelectedGameTypes,
+} from 'features/memberProfile/type'
 
 // S2C
 
@@ -29,4 +32,17 @@ export const LiveStreamingGameResConverter = (
 	})
 
 	return { selectedTp, selectedGameTypes }
+}
+
+// C2S
+export const LiveStreamingGameReqConverter = (
+	selectedGameTypes: Record<string, ISelectedGameTypes>
+) => {
+	const tpGameTypes: number[] = []
+	// 初始化
+	Object.values(selectedGameTypes)?.map(({ gameTypes }) =>
+		gameTypes.map(gameTypeId => tpGameTypes.push(gameTypeId))
+	)
+
+	return { tpGameTypes }
 }
