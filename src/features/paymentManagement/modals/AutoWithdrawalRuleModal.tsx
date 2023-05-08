@@ -177,7 +177,7 @@ const AutoWithdrawalRuleModal = ({
 			title: t('Label_Action'),
 			key: 'currencyName',
 			align: 'center' as 'center',
-			width: 100,
+			width: '10%',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
 				const { id } = data
@@ -218,14 +218,14 @@ const AutoWithdrawalRuleModal = ({
 			title: t('Label_Currency'),
 			key: 'isoCode',
 			dataIndex: 'isoCode',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			render: (isoCode: string) => isoCode ?? 'N/A',
 		},
 		{
 			title: t('Label_WithdrawalAmount'),
 			key: 'withdrawalAmount',
-			width: 100,
+			width: '10%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
@@ -243,7 +243,7 @@ const AutoWithdrawalRuleModal = ({
 		{
 			title: t('Label_AccountWithdrawalCount'),
 			key: 'accountWithdrawalCount',
-			width: 100,
+			width: '5%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
@@ -261,7 +261,7 @@ const AutoWithdrawalRuleModal = ({
 		{
 			title: t('Label_VipLevel'),
 			key: 'vipLevels',
-			width: 100,
+			width: '20%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
@@ -279,7 +279,7 @@ const AutoWithdrawalRuleModal = ({
 		{
 			title: t('Label_Tagging'),
 			key: 'tags',
-			width: 100,
+			width: '20%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
@@ -295,7 +295,7 @@ const AutoWithdrawalRuleModal = ({
 		{
 			title: t('Label_WithdrawalType'),
 			key: 'withdrawalTypes',
-			width: 100,
+			width: '20%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
@@ -311,7 +311,7 @@ const AutoWithdrawalRuleModal = ({
 		{
 			title: t('Label_Status'),
 			key: 'status',
-			width: 100,
+			width: '5%',
 			align: 'center' as 'center',
 			render: (data: IAutoWithdrawalRuleData) => {
 				const editable = isEditing(data)
