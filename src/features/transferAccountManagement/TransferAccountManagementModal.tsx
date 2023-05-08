@@ -67,7 +67,7 @@ const TransferAccountManagementModal: FC<
 					date: initialTime as Moment,
 					utcOffset: timeZoneUtcOffset,
 				}),
-				siteId: recordSiteId,
+				siteId: recordSiteId || siteId,
 				...values,
 			}).unwrap()
 
