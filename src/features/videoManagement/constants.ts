@@ -6,6 +6,7 @@ export enum CurrencyEnum {
 	IDR = 15,
 	VND = 51,
 	INR = 61,
+	KHM = 72,
 	BDT = 74,
 }
 
@@ -18,6 +19,7 @@ export const LangObj: { [key: string]: number } = {
 	hi: 6,
 	my: 7,
 	bd: 8,
+	kh: 9,
 }
 
 // 因對應api返回小駝峰字串,故這邊enum皆為小駝峰
@@ -30,6 +32,7 @@ export enum LangIdEnum {
 	hi,
 	my,
 	bd,
+	kh,
 }
 
 // * 各幣別所支援的 語系
@@ -42,6 +45,7 @@ export const langIdsByCurrency: { [currency: number]: number[] } = {
 	[CurrencyEnum.CNY]: [LangIdEnum.en, LangIdEnum.cs],
 	[CurrencyEnum.VND]: [LangIdEnum.en, LangIdEnum.vn],
 	[CurrencyEnum.USD]: [LangIdEnum.en],
+	[CurrencyEnum.USD]: [LangIdEnum.en, LangIdEnum.kh],
 }
 
 /**

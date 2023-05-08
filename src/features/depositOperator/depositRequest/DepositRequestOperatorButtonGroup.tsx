@@ -12,19 +12,23 @@ import { useAuth } from 'common/hooks'
 interface IDepositRequestOperatorButtonGroupProps {
 	loading?: boolean
 	depositStatus: number
+	checkReceipt: number
 	usableActionButtons: number[]
 	onSetDepositStatus: (status: DepositStatusEnum) => void
 	onShowSendMessageModal: () => void
 	onCheckDepositReceipt: () => void
+	unCheckDepositReceipt: () => void
 }
 
 const DepositRequestOperatorButtonGroup = ({
 	loading,
 	depositStatus,
+	checkReceipt,
 	usableActionButtons,
 	onSetDepositStatus,
 	onShowSendMessageModal,
 	onCheckDepositReceipt,
+	unCheckDepositReceipt,
 }: IDepositRequestOperatorButtonGroupProps) => {
 	const { t } = useTranslation()
 	const {
@@ -136,7 +140,8 @@ const DepositRequestOperatorButtonGroup = ({
 			)}
 			{(depositStatus === DepositStatusEnum.Pending ||
 				depositStatus === DepositStatusEnum.OnHold) &&
-				checkReceiptPermission?.canUse && (
+				checkReceiptPermission?.canUse &&
+				!checkReceipt && (
 					<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
 						<OperatorButton
 							loading={loading}
@@ -145,6 +150,21 @@ const DepositRequestOperatorButtonGroup = ({
 							color='Pink'
 						>
 							{t('Label_Check')}
+						</OperatorButton>
+					</Col>
+				)}
+			{(depositStatus === DepositStatusEnum.Pending ||
+				depositStatus === DepositStatusEnum.OnHold) &&
+				checkReceiptPermission?.canUse &&
+				!!checkReceipt && (
+					<Col flex='1 auto' style={{ maxWidth: '15vw' }}>
+						<OperatorButton
+							loading={loading}
+							disabled={!checkReceiptPermission?.canUse}
+							onClick={unCheckDepositReceipt}
+							color='Pink'
+						>
+							{t('Label_UnCheck')}
 						</OperatorButton>
 					</Col>
 				)}

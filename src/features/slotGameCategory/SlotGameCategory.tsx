@@ -7,6 +7,7 @@ import {
 	useGetTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
+	useSetSlotGameAllCurrencyMutation,
 	useSetSlotGameCategoryMutation,
 	useSetSlotGameMutation,
 } from 'features/slotGameCategory/api'
@@ -67,6 +68,11 @@ const SlotGameCategory: FC<{
 
 	const [setSlotGame, { isLoading: isSetSlotGameLoading }] =
 		useSetSlotGameMutation()
+
+	const [
+		setSlotGameAllCurrency,
+		{ isLoading: isSetSlotGameAllCurrencyLoading },
+	] = useSetSlotGameAllCurrencyMutation()
 
 	const [
 		getSlotGameCategoryList,
@@ -203,7 +209,66 @@ const SlotGameCategory: FC<{
 			const mutationData = assign(rawSource[sourceIndex], {
 				[dataIndex]: Number(status),
 			})
+
+			if (!status) {
+				assign(mutationData, {
+					activeInactiveAll: false,
+				})
+			} else {
+				let isActiveAll = true
+				const filteredObj: { [key: string]: any } = Object.keys(mutationData)
+					.filter((key: string) => key.includes('isoCode'))
+					.reduce((newObj: { [key: string]: any }, key: string) => {
+						newObj[key] = mutationData[key]
+						return newObj
+					}, {})
+				Object.values(filteredObj).forEach((value: number) => {
+					if (value !== 1) {
+						isActiveAll = false
+					}
+				})
+				if (isActiveAll) {
+					assign(mutationData, {
+						activeInactiveAll: true,
+					})
+				}
+			}
 			setTableDataSource(assign(rawSource, mutationData))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSetAllCurrencyStatus = async ({
+		slotGameId,
+		activeInactiveAll,
+	}: {
+		slotGameId: number
+		activeInactiveAll: boolean
+	}) => {
+		try {
+			await setSlotGameAllCurrency({
+				siteId: Number(siteId),
+				slotGameId,
+				status: activeInactiveAll ? 1 : 0,
+			}).unwrap()
+
+			// 更動儲存在前端的資料
+			const rawSource = cloneDeep(tableDataSource)
+			const sourceIndex = findIndex(
+				rawSource,
+				source => source.id === slotGameId
+			)
+			columnInfos.forEach(({ dataIndex }) =>
+				assign(rawSource[sourceIndex], {
+					[dataIndex]: activeInactiveAll ? 1 : 0,
+				})
+			)
+			assign(rawSource[sourceIndex], { activeInactiveAll })
+
+			setTableDataSource(rawSource)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -260,7 +325,8 @@ const SlotGameCategory: FC<{
 		isGetSlotGameListLoading ||
 		isSetSlotGameLoading ||
 		isGetSlotGameCategoryListLoading ||
-		isSetSlotGameCategoryLoading
+		isSetSlotGameCategoryLoading ||
+		isSetSlotGameAllCurrencyLoading
 
 	return (
 		<LayoutContent.Main>
@@ -281,6 +347,7 @@ const SlotGameCategory: FC<{
 					pagination={pagination}
 					onTableChange={handleTableChange}
 					setStatus={handleSetStatus}
+					setAllStatus={handleSetAllCurrencyStatus}
 					categoryForm={categoryForm}
 				/>
 			)}

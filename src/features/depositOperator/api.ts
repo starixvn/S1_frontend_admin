@@ -151,6 +151,17 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		unCheckDepositReceipt: builder.mutation<
+			IAxiosResponse<null>,
+			ICheckDepositReceiptArgs
+		>({
+			query: data => ({
+				url: 'Deposit/UnCheckDepositReceipt',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
 		deleteReceipt: builder.mutation<IAxiosResponse<null>, IDeleteReceiptArgs>({
 			query: data => ({
 				url: 'Deposit/DeleteReceipt',
@@ -183,6 +194,7 @@ export const {
 	useGetDepositReasonMessagesQuery,
 	useSetDepositReasonMessageMutation,
 	useCheckDepositReceiptMutation,
+	useUnCheckDepositReceiptMutation,
 	useDeleteReceiptMutation,
 	useUploadReceiptMutation,
 } = depositOperatorApi

@@ -59,6 +59,7 @@ export enum BonusTypeEnum {
 	CashBack = 7,
 	ManualBonus,
 	RetentionFreeBet,
+	DeviceBonus,
 }
 
 export enum PeriodTypeEnum {

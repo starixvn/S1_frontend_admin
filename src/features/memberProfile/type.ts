@@ -100,6 +100,7 @@ export interface IGetBasicInfoData {
 	userLang: string
 	phoneVerifyTime: string
 	emailVerifyTime: string
+	sabaId: string
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
