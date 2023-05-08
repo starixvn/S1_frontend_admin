@@ -5,9 +5,9 @@ import { MultipleSelect } from 'components/Select'
 import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
 import { useGetVipLevelQuery } from 'common/service/allDataApi'
-import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
 import { IAutoWithdrawalRuleData } from 'features/paymentManagement/type'
+import { useGetWithdrawalTypeListQuery } from 'features/paymentManagement/api'
 
 interface IAddAutoWithdrawalRuleModalProps {
 	form: FormInstance
@@ -35,7 +35,7 @@ const AddAutoWithdrawalRuleModal = ({
 	const {
 		data: { data: typeList = [] } = {},
 		isLoading: isGetTypeListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'WithdrawalTypeEnum' })
+	} = useGetWithdrawalTypeListQuery(null)
 
 	const {
 		data: { data: vipLevelList = [] } = {},

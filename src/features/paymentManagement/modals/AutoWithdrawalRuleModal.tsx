@@ -22,9 +22,9 @@ import { selectUserSite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
 import { numberFormatter } from 'common/utils/format'
 import { useGetVipLevelQuery } from 'common/service/allDataApi'
-import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
 import { IAutoWithdrawalRuleData } from 'features/paymentManagement/type'
+import { useGetWithdrawalTypeListQuery } from 'features/paymentManagement/api'
 
 interface IAutoWithdrawalRuleModalProps {
 	form: FormInstance
@@ -61,7 +61,7 @@ const AutoWithdrawalRuleModal = ({
 	const {
 		data: { data: typeList = [] } = {},
 		isLoading: isGetTypeListLoading,
-	} = useGetEnumTypeQuery({ enumName: 'WithdrawalTypeEnum' })
+	} = useGetWithdrawalTypeListQuery(null)
 
 	const {
 		data: { data: vipLevelList = [] } = {},
