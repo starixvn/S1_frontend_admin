@@ -6,6 +6,7 @@ import {
 	IVipLevelData,
 	ITagData,
 	IExportMemberArgs,
+	IGetRegisterMemberArgs,
 } from './type'
 
 export const memberAdministrationListApi = rootApi.injectEndpoints({
@@ -16,6 +17,7 @@ export const memberAdministrationListApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST'],
 		}),
 		getAllTag: builder.query<IAxiosResponse<ITagData[]>, void>({
 			query: () => ({
@@ -41,6 +43,17 @@ export const memberAdministrationListApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+		getRegisterMember: builder.mutation<
+			IAxiosResponse<null>,
+			IGetRegisterMemberArgs
+		>({
+			query: data => ({
+				url: 'Member/RegisterMember',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST'],
+		}),
 	}),
 })
 
@@ -49,4 +62,5 @@ export const {
 	useGetAllTagQuery,
 	useGetVipLevelSettingsQuery,
 	useExportMemberMutation,
+	useGetRegisterMemberMutation,
 } = memberAdministrationListApi

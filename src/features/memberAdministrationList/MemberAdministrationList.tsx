@@ -10,22 +10,26 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
+	useModal,
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
 import { isArray, isEmpty, trim } from 'lodash'
 import download from 'downloadjs'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import {
 	useLazyGetMemberListQuery,
 	useGetAllTagQuery,
 	useGetVipLevelSettingsQuery,
 	useExportMemberMutation,
+	useGetRegisterMemberMutation,
 } from './api'
 import MemberAdministrationListFilter from './MemberAdministrationListFilter'
 import MemberAdministrationListTable from './MemberAdministrationListTable'
-import { IdentityEnum, DateTypeEnum, UserTypeEnum } from './constants'
-import { IForm, IMemberResponse, IExportMemberArgs } from './type'
+import MemberAdministrationModal from './MemberAdministrationModal'
+import { IdentityEnum, DateTypeEnum } from './constants'
+import { IForm, IAddForm, IMemberResponse, IExportMemberArgs } from './type'
 
 const MemberAdministrationList = ({
 	pageTitle = '',
@@ -33,12 +37,16 @@ const MemberAdministrationList = ({
 	pageTitle?: string
 }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
+	const {
+		actionPermissions: { exportExcelPermission, registerMemberPermission } = {},
+	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm<IForm>()
+	const [addForm] = Form.useForm<IAddForm>()
+	const registerMemberModal = useModal()
 
 	const [
 		getMemberList,
@@ -54,12 +62,22 @@ const MemberAdministrationList = ({
 	const [exportMember, { isLoading: isExportMemberLoading }] =
 		useExportMemberMutation()
 
+	const [registerMember, { isLoading: isRegisterMemberLoading }] =
+		useGetRegisterMemberMutation()
+
 	const { data: { data: allTagEnums = [] } = {} } = useGetAllTagQuery()
 
 	const { data: { data: vipLevelEnums = [] } = {} } =
 		useGetVipLevelSettingsQuery({
 			siteId,
 		})
+
+	const {
+		data: { data: memberTypeEnums = [] } = {},
+		isLoading: isMemberTypeEnumsLoading,
+	} = useGetEnumTypeQuery({
+		enumName: 'MemberTypeEnum',
+	})
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: memberListPaginationTotal,
@@ -86,6 +104,7 @@ const MemberAdministrationList = ({
 			userName,
 			tpUserName,
 			excludeTag,
+			userTypes,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -103,6 +122,7 @@ const MemberAdministrationList = ({
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
 				excludeTag: Boolean(excludeTag),
+				userTypes,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -118,6 +138,7 @@ const MemberAdministrationList = ({
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',
+				userTypes,
 				...values,
 				exportTransferWallet: Boolean(exportTransferWallet),
 				startDate,
@@ -163,7 +184,7 @@ const MemberAdministrationList = ({
 			vipLevel,
 			accountName,
 			dateType,
-			userType,
+			userTypes = [],
 			exportTransferWallet,
 			loginIp,
 			email,
@@ -199,7 +220,9 @@ const MemberAdministrationList = ({
 			shieldLevel,
 			iovationLevel,
 			deviceId,
-			userType: Number(userType) || UserTypeEnum.All,
+			userTypes: isArray(userTypes)
+				? userTypes.map(value => Number(value))
+				: [],
 			dateType: Number(dateType) || DateTypeEnum.All,
 			startDate,
 			endDate,
@@ -216,6 +239,50 @@ const MemberAdministrationList = ({
 			)
 		}
 	}
+
+	const handleRegisterMember = async () => {
+		if (!siteId) return
+		const {
+			userName,
+			userpwd,
+			memberType,
+			email,
+			currencyId,
+			areaCode,
+			phoneNo,
+			affCode,
+		} = await addForm.validateFields()
+
+		try {
+			const response = await registerMember({
+				siteId,
+				userName: trim(userName),
+				userpwd: trim(userpwd),
+				memberType,
+				email,
+				currencyId,
+				areaCode,
+				phoneNo: String(phoneNo),
+				affCode,
+			}).unwrap()
+			message.success(response?.message || t('System.Label_Success'))
+			registerMemberModal.onCancel()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const loading = isGetMemberListFetching || isMemberTypeEnumsLoading
+
+	useEffect(() => {
+		if (!loading) {
+			form.setFieldsValue({
+				userTypes: memberTypeEnums.map(({ value }) => value),
+			})
+		}
+	}, [isMemberTypeEnumsLoading])
 
 	useEffect(() => {
 		const init = () => {
@@ -236,7 +303,7 @@ const MemberAdministrationList = ({
 				tags,
 				vipLevel,
 				dateType,
-				userType,
+				userTypes = [],
 				exportTransferWallet,
 				...values
 			} = queryParams
@@ -257,7 +324,9 @@ const MemberAdministrationList = ({
 				vipLevel: isArray(vipLevel) ? vipLevel.map(level => Number(level)) : [],
 				identity: Number(identity) || IdentityEnum.All,
 				dateType: Number(dateType) || DateTypeEnum.All,
-				userType: Number(userType) || UserTypeEnum.All,
+				userTypes: isArray(userTypes)
+					? userTypes.map(value => Number(value))
+					: [],
 				userName,
 				tpUserName: sabaId,
 				affiliateName,
@@ -275,8 +344,6 @@ const MemberAdministrationList = ({
 		init()
 	}, [])
 
-	const loading = isGetMemberListFetching
-
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle} />
@@ -287,6 +354,7 @@ const MemberAdministrationList = ({
 				currencyListBySite={currencyListBySite}
 				allTagEnums={allTagEnums}
 				vipLevelEnums={vipLevelEnums}
+				memberTypeEnums={memberTypeEnums}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
@@ -298,8 +366,24 @@ const MemberAdministrationList = ({
 				pagination={pagination}
 				onTableChange={handleTableChange}
 			/>
+
+			<MemberAdministrationModal
+				loading={false}
+				form={addForm}
+				memberTypeEnums={memberTypeEnums}
+				currencyListBySite={currencyListBySite}
+				visible={registerMemberModal.visible}
+				onCancel={registerMemberModal.onCancel}
+				onFinish={handleRegisterMember}
+			/>
+
 			<AffixButtons>
 				<AffixButtons.BackToTop />
+				<AffixButtons.Create
+					loading={isRegisterMemberLoading}
+					onClick={registerMemberModal.onOpen}
+					disabled={!registerMemberPermission?.canUse}
+				/>
 				<AffixButtons.FileExport
 					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
 					onClick={handleExportMember}

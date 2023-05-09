@@ -66,6 +66,8 @@ export type EnumNameType =
 	| 'DirectionEnum'
 	| 'DepositReceiptCreateFromEnum'
 	| 'LeaderBoardCategoryEnum'
+	| 'MemberTypeEnum'
+	| 'CustTpGameTypeSettingGetType'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -123,6 +125,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 * @argument {string}  LeaderBoardCategoryEnum - 取得 LeaderBoardCategory 列表
+	 * @argument {string}  MemberTypeEnum - 取得 MemberTypeEnum 列表
+	 * @argument {string}  CustTpGameTypeSettingGetType - 取得 CustTpGameTypeSettingGetType 列表 (遊戲可玩可不玩 顯示與不顯示)
 	 */
 	enumName: EnumNameType
 }

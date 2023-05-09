@@ -292,3 +292,10 @@ export const WITHDRAWAL_STATUS_TAGS_COLOR: { [status: number]: string } = {
 	[AllWithdrawalStatusEnum.Rejected]: '#C70707',
 	[AllWithdrawalStatusEnum.ToKyc]: '#9957EC',
 }
+
+export enum CustTpGameTypeSettingEnum {
+	NoShow = 1,
+	NoPlay = 2,
+	IsShow = 11,
+	IsPlay = 21,
+}

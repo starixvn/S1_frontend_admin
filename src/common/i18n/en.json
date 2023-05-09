@@ -1147,7 +1147,6 @@
 	"Label_ExtraPoint": "Extra Point",
 	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_content": "content",
-	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_ExclusiveVIP": "Exclusive VIP",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
@@ -1158,5 +1157,17 @@
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
 	"Label_Tagging": "Tagging",
-	"Label_ActiveInactiveAll": "Active/Inactive All"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_LiveStreaming": "LiveStreaming",
+	"Label_RegisterMember": "RegisterMember",
+	"Label_AffiliateId": "Affiliate ID",
+	"Label_CountryCode": "Country Code",
+	"Label_MailWrongFormat": "Email address format incorrect",
+	"Label_PasswordLengthLimit": "Password must be 6-15 characters, contain alphanumeric.",
+	"Label_AccountStatusMustSelected": "Account Status Must be Selected",
+	"Label_PhoneNumberErrorTip": "Phone number you entered is incorrect, should be between {{digitalArea}} digits",
+	"Label_LiveStreamingGame": "Live Streaming Game",
+	"Label_TpCategory": "Tp Category",
+	"Label_LiveStreamingGameType": "LiveStreamingGameType"
 }
