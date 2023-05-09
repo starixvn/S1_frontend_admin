@@ -93,7 +93,18 @@ const AutoWithdrawalRuleModal = ({
 		}
 
 		return (
-			<Form.Item name='vipLevels' style={{ margin: '0', width: '100%' }}>
+			<Form.Item
+				name='vipLevels'
+				style={{ margin: '0', width: '100%' }}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_VipLevel'),
+						}),
+					},
+				]}
+			>
 				<MultipleSelect
 					onChange={handleChangeVipLevel}
 					placeholder={t('Label_Select')}
@@ -123,7 +134,18 @@ const AutoWithdrawalRuleModal = ({
 		}
 
 		return (
-			<Form.Item name='tags' style={{ margin: '0', width: '100%' }}>
+			<Form.Item
+				name='tags'
+				style={{ margin: '0', width: '100%' }}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Tagging'),
+						}),
+					},
+				]}
+			>
 				<MultipleSelect
 					onChange={handleChangeTag}
 					placeholder={t('Label_Select')}
@@ -152,7 +174,18 @@ const AutoWithdrawalRuleModal = ({
 		}
 
 		return (
-			<Form.Item name='withdrawalTypes' style={{ margin: '0', width: '100%' }}>
+			<Form.Item
+				name='withdrawalTypes'
+				style={{ margin: '0', width: '100%' }}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_WithdrawalType'),
+						}),
+					},
+				]}
+			>
 				<MultipleSelect
 					onChange={handleChangeType}
 					placeholder={t('Label_Select')}
@@ -232,8 +265,19 @@ const AutoWithdrawalRuleModal = ({
 				const { withdrawalAmount } = data
 
 				return editable ? (
-					<Form.Item name='withdrawalAmount' style={{ margin: '0' }}>
-						<InputNumber />
+					<Form.Item
+						name='withdrawalAmount'
+						style={{ margin: '0' }}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_WithdrawalAmount'),
+								}),
+							},
+						]}
+					>
+						<InputNumber min={0} />
 					</Form.Item>
 				) : (
 					numberFormatter.format(withdrawalAmount)
@@ -250,8 +294,19 @@ const AutoWithdrawalRuleModal = ({
 				const { accountWithdrawalCount } = data
 
 				return editable ? (
-					<Form.Item name='accountWithdrawalCount' style={{ margin: '0' }}>
-						<InputNumber />
+					<Form.Item
+						name='accountWithdrawalCount'
+						style={{ margin: '0' }}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_AccountWithdrawalCount'),
+								}),
+							},
+						]}
+					>
+						<InputNumber min={0} />
 					</Form.Item>
 				) : (
 					accountWithdrawalCount

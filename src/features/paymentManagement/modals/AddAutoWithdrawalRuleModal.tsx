@@ -252,7 +252,7 @@ const AddAutoWithdrawalRuleModal = ({
 									},
 								]}
 							>
-								<InputNumber />
+								<InputNumber min={0} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
@@ -268,7 +268,7 @@ const AddAutoWithdrawalRuleModal = ({
 									},
 								]}
 							>
-								<InputNumber />
+								<InputNumber min={0} />
 							</Form.Item>
 						</Col>
 						<Col span={24}>{vipLevelSelector()}</Col>
