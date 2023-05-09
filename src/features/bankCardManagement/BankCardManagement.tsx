@@ -67,32 +67,32 @@ const BankCardManagement: FC<{
 	>([])
 
 	const {
-		data: { data: purposeList } = {} as IEnumTypeResponse,
+		data: { data: purposeList = [] } = {} as IEnumTypeResponse,
 		isLoading: isGetPurposeListLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementPurposeEnum' })
 
 	const {
-		data: { data: agentList } = {} as IGetAgentListResponse,
+		data: { data: agentList = [] } = {} as IGetAgentListResponse,
 		isLoading: isGetAgentListLoading,
 	} = useGetAgentListQuery({ siteId })
 
 	const {
-		data: { data: vipLevelList } = {} as IVipLevelsResponse,
+		data: { data: vipLevelList = [] } = {} as IVipLevelsResponse,
 		isLoading: isGetVipLevelSettingLoading,
 	} = useGetVipLevelQuery({ siteIdForFilter: siteId })
 
 	const {
-		data: { data: statusEnumList } = {} as IEnumTypeResponse,
+		data: { data: statusEnumList = [] } = {} as IEnumTypeResponse,
 		isLoading: isGetStatusEnumLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementStatusEnum' })
 
 	const {
-		data: { data: supportChannelList } = {} as IEnumTypeResponse,
+		data: { data: supportChannelList = [] } = {} as IEnumTypeResponse,
 		isLoading: isGetSupportChannelLoading,
 	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementSupportChannelEnum' })
 
 	const {
-		data: { data: bankInfoList } = {} as IGetBankInfoResponse,
+		data: { data: bankInfoList = [] } = {} as IGetBankInfoResponse,
 		isFetching: isGetBankInfoLoading,
 	} = useGetBankInfoQuery(
 		{ currencyId: currentCurrency },
@@ -100,7 +100,7 @@ const BankCardManagement: FC<{
 	)
 
 	const {
-		data: { data: pointLevelList } = {} as IGetPointLevelListResponse,
+		data: { data: pointLevelList = [] } = {} as IGetPointLevelListResponse,
 		isFetching: isGetPointLevelLoading,
 	} = useGetPointLevelListQuery(
 		{ siteId, currencyId: currentCurrency },
@@ -111,7 +111,7 @@ const BankCardManagement: FC<{
 		getBankCardList,
 		{
 			data: {
-				data: bankCardListData,
+				data: bankCardListData = [],
 				rowCount: bankCardListTotal = 0,
 			} = {} as IGetBankCardListResponse,
 			isFetching: isGetBankCardListLoading,
