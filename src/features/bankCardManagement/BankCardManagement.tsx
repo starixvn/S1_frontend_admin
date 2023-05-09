@@ -5,11 +5,13 @@ import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import {
+	IFilterForm,
 	IGetAgentListResponse,
 	IGetBankCardListData,
 	IGetBankCardListResponse,
 	IGetBankInfoResponse,
 	IGetPointLevelListResponse,
+	IModalForm,
 } from 'features/bankCardManagement/type'
 import {
 	useGetAgentListQuery,
@@ -19,7 +21,9 @@ import {
 	useSetBankCardMutation,
 } from 'features/bankCardManagement/api'
 import {
+	ILocalPaySettingData,
 	IVipLevelsResponse,
+	useGetLocalPaySettingListQuery,
 	useGetVipLevelQuery,
 } from 'common/service/allDataApi'
 import { BankCardManagementFilterTab } from 'features/bankCardManagement/BankCardManagementFilter/BankCardManagementFilterTab'
@@ -50,38 +54,17 @@ const BankCardManagement: FC<{
 	)
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 
-	const [filterForm] = Form.useForm<{
-		purposes: Array<number | string>
-		statuses: number[]
-		sysIds: Array<number | string>
-		vipLevels: Array<number | string>
-		pointLevels: Array<number | string>
-		supportChannels: Array<number | string>
-		agent: string
-		accountNo: string
-	}>()
+	const [filterForm] = Form.useForm<IFilterForm>()
 
-	const [modalForm] = Form.useForm<{
-		currency: number
-		bankName: string
-		accountName: string
-		accountNo: string
-		minAmount: number
-		maxAmount: number
-		dailyLimitAmount: number
-		purpose: string
-		vipLevels: number[]
-		status: number
-		pointLevels: number[]
-		supportChannels: number[]
-		qrCodeUrl: string | null
-		sort: number
-		memo: string
-	}>()
+	const [modalForm] = Form.useForm<IModalForm>()
+
 	const editBankModal = useModal()
 	const [modalRecord, setModalRecord] = useState<
 		IGetBankCardListData | undefined
 	>(undefined)
+	const [localPaySetting, setLocalPaySetting] = useState<
+		ILocalPaySettingData[]
+	>([])
 
 	const {
 		data: { data: purposeList } = {} as IEnumTypeResponse,
@@ -141,6 +124,9 @@ const BankCardManagement: FC<{
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: bankCardListTotal,
 	})
+
+	const { data: { data: allLocalPaySettingList = [] } = {} } =
+		useGetLocalPaySettingListQuery(null)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -240,7 +226,24 @@ const BankCardManagement: FC<{
 			memo,
 			supportChannels,
 			qrCodeUrl,
+			sysId,
+			groupIds,
 		} = record
+
+		setLocalPaySetting(
+			allLocalPaySettingList.filter(rawSetting => {
+				const { currencyId: settingCurrencyId, sysId: settingSysId } =
+					rawSetting
+				// 要符合 currencyId 與 sysId , sysId = 0 則代表不綁 bank
+				if (settingCurrencyId === currentCurrency) {
+					if (settingSysId === sysId || settingSysId === 0) {
+						return true
+					}
+				}
+				return false
+			})
+		)
+
 		const purposeText = concatStrings(purposes)
 
 		modalForm.setFieldsValue({
@@ -259,6 +262,8 @@ const BankCardManagement: FC<{
 			memo: memo || '',
 			supportChannels,
 			qrCodeUrl,
+			// 畫面上不顯示 groupId 為 0 的資料，若為 0 則視為沒選
+			groupIds,
 		})
 		editBankModal.onOpen()
 	}
@@ -277,6 +282,7 @@ const BankCardManagement: FC<{
 			memo,
 			supportChannels,
 			qrCodeUrl,
+			groupIds,
 		} = await modalForm.validateFields()
 		const { financialAccountId } = modalRecord
 		try {
@@ -294,6 +300,7 @@ const BankCardManagement: FC<{
 				sort,
 				supportChannels,
 				qrCodeUrl,
+				groupIds,
 			}).unwrap()
 
 			message.success(response.message ?? t('System.Label_Success'))
@@ -418,6 +425,7 @@ const BankCardManagement: FC<{
 				vipLevelList={vipLevelList}
 				statusEnumList={statusEnumList}
 				supportChannelsList={supportChannelList}
+				localPaySettingList={localPaySetting}
 				pointLevelList={pointLevelList}
 			/>
 		</LayoutContent.Main>
