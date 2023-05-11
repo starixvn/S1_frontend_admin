@@ -31,15 +31,7 @@ const LiveStreamingGameTypeSelector = ({
 		<Col lg={6} md={12} xs={12}>
 			<Card title={tpName}>
 				{/* key 要是字串  */}
-				<Form.Item
-					name={['selectedGameTypes', String(tpId), 'gameTypes']}
-					rules={[
-						{
-							required: true,
-							message: t('Label_RequiredText'),
-						},
-					]}
-				>
+				<Form.Item name={['selectedGameTypes', String(tpId), 'gameTypes']}>
 					<MultipleSelect
 						onChange={onChangeGame}
 						placeholder={`${t('Label_Search')} & ${t('Label_Select')}`}

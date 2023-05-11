@@ -1,4 +1,4 @@
-import { assign, find, includes } from 'lodash'
+import { assign, find, includes, isUndefined } from 'lodash'
 import {
 	ICustTpGameTypeSettingData,
 	ISelectedGameTypes,
@@ -39,6 +39,10 @@ export const LiveStreamingGameReqConverter = (
 	selectedGameTypes: Record<string, ISelectedGameTypes>
 ) => {
 	const tpGameTypes: number[] = []
+
+	if (isUndefined(selectedGameTypes)) {
+		return { tpGameTypes }
+	}
 
 	Object.values(selectedGameTypes)?.map(({ gameTypes }) =>
 		gameTypes.map(gameTypeId => tpGameTypes.push(gameTypeId))

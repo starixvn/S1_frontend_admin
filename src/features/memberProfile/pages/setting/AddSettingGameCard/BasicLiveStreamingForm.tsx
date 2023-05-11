@@ -30,18 +30,7 @@ const BasicLiveStreamingForm = ({
 			>
 				<Row align='middle' gutter={[16, 16]}>
 					<Col span={12}>
-						<Form.Item
-							name='tpId'
-							label={t('Label_Vender')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_Vender'),
-									}),
-								},
-							]}
-						>
+						<Form.Item name='tpId' label={t('Label_Vender')}>
 							<MultipleSelect
 								onChange={onVenderChange}
 								placeholder={`${t('Label_Select')} ${t('Label_Vender')}`}

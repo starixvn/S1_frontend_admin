@@ -99,6 +99,9 @@ const LiveStreamingGameResultTable = ({
 					}
 				})
 			}
+		} else {
+			// Vender 全清後移除 table 裡的資料
+			setResult([])
 		}
 	}, [selectedGameTypes])
 
