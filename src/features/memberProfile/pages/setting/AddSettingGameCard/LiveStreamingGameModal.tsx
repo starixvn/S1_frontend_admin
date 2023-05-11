@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { filter, reject, includes, first, isEmpty } from 'lodash'
+import { filter, reject, includes, first, isEmpty, isUndefined } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import {
 	useGetTpListQuery,
@@ -63,10 +63,7 @@ const LiveStreamingGameModal = ({
 			const { data: { data: liveStreamingGameList = [] } = {} } =
 				await getCustTpGameTypeSetting({
 					custId,
-					getDataTypes: [
-						CustTpGameTypeSettingEnum.IsPlay,
-						CustTpGameTypeSettingEnum.IsShow,
-					],
+					getDataTypes: [CustTpGameTypeSettingEnum.IsPlay],
 				})
 
 			const { selectedTp, selectedGameTypes } = LiveStreamingGameResConverter(
@@ -85,6 +82,14 @@ const LiveStreamingGameModal = ({
 	const handleVender = (newTpIds: number[]) => {
 		// 綁在初始化條件上 避免在 onChange 時影響 useEffect 裡的初始化
 		onChangeTpId.current = newTpIds
+		// 點選 vender 清除全部動作
+		if (isEmpty(newTpIds)) {
+			form.resetFields(['selectedGameTypes'])
+			setSelectedResult([])
+			prevTps.current = []
+			onChangeTpId.current = []
+		}
+
 		// 篩出新增的 id
 		const newId = newTpIds?.filter(id => !includes(selectedTps, id))
 		// 篩出移除的 id
@@ -168,7 +173,7 @@ const LiveStreamingGameModal = ({
 			}
 		}
 		// 確認 isEmpty(onChangeTpId.current) 是為了避免在 onChange 時打 handleSyncSelectedTps 進行初始化
-		if (selectedTps !== undefined && isEmpty(onChangeTpId.current)) {
+		if (!isUndefined(selectedTps) && isEmpty(onChangeTpId.current)) {
 			handleSyncSelectedTps()
 		}
 	}, [selectedTps])
@@ -199,7 +204,7 @@ const LiveStreamingGameModal = ({
 				onVenderChange={handleVender}
 			/>
 
-			{(selectedTps?.length || prevTps.current.length) > 0 && (
+			{(!isEmpty(onChangeTpId.current) || !isEmpty(prevTps.current)) && (
 				<Form form={form} component={false}>
 					<LiveStreamingGameTypeForm
 						loading={isGetCustTpGameTypeSettingFetching}
