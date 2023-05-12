@@ -65,7 +65,6 @@ const LiveStreamingGameModal = ({
 					custId,
 					getDataTypes: [CustTpGameTypeSettingEnum.IsPlay],
 				})
-
 			const { selectedTp, selectedGameTypes } = LiveStreamingGameResConverter(
 				liveStreamingGameList
 			)
@@ -122,6 +121,14 @@ const LiveStreamingGameModal = ({
 					].sort((a, b) => a.tpId - b.tpId)
 					return newSelectedResult
 				})
+
+				form.setFieldsValue({
+					selectedGameTypes: {
+						[String(selectedTpId)]: {
+							gameTypes: selectedVender.map(({ type }) => type),
+						},
+					},
+				})
 			}
 		} else if (removeId.length > 0) {
 			// 移除取消選取的部分 , 移除該 tp 底下所有已選擇的 gameTypes
@@ -130,6 +137,16 @@ const LiveStreamingGameModal = ({
 			])
 			setSelectedResult(prev => prev.filter(({ tpId }) => tpId !== removeId[0]))
 		}
+	}
+
+	const handleDeleteGameType = (deletedTpId: number) => {
+		setSelectedResult(prev => {
+			return [...filter(prev, item => item.tpId !== deletedTpId)]
+		})
+
+		form.setFieldsValue({
+			tpId: filter(selectedTps, tpId => tpId !== deletedTpId),
+		})
 	}
 
 	useEffect(() => {
@@ -212,6 +229,7 @@ const LiveStreamingGameModal = ({
 						loading={isGetCustTpGameTypeSettingFetching}
 						form={form}
 						selectedResult={selectedResult}
+						onDelete={handleDeleteGameType}
 					/>
 				</Form>
 			)}

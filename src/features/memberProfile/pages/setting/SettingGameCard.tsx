@@ -10,15 +10,22 @@ import { useAuth, useModal } from 'common/hooks'
 import { useActionPermissionsByFunctionId } from 'common/auth'
 import LiveStreamingGameModal from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameModal'
 import { useSetCustTpGameTypeSettingMutation } from 'features/memberProfile/api'
-import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
-import { IAddLiveStreamingForm } from 'features/memberProfile/type'
+import {
+	CustTpGameTypeSettingEnum,
+	IdentityEnum,
+} from 'features/memberProfile/constants'
+import {
+	IAddLiveStreamingForm,
+	IGetBasicInfoData,
+} from 'features/memberProfile/type'
 import { LiveStreamingGameReqConverter } from 'features/memberProfile/pages/setting/AddSettingGameCard/utils'
 
 interface ISettingGameCardProps {
 	custId: number
+	custBasicInfo: IGetBasicInfoData
 }
 
-const SettingGameCard = ({ custId }: ISettingGameCardProps) => {
+const SettingGameCard = ({ custId, custBasicInfo }: ISettingGameCardProps) => {
 	const { t } = useTranslation()
 	const [addForm] = Form.useForm<IAddLiveStreamingForm>()
 	const { actionPermissions: betLimitActionPermissions } =
@@ -91,7 +98,8 @@ const SettingGameCard = ({ custId }: ISettingGameCardProps) => {
 					)}
 				</p>
 				<p>
-					{setLiveStreamingGamePermission?.canUse ? (
+					{setLiveStreamingGamePermission?.canUse &&
+					custBasicInfo.memberType === IdentityEnum.LiveStreaming ? (
 						<Typography.Link onClick={liveStreamingGameModal.onOpen}>
 							{t('Label_LiveStreamingGame')}
 						</Typography.Link>

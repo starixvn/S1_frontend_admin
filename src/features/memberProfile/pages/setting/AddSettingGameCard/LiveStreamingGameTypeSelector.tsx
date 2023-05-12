@@ -2,10 +2,12 @@ import { Card, Col, Form, FormInstance, Select } from 'antd'
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
+import { CloseCircleOutlined } from '@ant-design/icons'
 
 interface ILiveStreamingGameTypeSelectorProps {
 	tpGame: ILiveStreamingGameTableData
 	form: FormInstance
+	onDelete: (deletedTpId: number) => void
 }
 
 const { Option } = Select
@@ -13,6 +15,7 @@ const { Option } = Select
 const LiveStreamingGameTypeSelector = ({
 	tpGame,
 	form,
+	onDelete,
 }: ILiveStreamingGameTypeSelectorProps) => {
 	const { t } = useTranslation()
 	const { tpGames, tpId, tpName } = tpGame
@@ -26,16 +29,19 @@ const LiveStreamingGameTypeSelector = ({
 			},
 		})
 	}
-
 	return (
 		<Col lg={6} md={12} xs={12}>
-			<Card title={tpName}>
+			<Card
+				title={tpName}
+				extra={<CloseCircleOutlined onClick={() => onDelete(tpId)} />}
+			>
 				{/* key 要是字串  */}
 				<Form.Item name={['selectedGameTypes', String(tpId), 'gameTypes']}>
 					<MultipleSelect
 						onChange={onChangeGame}
 						placeholder={`${t('Label_Search')} & ${t('Label_Select')}`}
 						showSearch
+						onBlur={() => onDelete(tpId)}
 						filterOption={(input, option) => {
 							const isIncludes: boolean = (
 								option!.children as unknown as string
