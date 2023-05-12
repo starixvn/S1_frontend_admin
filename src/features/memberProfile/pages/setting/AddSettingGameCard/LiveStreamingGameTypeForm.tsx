@@ -8,12 +8,14 @@ interface ILiveStreamingGameTypeFormProps {
 	form: FormInstance
 	loading: boolean
 	selectedResult: ILiveStreamingGameTableData[]
+	onDelete: (deletedTpId: number) => void
 }
 
 const LiveStreamingGameTypeForm = ({
 	form,
 	loading,
 	selectedResult,
+	onDelete,
 }: ILiveStreamingGameTypeFormProps) => {
 	const { t } = useTranslation()
 	return (
@@ -28,6 +30,7 @@ const LiveStreamingGameTypeForm = ({
 							form={form}
 							tpGame={tpGame}
 							key={tpGame.tpId}
+							onDelete={onDelete}
 						/>
 					))}
 				</Row>

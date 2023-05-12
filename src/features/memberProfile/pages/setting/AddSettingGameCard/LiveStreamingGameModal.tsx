@@ -65,7 +65,6 @@ const LiveStreamingGameModal = ({
 					custId,
 					getDataTypes: [CustTpGameTypeSettingEnum.IsPlay],
 				})
-
 			const { selectedTp, selectedGameTypes } = LiveStreamingGameResConverter(
 				liveStreamingGameList
 			)
@@ -79,7 +78,8 @@ const LiveStreamingGameModal = ({
 		}
 	}
 
-	const handleVender = (newTpIds: number[]) => {
+	const handleVender = (originNewTpIds: number[]) => {
+		const newTpIds = originNewTpIds.sort((a, b) => a - b)
 		// 綁在初始化條件上 避免在 onChange 時影響 useEffect 裡的初始化
 		onChangeTpId.current = newTpIds
 		// 點選 vender 清除全部動作
@@ -111,14 +111,23 @@ const LiveStreamingGameModal = ({
 				)?.tpName
 
 				setSelectedResult(prev => {
-					return [
+					const newSelectedResult = [
 						...prev,
 						{
 							tpId: selectedTpId!,
 							tpName: selectedTpName!,
 							tpGames: selectedVender!,
 						},
-					]
+					].sort((a, b) => a.tpId - b.tpId)
+					return newSelectedResult
+				})
+
+				form.setFieldsValue({
+					selectedGameTypes: {
+						[String(selectedTpId)]: {
+							gameTypes: selectedVender.map(({ type }) => type),
+						},
+					},
 				})
 			}
 		} else if (removeId.length > 0) {
@@ -128,6 +137,16 @@ const LiveStreamingGameModal = ({
 			])
 			setSelectedResult(prev => prev.filter(({ tpId }) => tpId !== removeId[0]))
 		}
+	}
+
+	const handleDeleteGameType = (deletedTpId: number) => {
+		setSelectedResult(prev => {
+			return [...filter(prev, item => item.tpId !== deletedTpId)]
+		})
+
+		form.setFieldsValue({
+			tpId: filter(selectedTps, tpId => tpId !== deletedTpId),
+		})
 	}
 
 	useEffect(() => {
@@ -210,6 +229,7 @@ const LiveStreamingGameModal = ({
 						loading={isGetCustTpGameTypeSettingFetching}
 						form={form}
 						selectedResult={selectedResult}
+						onDelete={handleDeleteGameType}
 					/>
 				</Form>
 			)}
