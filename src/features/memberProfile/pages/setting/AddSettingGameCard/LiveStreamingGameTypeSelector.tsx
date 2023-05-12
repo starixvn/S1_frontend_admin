@@ -41,7 +41,6 @@ const LiveStreamingGameTypeSelector = ({
 						onChange={onChangeGame}
 						placeholder={`${t('Label_Search')} & ${t('Label_Select')}`}
 						showSearch
-						onBlur={() => onDelete(tpId)}
 						filterOption={(input, option) => {
 							const isIncludes: boolean = (
 								option!.children as unknown as string
