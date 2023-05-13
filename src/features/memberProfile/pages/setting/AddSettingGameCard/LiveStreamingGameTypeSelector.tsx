@@ -29,6 +29,7 @@ const LiveStreamingGameTypeSelector = ({
 			},
 		})
 	}
+
 	return (
 		<Col lg={6} md={12} xs={12}>
 			<Card
