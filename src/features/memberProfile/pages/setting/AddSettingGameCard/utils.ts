@@ -9,21 +9,21 @@ import {
 export const LiveStreamingGameResConverter = (
 	value: ICustTpGameTypeSettingData[]
 ) => {
-	const selectedTp: number[] = []
-	const selectedGameTypes = {}
+	const initTp: number[] = []
+	const initGameTypes = {}
 	value.forEach(({ tpId, gameType }) => {
-		if (!includes(selectedTp, tpId)) {
-			selectedTp.push(tpId)
+		if (!includes(initTp, tpId)) {
+			initTp.push(tpId)
 		}
 
-		const exist = find(selectedGameTypes, (_, key) => key === String(tpId))
+		const exist = find(initGameTypes, (_, key) => key === String(tpId))
 		if (exist) {
 			// 已存在
 			const { gameTypes = [] as number[] } = exist
 			gameTypes.push(gameType)
 		} else {
 			// 新增
-			assign(selectedGameTypes, {
+			assign(initGameTypes, {
 				[String(tpId)]: {
 					gameTypes: [gameType],
 				},
@@ -31,7 +31,7 @@ export const LiveStreamingGameResConverter = (
 		}
 	})
 
-	return { selectedTp, selectedGameTypes }
+	return { initTp, initGameTypes }
 }
 
 // C2S
@@ -39,7 +39,7 @@ export const LiveStreamingGameReqConverter = (
 	selectedGameTypes: Record<string, ISelectedGameTypes>
 ) => {
 	const tpGameTypes: number[] = []
-
+	// GameTypes 沒選則帶 []
 	if (isUndefined(selectedGameTypes)) {
 		return { tpGameTypes }
 	}

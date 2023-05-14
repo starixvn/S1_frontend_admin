@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import { filter, reject, includes, first, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { Form, FormInstance, Modal, message } from 'antd'
+import { filter, reject, includes, first, isEmpty } from 'lodash'
 import {
 	useGetTpListQuery,
 	useGetProductsQuery,
 } from 'common/service/allDataApi'
-import { Form, FormInstance, Modal, message } from 'antd'
 import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
-import LiveStreamingGameResultTable from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameResultTable'
-import { useLazyGetCustTpGameTypeSettingQuery } from 'features/memberProfile/api'
 import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
-import LiveStreamingGameTypeForm from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameTypeForm'
-import BasicLiveStreamingForm from 'features/memberProfile/pages/setting/AddSettingGameCard/BasicLiveStreamingForm'
+import { useLazyGetCustTpGameTypeSettingQuery } from 'features/memberProfile/api'
 import { LiveStreamingGameResConverter } from 'features/memberProfile/pages/setting/AddSettingGameCard/utils'
+import BasicLiveStreamingForm from 'features/memberProfile/pages/setting/AddSettingGameCard/BasicLiveStreamingForm'
+import LiveStreamingGameTypeForm from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameTypeForm'
+import LiveStreamingGameResultTable from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameResultTable'
 
 interface ILiveStreamingGameModalProps {
 	custId: number
@@ -62,23 +62,23 @@ const LiveStreamingGameModal = ({
 					custId,
 					getDataTypes: [CustTpGameTypeSettingEnum.IsPlay],
 				})
-			const { selectedTp, selectedGameTypes } = LiveStreamingGameResConverter(
+			const { initTp, initGameTypes } = LiveStreamingGameResConverter(
 				liveStreamingGameList
 			)
 
 			form.setFieldsValue({
-				tpId: selectedTp,
-				selectedGameTypes,
+				tpId: initTp.sort((a, b) => a - b),
+				selectedGameTypes: initGameTypes,
 			})
 
-			if (!isEmpty(selectedTp)) {
+			if (!isEmpty(initTp)) {
 				// 取得 Tp 底下的所有 gameType
 				const selectedVender = filter(gameTypeList, gameTypeItem => {
-					return includes(selectedTp, gameTypeItem.tpId)
+					return includes(initTp, gameTypeItem.tpId)
 				})
 
 				if (selectedVender.length > 0) {
-					selectedTp.forEach(value => {
+					initTp.forEach(value => {
 						setSelectedResult(prev => {
 							const selectedGameTypeList = filter(selectedVender, [
 								'tpId',
@@ -96,7 +96,7 @@ const LiveStreamingGameModal = ({
 									tpName: selectedTpNames!,
 									tpGames: selectedGameTypeList!,
 								},
-							]
+							].sort((a, b) => a.tpId - b.tpId)
 						})
 					})
 				}
@@ -135,7 +135,7 @@ const LiveStreamingGameModal = ({
 				)?.tpName
 
 				setSelectedResult(prev => {
-					const newSelectedResult = [
+					return [
 						...prev,
 						{
 							tpId: selectedTpId!,
@@ -143,7 +143,6 @@ const LiveStreamingGameModal = ({
 							tpGames: selectedVender!,
 						},
 					].sort((a, b) => a.tpId - b.tpId)
-					return newSelectedResult
 				})
 
 				form.setFieldsValue({

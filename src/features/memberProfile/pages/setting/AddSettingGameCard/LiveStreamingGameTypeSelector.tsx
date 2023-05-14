@@ -1,8 +1,8 @@
-import { Card, Col, Form, FormInstance, Select } from 'antd'
-import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
-import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
+import { MultipleSelect } from 'components/Select'
 import { CloseCircleOutlined } from '@ant-design/icons'
+import { Card, Col, Form, FormInstance, Select } from 'antd'
+import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
 
 interface ILiveStreamingGameTypeSelectorProps {
 	tpGame: ILiveStreamingGameTableData

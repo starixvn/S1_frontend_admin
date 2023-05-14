@@ -1,7 +1,7 @@
-import { Col, Form, FormInstance, Row, Select, Card } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { MultipleSelect } from 'components/Select'
 import { ITpListData } from 'common/service/allDataApi'
+import { Col, Form, FormInstance, Row, Select, Card } from 'antd'
 
 interface IBasicLiveStreamingFormProps {
 	form: FormInstance
