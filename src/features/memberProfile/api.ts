@@ -107,6 +107,9 @@ import {
 	IGetPromotionReceiveFailLogArgs,
 	IPromotionReceiveFailLogData,
 	IExportCustTpBetRecordByGameTypeArgs,
+	ISetCustTpGameTypeSettingArgs,
+	IGetCustTpGameTypeSettingArgs,
+	ICustTpGameTypeSettingResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -120,6 +123,7 @@ export const memberProfileApi = createApi({
 		'SetVipLevel',
 		'SetPromotionReport',
 		'CustPromotionWhiteList',
+		'liveStreamingGame',
 	],
 	endpoints: builder => ({
 		// sider基本資料
@@ -1092,6 +1096,30 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		// 新增 LiveStreamingGame
+		setCustTpGameTypeSetting: builder.mutation<
+			IAxiosResponse<null>,
+			ISetCustTpGameTypeSettingArgs
+		>({
+			query: data => ({
+				url: 'Member/SetCustTpGameTypeSetting',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['liveStreamingGame'],
+		}),
+		// 取得 LiveStreamingGame
+		getCustTpGameTypeSetting: builder.query<
+			ICustTpGameTypeSettingResponse,
+			IGetCustTpGameTypeSettingArgs
+		>({
+			query: data => ({
+				url: 'Member/GetCustTpGameTypeSetting',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['liveStreamingGame'],
+		}),
 	}),
 })
 
@@ -1188,4 +1216,6 @@ export const {
 	useExportCustTpBetRecordByDayMutation,
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
+	useSetCustTpGameTypeSettingMutation,
+	useLazyGetCustTpGameTypeSettingQuery,
 } = memberProfileApi
