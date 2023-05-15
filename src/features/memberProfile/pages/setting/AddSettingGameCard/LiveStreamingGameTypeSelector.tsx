@@ -52,7 +52,7 @@ const LiveStreamingGameTypeSelector = ({
 							return isIncludes
 						}}
 					>
-						{tpGames?.map(({ typeName, type }) => (
+						{tpGames.map(({ typeName, type }) => (
 							<Option key={type} value={type}>
 								{typeName}
 							</Option>

@@ -163,7 +163,7 @@ export const {
 	useGetPaySettingListQuery,
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
-	useGetProductsQuery,
 	useGetTpListQuery,
 	useGetLocalPaySettingListQuery,
+	useGetProductsQuery,
 } = allDataApi

@@ -46,7 +46,7 @@ const BasicLiveStreamingForm = ({
 									return isIncludes
 								}}
 							>
-								{tpList?.map(({ id, tpDisplayName }) => (
+								{tpList.map(({ id, tpDisplayName }) => (
 									<Option key={id} value={id}>
 										{tpDisplayName}
 									</Option>

@@ -1112,7 +1112,6 @@
 	"Label_Downloaded": "Downloaded",
 	"Label_Loading": "Loading...",
 	"Label_Processing": "Processing",
-	"Label_DateRangeExceedsThreeMonths": "Date range exceeds 3 months.",
 	"Label_AdminUserLog": "Admin User Log",
 	"Label_TaggingRestrict": "Tagging Restrict",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
@@ -1137,9 +1136,9 @@
 	"Label_Amount": "Amount",
 	"Label_Menu": "Menu",
 	"Label_EmailVerifiedTime": "Email Verified Time",
-	"Label_PhoneVerifiedTime": "Phone Verified Time",
 	"Label_Network": "Network",
 	"Label_PayGroup": "Pay Group",
+	"Label_PhoneVerifiedTime": "Phone Verified Time",
 	"Label_CheckBy": "Check By",
 	"Label_Ranking": "Ranking",
 	"Label_Points": "Points",
@@ -1169,5 +1168,6 @@
 	"Label_PhoneNumberErrorTip": "Phone number you entered is incorrect, should be between {{digitalArea}} digits",
 	"Label_LiveStreamingGame": "Live Streaming Game",
 	"Label_TpCategory": "Tp Category",
-	"Label_LiveStreamingGameType": "LiveStreamingGameType"
+	"Label_LiveStreamingGameType": "LiveStreamingGameType",
+	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only."
 }

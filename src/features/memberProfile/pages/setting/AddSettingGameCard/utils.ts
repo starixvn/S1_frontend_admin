@@ -44,7 +44,7 @@ export const LiveStreamingGameReqConverter = (
 		return { tpGameTypes }
 	}
 
-	Object.values(selectedGameTypes)?.map(({ gameTypes }) =>
+	Object.values(selectedGameTypes).map(({ gameTypes }) =>
 		gameTypes.map(gameTypeId => tpGameTypes.push(gameTypeId))
 	)
 

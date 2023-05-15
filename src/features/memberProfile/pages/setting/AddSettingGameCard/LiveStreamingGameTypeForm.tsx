@@ -25,7 +25,7 @@ const LiveStreamingGameTypeForm = ({
 					{t('Label_LiveStreamingGameType')}
 				</Typography.Title>
 				<Row align='middle' gutter={[16, 16]}>
-					{selectedResult?.map(tpGame => (
+					{selectedResult.map(tpGame => (
 						<LiveStreamingGameTypeSelector
 							form={form}
 							tpGame={tpGame}

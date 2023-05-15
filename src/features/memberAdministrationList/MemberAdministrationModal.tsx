@@ -80,6 +80,10 @@ const MemberAdministrationModal = ({
 										key: t('Label_TagName'),
 									}),
 								},
+								{
+									pattern: /^(?=.*[a-zA-Z])(?=.*\d).{6,18}$/,
+									message: t('Label_UserNameLimit'),
+								},
 							]}
 						>
 							<Input allowClear style={{ width: '100%' }} />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, FormInstance, Modal, message } from 'antd'
-import { filter, reject, includes, first, isEmpty } from 'lodash'
+import { filter, reject, includes, head, isEmpty } from 'lodash'
 import {
 	useGetTpListQuery,
 	useGetProductsQuery,
@@ -85,16 +85,15 @@ const LiveStreamingGameModal = ({
 								value,
 							])
 
-							const selectedTpNames = first(
-								filter(tpList, ['id', value])
-							)?.tpName
+							const selectedTpNames = head(filter(tpList, ['id', value]))
+								?.tpName!
 
 							return [
 								...prev,
 								{
-									tpId: value!,
-									tpName: selectedTpNames!,
-									tpGames: selectedGameTypeList!,
+									tpId: value,
+									tpName: selectedTpNames,
+									tpGames: selectedGameTypeList,
 								},
 							].sort((a, b) => a.tpId - b.tpId)
 						})
@@ -102,7 +101,9 @@ const LiveStreamingGameModal = ({
 				}
 			}
 		} catch (error) {
-			message.error(t((error as Error).message))
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
 		}
 	}
 	// 第一層 tpId
@@ -115,9 +116,9 @@ const LiveStreamingGameModal = ({
 		}
 
 		// 篩出新增的 id
-		const newId = newTpIds?.filter(id => !includes(selectedTps, id))
+		const newId = newTpIds.filter(id => !includes(selectedTps, id))
 		// 篩出移除的 id
-		const removeId = selectedTps?.filter(id => !includes(newTpIds, id))
+		const removeId = selectedTps.filter(id => !includes(newTpIds, id))
 
 		if (newId.length > 0) {
 			// 新增 TP 選項
@@ -129,8 +130,8 @@ const LiveStreamingGameModal = ({
 
 			if (selectedVender.length > 0) {
 				// 已經是在同個 gameType底下 故取 tpId 與 tpName 時抓第一個取值就行
-				const selectedTpId = first(selectedVender)?.tpId
-				const selectedTpName = first(
+				const selectedTpId = head(selectedVender)?.tpId
+				const selectedTpName = head(
 					filter(tpList, ['id', selectedTpId])
 				)?.tpName
 
@@ -155,6 +156,7 @@ const LiveStreamingGameModal = ({
 			}
 		} else if (removeId.length > 0) {
 			// 移除取消選取的部分 , 移除該 tp 底下所有已選擇的 gameTypes
+			// 這裡的 removeId 只會有一個 全關已被上面 113行 isEmpty(newTpIds) 排除
 			form.resetFields([
 				['selectedGameTypes', String(removeId[0]), 'gameTypes'],
 			])

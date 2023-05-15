@@ -98,8 +98,8 @@ export interface ActionPermissions {
 	editAutoWithdrawalRulePermission: PermissionInterface
 	forceProceed: PermissionInterface
 	exclusiveVipPermission: PermissionInterface
-	registerMemberPermission: PermissionInterface
 	setLiveStreamingGamePermission: PermissionInterface
+	registerMemberPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
