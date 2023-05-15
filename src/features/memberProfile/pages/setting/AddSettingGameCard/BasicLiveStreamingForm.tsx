@@ -1,12 +1,12 @@
-import { Col, Form, FormInstance, Row, Select, Card } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { MultipleSelect } from 'components/Select'
 import { ITpListData } from 'common/service/allDataApi'
+import { Col, Form, FormInstance, Row, Select, Card } from 'antd'
 
 interface IBasicLiveStreamingFormProps {
 	form: FormInstance
 	tpList: ITpListData[]
-	onVenderChange: (newTpIds: number[]) => void
+	onTpIdChange: (newTpIds: number[]) => void
 }
 
 const { Option } = Select
@@ -14,7 +14,7 @@ const { Option } = Select
 const BasicLiveStreamingForm = ({
 	form,
 	tpList,
-	onVenderChange,
+	onTpIdChange,
 }: IBasicLiveStreamingFormProps) => {
 	const { t } = useTranslation()
 
@@ -32,7 +32,7 @@ const BasicLiveStreamingForm = ({
 					<Col span={12}>
 						<Form.Item name='tpId' label={t('Label_Vender')}>
 							<MultipleSelect
-								onChange={onVenderChange}
+								onChange={onTpIdChange}
 								placeholder={`${t('Label_Select')} ${t('Label_Vender')}`}
 								showSearch
 								allowClear

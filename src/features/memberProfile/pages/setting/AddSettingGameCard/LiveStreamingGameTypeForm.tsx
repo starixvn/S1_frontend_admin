@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { FormInstance, Row, Spin, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
+import { FormInstance, Row, Spin, Typography } from 'antd'
 import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
 import LiveStreamingGameTypeSelector from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameTypeSelector'
 

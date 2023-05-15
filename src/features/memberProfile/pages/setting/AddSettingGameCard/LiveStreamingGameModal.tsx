@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
-import { filter, reject, includes, first, isEmpty, isUndefined } from 'lodash'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Form, FormInstance, Modal, message } from 'antd'
+import { filter, reject, includes, first, isEmpty } from 'lodash'
 import {
 	useGetTpListQuery,
 	useGetProductsQuery,
 } from 'common/service/allDataApi'
-import { Form, FormInstance, Modal, message } from 'antd'
 import { ILiveStreamingGameTableData } from 'features/memberProfile/type'
-import LiveStreamingGameResultTable from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameResultTable'
-import { useLazyGetCustTpGameTypeSettingQuery } from 'features/memberProfile/api'
 import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
-import LiveStreamingGameTypeForm from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameTypeForm'
-import BasicLiveStreamingForm from 'features/memberProfile/pages/setting/AddSettingGameCard/BasicLiveStreamingForm'
+import { useLazyGetCustTpGameTypeSettingQuery } from 'features/memberProfile/api'
 import { LiveStreamingGameResConverter } from 'features/memberProfile/pages/setting/AddSettingGameCard/utils'
+import BasicLiveStreamingForm from 'features/memberProfile/pages/setting/AddSettingGameCard/BasicLiveStreamingForm'
+import LiveStreamingGameTypeForm from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameTypeForm'
+import LiveStreamingGameResultTable from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameResultTable'
 
 interface ILiveStreamingGameModalProps {
 	custId: number
@@ -35,10 +35,7 @@ const LiveStreamingGameModal = ({
 	const [selectedResult, setSelectedResult] = useState<
 		ILiveStreamingGameTableData[]
 	>([])
-	// 前次資料(監測 useEffect 初始化)
-	const prevTps = useRef<number[]>([])
-	// 前次資料(監測 tpId onChange異動)
-	const onChangeTpId = useRef<number[]>([])
+
 	const selectedTps = Form.useWatch<number[]>('tpId', form)
 
 	const { data: { data: tpList = [] } = {} } = useGetTpListQuery(null)
@@ -65,29 +62,56 @@ const LiveStreamingGameModal = ({
 					custId,
 					getDataTypes: [CustTpGameTypeSettingEnum.IsPlay],
 				})
-			const { selectedTp, selectedGameTypes } = LiveStreamingGameResConverter(
+			const { initTp, initGameTypes } = LiveStreamingGameResConverter(
 				liveStreamingGameList
 			)
 
 			form.setFieldsValue({
-				tpId: selectedTp,
-				selectedGameTypes,
+				tpId: initTp.sort((a, b) => a - b),
+				selectedGameTypes: initGameTypes,
 			})
+
+			if (!isEmpty(initTp)) {
+				// 取得 Tp 底下的所有 gameType
+				const selectedVender = filter(gameTypeList, gameTypeItem => {
+					return includes(initTp, gameTypeItem.tpId)
+				})
+
+				if (selectedVender.length > 0) {
+					initTp.forEach(value => {
+						setSelectedResult(prev => {
+							const selectedGameTypeList = filter(selectedVender, [
+								'tpId',
+								value,
+							])
+
+							const selectedTpNames = first(
+								filter(tpList, ['id', value])
+							)?.tpName
+
+							return [
+								...prev,
+								{
+									tpId: value!,
+									tpName: selectedTpNames!,
+									tpGames: selectedGameTypeList!,
+								},
+							].sort((a, b) => a.tpId - b.tpId)
+						})
+					})
+				}
+			}
 		} catch (error) {
 			message.error(t((error as Error).message))
 		}
 	}
-
-	const handleVender = (originNewTpIds: number[]) => {
+	// 第一層 tpId
+	const handleTpId = (originNewTpIds: number[]) => {
 		const newTpIds = originNewTpIds.sort((a, b) => a - b)
-		// 綁在初始化條件上 避免在 onChange 時影響 useEffect 裡的初始化
-		onChangeTpId.current = newTpIds
 		// 點選 vender 清除全部動作
 		if (isEmpty(newTpIds)) {
 			form.resetFields(['selectedGameTypes'])
 			setSelectedResult([])
-			prevTps.current = []
-			onChangeTpId.current = []
 		}
 
 		// 篩出新增的 id
@@ -111,7 +135,7 @@ const LiveStreamingGameModal = ({
 				)?.tpName
 
 				setSelectedResult(prev => {
-					const newSelectedResult = [
+					return [
 						...prev,
 						{
 							tpId: selectedTpId!,
@@ -119,7 +143,6 @@ const LiveStreamingGameModal = ({
 							tpGames: selectedVender!,
 						},
 					].sort((a, b) => a.tpId - b.tpId)
-					return newSelectedResult
 				})
 
 				form.setFieldsValue({
@@ -139,11 +162,11 @@ const LiveStreamingGameModal = ({
 		}
 	}
 
+	// 第二層 GameType
 	const handleDeleteGameType = (deletedTpId: number) => {
 		setSelectedResult(prev => {
 			return [...filter(prev, item => item.tpId !== deletedTpId)]
 		})
-
 		form.setFieldsValue({
 			tpId: filter(selectedTps, tpId => tpId !== deletedTpId),
 		})
@@ -155,47 +178,6 @@ const LiveStreamingGameModal = ({
 			handleGetCustTpGameTypeSetting()
 		}
 	}, [visible])
-
-	useEffect(() => {
-		const handleSyncSelectedTps = () => {
-			prevTps.current = selectedTps
-
-			if (prevTps.current.length > 0) {
-				// 取得 Tp 底下的所有 gameType
-				const selectedVender = filter(gameTypeList, gameTypeItem => {
-					return includes(prevTps.current, gameTypeItem.tpId)
-				})
-
-				if (selectedVender.length > 0) {
-					prevTps.current.forEach(value => {
-						setSelectedResult(prev => {
-							const selectedGameTypeList = filter(selectedVender, [
-								'tpId',
-								value,
-							])
-
-							const selectedTpNames = first(
-								filter(tpList, ['id', value])
-							)?.tpName
-
-							return [
-								...prev,
-								{
-									tpId: value!,
-									tpName: selectedTpNames!,
-									tpGames: selectedGameTypeList!,
-								},
-							]
-						})
-					})
-				}
-			}
-		}
-		// 確認 isEmpty(onChangeTpId.current) 是為了避免在 onChange 時打 handleSyncSelectedTps 進行初始化
-		if (!isUndefined(selectedTps) && isEmpty(onChangeTpId.current)) {
-			handleSyncSelectedTps()
-		}
-	}, [selectedTps])
 
 	return (
 		<Modal
@@ -212,18 +194,16 @@ const LiveStreamingGameModal = ({
 				form.resetFields()
 				// 清空舊資料避免重複初始化
 				setSelectedResult([])
-				// 清空 ref TpId 保持每次打開都能正確初始化
-				onChangeTpId.current = []
 			}}
 			onOk={onFinish}
 		>
 			<BasicLiveStreamingForm
 				form={form}
 				tpList={tpList}
-				onVenderChange={handleVender}
+				onTpIdChange={handleTpId}
 			/>
 
-			{(!isEmpty(onChangeTpId.current) || !isEmpty(prevTps.current)) && (
+			{!isEmpty(selectedTps) && (
 				<Form form={form} component={false}>
 					<LiveStreamingGameTypeForm
 						loading={isGetCustTpGameTypeSettingFetching}

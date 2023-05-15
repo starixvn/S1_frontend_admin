@@ -1,9 +1,9 @@
 import { Table } from 'components'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { Typography, FormInstance, Form } from 'antd'
-import { useEffect, useState } from 'react'
 import { includes, find, cloneDeep } from 'lodash'
+import { Typography, FormInstance, Form } from 'antd'
 import {
 	ILiveStreamingGameTableData,
 	ILiveStreamingInfo,
@@ -88,7 +88,10 @@ const LiveStreamingGameResultTable = ({
 									return clonePrev
 								}
 
-								return [...clonePrev, { tpName, selectedGameTypeNames, tpId }]
+								return [
+									...clonePrev,
+									{ tpName, selectedGameTypeNames, tpId },
+								].sort((a, b) => a.tpId - b.tpId)
 							})
 						} else {
 							// 如果內容長度 = 0 則移除該筆資料
