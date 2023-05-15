@@ -292,6 +292,7 @@ export interface IBonusAmountClaimedCurrencyData {
 	currency: string
 	bonusAmountClaim: number
 	comparedBonusAmountClaim: number
+	baseBonusAmountClaim: number
 	changeRate: number
 }
 
