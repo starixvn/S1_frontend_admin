@@ -45,12 +45,12 @@ const BonusAmountClaimedBonusTable = ({
 		},
 		{
 			title: t('Label_TotalBonusAmountClaimed'),
-			key: 'bonusAmountClaim',
-			dataIndex: 'bonusAmountClaim',
+			key: 'baseBonusAmountClaim',
+			dataIndex: 'baseBonusAmountClaim',
 			width: '25%',
 			align: 'center' as 'center',
-			render: (bonusAmountClaim: number) =>
-				bonusAmountClaim ? numFormatToDigits(bonusAmountClaim) : 0,
+			render: (baseBonusAmountClaim: number) =>
+				baseBonusAmountClaim ? numFormatToDigits(baseBonusAmountClaim) : 0,
 		},
 	]
 
@@ -69,7 +69,7 @@ const BonusAmountClaimedBonusTable = ({
 			// eslint-disable-next-line react/no-unstable-nested-components
 			summary={() => {
 				// 解決 first render is undefined
-				const { numberOfBonusUser, bonusAmountClaim } =
+				const { numberOfBonusUser, baseBonusAmountClaim } =
 					marketingBonusAmountClaimedData.groupByBonusCodeSum || {}
 
 				return (
@@ -87,7 +87,9 @@ const BonusAmountClaimedBonusTable = ({
 								</Text>
 							</Summary.Cell>
 							<Summary.Cell align='center' index={4}>
-								{bonusAmountClaim ? numFormatToDigits(bonusAmountClaim) : 0}
+								{baseBonusAmountClaim
+									? numFormatToDigits(baseBonusAmountClaim)
+									: 0}
 							</Summary.Cell>
 						</Summary.Row>
 					</Summary>
