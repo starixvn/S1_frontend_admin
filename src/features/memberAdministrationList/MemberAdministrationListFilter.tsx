@@ -27,7 +27,6 @@ import {
 	SHIELD_LEVEL_ENUM_OPTIONS,
 	STATUS_ENUM_OPTIONS,
 	DATE_TYPE_ENUM_OPTIONS,
-	USER_TYPE_ENUM_OPTIONS,
 	StatueEnum,
 	IdentityEnum,
 	IovationLevelEnum,
@@ -35,7 +34,7 @@ import {
 	DateTypeEnum,
 	UserTypeEnum,
 } from './constants'
-import { IForm, ITagData, IVipLevelData } from './type'
+import { IForm, ITagData, IVipLevelData, IMemberTypeData } from './type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -48,6 +47,7 @@ interface IMemberAdministrationListFilterProps {
 	currencyListBySite: Currency[]
 	allTagEnums: ITagData[]
 	vipLevelEnums: IVipLevelData[]
+	memberTypeEnums: IMemberTypeData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
@@ -66,6 +66,7 @@ const MemberAdministrationListFilter = ({
 	currencyListBySite,
 	allTagEnums,
 	vipLevelEnums,
+	memberTypeEnums,
 	onTimeZoneChange,
 	onSearch,
 }: IMemberAdministrationListFilterProps) => {
@@ -217,6 +218,38 @@ const MemberAdministrationListFilter = ({
 		)
 	}
 
+	const memberTypeSelector = () => {
+		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
+			if (newMemberTypes.includes(0)) {
+				form.setFieldsValue({
+					userTypes: memberTypeEnums?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					userTypes: newMemberTypes,
+				})
+			}
+		}
+		return (
+			<Form.Item name='userTypes' label={t('Label_MemberType')}>
+				<MultipleSelect
+					onChange={handleChangeMemberType}
+					placeholder={t('Label_Select') + t('Label_MemberType')}
+				>
+					{(memberTypeEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{memberTypeEnums?.map(({ value, name }) => (
+						<Option key={value} value={value}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -247,7 +280,7 @@ const MemberAdministrationListFilter = ({
 							iovationLevel: IovationLevelEnum.All,
 							dateType: DateTypeEnum.All,
 							exportTransferWallet: 0,
-							userType: UserTypeEnum.All,
+							userTypes: memberTypeEnums?.map(({ value }) => value),
 							deviceId: null,
 						}}
 						onFinish={() => onSearch({})}
@@ -456,19 +489,7 @@ const MemberAdministrationListFilter = ({
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
-										<Form.Item name='userType' label={t('Label_MemberType')}>
-											<Select
-												placeholder={t('Label_Select') + t('Label_MemberType')}
-											>
-												{USER_TYPE_ENUM_OPTIONS?.map(
-													({ value, displayKey }) => (
-														<Option key={value} value={value}>
-															{t(displayKey)}
-														</Option>
-													)
-												)}
-											</Select>
-										</Form.Item>
+										{memberTypeSelector()}
 									</Col>
 									<Col lg={6} md={12} xs={12}>
 										<Form.Item

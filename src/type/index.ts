@@ -97,6 +97,8 @@ export interface ActionPermissions {
 	setAmountPermission: PermissionInterface
 	editAutoWithdrawalRulePermission: PermissionInterface
 	forceProceed: PermissionInterface
+	registerMemberPermission: PermissionInterface
+	setLiveStreamingGamePermission: PermissionInterface
 	exclusiveVipPermission: PermissionInterface
 	resetOtpLimitPermission: PermissionInterface
 }
