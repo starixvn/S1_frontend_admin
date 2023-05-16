@@ -559,6 +559,13 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		resetOtpTimes: builder.mutation<IAxiosResponse<void>, { custId: number }>({
+			query: data => ({
+				url: 'Member/ResetOtpTimes',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// 取得關聯 IP 的帳號
 		getIpUser: builder.query<IGetIpUserListResponse, IGetIpUserListArgs>({
 			query: data => ({
@@ -1188,4 +1195,5 @@ export const {
 	useExportCustTpBetRecordByDayMutation,
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
+	useResetOtpTimesMutation,
 } = memberProfileApi
