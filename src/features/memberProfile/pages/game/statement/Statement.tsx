@@ -8,6 +8,7 @@ import {
 	useLazyGetCustTpBetRecordByDayQuery,
 	useLazyGetCustTpBetRecordByGameTypeQuery,
 	useLazyGetCustTpBetRecordQuery,
+	useLazyGetGameTypeListQuery,
 	useLazyGetTpBetRecordDetailQuery,
 } from 'features/memberProfile/api'
 import { useParams } from 'react-router-dom'
@@ -16,7 +17,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { StatementFilter } from 'features/memberProfile/pages/game/statement/StatementFilter'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { dateRangeToUtcFormatter, getInRangeDate } from 'common/utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CustTpBetRecordTable } from 'features/memberProfile/pages/game/statement/tables/CustTpBetRecordTable'
 import { GameStatementTableEnum } from 'features/memberProfile/constants'
 import { CustTpBetRecordByDayTable } from 'features/memberProfile/pages/game/statement/tables/CustTpBetRecordByDayTable'
@@ -35,6 +36,7 @@ import { TpBetRecordDetailModal } from 'features/memberProfile/pages/game/statem
 import { AffixButtons } from 'components/AffixButtons'
 import download from 'downloadjs'
 import moment from 'moment/moment'
+import { useGetCategoryQuery } from 'common/service/allDataApi'
 
 const Statement = () => {
 	const { t } = useTranslation()
@@ -44,6 +46,8 @@ const Statement = () => {
 	const { startDate: queryStartDate, endDate: queryEndDate } = queryParams
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [filterForm] = Form.useForm()
+	const currentCategories = Form.useWatch('tpCategoryList', filterForm)
+	const [initSearch, setInitSearch] = useState(false)
 	const [tableState, setTableState] = useState(0)
 	const tpBetRecordDetailModal = useModal()
 	// 暫存當前閱讀的 categoryId 供彈窗元件判斷
@@ -123,9 +127,34 @@ const Statement = () => {
 		},
 	] = useLazyGetTpBetRecordDetailQuery()
 
+	const {
+		data: { data: categoryList = [] } = {},
+		isLoading: isGetCategoryListLoading,
+	} = useGetCategoryQuery(null)
+
+	const [
+		getGameTypeList,
+		{
+			data: { data: gameTypeList = [] } = {},
+			isFetching: isGetGameTypeListLoading,
+		},
+	] = useLazyGetGameTypeListQuery()
+
+	const handleGetGameType = async () => {
+		const { tpCategoryList = [] } = filterForm.getFieldsValue()
+		try {
+			await getGameTypeList({ tpCategoryList }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const handleSearch = async () => {
 		// 第一層
 		if (!custId) return
+		const { gameTypes = [] } = filterForm.getFieldsValue()
 		const { dateRange } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
@@ -137,6 +166,7 @@ const Statement = () => {
 				custId: Number(custId),
 				startDate,
 				endDate,
+				gameTypes,
 			}).unwrap()
 
 			setQueryParams({ startDate, endDate })
@@ -150,6 +180,7 @@ const Statement = () => {
 
 	// 取得第二層的 Table Detail ,  並切換 state 至第二層
 	const handleTpBetRecordTableClicked = async (settledDate: string) => {
+		const { gameTypes = [] } = filterForm.getFieldsValue()
 		const [startDate, endDate] = getInRangeDate({
 			targetDate: settledDate,
 			dateRange: [queryStartDate, queryEndDate],
@@ -162,6 +193,7 @@ const Statement = () => {
 				startDate,
 				endDate,
 				selDate: settledDate,
+				gameTypes,
 			}).unwrap()
 
 			filterForm.setFieldsValue({
@@ -179,6 +211,7 @@ const Statement = () => {
 	const handleTpBetRecordByDayTableClicked = async (categoryId: number) => {
 		setCurrentCategoryId(categoryId)
 		const { selDate } = filterForm.getFieldsValue(true)
+		const { gameTypes = [] } = filterForm.getFieldsValue()
 		const [startDate, endDate] = getInRangeDate({
 			targetDate: selDate,
 			dateRange: [queryStartDate, queryEndDate],
@@ -192,6 +225,7 @@ const Statement = () => {
 				endDate,
 				selDate,
 				categoryId,
+				gameTypes,
 			}).unwrap()
 			setTableState(prev => prev + 1)
 		} catch (error) {
@@ -289,6 +323,7 @@ const Statement = () => {
 		switch (tableState) {
 			case GameStatementTableEnum.TPBetRecord: {
 				if (!custId) return
+				const { gameTypes = [] } = filterForm.getFieldsValue()
 				const { dateRange } = filterForm.getFieldsValue()
 				const [startDate, endDate] = dateRangeToUtcFormatter(
 					dateRange,
@@ -299,6 +334,7 @@ const Statement = () => {
 						custId: Number(custId),
 						startDate,
 						endDate,
+						gameTypes,
 					}).unwrap()
 					download(
 						blob,
@@ -314,6 +350,7 @@ const Statement = () => {
 			}
 			case GameStatementTableEnum.TPBetRecordByDay: {
 				const { selDate } = filterForm.getFieldsValue(true)
+				const { gameTypes = [] } = filterForm.getFieldsValue()
 				const [startDate, endDate] = getInRangeDate({
 					targetDate: selDate,
 					dateRange: [queryStartDate, queryEndDate],
@@ -325,6 +362,7 @@ const Statement = () => {
 						startDate,
 						endDate,
 						selDate,
+						gameTypes,
 					}).unwrap()
 					download(
 						blob,
@@ -342,6 +380,7 @@ const Statement = () => {
 			}
 			case GameStatementTableEnum.TPBetRecordByCategory: {
 				if (!currentCategoryId) return
+				const { gameTypes = [] } = filterForm.getFieldsValue()
 				const { selDate } = filterForm.getFieldsValue(true)
 				const [startDate, endDate] = getInRangeDate({
 					targetDate: selDate,
@@ -355,6 +394,7 @@ const Statement = () => {
 						startDate,
 						endDate,
 						categoryId: currentCategoryId,
+						gameTypes,
 					}).unwrap()
 					download(
 						blob,
@@ -405,12 +445,39 @@ const Statement = () => {
 		}
 	}
 
+	const filterLoading = isGetGameTypeListLoading || isGetCategoryListLoading
+
 	const loading =
 		isGetCustTpBetRecordLoading ||
 		isGetTpBetRecordDetailLoading ||
 		isGetCustRecordByGameTypeLoading ||
 		isGetCustRecordByCategoryLoading ||
 		isGetCustRecordByDayLoading
+
+	useEffect(() => {
+		// 初始化 category Select
+		if (!isGetCategoryListLoading && categoryList.length > 0) {
+			filterForm.setFieldsValue({
+				tpCategoryList: categoryList?.map(category => category.categoryId),
+			})
+		}
+	}, [isGetCategoryListLoading])
+
+	useEffect(() => {
+		// 取得 gameTypes
+		handleGetGameType()
+	}, [currentCategories])
+
+	useEffect(() => {
+		// 初始化 gameTypes , 沒有第一次進入時才自動全選 , 之後更改則必須手動重新選擇 filter
+		if (!isGetGameTypeListLoading && gameTypeList.length > 0 && !initSearch) {
+			filterForm.setFieldsValue({
+				gameTypes: gameTypeList?.map(gameType => gameType.type),
+			})
+			// 更改 initState 代表初始化完成  之後更動不會再進到此 useEffect
+			setInitSearch(true)
+		}
+	}, [isGetGameTypeListLoading])
 
 	return (
 		<>
@@ -420,7 +487,10 @@ const Statement = () => {
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<StatementFilter
 					loading={isGetCustTpBetRecordLoading}
+					filterLoading={filterLoading}
 					form={filterForm}
+					categoryList={categoryList}
+					gameTypeList={gameTypeList}
 					onSearch={handleSearch}
 					onTimeZoneChange={onTimeZoneChange}
 					timeZoneUtcOffset={timeZoneUtcOffset}
