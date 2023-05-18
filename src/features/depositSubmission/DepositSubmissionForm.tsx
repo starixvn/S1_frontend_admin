@@ -79,8 +79,10 @@ const DepositSubmissionForm = ({
 		)
 	}
 
-	const { minAmount, maxAmount } =
+	const { minAmount, maxAmount: originMaxAmount } =
 		find(bankInfoList, { accountNo: accountNum }) ?? {}
+	// * maxAmount = 0 時給 undefined 不設限
+	const maxAmount = originMaxAmount === 0 ? undefined : originMaxAmount
 
 	return (
 		<Spin spinning={loading}>
