@@ -25,11 +25,12 @@ import {
 	IEditForm,
 	IFilterForm,
 	IBetLimitData,
-	IGameTypeBetLimit,
+	ITpCategoryListData,
 } from 'features/betLimit/type'
 import { BetLimitTable } from 'features/betLimit/BetLimitTable'
 import { BetLimitFilter } from 'features/betLimit/BetLimitFilter'
-import { EditBetLimitModal } from 'features/betLimit/EditBetLimitModal'
+import { EditBetLimitModal } from 'features/betLimit/BetLimitModal/EditBetLimitModal'
+import { TpBetLimitCategoryListConverter } from 'features/betLimit/utils'
 
 const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -154,31 +155,11 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleSetBetLimit = async (list: IGameTypeBetLimit[]) => {
+	const handleSetBetLimit = async (list: ITpCategoryListData[]) => {
 		const { userName } = editForm.getFieldsValue()
 		const { currencyId } = editForm.getFieldsValue(['currencyId'])
 
-		const betSettingList = list?.map(
-			({
-				categoryId: tpCategory,
-				categoryName: tpCategoryName,
-				typeId: gameTypeId,
-				typeName: gameTypeName,
-				limitGroup,
-				selectedValue,
-				checked,
-			}) => ({
-				checked,
-				tpCategory,
-				tpCategoryName,
-				gameTypeId,
-				gameTypeName,
-				limitGroup: checked ? selectedValue : null,
-				limitRange: checked
-					? limitGroup.find(obj => obj.group === selectedValue)?.range
-					: null,
-			})
-		)
+		const betSetting = TpBetLimitCategoryListConverter(list)
 
 		try {
 			await setBetLimit({
@@ -186,7 +167,7 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyId,
 				after: {
 					userName,
-					betSetting: betSettingList,
+					betSetting,
 				},
 			}).unwrap()
 

@@ -1094,5 +1094,6 @@
 	"Label_content": "content",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ActiveInactiveAll": "Active/Inactive All"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_MaxPerMatch": "MaxPerMatch"
 }

@@ -9,9 +9,10 @@ import {
 	IGetCustDetailsArgs,
 	ICustInfoDetailsResponse,
 	ITpCategoryListResponse,
-	IGetTpBetLimitGroupArgs,
-	ITpBetLimitGroupResponse,
+	IGetTpCategoryListArgs,
 } from 'features/betLimit/type'
+import { assign } from 'lodash'
+import { v4 as uuidV4 } from 'uuid'
 
 const betLimitApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
@@ -56,22 +57,22 @@ const betLimitApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getTpCategoryList: builder.query<ITpCategoryListResponse, void>({
+		getTpCategoryList: builder.query<
+			ITpCategoryListResponse,
+			IGetTpCategoryListArgs
+		>({
 			query: data => ({
 				url: 'TpBetLimit/GetTpCategoryList',
 				method: 'POST',
 				data,
 			}),
-		}),
-		getTpBetLimitGroup: builder.query<
-			ITpBetLimitGroupResponse,
-			IGetTpBetLimitGroupArgs
-		>({
-			query: data => ({
-				url: 'TpBetLimit/GetTpBetLimitGroup',
-				method: 'POST',
-				data,
-			}),
+			transformResponse: (returnResponse: ITpCategoryListResponse) => {
+				const { data: tpCategoryData } = returnResponse
+				const newData = tpCategoryData.map(item =>
+					assign(item, { key: uuidV4(), checked: false, selectedGroup: null })
+				)
+				return assign(returnResponse, { data: newData })
+			},
 		}),
 	}),
 })
@@ -83,5 +84,4 @@ export const {
 	useDeleteBetLimitMutation,
 	useLazyGetCustInfoDetailsQuery,
 	useLazyGetTpCategoryListQuery,
-	useLazyGetTpBetLimitGroupQuery,
 } = betLimitApi
