@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -12,10 +12,12 @@ import {
 	Button,
 	Switch,
 	message,
+	Space,
 	FormInstance,
+	Table,
 } from 'antd'
-import { Table } from 'components'
-import { findIndex } from 'lodash'
+import { InputNumber } from 'components'
+import { findIndex, head, find } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
@@ -23,14 +25,10 @@ import {
 	useLazyGetByCustIdQuery,
 	useLazyGetTpCategoryListQuery,
 	useLazyGetCustInfoDetailsQuery,
-	useLazyGetTpBetLimitGroupQuery,
 } from 'features/betLimit/api'
-
-import {
-	IEditForm,
-	IGameTypeBetLimit,
-	ITpCategoryListResponse,
-} from 'features/betLimit/type'
+import { IEditForm, ITpCategoryListData } from 'features/betLimit/type'
+import { SetByBetLimitCell } from 'features/betLimit/BetLimitModal/SetByBetLimitCell'
+import { CustBetLimitConverter } from 'features/betLimit/utils'
 
 interface IEditBetLimitModalProps {
 	form: FormInstance<IEditForm>
@@ -39,7 +37,7 @@ interface IEditBetLimitModalProps {
 	editPermission?: PermissionInterface
 	isSetBetLimitLoading: boolean
 	onCancel: () => void
-	onSetBetLimit: (list: IGameTypeBetLimit[]) => void
+	onSetBetLimit: (list: ITpCategoryListData[]) => void
 }
 
 const EditBetLimitModal = ({
@@ -55,10 +53,9 @@ const EditBetLimitModal = ({
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { currencyId } = form.getFieldsValue(['currencyId'])
-	const [gameTypeBetLimitList, setGameTypeBetLimitList] = useState<
-		undefined | IGameTypeBetLimit[]
+	const [dataSource, setDataSource] = useState<
+		ITpCategoryListData[] | undefined
 	>(undefined)
-
 	const currency =
 		currencyListBySite.find(
 			({ currencyId: siteCurrencyId }) => currencyId === siteCurrencyId
@@ -70,26 +67,28 @@ const EditBetLimitModal = ({
 	const [getCustInfoDetails, { isFetching: isGetCustInfoDetailsFetching }] =
 		useLazyGetCustInfoDetailsQuery()
 
-	const [
-		getTpCategoryList,
-		{
-			data: { data: tpCategoryList } = {} as ITpCategoryListResponse,
-			isFetching: isGetTpCategoryListFetching,
-		},
-	] = useLazyGetTpCategoryListQuery()
-
-	const [getTpBetLimitGroup, { isFetching: isGetTpBetLimitGroupFetching }] =
-		useLazyGetTpBetLimitGroupQuery()
+	const [getTpCategoryList, { isFetching: isGetTpCategoryListFetching }] =
+		useLazyGetTpCategoryListQuery()
 
 	const getBetLimitByCustId = async () => {
 		const { custId } = form.getFieldsValue(['custId'])
 
 		try {
+			const { data: tpBetLimitCategoryList } = await getTpCategoryList({
+				siteId,
+				currencyId,
+			}).unwrap()
+
 			const { data: custBetLimitData } = await getByCustId({
 				custId,
 			}).unwrap()
 
-			setGameTypeBetLimitList(custBetLimitData?.gameTypeBetLimit)
+			const actualDataList = CustBetLimitConverter(
+				custBetLimitData.betSetting,
+				tpBetLimitCategoryList
+			)
+
+			setDataSource(actualDataList)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('Label_NotExpectedServerError')
@@ -98,20 +97,18 @@ const EditBetLimitModal = ({
 	}
 
 	const onTableChange = ({
-		categoryId,
-		typeId,
+		key,
 		checked,
 		group,
 	}: {
-		categoryId: number
-		typeId: number
+		key: string
 		checked?: boolean
 		group?: string
 	}) => {
-		setGameTypeBetLimitList(prev => {
+		setDataSource(prev => {
 			const newArr = [...(prev || [])]
-			const idx = findIndex(newArr, { categoryId, typeId })
-			const newData = group ? { selectedValue: group } : { checked: !checked }
+			const idx = findIndex(newArr, ['key', key])
+			const newData = group ? { selectedGroup: group } : { checked: !checked }
 			newArr[idx] = { ...newArr[idx], ...newData }
 			return newArr
 		})
@@ -127,12 +124,12 @@ const EditBetLimitModal = ({
 				userName,
 			}).unwrap()
 
-			const { data: tpBetLimit } = await getTpBetLimitGroup({
-				categoryId: tpCategoryList.categoryId,
+			const { data: tpBetLimitCategoryList } = await getTpCategoryList({
+				siteId,
 				currencyId: custInfoDetail.currencyId,
 			}).unwrap()
 
-			setGameTypeBetLimitList(tpBetLimit)
+			setDataSource(tpBetLimitCategoryList)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -140,16 +137,36 @@ const EditBetLimitModal = ({
 		}
 	}
 
+	const handleEndEdit = (
+		key: string,
+		min: number,
+		max: number,
+		maxPerMatch: number
+	) => {
+		setDataSource(prev => {
+			const newArr = [...(prev || [])]
+			const idx = findIndex(newArr, ['key', key])
+			const newData = {
+				limitInput: {
+					min: Number(min),
+					max: Number(max),
+					maxPerMatch: Number(maxPerMatch),
+				},
+			}
+			newArr[idx] = { ...newArr[idx], ...newData }
+			return newArr
+		})
+	}
+
 	const onCloseModal = () => {
-		setGameTypeBetLimitList(undefined)
+		setDataSource(undefined)
 		form.resetFields()
 	}
 
+	// 每次打開初次渲染 table
 	useEffect(() => {
 		if (isOpen) {
-			if (isAdd) {
-				getTpCategoryList()
-			} else {
+			if (!isAdd) {
 				getBetLimitByCustId()
 			}
 		}
@@ -159,7 +176,6 @@ const EditBetLimitModal = ({
 		isGetByCustIdLoading ||
 		isGetCustInfoDetailsFetching ||
 		isGetTpCategoryListFetching ||
-		isGetTpBetLimitGroupFetching ||
 		isSetBetLimitLoading
 
 	const columns = [
@@ -168,11 +184,11 @@ const EditBetLimitModal = ({
 			key: 'checked',
 			width: 60,
 			align: 'center' as 'center',
-			render: ({ categoryId, typeId, checked }: IGameTypeBetLimit) => (
+			render: ({ key, checked }: ITpCategoryListData) => (
 				<Switch
 					checked={checked}
 					disabled={!editPermission?.canUse}
-					onChange={() => onTableChange({ categoryId, typeId, checked })}
+					onChange={() => onTableChange({ key, checked })}
 				/>
 			),
 		},
@@ -185,8 +201,8 @@ const EditBetLimitModal = ({
 		},
 		{
 			title: t('Label_Product'),
-			key: 'typeName',
-			dataIndex: 'typeName',
+			key: 'gameTypeName',
+			dataIndex: 'gameTypeName',
 			width: 60,
 			align: 'center' as 'center',
 		},
@@ -195,36 +211,67 @@ const EditBetLimitModal = ({
 			key: 'limitGroup',
 			width: 200,
 			align: 'center' as 'center',
+			editable: true,
 			render: ({
-				typeId,
-				checked,
-				categoryId,
+				key,
+				isGroup,
 				limitGroup,
-				selectedValue,
-			}: IGameTypeBetLimit) => {
-				const selectedRange = limitGroup.find(
-					({ group }) => group === selectedValue
-				)?.range
+				limitInput,
+				selectedGroup,
+			}: ITpCategoryListData) => {
+				const { max, min, maxPerMatch } = limitInput ?? {}
+				const selectedRange = find(limitGroup, ['group', selectedGroup])?.range
 
-				return (
+				return isGroup ? (
 					<Select
-						placeholder={selectedRange}
+						placeholder={selectedRange || head(limitGroup)?.range}
 						style={{ width: '50%' }}
-						disabled={!checked || !editPermission?.canUse}
-						onSelect={(group: string) =>
-							onTableChange({ categoryId, typeId, group })
-						}
+						disabled={!editPermission?.canUse}
+						onSelect={(group: string) => onTableChange({ key, group })}
 					>
-						{limitGroup?.map(({ group, range }) => (
+						{limitGroup.map(({ group, range }) => (
 							<Select.Option key={group} value={group}>
 								{range}
 							</Select.Option>
 						))}
 					</Select>
+				) : (
+					<Space>
+						<Form.Item style={{ margin: 0 }} name='min' label={t('Label_Min')}>
+							<InputNumber bordered={false} defaultValue={min} />
+						</Form.Item>
+						<Form.Item style={{ margin: 0 }} name='max' label={t('Label_Max')}>
+							<InputNumber bordered={false} defaultValue={max} />
+						</Form.Item>
+						<Form.Item
+							style={{ margin: 0 }}
+							name='maxPerMatch'
+							label={t('Label_MaxPerMatch')}
+						>
+							<InputNumber bordered={false} defaultValue={maxPerMatch} />
+						</Form.Item>
+					</Space>
 				)
 			},
 		},
 	]
+
+	const mergedColumns = columns.map(col => {
+		if (!col.editable) {
+			return col
+		}
+		return {
+			...col,
+			onCell: (record: ITpCategoryListData) => ({
+				record,
+				form,
+				handleEndEdit,
+				title: col.title,
+				editable: col.editable,
+				dataIndex: col.dataIndex,
+			}),
+		}
+	})
 
 	return (
 		<Modal
@@ -234,9 +281,9 @@ const EditBetLimitModal = ({
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}
 			onOk={() => {
-				onSetBetLimit(gameTypeBetLimitList ?? [])
+				onSetBetLimit(dataSource ?? [])
 			}}
-			width='60vw'
+			width='70vw'
 			confirmLoading={loading}
 			afterClose={onCloseModal}
 		>
@@ -282,12 +329,18 @@ const EditBetLimitModal = ({
 							</Col>
 						)}
 					</Row>
-					{gameTypeBetLimitList && (
+					{dataSource && (
 						<Table
+							components={{
+								body: {
+									cell: SetByBetLimitCell,
+								},
+							}}
 							loading={loading}
-							columns={columns}
-							dataSource={gameTypeBetLimitList}
+							columns={mergedColumns}
+							dataSource={dataSource}
 							pagination={false}
+							size='large'
 						/>
 					)}
 				</Form>
