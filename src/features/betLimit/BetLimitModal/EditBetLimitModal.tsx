@@ -209,7 +209,7 @@ const EditBetLimitModal = ({
 		{
 			title: t('Label_LimitGroup'),
 			key: 'limitGroup',
-			width: 200,
+			width: 300,
 			align: 'center' as 'center',
 			editable: true,
 			render: ({
@@ -237,14 +237,22 @@ const EditBetLimitModal = ({
 					</Select>
 				) : (
 					<Space>
-						<Form.Item style={{ margin: 0 }} name='min' label={t('Label_Min')}>
+						<Form.Item
+							style={{ margin: 0, lineHeight: 3 }}
+							name='min'
+							label={t('Label_Min')}
+						>
 							<InputNumber bordered={false} defaultValue={min} />
 						</Form.Item>
-						<Form.Item style={{ margin: 0 }} name='max' label={t('Label_Max')}>
+						<Form.Item
+							style={{ margin: 0, lineHeight: 3 }}
+							name='max'
+							label={t('Label_Max')}
+						>
 							<InputNumber bordered={false} defaultValue={max} />
 						</Form.Item>
 						<Form.Item
-							style={{ margin: 0 }}
+							style={{ margin: 0, lineHeight: 3 }}
 							name='maxPerMatch'
 							label={t('Label_MaxPerMatch')}
 						>
