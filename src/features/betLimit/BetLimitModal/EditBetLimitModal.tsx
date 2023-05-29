@@ -17,7 +17,7 @@ import {
 	Table,
 } from 'antd'
 import { InputNumber } from 'components'
-import { findIndex, head, find } from 'lodash'
+import { findIndex, head, find, keys, values } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
@@ -27,7 +27,6 @@ import {
 	useLazyGetCustInfoDetailsQuery,
 } from 'features/betLimit/api'
 import { IEditForm, ITpCategoryListData } from 'features/betLimit/type'
-import { SetByBetLimitCell } from 'features/betLimit/BetLimitModal/SetByBetLimitCell'
 import { CustBetLimitConverter } from 'features/betLimit/utils'
 
 interface IEditBetLimitModalProps {
@@ -137,12 +136,12 @@ const EditBetLimitModal = ({
 		}
 	}
 
-	const handleEndEdit = (
-		key: string,
-		min: number,
-		max: number,
-		maxPerMatch: number
-	) => {
+	const handleLimitInput = async () => {
+		const { limitInput } = await form.validateFields()
+
+		// 使用巢狀陣列 lodash 陣列裡只有一個物件或字串
+		const key = keys(limitInput)[0]
+		const { min, max, maxPerMatch } = values(limitInput)[0]
 		setDataSource(prev => {
 			const newArr = [...(prev || [])]
 			const idx = findIndex(newArr, ['key', key])
@@ -237,49 +236,51 @@ const EditBetLimitModal = ({
 					</Select>
 				) : (
 					<Space>
+						{/* Label_MaxPerMatch 是串關累計最大金額 條件是 MIn <= Max <= MaxPerMatch */}
 						<Form.Item
-							style={{ margin: 0, lineHeight: 3 }}
-							name='min'
+							style={{ margin: 0 }}
+							name={['limitInput', String(key), 'min']}
 							label={t('Label_Min')}
+							// rules={[
+							// 	{
+							// 		required: true,
+							// 	},
+							// ]}
 						>
-							<InputNumber bordered={false} defaultValue={min} />
+							<InputNumber onChange={handleLimitInput} defaultValue={min} />
 						</Form.Item>
 						<Form.Item
-							style={{ margin: 0, lineHeight: 3 }}
-							name='max'
+							style={{ margin: 0 }}
+							name={['limitInput', String(key), 'max']}
 							label={t('Label_Max')}
+							// rules={[
+							// 	{
+							// 		required: true,
+							// 	},
+							// ]}
 						>
-							<InputNumber bordered={false} defaultValue={max} />
+							<InputNumber onChange={handleLimitInput} defaultValue={max} />
 						</Form.Item>
 						<Form.Item
-							style={{ margin: 0, lineHeight: 3 }}
-							name='maxPerMatch'
+							style={{ margin: 0 }}
+							name={['limitInput', String(key), 'maxPerMatch']}
 							label={t('Label_MaxPerMatch')}
+							// rules={[
+							// 	{
+							// 		required: true,
+							// 	},
+							// ]}
 						>
-							<InputNumber bordered={false} defaultValue={maxPerMatch} />
+							<InputNumber
+								onChange={handleLimitInput}
+								defaultValue={maxPerMatch}
+							/>
 						</Form.Item>
 					</Space>
 				)
 			},
 		},
 	]
-
-	const mergedColumns = columns.map(col => {
-		if (!col.editable) {
-			return col
-		}
-		return {
-			...col,
-			onCell: (record: ITpCategoryListData) => ({
-				record,
-				form,
-				handleEndEdit,
-				title: col.title,
-				editable: col.editable,
-				dataIndex: col.dataIndex,
-			}),
-		}
-	})
 
 	return (
 		<Modal
@@ -294,6 +295,7 @@ const EditBetLimitModal = ({
 			width='70vw'
 			confirmLoading={loading}
 			afterClose={onCloseModal}
+			maskClosable={false}
 		>
 			<Spin spinning={loading}>
 				<Form form={form} layout='vertical' initialValues={{ currency }}>
@@ -339,13 +341,8 @@ const EditBetLimitModal = ({
 					</Row>
 					{dataSource && (
 						<Table
-							components={{
-								body: {
-									cell: SetByBetLimitCell,
-								},
-							}}
 							loading={loading}
-							columns={mergedColumns}
+							columns={columns}
 							dataSource={dataSource}
 							pagination={false}
 							size='large'
