@@ -100,6 +100,7 @@ export interface ActionPermissions {
 	exclusiveVipPermission: PermissionInterface
 	setLiveStreamingGamePermission: PermissionInterface
 	registerMemberPermission: PermissionInterface
+	resetOtpLimitPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

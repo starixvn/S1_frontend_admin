@@ -22,6 +22,7 @@ interface ISettingRiskCardProps {
 	onSwitch: (newSwitchType: SettingSwitchTypeEnum, checked: boolean) => void
 	onEditTypeChange: (newEditType: SettingEditTypeEnum | undefined) => void
 	onResetPassword: () => void
+	onResetOTP: () => void
 }
 
 const SettingRiskCard = ({
@@ -34,6 +35,7 @@ const SettingRiskCard = ({
 		lockAccountPermission,
 		closeAccountPermission,
 		kickOutPermission,
+		resetOtpLimitPermission,
 	},
 	custId,
 	custBasicInfo,
@@ -44,6 +46,7 @@ const SettingRiskCard = ({
 	onSwitch,
 	onEditTypeChange,
 	onResetPassword,
+	onResetOTP,
 }: ISettingRiskCardProps) => {
 	const { t } = useTranslation()
 	const { isKyc, isRisk, phoneVerified, emailVerified, status } = custBasicInfo
@@ -150,6 +153,17 @@ const SettingRiskCard = ({
 					>
 						<Typography.Link disabled={!resetPasswordPermission?.canUse}>
 							{t('Label_ResetPassword')}
+						</Typography.Link>
+					</Popconfirm>
+				</p>
+				<p>
+					<Popconfirm
+						disabled={!resetOtpLimitPermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={onResetOTP}
+					>
+						<Typography.Link disabled={!resetOtpLimitPermission?.canUse}>
+							{t('Label_ResetOTPLimit')}
 						</Typography.Link>
 					</Popconfirm>
 				</p>

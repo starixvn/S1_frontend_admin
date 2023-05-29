@@ -79,4 +79,5 @@ export const ACTION_NAMES: {
 	86: 'exclusiveVipPermission',
 	84: 'registerMemberPermission',
 	85: 'setLiveStreamingGamePermission',
+	87: 'resetOtpLimitPermission',
 }

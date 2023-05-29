@@ -1156,7 +1156,6 @@
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
 	"Label_Tagging": "Tagging",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_LiveStreaming": "LiveStreaming",
 	"Label_RegisterMember": "RegisterMember",
@@ -1169,5 +1168,7 @@
 	"Label_LiveStreamingGame": "Live Streaming Game",
 	"Label_TpCategory": "Tp Category",
 	"Label_LiveStreamingGameType": "LiveStreamingGameType",
-	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only."
+	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_ResetOTPLimit": "Reset OTP Limit"
 }
