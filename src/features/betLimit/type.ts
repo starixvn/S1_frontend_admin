@@ -36,9 +36,7 @@ export interface IEditForm {
 	userName: string | null
 	custId?: number
 	currencyId: number
-	min?: number
-	max?: number
-	maxPerMatch?: number
+	limitInput: any
 }
 
 export interface IGetByCustIdArgs {
