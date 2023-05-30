@@ -1162,5 +1162,6 @@
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
 	"Label_Tagging": "Tagging",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
-	"Label_ResetOTPLimit": "Reset OTP Limit"
+	"Label_ResetOTPLimit": "Reset OTP Limit",
+	"Label_Message": "Message"
 }

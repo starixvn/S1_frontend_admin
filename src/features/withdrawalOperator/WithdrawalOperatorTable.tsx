@@ -1,6 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { Space, TablePaginationConfig, Tag, Typography } from 'antd'
+import {
+	Tag,
+	Badge,
+	Space,
+	Popover,
+	Typography,
+	TablePaginationConfig,
+} from 'antd'
 import {
 	Table,
 	useVisibilityColumnsButtonHook,
@@ -41,6 +48,23 @@ const WithdrawalOperatorTable = ({
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
 		useVisibilityColumnsButtonHook()
 
+	const messageColumns = [
+		{
+			title: t('Label_CreateTime'),
+			key: 'createTime',
+			dataIndex: 'createTime',
+			align: 'center' as 'center',
+			render: (createTime: string) =>
+				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+		},
+		{
+			title: t('Label_Message'),
+			dataIndex: 'message',
+			align: 'center' as 'center',
+			key: 'message',
+		},
+	]
+
 	const baseColumns = [
 		{
 			title: t('Label_TrxnID'),
@@ -80,14 +104,44 @@ const WithdrawalOperatorTable = ({
 			width: 100,
 			align: 'center' as 'center',
 			render: (record: IGetWithdrawalData) => {
-				const { status, statusName } = record
+				const { status, statusName, withdrawalMessageList } = record
+
+				// sort message by createTime (old to new)
+				const sortedWithdrawalMessageList =
+					withdrawalMessageList.length > 1
+						? withdrawalMessageList
+								.slice()
+								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+						: withdrawalMessageList
+
 				return (
-					<Tag
-						style={{ whiteSpace: 'nowrap' }}
-						color={WITHDRAWAL_STATUS_TAGS_COLOR[status]}
-					>
-						{statusName}
-					</Tag>
+					<Space size={1}>
+						<Tag
+							style={{ whiteSpace: 'nowrap' }}
+							color={WITHDRAWAL_STATUS_TAGS_COLOR[status]}
+						>
+							{statusName}
+						</Tag>
+						{withdrawalMessageList.length > 0 && (
+							<Popover
+								content={
+									<Table
+										dataSource={sortedWithdrawalMessageList}
+										columns={messageColumns}
+										pagination={false}
+									/>
+								}
+								title={false}
+								trigger='hover'
+								overlayStyle={{ width: '30vw' }}
+							>
+								<Badge
+									count={withdrawalMessageList.length}
+									style={{ backgroundColor: '#faad14' }}
+								/>
+							</Popover>
+						)}
+					</Space>
 				)
 			},
 		},
