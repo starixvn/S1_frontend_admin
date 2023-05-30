@@ -28,7 +28,7 @@ import {
 	useLazyGetPaymentListQuery,
 } from 'common/service/baseDataApi'
 import { selectUserSite } from 'common/enum'
-import { utcFormatter } from 'common/utils'
+import { multiEqual, utcFormatter } from 'common/utils'
 import {
 	DepositStatusEnum,
 	IDepositOperatorData,
@@ -188,7 +188,10 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			comment,
 			transId,
 			// * bankId 在 action 是 approved 時需要送出
-			...(status === DepositStatusEnum.Approved && { bankId }),
+			...(multiEqual(status, [
+				DepositStatusEnum.OnHold,
+				DepositStatusEnum.Approved,
+			]) && { bankId }),
 			// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
 			...(status === DepositStatusEnum.Draft &&
 				depositType === DepositTypeEnum.LocalBanking && {
