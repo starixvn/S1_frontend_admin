@@ -87,11 +87,7 @@ const DepositRequestDepositInfo = ({
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
-	const isEditAmount = !(
-		status === DepositStatusEnum.Rejected ||
-		status === DepositStatusEnum.Approved ||
-		status === DepositStatusEnum.Canceled
-	)
+	const isPending = status === DepositStatusEnum.Pending
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
 	const isShowPaymentInfoModalButton =
@@ -235,10 +231,11 @@ const DepositRequestDepositInfo = ({
 								/>
 							</Row>
 						</Descriptions.Item>
+						{/* approved 狀態和 pending 狀態才能修改 */}
 						<Descriptions.Item label={t('Label_CalCode')}>
 							<Form.Item noStyle name='bankId'>
 								<Select
-									disabled={!isApproved}
+									disabled={!isApproved && !isPending}
 									showSearch
 									filterOption={(input, option) => {
 										const isIncludes: boolean = (
