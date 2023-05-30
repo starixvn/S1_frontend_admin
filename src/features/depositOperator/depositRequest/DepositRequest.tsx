@@ -29,12 +29,12 @@ import {
 	useLazyGetPaymentListQuery,
 } from 'common/service/baseDataApi'
 import { selectUserSite } from 'common/enum'
-import { utcFormatter } from 'common/utils'
+import { multiEqual, utcFormatter } from 'common/utils'
 import {
 	DepositStatusEnum,
-	ISetDepositStatusArgs,
-	ISetAmountByTransIdArgs,
 	IDepositOperatorData,
+	ISetAmountByTransIdArgs,
+	ISetDepositStatusArgs,
 	ICryptoAmountCalculationArgs,
 } from 'features/depositOperator/type'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
@@ -209,6 +209,12 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				comment,
 				transId,
 				actualCryptoAmount: amount,
+				// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
+				// * bankId 在 action 是 approved 時需要送出
+				...(multiEqual(status, [
+					DepositStatusEnum.OnHold,
+					DepositStatusEnum.Approved,
+				]) && { bankId }),
 				// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
 				...(status === DepositStatusEnum.Draft &&
 					depositType === DepositTypeEnum.LocalBanking && {
