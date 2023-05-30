@@ -159,6 +159,7 @@ export interface IDepositOperatorData {
 	bonusDescription: string
 	checkReceipt: number
 	checkReceiptBy: string | null
+	depositMessageList: { createTime: string; message: string }[]
 }
 
 export interface IForm {
