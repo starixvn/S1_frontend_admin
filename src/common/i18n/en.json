@@ -1096,7 +1096,5 @@
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_MaxPerMatch": "MaxPerMatch",
-	"Label_LimitedMin": "min need to be less than max & maxPerMatch",
-	"Label_LimitedMax": "max need to be greater than min & less than maxPerMatch",
-	"Label_LimitedMaxPerMatch": "maxPerMatch need to be greater than min & max"
+	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch"
 }
