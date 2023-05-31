@@ -363,6 +363,24 @@ const paths = {
 	report: {
 		root: 'report',
 		sub: {
+			mpaMarketingReport: {
+				root: 'report/marketing',
+				functionId: 140,
+				sub: {
+					depositAmount: {
+						root: 'report/marketing/depositAmount',
+					},
+					withdrawalAmount: {
+						root: 'report/marketing/withdrawalAmount',
+					},
+					nru: {
+						root: 'report/marketing/nru',
+					},
+					bonusClaimedInfo: {
+						root: 'report/marketing/bonusAmountClaimed',
+					},
+				},
+			},
 			mainFinancialReport: {
 				root: 'report/mainFinancialReport',
 			},
