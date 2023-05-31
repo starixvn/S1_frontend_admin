@@ -388,10 +388,10 @@ const DepositRequestDepositInfo = ({
 				{isCryptoWallet ? (
 					<>
 						<Descriptions.Item label={t('Label_ToCryptoAccount')}>
-							{accountNo || '-'}
+							{displayName || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_FrontDisplayName')}>
-							{displayName || '-'}
+							{depositInfo.frontendDisplayName || '-'}
 						</Descriptions.Item>
 					</>
 				) : (
