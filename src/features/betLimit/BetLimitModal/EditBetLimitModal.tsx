@@ -17,7 +17,7 @@ import {
 	Table,
 } from 'antd'
 import { InputNumber } from 'components'
-import { findIndex, head, find, keys, values } from 'lodash'
+import { findIndex, head, find, keys, values, cloneDeep, filter } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
@@ -36,7 +36,7 @@ interface IEditBetLimitModalProps {
 	editPermission?: PermissionInterface
 	isSetBetLimitLoading: boolean
 	onCancel: () => void
-	onSetBetLimit: (list: ITpCategoryListData[]) => void
+	onSetBetLimit: (list: ITpCategoryListData[] | undefined) => void
 }
 
 const EditBetLimitModal = ({
@@ -88,6 +88,17 @@ const EditBetLimitModal = ({
 			)
 
 			setDataSource(actualDataList)
+			filter(actualDataList, ['isGroup', false]).map(data =>
+				form.setFieldsValue({
+					limitInput: {
+						[data.key]: {
+							min: data.limitInput.min,
+							max: data.limitInput.max,
+							maxPerMatch: data.limitInput.maxPerMatch,
+						},
+					},
+				})
+			)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('Label_NotExpectedServerError')
@@ -129,6 +140,17 @@ const EditBetLimitModal = ({
 			}).unwrap()
 
 			setDataSource(tpBetLimitCategoryList)
+			filter(tpBetLimitCategoryList, ['isGroup', false]).map(data =>
+				form.setFieldsValue({
+					limitInput: {
+						[data.key]: {
+							min: data.limitInput.min,
+							max: data.limitInput.max,
+							maxPerMatch: data.limitInput.maxPerMatch,
+						},
+					},
+				})
+			)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -136,25 +158,43 @@ const EditBetLimitModal = ({
 		}
 	}
 
-	const handleLimitInput = async () => {
+	const handleValidation = async () => {
 		const { limitInput } = await form.validateFields()
-
-		// 使用巢狀陣列 lodash 陣列裡只有一個物件或字串
-		const key = keys(limitInput)[0]
 		const { min, max, maxPerMatch } = values(limitInput)[0]
-		setDataSource(prev => {
-			const newArr = [...(prev || [])]
-			const idx = findIndex(newArr, ['key', key])
+
+		switch (true) {
+			case min >= max || min >= maxPerMatch || max >= maxPerMatch:
+				throw new Error('error')
+			default:
+				return true
+		}
+	}
+
+	// 送出修改前單獨驗證 min max maxPerMatch 輸入框
+	const handleBeforeSetBetLimit = async () => {
+		try {
+			await handleValidation()
+			const newDataSource: ITpCategoryListData[] = cloneDeep(dataSource!)
+
+			const { limitInput } = await form.validateFields()
+			const { min, max, maxPerMatch } = values(limitInput)[0]
+			const key = keys(limitInput)[0]
+
+			const idx = findIndex(newDataSource, ['key', key])
 			const newData = {
 				limitInput: {
-					min: Number(min),
-					max: Number(max),
-					maxPerMatch: Number(maxPerMatch),
+					min,
+					max,
+					maxPerMatch,
 				},
 			}
-			newArr[idx] = { ...newArr[idx], ...newData }
-			return newArr
-		})
+			newDataSource[idx] = { ...newDataSource[idx], ...newData }
+			return newDataSource ?? []
+		} catch (error) {
+			message.error(t('Label_LimitInputAmount'))
+			//  驗證未過送 undefined 避免打 api
+			return undefined
+		}
 	}
 
 	const onCloseModal = () => {
@@ -215,10 +255,8 @@ const EditBetLimitModal = ({
 				key,
 				isGroup,
 				limitGroup,
-				limitInput,
 				selectedGroup,
 			}: ITpCategoryListData) => {
-				const { max, min, maxPerMatch } = limitInput ?? {}
 				const selectedRange = find(limitGroup, ['group', selectedGroup])?.range
 
 				return isGroup ? (
@@ -241,40 +279,40 @@ const EditBetLimitModal = ({
 							style={{ margin: 0 }}
 							name={['limitInput', String(key), 'min']}
 							label={t('Label_Min')}
-							// rules={[
-							// 	{
-							// 		required: true,
-							// 	},
-							// ]}
+							rules={[
+								{
+									required: true,
+									message: '',
+								},
+							]}
 						>
-							<InputNumber onChange={handleLimitInput} defaultValue={min} />
+							<InputNumber />
 						</Form.Item>
 						<Form.Item
 							style={{ margin: 0 }}
 							name={['limitInput', String(key), 'max']}
 							label={t('Label_Max')}
-							// rules={[
-							// 	{
-							// 		required: true,
-							// 	},
-							// ]}
+							rules={[
+								{
+									required: true,
+									message: '',
+								},
+							]}
 						>
-							<InputNumber onChange={handleLimitInput} defaultValue={max} />
+							<InputNumber />
 						</Form.Item>
 						<Form.Item
 							style={{ margin: 0 }}
 							name={['limitInput', String(key), 'maxPerMatch']}
 							label={t('Label_MaxPerMatch')}
-							// rules={[
-							// 	{
-							// 		required: true,
-							// 	},
-							// ]}
+							rules={[
+								{
+									required: true,
+									message: '',
+								},
+							]}
 						>
-							<InputNumber
-								onChange={handleLimitInput}
-								defaultValue={maxPerMatch}
-							/>
+							<InputNumber />
 						</Form.Item>
 					</Space>
 				)
@@ -289,9 +327,11 @@ const EditBetLimitModal = ({
 			onCancel={onCancel}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}
-			onOk={() => {
-				onSetBetLimit(dataSource ?? [])
+			// handleBeforeSetBetLimit 裡 validateFields驗正需異步
+			onOk={async () => {
+				onSetBetLimit(await handleBeforeSetBetLimit())
 			}}
+			// okButtonProps={{ disabled: true }}
 			width='70vw'
 			confirmLoading={loading}
 			afterClose={onCloseModal}

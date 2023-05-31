@@ -155,11 +155,11 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleSetBetLimit = async (list: ITpCategoryListData[]) => {
+	const handleSetBetLimit = async (list: ITpCategoryListData[] | undefined) => {
 		const { userName } = editForm.getFieldsValue()
 		const { currencyId } = editForm.getFieldsValue(['currencyId'])
 
-		const betSetting = TpBetLimitCategoryListConverter(list)
+		const betSetting = TpBetLimitCategoryListConverter(list!)
 
 		try {
 			await setBetLimit({
