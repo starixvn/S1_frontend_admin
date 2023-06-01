@@ -38,7 +38,7 @@ export interface IPerformanceHighlightData {
 	bonusAmountClaimedComparedRate?: number
 	churnRate: number
 	churnComparedRate?: number
-	retentionRate?: number
+	retentionRate: number
 	retentionComparedRate?: number
 	noBetUsers: number
 	hasBetUsers: number
