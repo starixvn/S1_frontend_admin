@@ -65,7 +65,6 @@ const DepositRequestDepositInfo = ({
 		depositTypeName,
 		channelName,
 		depositCnt,
-		displayName,
 		bankCode,
 		bankName,
 		accountName,
@@ -388,7 +387,7 @@ const DepositRequestDepositInfo = ({
 				{isCryptoWallet ? (
 					<>
 						<Descriptions.Item label={t('Label_ToCryptoAccount')}>
-							{displayName || '-'}
+							{accountName || '-'}
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_FrontDisplayName')}>
 							{depositInfo.frontendDisplayName || '-'}
