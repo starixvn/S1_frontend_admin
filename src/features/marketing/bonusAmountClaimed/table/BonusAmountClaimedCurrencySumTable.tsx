@@ -28,12 +28,12 @@ const BonusAmountClaimedCurrencySumTable = ({
 		},
 		{
 			title: t('Label_ReportDate'),
-			key: 'baseBonusAmountClaim',
-			dataIndex: 'baseBonusAmountClaim',
+			key: 'bonusAmountClaim',
+			dataIndex: 'bonusAmountClaim',
 			width: '50%',
 			align: 'center' as 'center',
-			render: (baseBonusAmountClaim: number) =>
-				baseBonusAmountClaim ? numFormatToDigits(baseBonusAmountClaim) : 0,
+			render: (bonusAmountClaim: number) =>
+				bonusAmountClaim ? numFormatToDigits(bonusAmountClaim) : 0,
 		},
 	]
 
@@ -45,7 +45,7 @@ const BonusAmountClaimedCurrencySumTable = ({
 			dataSource={marketingBonusAmountClaimedData.groupByCurrency}
 			// eslint-disable-next-line react/no-unstable-nested-components
 			summary={() => {
-				const { baseBonusAmountClaim } =
+				const { bonusAmountClaim } =
 					// 解決 first render is undefined
 					marketingBonusAmountClaimedData.groupByCurrencySum || {}
 
@@ -56,7 +56,7 @@ const BonusAmountClaimedCurrencySumTable = ({
 								{t('Label_Total')}
 							</Summary.Cell>
 							<Summary.Cell align='center' index={2}>
-								<Text>{numFormatToDigits(baseBonusAmountClaim || 0)}</Text>
+								<Text>{numFormatToDigits(bonusAmountClaim || 0)}</Text>
 							</Summary.Cell>
 						</Summary.Row>
 					</Summary>

@@ -1140,7 +1140,6 @@
 	"Label_Network": "Network",
 	"Label_PayGroup": "Pay Group",
 	"Label_PhoneVerifiedTime": "Phone Verified Time",
-	"Label_CheckBy": "Check By",
 	"Label_Ranking": "Ranking",
 	"Label_Points": "Points",
 	"Label_MonthRequire": "Month is Required",
@@ -1149,5 +1148,10 @@
 	"Label_content": "content",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ActiveInactiveAll": "Active/Inactive All"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_CheckBy": "Check By",
+	"Label_CR": "CR",
+	"Label_ChurnRate": "Churn Rate",
+	"Label_RR": "RR",
+	"Label_RetentionRate": "Retention Rate"
 }
