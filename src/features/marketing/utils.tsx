@@ -16,7 +16,6 @@ export const groupByBonusCodeResConverter = (
 			return assign({}, item, {
 				key: uuidV4(),
 				bonusAmountClaim: parseFloat(item.bonusAmountClaim.toFixed(2)),
-				baseBonusAmountClaim: parseFloat(item.baseBonusAmountClaim.toFixed(2)),
 			})
 		})
 
