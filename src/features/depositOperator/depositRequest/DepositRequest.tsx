@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { useEffect } from 'react'
-import { Col, Divider, PageHeader, Row, Form, message, Modal } from 'antd'
+import { Col, Divider, Form, message, Modal, PageHeader, Row } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -28,12 +28,12 @@ import {
 	useLazyGetPaymentListQuery,
 } from 'common/service/baseDataApi'
 import { selectUserSite } from 'common/enum'
-import { utcFormatter } from 'common/utils'
+import { multiEqual, utcFormatter } from 'common/utils'
 import {
 	DepositStatusEnum,
-	ISetDepositStatusArgs,
-	ISetAmountByTransIdArgs,
 	IDepositOperatorData,
+	ISetAmountByTransIdArgs,
+	ISetDepositStatusArgs,
 } from 'features/depositOperator/type'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
 import DepositRequestComments from 'features/depositOperator/depositRequest/DepositRequestComments'
@@ -187,6 +187,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			actualDeposit,
 			comment,
 			transId,
+			// * bankId 在 action 是 approved 時需要送出
+			...(multiEqual(status, [
+				DepositStatusEnum.OnHold,
+				DepositStatusEnum.Approved,
+			]) && { bankId }),
 			// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
 			...(status === DepositStatusEnum.Draft &&
 				depositType === DepositTypeEnum.LocalBanking && {
