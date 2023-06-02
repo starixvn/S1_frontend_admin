@@ -242,7 +242,7 @@ const AddAutoWithdrawalRuleModal = ({
 						<Col span={12}>
 							<Form.Item
 								name='withdrawalAmount'
-								label={t('Label_WithdrawalAmount')}
+								label={`${t('Label_WithdrawalAmount')} (<=)`}
 								rules={[
 									{
 										required: true,
@@ -258,7 +258,7 @@ const AddAutoWithdrawalRuleModal = ({
 						<Col span={12}>
 							<Form.Item
 								name='accountWithdrawalCount'
-								label={t('Label_AccountWithdrawalCount')}
+								label={`${t('Label_AccountWithdrawalCount')} (>=)`}
 								rules={[
 									{
 										required: true,

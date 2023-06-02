@@ -256,7 +256,7 @@ const AutoWithdrawalRuleModal = ({
 			render: (isoCode: string) => isoCode ?? 'N/A',
 		},
 		{
-			title: t('Label_WithdrawalAmount'),
+			title: `${t('Label_WithdrawalAmount')} (<=)`,
 			key: 'withdrawalAmount',
 			width: '10%',
 			align: 'center' as 'center',
@@ -285,7 +285,7 @@ const AutoWithdrawalRuleModal = ({
 			},
 		},
 		{
-			title: t('Label_AccountWithdrawalCount'),
+			title: `${t('Label_AccountWithdrawalCount')} (>=)`,
 			key: 'accountWithdrawalCount',
 			width: '5%',
 			align: 'center' as 'center',
