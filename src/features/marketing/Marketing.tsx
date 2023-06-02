@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
 import moment from 'moment/moment'
@@ -34,6 +34,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [filterForm] = Form.useForm<IFilterForm>()
+	const [isInOneDay, setIsInOneDay] = useState<boolean>(false)
 
 	const [
 		getPerformanceHighlight,
@@ -67,7 +68,11 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
-
+		// 小於一天內不顯示 Statistic 的 CR RR
+		setIsInOneDay(false)
+		if (moment(endDate).diff(moment(startDate), 'days') === 0) {
+			setIsInOneDay(true)
+		}
 		const [comparedStartDate, comparedEndDate] = dateRangeToUtcFormatter(
 			compareDateRange,
 			currentTimeZoneUtcOffset
@@ -176,6 +181,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 			{!isEmpty(queryParams) && (
 				<MarketingStatistic
 					loading={isGetPerformanceHighlightFetching}
+					isInOneDay={isInOneDay}
 					exportExcelPermission={exportExcelPermission}
 					performanceHighlightData={performanceHighlightData ?? {}}
 					onExportClick={handleExportPerformanceHighlight}
