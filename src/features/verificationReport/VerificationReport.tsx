@@ -71,7 +71,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 			currencyIds,
 		} = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			dateRange,
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 
