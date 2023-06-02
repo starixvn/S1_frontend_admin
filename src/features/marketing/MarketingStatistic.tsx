@@ -13,6 +13,7 @@ import { ExcelExportButton } from 'features/marketing/components/ExcelExportButt
 
 interface MpaMarketingStatisticProps {
 	loading: boolean
+	isInOneDay: boolean
 	exportExcelPermission?: PermissionInterface
 	performanceHighlightData: IPerformanceHighlightData
 	onExportClick: () => void
@@ -23,6 +24,7 @@ const { Text, Title } = Typography
 
 const MarketingStatistic = ({
 	loading,
+	isInOneDay,
 	exportExcelPermission,
 	performanceHighlightData,
 	onExportClick,
@@ -707,132 +709,136 @@ const MarketingStatistic = ({
 										</Row>
 									</Card>
 								</Col>
-
-								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
-									<Card
-										bodyStyle={{ padding: '10px' }}
-										style={{
-											borderRadius: '5px',
-											overflow: 'hidden',
-											border: '3px solid rgba(0, 0, 0, 0.05)',
-											height: 160,
-										}}
-									>
-										<Row gutter={[0, 8]}>
-											<Col span={24}>
-												<Title
-													level={5}
-													style={{
-														fontWeight: 'bold',
-														fontSize: 15,
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{t('Label_CR')}
-												</Title>
-											</Col>
-											<Col span={24} style={{ marginTop: -8, fontSize: 12 }}>
-												<Text>{t('Label_ChurnRate')}</Text>
-											</Col>
-											<Col span={24} style={{ textAlign: 'center' }}>
-												<Text
-													strong
-													style={{ fontSize: 24, whiteSpace: 'nowrap' }}
-												>
-													{`${numberFormatter.format(
-														performanceHighlightData.churnRate
-													)}%`}
-												</Text>
-											</Col>
-											{/* 沒有選 Compare Date, api 回傳是 null  */}
-											{!isNull(performanceHighlightData.churnComparedRate) && (
-												<Col span={24} style={{ marginTop: 12 }}>
-													<Row
-														gutter={[0, 16]}
-														align='bottom'
-														justify='space-between'
+								{!isInOneDay && (
+									<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+										<Card
+											bodyStyle={{ padding: '10px' }}
+											style={{
+												borderRadius: '5px',
+												overflow: 'hidden',
+												border: '3px solid rgba(0, 0, 0, 0.05)',
+												height: 160,
+											}}
+										>
+											<Row gutter={[0, 8]}>
+												<Col span={24}>
+													<Title
+														level={5}
+														style={{
+															fontWeight: 'bold',
+															fontSize: 15,
+															whiteSpace: 'nowrap',
+														}}
 													>
-														<Col>
-															<Text>{t('Label_CompareDate')}</Text>
-														</Col>
-														<Col>
-															<CustomStatistic
-																value={Number(
-																	performanceHighlightData.churnComparedRate
-																)}
-																precision={0}
-															/>
-														</Col>
-													</Row>
+														{t('Label_CR')}
+													</Title>
 												</Col>
-											)}
-										</Row>
-									</Card>
-								</Col>
-
-								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
-									<Card
-										bodyStyle={{ padding: '10px' }}
-										style={{
-											borderRadius: '5px',
-											overflow: 'hidden',
-											border: '3px solid rgba(0, 0, 0, 0.05)',
-											height: 160,
-										}}
-									>
-										<Row gutter={[0, 8]}>
-											<Col span={24}>
-												<Title
-													level={5}
-													style={{
-														fontWeight: 'bold',
-														fontSize: 15,
-														whiteSpace: 'nowrap',
-													}}
-												>
-													{t('Label_RR')}
-												</Title>
-											</Col>
-											<Col span={24} style={{ marginTop: -8, fontSize: 12 }}>
-												<Text>{t('Label_RetentionRate')}</Text>
-											</Col>
-											<Col span={24} style={{ textAlign: 'center' }}>
-												<Text
-													strong
-													style={{ fontSize: 24, whiteSpace: 'nowrap' }}
-												>
-													{`${numberFormatter.format(
-														performanceHighlightData.retentionRate
-													)}%`}
-												</Text>
-											</Col>
-											{/* 沒有選 Compare Date, api 回傳是 null  */}
-											{!isNull(
-												performanceHighlightData.retentionComparedRate
-											) && (
-												<Col span={24} style={{ marginTop: 12 }}>
-													<Row
-														gutter={[0, 16]}
-														align='bottom'
-														justify='space-between'
+												<Col span={24} style={{ marginTop: -8, fontSize: 12 }}>
+													<Text>{t('Label_ChurnRate')}</Text>
+												</Col>
+												<Col span={24} style={{ textAlign: 'center' }}>
+													<Text
+														strong
+														style={{ fontSize: 24, whiteSpace: 'nowrap' }}
 													>
-														<Col>
-															<Text>{t('Label_CompareDate')}</Text>
-														</Col>
-														<Col>
-															<CustomStatistic
-																value={Number(
-																	performanceHighlightData.retentionComparedRate
-																)}
-																precision={0}
-															/>
-														</Col>
-													</Row>
+														{`${numberFormatter.format(
+															performanceHighlightData.churnRate
+														)}%`}
+													</Text>
 												</Col>
-											)}
-										</Row>
-									</Card>
-								</Col>
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
+												{!isNull(
+													performanceHighlightData.churnComparedRate
+												) && (
+													<Col span={24} style={{ marginTop: 12 }}>
+														<Row
+															gutter={[0, 16]}
+															align='bottom'
+															justify='space-between'
+														>
+															<Col>
+																<Text>{t('Label_CompareDate')}</Text>
+															</Col>
+															<Col>
+																<CustomStatistic
+																	value={Number(
+																		performanceHighlightData.churnComparedRate
+																	)}
+																	precision={0}
+																/>
+															</Col>
+														</Row>
+													</Col>
+												)}
+											</Row>
+										</Card>
+									</Col>
+								)}
+								{!isInOneDay && (
+									<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
+										<Card
+											bodyStyle={{ padding: '10px' }}
+											style={{
+												borderRadius: '5px',
+												overflow: 'hidden',
+												border: '3px solid rgba(0, 0, 0, 0.05)',
+												height: 160,
+											}}
+										>
+											<Row gutter={[0, 8]}>
+												<Col span={24}>
+													<Title
+														level={5}
+														style={{
+															fontWeight: 'bold',
+															fontSize: 15,
+															whiteSpace: 'nowrap',
+														}}
+													>
+														{t('Label_RR')}
+													</Title>
+												</Col>
+												<Col span={24} style={{ marginTop: -8, fontSize: 12 }}>
+													<Text>{t('Label_RetentionRate')}</Text>
+												</Col>
+												<Col span={24} style={{ textAlign: 'center' }}>
+													<Text
+														strong
+														style={{ fontSize: 24, whiteSpace: 'nowrap' }}
+													>
+														{`${numberFormatter.format(
+															performanceHighlightData.retentionRate
+														)}%`}
+													</Text>
+												</Col>
+												{/* 沒有選 Compare Date, api 回傳是 null  */}
+												{!isNull(
+													performanceHighlightData.retentionComparedRate
+												) && (
+													<Col span={24} style={{ marginTop: 12 }}>
+														<Row
+															gutter={[0, 16]}
+															align='bottom'
+															justify='space-between'
+														>
+															<Col>
+																<Text>{t('Label_CompareDate')}</Text>
+															</Col>
+															<Col>
+																<CustomStatistic
+																	value={Number(
+																		performanceHighlightData.retentionComparedRate
+																	)}
+																	precision={0}
+																/>
+															</Col>
+														</Row>
+													</Col>
+												)}
+											</Row>
+										</Card>
+									</Col>
+								)}
 							</Row>
 						</LayoutContent.Card>
 					)}
