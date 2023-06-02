@@ -20,13 +20,14 @@ import React from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
-import { adjustmentTypeList } from 'features/paymentAdjustment/constants'
 import { IFilterForm } from 'features/paymentAdjustment/type'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IPaymentAdjustmentFilterProps {
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
+	adjustTypeList: IEnumTypeData[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -48,6 +49,7 @@ const PaymentAdjustmentFilter = ({
 	loading,
 	form,
 	timeZoneUtcOffset,
+	adjustTypeList,
 	onSearch,
 	onTimeZoneChange,
 	currencyListBySite,
@@ -90,7 +92,7 @@ const PaymentAdjustmentFilter = ({
 		const handleChangeAdjustmentType = (newTypes: number[]) => {
 			if (newTypes.includes(0)) {
 				form.setFieldsValue({
-					adjustTypes: adjustmentTypeList?.map(({ value }) => value),
+					adjustTypes: adjustTypeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
@@ -104,13 +106,13 @@ const PaymentAdjustmentFilter = ({
 					onChange={handleChangeAdjustmentType}
 					placeholder={t('Label_Select') + t('Label_Type')}
 				>
-					{(adjustmentTypeList?.length as number) > 1 && (
+					{(adjustTypeList?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
 
-					{adjustmentTypeList?.map(({ value, displayName }) => (
+					{adjustTypeList?.map(({ value, name }) => (
 						<Option key={value} value={value}>
-							{t(displayName)}
+							{name}
 						</Option>
 					))}
 				</MultipleSelect>
@@ -131,7 +133,6 @@ const PaymentAdjustmentFilter = ({
 							currencyIds: currencyListBySite?.map(
 								({ currencyId }) => currencyId
 							),
-							adjustTypes: adjustmentTypeList?.map(({ value }) => value),
 						}}
 					>
 						<Row align='middle' gutter={16}>
