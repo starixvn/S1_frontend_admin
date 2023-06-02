@@ -31,6 +31,7 @@ import {
 	IFilterForm,
 	IGetPaymentAdjustmentReportData,
 } from 'features/paymentAdjustment/type'
+import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -52,6 +53,11 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		data: { data: reasonList = [] } = {},
 		isLoading: isGetReasonListLoading,
 	} = useGetPaymentReasonListQuery(null)
+
+	const {
+		data: { data: adjustTypeList = [] } = {} as IEnumTypeResponse,
+		isLoading: isGetAdjustTypeListLoading,
+	} = useGetEnumTypeQuery({ enumName: 'AdjustTypeEnum' })
 
 	const [
 		getPaymentAdjustmentReport,
@@ -233,10 +239,19 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (!isGetAdjustTypeListLoading && isEmpty(queryParams)) {
+			filterForm.setFieldsValue({
+				adjustTypes: adjustTypeList.map(({ value }) => value),
+			})
+		}
+	}, [isGetAdjustTypeListLoading])
+
 	const loading =
 		isGetReasonListLoading ||
 		isGetPaymentAdjustmentReportLoading ||
-		isSetPaymentAdjustmentLoading
+		isSetPaymentAdjustmentLoading ||
+		isGetAdjustTypeListLoading
 
 	return (
 		<LayoutContent.Main>
@@ -245,6 +260,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetPaymentAdjustmentReportLoading}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
+				adjustTypeList={adjustTypeList}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
 				onTimeZoneChange={onTimeZoneChange}
