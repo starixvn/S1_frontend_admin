@@ -354,6 +354,10 @@ const paths = {
 					},
 				},
 			},
+			rebateExcludeGame: {
+				root: 'marketing/rebateExcludeGame',
+				functionId: 145,
+			},
 		},
 	},
 	game: {
