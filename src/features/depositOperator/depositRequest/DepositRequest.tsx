@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Divider, PageHeader, Row, Form, message, Modal } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
@@ -10,6 +10,7 @@ import {
 	useGetDepositCommentsByTransIdQuery,
 	useGetDepositInfoByTransIdQuery,
 	useGetDepositReceiptByTransIdQuery,
+	useLazyGetCryptoAmountCalculationQuery,
 	useSetAmountByTransIdMutation,
 	useSetDepositManualApprovalMutation,
 	useSetDepositStatusMutation,
@@ -34,6 +35,7 @@ import {
 	ISetDepositStatusArgs,
 	ISetAmountByTransIdArgs,
 	IDepositOperatorData,
+	ICryptoAmountCalculationArgs,
 } from 'features/depositOperator/type'
 import DepositRequestDepositInfo from 'features/depositOperator/depositRequest/DepositRequestDepositInfo'
 import DepositRequestComments from 'features/depositOperator/depositRequest/DepositRequestComments'
@@ -44,6 +46,7 @@ import DepositRequestBankInfoDescriptions from 'features/depositOperator/deposit
 import useMemberInfo from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
 import { UploadFile } from 'antd/es/upload/interface'
 import { DepositTypeEnum } from 'type'
+import { jsonToObject } from 'common/utils/format'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 import { ReceiptUploader } from 'features/depositOperator/components/ReceiptUploader'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
@@ -63,6 +66,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [form] = Form.useForm()
 	const { onCopy } = useCopy()
+	const [userActualCryptoAmount, setUserActualCryptoAmount] = useState(0)
 
 	const {
 		data: { data: depositReceiptCreateFromEnum } = {} as IEnumTypeResponse,
@@ -122,6 +126,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		transId,
 	})
 
+	const [
+		getCryptoAmountCalculation,
+		{ isFetching: isGetCryptoAmountCalculationFetching },
+	] = useLazyGetCryptoAmountCalculationQuery()
+
 	const [setAmountByTransId, { isLoading: isSetAmountByTransIdLoading }] =
 		useSetAmountByTransIdMutation()
 
@@ -180,22 +189,36 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		if (!transId) return
 
 		const { comment, bankId, statementTime } = form.getFieldsValue()
-		const { actualDeposit, depositType } = depositInfo
 
-		const args: ISetDepositStatusArgs = {
-			action: status,
-			actualDeposit,
-			comment,
-			transId,
-			// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
-			...(status === DepositStatusEnum.Draft &&
-				depositType === DepositTypeEnum.LocalBanking && {
-					statementTime: utcFormatter({
-						date: statementTime,
-						utcOffset: timeZoneUtcOffset,
+		const { actualDeposit, depositType, amount } = depositInfo
+
+		let args: ISetDepositStatusArgs
+		if (depositType === DepositTypeEnum.CryptoWallet) {
+			const { actualCryptoAmount } = form.getFieldsValue()
+			args = {
+				action: status,
+				actualDeposit,
+				comment,
+				transId,
+				actualCryptoAmount,
+			}
+		} else {
+			args = {
+				action: status,
+				actualDeposit,
+				comment,
+				transId,
+				actualCryptoAmount: amount,
+				// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
+				...(status === DepositStatusEnum.Draft &&
+					depositType === DepositTypeEnum.LocalBanking && {
+						statementTime: utcFormatter({
+							date: statementTime,
+							utcOffset: timeZoneUtcOffset,
+						}),
+						bankId,
 					}),
-					bankId,
-				}),
+			}
 		}
 
 		try {
@@ -216,11 +239,36 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const handleSetAmountByTransId = async () => {
 		if (!memberInfo?.currencyId) return
-
-		const afterAmount = form.getFieldValue('amount')
+		let afterAmount = form.getFieldValue('amount')
 		const { currencyId } = memberInfo
-
+		const { depositType, depositInfo: jsonDepositInfo } = depositInfo
+		let calculateAmount
 		if (!siteId || !transId) return
+
+		if (depositType === DepositTypeEnum.CryptoWallet) {
+			afterAmount = form.getFieldValue('actualCryptoAmount')
+			const { exchangeRate = 0 } = jsonToObject(jsonDepositInfo) ?? {}
+			try {
+				const args: ICryptoAmountCalculationArgs = {
+					currencyId: depositInfo.currencyId,
+					exchangeRate,
+					cryptoAmount: afterAmount,
+				}
+				const {
+					data: { amount },
+				} = await getCryptoAmountCalculation(args).unwrap()
+				setUserActualCryptoAmount(afterAmount)
+				form.setFieldsValue({
+					actualAmount: amount,
+				})
+
+				calculateAmount = amount
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
+		}
 
 		const args: ISetAmountByTransIdArgs = {
 			siteId,
@@ -230,7 +278,10 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				amount: depositInfo.amount,
 			},
 			after: {
-				amount: afterAmount,
+				amount:
+					depositType === DepositTypeEnum.CryptoWallet
+						? calculateAmount ?? afterAmount
+						: afterAmount,
 			},
 		}
 		try {
@@ -304,18 +355,37 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isSetAmountByTransIdLoading ||
 		isGetPaymentListFetching ||
 		isGetDepositReceiptByTransIdLoading ||
-		isDepositReceiptCreateFromEnumLoading
+		isDepositReceiptCreateFromEnumLoading ||
+		isGetCryptoAmountCalculationFetching
 
 	useEffect(() => {
 		if (depositLoading) return
-
-		const { bankId, statementTime, amount } = depositInfo
-
-		form.setFieldsValue({
+		const {
 			bankId,
+			statementTime,
 			amount,
-			statementTime: moment(statementTime),
-		})
+			depositInfo: jsonDepositInfo,
+			depositType,
+		} = depositInfo
+
+		if (depositType === DepositTypeEnum.CryptoWallet) {
+			const { exchangeAmount, actualExchangeAmount } =
+				jsonToObject(jsonDepositInfo) ?? {}
+			form.setFieldsValue({
+				bankId,
+				actualCryptoAmount:
+					userActualCryptoAmount !== 0
+						? userActualCryptoAmount
+						: actualExchangeAmount ?? exchangeAmount,
+				statementTime: moment(statementTime),
+			})
+		} else {
+			form.setFieldsValue({
+				bankId,
+				amount,
+				statementTime: moment(statementTime),
+			})
+		}
 	}, [depositLoading])
 
 	const imageInit = async () => {
@@ -341,7 +411,6 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			imageInit()
 		}
 	}, [isGetDepositReceiptByTransIdLoading])
-
 	return (
 		<LayoutContent.Main>
 			<PageHeader title={pageTitle} />
@@ -363,6 +432,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 								loading={depositLoading}
 								timeZoneUtcOffset={timeZoneUtcOffset}
 								depositInfo={depositInfo}
+								userActualCryptoAmount={userActualCryptoAmount}
 								calCodeList={calCodeList}
 								onCopy={onCopy}
 								onSetAmountByTransId={handleSetAmountByTransId}

@@ -336,6 +336,7 @@
 	"Label_Agent": "Agent",
 	"Label_Pay": "Pay",
 	"Label_DisplayName": "Display Name",
+	"Label_FrontendDisplayName": "Frontend Display Name",
 	"Label_Creator": "Creator",
 	"Label_Update": "Updater",
 	"Label_InitialAmount": "Initial Amount",
@@ -1094,5 +1095,8 @@
 	"Label_content": "content",
 	"Label_Receive": "Receive",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
+	"Label_ToCryptoAccount": "To Crypto Account",
+	"Label_FrontDisplayName": "Front Display Name",
+	"Label_ActualAmount": "Actual Amount",
 	"Label_ActiveInactiveAll": "Active/Inactive All"
 }
