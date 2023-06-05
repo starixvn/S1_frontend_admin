@@ -451,12 +451,6 @@ const WithdrawalRequest = () => {
 		// Action 流程判斷
 		// 只有進入 Process 需要送完整 Withdrawal 資料
 		if (action === WithdrawalStatusEnum.Process) {
-			// cryptoPay ChannelId
-			const channelId = find(
-				cryptoPayList,
-				({ payId }) => payId === rawSelId
-			)?.channelId
-
 			switch (withdrawalType) {
 				case WithdrawalTypeEnum.Undefined:
 					message.error(t('Label_UndefinedTypeError'))
@@ -469,6 +463,11 @@ const WithdrawalRequest = () => {
 					break
 				case WithdrawalTypeEnum.CryptoPay:
 					try {
+						const channelId = find(
+							cryptoPayList,
+							({ payId }) => payId === rawSelId
+						)?.channelId
+
 						await setWithdrawalStatus({
 							comment,
 							transId,
@@ -487,6 +486,16 @@ const WithdrawalRequest = () => {
 					break
 				case WithdrawalTypeEnum.OnlinePayment:
 					try {
+						const paymentList =
+							accountType === AccountTypeEnum.EWallet
+								? eWalletList
+								: onlinePayList
+
+						const channelId = find(
+							paymentList,
+							({ payId }) => payId === rawSelId
+						)?.channelId
+
 						await setWithdrawalStatus({
 							comment,
 							transId,
@@ -494,6 +503,7 @@ const WithdrawalRequest = () => {
 							action,
 							selId: rawSelId,
 							withdrawalType,
+							channelId,
 						}).unwrap()
 					} catch (error) {
 						message.error(

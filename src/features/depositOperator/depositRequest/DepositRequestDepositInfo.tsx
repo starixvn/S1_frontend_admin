@@ -31,6 +31,7 @@ import {
 } from '@ant-design/icons'
 import { red, green } from '@ant-design/colors'
 import { DepositTypeEnum, PermissionInterface } from 'type'
+import { formatNumber } from 'features/depositOperator/utils'
 
 const { Option } = Select
 
@@ -40,6 +41,7 @@ interface IDepositRequestDepositInfoProps {
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositInfo: IDepositOperatorData
+	userActualCryptoAmount: number
 	calCodeList: ICalCodeData[]
 	onCopy: (value: string) => Promise<void>
 	onSetAmountByTransId: () => void
@@ -55,12 +57,14 @@ const DepositRequestDepositInfo = ({
 	depositInfo: {
 		transId,
 		amount,
+		actualDeposit,
 		status,
 		statusName,
 		createTime,
 		depositType,
 		depositTypeName,
 		channelName,
+		depositCnt,
 		bankCode,
 		bankName,
 		accountName,
@@ -76,6 +80,7 @@ const DepositRequestDepositInfo = ({
 		bonusDescription,
 		oDepositInfo,
 	},
+	userActualCryptoAmount,
 	calCodeList,
 	onCopy,
 	onSetAmountByTransId,
@@ -94,6 +99,7 @@ const DepositRequestDepositInfo = ({
 	)
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
+	const isCryptoWallet = depositType === DepositTypeEnum.CryptoWallet
 	const isShowPaymentInfoModalButton =
 		depositType === DepositTypeEnum.OnlineBanking ||
 		depositType === DepositTypeEnum.MobilePay ||
@@ -117,61 +123,177 @@ const DepositRequestDepositInfo = ({
 					{transId || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RequestAmount')}>
-					<Input.Group compact>
-						<Form.Item noStyle name='amount'>
-							<InputNumber
-								controls={false}
-								disabled={!setAmountPermission?.canUse || editable !== 'amount'}
-								style={{ width: 'calc(100% - 64px)' }}
-								// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
-								formatter={value =>
-									`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-								}
-								// 把 + 過逗號的值再 parser 回來
-								parser={value => value!.replace(/\$\s?|(,*)/g, '')}
-							/>
-						</Form.Item>
-
-						{editable === 'amount' ? (
-							<>
-								<Button
-									disabled={isSetAmountDisabled}
-									onClick={() => {
-										onSetAmountByTransId()
-										setEditable(undefined)
+					{isCryptoWallet ? (
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+						>
+							<text>{formatNumber(amount) || '-'}</text>
+						</div>
+					) : (
+						<Input.Group compact>
+							<Form.Item noStyle name='amount'>
+								<InputNumber
+									controls={false}
+									disabled={
+										!setAmountPermission?.canUse || editable !== 'amount'
+									}
+									style={{ width: 'calc(100% - 64px)' }}
+									// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+									formatter={value => {
+										const [integer, decimal] = `${value}`.split('.')
+										const formattedInteger = integer.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+										)
+										return decimal
+											? `${formattedInteger}.${decimal}`
+											: formattedInteger
 									}}
-									type='link'
-									icon={<CheckOutlined style={{ color: green.primary }} />}
+									// 把 + 過逗號的值再 parser 回來
+									parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 								/>
+							</Form.Item>
+							{editable === 'amount' ? (
+								<>
+									<Button
+										disabled={isSetAmountDisabled}
+										onClick={() => {
+											onSetAmountByTransId()
+											setEditable(undefined)
+										}}
+										type='link'
+										icon={<CheckOutlined style={{ color: green.primary }} />}
+									/>
 
-								<Button
-									onClick={() => {
-										form.setFieldsValue({
-											amount,
-										})
-										setEditable(undefined)
-									}}
-									type='link'
-									icon={<CloseOutlined style={{ color: red.primary }} />}
-								/>
-							</>
-						) : (
-							<>
+									<Button
+										onClick={() => {
+											form.setFieldsValue({
+												amount,
+											})
+											setEditable(undefined)
+										}}
+										type='link'
+										icon={<CloseOutlined style={{ color: red.primary }} />}
+									/>
+								</>
+							) : (
+								<>
+									<Button
+										type='link'
+										icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
+										onClick={() => onCopy(String(amount))}
+									/>
+									<Button
+										disabled={!setAmountPermission?.canUse}
+										onClick={() => setEditable('amount')}
+										type='link'
+										icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
+									/>
+								</>
+							)}
+						</Input.Group>
+					)}
+				</Descriptions.Item>
+
+				{isCryptoWallet && (
+					<>
+						<Descriptions.Item label={t('Label_ActualAmount')}>
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								<Form.Item noStyle name='actualAmount'>
+									{formatNumber(actualDeposit)}
+								</Form.Item>
 								<Button
 									type='link'
 									icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
-									onClick={() => onCopy(String(amount))}
+									onClick={() => onCopy(String(actualDeposit))}
 								/>
-								<Button
-									disabled={!setAmountPermission?.canUse}
-									onClick={() => setEditable('amount')}
-									type='link'
-									icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
-								/>
-							</>
-						)}
-					</Input.Group>
-				</Descriptions.Item>
+							</div>
+						</Descriptions.Item>
+
+						<Descriptions.Item label={t('Label_ActualCryptoAmount')}>
+							<Input.Group compact>
+								<Form.Item noStyle name='actualCryptoAmount'>
+									<InputNumber
+										controls={false}
+										disabled={
+											!setAmountPermission?.canUse || editable !== 'amount'
+										}
+										style={{ width: 'calc(100% - 64px)' }}
+										// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+										formatter={value => {
+											const [integer, decimal] = `${value}`.split('.')
+											const formattedInteger = integer.replace(
+												/\B(?=(\d{3})+(?!\d))/g,
+												','
+											)
+											return decimal
+												? `${formattedInteger}.${decimal}`
+												: formattedInteger
+										}}
+										// 把 + 過逗號的值再 parser 回來
+										parser={value => value!.replace(/\$\s?|(,*)/g, '')}
+									/>
+								</Form.Item>
+								{editable === 'amount' ? (
+									<>
+										<Button
+											disabled={isSetAmountDisabled}
+											onClick={() => {
+												onSetAmountByTransId()
+												setEditable(undefined)
+											}}
+											type='link'
+											icon={<CheckOutlined style={{ color: green.primary }} />}
+										/>
+
+										<Button
+											onClick={() => {
+												form.setFieldsValue({
+													actualCryptoAmount: depositInfo.exchangeAmount,
+												})
+												setEditable(undefined)
+											}}
+											type='link'
+											icon={<CloseOutlined style={{ color: red.primary }} />}
+										/>
+									</>
+								) : (
+									<>
+										<Button
+											disabled={!setAmountPermission?.canUse}
+											onClick={() => setEditable('amount')}
+											type='link'
+											icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
+										/>
+										<Button
+											type='link'
+											icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
+											onClick={() =>
+												onCopy(
+													String(
+														userActualCryptoAmount !== 0
+															? userActualCryptoAmount
+															: depositInfo.actualExchangeAmount ??
+																	depositInfo.exchangeAmount
+													)
+												)
+											}
+										/>
+									</>
+								)}
+							</Input.Group>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_CryptoAmount')}>
+							{formatNumber(Number(depositInfo.exchangeAmount))}
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_ExchangeRate')}>
+							{depositInfo.exchangeRate || '-'}
+						</Descriptions.Item>
+					</>
+				)}
 				<Descriptions.Item label={t('Label_DepositBonus')}>
 					{bonusDescription || '-'}
 				</Descriptions.Item>
@@ -263,23 +385,41 @@ const DepositRequestDepositInfo = ({
 					</>
 				)}
 
-				<Descriptions.Item label={t('Label_RefId')}>
-					{refId || oDepositInfo?.code || '-'}
-				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_Payment')}>
-					<Row align='middle' justify='space-between'>
-						{payName || '-'}
-						{isShowPaymentInfoModalButton && (
-							<Button
-								type='link'
-								style={{ padding: '0px' }}
-								onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
-							>
-								<InfoCircleOutlined style={{ fontSize: '18px' }} />
-							</Button>
-						)}
-					</Row>
-				</Descriptions.Item>
+				{isCryptoWallet ? (
+					<>
+						<Descriptions.Item label={t('Label_ToCryptoAccount')}>
+							{accountName || '-'}
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_FrontDisplayName')}>
+							{depositInfo.frontendDisplayName || '-'}
+						</Descriptions.Item>
+					</>
+				) : (
+					<>
+						<Descriptions.Item label={t('Label_RefId')}>
+							{refId || oDepositInfo?.code || '-'}
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_Payment')}>
+							<Row align='middle' justify='space-between'>
+								{payName || '-'}
+								{isShowPaymentInfoModalButton && (
+									<Button
+										type='link'
+										style={{ padding: '0px' }}
+										onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
+									>
+										<InfoCircleOutlined style={{ fontSize: '18px' }} />
+									</Button>
+								)}
+							</Row>
+						</Descriptions.Item>
+					</>
+				)}
+				{isCryptoWallet && (
+					<Descriptions.Item label={t('Label_DepositCount')}>
+						{depositCnt ?? '-'}
+					</Descriptions.Item>
+				)}
 				<Descriptions.Item label={t('Label_FlowEndTime')}>
 					{flowEndTime &&
 						moment(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}

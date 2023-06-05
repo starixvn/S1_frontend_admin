@@ -87,6 +87,11 @@ export interface IDepositInfo {
 	channelName?: string
 	exchangeAmount?: number
 	actualExchangeAmount?: number
+	bankId?: number
+	currencyName?: string
+	exchangeRate?: number
+	frontendDisplayName?: string
+	network?: string
 }
 
 export interface IDepositFrom {
@@ -224,6 +229,7 @@ export interface ISetDepositStatusArgs {
 	actualDeposit: number
 	comment: null | string
 	transId: string
+	actualCryptoAmount: number
 	// * statementTime、bankId 只有在 action 是 draft 時才需要送出
 	statementTime?: string
 	bankId?: number
@@ -285,3 +291,13 @@ export interface IDepositReceiptByTransIdData {
 }
 
 export type IDepositReceiptByTransIdResponse = IDepositReceiptByTransIdData[]
+
+export interface ICryptoAmountCalculationArgs {
+	currencyId: number
+	exchangeRate: number
+	cryptoAmount: number
+}
+
+export interface ICryptoAmountData {
+	amount: number
+}
