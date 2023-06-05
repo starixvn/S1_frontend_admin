@@ -98,7 +98,13 @@ const StatementFilter = ({
 		return (
 			<MultipleSelect
 				onChange={onChangeGameType}
-				placeholder={t('Label_Select')}
+				filterOption={(input, option) => {
+					const isIncludes: boolean = (option!.children as unknown as string)
+						.toLowerCase()
+						.includes(input.toLowerCase())
+
+					return isIncludes
+				}}
 			>
 				{(gameTypeList?.length as number) > 1 && (
 					<Option value='all'>{t('Label_SelectAll')}</Option>
