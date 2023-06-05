@@ -70,6 +70,7 @@ export interface IBankTransferAccountData {
 	accountName: string | null
 	accountCode: string | null
 	displayName: string | null
+	frontendDisplayName: string | null
 	initialAmount: number
 	initialTime: string
 	maxBalanceAlertAmount: number

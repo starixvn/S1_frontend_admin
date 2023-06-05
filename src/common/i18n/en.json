@@ -336,6 +336,7 @@
 	"Label_Agent": "Agent",
 	"Label_Pay": "Pay",
 	"Label_DisplayName": "Display Name",
+	"Label_FrontendDisplayName": "Frontend Display Name",
 	"Label_Creator": "Creator",
 	"Label_Update": "Updater",
 	"Label_InitialAmount": "Initial Amount",
@@ -1153,5 +1154,8 @@
 	"Label_CR": "CR",
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
-	"Label_RetentionRate": "Retention Rate"
+	"Label_RetentionRate": "Retention Rate",
+	"Label_ToCryptoAccount": "To Crypto Account",
+	"Label_FrontDisplayName": "Front Display Name",
+	"Label_ActualAmount": "Actual Amount"
 }
