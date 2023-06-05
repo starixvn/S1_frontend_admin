@@ -123,6 +123,9 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				pageNumber: current,
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
+				transId: transId || null,
+				bonusCode: bonusCode || null,
+				userName: userName || null,
 				...args,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
