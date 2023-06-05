@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 export interface IGetBetListArgs {
 	pageNumber: number
@@ -26,6 +27,7 @@ export interface IGetBetListArgs {
 	orderBy?: boolean
 	orderByProperty?: string
 	orderByDirection?: number
+	memberTypes: UserTypeEnum[]
 }
 
 export interface IGetBetListData {
