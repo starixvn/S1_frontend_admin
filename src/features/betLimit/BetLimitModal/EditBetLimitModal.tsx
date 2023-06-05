@@ -17,7 +17,6 @@ import {
 	Table,
 } from 'antd'
 import { InputNumber } from 'components'
-import { findIndex, head, find, keys, values, cloneDeep, filter } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
@@ -26,8 +25,13 @@ import {
 	useLazyGetTpCategoryListQuery,
 	useLazyGetCustInfoDetailsQuery,
 } from 'features/betLimit/api'
-import { IEditForm, ITpCategoryListData } from 'features/betLimit/type'
-import { CustBetLimitConverter } from 'features/betLimit/utils'
+import {
+	IBetLimitTableData,
+	IEditForm,
+	IFormBetLimitTableData,
+	IGameTypeBetLimit,
+} from 'features/betLimit/type'
+import { find } from 'lodash'
 
 interface IEditBetLimitModalProps {
 	form: FormInstance<IEditForm>
@@ -36,7 +40,7 @@ interface IEditBetLimitModalProps {
 	editPermission?: PermissionInterface
 	isSetBetLimitLoading: boolean
 	onCancel: () => void
-	onSetBetLimit: (list: ITpCategoryListData[] | undefined) => void
+	onSetBetLimit: (list: IGameTypeBetLimit[] | undefined) => void
 }
 
 const EditBetLimitModal = ({
@@ -50,15 +54,14 @@ const EditBetLimitModal = ({
 }: IEditBetLimitModalProps) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const { currencyId } = form.getFieldsValue(true)
+	const currency = find(currencyListBySite, { currencyId })?.isoCode ?? 'N/A'
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { currencyId } = form.getFieldsValue(['currencyId'])
+	const [betLimitForm] = Form.useForm<IFormBetLimitTableData>()
+
 	const [dataSource, setDataSource] = useState<
-		ITpCategoryListData[] | undefined
+		IBetLimitTableData[] | undefined
 	>(undefined)
-	const currency =
-		currencyListBySite.find(
-			({ currencyId: siteCurrencyId }) => currencyId === siteCurrencyId
-		)?.isoCode ?? 'N/A'
 
 	const [getByCustId, { isFetching: isGetByCustIdLoading }] =
 		useLazyGetByCustIdQuery()
@@ -69,36 +72,100 @@ const EditBetLimitModal = ({
 	const [getTpCategoryList, { isFetching: isGetTpCategoryListFetching }] =
 		useLazyGetTpCategoryListQuery()
 
-	const getBetLimitByCustId = async () => {
-		const { custId } = form.getFieldsValue(['custId'])
-
+	const onSearchBetLimit = async () => {
 		try {
-			const { data: tpBetLimitCategoryList } = await getTpCategoryList({
-				siteId,
-				currencyId,
-			}).unwrap()
+			let betLimitTableDataList: IBetLimitTableData[] = []
 
-			const { data: custBetLimitData } = await getByCustId({
-				custId,
-			}).unwrap()
+			if (isAdd) {
+				const { userName } = form.getFieldsValue()
 
-			const actualDataList = CustBetLimitConverter(
-				custBetLimitData.betSetting,
-				tpBetLimitCategoryList
-			)
+				const { data: custInfoDetail } = await getCustInfoDetails({
+					siteId,
+					userName,
+				}).unwrap()
 
-			setDataSource(actualDataList)
-			filter(actualDataList, ['isGroup', false]).map(data =>
-				form.setFieldsValue({
-					limitInput: {
-						[data.key]: {
-							min: data.limitInput.min,
-							max: data.limitInput.max,
-							maxPerMatch: data.limitInput.maxPerMatch,
-						},
-					},
-				})
-			)
+				const { data: tpBetLimitCategoryList } = await getTpCategoryList({
+					siteId,
+					currencyId: custInfoDetail.currencyId,
+				}).unwrap()
+
+				betLimitTableDataList = tpBetLimitCategoryList.map(
+					({
+						gameType: gameTypeId,
+						gameTypeName,
+						limitGroup: limitGroupOptions,
+						isGroup,
+						limitInput,
+						categoryName: tpCategoryName,
+						categoryId: tpCategory,
+					}) => ({
+						checked: false,
+						gameTypeId,
+						gameTypeName,
+						limitGroupOptions,
+						limitGroup: undefined,
+						isGroup,
+						limitInput,
+						tpCategoryName,
+						tpCategory,
+					})
+				)
+			} else {
+				const { custId } = form.getFieldsValue(true)
+
+				const { data: tpCategoryList = [] } = await getTpCategoryList({
+					siteId,
+					currencyId,
+				}).unwrap()
+
+				const { data: custBetLimitData } = await getByCustId({
+					custId,
+				}).unwrap()
+
+				const { betSetting } = custBetLimitData
+
+				betLimitTableDataList = betSetting.map(
+					({
+						checked,
+						gameTypeId,
+						gameTypeName,
+						limitGroup,
+						min,
+						max,
+						maxPerMatch,
+						tpCategoryName,
+						tpCategory,
+					}) => {
+						const isGroup = Boolean(limitGroup)
+
+						return {
+							checked,
+							gameTypeId,
+							gameTypeName,
+							limitGroupOptions: isGroup
+								? find(tpCategoryList, { gameTypeName })?.limitGroup
+								: undefined,
+							limitGroup,
+							isGroup,
+							limitInput: max ? { min, max, maxPerMatch } : undefined,
+							tpCategoryName,
+							tpCategory,
+						}
+					}
+				)
+			}
+
+			// * for render Table
+			setDataSource(betLimitTableDataList)
+
+			// * 透過 gameTypeName 當作 key 製作成 form object
+			const betLimitFormResult: {
+				[key: string]: IBetLimitTableData
+			} = {}
+			betLimitTableDataList.forEach(item => {
+				betLimitFormResult[item.gameTypeName] = item
+			})
+			betLimitForm.setFieldsValue(betLimitFormResult)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('Label_NotExpectedServerError')
@@ -106,110 +173,59 @@ const EditBetLimitModal = ({
 		}
 	}
 
-	const onTableChange = ({
-		key,
-		checked,
-		group,
-	}: {
-		key: string
-		checked?: boolean
-		group?: string
-	}) => {
-		setDataSource(prev => {
-			const newArr = [...(prev || [])]
-			const idx = findIndex(newArr, ['key', key])
-			const newData = group ? { selectedGroup: group } : { checked: !checked }
-			newArr[idx] = { ...newArr[idx], ...newData }
-			return newArr
-		})
-	}
-
-	const onSearchUserName = async () => {
-		const { userName } = form.getFieldsValue()
-		if (!userName) return
-
-		try {
-			const { data: custInfoDetail } = await getCustInfoDetails({
-				siteId,
-				userName,
-			}).unwrap()
-
-			const { data: tpBetLimitCategoryList } = await getTpCategoryList({
-				siteId,
-				currencyId: custInfoDetail.currencyId,
-			}).unwrap()
-
-			setDataSource(tpBetLimitCategoryList)
-			filter(tpBetLimitCategoryList, ['isGroup', false]).map(data =>
-				form.setFieldsValue({
-					limitInput: {
-						[data.key]: {
-							min: data.limitInput.min,
-							max: data.limitInput.max,
-							maxPerMatch: data.limitInput.maxPerMatch,
-						},
-					},
-				})
-			)
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
-	}
-
-	const handleValidation = async () => {
-		const { limitInput } = await form.validateFields()
-		const { min, max, maxPerMatch } = values(limitInput)[0]
-
-		switch (true) {
-			case min >= max || min >= maxPerMatch || max >= maxPerMatch:
-				throw new Error('error')
-			default:
-				return true
-		}
-	}
-
-	// 送出修改前單獨驗證 min max maxPerMatch 輸入框
 	const handleBeforeSetBetLimit = async () => {
-		try {
-			await handleValidation()
-			const newDataSource: ITpCategoryListData[] = cloneDeep(dataSource!)
+		const values: IFormBetLimitTableData = betLimitForm.getFieldsValue(true)
 
-			const { limitInput } = await form.validateFields()
-			const { min, max, maxPerMatch } = values(limitInput)[0]
-			const key = keys(limitInput)[0]
-
-			const idx = findIndex(newDataSource, ['key', key])
-			const newData = {
-				limitInput: {
-					min,
-					max,
-					maxPerMatch,
-				},
+		const newBetLimit: IGameTypeBetLimit[] = Object.values(values).map(
+			({
+				isGroup,
+				checked,
+				tpCategory,
+				tpCategoryName,
+				gameTypeId,
+				gameTypeName,
+				limitGroupOptions,
+				limitGroup,
+				limitInput,
+			}) => {
+				return {
+					checked,
+					tpCategory,
+					tpCategoryName,
+					gameTypeId,
+					gameTypeName,
+					// * 分別格式化成 'limitGroup' or 'limitInput' 的送出格式
+					...(isGroup
+						? {
+								limitGroup,
+								limitRange: find(limitGroupOptions, { group: limitGroup })
+									?.range,
+						  }
+						: {
+								min: limitInput?.min,
+								max: limitInput?.max,
+								maxPerMatch: limitInput?.maxPerMatch,
+						  }),
+				}
 			}
-			newDataSource[idx] = { ...newDataSource[idx], ...newData }
-			return newDataSource ?? []
-		} catch (error) {
-			message.error(t('Label_LimitInputAmount'))
-			//  驗證未過送 undefined 避免打 api
-			return undefined
-		}
+		)
+
+		onSetBetLimit(newBetLimit)
 	}
 
+	// * 清空列表
 	const onCloseModal = () => {
 		setDataSource(undefined)
 		form.resetFields()
+		betLimitForm.resetFields()
 	}
 
-	// 每次打開初次渲染 table
+	// * 每次打開初次渲染 table
 	useEffect(() => {
-		if (isOpen) {
-			if (!isAdd) {
-				getBetLimitByCustId()
-			}
+		if (isOpen && !isAdd) {
+			onSearchBetLimit()
 		}
-	}, [isOpen, isAdd])
+	}, [isOpen])
 
 	const loading =
 		isGetByCustIdLoading ||
@@ -223,18 +239,16 @@ const EditBetLimitModal = ({
 			key: 'checked',
 			width: 60,
 			align: 'center' as 'center',
-			render: ({ key, checked }: ITpCategoryListData) => (
-				<Switch
-					checked={checked}
-					disabled={!editPermission?.canUse}
-					onChange={() => onTableChange({ key, checked })}
-				/>
+			render: ({ gameTypeName }: IBetLimitTableData) => (
+				<Form.Item name={[gameTypeName, 'checked']} valuePropName='checked'>
+					<Switch disabled={!editPermission?.canUse} />
+				</Form.Item>
 			),
 		},
 		{
 			title: t('Label_Category'),
-			key: 'categoryName',
-			dataIndex: 'categoryName',
+			key: 'tpCategoryName',
+			dataIndex: 'tpCategoryName',
 			width: 60,
 			align: 'center' as 'center',
 		},
@@ -247,63 +261,87 @@ const EditBetLimitModal = ({
 		},
 		{
 			title: t('Label_LimitGroup'),
-			key: 'limitGroup',
 			width: 300,
 			align: 'center' as 'center',
 			editable: true,
 			render: ({
-				key,
 				isGroup,
-				limitGroup,
-				selectedGroup,
-			}: ITpCategoryListData) => {
-				const selectedRange = find(limitGroup, ['group', selectedGroup])?.range
-
+				limitGroupOptions = [],
+				gameTypeName,
+			}: IBetLimitTableData) => {
 				return isGroup ? (
-					<Select
-						placeholder={selectedRange || head(limitGroup)?.range}
-						style={{ width: '50%' }}
-						disabled={!editPermission?.canUse}
-						onSelect={(group: string) => onTableChange({ key, group })}
+					<Form.Item
+						name={[gameTypeName, 'limitGroup']}
+						rules={[
+							{
+								required: true,
+								message: '',
+							},
+						]}
 					>
-						{limitGroup.map(({ group, range }) => (
-							<Select.Option key={group} value={group}>
-								{range}
-							</Select.Option>
-						))}
-					</Select>
+						<Select
+							placeholder='select'
+							style={{ width: '50%' }}
+							disabled={!editPermission?.canUse}
+						>
+							{limitGroupOptions.map(({ group, range }) => (
+								<Select.Option key={group} value={group}>
+									{range}
+								</Select.Option>
+							))}
+						</Select>
+					</Form.Item>
 				) : (
 					<Space>
-						{/* Label_MaxPerMatch 是串關累計最大金額 條件是 MIn <= Max <= MaxPerMatch */}
 						<Form.Item
 							style={{ margin: 0 }}
-							name={['limitInput', String(key), 'min']}
+							name={[gameTypeName, 'limitInput', 'min']}
 							label={t('Label_Min')}
 							rules={[
 								{
 									required: true,
 									message: '',
 								},
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (
+											value < getFieldValue([gameTypeName, 'limitInput', 'max'])
+										) {
+											return Promise.resolve()
+										}
+										return Promise.reject(new Error(''))
+									},
+								}),
 							]}
 						>
 							<InputNumber />
 						</Form.Item>
 						<Form.Item
 							style={{ margin: 0 }}
-							name={['limitInput', String(key), 'max']}
+							name={[gameTypeName, 'limitInput', 'max']}
 							label={t('Label_Max')}
 							rules={[
 								{
 									required: true,
 									message: '',
 								},
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (
+											value > getFieldValue([gameTypeName, 'limitInput', 'min'])
+										) {
+											return Promise.resolve()
+										}
+										return Promise.reject(new Error(''))
+									},
+								}),
 							]}
 						>
 							<InputNumber />
 						</Form.Item>
 						<Form.Item
 							style={{ margin: 0 }}
-							name={['limitInput', String(key), 'maxPerMatch']}
+							name={[gameTypeName, 'limitInput', 'maxPerMatch']}
 							label={t('Label_MaxPerMatch')}
 							rules={[
 								{
@@ -327,9 +365,8 @@ const EditBetLimitModal = ({
 			onCancel={onCancel}
 			okText={t('Label_Submit')}
 			cancelText={t('Label_Cancel')}
-			// handleBeforeSetBetLimit 裡 validateFields驗正需異步
 			onOk={async () => {
-				onSetBetLimit(await handleBeforeSetBetLimit())
+				betLimitForm.validateFields().then(() => handleBeforeSetBetLimit())
 			}}
 			// okButtonProps={{ disabled: true }}
 			width='70vw'
@@ -364,7 +401,7 @@ const EditBetLimitModal = ({
 										type='primary'
 										htmlType='submit'
 										icon={<SearchOutlined />}
-										onClick={onSearchUserName}
+										onClick={onSearchBetLimit}
 									>
 										{t('Label_Search')}
 									</Button>
@@ -379,6 +416,8 @@ const EditBetLimitModal = ({
 							</Col>
 						)}
 					</Row>
+				</Form>
+				<Form form={betLimitForm} component={false}>
 					{dataSource && (
 						<Table
 							loading={loading}

@@ -40,7 +40,7 @@ export interface IEditForm {
 }
 
 export interface IGetByCustIdArgs {
-	custId: number
+	custId: number | undefined
 }
 
 export interface ILimitGroup {
@@ -49,9 +49,9 @@ export interface ILimitGroup {
 }
 
 export interface ILimitInput {
-	min: number
-	max: number
-	maxPerMatch: number
+	min: number | undefined
+	max: number | undefined
+	maxPerMatch: number | undefined
 }
 
 export interface IGameTypeBetLimit {
@@ -60,7 +60,7 @@ export interface IGameTypeBetLimit {
 	gameTypeId: number
 	gameTypeName: string
 	checked: boolean
-	limitGroup?: string | null
+	limitGroup?: string
 	limitRange?: string | null
 	min?: number
 	max?: number
@@ -121,8 +121,6 @@ export interface IGetTpCategoryListArgs {
 }
 
 export interface ITpCategoryListData {
-	// 用於判斷 table 欄位的 uuid
-	key: string
 	checked: boolean
 	selectedGroup: string
 	categoryId: number
@@ -132,6 +130,22 @@ export interface ITpCategoryListData {
 	isGroup: boolean
 	limitGroup: ILimitGroup[]
 	limitInput: ILimitInput
+}
+
+export interface IBetLimitTableData {
+	tpCategoryName: string
+	tpCategory: number
+	checked: boolean
+	gameTypeId: number
+	gameTypeName: string
+	limitGroupOptions: ILimitGroup[] | undefined
+	limitGroup?: string | undefined
+	isGroup: boolean
+	limitInput?: ILimitInput
+}
+
+export interface IFormBetLimitTableData {
+	[key: string]: IBetLimitTableData
 }
 
 export type ITpCategoryListResponse = IAxiosResponse<ITpCategoryListData[]>
