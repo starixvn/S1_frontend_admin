@@ -2,11 +2,7 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
 import { Table } from 'components'
-import {
-	numberFormatter,
-	numFormatToDigits,
-	timeFormat,
-} from 'common/utils/format'
+import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import type { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
 import { TablePaginationConfig, Typography } from 'antd'
@@ -50,6 +46,15 @@ const BonusAmountClaimedDetailTable = ({
 		},
 		{
 			title: t('Label_UserName'),
+			key: 'userName',
+			dataIndex: 'userName',
+			align: 'center' as 'center',
+			sorter: true,
+			width: 120,
+			render: (userName: string) => userName || '-',
+		},
+		{
+			title: t('Label_Currency'),
 			key: 'currency',
 			dataIndex: 'currency',
 			align: 'center' as 'center',
@@ -89,8 +94,7 @@ const BonusAmountClaimedDetailTable = ({
 			align: 'center' as 'center',
 			sorter: true,
 			width: 120,
-			render: (affCode: number) =>
-				affCode ? numberFormatter.format(affCode) : 0,
+			render: (affCode: number) => affCode ?? 0,
 		},
 		{
 			title: t('Label_TotalDepositAmount'),
