@@ -22,11 +22,14 @@ import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { adjustmentTypeList } from 'features/paymentAdjustment/constants'
 import { IFilterForm } from 'features/paymentAdjustment/type'
+import { IMemberTypeData } from 'features/memberAdministrationList/type'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 interface IPaymentAdjustmentFilterProps {
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
+	memberTypeEnums: IMemberTypeData[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -48,6 +51,7 @@ const PaymentAdjustmentFilter = ({
 	loading,
 	form,
 	timeZoneUtcOffset,
+	memberTypeEnums,
 	onSearch,
 	onTimeZoneChange,
 	currencyListBySite,
@@ -118,6 +122,38 @@ const PaymentAdjustmentFilter = ({
 		)
 	}
 
+	const memberTypeSelector = () => {
+		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
+			if (newMemberTypes.includes(0)) {
+				form.setFieldsValue({
+					memberTypes: memberTypeEnums?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					memberTypes: newMemberTypes,
+				})
+			}
+		}
+		return (
+			<Form.Item name='memberTypes' label={t('Label_MemberType')}>
+				<MultipleSelect
+					onChange={handleChangeMemberType}
+					placeholder={t('Label_Select') + t('Label_MemberType')}
+				>
+					{(memberTypeEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{memberTypeEnums?.map(({ value, name }) => (
+						<Option key={value} value={value}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -132,6 +168,7 @@ const PaymentAdjustmentFilter = ({
 								({ currencyId }) => currencyId
 							),
 							adjustTypes: adjustmentTypeList?.map(({ value }) => value),
+							memberTypes: memberTypeEnums?.map(({ value }) => value),
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -198,6 +235,9 @@ const PaymentAdjustmentFilter = ({
 								<Form.Item name='depositId' label={t('Label_DepositId')}>
 									<Input allowClear />
 								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								{memberTypeSelector()}
 							</Col>
 						</Row>
 						<br />
