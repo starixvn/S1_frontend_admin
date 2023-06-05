@@ -11,8 +11,6 @@ import {
 	ITpCategoryListResponse,
 	IGetTpCategoryListArgs,
 } from 'features/betLimit/type'
-import { assign } from 'lodash'
-import { v4 as uuidV4 } from 'uuid'
 
 const betLimitApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
@@ -66,13 +64,6 @@ const betLimitApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			transformResponse: (returnResponse: ITpCategoryListResponse) => {
-				const { data: tpCategoryData } = returnResponse
-				const newData = tpCategoryData.map(item =>
-					assign(item, { key: uuidV4(), checked: false, selectedGroup: null })
-				)
-				return assign(returnResponse, { data: newData })
-			},
 		}),
 	}),
 })

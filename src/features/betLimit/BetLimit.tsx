@@ -25,12 +25,12 @@ import {
 	IEditForm,
 	IFilterForm,
 	IBetLimitData,
-	ITpCategoryListData,
+	IGameTypeBetLimit,
+	ISetBetLimitArgs,
 } from 'features/betLimit/type'
 import { BetLimitTable } from 'features/betLimit/BetLimitTable'
 import { BetLimitFilter } from 'features/betLimit/BetLimitFilter'
 import { EditBetLimitModal } from 'features/betLimit/BetLimitModal/EditBetLimitModal'
-import { TpBetLimitCategoryListConverter } from 'features/betLimit/utils'
 
 const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -155,22 +155,23 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleSetBetLimit = async (list: ITpCategoryListData[] | undefined) => {
+	const handleSetBetLimit = async (
+		newBetSetting: IGameTypeBetLimit[] | undefined
+	) => {
 		const { userName } = editForm.getFieldsValue()
-		const { currencyId } = editForm.getFieldsValue(['currencyId'])
+		const { currencyId } = editForm.getFieldsValue(true)
 
-		const betSetting = TpBetLimitCategoryListConverter(list!)
+		const payload: ISetBetLimitArgs = {
+			siteId,
+			currencyId,
+			after: {
+				userName,
+				betSetting: newBetSetting,
+			},
+		}
 
 		try {
-			await setBetLimit({
-				siteId,
-				currencyId,
-				after: {
-					userName,
-					betSetting,
-				},
-			}).unwrap()
-
+			await setBetLimit(payload).unwrap()
 			editModal.onCancel()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
