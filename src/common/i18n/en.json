@@ -1174,6 +1174,8 @@
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
 	"Label_RetentionRate": "Retention Rate",
+	"Label_Message": "Message",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
-	"Label_Message": "Message"
+	"Label_MaxPerMatch": "MaxPerMatch",
+	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch"
 }
