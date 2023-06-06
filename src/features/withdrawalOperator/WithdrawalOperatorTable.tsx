@@ -92,6 +92,14 @@ const WithdrawalOperatorTable = ({
 			},
 		},
 		{
+			title: t('Label_ProcessWay'),
+			key: 'processWayName',
+			dataIndex: 'processWayName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (processWayName: string) => processWayName ?? '-',
+		},
+		{
 			title: t('Label_WithdrawalType'),
 			key: 'withdrawalType',
 			dataIndex: 'withdrawalTypeName',

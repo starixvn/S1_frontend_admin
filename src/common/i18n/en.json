@@ -1148,7 +1148,6 @@
 	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_content": "content",
 	"Label_Receive": "Receive",
-	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_CheckBy": "Check By",
 	"Label_CR": "CR",
@@ -1157,5 +1156,7 @@
 	"Label_RetentionRate": "Retention Rate",
 	"Label_ToCryptoAccount": "To Crypto Account",
 	"Label_FrontDisplayName": "Front Display Name",
-	"Label_ActualAmount": "Actual Amount"
+	"Label_ActualAmount": "Actual Amount",
+	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
+	"Label_ProcessWay": "Process Way"
 }
