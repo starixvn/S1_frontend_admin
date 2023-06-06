@@ -1175,7 +1175,9 @@
 	"Label_RR": "RR",
 	"Label_RetentionRate": "Retention Rate",
 	"Label_Message": "Message",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_MaxPerMatch": "MaxPerMatch",
-	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch"
+	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch",
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_Step1_SelectTpMessage": "Step 1 : Select TP",
+	"Label_Step2_SelectGames": "Step 2: Select Games"
 }

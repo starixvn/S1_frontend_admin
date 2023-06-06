@@ -120,6 +120,16 @@ export interface ISlotTpData {
 	checked: boolean
 }
 
+export interface ISlotGameData {
+	tpId: number
+	gameType: number
+	categoryId: number
+	id: string
+	gameId: string
+	appId: string
+	name: string
+}
+
 export type ILocalPaySettingData = {
 	currencyId: number
 	sysId: number
