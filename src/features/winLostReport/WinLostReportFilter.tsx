@@ -28,6 +28,8 @@ import { IGetTpGameTypeData } from 'features/bettingMonitorSetting/type'
 import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
+import { RangePickerProps } from 'antd/es/date-picker'
+import moment from 'moment/moment'
 
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
@@ -63,6 +65,12 @@ const WinLostReportFilter = ({
 	onSearch,
 }: IWinLostReportFilterProps) => {
 	const { t } = useTranslation()
+
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		return (
+			current > moment().endOf('day') || current < moment().subtract(2, 'month')
+		)
+	}
 
 	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: Array<string | number>) => {
@@ -190,6 +198,7 @@ const WinLostReportFilter = ({
 													'Last 7 Day',
 													'This Month',
 												])}
+												disabledDate={disabledDate}
 											/>
 										</Form.Item>
 										<div>
