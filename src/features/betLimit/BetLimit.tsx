@@ -160,7 +160,6 @@ const BetLimit = ({ pageTitle }: { pageTitle?: string }) => {
 	) => {
 		const { userName } = editForm.getFieldsValue()
 		const { currencyId } = editForm.getFieldsValue(true)
-
 		const payload: ISetBetLimitArgs = {
 			siteId,
 			currencyId,

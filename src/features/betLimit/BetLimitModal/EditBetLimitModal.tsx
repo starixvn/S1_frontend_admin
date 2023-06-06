@@ -196,14 +196,15 @@ const EditBetLimitModal = ({
 					// * 分別格式化成 'limitGroup' or 'limitInput' 的送出格式
 					...(isGroup
 						? {
-								limitGroup,
-								limitRange: find(limitGroupOptions, { group: limitGroup })
-									?.range,
+								limitGroup: checked ? limitGroup : null,
+								limitRange: checked
+									? find(limitGroupOptions, { group: limitGroup! })?.range
+									: null,
 						  }
 						: {
-								min: limitInput?.min,
-								max: limitInput?.max,
-								maxPerMatch: limitInput?.maxPerMatch,
+								min: checked ? limitInput?.min : null,
+								max: checked ? limitInput?.max : null,
+								maxPerMatch: checked ? limitInput?.maxPerMatch : null,
 						  }),
 				}
 			}
