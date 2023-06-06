@@ -27,6 +27,7 @@ import {
 } from 'antd'
 import { IFilterForm } from 'features/marketing/type'
 import { compareDateList, CompareDateEnum } from 'features/marketing/constants'
+import { RangePickerProps } from 'antd/es/date-picker'
 
 interface IMpaMarketingFilterProps {
 	loading: boolean
@@ -57,6 +58,12 @@ const MarketingFilter = ({
 }: IMpaMarketingFilterProps) => {
 	const { t } = useTranslation()
 	const formIsCompared = Form.useWatch('isCompared', form)
+
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		return (
+			current > moment().endOf('day') || current < moment().subtract(2, 'month')
+		)
+	}
 
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
@@ -198,6 +205,7 @@ const MarketingFilter = ({
 												])}
 												format={dateFormat}
 												onChange={handleDateRangeSelector}
+												disabledDate={disabledDate}
 											/>
 										</Form.Item>
 										<div>
