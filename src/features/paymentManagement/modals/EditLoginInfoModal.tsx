@@ -45,6 +45,7 @@ const EditLoginInfoModal = ({
 					loginPassword: '',
 					transferPin: '',
 					loginPin: '',
+					corporateId: '',
 				}}
 			>
 				<Row gutter={16}>
@@ -57,6 +58,22 @@ const EditLoginInfoModal = ({
 									required: true,
 									message: t('Label_Required', {
 										key: t('Label_LoginUrl'),
+									}),
+								},
+							]}
+						>
+							<Input allowClear />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item
+							name='corporateId'
+							label={t('Label_CorporateID')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_CorporateID'),
 									}),
 								},
 							]}
