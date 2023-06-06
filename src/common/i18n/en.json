@@ -1158,5 +1158,8 @@
 	"Label_FrontDisplayName": "Front Display Name",
 	"Label_ActualAmount": "Actual Amount",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ProcessWay": "Process Way"
+	"Label_ProcessWay": "Process Way",
+	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
+	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
+	"Label_Tagging": "Tagging"
 }
