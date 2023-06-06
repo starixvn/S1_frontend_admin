@@ -24,6 +24,8 @@ import { MultipleSelect } from 'components/Select'
 import { GroupByEnum, groupByList } from 'features/bonusInfo/constants'
 import { IFilterForm } from 'features/bonusInfo/type'
 import { IEnumTypeData } from 'common/service/enumApi'
+import { RangePickerProps } from 'antd/es/date-picker'
+import moment from 'moment'
 
 interface IBonusInfoFilterProps {
 	loading: boolean
@@ -57,6 +59,12 @@ const BonusInfoFilter = ({
 	onSearch,
 }: IBonusInfoFilterProps) => {
 	const { t } = useTranslation()
+
+	const disabledDate: RangePickerProps['disabledDate'] = current => {
+		return (
+			current > moment().endOf('day') || current < moment().subtract(2, 'month')
+		)
+	}
 
 	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
@@ -226,6 +234,7 @@ const BonusInfoFilter = ({
 														'Last 7 Day',
 														'This Month',
 													])}
+													disabledDate={disabledDate}
 												/>
 											</Form.Item>
 											<div>
