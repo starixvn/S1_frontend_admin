@@ -97,6 +97,7 @@ export interface ActionPermissions {
 	setAmountPermission: PermissionInterface
 	editAutoWithdrawalRulePermission: PermissionInterface
 	forceProceed: PermissionInterface
+	exclusiveVipPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

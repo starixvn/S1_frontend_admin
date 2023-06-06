@@ -7,10 +7,10 @@ import {
 	Button,
 	Form,
 	message,
+	Modal,
 	notification,
 	Row,
 	Typography,
-	Modal,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { uniqueId } from 'lodash'
@@ -18,14 +18,18 @@ import {
 	useCloseAccountMutation,
 	useEditAddressMutation,
 	useEditBirthdayMutation,
+	useEditCustPromotionWhiteListMutation,
 	useEditEmailNameMutation,
 	useEditFullNameMutation,
 	useEditPhoneNoMutation,
 	useGetBasicInfoQuery,
+	useGetCustPromotionWhiteListDataQuery,
+	useKickOutUserMutation,
+	useLazyGetCheckDuplicateNameQuery,
 	useLockAccountMutation,
 	useResetBankInfoMutation,
-	useResetEWalletMutation,
 	useResetCryptoInfoMutation,
+	useResetEWalletMutation,
 	useResetPasswordMutation,
 	useSetPayoutVerificationRewardMutation,
 	useSwitchEmailVerifiedMutation,
@@ -33,24 +37,21 @@ import {
 	useSwitchPhoneVerifiedMutation,
 	useSwitchRebatePayoutMutation,
 	useSwitchRiskMutation,
-	useKickOutUserMutation,
-	useLazyGetCheckDuplicateNameQuery,
-	useGetCustPromotionWhiteListDataQuery,
-	useEditCustPromotionWhiteListMutation,
+	useSwitchVipAutomationExclusionMutation,
 } from 'features/memberProfile/api'
 import {
-	ISettingFinancePermissions,
+	ICustPromotionWhiteResponse,
 	IGetBasicInfoResponse,
+	ISettingFinancePermissions,
 	ISettingForm,
+	ISettingInfoPermissions,
+	ISettingMarketingPermissions,
 	ISettingRiskPermissions,
-	PayoutVerificationRewardOTPTypeEnum,
 	LockAccountTypeEnum,
+	PayoutVerificationRewardOTPTypeEnum,
+	SettingCustPromotionWitheListEnum,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
-	ISettingMarketingPermissions,
-	ISettingInfoPermissions,
-	ICustPromotionWhiteResponse,
-	SettingCustPromotionWitheListEnum,
 } from 'features/memberProfile/type'
 import copy from 'copy-to-clipboard'
 import SettingInfoCard from './SettingInfoCard'
@@ -91,6 +92,7 @@ const Setting = () => {
 			phoneVerifiedRewardPermission,
 			emailVerifiedRewardPermission,
 			lockRebatePayoutPermission,
+			exclusiveVipPermission,
 		} = {},
 	} = useAuth()
 
@@ -125,6 +127,7 @@ const Setting = () => {
 		phoneVerifiedRewardPermission,
 		emailVerifiedRewardPermission,
 		lockRebatePayoutPermission,
+		exclusiveVipPermission,
 	}
 
 	const { custId: originCustId } = useParams()
@@ -197,6 +200,10 @@ const Setting = () => {
 	const [switchRebatePayout, { isLoading: isSwitchRebatePayoutLoading }] =
 		useSwitchRebatePayoutMutation()
 
+	const [
+		switchVipAutomationExclusion,
+		{ isLoading: isSwitchVipAutomationLoading },
+	] = useSwitchVipAutomationExclusionMutation()
 	const [setPayoutVerificationReward] = useSetPayoutVerificationRewardMutation()
 
 	const [editCustPromotionWhiteList] = useEditCustPromotionWhiteListMutation()
@@ -241,6 +248,13 @@ const Setting = () => {
 					await switchRebatePayout({
 						custId,
 						status: checked ? 1 : 0,
+					}).unwrap()
+					break
+				}
+				case SettingSwitchTypeEnum.ExclusiveVIP: {
+					await switchVipAutomationExclusion({
+						custId,
+						enable: checked,
 					}).unwrap()
 					break
 				}
@@ -582,6 +596,7 @@ const Setting = () => {
 						custBasicInfo={custBasicInfo ?? {}}
 						custPromotionWhiteData={custPromotionWhiteData ?? {}}
 						isSwitchRebatePayoutLoading={isSwitchRebatePayoutLoading}
+						isSwitchVipAutomationLoading={isSwitchVipAutomationLoading}
 						onSwitch={handleSwitch}
 						onSwitchPromotionWhiteList={handleSwitchPromotionWhiteList}
 						onSetPayoutVerificationReward={handleSetPayoutVerificationReward}

@@ -1161,5 +1161,7 @@
 	"Label_ProcessWay": "Process Way",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
-	"Label_Tagging": "Tagging"
+	"Label_Tagging": "Tagging",
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_ExclusiveVIP": "Exclusive VIP"
 }
