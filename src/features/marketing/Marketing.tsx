@@ -35,6 +35,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isInOneDay, setIsInOneDay] = useState<boolean>(false)
+	const [selectDate, setSelectDate] = useState(null)
 
 	const [
 		getPerformanceHighlight,
@@ -175,6 +176,8 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
+				selectDate={selectDate}
+				setSelectDate={setSelectDate}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
