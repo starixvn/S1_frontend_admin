@@ -49,9 +49,9 @@ export interface ILimitGroup {
 }
 
 export interface ILimitInput {
-	min: number | undefined
-	max: number | undefined
-	maxPerMatch: number | undefined
+	min: number | undefined | null
+	max: number | undefined | null
+	maxPerMatch: number | undefined | null
 }
 
 export interface IGameTypeBetLimit {
@@ -60,11 +60,11 @@ export interface IGameTypeBetLimit {
 	gameTypeId: number
 	gameTypeName: string
 	checked: boolean
-	limitGroup?: string
+	limitGroup?: string | null
 	limitRange?: string | null
-	min?: number
-	max?: number
-	maxPerMatch?: number
+	min?: number | null
+	max?: number | null
+	maxPerMatch?: number | null
 }
 
 export interface IGetByCustIdData {
@@ -139,7 +139,7 @@ export interface IBetLimitTableData {
 	gameTypeId: number
 	gameTypeName: string
 	limitGroupOptions: ILimitGroup[] | undefined
-	limitGroup?: string | undefined
+	limitGroup?: string | undefined | null
 	isGroup: boolean
 	limitInput?: ILimitInput
 }
