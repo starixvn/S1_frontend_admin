@@ -67,9 +67,21 @@ const MarketingFilter = ({
 		if (!selectDate) {
 			return false
 		}
-		const tooLate = selectDate[0] && current.diff(selectDate[0], 'month') > 1
-		const tooEarly = selectDate[1] && selectDate[1].diff(current, 'month') > 1
-		return !!tooEarly || !!tooLate
+		if (selectDate[0] && current.diff(selectDate[0], 'month') >= 2) return true
+		if (selectDate[1] && current.diff(selectDate[1], 'month') <= -2) return true
+
+		return false
+	}
+
+	const onOpenChange = (open: boolean) => {
+		if (open) {
+			setSelectDate([null, null])
+			form.setFieldsValue({
+				dateRange: undefined,
+			})
+		} else {
+			setSelectDate(null)
+		}
 	}
 
 	const currencyIdsSelector = () => {
@@ -213,6 +225,7 @@ const MarketingFilter = ({
 												format={dateFormat}
 												onChange={handleDateRangeSelector}
 												disabledDate={disabledDate}
+												onOpenChange={onOpenChange}
 												onCalendarChange={date => setSelectDate(date)}
 											/>
 										</Form.Item>
