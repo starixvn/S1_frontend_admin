@@ -987,7 +987,9 @@ export interface IGetTurnoverData {
 // GameLog => Statement
 
 // Table 第一層 , 取得客戶紀錄
-export interface IGetCustTpBetRecordArgs extends IGetIpLogArgs {}
+export interface IGetCustTpBetRecordArgs extends IGetIpLogArgs {
+	gameTypes: number[]
+}
 
 export interface IGetCustTpBetRecordData {
 	settledDate: string
@@ -1042,7 +1044,7 @@ export interface IGetCustTpBetRecordByCategoryIdData {
 
 // Table 第四層 , 取得客戶指定 GameType 紀錄
 export interface IGetCustTpBetRecordByGameTypeArgs
-	extends IGetCustTpBetRecordByDayArgs {
+	extends Omit<IGetCustTpBetRecordByDayArgs, 'gameTypes'> {
 	pageNumber: number
 	pageSize: number
 	gameTypeId: number
