@@ -1,5 +1,12 @@
 import moment from 'moment'
-import { TablePaginationConfig, Typography } from 'antd'
+import {
+	Tag,
+	Badge,
+	Space,
+	Popover,
+	Typography,
+	TablePaginationConfig,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -7,6 +14,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
+import { DEPOSIT_STATUS_TAGS_COLOR } from 'features/depositOperator/constants'
 import { IDepositTimeReportData } from 'features/depositTimeReport/type'
 
 interface IDepositTimeReportTableProps {
@@ -26,13 +34,37 @@ const DepositTimeReportTable = ({
 }: IDepositTimeReportTableProps) => {
 	const { t } = useTranslation()
 
+	const messageColumns = [
+		{
+			title: t('Label_CreateTime'),
+			key: 'createTime',
+			dataIndex: 'createTime',
+			align: 'center' as 'center',
+			render: (createTime: string) =>
+				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+		},
+		{
+			title: t('Label_Message'),
+			dataIndex: 'message',
+			align: 'center' as 'center',
+			key: 'message',
+		},
+	]
+
 	const columns = [
 		{
 			title: t('Label_DepositId'),
-			key: 'depositId',
-			dataIndex: 'depositId',
+			key: 'transId',
+			dataIndex: 'transId',
 			width: 60,
 			align: 'center' as 'center',
+			render: (transId: string) => (
+				<Typography.Link
+					href={`/${NEW_SITE_PREFIX_URL}/${paths.finance.sub.depositWithdrawalSector.sub.depositOperator.root}/${transId}`}
+				>
+					{transId}
+				</Typography.Link>
+			),
 		},
 		{
 			title: t('Label_DepositType'),
@@ -72,10 +104,49 @@ const DepositTimeReportTable = ({
 		},
 		{
 			title: t('Label_Status'),
-			key: 'statusName',
-			dataIndex: 'statusName',
+			key: 'status',
 			width: 60,
 			align: 'center' as 'center',
+			render: ({
+				status,
+				statusName,
+				depositMessageList,
+			}: IDepositTimeReportData) => {
+				const color = DEPOSIT_STATUS_TAGS_COLOR[status]
+
+				// sort message by createTime (old to new)
+				const sortedDepositMessageList =
+					depositMessageList.length > 1
+						? depositMessageList
+								.slice()
+								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+						: depositMessageList
+
+				return (
+					<Space size={1}>
+						<Tag color={color}>{statusName ?? 'N/A'}</Tag>
+						{depositMessageList && depositMessageList.length > 0 && (
+							<Popover
+								content={
+									<Table
+										dataSource={sortedDepositMessageList}
+										columns={messageColumns}
+										pagination={false}
+									/>
+								}
+								title={false}
+								trigger='hover'
+								overlayStyle={{ width: '30vw' }}
+							>
+								<Badge
+									count={depositMessageList.length}
+									style={{ backgroundColor: '#faad14' }}
+								/>
+							</Popover>
+						)}
+					</Space>
+				)
+			},
 		},
 		{
 			title: t('Label_CreateTime'),

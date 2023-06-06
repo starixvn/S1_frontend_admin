@@ -1168,11 +1168,12 @@
 	"Label_TpCategory": "Tp Category",
 	"Label_LiveStreamingGameType": "LiveStreamingGameType",
 	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_ResetOTPLimit": "Reset OTP Limit",
 	"Label_CheckBy": "Check By",
 	"Label_CR": "CR",
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
-	"Label_RetentionRate": "Retention Rate"
+	"Label_RetentionRate": "Retention Rate",
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_Message": "Message"
 }

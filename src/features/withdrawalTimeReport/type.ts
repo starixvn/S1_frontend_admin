@@ -38,6 +38,7 @@ export interface IWithdrawalTimeReportData {
 	verifiedBy: string | null
 	processedBy: string | null
 	approvedBy: string | null
+	withdrawalMessageList: { createTime: string; message: string }[]
 }
 
 export type ICurrencyAmountRecordData = {
