@@ -1100,5 +1100,7 @@
 	"Label_ToCryptoAccount": "To Crypto Account",
 	"Label_FrontDisplayName": "Front Display Name",
 	"Label_ActualAmount": "Actual Amount",
-	"Label_ActiveInactiveAll": "Active/Inactive All"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_ExclusiveVIP": "Exclusive VIP"
 }
