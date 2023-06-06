@@ -18,6 +18,7 @@ interface ISettingMarketingCardProps {
 	custBasicInfo: IGetBasicInfoData
 	custPromotionWhiteData: ICustPromotionWhiteData
 	isSwitchRebatePayoutLoading: boolean
+	isSwitchVipAutomationLoading: boolean
 	onSwitch: (newSwitchType: SettingSwitchTypeEnum, checked: boolean) => void
 	onSwitchPromotionWhiteList: (
 		newSwitchType: SettingCustPromotionWitheListEnum,
@@ -35,17 +36,20 @@ const SettingMarketingCard = ({
 		phoneVerifiedRewardPermission,
 		emailVerifiedRewardPermission,
 		lockRebatePayoutPermission,
+		exclusiveVipPermission,
 	},
 	custBasicInfo,
 	custPromotionWhiteData,
 	isSwitchRebatePayoutLoading,
+	isSwitchVipAutomationLoading,
 	onSwitch,
 	onSwitchPromotionWhiteList,
 	onSetPayoutVerificationReward,
 }: ISettingMarketingCardProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
-	const { enableRebate, phoneRewardTime, emailRewardTime } = custBasicInfo
+	const { enableRebate, phoneRewardTime, emailRewardTime, exclusive } =
+		custBasicInfo
 	const isRebatePayoutStatus = Boolean(enableRebate)
 
 	return (
@@ -182,6 +186,21 @@ const SettingMarketingCard = ({
 										custPromotionWhiteData.deviceEnable,
 										checkedRealName
 									)
+								}
+							/>
+						</Col>
+					</Row>
+				</p>
+				<p>
+					<Row>
+						<Col span={16}>{t('Label_ExclusiveVIP')}</Col>
+						<Col span={6} offset={2}>
+							<Switch
+								checked={Boolean(exclusive)}
+								loading={isSwitchVipAutomationLoading}
+								disabled={!exclusiveVipPermission?.canUse}
+								onChange={checked =>
+									onSwitch(SettingSwitchTypeEnum.ExclusiveVIP, checked)
 								}
 							/>
 						</Col>

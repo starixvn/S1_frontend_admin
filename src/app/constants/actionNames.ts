@@ -75,4 +75,5 @@ export const ACTION_NAMES: {
 	79: 'checkReceiptPermission',
 	81: 'setAmountPermission',
 	83: 'forceProceed',
+	86: 'exclusiveVipPermission',
 }
