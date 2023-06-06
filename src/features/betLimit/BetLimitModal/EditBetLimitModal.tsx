@@ -31,7 +31,7 @@ import {
 	IFormBetLimitTableData,
 	IGameTypeBetLimit,
 } from 'features/betLimit/type'
-import { find } from 'lodash'
+import { find, isEmpty } from 'lodash'
 
 interface IEditBetLimitModalProps {
 	form: FormInstance<IEditForm>
@@ -123,7 +123,6 @@ const EditBetLimitModal = ({
 				}).unwrap()
 
 				const { betSetting } = custBetLimitData
-
 				betLimitTableDataList = betSetting.map(
 					({
 						checked,
@@ -305,7 +304,8 @@ const EditBetLimitModal = ({
 								({ getFieldValue }) => ({
 									validator(_, value) {
 										if (
-											value < getFieldValue([gameTypeName, 'limitInput', 'max'])
+											value <=
+											getFieldValue([gameTypeName, 'limitInput', 'max'])
 										) {
 											return Promise.resolve()
 										}
@@ -328,7 +328,14 @@ const EditBetLimitModal = ({
 								({ getFieldValue }) => ({
 									validator(_, value) {
 										if (
-											value > getFieldValue([gameTypeName, 'limitInput', 'min'])
+											value >=
+												getFieldValue([gameTypeName, 'limitInput', 'min']) &&
+											value <=
+												getFieldValue([
+													gameTypeName,
+													'limitInput',
+													'maxPerMatch',
+												])
 										) {
 											return Promise.resolve()
 										}
@@ -348,6 +355,17 @@ const EditBetLimitModal = ({
 									required: true,
 									message: '',
 								},
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (
+											value >=
+											getFieldValue([gameTypeName, 'limitInput', 'max'])
+										) {
+											return Promise.resolve()
+										}
+										return Promise.reject(new Error(''))
+									},
+								}),
 							]}
 						>
 							<InputNumber />
@@ -368,7 +386,7 @@ const EditBetLimitModal = ({
 			onOk={async () => {
 				betLimitForm.validateFields().then(() => handleBeforeSetBetLimit())
 			}}
-			// okButtonProps={{ disabled: true }}
+			okButtonProps={{ disabled: isEmpty(dataSource) }}
 			width='70vw'
 			confirmLoading={loading}
 			afterClose={onCloseModal}
