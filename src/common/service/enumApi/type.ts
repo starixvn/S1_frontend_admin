@@ -65,6 +65,10 @@ export type EnumNameType =
 	| 'DirectionEnum'
 	| 'DepositReceiptCreateFromEnum'
 	| 'LeaderBoardCategoryEnum'
+	| 'PromotionStatusEnum'
+	| 'BonusSummaryType'
+	| 'BonusInfoStatusEnum'
+	| 'BonusSummaryTransactionType'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -121,6 +125,10 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 * @argument {string}  LeaderBoardCategoryEnum - 取得 LeaderBoardCategory 列表
+	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表
+	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
+	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
+	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
 	 */
 	enumName: EnumNameType
 }

@@ -2701,6 +2701,14 @@ const routes: RouteObject[] = [
 					</AuthRequire>
 				),
 			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
+						<BonusInfo />
+					</AuthRequire>
+				),
+			},
 		],
 	},
 	{
