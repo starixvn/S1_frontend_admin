@@ -60,6 +60,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
 	const [expandList, setExpandList] = useState<Array<string | number>>([])
+	const [selectDate, setSelectDate] = useState(null)
 
 	const {
 		data: { data: tpGameList = [] } = {},
@@ -591,6 +592,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
+				selectDate={selectDate}
+				setSelectDate={setSelectDate}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
