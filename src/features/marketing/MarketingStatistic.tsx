@@ -164,9 +164,10 @@ const MarketingStatistic = ({
 													strong
 													style={{ fontSize: 24, whiteSpace: 'nowrap' }}
 												>
-													{numberFormatter.format(
-														performanceHighlightData.activeUsers
-													)}
+													{/* 這段與au參數不同 後端處理中 還未能正確獲取數值 故先註解 */}
+													{/* {numberFormatter.format( */}
+													{/* 	performanceHighlightData.activeUsers */}
+													{/* )} */}-
 												</Text>
 											</Col>
 										</Row>
