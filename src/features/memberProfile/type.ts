@@ -196,6 +196,8 @@ export interface ITodayInfoData {
 	todayWithdrawal: number
 	todayWinLoss: number
 	todayBetting: number
+	todayBonus: number
+	todayReward: number
 }
 
 export interface ICustTpWalletList {
