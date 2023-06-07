@@ -29,7 +29,6 @@ import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { RangePickerProps } from 'antd/es/date-picker'
-import moment from 'moment/moment'
 
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
@@ -42,6 +41,8 @@ interface IWinLostReportFilterProps {
 	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
+	selectDate: any
+	setSelectDate: (date: any) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
@@ -61,15 +62,33 @@ const WinLostReportFilter = ({
 	currencyListBySite,
 	currencyListByAllSite,
 	timeZoneUtcOffset,
+	selectDate,
+	setSelectDate,
 	onTimeZoneChange,
 	onSearch,
 }: IWinLostReportFilterProps) => {
 	const { t } = useTranslation()
 
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
-		return (
-			current > moment().endOf('day') || current < moment().subtract(2, 'month')
-		)
+		if (!selectDate) {
+			return false
+		}
+
+		if (selectDate[0] && current.diff(selectDate[0], 'month') >= 2) return true
+		if (selectDate[1] && current.diff(selectDate[1], 'month') <= -2) return true
+
+		return false
+	}
+
+	const onOpenChange = (open: boolean) => {
+		if (open) {
+			setSelectDate([null, null])
+			form.setFieldsValue({
+				dateRange: undefined,
+			})
+		} else {
+			setSelectDate(null)
+		}
 	}
 
 	const currencySelector = () => {
@@ -199,6 +218,8 @@ const WinLostReportFilter = ({
 													'This Month',
 												])}
 												disabledDate={disabledDate}
+												onOpenChange={onOpenChange}
+												onCalendarChange={date => setSelectDate(date)}
 											/>
 										</Form.Item>
 										<div>
