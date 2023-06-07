@@ -64,7 +64,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [formGroupByDate, setFormGroupByDate] = useState<boolean>(false)
 	// bonusDetail 的資料接出來處理，因為下拉異動之後需要清除資料
 	const [bonusDetail, setBonusDetail] = useState<IBonusDetailListData[]>([])
-
+	const [selectDate, setSelectDate] = useState(null)
 	const [
 		getBonusInfo,
 		{
@@ -534,6 +534,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				claimStatusList={claimStatusList}
 				bonusStatusList={bonusStatusList}
 				bonusTypeList={bonusTypeList}
+				selectDate={selectDate}
+				setSelectDate={setSelectDate}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={() => {
 					// 使用 filter 搜尋時因條件改變，移除 detailTable
