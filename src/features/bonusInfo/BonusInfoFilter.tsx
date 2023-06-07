@@ -25,7 +25,6 @@ import { GroupByEnum, groupByList } from 'features/bonusInfo/constants'
 import { IFilterForm } from 'features/bonusInfo/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { RangePickerProps } from 'antd/es/date-picker'
-import moment from 'moment'
 
 interface IBonusInfoFilterProps {
 	loading: boolean
@@ -37,6 +36,8 @@ interface IBonusInfoFilterProps {
 	bonusStatusList: IEnumTypeData[]
 	bonusTypeList: IEnumTypeData[]
 	claimStatusList: IEnumTypeData[]
+	selectDate: any
+	setSelectDate: (date: any) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: () => void
 }
@@ -55,15 +56,33 @@ const BonusInfoFilter = ({
 	bonusStatusList,
 	bonusTypeList,
 	claimStatusList,
+	selectDate,
+	setSelectDate,
 	onTimeZoneChange,
 	onSearch,
 }: IBonusInfoFilterProps) => {
 	const { t } = useTranslation()
 
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
-		return (
-			current > moment().endOf('day') || current < moment().subtract(2, 'month')
-		)
+		if (!selectDate) {
+			return false
+		}
+
+		if (selectDate[0] && current.diff(selectDate[0], 'month') >= 2) return true
+		if (selectDate[1] && current.diff(selectDate[1], 'month') <= -2) return true
+
+		return false
+	}
+
+	const onOpenChange = (open: boolean) => {
+		if (open) {
+			setSelectDate([null, null])
+			form.setFieldsValue({
+				dateRange: undefined,
+			})
+		} else {
+			setSelectDate(null)
+		}
 	}
 
 	const currencySelector = () => {
@@ -235,6 +254,8 @@ const BonusInfoFilter = ({
 														'This Month',
 													])}
 													disabledDate={disabledDate}
+													onOpenChange={onOpenChange}
+													onCalendarChange={date => setSelectDate(date)}
 												/>
 											</Form.Item>
 											<div>
