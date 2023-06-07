@@ -35,6 +35,8 @@ interface IMpaMarketingFilterProps {
 	timeZoneUtcOffset: number
 	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
+	selectDate: any
+	setSelectDate: (date: any) => void
 	onSearch: ({
 		currentTimeZoneUtcOffset,
 	}: {
@@ -53,6 +55,8 @@ const MarketingFilter = ({
 	timeZoneUtcOffset,
 	currencyListBySite,
 	currencyListByAllSite,
+	selectDate,
+	setSelectDate,
 	onSearch,
 	onTimeZoneChange,
 }: IMpaMarketingFilterProps) => {
@@ -60,9 +64,24 @@ const MarketingFilter = ({
 	const formIsCompared = Form.useWatch('isCompared', form)
 
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
-		return (
-			current > moment().endOf('day') || current < moment().subtract(2, 'month')
-		)
+		if (!selectDate) {
+			return false
+		}
+		if (selectDate[0] && current.diff(selectDate[0], 'month') >= 2) return true
+		if (selectDate[1] && current.diff(selectDate[1], 'month') <= -2) return true
+
+		return false
+	}
+
+	const onOpenChange = (open: boolean) => {
+		if (open) {
+			setSelectDate([null, null])
+			form.setFieldsValue({
+				dateRange: undefined,
+			})
+		} else {
+			setSelectDate(null)
+		}
 	}
 
 	const currencyIdsSelector = () => {
@@ -206,6 +225,8 @@ const MarketingFilter = ({
 												format={dateFormat}
 												onChange={handleDateRangeSelector}
 												disabledDate={disabledDate}
+												onOpenChange={onOpenChange}
+												onCalendarChange={date => setSelectDate(date)}
 											/>
 										</Form.Item>
 										<div>
