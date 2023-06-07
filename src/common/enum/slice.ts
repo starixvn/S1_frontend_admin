@@ -71,6 +71,7 @@ const enumSlice = createSlice({
 				state.adminUserCurrencyList = siteCurrencyList
 				state.rewardsCurrencyList = rewardsCurrencyList
 				state.vipCurrencyList = vipCurrencyList
+				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
 				state.status = 'succeeded'
 				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
 			}),
