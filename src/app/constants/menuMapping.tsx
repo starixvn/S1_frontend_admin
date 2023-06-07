@@ -610,11 +610,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Win Lost Report',
 		icon: null,
-		functionId: 79,
+		functionId: paths.report.sub.winLostReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/LicWinLost',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.winLostReport.root,
 	},
 	{
 		icon: null,
