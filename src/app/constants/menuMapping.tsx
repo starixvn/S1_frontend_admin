@@ -550,11 +550,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: 72,
+		functionId: paths.report.sub.bonusInfoReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingRebateInfoReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/RebateInfoReport',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.bonusInfoReport.root,
 	},
 	{
 		name: 'Bonus Report',
@@ -610,11 +610,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		name: 'Win Lost Report',
 		icon: null,
-		functionId: 79,
+		functionId: paths.report.sub.winLostReport.functionId,
 		internalFunctionKey: allowedRoles.MarketingDrawPrizeReport,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Report/LicWinLost',
-		newAdminPath: '',
+		newAdminPath: paths.report.sub.winLostReport.root,
 	},
 	{
 		icon: null,
@@ -929,5 +929,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.cms.sub.leaderboardExtraPoint.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.leaderboardExtraPoint.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.mpaMarketingReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.mpaMarketingReport.root,
 	},
 ]

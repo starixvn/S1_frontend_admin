@@ -921,6 +921,42 @@ const SmsGenerator = lazy(
 		)
 )
 
+const MpaMarketing = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'MpaMarketing' */ 'features/marketing/Marketing'
+		)
+)
+
+// *  marketing > DepositAmount 列表
+const DepositAmount = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'DepositAmount' */ 'features/marketing/depositAmount/DepositAmount'
+		)
+)
+
+// *  marketing > WithdrawalAmount 列表
+const WithdrawalAmount = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WithdrawalAmount' */ 'features/marketing/withdrawalAmount/WithdrawalAmount'
+		)
+)
+
+// *  marketing > NRU 列表
+const Nru = lazy(
+	() => import(/* webpackChunkName: 'Nru' */ 'features/marketing/nru/Nru')
+)
+
+// *  marketing > BonusAmountClaimed 列表
+const BonusAmountClaimed = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BonusAmountClaimed' */ 'features/marketing/bonusAmountClaimed/BonusAmountClaimed'
+		)
+)
+
 const ProductMaintenance = lazy(
 	() =>
 		import(
@@ -992,6 +1028,18 @@ const Announcement = lazy(
 		import(
 			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
 		)
+)
+
+const WinLostReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
+		)
+)
+
+const BonusInfo = lazy(
+	() =>
+		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
 )
 
 const BatchMemberInfoReport = lazy(
@@ -2403,6 +2451,56 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<MpaMarketing />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.depositAmount.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<DepositAmount />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.withdrawalAmount.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<WithdrawalAmount />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.nru.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<Nru />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.sub.bonusClaimedInfo.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.mpaMarketingReport.functionId}
+					>
+						<BonusAmountClaimed />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
 				element: (
 					<AuthRequire
@@ -2501,6 +2599,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.winLostReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.winLostReport.functionId}>
+						<WinLostReport />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.batchMemberInfoReport.root}`,
 				element: (
 					<AuthRequire
@@ -2537,6 +2643,14 @@ const routes: RouteObject[] = [
 						functionId={paths.cms.sub.leaderboardExtraPoint.functionId}
 					>
 						<LeaderboardExtraPoint />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
+						<BonusInfo />
 					</AuthRequire>
 				),
 			},
