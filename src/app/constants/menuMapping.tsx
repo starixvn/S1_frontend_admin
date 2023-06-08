@@ -418,7 +418,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	{
 		icon: null,
 		functionId: paths.cms.sub.hotGameManagement.functionId,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/HotGamesManagement',
 		internalFunctionKey: allowedRoles.CMSHotEventManagement,
 		newAdminPath: paths.cms.sub.hotGameManagement.root,
@@ -713,7 +713,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.administration.sub.specialPasswordManagement.functionId,
 		internalFunctionKey: allowedRoles.AdminSpecialPasswordManagement,
-		pathMode: 'Internal',
+		pathMode: 'NewAdmin',
 		internalPath: 'Admin/SpecialPasswordManagement',
 		newAdminPath: paths.administration.sub.specialPasswordManagement.root,
 	},
