@@ -10,6 +10,7 @@ import {
 	Row,
 	Select,
 } from 'antd'
+import { reject } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	MOMENT_DATE_RANGES,
@@ -168,7 +169,11 @@ const PaymentAdjustmentFilter = ({
 								({ currencyId }) => currencyId
 							),
 							adjustTypes: adjustmentTypeList?.map(({ value }) => value),
-							memberTypes: memberTypeEnums?.map(({ value }) => value),
+							// 預設排除直播主
+							memberTypes: reject(memberTypeEnums, [
+								'value',
+								UserTypeEnum.LiveStreaming,
+							]).map(({ value }) => Number(value)),
 						}}
 					>
 						<Row align='middle' gutter={16}>
