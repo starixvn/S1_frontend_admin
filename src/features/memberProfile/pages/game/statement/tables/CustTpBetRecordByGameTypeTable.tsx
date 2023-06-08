@@ -1,7 +1,12 @@
 import moment from 'moment'
 import { IGetCustTpBetRecordByGameTypeData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
-import { Table as AntdTable, TablePaginationConfig, Typography } from 'antd'
+import {
+	PaginationProps,
+	Table as AntdTable,
+	TablePaginationConfig,
+	Typography,
+} from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
@@ -158,6 +163,10 @@ const CustTpBetRecordByGameTypeTable = ({
 			render: (bonusCode: string) => (!isEmpty(bonusCode) ? bonusCode : '-'),
 		},
 	]
+
+	const showTotal: PaginationProps['showTotal'] = total =>
+		`Total ${total} items`
+
 	return (
 		<Table
 			loading={loading}
@@ -206,7 +215,13 @@ const CustTpBetRecordByGameTypeTable = ({
 			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
-			pagination={pagination as TablePaginationConfig}
+			pagination={
+				{
+					pagination,
+					showTotal,
+					position: ['topRight'],
+				} as TablePaginationConfig
+			}
 			onChange={onTableChange}
 		/>
 	)

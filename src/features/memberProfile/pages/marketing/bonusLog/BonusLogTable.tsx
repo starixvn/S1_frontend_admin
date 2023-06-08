@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { IGetBonusLogData } from 'features/memberProfile/type'
-import { TablePaginationConfig, Typography } from 'antd'
+import { PaginationProps, TablePaginationConfig, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
@@ -146,10 +146,19 @@ const BonusLogTable = ({
 		},
 	]
 
+	const showTotal: PaginationProps['showTotal'] = total =>
+		`Total ${total} items`
+
 	return (
 		<Table
 			loading={loading}
-			pagination={pagination as TablePaginationConfig}
+			pagination={
+				{
+					pagination,
+					showTotal,
+					position: ['topRight'],
+				} as TablePaginationConfig
+			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			dataSource={bonusLog ?? []}
 			onChange={onTableChange}
