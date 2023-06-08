@@ -154,7 +154,7 @@ const BonusLogTable = ({
 			loading={loading}
 			pagination={
 				{
-					pagination,
+					...pagination,
 					showTotal,
 					position: ['topRight'],
 				} as TablePaginationConfig

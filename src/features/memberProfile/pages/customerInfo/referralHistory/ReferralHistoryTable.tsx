@@ -166,7 +166,7 @@ const ReferralHistoryTable = ({
 				onChange={onTableChange}
 				pagination={
 					{
-						pagination,
+						...pagination,
 						showTotal,
 						position: ['topRight'],
 					} as TablePaginationConfig

@@ -217,7 +217,7 @@ const CustTpBetRecordByGameTypeTable = ({
 			columns={columns}
 			pagination={
 				{
-					pagination,
+					...pagination,
 					showTotal,
 					position: ['topRight'],
 				} as TablePaginationConfig
