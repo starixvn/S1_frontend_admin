@@ -1,7 +1,7 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import { useEffect, useState } from 'react'
-import { isArray, isEmpty } from 'lodash'
+import { isArray, isEmpty, reject } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
@@ -31,6 +31,7 @@ import {
 	IFilterForm,
 	IGetPaymentAdjustmentReportData,
 } from 'features/paymentAdjustment/type'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
@@ -210,9 +211,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				adjustTypes: adjustTypes?.map((type: string) => Number(type)) ?? [],
 				currencyIds:
 					currencyIds?.map((currency: string) => Number(currency)) ?? [],
-				memberTypes: isArray(memberTypes)
-					? memberTypes.map(value => Number(value))
-					: [],
+				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 			}).unwrap()
 			download(
 				blob,
@@ -252,7 +251,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				transId,
 				depositId,
 				memberTypes: isArray(memberTypes)
-					? memberTypes.map(value => Number(value))
+					? memberTypes.map((value: string) => Number(value))
 					: [],
 			})
 			handleSearch({
@@ -278,10 +277,17 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetAdjustTypeListLoading ||
 		isMemberTypeEnumsLoading
 
+	const filterLoading =
+		isMemberTypeEnumsLoading || isGetPaymentAdjustmentReportLoading
+
 	useEffect(() => {
-		if (!loading) {
+		if (!filterLoading) {
 			filterForm.setFieldsValue({
-				memberTypes: memberTypeEnums.map(({ value }) => value),
+				// 預設排除直播主
+				memberTypes: reject(memberTypeEnums, [
+					'value',
+					UserTypeEnum.LiveStreaming,
+				]).map(({ value }) => Number(value)),
 			})
 		}
 	}, [isMemberTypeEnumsLoading])
