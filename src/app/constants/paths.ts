@@ -459,14 +459,6 @@ const paths = {
 				root: 'report/leaderboardReport',
 				functionId: 143,
 			},
-			winLostReport: {
-				root: 'report/winLostReport',
-				functionId: 79,
-			},
-			bonusInfoReport: {
-				root: 'report/bonusInfoReport',
-				functionId: 72,
-			},
 		},
 	},
 	member: {
