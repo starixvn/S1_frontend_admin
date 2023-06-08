@@ -1148,7 +1148,8 @@
 	"Label_hideForUnLogin": "Hide For UnLogin",
 	"Label_content": "content",
 	"Label_Receive": "Receive",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_AddExtraPoint": "Add ExtraPoint",
+	"Label_ExclusiveVIP": "Exclusive VIP",
 	"Label_CheckBy": "Check By",
 	"Label_CR": "CR",
 	"Label_ChurnRate": "Churn Rate",
@@ -1158,8 +1159,11 @@
 	"Label_FrontDisplayName": "Front Display Name",
 	"Label_ActualAmount": "Actual Amount",
 	"Label_ReceiveConfirmMsg": "This order has been received, do you want to continue?",
-	"Label_ProcessWay": "Process Way",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
+	"Label_Tagging": "Tagging",
+	"Label_ProcessWay": "Process Way",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
-	"Label_Tagging": "Tagging"
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_ResetOTPLimit": "Reset OTP Limit",
+	"Label_Message": "Message"
 }

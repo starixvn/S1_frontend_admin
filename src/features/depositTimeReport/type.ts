@@ -40,6 +40,7 @@ export interface IDepositTimeReportData {
 	approvedTime: string
 	toApprovedTime: string
 	approvedBy: string
+	depositMessageList: { createTime: string; message: string }[]
 }
 
 export type ICurrencyAmountRecordData = {
