@@ -1159,5 +1159,7 @@
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
 	"Label_RetentionRate": "Retention Rate",
-	"Label_ProcessWay": "Process Way"
+	"Label_ProcessWay": "Process Way",
+	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
+	"Label_Tagging": "Tagging"
 }
