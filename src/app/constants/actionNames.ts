@@ -74,6 +74,7 @@ export const ACTION_NAMES: {
 	78: 'deleteReceiptPermission',
 	79: 'checkReceiptPermission',
 	81: 'setAmountPermission',
+	82: 'editAutoWithdrawalRulePermission',
 	83: 'forceProceed',
 	86: 'exclusiveVipPermission',
 }
