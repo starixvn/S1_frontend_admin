@@ -95,8 +95,10 @@ export interface ActionPermissions {
 	deleteReceiptPermission: PermissionInterface
 	checkReceiptPermission: PermissionInterface
 	setAmountPermission: PermissionInterface
+	editAutoWithdrawalRulePermission: PermissionInterface
 	forceProceed: PermissionInterface
 	exclusiveVipPermission: PermissionInterface
+	resetOtpLimitPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

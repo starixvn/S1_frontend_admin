@@ -1176,6 +1176,7 @@ export interface ISettingRiskPermissions {
 	lockAccountPermission: PermissionInterface | undefined
 	closeAccountPermission: PermissionInterface | undefined
 	kickOutPermission: PermissionInterface | undefined
+	resetOtpLimitPermission: PermissionInterface | undefined
 }
 
 export interface ISettingFinancePermissions {

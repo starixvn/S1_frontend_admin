@@ -38,6 +38,7 @@ import {
 	useSwitchRebatePayoutMutation,
 	useSwitchRiskMutation,
 	useSwitchVipAutomationExclusionMutation,
+	useResetOtpTimesMutation,
 } from 'features/memberProfile/api'
 import {
 	ICustPromotionWhiteResponse,
@@ -84,6 +85,7 @@ const Setting = () => {
 			lockAccountPermission,
 			closeAccountPermission,
 			kickOutPermission,
+			resetOtpLimitPermission,
 			// * financePermissions
 			resetBankInfoPermission,
 			resetEWalletPermission,
@@ -115,6 +117,7 @@ const Setting = () => {
 		lockAccountPermission,
 		closeAccountPermission,
 		kickOutPermission,
+		resetOtpLimitPermission,
 	}
 
 	const financePermissions: ISettingFinancePermissions = {
@@ -196,6 +199,8 @@ const Setting = () => {
 	const [resetEWallet] = useResetEWalletMutation()
 
 	const [resetCryptoInfo] = useResetCryptoInfoMutation()
+
+	const [resetOtpTimes] = useResetOtpTimesMutation()
 
 	const [switchRebatePayout, { isLoading: isSwitchRebatePayoutLoading }] =
 		useSwitchRebatePayoutMutation()
@@ -481,6 +486,17 @@ const Setting = () => {
 		}
 	}
 
+	const handleResetOTP = async () => {
+		try {
+			await resetOtpTimes({ custId }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const handleSetPayoutVerificationReward = async (
 		OTPType: PayoutVerificationRewardOTPTypeEnum
 	) => {
@@ -581,6 +597,7 @@ const Setting = () => {
 						onEditTypeChange={onEditTypeChange}
 						onSwitch={handleSwitch}
 						onResetPassword={handleResetPassword}
+						onResetOTP={handleResetOTP}
 					/>
 
 					<SettingFinanceCard

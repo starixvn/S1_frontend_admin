@@ -34,6 +34,7 @@ interface IPaymentManagementFilterProps {
 	}) => void
 	onSetGlobalStatusClicked: () => void
 	onSetCryptoInfoClicked: () => void
+	onAutoWithdrawalRuleClicked: () => void
 }
 
 const { Panel } = Collapse
@@ -51,6 +52,7 @@ const PaymentManagementFilter = ({
 	currencyListBySite,
 	onSetCryptoInfoClicked,
 	onSetGlobalStatusClicked,
+	onAutoWithdrawalRuleClicked,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
 
@@ -207,6 +209,11 @@ const PaymentManagementFilter = ({
 								<Col>
 									<Button type='primary' onClick={onSetCryptoInfoClicked}>
 										{t('Label_CryptoSetting')}
+									</Button>
+								</Col>
+								<Col>
+									<Button type='primary' onClick={onAutoWithdrawalRuleClicked}>
+										{t('Label_AutoWithdrawalRule')}
 									</Button>
 								</Col>
 							</Row>

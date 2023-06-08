@@ -1153,12 +1153,16 @@
 	"Label_ToCryptoAccount": "To Crypto Account",
 	"Label_FrontDisplayName": "Front Display Name",
 	"Label_ActualAmount": "Actual Amount",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_ExclusiveVIP": "Exclusive VIP",
 	"Label_CheckBy": "Check By",
 	"Label_CR": "CR",
 	"Label_ChurnRate": "Churn Rate",
 	"Label_RR": "RR",
-	"Label_RetentionRate": "Retention Rate"
+	"Label_RetentionRate": "Retention Rate",
+	"Label_ProcessWay": "Process Way",
+	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
+	"Label_Tagging": "Tagging",
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_ResetOTPLimit": "Reset OTP Limit"
 }
