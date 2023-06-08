@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isArray, isEmpty, isNumber } from 'lodash'
+import { isArray, isEmpty, isNumber, reject } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -19,6 +19,7 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import type { SorterResult } from 'antd/es/table/interface'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { BetListFilter } from './BetListFilter'
 import {
 	IGetBetListArgs,
@@ -288,9 +289,7 @@ const BetList: FC<{
 				endTime,
 				winLostAmount,
 				transId,
-				memberTypes: isArray(memberTypes)
-					? memberTypes.map(value => Number(value))
-					: [],
+				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 			}
 
 			const blob = await exportBetListFile(args).unwrap()
@@ -329,7 +328,7 @@ const BetList: FC<{
 				transId,
 				winLostAmount,
 				timeZone,
-				memberTypes = [],
+				memberTypes,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -352,7 +351,7 @@ const BetList: FC<{
 				transId,
 				winLostAmount,
 				memberTypes: isArray(memberTypes)
-					? memberTypes.map(value => Number(value))
+					? memberTypes.map((value: string) => Number(value))
 					: [],
 			})
 			handleSearch({
@@ -373,10 +372,16 @@ const BetList: FC<{
 		isGetTagListFetching ||
 		isMemberTypeEnumsLoading
 
+	const filterLoading = isGetBetListFetching || isMemberTypeEnumsLoading
+
 	useEffect(() => {
-		if (!loading) {
+		if (!filterLoading) {
+			// 預設排除直播主
 			form.setFieldsValue({
-				memberTypes: memberTypeEnums.map(({ value }) => value),
+				memberTypes: reject(memberTypeEnums, [
+					'value',
+					UserTypeEnum.LiveStreaming,
+				]).map(({ value }) => Number(value)),
 			})
 		}
 	}, [isMemberTypeEnumsLoading])

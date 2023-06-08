@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import moment from 'moment'
+import { reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -170,7 +171,11 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							currencyIds: currencyList?.map(item => item.currencyId),
-							memberTypes: memberTypeEnums?.map(({ value }) => value),
+							// 預設排除直播主
+							memberTypes: reject(memberTypeEnums, [
+								'value',
+								UserTypeEnum.LiveStreaming,
+							]).map(({ value }) => Number(value)),
 						}}
 					>
 						<Row align='middle' gutter={16}>
