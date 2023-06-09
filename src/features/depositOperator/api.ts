@@ -199,6 +199,7 @@ export const {
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
 	useGetDepositInfoByTransIdQuery,
+	useLazyGetDepositInfoByTransIdQuery,
 	useGetDepositReceiptByTransIdQuery,
 	useGetDepositCommentsByTransIdQuery,
 	useLazyGetCryptoAmountCalculationQuery,
