@@ -1163,5 +1163,6 @@
 	"Label_Tagging": "Tagging",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_ResetOTPLimit": "Reset OTP Limit",
-	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule"
+	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
+	"Label_Message": "Message"
 }
