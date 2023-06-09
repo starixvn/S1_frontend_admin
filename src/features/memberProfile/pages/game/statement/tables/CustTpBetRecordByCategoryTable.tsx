@@ -5,7 +5,6 @@ import {
 	Button,
 	Typography,
 	Table as AntdTable,
-	PaginationProps,
 	TablePaginationConfig,
 } from 'antd'
 import moment from 'moment/moment'
@@ -197,9 +196,6 @@ const CustTpBetRecordByCategoryTable = ({
 		},
 	]
 
-	const showTotal: PaginationProps['showTotal'] = total =>
-		`Total ${total} items`
-
 	return (
 		<Table
 			loading={loading}
@@ -263,8 +259,7 @@ const CustTpBetRecordByCategoryTable = ({
 			}
 			pagination={
 				{
-					showTotal,
-					position: ['topRight'],
+					showTotal: total => `total ${total} items`,
 				} as TablePaginationConfig
 			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}

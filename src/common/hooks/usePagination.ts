@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 export const PAGINATION = {
 	defaultCurrent: 1,
 	defaultPageSize: 25,
-	position: ['topLeft'],
+	position: ['topRight'],
 	pageSizeOptions: [10, 25, 50, 100, 200, 300],
 	hideOnSinglePage: false,
 	showSizeChanger: true,

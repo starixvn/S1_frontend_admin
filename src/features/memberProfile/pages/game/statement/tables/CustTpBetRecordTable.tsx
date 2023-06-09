@@ -6,7 +6,6 @@ import {
 	Button,
 	Typography,
 	Table as AntdTable,
-	PaginationProps,
 	TablePaginationConfig,
 } from 'antd'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
@@ -188,9 +187,6 @@ const CustTpBetRecordTable = ({
 		},
 	]
 
-	const showTotal: PaginationProps['showTotal'] = total =>
-		`Total ${total} items`
-
 	return (
 		<Table
 			loading={loading}
@@ -265,8 +261,7 @@ const CustTpBetRecordTable = ({
 			}
 			pagination={
 				{
-					showTotal,
-					position: ['topRight'],
+					showTotal: total => `total ${total} items`,
 				} as TablePaginationConfig
 			}
 			columns={columns}

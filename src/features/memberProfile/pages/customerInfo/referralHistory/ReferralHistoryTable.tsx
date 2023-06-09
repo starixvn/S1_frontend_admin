@@ -1,7 +1,7 @@
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { PaginationProps, TablePaginationConfig, Typography } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
 import { IGetReferralHistoryData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { isEmpty } from 'lodash'
@@ -156,9 +156,6 @@ const ReferralHistoryTable = ({
 		},
 	]
 
-	const showTotal: PaginationProps['showTotal'] = total =>
-		`Total ${total} items`
-
 	return (
 		<LayoutContent.Card style={{ marginTop: -20 }}>
 			<Table
@@ -167,8 +164,7 @@ const ReferralHistoryTable = ({
 				pagination={
 					{
 						...pagination,
-						showTotal,
-						position: ['topRight'],
+						showTotal: total => `total ${total} items`,
 					} as TablePaginationConfig
 				}
 				style={{ marginTop: '10px', marginBottom: '10px' }}

@@ -7,7 +7,6 @@ import { PaginationInterface } from 'common/hooks'
 import { IFinancialLogData } from 'features/memberProfile/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { isPositiveNum } from 'common/utils'
-import type { PaginationProps } from 'antd'
 
 const { Text } = Typography
 interface FinancialTableProps {
@@ -122,9 +121,6 @@ const FinancialTable = ({
 		},
 	]
 
-	const showTotal: PaginationProps['showTotal'] = total =>
-		`Total ${total} items`
-
 	return (
 		<Table
 			loading={loading}
@@ -134,8 +130,7 @@ const FinancialTable = ({
 			pagination={
 				{
 					...pagination,
-					showTotal,
-					position: ['topRight'],
+					showTotal: total => `total ${total} items`,
 				} as TablePaginationConfig
 			}
 			onChange={onTableChange}

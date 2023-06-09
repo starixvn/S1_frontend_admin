@@ -6,7 +6,6 @@ import {
 	Button,
 	Typography,
 	Table as AntdTable,
-	PaginationProps,
 	TablePaginationConfig,
 } from 'antd'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
@@ -197,9 +196,6 @@ const CustTpBetRecordByDayTable = ({
 		},
 	]
 
-	const showTotal: PaginationProps['showTotal'] = total =>
-		`Total ${total} items`
-
 	return (
 		<Table
 			loading={loading}
@@ -262,8 +258,7 @@ const CustTpBetRecordByDayTable = ({
 			}
 			pagination={
 				{
-					showTotal,
-					position: ['topRight'],
+					showTotal: total => `total ${total} items`,
 				} as TablePaginationConfig
 			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
