@@ -31,7 +31,7 @@ import {
 	IFormBetLimitTableData,
 	IGameTypeBetLimit,
 } from 'features/betLimit/type'
-import { find, isEmpty } from 'lodash'
+import { find, isEmpty, isNull } from 'lodash'
 
 interface IEditBetLimitModalProps {
 	form: FormInstance<IEditForm>
@@ -135,7 +135,9 @@ const EditBetLimitModal = ({
 						tpCategoryName,
 						tpCategory,
 					}) => {
-						const isGroup = Boolean(limitGroup)
+						// 因 getByCustId 這支沒有一個參數能判斷是否是下拉選單或是 min max maxPerMatch 框
+						// DG需 排除 null 的可能 保持 isGroup 是 true
+						const isGroup = isNull(limitGroup) ? true : Boolean(limitGroup)
 
 						return {
 							checked,
