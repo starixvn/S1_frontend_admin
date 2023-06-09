@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect , useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Divider, Form, message, Modal, PageHeader, Row } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
@@ -9,6 +9,7 @@ import {
 	useDeleteReceiptMutation,
 	useGetDepositCommentsByTransIdQuery,
 	useGetDepositInfoByTransIdQuery,
+	useLazyGetDepositInfoByTransIdQuery,
 	useGetDepositReceiptByTransIdQuery,
 	useLazyGetCryptoAmountCalculationQuery,
 	useSetAmountByTransIdMutation,
@@ -77,6 +78,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		data: { data: depositInfo = {} as IDepositOperatorData } = {},
 		isFetching: isDepositInfoLoading,
 	} = useGetDepositInfoByTransIdQuery({ transId })
+
+	const [
+		getDepositInfoByTransId,
+		{ isFetching: isDepositInfoByTransIdFetching },
+	] = useLazyGetDepositInfoByTransIdQuery()
 
 	const { data: { data: bankInfoOffList = [] } = {} } =
 		useGetBankInfoOffListQuery(
@@ -188,48 +194,56 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const handleSetDepositStatus = async (status: DepositStatusEnum) => {
 		if (!transId) return
 
-		const { comment, bankId, statementTime } = form.getFieldsValue()
-
-		const { actualDeposit, depositType, amount } = depositInfo
-
-		let args: ISetDepositStatusArgs
-		if (depositType === DepositTypeEnum.CryptoWallet) {
-			const { actualCryptoAmount } = form.getFieldsValue()
-			args = {
-				action: status,
-				actualDeposit,
-				comment,
-				transId,
-				actualCryptoAmount,
-			}
-		} else {
-			args = {
-				action: status,
-				actualDeposit,
-				comment,
-				transId,
-				actualCryptoAmount: amount,
-				// * bankId 在 action 是 approved 時需要送出
-				...(multiEqual(status, [
-					DepositStatusEnum.OnHold,
-					DepositStatusEnum.Approved,
-				]) && { bankId }),
-				// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
-				...(status === DepositStatusEnum.Draft &&
-					depositType === DepositTypeEnum.LocalBanking && {
-						statementTime: utcFormatter({
-							date: statementTime,
-							utcOffset: timeZoneUtcOffset,
-						}),
-						bankId,
-					}),
-			}
-		}
-
 		try {
 			if (status === DepositStatusEnum.ManualApproved) {
 				await setDepositManualApproval({ transId }).unwrap()
 			} else {
+				const { data: currentDepositInfo } = await getDepositInfoByTransId({
+					transId,
+				}).unwrap()
+
+				const {
+					actualDeposit,
+					depositType,
+					amount,
+					comment,
+					bankId,
+					statementTime,
+				} = currentDepositInfo
+
+				let args: ISetDepositStatusArgs
+				if (depositType === DepositTypeEnum.CryptoWallet) {
+					const { actualCryptoAmount } = form.getFieldsValue()
+					args = {
+						action: status,
+						actualDeposit,
+						comment,
+						transId,
+						actualCryptoAmount,
+					}
+				} else {
+					args = {
+						action: status,
+						actualDeposit: currentDepositInfo.actualDeposit,
+						comment,
+						transId,
+						actualCryptoAmount: amount,
+						// * bankId 在 action 是 approved 時需要送出
+						...(multiEqual(status, [
+							DepositStatusEnum.OnHold,
+							DepositStatusEnum.Approved,
+						]) && { bankId }),
+						// * statementTime、bankId 只有在 action 是 draft && LocalBanking 時才需要送出
+						...(status === DepositStatusEnum.Draft &&
+							depositType === DepositTypeEnum.LocalBanking && {
+								statementTime: utcFormatter({
+									date: statementTime || '',
+									utcOffset: timeZoneUtcOffset,
+								}),
+								bankId,
+							}),
+					}
+				}
 				await setDepositStatus(args).unwrap()
 				form.setFieldsValue({
 					comment: '',
@@ -485,7 +499,8 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						isCheckDepositReceiptLoading ||
 						isUploadReceiptLoading ||
 						isDeleteReceiptLoading ||
-						isUnCheckDepositReceiptLoading
+						isUnCheckDepositReceiptLoading ||
+						isDepositInfoByTransIdFetching
 					}
 					depositStatus={depositInfo?.status}
 					checkReceipt={depositInfo?.checkReceipt}
