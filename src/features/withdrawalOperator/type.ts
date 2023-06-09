@@ -89,6 +89,7 @@ export interface IGetWithdrawalData {
 	withdrawalAccountingModels: IWithdrawalAccounting[]
 	onUser: string
 	processWayName: string
+	withdrawalMessageList: { createTime: string; message: string }[]
 }
 
 export interface IGetWithdrawalResponse
