@@ -358,7 +358,22 @@ const BannerModalForm = ({
 							<Form.Item
 								name='gameId'
 								label={t('Label_GameId')}
-								rules={[{ required: true }]}
+								rules={[
+									{
+										validator: (_validator, value) => {
+											// * gameId 有可能是 "", 因此不能單純使用 { required: true }
+											return value !== undefined
+												? Promise.resolve()
+												: Promise.reject(
+														new Error(
+															t('Label_Required', {
+																key: t('Label_GameId'),
+															})
+														)
+												  )
+										},
+									},
+								]}
 							>
 								<Select
 									placeholder={t('Label_GameId')}
