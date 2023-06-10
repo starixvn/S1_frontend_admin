@@ -198,18 +198,11 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			if (status === DepositStatusEnum.ManualApproved) {
 				await setDepositManualApproval({ transId }).unwrap()
 			} else {
+				const { comment, bankId, statementTime } = form.getFieldsValue()
 				const { data: currentDepositInfo } = await getDepositInfoByTransId({
 					transId,
 				}).unwrap()
-
-				const {
-					actualDeposit,
-					depositType,
-					amount,
-					comment,
-					bankId,
-					statementTime,
-				} = currentDepositInfo
+				const { actualDeposit, depositType, amount } = currentDepositInfo
 
 				let args: ISetDepositStatusArgs
 				if (depositType === DepositTypeEnum.CryptoWallet) {
@@ -224,7 +217,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				} else {
 					args = {
 						action: status,
-						actualDeposit: currentDepositInfo.actualDeposit,
+						actualDeposit,
 						comment,
 						transId,
 						actualCryptoAmount: amount,
@@ -237,7 +230,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						...(status === DepositStatusEnum.Draft &&
 							depositType === DepositTypeEnum.LocalBanking && {
 								statementTime: utcFormatter({
-									date: statementTime || '',
+									date: statementTime,
 									utcOffset: timeZoneUtcOffset,
 								}),
 								bankId,
