@@ -45,7 +45,6 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			providesTags: ['POST'],
 		}),
 		setSlotGameCategory: builder.mutation<void, ISetGameCategoryArgs>({
 			query: data => ({
@@ -53,7 +52,6 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['POST'],
 		}),
 		getSlotCategoryList: builder.query<IGetSlotCategoryListResponse, null>({
 			query: data => ({
@@ -68,7 +66,6 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
-			invalidatesTags: ['POST'],
 		}),
 	}),
 })
