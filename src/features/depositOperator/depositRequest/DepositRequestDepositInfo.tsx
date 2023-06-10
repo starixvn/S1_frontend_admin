@@ -92,7 +92,6 @@ const DepositRequestDepositInfo = ({
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
-
 	const isPending = status === DepositStatusEnum.Pending
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking

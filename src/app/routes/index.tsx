@@ -1030,16 +1030,16 @@ const EditGameExclusion = lazy(
 		)
 )
 
-const BonusInfo = lazy(
-	() =>
-		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
-)
-
 const WinLostReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'WinLostReport' */ 'features/winLostReport/WinLostReport'
 		)
+)
+
+const BonusInfo = lazy(
+	() =>
+		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
 )
 
 const BatchMemberInfoReport = lazy(
@@ -2785,6 +2785,14 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
 					>
 						<RebateExcludeGame />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
+						<BonusInfo />
 					</AuthRequire>
 				),
 			},

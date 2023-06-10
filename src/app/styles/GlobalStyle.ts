@@ -62,6 +62,9 @@ const GlobalStyle = createGlobalStyle`
     .gray-background > .ant-table-cell-row-hover {
      background-color: transparent !important;
     }
+  .ant-table-column-sorters{
+    word-break: break-word;
+  }
 `
 
 export default GlobalStyle
