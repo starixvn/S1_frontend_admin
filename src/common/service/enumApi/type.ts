@@ -55,12 +55,6 @@ export type EnumNameType =
 	| 'LangType'
 	| 'IovationDeviceType'
 	| 'NewsStatusEnum'
-	| 'PromotionStatusEnum'
-	| 'BonusSummaryType'
-	| 'BonusInfoStatusEnum'
-	| 'BonusSummaryTransactionType'
-	| 'DepositReceiptCreateFromEnum'
-	| 'DirectionEnum'
 	| 'BlockCryptoStatus'
 	| 'CustCryptoWalletDetailSatatus'
 	| 'DirectionEnum'
@@ -117,24 +111,22 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
-	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表
-	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
-	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
-	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
 	 * @argument {string}  VipStatus - 取得Vip狀態列表
-	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
-	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
 	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
 	 * @argument {string}  DepositReceiptCreateFromEnum - 取得 DepositReceiptCreateFrom 列表
 	 * @argument {string}  LeaderBoardCategoryEnum - 取得 LeaderBoardCategory 列表
+	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表
+	 * @argument {string}  BonusSummaryType - 取得 BonusInfo 的 type 列表
+	 * @argument {string}  BonusInfoStatusEnum - 取得 BonusInfo 的 ClaimStatus 列表
+	 * @argument {string}  BonusSummaryTransactionType - 取得 BonusInfo 的 TransactionType 列表
 	 * @argument {string}  MemberTypeEnum - 取得 MemberTypeEnum 列表
 	 * @argument {string}  CustTpGameTypeSettingGetType - 取得 CustTpGameTypeSettingGetType 列表 (遊戲可玩可不玩 顯示與不顯示)
-	 
-	 
-	 
-	 
+
+
+
+
 	 */
 	enumName: EnumNameType
 }

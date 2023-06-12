@@ -1238,7 +1238,7 @@ export const {
 	useExportCustTpBetRecordByCategoryMutation,
 	useExportCustTpBetRecordByGameTypeMutation,
 	useSwitchVipAutomationExclusionMutation,
+	useResetOtpTimesMutation,
 	useSetCustTpGameTypeSettingMutation,
 	useLazyGetCustTpGameTypeSettingQuery,
-	useResetOtpTimesMutation,
 } = memberProfileApi

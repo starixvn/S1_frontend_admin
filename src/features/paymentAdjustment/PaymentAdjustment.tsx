@@ -275,10 +275,23 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetPaymentAdjustmentReportLoading ||
 		isSetPaymentAdjustmentLoading ||
 		isMemberTypeEnumsLoading ||
-		isGetAdjustTypeListLoading
+		isGetAdjustTypeListLoading ||
+		isMemberTypeEnumsLoading
 
 	const filterLoading =
 		isMemberTypeEnumsLoading || isGetPaymentAdjustmentReportLoading
+
+	useEffect(() => {
+		if (!filterLoading) {
+			filterForm.setFieldsValue({
+				// 預設排除直播主
+				memberTypes: reject(memberTypeEnums, [
+					'value',
+					UserTypeEnum.LiveStreaming,
+				]).map(({ value }) => Number(value)),
+			})
+		}
+	}, [isMemberTypeEnumsLoading])
 
 	useEffect(() => {
 		if (!filterLoading) {
