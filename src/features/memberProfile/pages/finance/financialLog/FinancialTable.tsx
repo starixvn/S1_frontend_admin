@@ -120,13 +120,19 @@ const FinancialTable = ({
 			),
 		},
 	]
+
 	return (
 		<Table
 			loading={loading}
 			dataSource={financialLogs ?? []}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
-			pagination={pagination as TablePaginationConfig}
+			pagination={
+				{
+					...pagination,
+					showTotal: total => `total ${total} items`,
+				} as TablePaginationConfig
+			}
 			onChange={onTableChange}
 		/>
 	)
