@@ -41,6 +41,7 @@ const BonusWalletDescriptions = ({
 		manualBonus = 0,
 		cancelBonusAmount = 0,
 		rewardPoint = 0,
+		deviceBonus = 0,
 	} = custBonusSum ?? {}
 
 	const { custRewardTotalSum = 0, custRewardType = [] } = custRewardSum ?? {}
@@ -117,6 +118,13 @@ const BonusWalletDescriptions = ({
 											type={isPositiveNum(manualBonus) ? undefined : 'danger'}
 										>
 											{numFormatToDigits(manualBonus || 0)}
+										</Text>
+									</Descriptions.Item>
+									<Descriptions.Item label={t('BonusType.Label_DeviceBonus')}>
+										<Text
+											type={isPositiveNum(deviceBonus) ? undefined : 'danger'}
+										>
+											{numFormatToDigits(deviceBonus || 0)}
 										</Text>
 									</Descriptions.Item>
 								</Descriptions>
