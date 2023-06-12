@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 export interface IWinLossBasicExportArgs {
 	siteId: number
@@ -14,6 +15,7 @@ export interface IWinLossBasicExportArgs {
 	displayGroupBreakdownInOriginalCurrency: boolean
 	includeFreeSpins: boolean
 	noDraw: boolean
+	memberTypes: UserTypeEnum[]
 }
 
 export interface IWinLossBasicArgs extends IWinLossBasicExportArgs {
