@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, useContext } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCategoryFilter'
 import { useTranslation } from 'react-i18next'
@@ -28,10 +28,12 @@ import { SlotGameCategoryTable } from 'features/slotGameCategory/SlotGameCategor
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
+import { AuthContext } from 'common/auth'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
+	const { userData } = useContext(AuthContext)
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<{
@@ -209,7 +211,10 @@ const SlotGameCategory: FC<{
 			const mutationData = assign(rawSource[sourceIndex], {
 				[dataIndex]: Number(status),
 			})
-
+			// Last operator 欄位更動拿全域 auth 狀態儲存在前端
+			assign(mutationData, {
+				operator: userData?.userName,
+			})
 			if (!status) {
 				assign(mutationData, {
 					activeInactiveAll: false,
@@ -267,7 +272,7 @@ const SlotGameCategory: FC<{
 				})
 			)
 			assign(rawSource[sourceIndex], { activeInactiveAll })
-
+			assign(rawSource[sourceIndex], { operator: userData?.userName })
 			setTableDataSource(rawSource)
 		} catch (error) {
 			message.error(
