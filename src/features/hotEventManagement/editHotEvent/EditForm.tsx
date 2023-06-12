@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next'
 import moment from 'moment/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useLazyGetSportTeamsQuery } from 'features/hotEventManagement/api'
+import { gameIdTypes } from '../constants'
 
 interface IEditFormProps {
 	loading: boolean
@@ -166,6 +167,7 @@ const EditForm: FC<IEditFormProps> = ({
 										<Input disabled />
 									</Form.Item>
 								</Col>
+
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item
 										name='gameId'
@@ -179,7 +181,13 @@ const EditForm: FC<IEditFormProps> = ({
 											},
 										]}
 									>
-										<Input disabled />
+										<Select>
+											{gameIdTypes.map(item => (
+												<Option key={item.id} value={item.id}>
+													{item.displayName}
+												</Option>
+											))}
+										</Select>
 									</Form.Item>
 								</Col>
 							</>
