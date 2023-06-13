@@ -13,8 +13,8 @@ import {
 } from 'features/vipUpgradeSetting/api'
 import {
 	IEditForm,
-	IGetVipUpgradeSupportCurrencyResponse,
-	ISetUpgradeSetting,
+	IVipUpgradeSupportCurrencyResponse,
+	ISetUpgradeSettingArgs,
 	IUpgradeSettingTableData,
 	VipLevelsEnum,
 } from 'features/vipUpgradeSetting/type'
@@ -35,7 +35,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: {
 			data: VipUpgradeSupportCurrencyList = [],
-		} = {} as IGetVipUpgradeSupportCurrencyResponse,
+		} = {} as IVipUpgradeSupportCurrencyResponse,
 		isFetching: isVipUpgradeSupportCurrencyFetching,
 	} = useGetVipUpgradeSupportCurrencyQuery({ siteId })
 
@@ -82,7 +82,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 			diamondClub,
 		}: IUpgradeSettingTableData = await editForm.getFieldsValue(true)
 
-		const payload: ISetUpgradeSetting = {
+		const payload: ISetUpgradeSettingArgs = {
 			siteId,
 			currencyId,
 			before: {
@@ -154,12 +154,11 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 		isVipUpgradeSupportCurrencyFetching
 
 	useEffect(() => {
-		if (!VipUpgradeSupportCurrencyList) return
-		// queryParams 若是空的 則 setQueryParams 並拿第一筆 currencyId 打 api
 		if (isEmpty(queryParams)) {
-			setQueryParams({
-				currencyId: head(VipUpgradeSupportCurrencyList),
-			})
+			if (!isVipUpgradeSupportCurrencyFetching)
+				setQueryParams({
+					currencyId: head(VipUpgradeSupportCurrencyList),
+				})
 			handleGetUpgradeSetting(head(VipUpgradeSupportCurrencyList)!)
 		} else {
 			const { currencyId } = queryParams
@@ -182,8 +181,8 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 					form={editForm}
 					editPermission={editPermission}
 					editingKey={editingKey}
-					setEditingKey={setEditingKey}
 					tableData={tableData}
+					setEditingKey={setEditingKey}
 					onRowSaved={handleRowSaved}
 				/>
 			),

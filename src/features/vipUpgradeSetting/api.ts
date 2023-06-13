@@ -4,14 +4,14 @@ import {
 	IGetUpgradeSettingArgs,
 	IGetUpgradeSettingResponse,
 	IGetVipUpgradeSupportCurrencyArgs,
-	IGetVipUpgradeSupportCurrencyResponse,
-	ISetUpgradeSetting,
+	IVipUpgradeSupportCurrencyResponse,
+	ISetUpgradeSettingArgs,
 } from 'features/vipUpgradeSetting/type'
 
 export const upgradeSettingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getVipUpgradeSupportCurrency: builder.query<
-			IGetVipUpgradeSupportCurrencyResponse,
+			IVipUpgradeSupportCurrencyResponse,
 			IGetVipUpgradeSupportCurrencyArgs
 		>({
 			query: data => ({
@@ -32,7 +32,7 @@ export const upgradeSettingApi = rootApi.injectEndpoints({
 		}),
 		setUpgradeSetting: builder.mutation<
 			IAxiosResponse<null>,
-			ISetUpgradeSetting
+			ISetUpgradeSettingArgs
 		>({
 			query: data => ({
 				url: 'VipLevel/SetUpgradeSetting',

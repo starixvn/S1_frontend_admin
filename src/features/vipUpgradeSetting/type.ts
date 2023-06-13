@@ -4,10 +4,10 @@ export interface IGetVipUpgradeSupportCurrencyArgs {
 	siteId?: number
 }
 
-export type IGetVipUpgradeSupportCurrencyList = number[]
+export type IVipUpgradeSupportCurrencyList = number[]
 
-export type IGetVipUpgradeSupportCurrencyResponse =
-	IAxiosResponse<IGetVipUpgradeSupportCurrencyList>
+export type IVipUpgradeSupportCurrencyResponse =
+	IAxiosResponse<IVipUpgradeSupportCurrencyList>
 
 export interface IGetUpgradeSettingArgs {
 	siteId?: number
@@ -30,7 +30,7 @@ export interface IUpgradeSettingData {
 
 export type IGetUpgradeSettingResponse = IAxiosResponse<IUpgradeSettingData[]>
 
-export interface ISetUpgradeSetting {
+export interface ISetUpgradeSettingArgs {
 	siteId?: number
 	currencyId: number
 	before: {

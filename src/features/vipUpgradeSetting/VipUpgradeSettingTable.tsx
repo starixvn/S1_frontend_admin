@@ -1,18 +1,18 @@
 import { useTranslation } from 'react-i18next'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { numberFormatter } from 'common/utils/format'
+import { EditableCellRows } from 'components'
+import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { PermissionInterface } from 'type'
 import { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
-import { EditableCellRows } from 'components'
 
 interface IVipUpgradeSettingTableProps {
 	loading: boolean
 	form: FormInstance
 	editPermission?: PermissionInterface
 	editingKey: number | undefined
-	setEditingKey: Dispatch<SetStateAction<number | undefined>>
 	tableData: IUpgradeSettingTableData[]
+	setEditingKey: Dispatch<SetStateAction<number | undefined>>
 	onRowSaved: () => void
 }
 
@@ -23,8 +23,8 @@ const VipUpgradeSettingTable = ({
 	form,
 	editPermission,
 	editingKey,
-	setEditingKey,
 	tableData,
+	setEditingKey,
 	onRowSaved,
 }: IVipUpgradeSettingTableProps) => {
 	const { t } = useTranslation()
@@ -162,6 +162,7 @@ const VipUpgradeSettingTable = ({
 				columns={mergeColumns}
 				dataSource={tableData}
 				pagination={false}
+				// 最後一筆後端沒有提供且無法修改資料 暫用 summary 寫死
 				summary={
 					// eslint-disable-next-line react/no-unstable-nested-components
 					() => {
