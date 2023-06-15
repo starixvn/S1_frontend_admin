@@ -9,8 +9,7 @@ import {
 	IGetCustDetailsArgs,
 	ICustInfoDetailsResponse,
 	ITpCategoryListResponse,
-	IGetTpBetLimitGroupArgs,
-	ITpBetLimitGroupResponse,
+	IGetTpCategoryListArgs,
 } from 'features/betLimit/type'
 
 const betLimitApi = rootApi.injectEndpoints({
@@ -56,19 +55,12 @@ const betLimitApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getTpCategoryList: builder.query<ITpCategoryListResponse, void>({
-			query: data => ({
-				url: 'TpBetLimit/GetTpCategoryList',
-				method: 'POST',
-				data,
-			}),
-		}),
-		getTpBetLimitGroup: builder.query<
-			ITpBetLimitGroupResponse,
-			IGetTpBetLimitGroupArgs
+		getTpCategoryList: builder.query<
+			ITpCategoryListResponse,
+			IGetTpCategoryListArgs
 		>({
 			query: data => ({
-				url: 'TpBetLimit/GetTpBetLimitGroup',
+				url: 'TpBetLimit/GetTpCategoryList',
 				method: 'POST',
 				data,
 			}),
@@ -83,5 +75,4 @@ export const {
 	useDeleteBetLimitMutation,
 	useLazyGetCustInfoDetailsQuery,
 	useLazyGetTpCategoryListQuery,
-	useLazyGetTpBetLimitGroupQuery,
 } = betLimitApi

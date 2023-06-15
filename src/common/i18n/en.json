@@ -1164,7 +1164,9 @@
 	"Label_Tagging": "Tagging",
 	"Label_ProcessWay": "Process Way",
 	"Label_AccountWithdrawalCount": "Account Withdrawal Count",
-	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_ResetOTPLimit": "Reset OTP Limit",
-	"Label_Message": "Message"
+	"Label_Message": "Message",
+	"Label_ActiveInactiveAll": "Active/Inactive All",
+	"Label_MaxPerMatch": "MaxPerMatch",
+	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch"
 }
