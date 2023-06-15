@@ -35,6 +35,7 @@ export interface IGetProductsData {
 	typeName: string
 	tpId: number
 	categoryId: number
+	tpIdStatus?: number
 }
 
 export type IGetProductsResponse = IAxiosResponse<IGetProductsData[]>

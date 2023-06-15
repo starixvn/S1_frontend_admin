@@ -133,6 +133,7 @@ export enum UserTypeEnum {
 	All = 0,
 	Normal,
 	Affiliate,
+	LiveStreaming,
 }
 
 export const USER_TYPE_ENUM_OPTIONS: {
@@ -150,5 +151,13 @@ export const USER_TYPE_ENUM_OPTIONS: {
 	{
 		value: UserTypeEnum.Affiliate,
 		displayKey: 'Label_Affiliate',
+	},
+	{
+		value: UserTypeEnum.Affiliate,
+		displayKey: 'Label_Affiliate',
+	},
+	{
+		value: UserTypeEnum.LiveStreaming,
+		displayKey: 'Label_LiveStreaming',
 	},
 ]

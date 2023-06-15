@@ -170,7 +170,11 @@ const CustTpBetRecordByGameTypeTable = ({
 					const totalData: IGetCustTpBetRecordByGameTypeData = sumTotalObject(
 						pageData as object[]
 					)
-					const { validBet, turnOver, winlostAmount } = totalData
+					const {
+						validBet,
+						winlostAmount,
+						turnOver_ExcludeValidTO: turnOverExcludeValidTO,
+					} = totalData
 
 					return (
 						<Summary.Row>
@@ -184,7 +188,9 @@ const CustTpBetRecordByGameTypeTable = ({
 								{validBet ? numFormatToDigits(validBet) : 0}
 							</Summary.Cell>
 							<Summary.Cell index={3} align='center'>
-								{turnOver ? numFormatToDigits(turnOver) : 0}
+								{turnOverExcludeValidTO
+									? numFormatToDigits(turnOverExcludeValidTO)
+									: 0}
 							</Summary.Cell>
 							<Summary.Cell index={4} align='center'>
 								{winlostAmount ? numFormatToDigits(winlostAmount) : 0}

@@ -29,6 +29,10 @@ import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { RangePickerProps } from 'antd/es/date-picker'
+import { reject } from 'lodash'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
+import { IMemberTypeData } from 'features/memberAdministrationList/type'
+import React from 'react'
 
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
@@ -38,6 +42,7 @@ interface IWinLostReportFilterProps {
 	form: FormInstance
 	loading: boolean
 	tpGameList: IGetTpGameTypeData[]
+	memberTypeEnums: IMemberTypeData[]
 	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
@@ -59,6 +64,7 @@ const WinLostReportFilter = ({
 	form,
 	loading,
 	tpGameList,
+	memberTypeEnums,
 	currencyListBySite,
 	currencyListByAllSite,
 	timeZoneUtcOffset,
@@ -150,6 +156,38 @@ const WinLostReportFilter = ({
 		)
 	}
 
+	const memberTypeSelector = () => {
+		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
+			if (newMemberTypes.includes(0)) {
+				form.setFieldsValue({
+					memberTypes: memberTypeEnums?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					memberTypes: newMemberTypes,
+				})
+			}
+		}
+		return (
+			<Form.Item name='memberTypes' label={t('Label_MemberType')}>
+				<MultipleSelect
+					onChange={handleChangeMemberType}
+					placeholder={t('Label_Select') + t('Label_MemberType')}
+				>
+					{(memberTypeEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{memberTypeEnums?.map(({ value, name }) => (
+						<Option key={value} value={value}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -168,6 +206,11 @@ const WinLostReportFilter = ({
 							baseCurrencyId: currencyListByAllSite[0]?.currencyId,
 							includeFreeSpins: true,
 							noDraw: true,
+							// 預設排除直播主
+							memberTypes: reject(memberTypeEnums, [
+								'value',
+								UserTypeEnum.LiveStreaming,
+							]).map(({ value }) => Number(value)),
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -291,6 +334,11 @@ const WinLostReportFilter = ({
 								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear />
 								</Form.Item>
+							</Col>
+						</Row>
+						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								{memberTypeSelector()}
 							</Col>
 						</Row>
 						<Row align='middle' gutter={16}>

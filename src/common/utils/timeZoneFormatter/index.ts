@@ -20,7 +20,7 @@ export const utcFormatter = ({
 	utcOffset,
 	utcOffsetStr,
 }: {
-	date: moment.Moment | Date
+	date: moment.Moment | Date | string
 	utcOffset?: number
 	utcOffsetStr?: string
 }) => {
