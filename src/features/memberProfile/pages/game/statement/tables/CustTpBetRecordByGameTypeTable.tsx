@@ -158,6 +158,7 @@ const CustTpBetRecordByGameTypeTable = ({
 			render: (bonusCode: string) => (!isEmpty(bonusCode) ? bonusCode : '-'),
 		},
 	]
+
 	return (
 		<Table
 			loading={loading}
@@ -206,7 +207,12 @@ const CustTpBetRecordByGameTypeTable = ({
 			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			columns={columns}
-			pagination={pagination as TablePaginationConfig}
+			pagination={
+				{
+					...pagination,
+					showTotal: total => `total ${total} items`,
+				} as TablePaginationConfig
+			}
 			onChange={onTableChange}
 		/>
 	)
