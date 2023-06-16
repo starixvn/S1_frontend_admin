@@ -244,6 +244,7 @@ export interface IBonusWalletDetailData {
 		retentionBonus: number
 		rewardPoint: number
 		totalBonus: number
+		deviceBonus: number
 	} | null
 	custRebateSum: {
 		custRebateCategory: ICustRebateCategoryData[]
