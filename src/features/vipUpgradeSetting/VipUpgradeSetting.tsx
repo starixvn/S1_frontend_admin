@@ -179,6 +179,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 				<VipUpgradeSettingTable
 					loading={loading}
 					form={editForm}
+					siteId={siteId ?? 0}
 					editPermission={editPermission}
 					editingKey={editingKey}
 					tableData={tableData}

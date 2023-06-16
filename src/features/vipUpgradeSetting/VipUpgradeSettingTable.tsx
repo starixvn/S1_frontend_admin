@@ -5,10 +5,12 @@ import { EditableCellRows } from 'components'
 import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { PermissionInterface } from 'type'
 import { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
+import { SiteIds } from 'app/constants/siteIds'
 
 interface IVipUpgradeSettingTableProps {
 	loading: boolean
 	form: FormInstance
+	siteId: number
 	editPermission?: PermissionInterface
 	editingKey: number | undefined
 	tableData: IUpgradeSettingTableData[]
@@ -21,6 +23,7 @@ const { Summary } = Table
 const VipUpgradeSettingTable = ({
 	loading,
 	form,
+	siteId,
 	editPermission,
 	editingKey,
 	tableData,
@@ -38,6 +41,24 @@ const VipUpgradeSettingTable = ({
 		record.type === editingKey
 
 	const columns = () => {
+		const vipClubTitle = () => {
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
+				}[siteId] ?? ''
+			)
+		}
+		const vintageClubTitle = () => {
+			return (
+				{
+					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
+					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
+					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
+				}[siteId] ?? ''
+			)
+		}
 		return [
 			{
 				title: t('Label_Action'),
@@ -75,7 +96,7 @@ const VipUpgradeSettingTable = ({
 				render: (typeName: string) => typeName || '-',
 			},
 			{
-				title: t('Label_VintageClub'),
+				title: vintageClubTitle(),
 				key: 'vintageClub',
 				dataIndex: 'vintageClub',
 				align: 'center' as 'center',
@@ -124,7 +145,7 @@ const VipUpgradeSettingTable = ({
 					diamondClub !== null ? numberFormatter.format(diamondClub) : '-',
 			},
 			{
-				title: t('Label_NovaClub'),
+				title: vipClubTitle(),
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				align: 'center' as 'center',
