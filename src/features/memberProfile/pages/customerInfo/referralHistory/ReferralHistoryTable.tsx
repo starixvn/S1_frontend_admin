@@ -155,12 +155,18 @@ const ReferralHistoryTable = ({
 			align: 'center' as 'center',
 		},
 	]
+
 	return (
 		<LayoutContent.Card style={{ marginTop: -20 }}>
 			<Table
 				loading={loading}
 				onChange={onTableChange}
-				pagination={pagination as TablePaginationConfig}
+				pagination={
+					{
+						...pagination,
+						showTotal: total => `total ${total} items`,
+					} as TablePaginationConfig
+				}
 				style={{ marginTop: '10px', marginBottom: '10px' }}
 				dataSource={referralHistoryData ?? []}
 				columns={columns}

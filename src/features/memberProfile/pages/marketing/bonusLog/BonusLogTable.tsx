@@ -149,7 +149,12 @@ const BonusLogTable = ({
 	return (
 		<Table
 			loading={loading}
-			pagination={pagination as TablePaginationConfig}
+			pagination={
+				{
+					...pagination,
+					showTotal: total => `total ${total} items`,
+				} as TablePaginationConfig
+			}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
 			dataSource={bonusLog ?? []}
 			onChange={onTableChange}

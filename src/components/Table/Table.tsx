@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Table, TablePaginationConfig, TableProps } from 'antd'
 import { PAGINATION } from 'common/hooks'
 
-const BaseTable: FC<TableProps<any>> = ({ children, ...props }) => {
+const BaseTable: FC<TableProps<any>> = ({ children, pagination, ...props }) => {
 	return (
 		<Table
 			bordered
@@ -13,6 +13,7 @@ const BaseTable: FC<TableProps<any>> = ({ children, ...props }) => {
 				{
 					position: PAGINATION.position,
 					pageSize: PAGINATION.defaultPageSize,
+					...pagination,
 				} as TablePaginationConfig
 			}
 			{...props}
