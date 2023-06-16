@@ -28,7 +28,7 @@ export interface IUpgradeSettingData {
 	detail: IUpgradeSettingDetail[]
 }
 
-export type IGetUpgradeSettingResponse = IAxiosResponse<IUpgradeSettingData[]>
+export type IUpgradeSettingResponse = IAxiosResponse<IUpgradeSettingData[]>
 
 export interface ISetUpgradeSettingArgs {
 	siteId?: number

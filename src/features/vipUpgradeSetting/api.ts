@@ -2,7 +2,7 @@ import { rootApi } from 'common/service/rootApi/api'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetUpgradeSettingArgs,
-	IGetUpgradeSettingResponse,
+	IUpgradeSettingResponse,
 	IGetVipUpgradeSupportCurrencyArgs,
 	IVipUpgradeSupportCurrencyResponse,
 	ISetUpgradeSettingArgs,
@@ -21,7 +21,7 @@ export const upgradeSettingApi = rootApi.injectEndpoints({
 			}),
 		}),
 		getUpgradeSetting: builder.query<
-			IGetUpgradeSettingResponse,
+			IUpgradeSettingResponse,
 			IGetUpgradeSettingArgs
 		>({
 			query: data => ({

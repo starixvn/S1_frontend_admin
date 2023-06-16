@@ -34,7 +34,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const {
 		data: {
-			data: VipUpgradeSupportCurrencyList = [],
+			data: vipUpgradeSupportCurrencyList = [],
 		} = {} as IVipUpgradeSupportCurrencyResponse,
 		isFetching: isVipUpgradeSupportCurrencyFetching,
 	} = useGetVipUpgradeSupportCurrencyQuery({ siteId })
@@ -157,9 +157,9 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 		if (isEmpty(queryParams)) {
 			if (!isVipUpgradeSupportCurrencyFetching)
 				setQueryParams({
-					currencyId: head(VipUpgradeSupportCurrencyList),
+					currencyId: head(vipUpgradeSupportCurrencyList),
 				})
-			handleGetUpgradeSetting(head(VipUpgradeSupportCurrencyList)!)
+			handleGetUpgradeSetting(head(vipUpgradeSupportCurrencyList)!)
 		} else {
 			const { currencyId } = queryParams
 			setTabActiveKey(currencyId)
@@ -169,7 +169,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 
 	// 目前只有支援 MYR THB IDR
 	const items = filter(currencyListBySite, currency =>
-		includes(VipUpgradeSupportCurrencyList, currency.currencyId)
+		includes(vipUpgradeSupportCurrencyList, currency.currencyId)
 	).map(item => {
 		return {
 			label: item.isoCode,
