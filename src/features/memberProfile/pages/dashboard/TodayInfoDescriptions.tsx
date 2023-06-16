@@ -19,11 +19,13 @@ const TodayInfoDescriptions = ({
 		todayDeposit = 0,
 		todayWithdrawal = 0,
 		todayBetting = 0,
+		todayBonus = 0,
+		todayReward = 0,
 	} = todayInfoData ?? {}
 
 	return (
 		<Spin spinning={loading}>
-			<Descriptions layout='vertical' bordered column={4} size='small'>
+			<Descriptions layout='vertical' bordered column={6} size='small'>
 				<Descriptions.Item label="Today's WinLoss">
 					<Text type={isPositiveNum(todayWinLoss) ? undefined : 'danger'}>
 						{numFormatToDigits(todayWinLoss || 0)}
@@ -42,6 +44,16 @@ const TodayInfoDescriptions = ({
 				<Descriptions.Item label="Today's Betting">
 					<Text type={isPositiveNum(todayBetting) ? undefined : 'danger'}>
 						{numFormatToDigits(todayBetting || 0)}
+					</Text>
+				</Descriptions.Item>
+				<Descriptions.Item label="Today's Bonus">
+					<Text type={isPositiveNum(todayBonus) ? undefined : 'danger'}>
+						{numFormatToDigits(todayBonus || 0)}
+					</Text>
+				</Descriptions.Item>
+				<Descriptions.Item label="Today's Reward">
+					<Text type={isPositiveNum(todayReward) ? undefined : 'danger'}>
+						{numFormatToDigits(todayReward || 0)}
 					</Text>
 				</Descriptions.Item>
 			</Descriptions>
