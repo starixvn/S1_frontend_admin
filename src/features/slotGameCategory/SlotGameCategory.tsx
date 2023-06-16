@@ -4,7 +4,7 @@ import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCatego
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
 import {
-	useGetTpListQuery,
+	useGetSlotTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
 	useSetSlotGameAllCurrencyMutation,
@@ -63,7 +63,7 @@ const SlotGameCategory: FC<{
 	const {
 		data: { data: tpList } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
-	} = useGetTpListQuery(null)
+	} = useGetSlotTpListQuery(null)
 
 	const [getSlotGameList, { isFetching: isGetSlotGameListLoading }] =
 		useLazyGetSlotGameListQuery()
