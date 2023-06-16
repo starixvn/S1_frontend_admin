@@ -2,7 +2,12 @@ import moment from 'moment'
 import { IGetCustTpBetRecordData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { Button, Typography, Table as AntdTable } from 'antd'
+import {
+	Button,
+	Typography,
+	Table as AntdTable,
+	TablePaginationConfig,
+} from 'antd'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
 import { isPositiveNum, sumTotalObject } from 'common/utils'
 
@@ -253,6 +258,11 @@ const CustTpBetRecordTable = ({
 						</Summary.Row>
 					)
 				}
+			}
+			pagination={
+				{
+					showTotal: total => `total ${total} items`,
+				} as TablePaginationConfig
 			}
 			columns={columns}
 			style={{ marginTop: '10px', marginBottom: '10px' }}
