@@ -1182,5 +1182,14 @@
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_Message": "Message",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
-	"Label_Month": "Month"
+	"Label_Month": "Month",
+	"Label_VintageClub": "VINTAGE CLUB",
+	"Label_SliverClub": "SILVER CLUB",
+	"Label_GoldClub": "GOLD CLUB",
+	"Label_TitaniumClub": "TITANIUM CLUB",
+	"Label_DiamondClub": "DIAMOND CLUB",
+	"Label_NovaClub": "NOVA CLUB",
+	"Label_RankingValidityMembershipRenewal": "Ranking Validity Membership Renewal",
+	"Label_Lifetime": "Lifetime",
+	"Label_3Months": "3 Months"
 }
