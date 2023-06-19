@@ -17,6 +17,7 @@ import {
 	IGetTpIdData,
 	ISlotTpData,
 	ILocalPaySettingData,
+	ISlotGameData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
@@ -121,6 +122,12 @@ export const allDataApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
+		getSlotGameList: builder.query<IAxiosResponse<ISlotGameData[]>, null>({
+			query: () => ({
+				url: 'GetAllData/GetSlotGame',
+				method: 'POST',
+			}),
+		}),
 		// 取得所有 paymentSetting
 		getPaySettingList: builder.query<IGetPaySettingListResponse, null>({
 			query: data => ({
@@ -165,5 +172,6 @@ export const {
 	useGetTpIdListQuery,
 	useGetSlotTpListQuery,
 	useGetLocalPaySettingListQuery,
+	useGetSlotGameListQuery,
 	useGetProductsQuery,
 } = allDataApi

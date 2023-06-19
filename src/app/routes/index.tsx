@@ -1070,6 +1070,13 @@ const LeaderboardExtraPoint = lazy(
 		)
 )
 
+const RebateExcludeGame = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RebateExcludeGame' */ 'features/rebateExcludeGame/RebateExcludeGame'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2706,6 +2713,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
 						<BonusInfo />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.rebateExcludeGame.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
+					>
+						<RebateExcludeGame />
 					</AuthRequire>
 				),
 			},

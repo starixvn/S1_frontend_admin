@@ -938,6 +938,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.marketing.sub.rebateExcludeGame.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.marketing.sub.rebateExcludeGame.root,
+	},
+	{
+		icon: null,
 		functionId: paths.report.sub.mpaMarketingReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.mpaMarketingReport.root,
