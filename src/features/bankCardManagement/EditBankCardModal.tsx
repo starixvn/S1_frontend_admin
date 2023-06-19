@@ -439,7 +439,6 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 								{
 									required: multiIncludes(supportChannels, [
 										SupportChannelEnum.EWallet,
-										SupportChannelEnum.QRPay,
 									]),
 									message: t('Label_Required', {
 										key: t('Label_QrCodeUrl'),
