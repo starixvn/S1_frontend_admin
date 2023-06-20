@@ -1181,6 +1181,8 @@
 	"Label_ResetOTPLimit": "Reset OTP Limit",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
 	"Label_Message": "Message",
+	"Label_MemberListUpload": "Member List Upload",
+	"Label_MemberList": "Member List",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_Month": "Month",
 	"Label_VintageClub": "VINTAGE CLUB",

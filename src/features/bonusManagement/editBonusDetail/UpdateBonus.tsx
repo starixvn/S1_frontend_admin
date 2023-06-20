@@ -15,8 +15,10 @@ import { BonusDetailMainForm } from 'features/bonusManagement/editBonusDetail/Bo
 import {
 	useGetPromotionCategoryQuery,
 	useGetPromotionListQuery,
+	useLazyGetBonusUsingListQuery,
 	useLazyGetByBonusCodeQuery,
 	useSetBonusMutation,
+	useSetBonusUsingListMutation,
 } from 'features/bonusManagement/api'
 import {
 	IVipLevelsResponse,
@@ -46,6 +48,8 @@ import {
 	WalletTypeEnum,
 } from 'features/bonusManagement/constants'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
+import { RcFile } from 'antd/es/upload'
+import { MemberListModal } from 'features/bonusManagement/editBonusDetail/MemberListModal'
 
 const UpdateBonus: FC<{
 	pageTitle?: string
@@ -76,6 +80,7 @@ const UpdateBonus: FC<{
 	const editDetailModal = useModal()
 	// BonusType 為 Tier Redeposit 時需要用到的彈窗
 	const setGroupBonusModal = useModal()
+	const usingListModal = useModal()
 
 	const {
 		data: { data: bonusTypeList } = {} as IGetPromotionTypeResponse,
@@ -111,6 +116,14 @@ const UpdateBonus: FC<{
 	const { data: { data: tagList = [] } = {} } = useGetAllTagQuery()
 
 	const [setBonus, { isLoading: isSetBonusLoading }] = useSetBonusMutation()
+
+	const [
+		getBonusUsingList,
+		{ data: bonusUsingList = [], isFetching: isGetBonusUsingListLoading },
+	] = useLazyGetBonusUsingListQuery()
+
+	const [setBonusUsingList, { isLoading: isSetBonusUsingListLoading }] =
+		useSetBonusUsingListMutation()
 
 	const handleGetBonusDetail = async () => {
 		if (!bonusCode) return
@@ -262,6 +275,31 @@ const UpdateBonus: FC<{
 					message.error(errorMessage)
 				}
 			}
+		}
+	}
+
+	// usingList
+	const handleClickMemberList = async () => {
+		if (!siteId || !bonusCode) return
+		try {
+			await getBonusUsingList({ siteId, bonusCode }).unwrap()
+			usingListModal.onOpen()
+		} catch (error) {
+			message.error(error?.message || t('System.Label_NotExpectedServerError'))
+		}
+	}
+
+	const handleUploadUsingList = async (file: RcFile) => {
+		if (!siteId || !bonusCode) return
+		const formData = new FormData()
+		formData.append('excelUpload', file)
+		formData.append('SiteId', String(siteId))
+		formData.append('BonusCode', bonusCode)
+		try {
+			await setBonusUsingList(formData).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(error?.message || t('System.Label_NotExpectedServerError'))
 		}
 	}
 
@@ -483,10 +521,13 @@ const UpdateBonus: FC<{
 					<Col lg={12} xs={24}>
 						<BonusDetailMainForm
 							loading={loading}
+							uploadUsingListLoading={isSetBonusUsingListLoading}
 							tagList={tagList}
+							isEdit={isEdit}
 							bonusTypeList={bonusTypeList}
 							vipLevelList={vipLevelList}
-							isEdit={isEdit}
+							onUploadUsingList={handleUploadUsingList}
+							onClickMemberList={handleClickMemberList}
 						/>
 					</Col>
 					<Col lg={12} xs={24}>
@@ -520,6 +561,12 @@ const UpdateBonus: FC<{
 						onFinish={setGroupBonusModal.onCancel}
 					/>
 				)}
+				<MemberListModal
+					loading={isGetBonusUsingListLoading}
+					visible={usingListModal.visible}
+					onClose={usingListModal.onCancel}
+					bonusUsingList={bonusUsingList}
+				/>
 			</EditBonusContext.Provider>
 			<AffixButtons>
 				<AffixButtons.Saved
