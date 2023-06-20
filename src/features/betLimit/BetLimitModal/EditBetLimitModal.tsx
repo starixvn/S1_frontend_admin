@@ -98,12 +98,14 @@ const EditBetLimitModal = ({
 						limitInput,
 						categoryName: tpCategoryName,
 						categoryId: tpCategory,
+						// 新增需用下拉預設值
+						defaultGroup,
 					}) => ({
 						checked: false,
 						gameTypeId,
 						gameTypeName,
 						limitGroupOptions,
-						limitGroup: undefined,
+						limitGroup: defaultGroup,
 						isGroup,
 						limitInput,
 						tpCategoryName,
@@ -155,7 +157,6 @@ const EditBetLimitModal = ({
 					}
 				)
 			}
-
 			// * for render Table
 			setDataSource(betLimitTableDataList)
 
