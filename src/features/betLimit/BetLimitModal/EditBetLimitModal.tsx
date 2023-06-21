@@ -148,7 +148,9 @@ const EditBetLimitModal = ({
 							limitGroupOptions: isGroup
 								? find(tpCategoryList, { gameTypeName })?.limitGroup
 								: undefined,
-							limitGroup,
+							limitGroup: !limitGroup
+								? find(tpCategoryList, { gameTypeName })?.defaultGroup
+								: limitGroup,
 							isGroup,
 							limitInput: max ? { min, max, maxPerMatch } : undefined,
 							tpCategoryName,
