@@ -1036,7 +1036,6 @@
 	"Label_LimitGroup": "Limit Group",
 	"Label_TotalCount": "Total Count",
 	"Label_TotalAmount": "Total Amount",
-
 	"Label_TotalApprovedCount": "TotalApprovedCount",
 	"Label_SelectStatus": "Select Status",
 	"Label_EditAnnouncement": "Edit Announcement",
@@ -1164,7 +1163,6 @@
 	"Label_Tagging": "Tagging",
 	"Label_ResetOTPLimit": "Reset OTP Limit",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
-	"Label_Message": "Message",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_LiveStreaming": "LiveStreaming",
 	"Label_RegisterMember": "RegisterMember",
@@ -1178,7 +1176,6 @@
 	"Label_TpCategory": "Tp Category",
 	"Label_LiveStreamingGameType": "LiveStreamingGameType",
 	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
-	"Label_Month": "Month",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_Step1_SelectTpMessage": "Step 1 : Select TP",
 	"Label_Step2_SelectGames": "Step 2: Select Games"

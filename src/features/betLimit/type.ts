@@ -130,6 +130,7 @@ export interface ITpCategoryListData {
 	isGroup: boolean
 	limitGroup: ILimitGroup[]
 	limitInput: ILimitInput
+	defaultGroup: string
 }
 
 export interface IBetLimitTableData {
