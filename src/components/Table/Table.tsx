@@ -12,7 +12,7 @@ const BaseTable: FC<TableProps<any>> = ({ children, pagination, ...props }) => {
 			pagination={
 				{
 					position: PAGINATION.position,
-					pageSize: PAGINATION.defaultPageSize,
+					defaultPageSize: PAGINATION.defaultPageSize,
 					...pagination,
 				} as TablePaginationConfig
 			}
