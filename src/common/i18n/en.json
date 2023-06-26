@@ -1178,5 +1178,8 @@
 	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_Step1_SelectTpMessage": "Step 1 : Select TP",
-	"Label_Step2_SelectGames": "Step 2: Select Games"
+	"Label_Step2_SelectGames": "Step 2: Select Games",
+	"Label_Message": "Message",
+	"Label_MemberListUpload": "Member List Upload",
+	"Label_MemberList": "Member List"
 }
