@@ -135,8 +135,14 @@ const WinLostReportFilter = ({
 		}
 		return (
 			<MultipleSelect
+				showSearch
 				onChange={onChangeProduct}
 				placeholder={t('Label_Select')}
+				filterOption={(input, option) =>
+					(option!.children as unknown as string)
+						.toLowerCase()
+						.includes(input.toLowerCase())
+				}
 			>
 				{(tpGameList?.length as number) > 1 && (
 					<Option value='all'>{t('Label_SelectAll')}</Option>
