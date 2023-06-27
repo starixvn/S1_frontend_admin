@@ -136,7 +136,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const {
-			groupBy,
+			groupByType,
 			bonusCode,
 			bonusTypes,
 			bonusStatus,
@@ -165,7 +165,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			baseCurrencyId,
 			pageNumber: current,
 			pageSize,
-			isGroupByDate: groupBy === GroupByEnum.Date,
+			groupByType,
 			orderBy,
 			orderByProperty,
 			orderByDirection,
@@ -181,7 +181,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset })
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setFormGroupByDate(groupBy === GroupByEnum.Date)
+			setFormGroupByDate(groupByType === GroupByEnum.Date)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -234,7 +234,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			claimStatuses = [],
 			currencyIds = [],
 			baseCurrencyId = 0,
-			isGroupByDate,
+			groupByType,
 			orderBy,
 			orderByProperty = '',
 			orderByDirection = 0,
@@ -251,7 +251,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				baseCurrencyId: Number(baseCurrencyId),
-				isGroupByDate: !!isGroupByDate,
+				groupByType: Number(groupByType),
 				orderBy: !!orderBy,
 				orderByProperty,
 				orderByDirection: Number(orderByDirection),
@@ -483,7 +483,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					claimStatuses = [],
 					currencyIds = [],
 					baseCurrencyId = 0,
-					isGroupByDate,
+					groupByType = 0,
 					orderBy,
 					orderByProperty = '',
 					orderByDirection = 0,
@@ -496,7 +496,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					bonusCode,
 					orderBy: !!orderBy,
 					orderByProperty,
-					groupBy: isGroupByDate ? GroupByEnum.Date : GroupByEnum.BonusCode,
+					groupByType: Number(groupByType),
 					orderByDirection: Number(orderByDirection),
 					baseCurrencyId: Number(baseCurrencyId),
 					dateRange: [moment(startDate), moment(endDate)],
