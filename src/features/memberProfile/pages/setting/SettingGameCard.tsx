@@ -10,15 +10,13 @@ import { useAuth, useModal } from 'common/hooks'
 import { useActionPermissionsByFunctionId } from 'common/auth'
 import LiveStreamingGameModal from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameModal'
 import { useSetCustTpGameTypeSettingMutation } from 'features/memberProfile/api'
-import {
-	CustTpGameTypeSettingEnum,
-	IdentityEnum,
-} from 'features/memberProfile/constants'
+import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
 import {
 	IAddLiveStreamingForm,
 	IGetBasicInfoData,
 } from 'features/memberProfile/type'
 import { LiveStreamingGameReqConverter } from 'features/memberProfile/pages/setting/AddSettingGameCard/utils'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 interface ISettingGameCardProps {
 	custId: number
@@ -99,7 +97,7 @@ const SettingGameCard = ({ custId, custBasicInfo }: ISettingGameCardProps) => {
 				</p>
 				<p>
 					{setLiveStreamingGamePermission?.canUse &&
-					custBasicInfo.memberType === IdentityEnum.LiveStreaming ? (
+					custBasicInfo.memberType === UserTypeEnum.LiveStreaming ? (
 						<Typography.Link onClick={liveStreamingGameModal.onOpen}>
 							{t('Label_LiveStreamingGame')}
 						</Typography.Link>
