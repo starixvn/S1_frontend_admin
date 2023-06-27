@@ -99,12 +99,14 @@ export enum IdentityEnum {
 	Normal, // 直客
 	Referral, // 推薦
 	Affiliate, // 代理
+	LiveStreaming, // 直播主
 }
 
 export const identityList: Array<{ value: number; displayName: string }> = [
 	{ value: IdentityEnum.Normal, displayName: 'Label_Normal' },
 	{ value: IdentityEnum.Referral, displayName: 'Label_Referral' },
 	{ value: IdentityEnum.Affiliate, displayName: 'Label_Affiliate' },
+	{ value: IdentityEnum.LiveStreaming, displayName: 'Label_LiveStreaming' },
 ]
 
 export enum NotesMethodEnum {
@@ -291,4 +293,11 @@ export const WITHDRAWAL_STATUS_TAGS_COLOR: { [status: number]: string } = {
 	[AllWithdrawalStatusEnum.Approved]: '#3EA62E',
 	[AllWithdrawalStatusEnum.Rejected]: '#C70707',
 	[AllWithdrawalStatusEnum.ToKyc]: '#9957EC',
+}
+
+export enum CustTpGameTypeSettingEnum {
+	NoShow = 1,
+	NoPlay = 2,
+	IsShow = 11,
+	IsPlay = 21,
 }

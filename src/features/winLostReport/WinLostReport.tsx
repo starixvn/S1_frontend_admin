@@ -45,9 +45,11 @@ import {
 	selectUserSite,
 } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { cloneDeep, isEmpty } from 'lodash'
+import { cloneDeep, isArray, isEmpty, reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm()
@@ -123,6 +125,13 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		{ isLoading: isExportWinLossByCurrencyLoading },
 	] = useExportWinLossByCurrencyMutation()
 
+	const {
+		data: { data: memberTypeEnums = [] } = {},
+		isLoading: isMemberTypeEnumsLoading,
+	} = useGetEnumTypeQuery({
+		enumName: 'MemberTypeEnum',
+	})
+
 	const [pagination, setPagination] = usePagination({ paginationTotal })
 
 	const handleSearch = async ({
@@ -152,6 +161,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			noDraw,
 			displayGroupBreakdownInOriginalCurrency,
 			groupBy,
+			memberTypes,
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -182,6 +192,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			includeFreeSpins: Boolean(includeFreeSpins),
 			noDraw: Boolean(noDraw),
 			baseCurrencyId,
+			memberTypes,
 		}
 
 		const searchSelector = async (groupNum: number) => {
@@ -334,6 +345,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				noDraw,
 				groupBy,
 				baseCurrencyId,
+				memberTypes = [],
 			} = queryParams
 
 			const args = {
@@ -355,6 +367,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				includeFreeSpins: Boolean(includeFreeSpins),
 				noDraw: Boolean(noDraw),
 				baseCurrencyId: Number(baseCurrencyId),
+				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 			}
 			let blob
 			switch (Number(groupBy)) {
@@ -516,11 +529,18 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const filterLoading = isMemberTypeEnumsLoading || isGetTpGameListLoading
+
 	useEffect(() => {
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
 					tpGameTypes: tpGameList.map(({ type }) => type),
+					// 預設排除直播主
+					memberTypes: reject(memberTypeEnums, [
+						'value',
+						UserTypeEnum.LiveStreaming,
+					]).map(({ value }) => Number(value)),
 				})
 			} else {
 				const {
@@ -536,6 +556,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					noDraw,
 					displayGroupBreakdownInOriginalCurrency,
 					groupBy,
+					memberTypes,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
@@ -553,15 +574,18 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						displayGroupBreakdownInOriginalCurrency
 					),
 					groupBy: Number(groupBy),
+					memberTypes: isArray(memberTypes)
+						? memberTypes.map((value: string) => Number(value))
+						: [],
 				})
 
 				handleSearch({ currentTimeZoneUtcOffset: Number(timeZone) })
 			}
 		}
-		if (!isGetTpGameListLoading) {
+		if (!filterLoading) {
 			init()
 		}
-	}, [isGetTpGameListLoading])
+	}, [filterLoading])
 
 	const exportLoading =
 		isExportWinLossByDateLoading ||
@@ -580,6 +604,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWinLossByPlayerFetching ||
 		isGetWinLossByPlayerDetailFetching ||
 		isGetWinLossByCurrencyFetching ||
+		isMemberTypeEnumsLoading ||
 		exportLoading
 
 	return (
@@ -589,6 +614,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				loading={loading}
 				tpGameList={tpGameList}
+				memberTypeEnums={memberTypeEnums}
 				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}

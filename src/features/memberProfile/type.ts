@@ -102,6 +102,7 @@ export interface IGetBasicInfoData {
 	emailVerifyTime: string
 	exclusive: number
 	sabaId: string
+	memberType: number
 }
 
 export type IGetBasicInfoResponse = IAxiosResponse<IGetBasicInfoData>
@@ -1237,3 +1238,56 @@ export enum AllWithdrawalStatusEnum {
 	ToKyc,
 	Error = 99,
 }
+
+export interface ISetCustTpGameTypeSettingArgs {
+	custId: number
+	setDataType: number
+	tpGameTypes: number[]
+}
+
+export interface IGetCustTpGameTypeSettingArgs {
+	custId: number
+	getDataTypes: number[]
+}
+
+export interface ICustTpGameTypeSettingData {
+	noShow: boolean
+	noPlay: boolean
+	tpId: number
+	tpName: string
+	gameType: number
+	gameTypeName: string
+}
+
+export interface IAddLiveStreamingGameData {
+	type: number
+	typeName: string
+	tpId: number
+	categoryId: number
+	tpName?: string
+}
+
+export interface ILiveStreamingGameTableData {
+	tpId: number
+	tpName: string
+	tpGames: IAddLiveStreamingGameData[]
+}
+
+export interface ISelectedGameTypes {
+	gameTypes: number[]
+}
+
+export interface IAddLiveStreamingForm {
+	selectedGameTypes: Record<string, ISelectedGameTypes>
+	tpId: number[]
+}
+
+export type ILiveStreamingInfo = {
+	tpId: number
+	tpName: string
+	selectedGameTypeNames: string[]
+}
+
+export type ICustTpGameTypeSettingResponse = IAxiosResponse<
+	ICustTpGameTypeSettingData[]
+>

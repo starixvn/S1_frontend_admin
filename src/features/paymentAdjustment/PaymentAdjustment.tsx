@@ -1,7 +1,7 @@
 import moment from 'moment'
 import download from 'downloadjs'
 import { useEffect, useState } from 'react'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty, reject } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
@@ -31,6 +31,7 @@ import {
 	IFilterForm,
 	IGetPaymentAdjustmentReportData,
 } from 'features/paymentAdjustment/type'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
@@ -83,6 +84,13 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		{ isLoading: isExportPaymentAdjustmentReportLoading },
 	] = useExportPaymentAdjustmentReportMutation()
 
+	const {
+		data: { data: memberTypeEnums = [] } = {},
+		isLoading: isMemberTypeEnumsLoading,
+	} = useGetEnumTypeQuery({
+		enumName: 'MemberTypeEnum',
+	})
+
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
@@ -92,8 +100,15 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		const { dateRange, userName, sabaId, transId, depositId, ...restValue } =
-			filterForm.getFieldsValue()
+		const {
+			dateRange,
+			userName,
+			sabaId,
+			transId,
+			depositId,
+			memberTypes,
+			...restValue
+		} = filterForm.getFieldsValue()
 
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
@@ -107,6 +122,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				sabaId: sabaId || null,
 				transId: transId || null,
 				depositId: depositId || null,
+				memberTypes,
 				pageNumber: current,
 				pageSize,
 				...restValue,
@@ -118,6 +134,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				sabaId,
 				transId,
 				depositId,
+				memberTypes,
 				pageNumber: current,
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
@@ -180,6 +197,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			depositId,
 			adjustTypes,
 			currencyIds,
+			memberTypes = [],
 		} = queryParams
 
 		try {
@@ -193,6 +211,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				adjustTypes: adjustTypes?.map((type: string) => Number(type)) ?? [],
 				currencyIds:
 					currencyIds?.map((currency: string) => Number(currency)) ?? [],
+				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 			}).unwrap()
 			download(
 				blob,
@@ -220,6 +239,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber,
 				pageSize,
 				timeZone,
+				memberTypes = [],
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
@@ -230,6 +250,9 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				sabaId,
 				transId,
 				depositId,
+				memberTypes: isArray(memberTypes)
+					? memberTypes.map((value: string) => Number(value))
+					: [],
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -251,7 +274,23 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetReasonListLoading ||
 		isGetPaymentAdjustmentReportLoading ||
 		isSetPaymentAdjustmentLoading ||
-		isGetAdjustTypeListLoading
+		isGetAdjustTypeListLoading ||
+		isMemberTypeEnumsLoading
+
+	const filterLoading =
+		isMemberTypeEnumsLoading || isGetPaymentAdjustmentReportLoading
+
+	useEffect(() => {
+		if (!filterLoading) {
+			filterForm.setFieldsValue({
+				// 預設排除直播主
+				memberTypes: reject(memberTypeEnums, [
+					'value',
+					UserTypeEnum.LiveStreaming,
+				]).map(({ value }) => Number(value)),
+			})
+		}
+	}, [isMemberTypeEnumsLoading])
 
 	return (
 		<LayoutContent.Main>
@@ -260,6 +299,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetPaymentAdjustmentReportLoading}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
+				memberTypeEnums={memberTypeEnums}
 				adjustTypeList={adjustTypeList}
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
