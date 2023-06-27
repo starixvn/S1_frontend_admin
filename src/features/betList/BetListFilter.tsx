@@ -1,5 +1,6 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import moment from 'moment'
+import { reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -22,6 +23,8 @@ import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { Currency } from 'common/enum/type'
+import { IMemberTypeData } from 'features/memberAdministrationList/type'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import {
 	IGetCategoryData,
 	IGetProductsData,
@@ -51,6 +54,7 @@ interface BetListFilterInterface {
 	categories: IGetCategoryData[]
 	vipLevels: IGetVipLevels[]
 	tagList: IGetTagsData[]
+	memberTypeEnums: IMemberTypeData[]
 	siteId?: number
 }
 
@@ -72,6 +76,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	siteId,
 	vipLevels,
 	tagList,
+	memberTypeEnums,
 }) => {
 	const { t } = useTranslation()
 
@@ -117,6 +122,38 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 		)
 	}
 
+	const memberTypeSelector = () => {
+		const handleChangeMemberType = (newMemberTypes: UserTypeEnum[]) => {
+			if (newMemberTypes.includes(0)) {
+				form.setFieldsValue({
+					memberTypes: memberTypeEnums?.map(({ value }) => value),
+				})
+			} else {
+				form.setFieldsValue({
+					memberTypes: newMemberTypes,
+				})
+			}
+		}
+		return (
+			<Form.Item name='memberTypes' label={t('Label_MemberType')}>
+				<MultipleSelect
+					onChange={handleChangeMemberType}
+					placeholder={t('Label_Select') + t('Label_MemberType')}
+				>
+					{(memberTypeEnums?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{memberTypeEnums?.map(({ value, name }) => (
+						<Option key={value} value={value}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
 		return (
 			current > moment().endOf('day') || current < moment().subtract(14, 'day')
@@ -134,6 +171,11 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							currencyIds: currencyList?.map(item => item.currencyId),
+							// 預設排除直播主
+							memberTypes: reject(memberTypeEnums, [
+								'value',
+								UserTypeEnum.LiveStreaming,
+							]).map(({ value }) => Number(value)),
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -310,6 +352,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								{tagListSelect()}
+							</Col>
+							<Col lg={4} md={12} xs={12}>
+								{memberTypeSelector()}
 							</Col>
 						</Row>
 						<br />

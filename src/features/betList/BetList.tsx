@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { isEmpty, isNumber } from 'lodash'
+import { isArray, isEmpty, isNumber, reject } from 'lodash'
 import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -18,6 +18,8 @@ import download from 'downloadjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import type { SorterResult } from 'antd/es/table/interface'
 import { orderDirectionConverter } from 'features/betList/converter'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { BetListFilter } from './BetListFilter'
 import {
 	IGetBetListArgs,
@@ -76,6 +78,13 @@ const BetList: FC<{
 		data: { data: vipLevels } = {} as IGetVipLevelsResponse,
 		isFetching: isGetVipLevelsFetching,
 	} = useGetVipLevelsQuery(null)
+
+	const {
+		data: { data: memberTypeEnums = [] } = {},
+		isLoading: isMemberTypeEnumsLoading,
+	} = useGetEnumTypeQuery({
+		enumName: 'MemberTypeEnum',
+	})
 
 	const [
 		getBetList,
@@ -142,6 +151,7 @@ const BetList: FC<{
 			stake = 0,
 			winLostAmount = 0,
 			transId = '',
+			memberTypes,
 		} = form.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
 			dateRange,
@@ -186,6 +196,7 @@ const BetList: FC<{
 				orderBy,
 				orderByProperty,
 				orderByDirection,
+				memberTypes,
 			}
 			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
@@ -252,6 +263,7 @@ const BetList: FC<{
 			pageSize,
 			startTime,
 			endTime,
+			memberTypes = [],
 		} = queryParams
 		try {
 			const args: IGetBetListArgs = {
@@ -277,6 +289,7 @@ const BetList: FC<{
 				endTime,
 				winLostAmount,
 				transId,
+				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 			}
 
 			const blob = await exportBetListFile(args).unwrap()
@@ -315,6 +328,7 @@ const BetList: FC<{
 				transId,
 				winLostAmount,
 				timeZone,
+				memberTypes,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -336,6 +350,9 @@ const BetList: FC<{
 				stake,
 				transId,
 				winLostAmount,
+				memberTypes: isArray(memberTypes)
+					? memberTypes.map((value: string) => Number(value))
+					: [],
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -352,7 +369,23 @@ const BetList: FC<{
 		isGetCategoryFetching ||
 		isGetVipLevelsFetching ||
 		isGetBetListFetching ||
-		isGetTagListFetching
+		isGetTagListFetching ||
+		isMemberTypeEnumsLoading
+
+	const filterLoading = isGetBetListFetching || isMemberTypeEnumsLoading
+
+	useEffect(() => {
+		if (!filterLoading) {
+			// 預設排除直播主
+			form.setFieldsValue({
+				memberTypes: reject(memberTypeEnums, [
+					'value',
+					UserTypeEnum.LiveStreaming,
+				]).map(({ value }) => Number(value)),
+			})
+		}
+	}, [isMemberTypeEnumsLoading])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -370,6 +403,7 @@ const BetList: FC<{
 				tagList={tagList}
 				siteId={siteId}
 				vipLevels={vipLevels}
+				memberTypeEnums={memberTypeEnums}
 			/>
 			{!isEmpty(queryParams) && (
 				<BetListTable

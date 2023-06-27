@@ -1,5 +1,6 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import moment from 'moment'
+import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 export interface IExportPaymentAdjustmentReportArgs {
 	adjustTypes: number[]
@@ -10,6 +11,7 @@ export interface IExportPaymentAdjustmentReportArgs {
 	sabaId: string | null
 	transId: string | null
 	depositId: string | null
+	memberTypes: UserTypeEnum[]
 }
 
 export interface IGetPaymentAdjustmentReportArgs
@@ -78,6 +80,7 @@ export type IFilterForm = {
 	sabaId: string
 	transId: string
 	depositId: string
+	memberTypes: UserTypeEnum[]
 }
 
 export type IEditForm = {
