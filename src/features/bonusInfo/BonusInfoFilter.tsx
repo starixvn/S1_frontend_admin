@@ -224,7 +224,7 @@ const BonusInfoFilter = ({
 									({ currencyId }) => currencyId
 								),
 								baseCurrencyId: 0,
-								groupBy: GroupByEnum.BonusCode,
+								groupByType: GroupByEnum.BonusCode,
 								bonusCode: '',
 							}}
 						>
@@ -307,7 +307,7 @@ const BonusInfoFilter = ({
 							<Row align='middle' gutter={16}>
 								<Col>
 									<Form.Item
-										name='groupBy'
+										name='groupByType'
 										label={t('Label_GroupBy')}
 										style={{ margin: 0 }}
 									>

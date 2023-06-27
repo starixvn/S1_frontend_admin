@@ -15,7 +15,7 @@ export interface IGetBonusInfoArgs {
 	orderBy: boolean
 	orderByProperty: string
 	orderByDirection: number
-	isGroupByDate: boolean
+	groupByType: number
 }
 
 export type IExportBonusInfoArgs = Omit<
@@ -83,7 +83,7 @@ export interface IFilterForm {
 	claimStatuses: number[]
 	currencyIds: number[]
 	baseCurrencyId: number
-	groupBy: number
+	groupByType: number
 	orderBy: boolean
 	orderByProperty: string
 	orderByDirection: number
