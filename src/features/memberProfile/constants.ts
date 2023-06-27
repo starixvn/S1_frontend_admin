@@ -99,12 +99,14 @@ export enum IdentityEnum {
 	Normal = 1, // 直客
 	Referral, // 推薦
 	Affiliate, // 代理
+	LiveStreaming, // 直播主
 }
 
 export const identityList: Array<{ value: number; displayName: string }> = [
 	{ value: IdentityEnum.Normal, displayName: 'Label_Normal' },
 	{ value: IdentityEnum.Referral, displayName: 'Label_Referral' },
 	{ value: IdentityEnum.Affiliate, displayName: 'Label_Affiliate' },
+	{ value: IdentityEnum.LiveStreaming, displayName: 'Label_LiveStreaming' },
 ]
 
 export enum NotesMethodEnum {

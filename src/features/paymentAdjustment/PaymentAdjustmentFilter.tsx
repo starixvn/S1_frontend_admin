@@ -22,9 +22,9 @@ import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { IFilterForm } from 'features/paymentAdjustment/type'
-import { IEnumTypeData } from 'common/service/enumApi'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IPaymentAdjustmentFilterProps {
 	loading: boolean
@@ -53,8 +53,8 @@ const PaymentAdjustmentFilter = ({
 	loading,
 	form,
 	timeZoneUtcOffset,
-	adjustTypeList,
 	memberTypeEnums,
+	adjustTypeList,
 	onSearch,
 	onTimeZoneChange,
 	currencyListBySite,
