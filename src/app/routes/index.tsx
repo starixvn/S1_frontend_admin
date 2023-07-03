@@ -1077,6 +1077,13 @@ const RebateExcludeGame = lazy(
 		)
 )
 
+const VipUpgradeSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipUpgradeSetting' */ 'features/vipUpgradeSetting/VipUpgradeSetting'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2723,6 +2730,16 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
 					>
 						<RebateExcludeGame />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipUpgradeSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.vipUpgradeSetting.functionId}
+					>
+						<VipUpgradeSetting />
 					</AuthRequire>
 				),
 			},

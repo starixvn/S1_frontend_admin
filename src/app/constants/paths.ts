@@ -317,6 +317,10 @@ const paths = {
 				root: 'marketing/vipRebateManagement',
 				functionId: 49,
 			},
+			vipUpgradeSetting: {
+				root: 'marketing/vipUpgradeSetting',
+				functionId: 146,
+			},
 			referralManagement: {
 				root: 'marketing/referralManagement',
 				functionId: 48,
