@@ -36,10 +36,11 @@ export interface IEditForm {
 	userName: string | null
 	custId?: number
 	currencyId: number
+	limitInput: any
 }
 
 export interface IGetByCustIdArgs {
-	custId: number
+	custId: number | undefined
 }
 
 export interface ILimitGroup {
@@ -47,23 +48,30 @@ export interface ILimitGroup {
 	range: string
 }
 
+export interface ILimitInput {
+	min: number | undefined | null
+	max: number | undefined | null
+	maxPerMatch: number | undefined | null
+}
+
 export interface IGameTypeBetLimit {
-	categoryId: number
-	categoryName: string
-	typeId: number
-	typeName: string
+	tpCategory: number
+	tpCategoryName: string
+	gameTypeId: number
+	gameTypeName: string
 	checked: boolean
-	selectedValue?: string
-	limitGroup: ILimitGroup[]
+	limitGroup?: string | null
+	limitRange?: string | null
+	min?: number | null
+	max?: number | null
+	maxPerMatch?: number | null
 }
 
 export interface IGetByCustIdData {
-	siteId: number
-	siteName: string
 	custId: number
 	userName: string
 	currencyId: number
-	gameTypeBetLimit: IGameTypeBetLimit[]
+	betSetting: IGameTypeBetLimit[]
 }
 
 export type IGetByCustIdResponse = IAxiosResponse<IGetByCustIdData>
@@ -107,15 +115,38 @@ export interface ICustInfoDetailsData {
 
 export type ICustInfoDetailsResponse = IAxiosResponse<ICustInfoDetailsData>
 
-export interface ITpCategoryListData {
-	categoryId: number
-}
-
-export type ITpCategoryListResponse = IAxiosResponse<ITpCategoryListData>
-
-export interface IGetTpBetLimitGroupArgs {
-	categoryId: number
+export interface IGetTpCategoryListArgs {
+	siteId?: number
 	currencyId: number
 }
 
-export type ITpBetLimitGroupResponse = IAxiosResponse<IGameTypeBetLimit[]>
+export interface ITpCategoryListData {
+	checked: boolean
+	selectedGroup: string
+	categoryId: number
+	categoryName: string
+	gameType: number
+	gameTypeName: string
+	isGroup: boolean
+	limitGroup: ILimitGroup[]
+	limitInput: ILimitInput
+	defaultGroup: string
+}
+
+export interface IBetLimitTableData {
+	tpCategoryName: string
+	tpCategory: number
+	checked: boolean
+	gameTypeId: number
+	gameTypeName: string
+	limitGroupOptions: ILimitGroup[] | undefined
+	limitGroup?: string | undefined | null
+	isGroup: boolean
+	limitInput?: ILimitInput
+}
+
+export interface IFormBetLimitTableData {
+	[key: string]: IBetLimitTableData
+}
+
+export type ITpCategoryListResponse = IAxiosResponse<ITpCategoryListData[]>
