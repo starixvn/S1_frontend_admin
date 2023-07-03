@@ -1175,5 +1175,7 @@
 	"Label_TpCategory": "Tp Category",
 	"Label_LiveStreamingGameType": "LiveStreamingGameType",
 	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
-	"Label_Month": "Month"
+	"Label_Month": "Month",
+	"Label_MaxPerMatch": "MaxPerMatch",
+	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch"
 }
