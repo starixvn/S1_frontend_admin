@@ -1187,5 +1187,9 @@
 	"Label_MaxPerMatch": "MaxPerMatch",
 	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch",
 	"Label_Summary": "Summary",
-	"Label_AllSite": "All Site"
+	"Label_AllSite": "All Site",
+	"Label_AutoVerifyRule": "Auto Verify Rule",
+	"Label_DeviceLevel": "Device Level",
+	"Label_DeviceScores": "Device Scores",
+	"Label_DeviceScoresHint": "Above 75 is Low Risk"
 }

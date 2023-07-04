@@ -249,3 +249,79 @@ export type IAddAutoWithdrawalRuleForm = {
 	tags: number[]
 	withdrawalTypes: number[]
 }
+
+export interface IAutoVerifyRuleData {
+	currencyId: number
+	isoCode: string
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	deviceLevel: string[]
+	deviceScores: number
+	id: number
+	status: number
+	createTime: string
+	createUser: string
+	lastUpdateTime: string
+	lastUpdateUser: string
+}
+
+export interface IGetAutoVerifyRuleArgs {
+	siteId?: number
+	autoType?: number
+}
+
+export interface IAddAutoVerifyRuleArgs {
+	autoType?: number
+	siteId?: number
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	deviceLevel: string[]
+	deviceScores: number
+}
+
+export interface ISetAutoVerifyRuleArgs {
+	id: number
+	siteId?: number
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	deviceLevel: string[]
+	deviceScores: number
+	status: number
+}
+
+export interface IDeleteAutoVerifyRuleArgs {
+	id: number
+}
+
+export type IEditAutoVerifyRuleForm = {
+	id: number
+	siteId?: number
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	deviceLevel: string[]
+	deviceScores: number
+	status: number
+}
+
+export type IAddAutoVerifyRuleForm = {
+	autoType: number
+	siteId?: number
+	currencyId: number
+	withdrawalAmount: number
+	accountWithdrawalCount: number
+	vipLevels: number[]
+	tags: number[]
+	deviceLevel: string[]
+	deviceScores: number
+}
