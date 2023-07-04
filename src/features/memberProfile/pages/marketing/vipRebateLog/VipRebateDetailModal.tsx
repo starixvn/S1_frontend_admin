@@ -46,12 +46,20 @@ const VipRebateDetailModal = ({
 		},
 		// 保持數字準確性 , 這裡不做 formatter
 		{
-			title: t('Label_ValidTurnover'),
+			title: t('Label_TotalTurnover'),
 			key: 'validBet',
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
 			render: (validBet: number) => validBet ?? 0,
+		},
+		{
+			title: t('Label_ValidTurnover'),
+			key: 'validTurnover',
+			dataIndex: 'validTurnover',
+			width: 100,
+			align: 'center' as 'center',
+			render: (validTurnover: number) => validTurnover ?? 0,
 		},
 		{
 			title: t('Label_RebateByGame'),
@@ -84,6 +92,10 @@ const VipRebateDetailModal = ({
 				percentage: null,
 				calculatedAmount: rawVipRebateDetail.reduce(
 					(sum, cur) => sum + cur.calculatedAmount,
+					0
+				),
+				validTurnover: rawVipRebateDetail.reduce(
+					(sum, cur) => sum + cur.validTurnover,
 					0
 				),
 			},
