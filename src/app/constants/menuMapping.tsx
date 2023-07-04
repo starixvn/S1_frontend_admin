@@ -942,4 +942,22 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.mpaMarketingReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.marketing.sub.newReferralManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.marketing.sub.newReferralManagement.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.newReferralReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.newReferralReport.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.newReferralCustReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.newReferralCustReport.root,
+	},
 ]

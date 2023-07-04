@@ -325,6 +325,10 @@ const paths = {
 				root: 'marketing/referralManagement',
 				functionId: 48,
 			},
+			newReferralManagement: {
+				root: 'marketing/newReferralManagement',
+				functionId: 148,
+			},
 			editReferralManagement: {
 				root: 'marketing/referralManagement/edit',
 				functionId: 48,
@@ -462,6 +466,14 @@ const paths = {
 			bonusInfoReport: {
 				root: 'report/bonusInfoReport',
 				functionId: 72,
+			},
+			newReferralReport: {
+				root: 'report/newReferralReport',
+				functionId: 147,
+			},
+			newReferralCustReport: {
+				root: 'report/newReferralReport/log',
+				functionId: 147,
 			},
 		},
 	},
