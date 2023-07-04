@@ -836,6 +836,7 @@
 	"Label_PayoutStatus": "Payout Status",
 	"Label_PayoutTime": "Payout Time",
 	"Label_ValidTurnover": "Valid Turnover",
+	"Label_TotalTurnover": "Total Turnover",
 	"Label_RebateByGame": "Rebate % by Game",
 	"Label_Change": "Change",
 	"Label_Unlimited": "UnLimited",
