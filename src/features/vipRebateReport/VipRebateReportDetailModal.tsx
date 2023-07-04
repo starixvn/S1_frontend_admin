@@ -69,7 +69,9 @@ const VipRebateReportDetailModal = ({
 		)
 	}
 
-	const turnoverElement = () => {
+	// Total Turnover //
+
+	const totalTurnoverElement = () => {
 		const totalValidTurnover = reduce(
 			vipRebateDetail,
 			(sum, current) => sum + current.validBet,
@@ -77,8 +79,26 @@ const VipRebateReportDetailModal = ({
 		)
 
 		return itemRenderer(
-			t('Label_ValidTurnover'),
+			t('Label_TotalTurnover'),
 			vipRebateDetail.map(({ validBet }) => numberFormatter.format(validBet)),
+			numberFormatter.format(totalValidTurnover)
+		)
+	}
+
+	// Valid Turnover //
+
+	const validTurnoverElement = () => {
+		const totalValidTurnover = reduce(
+			vipRebateDetail,
+			(sum, current) => sum + current.validTurnover,
+			0
+		)
+
+		return itemRenderer(
+			t('Label_ValidTurnover'),
+			vipRebateDetail.map(({ validTurnover }) =>
+				numberFormatter.format(validTurnover)
+			),
 			numberFormatter.format(totalValidTurnover)
 		)
 	}
@@ -131,7 +151,8 @@ const VipRebateReportDetailModal = ({
 					}}
 				>
 					{titleElement()}
-					{turnoverElement()}
+					{totalTurnoverElement()}
+					{validTurnoverElement()}
 					{rebateElement()}
 					{amountElement()}
 				</Descriptions>
