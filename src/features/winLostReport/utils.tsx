@@ -56,6 +56,12 @@ export const tableColumnConverter = (tableList: object[]) => {
 	let tableColumns: object[] = []
 	if (tableList.length > 0) {
 		const excludeList = ['displayKey', 'children', 'key']
+		const noTwoDecimalPlaceFields = [
+			'betCount',
+			'uniquePlayers',
+			'depositCount',
+			'withDrawCount',
+		]
 		const columns = Object.keys(tableList[0]).filter(
 			value => !excludeList.includes(value)
 		)
@@ -82,17 +88,19 @@ export const tableColumnConverter = (tableList: object[]) => {
 					align: 'right' as AlignType,
 					sorter: true,
 					width: 80,
-					render: (data: number | string) =>
-						Number(data) ? (
-							<Typography.Text
-								style={{ whiteSpace: 'nowrap' }}
-								type={isPositiveNum(data) ? undefined : 'danger'}
-							>
-								{numFormatToDigits(Number(data) * 100 || 0)}%
-							</Typography.Text>
-						) : (
-							<Typography.Text>{data ?? '-'}</Typography.Text>
-						),
+					render: (data: number | string) => {
+						if (Number(data)) {
+							return (
+								<Typography.Text
+									style={{ whiteSpace: 'nowrap' }}
+									type={isPositiveNum(data) ? undefined : 'danger'}
+								>
+									{numFormatToDigits(Number(data) * 100 || 0, 2, 2)}%
+								</Typography.Text>
+							)
+						}
+						return <Typography.Text>{data ?? '-'}</Typography.Text>
+					},
 				}
 			}
 			return {
@@ -108,7 +116,9 @@ export const tableColumnConverter = (tableList: object[]) => {
 							style={{ whiteSpace: 'nowrap' }}
 							type={isPositiveNum(data) ? undefined : 'danger'}
 						>
-							{numFormatToDigits(Number(data) || 0)}
+							{noTwoDecimalPlaceFields.includes(dataIndex)
+								? numFormatToDigits(Number(data) || 0)
+								: numFormatToDigits(Number(data) || 0, 2, 2)}
 						</Typography.Text>
 					) : (
 						<Typography.Text>{data ?? '-'}</Typography.Text>
