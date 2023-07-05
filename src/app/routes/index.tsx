@@ -1070,6 +1070,13 @@ const LeaderboardExtraPoint = lazy(
 		)
 )
 
+const VipUpgradeSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VipUpgradeSetting' */ 'features/vipUpgradeSetting/VipUpgradeSetting'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2651,6 +2658,16 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
 						<BonusInfo />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipUpgradeSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.vipUpgradeSetting.functionId}
+					>
+						<VipUpgradeSetting />
 					</AuthRequire>
 				),
 			},
