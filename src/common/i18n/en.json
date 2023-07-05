@@ -1187,6 +1187,9 @@
 	"Label_MaxPerMatch": "MaxPerMatch",
 	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch",
 	"Label_NewReferralLog": "New Referral Log",
+	"Label_ReferralRewardRate": "Referral Reward Rate",
+	"Label_EditNewReferralManagement": "Edit New Referral Management",
+	"Label_NewReferralLog": "New Referral Log",
 	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch",
 	"Label_Summary": "Summary",
 	"Label_AllSite": "All Site"

@@ -960,4 +960,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.newReferralCustReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.marketing.sub.editNewReferralManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.marketing.sub.editNewReferralManagement.root,
+	},
 ]

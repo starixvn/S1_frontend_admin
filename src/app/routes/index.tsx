@@ -1091,6 +1091,13 @@ const NewReferralCustReport = lazy(
 		)
 )
 
+const EditNewReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditNewReferralManagement' */ 'features/newReferralManagement/EditReferralManagement'
+		)
+)
+
 const VipUpgradeSetting = lazy(
 	() =>
 		import(
@@ -2709,6 +2716,18 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.newReferralCustReport.functionId}
 					>
 						<NewReferralCustReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.editNewReferralManagement.root}/:editCurrencyId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.marketing.sub.editNewReferralManagement.functionId
+						}
+					>
+						<EditNewReferralManagement />
 					</AuthRequire>
 				),
 			},

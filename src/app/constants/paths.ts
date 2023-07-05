@@ -325,13 +325,17 @@ const paths = {
 				root: 'marketing/referralManagement',
 				functionId: 48,
 			},
+			editReferralManagement: {
+				root: 'marketing/referralManagement/edit',
+				functionId: 48,
+			},
 			newReferralManagement: {
 				root: 'marketing/newReferralManagement',
 				functionId: 148,
 			},
-			editReferralManagement: {
-				root: 'marketing/referralManagement/edit',
-				functionId: 48,
+			editNewReferralManagement: {
+				root: 'marketing/newReferralManagement/edit',
+				functionId: 148,
 			},
 			referralReport: {
 				root: 'marketing/referralReport',
