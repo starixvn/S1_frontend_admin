@@ -7,10 +7,14 @@ export const numberFormatter = new Intl.NumberFormat('en', {
 })
 
 // 數字 format 到特定小數點，預設為第二位
-export const numFormatToDigits = (value: number, digits = 2): string => {
+export const numFormatToDigits = (
+	value: number,
+	digits = 2,
+	minimumFractionDigits = 0
+): string => {
 	const formatter = new Intl.NumberFormat('en', {
 		maximumFractionDigits: digits,
-		minimumFractionDigits: 0,
+		minimumFractionDigits,
 	})
 	return formatter.format(Number(value.toFixed(digits)))
 }
