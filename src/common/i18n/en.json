@@ -1182,7 +1182,6 @@
 	"Label_Message": "Message",
 	"Label_MemberListUpload": "Member List Upload",
 	"Label_MemberList": "Member List",
-	"Label_Month": "Month",
 	"Label_VintageClub": "VINTAGE CLUB",
 	"Label_SliverClub": "SILVER CLUB",
 	"Label_GoldClub": "GOLD CLUB",
@@ -1191,5 +1190,7 @@
 	"Label_NovaClub": "NOVA CLUB",
 	"Label_RankingValidityMembershipRenewal": "Ranking Validity Membership Renewal",
 	"Label_Lifetime": "Lifetime",
-	"Label_3Months": "3 Months"
+	"Label_3Months": "3 Months",
+	"Label_Month": "Month",
+	"Label_Summary": "Summary"
 }
