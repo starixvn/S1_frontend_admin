@@ -23,7 +23,7 @@ const MemberListModal = ({
 			title: t('Label_Currency'),
 			key: 'currency',
 			dataIndex: 'currency',
-			width: '50%',
+			width: '30%',
 			align: 'center' as 'center',
 		},
 		{
@@ -33,6 +33,16 @@ const MemberListModal = ({
 			align: 'center' as 'center',
 			width: '50%',
 			render: (userName: string) => userName || '-',
+		},
+		{
+			title: t('Label_Status'),
+			key: 'status',
+			dataIndex: 'status',
+			align: 'center' as 'center',
+			width: '20%',
+			// 1 === yes
+			render: (status: number) =>
+				status === 1 ? t('Label_Yes') : t('Label_No'),
 		},
 	]
 	useEffect(() => {
