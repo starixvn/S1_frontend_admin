@@ -156,7 +156,7 @@ const DepositTable = ({
 		{
 			title: t('Label_FlowEndTime'),
 			key: 'flowEndTime',
-			dataIndex: 'depositTime',
+			dataIndex: 'flowEndTime',
 			width: 100,
 			align: 'center' as 'center',
 			render: (flowEndTime: string) =>
