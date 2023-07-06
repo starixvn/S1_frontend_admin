@@ -749,6 +749,7 @@ export interface IGetDepositInfoData {
 	transId: string
 	updateTime: string
 	bonusDescription: string
+	flowEndTime: string | null
 }
 
 export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]>
