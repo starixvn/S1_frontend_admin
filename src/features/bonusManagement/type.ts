@@ -252,4 +252,5 @@ export type IBonusUsingListData = {
 	custId: number
 	currency: string
 	userName: string
+	status: number
 }
