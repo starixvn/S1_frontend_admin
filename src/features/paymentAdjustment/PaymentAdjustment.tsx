@@ -159,16 +159,22 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleSaved = async (before: IGetPaymentAdjustmentReportData) => {
-		const { memo: afterMemo = '', adjustCategory: afterCategory } =
-			await editForm.getFieldsValue()
-		const { memo, adjustCategory, transId, currencyId, siteId } = before
+		const {
+			memo: afterMemo = '',
+			adjustCategory: afterCategory,
+			adjustType: afterAdjustType,
+		} = await editForm.getFieldsValue()
+		const { memo, adjustCategory, transId, currencyId, siteId, adjustType } =
+			before
 		const beforeData: IAdjustmentData = {
 			category: adjustCategory,
 			memo,
+			adjustType,
 		}
 		const afterData: IAdjustmentData = {
 			category: afterCategory,
 			memo: afterMemo,
+			adjustType: afterAdjustType,
 		}
 		try {
 			await setPaymentAdjustment({
@@ -310,6 +316,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 					loading={loading}
 					paymentAdjustmentReport={paymentAdjustmentReport}
 					pagination={pagination}
+					adjustTypeList={adjustTypeList}
 					onTableChange={handleTableChange}
 					reasonList={reasonList}
 					form={editForm}

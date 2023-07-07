@@ -26,6 +26,7 @@ export interface IGetPaymentAdjustmentReportData {
 	custId: number
 	siteName: string
 	transId: string
+	adjustType: number
 	adjustTypeName: string
 	adjustCategory: number
 	adjustCategoryName: string
@@ -54,9 +55,11 @@ export interface IGetPaymentAdjustmentReportResponse
 	currencyAmountRecord: ICurrencyAmountRecordData[]
 }
 
+// 新增 adjustType
 export type IAdjustmentData = {
 	category: number
 	memo: string
+	adjustType: number
 }
 
 export interface ISetAdjustmentArgs {
@@ -86,4 +89,5 @@ export type IFilterForm = {
 export type IEditForm = {
 	memo: string
 	adjustCategory: number
+	adjustType: number
 }

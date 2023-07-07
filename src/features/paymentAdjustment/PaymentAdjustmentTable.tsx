@@ -21,6 +21,7 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment/moment'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IPaymentAdjustmentTableProps {
 	form: FormInstance<IEditForm>
@@ -31,6 +32,7 @@ interface IPaymentAdjustmentTableProps {
 	editPermission?: PermissionInterface
 	reasonList: IGetReasonListData[]
 	paymentAdjustmentReport: IGetPaymentAdjustmentReportData[]
+	adjustTypeList: IEnumTypeData[]
 	setEditingKey: React.Dispatch<React.SetStateAction<string | undefined>>
 	onSaved: (before: IGetPaymentAdjustmentReportData) => void
 	onTableChange: (newPagination: TablePaginationConfig) => void
@@ -45,6 +47,7 @@ const PaymentAdjustmentTable = ({
 	editingKey,
 	pagination,
 	editPermission,
+	adjustTypeList,
 	timeZoneUtcOffset,
 	paymentAdjustmentReport,
 	onSaved,
@@ -106,17 +109,50 @@ const PaymentAdjustmentTable = ({
 			width: 100,
 			align: 'center' as 'center',
 		},
+
+		// adjust type //
 		{
 			title: t('Label_AdjustType'),
 			key: 'adjustTypeName',
-			dataIndex: 'adjustTypeName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (typeName: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-					{typeName}
-				</Typography.Text>
-			),
+
+			render: (record: IGetPaymentAdjustmentReportData) => {
+				const { transId, adjustTypeName } = record
+				const editable = isEditing(transId)
+				// console.log('data', record) //
+
+				// Filter adjustTypeList based on adjustTypeName for selecting options //
+
+				const filteredOptions = adjustTypeList.filter(option => {
+					return adjustTypeName === 'Credit'
+						? option.name === 'Credit' || option.name === 'IncreaseBonus'
+						: option.name === 'Debit' || option.name === 'ReduceBonus'
+				})
+
+				// Check if adjustTypeName is Credit or Debit //
+
+				const isCreditOrDebit =
+					adjustTypeName === 'Credit' || adjustTypeName === 'Debit'
+
+				// Only if user has edit permission and adjustTypeName is Credit or Debit, then show the dropdown //
+
+				return editable && isCreditOrDebit ? (
+					<Form.Item name='adjustType' style={{ margin: 0 }}>
+						<Select>
+							{filteredOptions.map(({ value, name }) => (
+								<Option key={value} value={value}>
+									{name}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				) : (
+					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
+						{adjustTypeName}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: t('Label_MemberId'),

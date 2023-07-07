@@ -17,7 +17,6 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import React from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
