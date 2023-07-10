@@ -102,7 +102,13 @@ const OnlineBankInfoModal = ({
 	}, [visible])
 
 	return (
-		<Modal open={visible} onCancel={onCancel} footer={false} title={false}>
+		<Modal
+			open={visible}
+			onCancel={onCancel}
+			footer={false}
+			title={false}
+			destroyOnClose
+		>
 			<Table
 				loading={loading}
 				pagination={false}
