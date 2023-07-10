@@ -27,7 +27,6 @@ export interface IGetPaymentAdjustmentReportData {
 	custId: number
 	siteName: string
 	transId: string
-	adjusttType: number
 	adjustTypeName: string
 	adjustCategory: number
 	adjustCategoryName: string
