@@ -56,12 +56,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [bonusDetailForm] = Form.useForm<IBonusDetailForm>()
 	// 當前搜出來的資料所含的 bonusCodes
 	const [currentBonusCodes, setCurrentBonusCodes] = useState<string[]>([])
-	// 當前搜出來的資料所含的 date，只有 groupByDate 時會用到
+	// 當前搜出來的資料所含的 date，只有 formGroupType 時會用到
 	const [currentDates, setCurrentDates] = useState<string[]>([])
 	// 僅用來控制 detail table 是否顯示
 	const [showDetails, setShowDetails] = useState<boolean>(false)
 	// 用 state 控制當前顯示的 table 類型，需要用 state 儲存的主要原因是希望在 handle search 之後才做畫面的更動
-	const [formGroupByDate, setFormGroupByDate] = useState<boolean>(false)
+	const [formGroupType, setFormGroupType] = useState<number>(
+		GroupByEnum.BonusCode
+	)
 	// bonusDetail 的資料接出來處理，因為下拉異動之後需要清除資料
 	const [bonusDetail, setBonusDetail] = useState<IBonusDetailListData[]>([])
 	const [selectDate, setSelectDate] = useState(null)
@@ -181,7 +183,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset })
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setFormGroupByDate(groupByType === GroupByEnum.Date)
+			setFormGroupType(groupByType)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -234,7 +236,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			claimStatuses = [],
 			currencyIds = [],
 			baseCurrencyId = 0,
-			groupByType,
+			groupByType = 0,
 			orderBy,
 			orderByProperty = '',
 			orderByDirection = 0,
@@ -272,7 +274,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			bonusCode,
 			recordDate: moment(recordDate).format(dateFormat),
 		})
-		if (formGroupByDate) {
+		if (
+			formGroupType === GroupByEnum.Date ||
+			formGroupType === GroupByEnum.Month
+		) {
 			// 篩出特定時間的 bonusCode => 排序
 			setCurrentBonusCodes(
 				uniq(
@@ -353,18 +358,20 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			})
 			const { data: bonusDetailData = [] } = await getBonusDetail({
 				siteId,
-				startDate: formGroupByDate
-					? utcFormatter({
-							date: moment(recordDate).startOf('day'),
-							utcOffset: timeZoneUtcOffset,
-					  })
-					: startDate,
-				endDate: formGroupByDate
-					? utcFormatter({
-							date: moment(recordDate).endOf('day'),
-							utcOffset: timeZoneUtcOffset,
-					  })
-					: endDate,
+				startDate:
+					formGroupType !== GroupByEnum.BonusCode
+						? utcFormatter({
+								date: moment(recordDate).startOf('day'),
+								utcOffset: timeZoneUtcOffset,
+						  })
+						: startDate,
+				endDate:
+					formGroupType !== GroupByEnum.BonusCode
+						? utcFormatter({
+								date: moment(recordDate).endOf('day'),
+								utcOffset: timeZoneUtcOffset,
+						  })
+						: endDate,
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				baseCurrencyId: Number(baseCurrencyId),
@@ -431,18 +438,20 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportBonusDetail({
 				bonusCode,
 				siteId,
-				startDate: formGroupByDate
-					? utcFormatter({
-							date: moment(recordDate).startOf('day'),
-							utcOffset: timeZoneUtcOffset,
-					  })
-					: startDate,
-				endDate: formGroupByDate
-					? utcFormatter({
-							date: moment(recordDate).endOf('day'),
-							utcOffset: timeZoneUtcOffset,
-					  })
-					: endDate,
+				startDate:
+					formGroupType !== GroupByEnum.BonusCode
+						? utcFormatter({
+								date: moment(recordDate).startOf('day'),
+								utcOffset: timeZoneUtcOffset,
+						  })
+						: startDate,
+				endDate:
+					formGroupType !== GroupByEnum.BonusCode
+						? utcFormatter({
+								date: moment(recordDate).endOf('day'),
+								utcOffset: timeZoneUtcOffset,
+						  })
+						: endDate,
 				orderBy: true,
 				orderByProperty,
 				orderByDirection,
@@ -550,7 +559,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 						isExportBonusInfoLoading ||
 						isGetBonusSummaryLoading
 					}
-					isGroupByDate={formGroupByDate}
+					formGroupType={formGroupType}
 					bonusInfo={bonusInfo}
 					bonusSummary={bonusSummary}
 					bonusTypeList={bonusTypeList}
@@ -567,7 +576,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				<BonusDetailTable
 					form={bonusDetailForm}
 					loading={isGetBonusDetailLoading || isExportBonusDetailLoading}
-					isGroupByDate={formGroupByDate}
+					formGroupType={formGroupType}
 					bonusDetail={bonusDetail}
 					currentBonusCodes={currentBonusCodes}
 					currentDates={currentDates}

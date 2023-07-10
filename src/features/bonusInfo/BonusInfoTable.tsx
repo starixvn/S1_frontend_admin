@@ -9,10 +9,11 @@ import { dateFormat, numFormatToDigits } from 'common/utils/format'
 import { SorterResult } from 'antd/es/table/interface'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { PermissionInterface } from 'type'
+import { GroupByEnum } from 'features/bonusInfo/constants'
 
 interface IBonusInfoTableProps {
 	loading: boolean
-	isGroupByDate: boolean
+	formGroupType: number
 	bonusInfo: IBonusInfoData[]
 	bonusSummary: IBonusInfoData
 	bonusTypeList: IEnumTypeData[]
@@ -34,7 +35,7 @@ const { Panel } = Collapse
 
 const BonusInfoTable = ({
 	loading,
-	isGroupByDate,
+	formGroupType,
 	bonusInfo,
 	bonusSummary,
 	bonusTypeList,
@@ -66,7 +67,11 @@ const BonusInfoTable = ({
 			align: 'center' as 'center',
 			sorter: true,
 			render: (bonusCode: string, record: IBonusInfoData) => {
-				if (isGroupByDate) return bonusCode || ''
+				if (
+					formGroupType === GroupByEnum.Date ||
+					formGroupType === GroupByEnum.Month
+				)
+					return bonusCode || ''
 				return bonusCode ? (
 					<Typography.Link onClick={() => onClickBonusCode(record)}>
 						{bonusCode}
@@ -232,9 +237,14 @@ const BonusInfoTable = ({
 
 	const mergedColumn = () => {
 		const cloneColumns = cloneDeep(columns)
-		if (isGroupByDate) {
+		if (
+			formGroupType === GroupByEnum.Date ||
+			formGroupType === GroupByEnum.Month
+		) {
 			cloneColumns.unshift({
-				title: t('Label_Date'),
+				title: t(
+					formGroupType === GroupByEnum.Date ? 'Label_Date' : 'Label_Month'
+				),
 				key: 'recordDate',
 				dataIndex: 'recordDate',
 				width: 80,
@@ -295,7 +305,12 @@ const BonusInfoTable = ({
 									</Summary.Cell>
 									<Summary.Cell
 										index={2}
-										colSpan={isGroupByDate ? 6 : 5}
+										colSpan={
+											formGroupType === GroupByEnum.Date ||
+											formGroupType === GroupByEnum.Month
+												? 6
+												: 5
+										}
 										align='center'
 									>
 										-
@@ -326,10 +341,26 @@ const BonusInfoTable = ({
 										{ggr ? numFormatToDigits(ggr) : 0}
 									</Summary.Cell>
 									{/* 根據 isGroupByDate 調整  */}
-									<Summary.Cell index={isGroupByDate ? 14 : 15} align='center'>
+									<Summary.Cell
+										index={
+											formGroupType === GroupByEnum.Date ||
+											formGroupType === GroupByEnum.Month
+												? 14
+												: 15
+										}
+										align='center'
+									>
 										{totalDeposit ? numFormatToDigits(totalDeposit) : 0}
 									</Summary.Cell>
-									<Summary.Cell index={isGroupByDate ? 15 : 16} align='center'>
+									<Summary.Cell
+										index={
+											formGroupType === GroupByEnum.Date ||
+											formGroupType === GroupByEnum.Month
+												? 15
+												: 16
+										}
+										align='center'
+									>
 										{totalWithdrawal ? numFormatToDigits(totalWithdrawal) : 0}
 									</Summary.Cell>
 								</Summary.Row>
