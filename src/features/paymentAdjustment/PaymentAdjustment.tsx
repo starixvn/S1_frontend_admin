@@ -310,6 +310,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				onSearch={handleSearch}
 				currencyListBySite={currencyListBySite}
 				onTimeZoneChange={onTimeZoneChange}
+				isEditing={!!editingTransId}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentAdjustmentTable

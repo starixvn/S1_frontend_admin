@@ -21,12 +21,13 @@ export interface IGetPaymentAdjustmentReportArgs
 }
 
 export interface IGetPaymentAdjustmentReportData {
+	adjustType: number
 	siteId: number
 	currencyId: number
 	custId: number
 	siteName: string
 	transId: string
-	adjustType: number
+	adjusttType: number
 	adjustTypeName: string
 	adjustCategory: number
 	adjustCategoryName: string

@@ -26,6 +26,7 @@ import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IPaymentAdjustmentFilterProps {
+	isEditing: boolean
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
@@ -49,6 +50,7 @@ const { Panel } = Collapse
 const { Option } = Select
 
 const PaymentAdjustmentFilter = ({
+	isEditing,
 	loading,
 	form,
 	timeZoneUtcOffset,
@@ -253,6 +255,7 @@ const PaymentAdjustmentFilter = ({
 									icon={<SearchOutlined />}
 									htmlType='submit'
 									type='primary'
+									disabled={isEditing}
 								>
 									{t('Label_Search')}
 								</Button>
