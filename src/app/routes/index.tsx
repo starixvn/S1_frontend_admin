@@ -2743,6 +2743,16 @@ const routes: RouteObject[] = [
 					</AuthRequire>
 				),
 			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipUpgradeSetting.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.vipUpgradeSetting.functionId}
+					>
+						<VipUpgradeSetting />
+					</AuthRequire>
+				),
+			},
 		],
 	},
 	{

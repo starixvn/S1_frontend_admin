@@ -950,6 +950,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.marketing.sub.vipUpgradeSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.marketing.sub.vipUpgradeSetting.root,
+	},
+	{
+		icon: null,
 		functionId: paths.report.sub.mpaMarketingReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.mpaMarketingReport.root,
