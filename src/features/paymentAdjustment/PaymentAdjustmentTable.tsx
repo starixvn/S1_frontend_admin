@@ -124,12 +124,17 @@ const PaymentAdjustmentTable = ({
 
 				// Filter adjustTypeList based on adjustTypeName for selecting options //
 
-				const filteredOptions = adjustTypeList.filter(option => {
-					return adjustType === AdjustmentTypeEnum.Credit
-						? option.value === AdjustmentTypeEnum.Credit ||
-								option.value === AdjustmentTypeEnum.IncreaseBonus
-						: option.value === AdjustmentTypeEnum.Debit ||
-								option.value === AdjustmentTypeEnum.ReduceBonus
+				const filteredOptions = adjustTypeList.filter(({ value }) => {
+					if (adjustType === AdjustmentTypeEnum.Credit) {
+						return (
+							value === AdjustmentTypeEnum.Credit ||
+							value === AdjustmentTypeEnum.IncreaseBonus
+						)
+					}
+					return (
+						value === AdjustmentTypeEnum.Debit ||
+						value === AdjustmentTypeEnum.ReduceBonus
+					)
 				})
 
 				// Check if adjustTypeName is Credit or Debit //
