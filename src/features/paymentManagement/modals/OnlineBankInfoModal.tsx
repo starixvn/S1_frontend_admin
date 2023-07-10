@@ -39,13 +39,14 @@ const OnlineBankInfoModal = ({
 		},
 		{
 			title: t('Label_Status'),
-			key: 'status',
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetBankInfoData) => {
-				const { id: sysId, status } = record
+				const { id: sysId, status, bankName } = record
 				return (
 					<Switch
+						// * 修復分頁相同索引職，發現 Antd Table 的 Key 沒辦法對 Switch 起作用，可能是他們的 bug
+						key={bankName}
 						defaultChecked={status === PaymentStatusEnum.True}
 						onClick={value => {
 							onSetStatus({ sysId, status: value })
