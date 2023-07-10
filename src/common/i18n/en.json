@@ -1187,5 +1187,6 @@
 	"Label_3Months": "3 Months",
 	"Label_MaxPerMatch": "MaxPerMatch",
 	"Label_LimitInputAmount": "Min need to be less than Max and Max need to be less than MaxPerMatch",
-	"Label_Summary": "Summary"
+	"Label_Summary": "Summary",
+	"Label_AllSite": "All Site"
 }
