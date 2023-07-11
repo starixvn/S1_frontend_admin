@@ -1,6 +1,6 @@
 export enum AdjustmentTypeEnum {
-	Debit = 1,
-	Credit = 2,
+	Credit = 1,
+	Debit = 2,
 	IncreaseBonus = 3,
 	ReduceBonus = 4,
 	ThirdAdd = 5,
