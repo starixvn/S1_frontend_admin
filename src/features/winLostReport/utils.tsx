@@ -27,7 +27,17 @@ export const winLossReportConverter = (
 		} else {
 			children?.forEach((childItem: any, childKey: number) => {
 				const { data, displayKey: childDisplayKey } = childItem
-				if (displayKey === childDisplayKey) {
+				const cloneItem = cloneDeep(item)
+				const cloneChildItem = cloneDeep(data)
+				delete cloneItem.children
+				delete cloneItem.key
+				delete cloneItem.displayKey
+				delete cloneChildItem.key
+				// 如果data內資料完全相同就不展開顯示
+				if (
+					displayKey === childDisplayKey &&
+					JSON.stringify(cloneItem) === JSON.stringify(cloneChildItem)
+				) {
 					delete item.children
 				} else {
 					Object.assign(
