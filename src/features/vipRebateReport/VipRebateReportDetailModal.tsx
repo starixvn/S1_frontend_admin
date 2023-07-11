@@ -106,11 +106,12 @@ const VipRebateReportDetailModal = ({
 	const rebateElement = () => {
 		return itemRenderer(
 			t('Label_RebateByGame'),
-			vipRebateDetail.map(({ percentage }) => `${percentage}%`),
+			vipRebateDetail.map(({ percentage }) =>
+				typeof percentage === 'number' ? `${percentage.toFixed(1)}%` : ''
+			),
 			''
 		)
 	}
-
 	const amountElement = () => {
 		const totalRedeemAmount = reduce(
 			vipRebateDetail,
