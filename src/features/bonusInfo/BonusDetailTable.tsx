@@ -24,11 +24,12 @@ import moment from 'moment'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
+import { GroupByEnum } from 'features/bonusInfo/constants'
 
 interface IBonusDetailTableProps {
 	form: FormInstance<IBonusDetailForm>
 	loading: boolean
-	isGroupByDate: boolean
+	formGroupType: number
 	currentBonusCodes: string[]
 	currentDates: string[]
 	bonusDetail: IBonusDetailListData[]
@@ -53,7 +54,7 @@ const { Option } = Select
 const BonusDetailTable = ({
 	form,
 	loading,
-	isGroupByDate,
+	formGroupType,
 	currentBonusCodes,
 	currentDates,
 	bonusDetail,
@@ -68,6 +69,7 @@ const BonusDetailTable = ({
 	onRecordDateChange,
 }: IBonusDetailTableProps) => {
 	const { t } = useTranslation()
+
 	const columns = [
 		{
 			title: t('Label_UserName'),
@@ -192,7 +194,7 @@ const BonusDetailTable = ({
 				)}
 				<Form form={form}>
 					<Row gutter={16}>
-						{isGroupByDate && (
+						{formGroupType === GroupByEnum.Date && (
 							<Col span={6}>
 								<Form.Item name='recordDate' label={t('Label_Date')}>
 									<Select onChange={date => onRecordDateChange(date)}>

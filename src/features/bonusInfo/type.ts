@@ -90,6 +90,7 @@ export interface IFilterForm {
 }
 
 export interface IBonusDetailForm {
+	dateRange: [Moment, Moment]
 	bonusCode: string
 	orderByProperty: string
 	orderByDirection: number
