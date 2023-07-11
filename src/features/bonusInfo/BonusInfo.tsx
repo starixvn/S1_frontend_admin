@@ -41,7 +41,7 @@ import { OrderByTypeEnum } from 'features/betList/type'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { BonusDetailTable } from 'features/bonusInfo/BonusDetailTable'
 import { AffixButtons } from 'components/AffixButtons'
-import { dateFormat } from 'common/utils/format'
+import { dateFormat, monthFormat } from 'common/utils/format'
 
 const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -78,7 +78,6 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: bonusInfoTotal,
 	})
-
 	const [
 		getInfoSummary,
 		{
@@ -274,11 +273,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			bonusCode,
 			recordDate: moment(recordDate).format(dateFormat),
 		})
-		if (
-			formGroupType === GroupByEnum.Date ||
-			formGroupType === GroupByEnum.Month
-		) {
-			// 篩出特定時間的 bonusCode => 排序
+		if (formGroupType === GroupByEnum.Date) {
+			// 篩出特定時間的 bonusCode(日為單位) => 排序
 			setCurrentBonusCodes(
 				uniq(
 					bonusInfo
@@ -300,6 +296,60 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					)
 				)
 			)
+		} else if (formGroupType === GroupByEnum.Month) {
+			// 篩出特定時間的 bonusCode(月為單位) => 排序
+			setCurrentBonusCodes(
+				uniq(
+					bonusInfo
+						.filter(
+							({ recordDate: dataRecordDate }) =>
+								moment(dataRecordDate).format(monthFormat) ===
+								moment(recordDate).format(monthFormat)
+						)
+						.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+				)
+			)
+			// 假設用戶選取日期是 5月28~ 7月3號
+			const { startDate, endDate } = queryParams
+			// 不再5月份且不在7月份表示 表示recordDate在中間月份 選取結果 => 6月1號 ～ 6月30號
+			if (
+				moment(startDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [
+						moment(recordDate).startOf('month'),
+						moment(recordDate).endOf('month'),
+					],
+				})
+				// 在5月份但不在7月份 表示recordDate在最前月份 選取結果 => 5月28號 ～ 5月31號
+			} else if (
+				moment(startDate).format(monthFormat) ===
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(startDate), moment(recordDate).endOf('month')],
+				})
+				// 在7月份但不在5月份 表示recordDate在最後月份 選取結果 => 7月1號 ～ 7月3號
+			} else if (
+				moment(startDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) ===
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(recordDate).startOf('month'), moment(endDate)],
+				})
+				// 其他則是落在選取日期在同月的情況 例：5月3號 ～ 5月27號 顯示結果 => 5月3號 ～ 5月27號
+			} else {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(startDate), moment(endDate)],
+				})
+			}
 		} else {
 			setCurrentBonusCodes(
 				uniq(bonusInfo.map(({ bonusCode: dataBonusCode }) => dataBonusCode))
@@ -350,7 +400,13 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			baseCurrencyId = 0,
 		} = queryParams
 		// groupBy Date 時要用這個時間
-		const { recordDate } = bonusDetailForm.getFieldsValue(true)
+		const { recordDate, dateRange } = bonusDetailForm.getFieldsValue(true)
+		// 選 month 時 detail 裡的 datePicker 元件(與 PM 討論後決定移除)
+		const [startTimeByMonth, endTimeByMonth] = dateRangeToUtcFormatter(
+			dateRange && dateRange,
+			timeZoneUtcOffset
+		)
+
 		try {
 			bonusDetailForm.setFieldsValue({
 				orderByProperty,
@@ -358,20 +414,24 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			})
 			const { data: bonusDetailData = [] } = await getBonusDetail({
 				siteId,
-				startDate:
-					formGroupType !== GroupByEnum.BonusCode
-						? utcFormatter({
-								date: moment(recordDate).startOf('day'),
-								utcOffset: timeZoneUtcOffset,
-						  })
-						: startDate,
-				endDate:
-					formGroupType !== GroupByEnum.BonusCode
-						? utcFormatter({
-								date: moment(recordDate).endOf('day'),
-								utcOffset: timeZoneUtcOffset,
-						  })
-						: endDate,
+				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
+					? utcFormatter({
+							date: moment(
+								formGroupType === GroupByEnum.Date
+									? recordDate
+									: startTimeByMonth
+							).startOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: startDate,
+				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
+					? utcFormatter({
+							date: moment(
+								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
+							).endOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: endDate,
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				baseCurrencyId: Number(baseCurrencyId),
@@ -432,26 +492,41 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			baseCurrencyId = 0,
 		} = queryParams
 		// 要額外處理 groupByDate
-		const { bonusCode, orderByProperty, orderByDirection, recordDate } =
-			bonusDetailForm.getFieldsValue(true)
+		const {
+			bonusCode,
+			orderByProperty,
+			orderByDirection,
+			recordDate,
+			dateRange,
+		} = bonusDetailForm.getFieldsValue(true)
+
+		const [startTimeByMonth, endTimeByMonth] = dateRangeToUtcFormatter(
+			dateRange && dateRange,
+			timeZoneUtcOffset
+		)
+
 		try {
 			const blob = await exportBonusDetail({
 				bonusCode,
 				siteId,
-				startDate:
-					formGroupType !== GroupByEnum.BonusCode
-						? utcFormatter({
-								date: moment(recordDate).startOf('day'),
-								utcOffset: timeZoneUtcOffset,
-						  })
-						: startDate,
-				endDate:
-					formGroupType !== GroupByEnum.BonusCode
-						? utcFormatter({
-								date: moment(recordDate).endOf('day'),
-								utcOffset: timeZoneUtcOffset,
-						  })
-						: endDate,
+				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
+					? utcFormatter({
+							date: moment(
+								formGroupType === GroupByEnum.Date
+									? recordDate
+									: startTimeByMonth
+							).startOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: startDate,
+				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
+					? utcFormatter({
+							date: moment(
+								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
+							).endOf('day'),
+							utcOffset: timeZoneUtcOffset,
+					  })
+					: endDate,
 				orderBy: true,
 				orderByProperty,
 				orderByDirection,

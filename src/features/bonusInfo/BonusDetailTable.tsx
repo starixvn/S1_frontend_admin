@@ -69,6 +69,7 @@ const BonusDetailTable = ({
 	onRecordDateChange,
 }: IBonusDetailTableProps) => {
 	const { t } = useTranslation()
+
 	const columns = [
 		{
 			title: t('Label_UserName'),
@@ -193,8 +194,7 @@ const BonusDetailTable = ({
 				)}
 				<Form form={form}>
 					<Row gutter={16}>
-						{(formGroupType === GroupByEnum.Date ||
-							formGroupType === GroupByEnum.Month) && (
+						{formGroupType === GroupByEnum.Date && (
 							<Col span={6}>
 								<Form.Item name='recordDate' label={t('Label_Date')}>
 									<Select onChange={date => onRecordDateChange(date)}>

@@ -5,7 +5,7 @@ import { IBonusInfoData } from 'features/bonusInfo/type'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography, Table, Collapse } from 'antd'
 import { IEnumTypeData } from 'common/service/enumApi'
-import { dateFormat, numFormatToDigits } from 'common/utils/format'
+import { dateFormat, numFormatToDigits, monthFormat } from 'common/utils/format'
 import { SorterResult } from 'antd/es/table/interface'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { PermissionInterface } from 'type'
@@ -255,7 +255,9 @@ const BonusInfoTable = ({
 						<Typography.Link onClick={() => onClickBonusCode(record)}>
 							{moment(recordDate)
 								.utcOffset(timeZoneUtcOffset)
-								.format(dateFormat)}
+								.format(
+									formGroupType === GroupByEnum.Date ? dateFormat : monthFormat
+								)}
 						</Typography.Link>
 					) : (
 						''

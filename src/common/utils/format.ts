@@ -26,6 +26,8 @@ export const timeFormat = 'YYYY-MM-DD  HH:mm:ss'
 
 export const dateFormat = 'YYYY/MM/DD'
 
+export const monthFormat = 'YYYY/MM'
+
 export const jsonToObject = <Type>(data: Type): Type => {
 	const parseData = isJSON(data) && JSON.parse(data as any)
 	return isObject(parseData)
