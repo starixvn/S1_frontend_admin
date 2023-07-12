@@ -22,7 +22,8 @@ import moment from 'moment/moment'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { IEnumTypeData } from 'common/service/enumApi'
-import { AdjustmentTypeEnum } from './constants'
+import { AdjustmentTypeEnum } from 'features/paymentAdjustment/constants'
+import { multiEqual } from 'common/utils'
 
 interface IPaymentAdjustmentTableProps {
 	form: FormInstance<IEditForm>
@@ -125,24 +126,40 @@ const PaymentAdjustmentTable = ({
 				// Filter adjustTypeList based on adjustTypeName for selecting options //
 
 				const filteredOptions = adjustTypeList.filter(({ value }) => {
-					if (adjustType === AdjustmentTypeEnum.Credit) {
+					if (
+						multiEqual(adjustType, [
+							AdjustmentTypeEnum.Credit,
+							AdjustmentTypeEnum.IncreaseBonus,
+						])
+					) {
 						return (
 							value === AdjustmentTypeEnum.Credit ||
 							value === AdjustmentTypeEnum.IncreaseBonus
 						)
 					}
-					return (
-						value === AdjustmentTypeEnum.Debit ||
-						value === AdjustmentTypeEnum.ReduceBonus
-					)
+
+					if (
+						multiEqual(adjustType, [
+							AdjustmentTypeEnum.Debit,
+							AdjustmentTypeEnum.ReduceBonus,
+						])
+					) {
+						return (
+							value === AdjustmentTypeEnum.Debit ||
+							value === AdjustmentTypeEnum.ReduceBonus
+						)
+					}
+					return false
 				})
 
 				// Check if adjustTypeName is Credit or Debit //
 
-				const isCreditOrDebit =
-					adjustType === AdjustmentTypeEnum.Credit ||
-					adjustType === AdjustmentTypeEnum.Debit
-
+				const isCreditOrDebit = multiEqual(adjustType, [
+					AdjustmentTypeEnum.Credit,
+					AdjustmentTypeEnum.Debit,
+					AdjustmentTypeEnum.IncreaseBonus,
+					AdjustmentTypeEnum.ReduceBonus,
+				])
 				// Only if user has edit permission and adjustTypeName is Credit or Debit, then show the dropdown //
 
 				return editable && isCreditOrDebit ? (
