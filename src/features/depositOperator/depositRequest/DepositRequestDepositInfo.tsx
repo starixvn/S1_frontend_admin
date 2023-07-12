@@ -88,7 +88,7 @@ const DepositRequestDepositInfo = ({
 	onOpenPaymentInfoModal,
 }: IDepositRequestDepositInfoProps) => {
 	const { t } = useTranslation()
-	const [editable, setEditable] = useState<'amount' | undefined>()
+	const [editable, setEditable] = useState<'actualDeposit' | undefined>()
 	const afterAmount = Form.useWatch('amount', form)
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
@@ -118,80 +118,9 @@ const DepositRequestDepositInfo = ({
 				<Descriptions.Item label={t('Label_TransactionNo')}>
 					{transId || '-'}
 				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_RequestAmount')}>
-					{isCryptoWallet ? (
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-							}}
-						>
-							<text>{formatNumber(amount) || '-'}</text>
-						</div>
-					) : (
-						<Input.Group compact>
-							<Form.Item noStyle name='amount'>
-								<InputNumber
-									controls={false}
-									disabled={
-										!setAmountPermission?.canUse || editable !== 'amount'
-									}
-									style={{ width: 'calc(100% - 64px)' }}
-									// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
-									formatter={value => {
-										const [integer, decimal] = `${value}`.split('.')
-										const formattedInteger = integer.replace(
-											/\B(?=(\d{3})+(?!\d))/g,
-											','
-										)
-										return decimal
-											? `${formattedInteger}.${decimal}`
-											: formattedInteger
-									}}
-									// 把 + 過逗號的值再 parser 回來
-									parser={value => value!.replace(/\$\s?|(,*)/g, '')}
-								/>
-							</Form.Item>
-							{editable === 'amount' ? (
-								<>
-									<Button
-										disabled={isSetAmountDisabled}
-										onClick={() => {
-											onSetAmountByTransId()
-											setEditable(undefined)
-										}}
-										type='link'
-										icon={<CheckOutlined style={{ color: green.primary }} />}
-									/>
 
-									<Button
-										onClick={() => {
-											form.setFieldsValue({
-												amount,
-											})
-											setEditable(undefined)
-										}}
-										type='link'
-										icon={<CloseOutlined style={{ color: red.primary }} />}
-									/>
-								</>
-							) : (
-								<>
-									<Button
-										type='link'
-										icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
-										onClick={() => onCopy(String(amount))}
-									/>
-									<Button
-										disabled={!setAmountPermission?.canUse}
-										onClick={() => setEditable('amount')}
-										type='link'
-										icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
-									/>
-								</>
-							)}
-						</Input.Group>
-					)}
+				<Descriptions.Item label={t('Label_RequestAmount')}>
+					{(amount && formatNumber(amount)) || '-'}
 				</Descriptions.Item>
 
 				{isCryptoWallet && (
@@ -215,7 +144,8 @@ const DepositRequestDepositInfo = ({
 									<InputNumber
 										controls={false}
 										disabled={
-											!setAmountPermission?.canUse || editable !== 'amount'
+											!setAmountPermission?.canUse ||
+											editable !== 'actualDeposit'
 										}
 										style={{ width: 'calc(100% - 64px)' }}
 										// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
@@ -233,7 +163,7 @@ const DepositRequestDepositInfo = ({
 										parser={value => value!.replace(/\$\s?|(,*)/g, '')}
 									/>
 								</Form.Item>
-								{editable === 'amount' ? (
+								{editable === 'actualDeposit' ? (
 									<>
 										<Button
 											disabled={isSetAmountDisabled}
@@ -260,7 +190,7 @@ const DepositRequestDepositInfo = ({
 									<>
 										<Button
 											disabled={!setAmountPermission?.canUse}
-											onClick={() => setEditable('amount')}
+											onClick={() => setEditable('actualDeposit')}
 											type='link'
 											icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
 										/>
@@ -290,6 +220,74 @@ const DepositRequestDepositInfo = ({
 						</Descriptions.Item>
 					</>
 				)}
+
+				{!isCryptoWallet && (
+					<Descriptions.Item label={t('Label_ActualDeposit')}>
+						<Input.Group compact>
+							<Form.Item noStyle name='actualDeposit'>
+								<InputNumber
+									controls={false}
+									disabled={
+										!setAmountPermission?.canUse || editable !== 'actualDeposit'
+									}
+									style={{ width: 'calc(100% - 64px)' }}
+									// InputNumber 要 formatter 取千分位 + 逗號，因為要 formatter 成字串，故這裡無法限制 type = "number"
+									formatter={value => {
+										const [integer, decimal] = `${value}`.split('.')
+										const formattedInteger = integer.replace(
+											/\B(?=(\d{3})+(?!\d))/g,
+											','
+										)
+										return decimal
+											? `${formattedInteger}.${decimal}`
+											: formattedInteger
+									}}
+									// 把 + 過逗號的值再 parser 回來
+									parser={value => value!.replace(/\$\s?|(,*)/g, '')}
+								/>
+							</Form.Item>
+							{editable === 'actualDeposit' ? (
+								<>
+									<Button
+										disabled={isSetAmountDisabled}
+										onClick={() => {
+											onSetAmountByTransId()
+											setEditable(undefined)
+										}}
+										type='link'
+										icon={<CheckOutlined style={{ color: green.primary }} />}
+									/>
+
+									<Button
+										onClick={() => {
+											form.setFieldsValue({
+												amount,
+											})
+											setEditable(undefined)
+										}}
+										type='link'
+										icon={<CloseOutlined style={{ color: red.primary }} />}
+									/>
+								</>
+							) : (
+								<>
+									<Button
+										disabled={!setAmountPermission?.canUse}
+										onClick={() => setEditable('actualDeposit')}
+										type='link'
+										icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
+									/>
+									<Button
+										type='link'
+										icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
+										onClick={() => onCopy(String(amount))}
+									/>
+								</>
+							)}
+						</Input.Group>
+					</Descriptions.Item>
+				)}
+
 				<Descriptions.Item label={t('Label_DepositBonus')}>
 					{bonusDescription || '-'}
 				</Descriptions.Item>
