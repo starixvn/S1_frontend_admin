@@ -41,7 +41,7 @@ import { OrderByTypeEnum } from 'features/betList/type'
 import { orderDirectionConverter } from 'features/betList/converter'
 import { BonusDetailTable } from 'features/bonusInfo/BonusDetailTable'
 import { AffixButtons } from 'components/AffixButtons'
-import { dateFormat } from 'common/utils/format'
+import { dateFormat, monthFormat } from 'common/utils/format'
 
 const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -56,12 +56,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [bonusDetailForm] = Form.useForm<IBonusDetailForm>()
 	// 當前搜出來的資料所含的 bonusCodes
 	const [currentBonusCodes, setCurrentBonusCodes] = useState<string[]>([])
-	// 當前搜出來的資料所含的 date，只有 groupByDate 時會用到
+	// 當前搜出來的資料所含的 date，只有 formGroupType 時會用到
 	const [currentDates, setCurrentDates] = useState<string[]>([])
 	// 僅用來控制 detail table 是否顯示
 	const [showDetails, setShowDetails] = useState<boolean>(false)
 	// 用 state 控制當前顯示的 table 類型，需要用 state 儲存的主要原因是希望在 handle search 之後才做畫面的更動
-	const [formGroupByDate, setFormGroupByDate] = useState<boolean>(false)
+	const [formGroupType, setFormGroupType] = useState<number>(
+		GroupByEnum.BonusCode
+	)
 	// bonusDetail 的資料接出來處理，因為下拉異動之後需要清除資料
 	const [bonusDetail, setBonusDetail] = useState<IBonusDetailListData[]>([])
 	const [selectDate, setSelectDate] = useState(null)
@@ -76,7 +78,6 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: bonusInfoTotal,
 	})
-
 	const [
 		getInfoSummary,
 		{
@@ -181,7 +182,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset })
 			setPagination(prev => ({ ...prev, current, pageSize }))
-			setFormGroupByDate(groupByType === GroupByEnum.Date)
+			setFormGroupType(groupByType)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -234,7 +235,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			claimStatuses = [],
 			currencyIds = [],
 			baseCurrencyId = 0,
-			groupByType,
+			groupByType = 0,
 			orderBy,
 			orderByProperty = '',
 			orderByDirection = 0,
@@ -272,8 +273,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			bonusCode,
 			recordDate: moment(recordDate).format(dateFormat),
 		})
-		if (formGroupByDate) {
-			// 篩出特定時間的 bonusCode => 排序
+		if (formGroupType === GroupByEnum.Date) {
+			// 篩出特定時間的 bonusCode(日為單位) => 排序
 			setCurrentBonusCodes(
 				uniq(
 					bonusInfo
@@ -295,6 +296,60 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					)
 				)
 			)
+		} else if (formGroupType === GroupByEnum.Month) {
+			// 篩出特定時間的 bonusCode(月為單位) => 排序
+			setCurrentBonusCodes(
+				uniq(
+					bonusInfo
+						.filter(
+							({ recordDate: dataRecordDate }) =>
+								moment(dataRecordDate).format(monthFormat) ===
+								moment(recordDate).format(monthFormat)
+						)
+						.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+				)
+			)
+			// 假設用戶選取日期是 5月28~ 7月3號
+			const { startDate, endDate } = queryParams
+			// 不再5月份且不在7月份表示 表示recordDate在中間月份 選取結果 => 6月1號 ～ 6月30號
+			if (
+				moment(startDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [
+						moment(recordDate).startOf('month'),
+						moment(recordDate).endOf('month'),
+					],
+				})
+				// 在5月份但不在7月份 表示recordDate在最前月份 選取結果 => 5月28號 ～ 5月31號
+			} else if (
+				moment(startDate).format(monthFormat) ===
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(startDate), moment(recordDate).endOf('month')],
+				})
+				// 在7月份但不在5月份 表示recordDate在最後月份 選取結果 => 7月1號 ～ 7月3號
+			} else if (
+				moment(startDate).format(monthFormat) !==
+					moment(recordDate).format(monthFormat) &&
+				moment(endDate).format(monthFormat) ===
+					moment(recordDate).format(monthFormat)
+			) {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(recordDate).startOf('month'), moment(endDate)],
+				})
+				// 其他則是落在選取日期在同月的情況 例：5月3號 ～ 5月27號 顯示結果 => 5月3號 ～ 5月27號
+			} else {
+				bonusDetailForm.setFieldsValue({
+					dateRange: [moment(startDate), moment(endDate)],
+				})
+			}
 		} else {
 			setCurrentBonusCodes(
 				uniq(bonusInfo.map(({ bonusCode: dataBonusCode }) => dataBonusCode))
@@ -345,7 +400,13 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			baseCurrencyId = 0,
 		} = queryParams
 		// groupBy Date 時要用這個時間
-		const { recordDate } = bonusDetailForm.getFieldsValue(true)
+		const { recordDate, dateRange } = bonusDetailForm.getFieldsValue(true)
+		// 選 month 時 detail 裡的 datePicker 元件(與 PM 討論後決定移除)
+		const [startTimeByMonth, endTimeByMonth] = dateRangeToUtcFormatter(
+			dateRange && dateRange,
+			timeZoneUtcOffset
+		)
+
 		try {
 			bonusDetailForm.setFieldsValue({
 				orderByProperty,
@@ -353,15 +414,21 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			})
 			const { data: bonusDetailData = [] } = await getBonusDetail({
 				siteId,
-				startDate: formGroupByDate
+				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(recordDate).startOf('day'),
+							date: moment(
+								formGroupType === GroupByEnum.Date
+									? recordDate
+									: startTimeByMonth
+							).startOf('day'),
 							utcOffset: timeZoneUtcOffset,
 					  })
 					: startDate,
-				endDate: formGroupByDate
+				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(recordDate).endOf('day'),
+							date: moment(
+								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
+							).endOf('day'),
 							utcOffset: timeZoneUtcOffset,
 					  })
 					: endDate,
@@ -425,21 +492,38 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			baseCurrencyId = 0,
 		} = queryParams
 		// 要額外處理 groupByDate
-		const { bonusCode, orderByProperty, orderByDirection, recordDate } =
-			bonusDetailForm.getFieldsValue(true)
+		const {
+			bonusCode,
+			orderByProperty,
+			orderByDirection,
+			recordDate,
+			dateRange,
+		} = bonusDetailForm.getFieldsValue(true)
+
+		const [startTimeByMonth, endTimeByMonth] = dateRangeToUtcFormatter(
+			dateRange && dateRange,
+			timeZoneUtcOffset
+		)
+
 		try {
 			const blob = await exportBonusDetail({
 				bonusCode,
 				siteId,
-				startDate: formGroupByDate
+				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(recordDate).startOf('day'),
+							date: moment(
+								formGroupType === GroupByEnum.Date
+									? recordDate
+									: startTimeByMonth
+							).startOf('day'),
 							utcOffset: timeZoneUtcOffset,
 					  })
 					: startDate,
-				endDate: formGroupByDate
+				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(recordDate).endOf('day'),
+							date: moment(
+								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
+							).endOf('day'),
 							utcOffset: timeZoneUtcOffset,
 					  })
 					: endDate,
@@ -550,7 +634,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 						isExportBonusInfoLoading ||
 						isGetBonusSummaryLoading
 					}
-					isGroupByDate={formGroupByDate}
+					formGroupType={formGroupType}
 					bonusInfo={bonusInfo}
 					bonusSummary={bonusSummary}
 					bonusTypeList={bonusTypeList}
@@ -567,7 +651,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				<BonusDetailTable
 					form={bonusDetailForm}
 					loading={isGetBonusDetailLoading || isExportBonusDetailLoading}
-					isGroupByDate={formGroupByDate}
+					formGroupType={formGroupType}
 					bonusDetail={bonusDetail}
 					currentBonusCodes={currentBonusCodes}
 					currentDates={currentDates}
