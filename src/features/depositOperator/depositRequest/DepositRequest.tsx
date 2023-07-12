@@ -251,7 +251,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const handleSetAmountByTransId = async () => {
 		if (!memberInfo?.currencyId) return
-		let afterAmount = form.getFieldValue('amount')
+		let afterAmount = form.getFieldValue('actualDeposit')
 		const { currencyId } = memberInfo
 		const { depositType, depositInfo: jsonDepositInfo } = depositInfo
 		let calculateAmount
@@ -259,6 +259,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 		if (depositType === DepositTypeEnum.CryptoWallet) {
 			afterAmount = form.getFieldValue('actualCryptoAmount')
+
 			const { exchangeRate = 0 } = jsonToObject(jsonDepositInfo) ?? {}
 			try {
 				const args: ICryptoAmountCalculationArgs = {
@@ -266,12 +267,13 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					exchangeRate,
 					cryptoAmount: afterAmount,
 				}
+
 				const {
 					data: { amount },
 				} = await getCryptoAmountCalculation(args).unwrap()
 				setUserActualCryptoAmount(afterAmount)
 				form.setFieldsValue({
-					actualAmount: amount,
+					actualCryptoAmount: amount,
 				})
 
 				calculateAmount = amount
@@ -287,7 +289,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			currencyId,
 			transId,
 			before: {
-				amount: depositInfo.amount,
+				amount: depositInfo.actualDeposit,
 			},
 			after: {
 				amount:
@@ -376,6 +378,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			bankId,
 			statementTime,
 			amount,
+			actualDeposit,
 			depositInfo: jsonDepositInfo,
 			depositType,
 		} = depositInfo
@@ -395,6 +398,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			form.setFieldsValue({
 				bankId,
 				amount,
+				actualDeposit,
 				statementTime: moment(statementTime),
 			})
 		}
