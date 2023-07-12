@@ -2,8 +2,10 @@ import { useTranslation } from 'react-i18next'
 import {
 	Col,
 	Collapse,
+	DatePicker,
 	Form,
 	FormInstance,
+	Input,
 	Progress,
 	Row,
 	Select,
@@ -25,6 +27,10 @@ import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { GroupByEnum } from 'features/bonusInfo/constants'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 
 interface IBonusDetailTableProps {
 	form: FormInstance<IBonusDetailForm>
@@ -50,6 +56,7 @@ interface IBonusDetailTableProps {
 
 const { Panel } = Collapse
 const { Option } = Select
+const { RangePicker } = DatePicker
 
 const BonusDetailTable = ({
 	form,
@@ -194,15 +201,46 @@ const BonusDetailTable = ({
 				)}
 				<Form form={form}>
 					<Row gutter={16}>
-						{formGroupType === GroupByEnum.Date && (
+						{[GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType) && (
 							<Col span={6}>
-								<Form.Item name='recordDate' label={t('Label_Date')}>
-									<Select onChange={date => onRecordDateChange(date)}>
-										{currentDates.map(value => (
-											<Option value={value}>{value}</Option>
-										))}
-									</Select>
-								</Form.Item>
+								{formGroupType === GroupByEnum.Date ? (
+									<Form.Item name='recordDate' label={t('Label_Date')}>
+										<Select onChange={date => onRecordDateChange(date)}>
+											{currentDates.map(value => (
+												<Option value={value}>{value}</Option>
+											))}
+										</Select>
+									</Form.Item>
+								) : (
+									<Form.Item label={t('Label_Date')}>
+										<Input.Group
+											compact
+											style={{ width: '100%', display: 'flex' }}
+										>
+											<Form.Item
+												noStyle
+												name='dateRange'
+												initialValue={MOMENT_DATE_RANGES.Today}
+												rules={[
+													{
+														required: true,
+														message: t('Label_DateRangeRequire'),
+													},
+												]}
+											>
+												<RangePicker
+													style={{ width: '100%' }}
+													ranges={MOMENT_RANGE_PICKER_RANGES([
+														'Today',
+														'Last 7 Day',
+														'This Month',
+													])}
+													disabled
+												/>
+											</Form.Item>
+										</Input.Group>
+									</Form.Item>
+								)}
 							</Col>
 						)}
 						<Col span={6}>
