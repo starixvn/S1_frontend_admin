@@ -51,7 +51,7 @@ const VipRebateDetailModal = ({
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validBet: number) => validBet ?? 0,
+			render: (validBet: number) => numFormatToDigits(validBet) ?? 0,
 		},
 		{
 			title: t('Label_ValidTurnover'),
@@ -59,7 +59,7 @@ const VipRebateDetailModal = ({
 			dataIndex: 'validTurnover',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validTurnover: number) => validTurnover ?? 0,
+			render: (validTurnover: number) => numFormatToDigits(validTurnover) ?? 0,
 		},
 		{
 			title: t('Label_RebateByGame'),
@@ -76,7 +76,8 @@ const VipRebateDetailModal = ({
 			dataIndex: 'calculatedAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (calculatedAmount: number) => calculatedAmount ?? 0,
+			render: (calculatedAmount: number) =>
+				numFormatToDigits(calculatedAmount) ?? 0,
 		},
 	]
 
