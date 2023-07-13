@@ -80,4 +80,5 @@ export const ACTION_NAMES: {
 	85: 'setLiveStreamingGamePermission',
 	86: 'exclusiveVipPermission',
 	87: 'resetOtpLimitPermission',
+	89: 'editWithdrawalAutoVerifyRulePermission',
 }

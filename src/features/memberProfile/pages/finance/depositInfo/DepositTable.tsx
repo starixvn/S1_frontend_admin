@@ -154,15 +154,15 @@ const DepositTable = ({
 			render: (accountNo: number) => accountNo ?? '-',
 		},
 		{
-			title: t('Label_DepositDate'),
-			key: 'DepositDate',
-			dataIndex: 'depositTime',
+			title: t('Label_FlowEndTime'),
+			key: 'flowEndTime',
+			dataIndex: 'flowEndTime',
 			width: 100,
 			align: 'center' as 'center',
-			render: (depositTime: string) =>
-				depositTime ? (
+			render: (flowEndTime: string) =>
+				flowEndTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(depositTime)
+						{moment(flowEndTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

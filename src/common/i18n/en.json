@@ -800,7 +800,6 @@
 	"Label_CompanyBankName": "Company Bank Name",
 	"Label_CompanyAccountName": "Company Account Name",
 	"Label_CompanyAccountNumber": "Company Account Number",
-	"Label_DepositDate": "Deposit Date",
 	"Label_CreatedDate": "Created Date",
 	"Label_WithdrawalType": "Withdrawal Type",
 	"Label_ThirdParty": "Third-Party",
@@ -1192,5 +1191,9 @@
 	"Label_RankingValidityMembershipRenewal": "Ranking Validity Membership Renewal",
 	"Label_Lifetime": "Lifetime",
 	"Label_3Months": "3 Months",
-	"Label_Summary": "Summary"
+	"Label_Summary": "Summary",
+	"Label_AutoVerifyRule": "Auto Verify Rule",
+	"Label_DeviceLevel": "Device Level",
+	"Label_DeviceScores": "Device Scores",
+	"Label_DeviceScoresHint": "Above 75 is Low Risk"
 }

@@ -1,9 +1,12 @@
+import { isEmpty } from 'lodash'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LayoutContent } from 'app/pages/layout'
-import { useGetEnumTypeQuery } from 'common/service/enumApi'
-import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { Form, message, TablePaginationConfig } from 'antd'
+import { useAppSelector } from 'app/store'
+import { LayoutContent } from 'app/pages/layout'
+import { SiteIds } from 'app/constants/siteIds'
+import { useGetEnumTypeQuery } from 'common/service/enumApi'
+import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
@@ -27,6 +30,10 @@ import {
 	useSetAutoWithdrawalRuleMutation,
 	useAddAutoWithdrawalRuleMutation,
 	useDeleteAutoWithdrawalRuleMutation,
+	useGetAutoVerifyRuleListQuery,
+	useAddAutoVerifyRuleMutation,
+	useSetAutoVerifyRuleMutation,
+	useDeleteAutoVerifyRuleMutation,
 } from 'features/paymentManagement/api'
 import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManagementFilter'
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
@@ -42,9 +49,9 @@ import {
 	PaymentStatusEnum,
 	IEditAutoWithdrawalRuleForm,
 	IAddAutoWithdrawalRuleForm,
+	IEditAutoVerifyRuleForm,
+	IAddAutoVerifyRuleForm,
 } from 'features/paymentManagement/type'
-import { useEffect, useRef } from 'react'
-import { isEmpty } from 'lodash'
 import { PaymentManagementTable } from 'features/paymentManagement/PaymentManagementTable'
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
 import { EditPaymentModal } from 'features/paymentManagement/modals/EditPaymentModal'
@@ -53,6 +60,8 @@ import { EditLoginInfoModal } from 'features/paymentManagement/modals/EditLoginI
 import { CryptoSettingModal } from 'features/paymentManagement/modals/CryptoSettingModal'
 import { AutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AutoWithdrawalRuleModal'
 import { AddAutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AddAutoWithdrawalRuleModal'
+import { AutoVerifyRuleModal } from 'features/paymentManagement/modals/AutoVerifyRuleModal'
+import { AddAutoVerifyRuleModal } from 'features/paymentManagement/modals/AddAutoVerifyRuleModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -62,6 +71,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			editInfoPermission,
 			setFeePermission,
 			editAutoWithdrawalRulePermission,
+			editWithdrawalAutoVerifyRulePermission,
 		} = {},
 	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -81,6 +91,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const cryptoInfoModal = useModal()
 	const autoWithdrawalRuleModal = useModal()
 	const addAutoWithdrawalRuleModal = useModal()
+	const autoVerifyRuleModal = useModal()
+	const addAutoVerifyRuleModal = useModal()
 
 	const [editForm] = Form.useForm<IEditForm>()
 
@@ -91,9 +103,13 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// 編輯 Auto Withdrawal Rule Form
 	const [editAutoWithdrawalRuleForm] =
 		Form.useForm<IEditAutoWithdrawalRuleForm>()
-
 	// 新增 Auto Withdrawal Rule Form
 	const [addAutoWithdrawalRuleForm] = Form.useForm<IAddAutoWithdrawalRuleForm>()
+
+	// 編輯 Auto Verify Rule Form
+	const [editAutoVerifyRuleForm] = Form.useForm<IEditAutoVerifyRuleForm>()
+	// 新增 Auto Verify Rule Form
+	const [addAutoVerifyRuleForm] = Form.useForm<IAddAutoVerifyRuleForm>()
 
 	// Method 下拉選單
 	const {
@@ -126,6 +142,11 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		data: { data: globalStatusList = [] } = {},
 		isLoading: isGetGlobalStatusLoading,
 	} = useGetEnumTypeQuery({ enumName: 'PayListStatusEnum' })
+
+	// Auto Verify Rule 的 Auto Type 選單
+	const { data: { data: autoTypeList = [] } = {} } = useGetEnumTypeQuery({
+		enumName: 'AutoType',
+	})
 
 	// payList
 	const { data: { data: payList = [] } = {}, isFetching: isGetPayListLoading } =
@@ -201,6 +222,24 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		deleteAutoWithdrawalRule,
 		{ isLoading: isDeleteAutoWithdrawalRuleLoading },
 	] = useDeleteAutoWithdrawalRuleMutation()
+
+	// autoVerifyRule 相關
+	const {
+		data: { data: autoVerifyRuleList = [] } = {},
+		isFetching: isGetAutoVerifyRuleLoading,
+	} = useGetAutoVerifyRuleListQuery({
+		siteId,
+		autoType: autoTypeList.find(({ name }) => name === 'AutoVerify')?.value,
+	})
+
+	const [setAutoVerifyRule, { isLoading: isSetAutoVerifyRuleLoading }] =
+		useSetAutoVerifyRuleMutation()
+
+	const [addAutoVerifyRule, { isLoading: isAddAutoVerifyRuleLoading }] =
+		useAddAutoVerifyRuleMutation()
+
+	const [deleteAutoVerifyRule, { isLoading: isDeleteAutoVerifyRuleLoading }] =
+		useDeleteAutoVerifyRuleMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -491,7 +530,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	// 設定 Auto Withdrawal Rule
+	// 修改 Auto Withdrawal Rule
 	const handleSetAutoWithdrawalRule = async (
 		id: number,
 		setEditingKey: (type: undefined) => void
@@ -571,6 +610,105 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	// 修改 Auto Verify Rule
+	const handleSetAutoVerifyRule = async (
+		id: number,
+		currencyId: number,
+		setEditingKey: (type: undefined) => void
+	) => {
+		const {
+			withdrawalAmount,
+			accountWithdrawalCount,
+			status,
+			tags,
+			vipLevels,
+			deviceLevel,
+			deviceScores,
+		} = await editAutoVerifyRuleForm.validateFields()
+
+		const payload = {
+			id,
+			siteId,
+			currencyId,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			// status 1: open, 0: close
+			status: status ? 1 : 0,
+			vipLevels,
+			tags,
+			// Nova88 using deviceLevel, other sites using deviceScores
+			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
+			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+		}
+
+		try {
+			await setAutoVerifyRule(payload).unwrap()
+			setEditingKey(undefined)
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 新增 Auto Verify Rule
+	const handleAddAutoVerifyRule = async () => {
+		const {
+			currencyId,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			tags,
+			vipLevels,
+			deviceLevel,
+			deviceScores,
+		} = await addAutoVerifyRuleForm.validateFields()
+
+		const autoType = autoTypeList.find(
+			({ name }) => name === 'AutoVerify'
+		)?.value
+
+		if (!autoType) {
+			message.error(t('System.Label_NotExpectedServerError'))
+			return
+		}
+
+		const payload = {
+			autoType,
+			siteId,
+			currencyId,
+			withdrawalAmount,
+			accountWithdrawalCount,
+			vipLevels,
+			tags,
+			// Nova88 using deviceLevel, other sites using deviceScores
+			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
+			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+		}
+
+		try {
+			await addAutoVerifyRule(payload).unwrap()
+			message.success(t('System.Label_Success'))
+			addAutoVerifyRuleModal.onCancel()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 刪除 Auto Verify Rule
+	const handleDeleteAutoVerifyRule = async (id: number) => {
+		try {
+			await deleteAutoVerifyRule({ id }).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -615,6 +753,11 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isSetAutoWithdrawalRuleLoading ||
 		isDeleteAutoWithdrawalRuleLoading
 
+	const autoVerifyRuleLoading =
+		isGetAutoVerifyRuleLoading ||
+		isSetAutoVerifyRuleLoading ||
+		isDeleteAutoVerifyRuleLoading
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -631,6 +774,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onSetCryptoInfoClicked={cryptoInfoModal.onOpen}
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
 				onAutoWithdrawalRuleClicked={autoWithdrawalRuleModal.onOpen}
+				onAutoVerifyRuleClicked={autoVerifyRuleModal.onOpen}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -714,6 +858,25 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				autoWithdrawalRuleList={autoWithdrawalRuleList}
 				onCancel={addAutoWithdrawalRuleModal.onCancel}
 				onSubmit={handleAddAutoWithdrawalRule}
+			/>
+			<AutoVerifyRuleModal
+				form={editAutoVerifyRuleForm}
+				visible={autoVerifyRuleModal.visible}
+				editPermission={editWithdrawalAutoVerifyRulePermission}
+				autoVerifyRuleList={autoVerifyRuleList}
+				dataFetchingLoading={autoVerifyRuleLoading}
+				onCancel={autoVerifyRuleModal.onCancel}
+				onAddClick={addAutoVerifyRuleModal.onOpen}
+				onSetVerifyRule={handleSetAutoVerifyRule}
+				onDeleteAutoVerifyRule={handleDeleteAutoVerifyRule}
+			/>
+			<AddAutoVerifyRuleModal
+				form={addAutoVerifyRuleForm}
+				visible={addAutoVerifyRuleModal.visible}
+				dataFetchingLoading={isAddAutoVerifyRuleLoading}
+				autoVerifyRuleList={autoVerifyRuleList}
+				onCancel={addAutoVerifyRuleModal.onCancel}
+				onSubmit={handleAddAutoVerifyRule}
 			/>
 		</LayoutContent.Main>
 	)
