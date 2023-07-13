@@ -5,7 +5,11 @@ import {
 	IGetVipRebateDetailData,
 	IVipRebateInfoData,
 } from 'features/vipRebateReport/type'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numFormatToDigits,
+	numberFormatter,
+	timeFormat,
+} from 'common/utils/format'
 import { reduce } from 'lodash'
 import { CustomDivider } from 'features/redemptionListing/RedemptionOverviewTable'
 import { useTranslation } from 'react-i18next'
@@ -80,8 +84,8 @@ const VipRebateReportDetailModal = ({
 
 		return itemRenderer(
 			t('Label_TotalTurnover'),
-			vipRebateDetail.map(({ validBet }) => numberFormatter.format(validBet)),
-			numberFormatter.format(totalValidTurnover)
+			vipRebateDetail.map(({ validBet }) => numFormatToDigits(validBet)),
+			numFormatToDigits(totalValidTurnover)
 		)
 	}
 
@@ -97,9 +101,9 @@ const VipRebateReportDetailModal = ({
 		return itemRenderer(
 			t('Label_ValidTurnover'),
 			vipRebateDetail.map(({ validTurnover }) =>
-				numberFormatter.format(validTurnover)
+				numFormatToDigits(validTurnover)
 			),
-			numberFormatter.format(totalValidTurnover)
+			numFormatToDigits(totalValidTurnover)
 		)
 	}
 
@@ -120,8 +124,10 @@ const VipRebateReportDetailModal = ({
 		)
 		return itemRenderer(
 			t('Label_RedeemAmount'),
-			vipRebateDetail.map(({ calculatedAmount }) => calculatedAmount),
-			totalRedeemAmount
+			vipRebateDetail.map(({ calculatedAmount }) =>
+				numFormatToDigits(calculatedAmount)
+			),
+			numFormatToDigits(totalRedeemAmount)
 		)
 	}
 
