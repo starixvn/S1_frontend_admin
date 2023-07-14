@@ -93,10 +93,11 @@ const DepositRequestDepositInfo = ({
 	const color = DEPOSIT_STATUS_TAGS_COLOR[status as DepositStatusEnum]
 	const isApproved = status === DepositStatusEnum.Approved
 	const isPending = status === DepositStatusEnum.Pending
+	const isRejected = status === DepositStatusEnum.Rejected
 	const isSetAmountDisabled = afterAmount === amount
 	const isLocalBank = depositType === DepositTypeEnum.LocalBanking
 	const isCryptoWallet = depositType === DepositTypeEnum.CryptoWallet
-	const isShowPaymentInfoModalButton =
+	const thirdPartyDepositType =
 		depositType === DepositTypeEnum.OnlineBanking ||
 		depositType === DepositTypeEnum.MobilePay ||
 		depositType === DepositTypeEnum.BankAutoChannel ||
@@ -257,12 +258,9 @@ const DepositRequestDepositInfo = ({
 										type='link'
 										icon={<CheckOutlined style={{ color: green.primary }} />}
 									/>
-
 									<Button
 										onClick={() => {
-											form.setFieldsValue({
-												amount,
-											})
+											form.setFieldsValue({ actualDeposit })
 											setEditable(undefined)
 										}}
 										type='link'
@@ -272,7 +270,12 @@ const DepositRequestDepositInfo = ({
 							) : (
 								<>
 									<Button
-										disabled={!setAmountPermission?.canUse}
+										disabled={
+											!setAmountPermission?.canUse ||
+											thirdPartyDepositType ||
+											isApproved ||
+											isRejected
+										}
 										onClick={() => setEditable('actualDeposit')}
 										type='link'
 										icon={<FormOutlined style={{ fontSize: '1.5rem' }} />}
@@ -397,7 +400,7 @@ const DepositRequestDepositInfo = ({
 						<Descriptions.Item label={t('Label_Payment')}>
 							<Row align='middle' justify='space-between'>
 								{payName || '-'}
-								{isShowPaymentInfoModalButton && (
+								{thirdPartyDepositType && (
 									<Button
 										type='link'
 										style={{ padding: '0px' }}
