@@ -424,7 +424,7 @@ const DepositRequestDepositInfo = ({
 				<Descriptions.Item label={t('Label_Payment')}>
 					<Row align='middle' justify='space-between'>
 						{payName || '-'}
-						{isShowPaymentInfoModalButton && (
+						{thirdPartyDepositType && (
 							<Button
 								type='link'
 								style={{ padding: '0px' }}
