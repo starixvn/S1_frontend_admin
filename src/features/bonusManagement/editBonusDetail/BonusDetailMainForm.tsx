@@ -361,7 +361,10 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									<Form.Item
 										noStyle
 										name='displayDate'
-										initialValue={MOMENT_DATE_RANGES.Today}
+										initialValue={[
+											moment().startOf('day'),
+											moment().startOf('day'),
+										]}
 										rules={[
 											{
 												required: true,
