@@ -1,16 +1,27 @@
 import { isEmpty } from 'lodash'
 import moment from 'moment/moment'
+import download from 'downloadjs'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
+import { AffixButtons } from 'components/AffixButtons'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
-import { Form, message, TablePaginationConfig } from 'antd'
-import { useLazyGetDepositReferralReportListQuery } from 'features/newReferralReport/api'
 import {
+	PAGINATION,
+	useAuth,
+	usePagination,
+	useQueryParams,
+} from 'common/hooks'
+import { Form, message, TablePaginationConfig } from 'antd'
+import {
+	useLazyGetDepositReferralReportListQuery,
+	useExportDepositReferralReportMutation,
+} from 'features/newReferralReport/api'
+import {
+	IExportDepositReferralReportArgs,
 	IDepositReferralReportResponse,
 	IFilterForm,
 } from 'features/newReferralReport/type'
@@ -20,6 +31,7 @@ import NewReferralReportFilter from 'features/newReferralReport/NewReferralRepor
 const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
@@ -40,6 +52,11 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: depositReferralReportTotal,
 	})
+
+	const [
+		exportDepositReferralReport,
+		{ isLoading: isExportDepositReferralLoading },
+	] = useExportDepositReferralReportMutation()
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -84,6 +101,32 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 			current,
 			pageSize,
 		})
+	}
+
+	const handleExport = async () => {
+		if (!siteId) return
+
+		const { currencyIds = [], userName, startDate, endDate } = queryParams
+
+		try {
+			const args: IExportDepositReferralReportArgs = {
+				siteId,
+				currencyIds: currencyIds.map((currency: string) => Number(currency)),
+				userName,
+				startDate,
+				endDate,
+			}
+			const blob = await exportDepositReferralReport(args).unwrap()
+
+			download(
+				blob,
+				`DepositReferralReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+			)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	useEffect(() => {
@@ -136,6 +179,15 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 					onTableChange={handleTableChange}
 				/>
 			)}
+
+			<AffixButtons>
+				<AffixButtons.BackToTop />
+				<AffixButtons.FileExport
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
+					onClick={handleExport}
+					loading={isExportDepositReferralLoading}
+				/>
+			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }

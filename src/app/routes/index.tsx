@@ -650,6 +650,13 @@ const MemberProfileReferralHistory = lazy(
 		)
 )
 
+const MemberProfileNewReferralHistory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralHistory' */ 'features/memberProfile/pages/customerInfo/newReferralHistory/NewReferralHistory'
+		)
+)
+
 const MemberProfileNotes = lazy(
 	() =>
 		import(
@@ -1947,6 +1954,14 @@ const routes: RouteObject[] = [
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileReferralHistory />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/newReferralHistory/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfileNewReferralHistory />
 							</AuthRequire>
 						),
 					},

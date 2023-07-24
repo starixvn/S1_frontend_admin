@@ -30,10 +30,10 @@ const NewReferralReportTable = ({
 	const columns = [
 		{
 			title: t('Label_Currency'),
-			key: 'currencyName',
-			dataIndex: 'currencyName',
+			key: 'currency',
+			dataIndex: 'currency',
 			align: 'center' as 'center',
-			render: (currencyName: string) => currencyName || '-',
+			render: (currency: string) => currency || '-',
 		},
 		{
 			title: t('Label_MemberId'),
@@ -67,6 +67,14 @@ const NewReferralReportTable = ({
 			align: 'center' as 'center',
 			render: (referralAmount: number) =>
 				numberFormatter.format(referralAmount) ?? '-',
+		},
+		{
+			title: t('Label_PayAmount'),
+			key: 'payoutAmount',
+			dataIndex: 'payoutAmount',
+			align: 'center' as 'center',
+			render: (payoutAmount: number) =>
+				numberFormatter.format(payoutAmount) ?? '-',
 		},
 		{
 			title: t('Label_Detail'),

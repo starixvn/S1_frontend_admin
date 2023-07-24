@@ -110,6 +110,8 @@ import {
 	ISetCustTpGameTypeSettingArgs,
 	IGetCustTpGameTypeSettingArgs,
 	ICustTpGameTypeSettingResponse,
+	IGetNewReferralHistoryArgs,
+	IGetNewReferralHistoryResponse,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -188,6 +190,17 @@ export const memberProfileApi = createApi({
 		>({
 			query: data => ({
 				url: 'customerManage/GetRefFriendByCustId',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// CustomerInfo => NewReferralHistory 頁面
+		getNewReferralHistoryLog: builder.query<
+			IGetNewReferralHistoryResponse,
+			IGetNewReferralHistoryArgs
+		>({
+			query: data => ({
+				url: 'customerManage/GetDepositReferralListByCustId',
 				method: 'POST',
 				data,
 			}),
@@ -1152,6 +1165,7 @@ export const {
 	useLineUnbindMutation,
 	useLazyGetVipLevelLogQuery,
 	useLazyGetReferralHistoryLogQuery,
+	useLazyGetNewReferralHistoryLogQuery,
 	useLazyGetCustNotesQuery,
 	useAddCustNotesMutation,
 	useSetCustNotesMutation,

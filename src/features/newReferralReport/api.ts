@@ -4,6 +4,7 @@ import {
 	IGetListArgs,
 	IDepositReferralReportResponse,
 	IGetDetailByCustIdArgs,
+	IExportDepositReferralReportArgs,
 	IDetailByCustIdResponse,
 } from 'features/newReferralReport/type'
 
@@ -29,10 +30,22 @@ export const newReferralReportApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		exportDepositReferralReport: builder.mutation<
+			Blob,
+			IExportDepositReferralReportArgs
+		>({
+			query: data => ({
+				url: 'DepositReferralReport/Export',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 	}),
 })
 
 export const {
 	useLazyGetDepositReferralReportListQuery,
 	useLazyGetDetailByCustIdQuery,
+	useExportDepositReferralReportMutation,
 } = newReferralReportApi

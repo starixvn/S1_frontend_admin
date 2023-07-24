@@ -12,16 +12,25 @@ export interface IGetListArgs {
 }
 
 export interface IListData {
+	siteName: string
 	currencyId: number
-	currencyName: string
+	currency: string
 	custId: number
 	userName: string
 	totalDeposit: number
-	totalCalculateReward: number
+	payoutAmount: number
 	referralAmount: number
 }
 
 export type IDepositReferralReportResponse = IAxiosResponse<IListData[]>
+
+export interface IExportDepositReferralReportArgs {
+	siteId: number
+	currencyIds: number[]
+	startDate: string
+	endDate: string
+	userName: string | null
+}
 
 export interface IGetDetailByCustIdArgs {
 	custId: number
