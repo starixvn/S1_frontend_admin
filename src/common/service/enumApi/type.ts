@@ -67,6 +67,7 @@ export type EnumNameType =
 	| 'BonusInfoStatusEnum'
 	| 'BonusSummaryTransactionType'
 	| 'AutoType'
+	| 'ReferralStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -125,6 +126,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  MemberTypeEnum - 取得 MemberTypeEnum 列表
 	 * @argument {string}  CustTpGameTypeSettingGetType - 取得 CustTpGameTypeSettingGetType 列表 (遊戲可玩可不玩 顯示與不顯示)
 	 * @argument {string}  AutoType - 取得 AutoType 列表
+	 * @argument {string}  ReferralStatusEnum - 取得 ReferralStatusEnum 列表
 	 */
 	enumName: EnumNameType
 }

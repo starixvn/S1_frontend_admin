@@ -650,6 +650,13 @@ const MemberProfileReferralHistory = lazy(
 		)
 )
 
+const MemberProfileNewReferralHistory = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralHistory' */ 'features/memberProfile/pages/customerInfo/newReferralHistory/NewReferralHistory'
+		)
+)
+
 const MemberProfileNotes = lazy(
 	() =>
 		import(
@@ -1073,6 +1080,34 @@ const RebateExcludeGame = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'RebateExcludeGame' */ 'features/rebateExcludeGame/RebateExcludeGame'
+		)
+)
+
+const NewReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralManagement' */ 'features/newReferralManagement/NewReferralManagement'
+		)
+)
+
+const NewReferralReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralReport' */ 'features/newReferralReport/NewReferralReport'
+		)
+)
+
+const NewReferralCustReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralCustReport' */ 'features/newReferralReport/NewReferralCustReport'
+		)
+)
+
+const EditNewReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EditNewReferralManagement' */ 'features/newReferralManagement/EditReferralManagement'
 		)
 )
 
@@ -1925,6 +1960,14 @@ const routes: RouteObject[] = [
 						element: (
 							<AuthRequire functionId={paths.memberProfile.functionId}>
 								<MemberProfileReferralHistory />
+							</AuthRequire>
+						),
+					},
+					{
+						path: 'customerInfo/newReferralHistory/:custId',
+						element: (
+							<AuthRequire functionId={paths.memberProfile.functionId}>
+								<MemberProfileNewReferralHistory />
 							</AuthRequire>
 						),
 					},
@@ -2800,6 +2843,48 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
 						<BonusInfo />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.newReferralManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.newReferralManagement.functionId}
+					>
+						<NewReferralManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.newReferralReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.newReferralReport.functionId}
+					>
+						<NewReferralReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.newReferralCustReport.root}/:custId`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.newReferralCustReport.functionId}
+					>
+						<NewReferralCustReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.editNewReferralManagement.root}/:editCurrencyId`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.marketing.sub.editNewReferralManagement.functionId
+						}
+					>
+						<EditNewReferralManagement />
 					</AuthRequire>
 				),
 			},

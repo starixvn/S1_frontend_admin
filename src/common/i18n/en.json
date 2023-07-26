@@ -626,6 +626,7 @@
 				"Label_MemberFlowLog": "Member Flow Log",
 				"Label_VIPLevel": "VIP Level",
 				"Label_ReferralHistory": "Referral History",
+				"Label_NewReferralHistory": "NewReferral History",
 				"Label_Notes": "Notes",
 				"Label_SMSInfo": "SMS Info",
 				"Label_LoginLog": "Login Log",
@@ -1197,5 +1198,14 @@
 	"Label_AutoVerifyRule": "Auto Verify Rule",
 	"Label_DeviceLevel": "Device Level",
 	"Label_DeviceScores": "Device Scores",
-	"Label_DeviceScoresHint": "Above 75 is Low Risk"
+	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_ReferralRewardRate": "Referral Reward Rate",
+	"Label_PayAmount": "PayAmount",
+	"Label_TotalRewardAmount": "Total Reward Amount",
+	"Label_TotalRefereeCount": "Total Referee Count",
+	"Label_TotalPayAmount": "Total PayAmount",
+	"Label_TotalRefereeCountOldAndNew": "Total Referee Count (Old+New)",
+	"Label_TotalPayAmountOldAndNew": "Total PayAmount (Old+New)",
+	"Label_EditNewReferralManagement": "Edit New Referral Management",
+	"Label_NewReferralLog": "New Referral Log"
 }
