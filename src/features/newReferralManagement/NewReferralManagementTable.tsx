@@ -105,7 +105,7 @@ const NewReferralManagementTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (depositRewardPercentage: number) => {
-				return `${numberFormatter.format(depositRewardPercentage)}%`
+				return `${depositRewardPercentage || 0}%`
 			},
 		},
 		{
