@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
-import { numberFormatter } from 'common/utils/format'
+import { numberFormatter, numFormatToDigits } from 'common/utils/format'
 import { Popconfirm, Space, Switch, Typography } from 'antd'
 import {
 	IDepositReferralData,
@@ -105,7 +105,7 @@ const NewReferralManagementTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (depositRewardPercentage: number) => {
-				return `${numberFormatter.format(depositRewardPercentage)}%`
+				return `${numFormatToDigits(depositRewardPercentage)}%`
 			},
 		},
 		{
