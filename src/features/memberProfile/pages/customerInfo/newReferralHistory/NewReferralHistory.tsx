@@ -73,7 +73,7 @@ const NewReferralHistory = () => {
 	return (
 		<>
 			<LayoutContent.Title
-				title={t('MemberProfile.Menu.CustomerInfo.Label_ReferralHistory')}
+				title={t('MemberProfile.Menu.CustomerInfo.Label_NewReferralHistory')}
 			/>
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<NewReferralHistoryTable

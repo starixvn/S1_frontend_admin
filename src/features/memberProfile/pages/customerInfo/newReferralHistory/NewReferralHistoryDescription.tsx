@@ -1,4 +1,4 @@
-import { head } from 'lodash'
+import { head, add } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { numFormatToDigits } from 'common/utils/format'
 import { INewReferralHistoryData } from 'features/memberProfile/type'
@@ -80,7 +80,11 @@ const NewReferralHistoryDescription = ({
 							<Badge
 								showZero
 								count={
-									head(newReferralHistoryList)?.referral_TotalRewardCount || 0
+									add(
+										head(newReferralHistoryList)?.referral_TotalRewardCount!,
+										head(newReferralHistoryList)
+											?.depositReferral_TotalRewardCount!
+									) || 0
 								}
 								style={{ backgroundColor: '#faad14' }}
 							/>
@@ -122,7 +126,11 @@ const NewReferralHistoryDescription = ({
 							<Badge
 								showZero
 								count={numFormatToDigits(
-									head(newReferralHistoryList)?.referral_TotalPayoutAmount || 0
+									add(
+										head(newReferralHistoryList)?.referral_TotalPayoutAmount!,
+										head(newReferralHistoryList)
+											?.depositReferral_TotalPayoutAmount!
+									) || 0
 								)}
 								style={{ backgroundColor: '#faad14' }}
 							/>
