@@ -22,6 +22,11 @@ import {
 	ISetAutoWithdrawalRuleArgs,
 	IDeleteAutoWithdrawalRuleArgs,
 	IWithdrawalTypeData,
+	IAutoVerifyRuleData,
+	IGetAutoVerifyRuleArgs,
+	IAddAutoVerifyRuleArgs,
+	ISetAutoVerifyRuleArgs,
+	IDeleteAutoVerifyRuleArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -33,6 +38,7 @@ export const paymentManagementApi = createApi({
 		'SetBankStatus',
 		'SetCryptoStatus',
 		'SetAutoWithdrawalRule',
+		'SetAutoVerifyRule',
 	],
 	endpoints: builder => ({
 		// 取得global status 列表
@@ -147,7 +153,7 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetPaySetting'],
 		}),
-		// 取得自動提款規則列表
+		// Auto Withdrawal Rule - 取得自動提款規則列表
 		getAutoWithdrawalRuleList: builder.query<
 			IAxiosResponse<IAutoWithdrawalRuleData[]>,
 			IGetAutoWithdrawalRuleArgs
@@ -159,7 +165,7 @@ export const paymentManagementApi = createApi({
 			}),
 			providesTags: ['SetAutoWithdrawalRule'],
 		}),
-		// 新增自動提款規則
+		//  Auto Withdrawal Rule - 新增自動提款規則
 		AddAutoWithdrawalRule: builder.mutation<
 			IAxiosResponse<null>,
 			IAddAutoWithdrawalRuleArgs
@@ -171,7 +177,7 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetAutoWithdrawalRule'],
 		}),
-		// 更新自動提款規則
+		//  Auto Withdrawal Rule - 更新自動提款規則
 		setAutoWithdrawalRule: builder.mutation<
 			IAxiosResponse<null>,
 			ISetAutoWithdrawalRuleArgs
@@ -183,7 +189,7 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetAutoWithdrawalRule'],
 		}),
-		// 刪除自動提款規則
+		//  Auto Withdrawal Rule - 刪除自動提款規則
 		deleteAutoWithdrawalRule: builder.mutation<
 			IAxiosResponse<null>,
 			IDeleteAutoWithdrawalRuleArgs
@@ -206,6 +212,54 @@ export const paymentManagementApi = createApi({
 				data,
 			}),
 		}),
+		// Auto Verify Rule - 取得自動驗證規則列表
+		getAutoVerifyRuleList: builder.query<
+			IAxiosResponse<IAutoVerifyRuleData[]>,
+			IGetAutoVerifyRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoPaymentRule/GetDataList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetAutoVerifyRule'],
+		}),
+		//  Auto Verify Rule - 新增自動驗證規則
+		AddAutoVerifyRule: builder.mutation<
+			IAxiosResponse<null>,
+			IAddAutoVerifyRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoPaymentRule/Create',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoVerifyRule'],
+		}),
+		//  Auto Verify Rule - 更新自動驗證規則
+		setAutoVerifyRule: builder.mutation<
+			IAxiosResponse<null>,
+			ISetAutoVerifyRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoPaymentRule/Set',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoVerifyRule'],
+		}),
+		//  Auto Verify Rule - 刪除自動驗證規則
+		deleteAutoVerifyRule: builder.mutation<
+			IAxiosResponse<null>,
+			IDeleteAutoVerifyRuleArgs
+		>({
+			query: data => ({
+				url: 'AutoPaymentRule/Delete',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetAutoVerifyRule'],
+		}),
 	}),
 })
 
@@ -226,4 +280,8 @@ export const {
 	useSetAutoWithdrawalRuleMutation,
 	useDeleteAutoWithdrawalRuleMutation,
 	useGetWithdrawalTypeListQuery,
+	useGetAutoVerifyRuleListQuery,
+	useAddAutoVerifyRuleMutation,
+	useSetAutoVerifyRuleMutation,
+	useDeleteAutoVerifyRuleMutation,
 } = paymentManagementApi
