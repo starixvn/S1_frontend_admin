@@ -7,7 +7,7 @@ import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { IGetBonusListData } from 'features/bonusExport/type'
 import { useTranslation } from 'react-i18next'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import { timeFormat } from 'common/utils/format'
 import moment from 'moment/moment'
 import { isEmpty } from 'lodash'
 
@@ -130,7 +130,7 @@ const BonusExportTable: FC<IBonusExportTableProps> = ({
 			key: 'amount',
 			dataIndex: 'amount',
 			align: 'center' as 'center',
-			render: (amount: number) => numberFormatter.format(amount),
+			render: (amount: number) => amount ?? '-',
 		},
 		{
 			title: t('Label_CreateTime'),
