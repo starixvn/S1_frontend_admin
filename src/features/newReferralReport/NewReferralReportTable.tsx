@@ -65,16 +65,14 @@ const NewReferralReportTable = ({
 			key: 'referralAmount',
 			dataIndex: 'referralAmount',
 			align: 'center' as 'center',
-			render: (referralAmount: number) =>
-				numberFormatter.format(referralAmount) ?? '-',
+			render: (referralAmount: number) => referralAmount ?? '-',
 		},
 		{
 			title: t('Label_PayAmount'),
 			key: 'payoutAmount',
 			dataIndex: 'payoutAmount',
 			align: 'center' as 'center',
-			render: (payoutAmount: number) =>
-				numberFormatter.format(payoutAmount) ?? '-',
+			render: (payoutAmount: number) => payoutAmount ?? '-',
 		},
 		{
 			title: t('Label_Detail'),

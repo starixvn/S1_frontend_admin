@@ -57,8 +57,7 @@ const NewReferralCustReportTable = ({
 			dataIndex: 'referralAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (referralAmount: number) =>
-				numberFormatter.format(referralAmount) ?? '-',
+			render: (referralAmount: number) => referralAmount ?? '',
 		},
 	]
 
