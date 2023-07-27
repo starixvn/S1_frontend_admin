@@ -71,8 +71,7 @@ const NewReferralHistoryTable = ({
 			dataIndex: 'referralAmount',
 			width: 120,
 			align: 'center' as 'center',
-			render: (referralAmount: number) =>
-				numberFormatter.format(referralAmount),
+			render: (referralAmount: number) => referralAmount ?? '-',
 		},
 	]
 
