@@ -17,7 +17,6 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import React from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
@@ -27,6 +26,7 @@ import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IEnumTypeData } from 'common/service/enumApi'
 
 interface IPaymentAdjustmentFilterProps {
+	isEditing: boolean
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
@@ -50,6 +50,7 @@ const { Panel } = Collapse
 const { Option } = Select
 
 const PaymentAdjustmentFilter = ({
+	isEditing,
 	loading,
 	form,
 	timeZoneUtcOffset,
@@ -254,6 +255,7 @@ const PaymentAdjustmentFilter = ({
 									icon={<SearchOutlined />}
 									htmlType='submit'
 									type='primary'
+									disabled={isEditing}
 								>
 									{t('Label_Search')}
 								</Button>
