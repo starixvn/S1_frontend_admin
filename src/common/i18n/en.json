@@ -1189,5 +1189,9 @@
 	"Label_Summary": "Summary",
 	"Label_AllSite": "All Site",
 	"Label_Step1_SelectTpMessage": "Step 1 : Select TP",
-	"Label_Step2_SelectGames": "Step 2: Select Games"
+	"Label_Step2_SelectGames": "Step 2: Select Games",
+	"Label_AutoVerifyRule": "Auto Verify Rule",
+	"Label_DeviceLevel": "Device Level",
+	"Label_DeviceScores": "Device Scores",
+	"Label_DeviceScoresHint": "Above 75 is Low Risk"
 }
