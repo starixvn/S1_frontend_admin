@@ -6,7 +6,11 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { PaginationInterface } from 'common/hooks'
 import { TablePaginationConfig, Typography } from 'antd'
 import { NewReferralDetailData } from 'features/memberProfile/type'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numberFormatter,
+	numFormatToDigits,
+	timeFormat,
+} from 'common/utils/format'
 
 interface INewReferralHistoryTableProps {
 	loading: boolean
@@ -71,7 +75,8 @@ const NewReferralHistoryTable = ({
 			dataIndex: 'referralAmount',
 			width: 120,
 			align: 'center' as 'center',
-			render: (referralAmount: number) => referralAmount ?? '-',
+			render: (referralAmount: number) =>
+				numFormatToDigits(referralAmount || 0),
 		},
 	]
 

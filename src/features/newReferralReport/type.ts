@@ -2,7 +2,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment/moment'
 
 export interface IGetListArgs {
-	siteId: number
+	siteIds: number[]
 	currencyIds: number[]
 	startDate: string
 	endDate: string
@@ -25,7 +25,7 @@ export interface IListData {
 export type IDepositReferralReportResponse = IAxiosResponse<IListData[]>
 
 export interface IExportDepositReferralReportArgs {
-	siteId: number
+	siteIds: number[]
 	currencyIds: number[]
 	startDate: string
 	endDate: string
