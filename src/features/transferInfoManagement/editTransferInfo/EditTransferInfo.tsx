@@ -114,19 +114,21 @@ const EditTransferInfo = () => {
 			reason,
 			remark,
 			fromChannel,
-			fromSysId,
+			// channel 選 PSP 或 CryptoWallet 時帶default 值 0
+			fromSysId = 0,
 			fromCurrencyId,
-			fromAccountDisplayName,
+			fromAccountDisplayName = '',
 			fromAccountNo,
 			fromAmount,
-			fromFee,
+			fromFee = 0,
 			toChannel,
-			toSysId,
+			// channel 選 PSP 或 CryptoWallet 時帶default 值 0
+			toSysId = 0,
 			toCurrencyId,
-			toAccountDisplayName,
+			toAccountDisplayName = '',
 			toAccountNo,
 			toAmount,
-			toFee,
+			toFee = 0,
 		} = editData
 
 		// 因為這些參數不會出現在畫面上 , 故使用全取把資料取出

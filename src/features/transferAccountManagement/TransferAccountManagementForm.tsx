@@ -28,6 +28,7 @@ import {
 	useGetBankTransferAccountReasonsQuery,
 } from 'features/transferAccountManagement/api'
 import { ChannelEnum } from 'features/transferAccountManagement/constants'
+import TimeZoneSelect from 'components/TimeZoneSelect'
 
 const { Option } = Select
 
@@ -35,11 +36,13 @@ interface ITransferAccountManagementFormProps {
 	form: FormInstance<IAddEditForm>
 	loading: boolean
 	agentList: string[]
+	timeZoneUtcOffset: number
+	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
 const TransferAccountManagementForm: FC<
 	ITransferAccountManagementFormProps
-> = ({ form, loading, agentList }) => {
+> = ({ form, loading, agentList, timeZoneUtcOffset, onTimeZoneChange }) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const formCurrencyId = Form.useWatch('currencyId', form)
@@ -154,7 +157,12 @@ const TransferAccountManagementForm: FC<
 								},
 							]}
 						>
-							<Select placeholder={t('Label_Channel')}>
+							<Select
+								placeholder={t('Label_Channel')}
+								onChange={() => {
+									form.resetFields(['sysId'])
+								}}
+							>
 								{transferChannelEnum?.map(({ value, name }) => (
 									<Option key={value} value={value}>
 										{name}
@@ -229,7 +237,10 @@ const TransferAccountManagementForm: FC<
 									},
 								]}
 							>
-								<Select placeholder={t('Label_Bank')}>
+								<Select
+									placeholder={t('Label_Bank')}
+									disabled={formChannel === ChannelEnum.Psp}
+								>
 									{bankInfoSys?.map(({ sysId, bankName }) => (
 										<Option key={sysId} value={sysId}>
 											{bankName}
@@ -450,18 +461,31 @@ const TransferAccountManagementForm: FC<
 					</Col>
 					<Col lg={8} md={12} xs={24}>
 						<Form.Item
-							name='initialTime'
+							required
 							label={t('Label_InitialTime')}
-							rules={[
-								{
-									required: true,
-									message: t('Label_Required', {
-										key: t('Label_InitialAmount'),
-									}),
-								},
-							]}
+							style={{ marginTop: 24 }}
 						>
-							<DatePicker showTime style={{ width: '100%' }} />
+							<Input.Group compact style={{ width: '100%', display: 'flex' }}>
+								<Form.Item
+									name='initialTime'
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_InitialAmount'),
+											}),
+										},
+									]}
+								>
+									<DatePicker showTime style={{ width: '100%' }} />
+								</Form.Item>
+								<div>
+									<TimeZoneSelect
+										value={timeZoneUtcOffset}
+										onChange={onTimeZoneChange}
+									/>
+								</div>
+							</Input.Group>
 						</Form.Item>
 					</Col>
 					<Col lg={8} md={12} xs={24}>

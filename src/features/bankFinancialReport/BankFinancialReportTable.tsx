@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { numberFormatter } from 'common/utils/format'
+import { numFormatToDigits } from 'common/utils/format'
 import { ITableColumnsInfo } from 'features/bankFinancialReport/type'
 import { TableConverter } from 'features/bankFinancialReport/utils'
 import { Table, TablePaginationConfig, Typography } from 'antd'
@@ -39,14 +39,15 @@ const BankFinancialReportTable = ({
 			dataIndex: 'openBalance',
 			width: 150,
 			align: 'right' as AlignType,
-			render: (openBalance: number) =>
-				isPositiveNum(openBalance) ? (
-					numberFormatter.format(openBalance)
+			render: (openBalance: number) => {
+				return isPositiveNum(openBalance) ? (
+					numFormatToDigits(openBalance)
 				) : (
 					<Typography.Text type='danger'>
-						{numberFormatter.format(openBalance)}
+						{numFormatToDigits(openBalance)}
 					</Typography.Text>
-				),
+				)
+			},
 		},
 		{
 			title: t('Label_ClosingBalance'),
@@ -56,10 +57,10 @@ const BankFinancialReportTable = ({
 			width: 150,
 			render: (closingBalance: number) =>
 				isPositiveNum(closingBalance) ? (
-					numberFormatter.format(closingBalance)
+					numFormatToDigits(closingBalance)
 				) : (
 					<Typography.Text type='danger'>
-						{numberFormatter.format(closingBalance)}
+						{numFormatToDigits(closingBalance)}
 					</Typography.Text>
 				),
 		},
@@ -71,10 +72,10 @@ const BankFinancialReportTable = ({
 			align: 'right' as AlignType,
 			render: (netBalance: number) =>
 				isPositiveNum(netBalance) ? (
-					numberFormatter.format(netBalance)
+					numFormatToDigits(netBalance)
 				) : (
 					<Typography.Text type='danger'>
-						{numberFormatter.format(netBalance)}
+						{numFormatToDigits(netBalance)}
 					</Typography.Text>
 				),
 		},
@@ -86,10 +87,10 @@ const BankFinancialReportTable = ({
 			align: 'right' as AlignType,
 			render: (fees: number) =>
 				isPositiveNum(fees) ? (
-					numberFormatter.format(fees)
+					numFormatToDigits(fees)
 				) : (
 					<Typography.Text type='danger'>
-						{numberFormatter.format(fees)}
+						{numFormatToDigits(fees)}
 					</Typography.Text>
 				),
 		},
