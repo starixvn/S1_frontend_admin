@@ -579,6 +579,7 @@ export interface IGetVipRebateDetailData {
 	gameType?: number
 	typeName: string
 	validBet: number
+	validTurnover: number
 	percentage: number | null
 	calculatedAmount: number
 }
