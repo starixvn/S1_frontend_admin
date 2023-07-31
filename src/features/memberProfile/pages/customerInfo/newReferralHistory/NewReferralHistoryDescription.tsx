@@ -12,6 +12,7 @@ const NewReferralHistoryDescription = ({
 	newReferralHistoryList,
 }: INewReferralHistoryDescriptionProps) => {
 	const { t } = useTranslation()
+
 	return (
 		<>
 			<Descriptions size='middle' column={2} bordered>
@@ -79,13 +80,16 @@ const NewReferralHistoryDescription = ({
 						>
 							<Badge
 								showZero
-								count={
+								// 因 numFormatToDigits 轉千分位時會讓 overflowCount 失效
+								// 故要完整顯示正確數值理論上 overflowCount 帶超過 1000 便可完整顯示
+								overflowCount={1000}
+								count={numFormatToDigits(
 									add(
 										head(newReferralHistoryList)?.referral_TotalRewardCount!,
 										head(newReferralHistoryList)
 											?.depositReferral_TotalRewardCount!
 									) || 0
-								}
+								)}
 								style={{ backgroundColor: '#faad14' }}
 							/>
 						</Popover>
@@ -125,6 +129,9 @@ const NewReferralHistoryDescription = ({
 						>
 							<Badge
 								showZero
+								// 因 numFormatToDigits 轉千分位時會讓 overflowCount 失效
+								// 故要完整顯示正確數值理論上 overflowCount 帶超過 1000 便可完整顯示
+								overflowCount={1000}
 								count={numFormatToDigits(
 									add(
 										head(newReferralHistoryList)?.referral_TotalPayoutAmount!,
