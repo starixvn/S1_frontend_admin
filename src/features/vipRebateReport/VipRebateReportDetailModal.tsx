@@ -5,7 +5,11 @@ import {
 	IGetVipRebateDetailData,
 	IVipRebateInfoData,
 } from 'features/vipRebateReport/type'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numFormatToDigits,
+	numberFormatter,
+	timeFormat,
+} from 'common/utils/format'
 import { reduce } from 'lodash'
 import { CustomDivider } from 'features/redemptionListing/RedemptionOverviewTable'
 import { useTranslation } from 'react-i18next'
@@ -69,7 +73,9 @@ const VipRebateReportDetailModal = ({
 		)
 	}
 
-	const turnoverElement = () => {
+	// Total Turnover //
+
+	const totalTurnoverElement = () => {
 		const totalValidTurnover = reduce(
 			vipRebateDetail,
 			(sum, current) => sum + current.validBet,
@@ -77,20 +83,39 @@ const VipRebateReportDetailModal = ({
 		)
 
 		return itemRenderer(
+			t('Label_TotalTurnover'),
+			vipRebateDetail.map(({ validBet }) => numFormatToDigits(validBet)),
+			numFormatToDigits(totalValidTurnover)
+		)
+	}
+
+	// Valid Turnover //
+
+	const validTurnoverElement = () => {
+		const totalValidTurnover = reduce(
+			vipRebateDetail,
+			(sum, current) => sum + current.validTurnover,
+			0
+		)
+
+		return itemRenderer(
 			t('Label_ValidTurnover'),
-			vipRebateDetail.map(({ validBet }) => numberFormatter.format(validBet)),
-			numberFormatter.format(totalValidTurnover)
+			vipRebateDetail.map(({ validTurnover }) =>
+				numFormatToDigits(validTurnover)
+			),
+			numFormatToDigits(totalValidTurnover)
 		)
 	}
 
 	const rebateElement = () => {
 		return itemRenderer(
 			t('Label_RebateByGame'),
-			vipRebateDetail.map(({ percentage }) => `${percentage}%`),
+			vipRebateDetail.map(({ percentage }) =>
+				typeof percentage === 'number' ? `${percentage.toFixed(1)}%` : ''
+			),
 			''
 		)
 	}
-
 	const amountElement = () => {
 		const totalRedeemAmount = reduce(
 			vipRebateDetail,
@@ -99,8 +124,10 @@ const VipRebateReportDetailModal = ({
 		)
 		return itemRenderer(
 			t('Label_RedeemAmount'),
-			vipRebateDetail.map(({ calculatedAmount }) => calculatedAmount),
-			totalRedeemAmount
+			vipRebateDetail.map(({ calculatedAmount }) =>
+				numFormatToDigits(calculatedAmount)
+			),
+			numFormatToDigits(totalRedeemAmount)
 		)
 	}
 
@@ -131,7 +158,8 @@ const VipRebateReportDetailModal = ({
 					}}
 				>
 					{titleElement()}
-					{turnoverElement()}
+					{totalTurnoverElement()}
+					{validTurnoverElement()}
 					{rebateElement()}
 					{amountElement()}
 				</Descriptions>

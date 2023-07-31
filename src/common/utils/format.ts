@@ -1,5 +1,5 @@
 import { isJSON } from 'common/utils/validators'
-import { camelCase, isObject, mapKeys } from 'lodash'
+import { camelCase, isObject, mapKeys, isNull, isUndefined } from 'lodash'
 
 export const numberFormatter = new Intl.NumberFormat('en', {
 	maximumFractionDigits: 0,
@@ -7,11 +7,8 @@ export const numberFormatter = new Intl.NumberFormat('en', {
 })
 
 // 數字 format 到特定小數點，預設為第二位
-export const numFormatToDigits = (
-	value: number,
-	digits = 2,
-	minimumFractionDigits = 0
-): string => {
+export const numFormatToDigits = (value: number, digits = 2, minimumFractionDigits = 0): string => {
+	if (isNull(value) || isUndefined(value)) return '0'
 	const formatter = new Intl.NumberFormat('en', {
 		maximumFractionDigits: digits,
 		minimumFractionDigits,
@@ -25,6 +22,8 @@ export const percentageFormatter = (percentage: number, point = 2): string => {
 export const timeFormat = 'YYYY-MM-DD  HH:mm:ss'
 
 export const dateFormat = 'YYYY/MM/DD'
+
+export const monthFormat = 'YYYY/MM'
 
 export const jsonToObject = <Type>(data: Type): Type => {
 	const parseData = isJSON(data) && JSON.parse(data as any)

@@ -46,12 +46,20 @@ const VipRebateDetailModal = ({
 		},
 		// 保持數字準確性 , 這裡不做 formatter
 		{
-			title: t('Label_ValidTurnover'),
+			title: t('Label_TotalTurnover'),
 			key: 'validBet',
 			dataIndex: 'validBet',
 			width: 100,
 			align: 'center' as 'center',
-			render: (validBet: number) => validBet ?? 0,
+			render: (validBet: number) => numFormatToDigits(validBet) ?? 0,
+		},
+		{
+			title: t('Label_ValidTurnover'),
+			key: 'validTurnover',
+			dataIndex: 'validTurnover',
+			width: 100,
+			align: 'center' as 'center',
+			render: (validTurnover: number) => numFormatToDigits(validTurnover) ?? 0,
 		},
 		{
 			title: t('Label_RebateByGame'),
@@ -59,7 +67,8 @@ const VipRebateDetailModal = ({
 			dataIndex: 'percentage',
 			width: 80,
 			align: 'center' as 'center',
-			render: (percentage: number) => (percentage ? `${percentage} %` : ''),
+			render: (percentage: number) =>
+				typeof percentage === 'number' ? `${percentage.toFixed(1)} %` : '',
 		},
 		{
 			title: t('Label_RedeemAmount'),
@@ -67,7 +76,8 @@ const VipRebateDetailModal = ({
 			dataIndex: 'calculatedAmount',
 			width: 100,
 			align: 'center' as 'center',
-			render: (calculatedAmount: number) => calculatedAmount ?? 0,
+			render: (calculatedAmount: number) =>
+				numFormatToDigits(calculatedAmount) ?? 0,
 		},
 	]
 
@@ -84,6 +94,10 @@ const VipRebateDetailModal = ({
 				percentage: null,
 				calculatedAmount: rawVipRebateDetail.reduce(
 					(sum, cur) => sum + cur.calculatedAmount,
+					0
+				),
+				validTurnover: rawVipRebateDetail.reduce(
+					(sum, cur) => sum + cur.validTurnover,
 					0
 				),
 			},
