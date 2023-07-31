@@ -75,7 +75,7 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 		)
 		setRange({ startDate, endDate })
 		const args = {
-			siteId,
+			siteIds: [siteId],
 			currencyIds,
 			userName,
 			startDate,
@@ -110,7 +110,7 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 		try {
 			const args: IExportDepositReferralReportArgs = {
-				siteId,
+				siteIds: [siteId],
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				userName,
 				startDate,
