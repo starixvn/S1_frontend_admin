@@ -11,7 +11,11 @@ import {
 } from 'features/transferInfoManagement/type'
 import { PermissionInterface } from 'type'
 import moment from 'moment'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numberFormatter,
+	numFormatToDigits,
+	timeFormat,
+} from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { useNavigate } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -244,7 +248,7 @@ const TransferInfoManagementTable = ({
 					render: (fromAmount: number) => {
 						return (
 							<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-								{fromAmount ? numberFormatter.format(fromAmount) : '-'}
+								{fromAmount ? numFormatToDigits(fromAmount) : '-'}
 							</Typography.Text>
 						)
 					},
@@ -383,7 +387,7 @@ const TransferInfoManagementTable = ({
 					render: (toAmount: number) => {
 						return (
 							<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-								{toAmount ? numberFormatter.format(toAmount) : '-'}
+								{toAmount ? numFormatToDigits(toAmount) : '-'}
 							</Typography.Text>
 						)
 					},

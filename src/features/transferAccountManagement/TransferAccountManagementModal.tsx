@@ -31,7 +31,7 @@ const TransferAccountManagementModal: FC<
 > = ({ loading, visible, onCancel }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { timeZoneUtcOffset } = useTimeZone()
+	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [form] = Form.useForm<IAddEditForm>()
 	// * editId:0 時為新增，其它為編輯
 
@@ -142,6 +142,8 @@ const TransferAccountManagementModal: FC<
 				form={form}
 				loading={isSetBankTransferAccountLoading}
 				agentList={agentList}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				onTimeZoneChange={onTimeZoneChange}
 			/>
 		</Modal>
 	)
