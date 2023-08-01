@@ -255,6 +255,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
 						BonusTypeEnum.DeviceBonus as number,
+						BonusTypeEnum.CashBack as number,
 					]) && (
 						<>
 							<Row gutter={16}>

@@ -395,6 +395,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						{multiEqual(currentBonusType as number, [
 							BonusTypeEnum.ReDeposit as number,
 							BonusTypeEnum.DeviceBonus as number,
+							BonusTypeEnum.CashBack as number,
 						]) && (
 							<Col lg={6} md={6} sm={6}>
 								<Form.Item name='periodType' label={t('Label_PeriodType')}>
@@ -405,11 +406,22 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 											currentBonusType === BonusTypeEnum.ReDeposit && isEdit
 										}
 									>
-										{periodTypeList?.map(type => (
-											<Option key={type.value} value={type.value}>
-												{t(type.displayName)}
-											</Option>
-										))}
+										{
+											// 使用三元式判斷: 當BonusType = CashBack 時只能選 Daily 或 Weekly
+											// 其餘 BonusType(上面有限定過，所以剩下ReDeposit和DeviceBonus)可選擇全部 PeriodType
+											(currentBonusType === BonusTypeEnum.CashBack
+												? periodTypeList?.filter(
+														type =>
+															type.value === PeriodTypeEnum.Daily ||
+															type.value === PeriodTypeEnum.Weekly
+												  )
+												: periodTypeList
+											)?.map(type => (
+												<Option key={type.value} value={type.value}>
+													{t(type.displayName)}
+												</Option>
+											))
+										}
 									</Select>
 								</Form.Item>
 							</Col>
