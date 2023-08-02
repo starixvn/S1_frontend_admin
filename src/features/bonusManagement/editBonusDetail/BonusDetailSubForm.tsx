@@ -116,6 +116,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					onChange={onChangeProducts}
 					placeholder={t('Label_Select')}
 					disabled={!active}
+					style={{ width: '100%' }}
 				>
 					{productList?.length > 1 && (
 						<Option value='all'>{t('Label_All')}</Option>
@@ -255,7 +256,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
 						BonusTypeEnum.DeviceBonus as number,
-						BonusTypeEnum.CashBack as number,
 					]) && (
 						<>
 							<Row gutter={16}>
@@ -656,9 +656,35 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					{currentBonusType === BonusTypeEnum.CashBack && (
 						// cashBack
 						<>
-							<Row>
-								<Col span={24}>{productsSelect()}</Col>
+							<Row gutter={16}>
+								<Col span={12}>{productsSelect()}</Col>
+								<Col span={12}>
+									<Form.Item
+										name={['specific', isoCode, 'requiredAmount']}
+										label={t('Label_RequiredAmount')}
+										rules={[
+											{
+												required: active,
+												message: t('Label_Required', {
+													key: t('Label_RequiredAmount'),
+												}),
+											},
+											{
+												type: 'number',
+												min: 0,
+											},
+										]}
+									>
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+											disabled={!active}
+										/>
+									</Form.Item>
+								</Col>
 							</Row>
+
 							<Row gutter={16}>
 								<Col span={6}>
 									<Form.Item
