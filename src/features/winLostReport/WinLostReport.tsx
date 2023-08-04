@@ -50,6 +50,8 @@ import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
+import { IGetCategoryResponse } from 'features/betList/type'
+import { useGetCategoryQuery } from 'features/betList/api'
 
 const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm()
@@ -68,6 +70,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		data: { data: tpGameList = [] } = {},
 		isLoading: isGetTpGameListLoading,
 	} = useGetProductsQuery(null)
+
+	const {
+		data: { data: categories = [] } = {} as IGetCategoryResponse,
+		isFetching: isGetCategoryFetching,
+	} = useGetCategoryQuery(null)
 
 	const [getWinLossByDate, { isFetching: isGetWinLossByDateFetching }] =
 		useLazyGetWinLossByDateQuery()
@@ -162,6 +169,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			displayGroupBreakdownInOriginalCurrency,
 			groupBy,
 			memberTypes,
+			includeTest,
+			tpCategorys = [],
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -178,6 +187,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			siteId,
 			starTime,
 			endTime,
+			tpCategorys: tpCategorys ?? [],
 			tpGameTypes: tpGameTypes ?? [],
 			currencyIds,
 			userName: userName ?? '',
@@ -190,6 +200,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				displayGroupBreakdownInOriginalCurrency
 			),
 			includeFreeSpins: Boolean(includeFreeSpins),
+			includeTest: Boolean(includeTest),
 			noDraw: Boolean(noDraw),
 			baseCurrencyId,
 			memberTypes,
@@ -333,6 +344,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId: querySiteId,
 				starTime,
 				endTime,
+				tpCategorys = [],
 				tpGameTypes = [],
 				currencyIds = [],
 				userName,
@@ -342,6 +354,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				dateType,
 				displayGroupBreakdownInOriginalCurrency,
 				includeFreeSpins,
+				includeTest,
 				noDraw,
 				groupBy,
 				baseCurrencyId,
@@ -352,6 +365,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId: Number(querySiteId),
 				starTime,
 				endTime,
+				tpCategorys: tpCategorys.map((categoryId: string) =>
+					Number(categoryId)
+				),
 				tpGameTypes: tpGameTypes.map((tpGameType: string) =>
 					Number(tpGameType)
 				),
@@ -365,6 +381,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					displayGroupBreakdownInOriginalCurrency
 				),
 				includeFreeSpins: Boolean(includeFreeSpins),
+				includeTest: Boolean(includeTest),
 				noDraw: Boolean(noDraw),
 				baseCurrencyId: Number(baseCurrencyId),
 				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
@@ -529,12 +546,14 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const filterLoading = isMemberTypeEnumsLoading || isGetTpGameListLoading
+	const filterLoading =
+		isMemberTypeEnumsLoading || isGetTpGameListLoading || isGetCategoryFetching
 
 	useEffect(() => {
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
+					tpCategorys: categories.map(({ categoryId }) => categoryId),
 					tpGameTypes: tpGameList.map(({ type }) => type),
 					// 預設排除直播主
 					memberTypes: reject(memberTypeEnums, [
@@ -550,9 +569,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					timeZone,
 					currencyIds = [],
 					baseCurrencyId,
+					tpCategorys = [],
 					tpGameTypes = [],
 					userName,
 					includeFreeSpins,
+					includeTest,
 					noDraw,
 					displayGroupBreakdownInOriginalCurrency,
 					groupBy,
@@ -564,11 +585,15 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					dateRange: [moment(starTime), moment(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					baseCurrencyId: Number(baseCurrencyId),
+					tpCategorys: tpCategorys.map((categoryId: string) =>
+						Number(categoryId)
+					),
 					tpGameTypes: tpGameTypes.map((tpGameType: string) =>
 						Number(tpGameType)
 					),
 					userName,
 					includeFreeSpins: Boolean(includeFreeSpins),
+					includeTest: Boolean(includeTest),
 					noDraw: Boolean(noDraw),
 					displayGroupBreakdownInOriginalCurrency: Boolean(
 						displayGroupBreakdownInOriginalCurrency
@@ -597,6 +622,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const loading =
 		isGetTpGameListLoading ||
+		isGetCategoryFetching ||
 		isGetWinLossByDateFetching ||
 		isGetWinLossByMonthFetching ||
 		isGetWinLossByTpGameTypeFetching ||
@@ -614,6 +640,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				form={filterForm}
 				loading={loading}
 				tpGameList={tpGameList}
+				categories={categories}
 				memberTypeEnums={memberTypeEnums}
 				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
