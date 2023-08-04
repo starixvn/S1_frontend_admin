@@ -77,7 +77,7 @@ const BonusExportTable: FC<IBonusExportTableProps> = ({
 			align: 'center' as 'center',
 			render: (agent: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-					{agent ?? ''}
+					{!isEmpty(agent) ? agent : 'N/A'}
 				</Typography.Text>
 			),
 		},
