@@ -37,6 +37,7 @@
   2. Same IP restrict
   3. Same Real Name restrict
 - 以上每組都包含一個 count 計次 inputNumber , `bonusType = FreeBet`與 `DeviceBonus` 時 `SameIPRestrict`要預設開啟
+- bonusUsingList (memberList) 設定相關 在 `bonusType` === `RetentionFreeBet` 才會出現，僅有 edit 時可用，create 時不可設定。
 
 #### Banner Info
 
