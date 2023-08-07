@@ -1,5 +1,7 @@
 import React, { FC, useContext, useEffect } from 'react'
+import { head } from 'lodash'
 import {
+	Button,
 	Checkbox,
 	Col,
 	DatePicker,
@@ -11,6 +13,14 @@ import {
 	Spin,
 	Typography,
 } from 'antd'
+import { InputNumber } from 'components'
+import { RcFile } from 'antd/es/upload'
+import {
+	DownloadOutlined,
+	UploadOutlined,
+	ProfileOutlined,
+} from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
@@ -32,18 +42,22 @@ import {
 } from 'features/bonusManagement/constants'
 import { MultipleSelect } from 'components/Select'
 import { IVipLevelsData } from 'common/service/allDataApi'
-import { head } from 'lodash'
 import { multiEqual } from 'features/bonusManagement/utils'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { ITagData } from 'features/memberAdministrationList/type'
-import { InputNumber } from 'components'
+import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
+import { UploadProps } from 'antd/es/upload/interface'
+import { xlsxMimeType } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
 
 interface IBonusDetailMainForm {
 	loading: boolean
+	uploadUsingListLoading: boolean
 	bonusTypeList: IGetPromotionTypeData[]
 	vipLevelList: IVipLevelsData[]
 	tagList: ITagData[]
 	isEdit: boolean
+	onUploadUsingList: (file: RcFile) => void
+	onClickMemberList: () => void
 }
 
 const { Option } = Select
@@ -51,10 +65,13 @@ const { RangePicker } = DatePicker
 
 const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	loading,
+	uploadUsingListLoading,
+	isEdit,
 	bonusTypeList,
 	vipLevelList,
 	tagList,
-	isEdit,
+	onUploadUsingList,
+	onClickMemberList,
 }) => {
 	const { t } = useTranslation()
 	const { form, categoryList, editPermission, currentActiveCurrency } =
@@ -66,6 +83,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 		'displayDate',
 		form
 	)
+
 	// 是否有勾選 special code
 	const isSpecialCode = Form.useWatch('isSpecial', form)
 	// * isDisplayDate 可以決定前台是否顯示該 Bonus, 當沒有打勾時前台的 Bonus 會被隱藏
@@ -148,6 +166,17 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 				</MultipleSelect>
 			</Form.Item>
 		)
+	}
+
+	// userList 的 excel 上傳功能
+	const uploadProps: UploadProps = {
+		accept: xlsxMimeType,
+		maxCount: 1,
+		beforeUpload: file => {
+			onUploadUsingList(file)
+			return false
+		},
+		fileList: [],
 	}
 
 	useEffect(() => {
@@ -504,6 +533,52 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 							</Form.Item>
 						</Col>
 					</Row>
+
+					{currentBonusType === BonusTypeEnum.RetentionFreeBet && (
+						// bonus using list
+						<Row gutter={16} align='middle'>
+							<Col span={8}>
+								<Form.Item label={t('Label_MemberListUpload')}>
+									<Link
+										to='/exampleFile/SendBonusUsingList.xlsx'
+										download='SendBonusUsingList.xlsx'
+										target='_blank'
+										style={{ color: 'white' }}
+									>
+										<Button type='primary' icon={<DownloadOutlined />} block>
+											{t('Label_TemplateFile')}
+										</Button>
+									</Link>
+								</Form.Item>
+							</Col>
+							<Col span={8}>
+								<Form.Item label={` `}>
+									<StyleUpload {...uploadProps} disabled={!isEdit}>
+										<Button
+											icon={<UploadOutlined />}
+											loading={uploadUsingListLoading}
+											disabled={!isEdit}
+										>
+											{t('Label_Upload', { key: t('Label_File') })}
+										</Button>
+									</StyleUpload>
+								</Form.Item>
+							</Col>
+							<Col span={8}>
+								<Form.Item label={` `}>
+									<Button
+										icon={<ProfileOutlined />}
+										block
+										type='primary'
+										onClick={onClickMemberList}
+										disabled={!isEdit}
+									>
+										{t('Label_MemberList')}
+									</Button>
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
 					{multiEqual(currentBonusType as number, [
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
