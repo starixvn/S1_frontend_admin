@@ -208,7 +208,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						sameByActive: false,
 						mainFormActive: false,
 						promotionDeviceType: DevicesDetailEnum.All,
-						walletType: WalletTypeEnum?.Transfer,
+						walletType: WalletTypeEnum?.Seamless,
 						selectedVipLevel: ['all'],
 						periodType: PeriodTypeEnum.Daily,
 						promotionAction: PromotionActionEnum.Detail,
@@ -720,6 +720,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										onChange={() => {
 											form?.resetFields(['categoryId'])
 										}}
+										disabled
 									>
 										{walletTypeList?.map(type => (
 											<Option key={type.value} value={type.value}>
