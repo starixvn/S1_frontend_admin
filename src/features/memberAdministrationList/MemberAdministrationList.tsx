@@ -343,7 +343,7 @@ const MemberAdministrationList = ({
 				tpUserName: sabaId,
 				affiliateName,
 				exportTransferWallet: exportTransferWallet ? 1 : 0,
-				eWalletAccountNumber: Number(eWalletAccountNumber),
+				eWalletAccountNumber: Number(eWalletAccountNumber) || null,
 				cryptoAddress,
 				...values,
 			})
