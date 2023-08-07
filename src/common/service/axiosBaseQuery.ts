@@ -10,9 +10,6 @@ export interface IAxiosResponse<T> {
 	message: string
 	rawErrorCode?: string
 	rawMessage?: string
-	totalApproveRow?: number
-	totalAmount?: number
-	totalApproveAmount?: number
 }
 
 export interface IAxiosError extends globalThis.Error {

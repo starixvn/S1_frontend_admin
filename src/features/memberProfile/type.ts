@@ -781,7 +781,11 @@ export interface IGetDepositInfoData {
 	flowEndTime: string | null
 }
 
-export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]>
+export type IGetDepositInfoResponse = IAxiosResponse<IGetDepositInfoData[]> & {
+	totalApproveRow?: number
+	totalAmount?: number
+	totalApproveAmount?: number
+}
 
 // withdrawal info 頁面
 export interface IGetWithdrawalInfoArgs extends IGetDepositInfoArgs {}
@@ -798,7 +802,11 @@ export interface IGetWithdrawalInfoData {
 
 export type IGetWithdrawalInfoResponse = IAxiosResponse<
 	IGetWithdrawalInfoData[]
->
+> & {
+	totalApproveRow?: number
+	totalAmount?: number
+	totalApproveAmount?: number
+}
 
 // adjustment info 頁面
 export interface IGetAdjustmentInfoArgs {
