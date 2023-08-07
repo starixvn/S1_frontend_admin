@@ -2,11 +2,13 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
+	IBonusUsingListData,
 	IDuplicateArgs,
 	IExportScratchCardListArgs,
 	IGenScratchCardCodeArgs,
 	IGetBonusListArgs,
 	IGetBonusListResponse,
+	IGetBonusUsingListArgs,
 	IGetByBonusCodeArgs,
 	IGetByBonusCodeResponse,
 	IGetCashBackGameListArgs,
@@ -126,6 +128,29 @@ export const bonusManagementApi = createApi({
 			}),
 			invalidatesTags: ['SCRATCH'],
 		}),
+		// Retention Free Bet bonus 用的名單功能
+		getBonusUsingList: builder.query<
+			IBonusUsingListData[],
+			IGetBonusUsingListArgs
+		>({
+			query: data => ({
+				url: 'Bonus/GetBonusUsingList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		setBonusUsingList: builder.mutation<IAxiosResponse<void>, FormData>({
+			query: data => ({
+				url: 'Bonus/SendBonusUsingList',
+				method: 'POST',
+				data,
+				// FormData content-type
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -141,4 +166,6 @@ export const {
 	useCreateScratchCardMutation,
 	useGetPromotionCategoryQuery,
 	useLazyGetCashBackGameListQuery,
+	useLazyGetBonusUsingListQuery,
+	useSetBonusUsingListMutation,
 } = bonusManagementApi

@@ -242,3 +242,15 @@ export interface IGetPromotionCategoryData {
 export type IGetPromotionCategoryResponse = IAxiosResponse<
 	IGetPromotionCategoryData[]
 >
+
+export interface IGetBonusUsingListArgs {
+	siteId?: number
+	bonusCode: string
+}
+
+export type IBonusUsingListData = {
+	custId: number
+	currency: string
+	userName: string
+	status: number
+}

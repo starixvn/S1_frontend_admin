@@ -1160,7 +1160,6 @@
 	"Label_Tagging": "Tagging",
 	"Label_ResetOTPLimit": "Reset OTP Limit",
 	"Label_AutoWithdrawalRule": "Auto Withdrawal Rule",
-	"Label_Message": "Message",
 	"Label_ActiveInactiveAll": "Active/Inactive All",
 	"Label_AddExtraPoint": "Add ExtraPoint",
 	"Label_LiveStreaming": "LiveStreaming",
@@ -1194,5 +1193,8 @@
 	"Label_AutoVerifyRule": "Auto Verify Rule",
 	"Label_DeviceLevel": "Device Level",
 	"Label_DeviceScores": "Device Scores",
-	"Label_DeviceScoresHint": "Above 75 is Low Risk"
+	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_Message": "Message",
+	"Label_MemberListUpload": "Member List Upload",
+	"Label_MemberList": "Member List"
 }
