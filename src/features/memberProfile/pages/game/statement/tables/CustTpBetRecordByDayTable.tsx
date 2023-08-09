@@ -245,12 +245,24 @@ const CustTpBetRecordByDayTable = ({
 								{runningTickets ? numFormatToDigits(runningTickets) : 0}
 							</Summary.Cell>
 							<Summary.Cell index={9} align='center'>
-								{winLoss ? numFormatToDigits(winLoss) : 0}
+								<Text
+									type={isPositiveNum(winLoss) ? undefined : 'danger'}
+									style={{ whiteSpace: 'nowrap', padding: '5px' }}
+								>
+									{winLoss ? numFormatToDigits(winLoss) : 0}
+								</Text>
 							</Summary.Cell>
 							<Summary.Cell index={10} align='center'>
-								{winLossExcludeBonus
-									? numFormatToDigits(winLossExcludeBonus)
-									: 0}
+								<Text
+									type={
+										isPositiveNum(winLossExcludeBonus) ? undefined : 'danger'
+									}
+									style={{ whiteSpace: 'nowrap', padding: '5px' }}
+								>
+									{winLossExcludeBonus
+										? numFormatToDigits(winLossExcludeBonus)
+										: 0}
+								</Text>
 							</Summary.Cell>
 						</Summary.Row>
 					)
