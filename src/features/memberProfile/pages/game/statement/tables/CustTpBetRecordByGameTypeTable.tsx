@@ -193,7 +193,12 @@ const CustTpBetRecordByGameTypeTable = ({
 									: 0}
 							</Summary.Cell>
 							<Summary.Cell index={4} align='center'>
-								{winlostAmount ? numFormatToDigits(winlostAmount) : 0}
+								<Text
+									type={isPositiveNum(winlostAmount) ? undefined : 'danger'}
+									style={{ whiteSpace: 'nowrap', padding: '5px' }}
+								>
+									{winlostAmount ? numFormatToDigits(winlostAmount) : 0}
+								</Text>
 							</Summary.Cell>
 							<Summary.Cell index={5} align='center'>
 								-
