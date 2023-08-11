@@ -6,10 +6,12 @@ import { Descriptions, Badge, Space, Popover } from 'antd'
 
 interface INewReferralHistoryDescriptionProps {
 	newReferralHistoryList: INewReferralHistoryData[]
+	newReferralHistoryTotal: number
 }
 
 const NewReferralHistoryDescription = ({
 	newReferralHistoryList,
+	newReferralHistoryTotal,
 }: INewReferralHistoryDescriptionProps) => {
 	const { t } = useTranslation()
 
@@ -31,6 +33,14 @@ const NewReferralHistoryDescription = ({
 					{numFormatToDigits(
 						head(newReferralHistoryList)?.depositReferral__TotalRewardAmount ||
 							0
+					)}
+				</Descriptions.Item>
+				<Descriptions.Item
+					label={t('Label_TotalRefereeCountPayout')}
+					style={{ whiteSpace: 'nowrap' }}
+				>
+					{numFormatToDigits(
+						head(newReferralHistoryList)?.totalRefereeWithPayoutCount || 0
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item
@@ -83,13 +93,7 @@ const NewReferralHistoryDescription = ({
 								// 因 numFormatToDigits 轉千分位時會讓 overflowCount 失效
 								// 故要完整顯示正確數值理論上 overflowCount 帶超過 1000 便可完整顯示
 								overflowCount={1000}
-								count={numFormatToDigits(
-									add(
-										head(newReferralHistoryList)?.referral_TotalRewardCount!,
-										head(newReferralHistoryList)
-											?.depositReferral_TotalRewardCount!
-									) || 0
-								)}
+								count={numFormatToDigits(newReferralHistoryTotal || 0)}
 								style={{ backgroundColor: '#faad14' }}
 							/>
 						</Popover>

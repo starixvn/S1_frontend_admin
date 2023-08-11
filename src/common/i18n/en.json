@@ -1206,5 +1206,6 @@
 	"Label_DeviceScoresHint": "Above 75 is Low Risk",
 	"Label_Message": "Message",
 	"Label_MemberListUpload": "Member List Upload",
-	"Label_MemberList": "Member List"
+	"Label_MemberList": "Member List",
+	"Label_TotalRefereeCountPayout": "Total Referee Count (with payout)"
 }
