@@ -1076,13 +1076,6 @@ const LeaderboardReport = lazy(
 		)
 )
 
-const NewReferralManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'NewReferralManagement' */ 'features/newReferralManagement/NewReferralManagement'
-		)
-)
-
 const NewReferralReport = lazy(
 	() =>
 		import(
@@ -1101,6 +1094,13 @@ const EditNewReferralManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'EditNewReferralManagement' */ 'features/newReferralManagement/EditReferralManagement'
+		)
+)
+
+const NewReferralManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewReferralManagement' */ 'features/newReferralManagement/NewReferralManagement'
 		)
 )
 

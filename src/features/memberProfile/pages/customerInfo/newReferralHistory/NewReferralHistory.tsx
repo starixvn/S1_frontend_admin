@@ -89,6 +89,7 @@ const NewReferralHistory = () => {
 
 				<NewReferralHistoryDescription
 					newReferralHistoryList={newReferralHistoryList}
+					newReferralHistoryTotal={newReferralHistoryTotal}
 				/>
 			</LayoutContent.Card>
 		</>

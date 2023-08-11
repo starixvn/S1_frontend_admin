@@ -187,6 +187,7 @@ export interface INewReferralHistoryData {
 	depositReferral__TotalRewardAmount: number
 	referral_TotalPayoutAmount: number
 	depositReferral_TotalPayoutAmount: number
+	totalRefereeWithPayoutCount: number
 }
 
 export type IGetNewReferralHistoryResponse = IAxiosResponse<
