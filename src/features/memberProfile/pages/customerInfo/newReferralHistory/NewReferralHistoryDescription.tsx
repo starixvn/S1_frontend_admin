@@ -19,11 +19,11 @@ const NewReferralHistoryDescription = ({
 		<>
 			<Descriptions size='middle' column={2} bordered>
 				<Descriptions.Item
-					label={t('Label_TotalRefereeCount')}
+					label={t('Label_TotalRefereeCountPayout')}
 					style={{ whiteSpace: 'nowrap' }}
 				>
 					{numFormatToDigits(
-						head(newReferralHistoryList)?.depositReferral_TotalRewardCount || 0
+						head(newReferralHistoryList)?.totalRefereeWithPayoutCount || 0
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item
@@ -33,14 +33,6 @@ const NewReferralHistoryDescription = ({
 					{numFormatToDigits(
 						head(newReferralHistoryList)?.depositReferral__TotalRewardAmount ||
 							0
-					)}
-				</Descriptions.Item>
-				<Descriptions.Item
-					label={t('Label_TotalRefereeCountPayout')}
-					style={{ whiteSpace: 'nowrap' }}
-				>
-					{numFormatToDigits(
-						head(newReferralHistoryList)?.totalRefereeWithPayoutCount || 0
 					)}
 				</Descriptions.Item>
 				<Descriptions.Item

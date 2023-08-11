@@ -1189,7 +1189,6 @@
 	"Label_ReferralRewardRate": "Referral Reward Rate",
 	"Label_PayAmount": "PayAmount",
 	"Label_TotalRewardAmount": "Total Reward Amount",
-	"Label_TotalRefereeCount": "Total Referee Count",
 	"Label_TotalPayAmount": "Total PayAmount",
 	"Label_TotalRefereeCountOldAndNew": "Total Referee Count (Old+New)",
 	"Label_TotalPayAmountOldAndNew": "Total PayAmount (Old+New)",
