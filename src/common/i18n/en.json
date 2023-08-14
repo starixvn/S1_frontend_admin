@@ -1203,6 +1203,7 @@
 	"Label_TotalPayAmountOldAndNew": "Total PayAmount (Old+New)",
 	"Label_EditNewReferralManagement": "Edit New Referral Management",
 	"Label_NewReferralLog": "New Referral Log",
+	"Label_EWalletNumber": "E-Wallet Number",
 	"Label_Message": "Message",
 	"Label_MemberListUpload": "Member List Upload",
 	"Label_DeviceScoresHint": "Above 75 is Low Risk",
