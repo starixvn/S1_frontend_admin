@@ -1070,17 +1070,17 @@ const LeaderboardExtraPoint = lazy(
 		)
 )
 
-const RebateExcludeGame = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'RebateExcludeGame' */ 'features/rebateExcludeGame/RebateExcludeGame'
-		)
-)
-
 const VipUpgradeSetting = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'VipUpgradeSetting' */ 'features/vipUpgradeSetting/VipUpgradeSetting'
+		)
+)
+
+const RebateExcludeGame = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'RebateExcludeGame' */ 'features/rebateExcludeGame/RebateExcludeGame'
 		)
 )
 
@@ -2750,6 +2750,16 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.vipUpgradeSetting.functionId}
 					>
 						<VipUpgradeSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.rebateExcludeGame.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
+					>
+						<RebateExcludeGame />
 					</AuthRequire>
 				),
 			},

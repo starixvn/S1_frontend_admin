@@ -32,7 +32,7 @@ import { RangePickerProps } from 'antd/es/date-picker'
 import { reject } from 'lodash'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
-import React from 'react'
+import { IGetCategoryData } from 'features/betList/type'
 
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
@@ -42,6 +42,7 @@ interface IWinLostReportFilterProps {
 	form: FormInstance
 	loading: boolean
 	tpGameList: IGetTpGameTypeData[]
+	categories: IGetCategoryData[]
 	memberTypeEnums: IMemberTypeData[]
 	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
@@ -64,6 +65,7 @@ const WinLostReportFilter = ({
 	form,
 	loading,
 	tpGameList,
+	categories,
 	memberTypeEnums,
 	currencyListBySite,
 	currencyListByAllSite,
@@ -121,6 +123,41 @@ const WinLostReportFilter = ({
 				{currencyListBySite?.map(({ currencyId, isoCode }) => (
 					<Option key={currencyId} value={currencyId}>
 						{isoCode}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
+
+	const categorySelector = () => {
+		const onChangeCategory = (newCategory: Array<string | number>) => {
+			if (newCategory.includes('all')) {
+				form.setFieldsValue({
+					tpCategorys: categories.map(({ categoryId }) => categoryId),
+				})
+			} else {
+				form.setFieldsValue({
+					tpCategorys: newCategory,
+				})
+			}
+		}
+		return (
+			<MultipleSelect
+				showSearch
+				onChange={onChangeCategory}
+				placeholder={t('Label_Select')}
+				filterOption={(input, option) =>
+					(option!.children as unknown as string)
+						.toLowerCase()
+						.includes(input.toLowerCase())
+				}
+			>
+				{(categories?.length as number) > 1 && (
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+				)}
+				{categories?.map(({ categoryId, categoryName }) => (
+					<Option key={categoryId} value={categoryId}>
+						{categoryName}
 					</Option>
 				))}
 			</MultipleSelect>
@@ -211,6 +248,7 @@ const WinLostReportFilter = ({
 							),
 							baseCurrencyId: currencyListByAllSite[0]?.currencyId,
 							includeFreeSpins: true,
+							includeTest: true,
 							noDraw: true,
 							// 預設排除直播主
 							memberTypes: reject(memberTypeEnums, [
@@ -322,6 +360,22 @@ const WinLostReportFilter = ({
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
+									name='tpCategorys'
+									label={t('Label_Category')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Category'),
+											}),
+										},
+									]}
+								>
+									{categorySelector()}
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
 									name='tpGameTypes'
 									label={t('Label_Product')}
 									rules={[
@@ -336,18 +390,23 @@ const WinLostReportFilter = ({
 									{productSelector()}
 								</Form.Item>
 							</Col>
+						</Row>
+						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
-						</Row>
-						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								{memberTypeSelector()}
 							</Col>
 						</Row>
 						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='includeTest' valuePropName='checked' noStyle>
+									<Checkbox>{t('Label_IncludeTestData')}</Checkbox>
+								</Form.Item>
+							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='includeFreeSpins'
