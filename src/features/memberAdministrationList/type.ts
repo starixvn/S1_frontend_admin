@@ -66,7 +66,7 @@ export interface IGetMemberListArgs {
 	pageNumber: number
 	pageSize: number
 	excludeTag: boolean
-	eWalletAccountNumber: null | number
+	eWalletAccountNumber: null | string
 	cryptoAddress: null | string
 }
 
@@ -144,7 +144,7 @@ export interface IExportMemberArgs {
 	endDate: '2022-10-05T09:00:01+08:00'
 	exportTransferWallet: boolean
 	excludeTag: boolean
-	eWalletAccountNumber: null | number
+	eWalletAccountNumber: null | string
 	cryptoAddress: null | string
 }
 
@@ -172,7 +172,7 @@ export interface IForm {
 	exportTransferWallet: boolean | number
 	userTypes: UserTypeEnum[]
 	excludeTag: boolean
-	eWalletAccountNumber: null | number
+	eWalletAccountNumber: null | string
 	cryptoAddress: null | string
 }
 

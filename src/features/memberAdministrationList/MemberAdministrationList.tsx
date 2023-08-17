@@ -236,7 +236,7 @@ const MemberAdministrationList = ({
 			endDate,
 			exportTransferWallet: Boolean(exportTransferWallet),
 			excludeTag: Boolean(excludeTag),
-			eWalletAccountNumber: Number(eWalletAccountNumber),
+			eWalletAccountNumber,
 			cryptoAddress,
 		}
 
@@ -343,7 +343,7 @@ const MemberAdministrationList = ({
 				tpUserName: sabaId,
 				affiliateName,
 				exportTransferWallet: exportTransferWallet ? 1 : 0,
-				eWalletAccountNumber: Number(eWalletAccountNumber) || null,
+				eWalletAccountNumber,
 				cryptoAddress,
 				...values,
 			})
