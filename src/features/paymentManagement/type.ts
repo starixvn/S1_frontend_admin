@@ -114,6 +114,7 @@ export interface IGetBankInfoData {
 	bankName: string
 	status: number
 	currencyId: number
+	method: number
 }
 
 // 更新三方支援銀行狀態
@@ -122,6 +123,7 @@ export interface ISetBankStatusArgs {
 	payId: number
 	sysId: number
 	status: number
+	method: number
 }
 
 export enum AmountRuleEnum {
