@@ -19,7 +19,6 @@ import {
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
-import { InputNumber } from 'components'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -431,7 +430,10 @@ const MemberAdministrationListFilter = ({
 											name='eWalletAccountNumber'
 											label={t('Label_EWalletNumber')}
 										>
-											<InputNumber placeholder={t('Label_EWalletNumber')} />
+											<Input
+												allowClear
+												placeholder={t('Label_EWalletNumber')}
+											/>
 										</Form.Item>
 									</Col>
 									<Col lg={6} md={12} xs={12}>
