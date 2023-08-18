@@ -402,8 +402,10 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									<Select
 										placeholder={t('Label_Select')}
 										disabled={
-											// 此欄位只有 當BonusType = ReDeposit 時在 edit 狀態不可修改
-											currentBonusType === BonusTypeEnum.ReDeposit && isEdit
+											// 此欄位只有 當BonusType = ReDeposit / CashBack 時在 edit 狀態不可修改
+											(currentBonusType === BonusTypeEnum.ReDeposit ||
+												currentBonusType === BonusTypeEnum.CashBack) &&
+											isEdit
 										}
 									>
 										{
