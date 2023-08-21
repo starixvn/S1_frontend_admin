@@ -5,6 +5,7 @@ export interface IWinLossBasicExportArgs {
 	siteId: number
 	starTime: string
 	endTime: string
+	tpCategorys: number[]
 	tpGameTypes: number[]
 	currencyIds: number[]
 	userName: string
@@ -15,6 +16,7 @@ export interface IWinLossBasicExportArgs {
 	displayGroupBreakdownInOriginalCurrency: boolean
 	includeFreeSpins: boolean
 	noDraw: boolean
+	includeTest: boolean
 	memberTypes: UserTypeEnum[]
 }
 

@@ -1193,8 +1193,10 @@
 	"Label_AutoVerifyRule": "Auto Verify Rule",
 	"Label_DeviceLevel": "Device Level",
 	"Label_DeviceScores": "Device Scores",
-	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_EWalletNumber": "E-Wallet Number",
 	"Label_Message": "Message",
 	"Label_MemberListUpload": "Member List Upload",
-	"Label_MemberList": "Member List"
+	"Label_MemberList": "Member List",
+	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_IncludeTestData": "Include Test Data"
 }
