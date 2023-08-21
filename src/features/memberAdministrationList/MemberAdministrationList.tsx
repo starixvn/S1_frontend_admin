@@ -105,6 +105,8 @@ const MemberAdministrationList = ({
 			tpUserName,
 			excludeTag,
 			userTypes,
+			eWalletAccountNumber,
+			cryptoAddress,
 			...values
 		} = await form.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -129,6 +131,8 @@ const MemberAdministrationList = ({
 				endDate,
 				pageNumber: current,
 				pageSize,
+				eWalletAccountNumber,
+				cryptoAddress,
 			}).unwrap()
 
 			setQueryParams({
@@ -147,6 +151,8 @@ const MemberAdministrationList = ({
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
 				excludeTag,
+				eWalletAccountNumber,
+				cryptoAddress,
 			})
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -196,6 +202,8 @@ const MemberAdministrationList = ({
 			iovationLevel,
 			deviceId,
 			excludeTag,
+			eWalletAccountNumber,
+			cryptoAddress,
 		} = queryParams
 
 		const args: IExportMemberArgs = {
@@ -228,6 +236,8 @@ const MemberAdministrationList = ({
 			endDate,
 			exportTransferWallet: Boolean(exportTransferWallet),
 			excludeTag: Boolean(excludeTag),
+			eWalletAccountNumber,
+			cryptoAddress,
 		}
 
 		try {
@@ -305,6 +315,8 @@ const MemberAdministrationList = ({
 				dateType,
 				userTypes = [],
 				exportTransferWallet,
+				eWalletAccountNumber,
+				cryptoAddress,
 				...values
 			} = queryParams
 
@@ -331,6 +343,8 @@ const MemberAdministrationList = ({
 				tpUserName: sabaId,
 				affiliateName,
 				exportTransferWallet: exportTransferWallet ? 1 : 0,
+				eWalletAccountNumber,
+				cryptoAddress,
 				...values,
 			})
 

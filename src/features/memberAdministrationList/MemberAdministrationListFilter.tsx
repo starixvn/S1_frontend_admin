@@ -282,6 +282,8 @@ const MemberAdministrationListFilter = ({
 							exportTransferWallet: 0,
 							userTypes: memberTypeEnums?.map(({ value }) => value),
 							deviceId: null,
+							eWalletAccountNumber: null,
+							cryptoAddress: null,
 						}}
 						onFinish={() => onSearch({})}
 					>
@@ -420,6 +422,28 @@ const MemberAdministrationListFilter = ({
 											<Input
 												allowClear
 												placeholder={t('Label_BankAccountNumber')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='eWalletAccountNumber'
+											label={t('Label_EWalletNumber')}
+										>
+											<Input
+												allowClear
+												placeholder={t('Label_EWalletNumber')}
+											/>
+										</Form.Item>
+									</Col>
+									<Col lg={6} md={12} xs={12}>
+										<Form.Item
+											name='cryptoAddress'
+											label={t('Label_CryptoWalletAddress')}
+										>
+											<Input
+												allowClear
+												placeholder={t('Label_CryptoWalletAddress')}
 											/>
 										</Form.Item>
 									</Col>
