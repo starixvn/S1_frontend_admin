@@ -1198,5 +1198,6 @@
 	"Label_MemberListUpload": "Member List Upload",
 	"Label_MemberList": "Member List",
 	"Label_DeviceScoresHint": "Above 75 is Low Risk",
-	"Label_IncludeTestData": "Include Test Data"
+	"Label_IncludeTestData": "Include Test Data",
+	"Label_BankMaintenance": "Bank Maintenance"
 }

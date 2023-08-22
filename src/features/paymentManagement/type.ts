@@ -1,4 +1,5 @@
 // 取得支付第三方列表
+
 export interface IGetGlobalStatusArgs {
 	siteId?: number
 }
@@ -326,4 +327,20 @@ export type IAddAutoVerifyRuleForm = {
 	tags: number[]
 	deviceLevel: string[]
 	deviceScores: number
+}
+
+export interface ISystemBankInfoData {
+	sysId: number
+	currencyId: number
+	isoCode: string
+	bankCode: string
+	bankName: string
+	status: number
+}
+
+export interface ISetSystemBankInfoArgs {
+	sysId: number
+	bankCode: string
+	bankName: string
+	status: number
 }
