@@ -2,6 +2,7 @@ import { FC } from 'react'
 import {
 	IGetAdjustmentTypeData,
 	IGetCustDetailData,
+	ReasonIdEnum,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
 import {
 	Button,
@@ -50,6 +51,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 	const conditionAvailable = Form.useWatch('withdrawalLimitOption', form)
 	const reasonId = Form.useWatch('reasonId', form)
 	const fileList = Form.useWatch('fileList', form)
+
 	const props: UploadProps = {
 		onRemove: () => {
 			form.setFieldsValue({
@@ -145,11 +147,32 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					{reasonId === 9 && (
+					{reasonId === ReasonIdEnum.Withdrawal && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
 									name='transId'
+									label={t('Label_WithdrawalId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_WithdrawalId'),
+											}),
+										},
+									]}
+								>
+									<Input allowClear placeholder={t('Label_WithdrawalId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+
+					{reasonId === ReasonIdEnum.Deposit && (
+						<Row align='middle' gutter={16}>
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='withdrawID'
 									label={t('Label_DepositId')}
 									rules={[
 										{

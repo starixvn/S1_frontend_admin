@@ -54,6 +54,8 @@ const BalanceAdjustment: FC<{
 		fileList: RcFile[]
 	}>()
 
+	const formAdjustmentType = Form.useWatch('adjustmentType', form)
+
 	const checkPasswordModal = useModal()
 
 	const {
@@ -64,7 +66,13 @@ const BalanceAdjustment: FC<{
 	const {
 		data: { data: reasonList } = {} as IGetReasonListResponse,
 		isLoading: isGetReasonListLoading,
-	} = useGetReasonListQuery(null)
+	} = useGetReasonListQuery(
+		{
+			methodTypeID: methodType,
+			adjustmentTypeID: formAdjustmentType as number,
+		},
+		{ skip: !methodType || !formAdjustmentType }
+	)
 
 	const [
 		getCustInfoWithBalance,
@@ -187,7 +195,7 @@ const BalanceAdjustment: FC<{
 
 			if (
 				adjustmentLimitInfo?.adjustmentMax &&
-				(amount as Number) > adjustmentLimitInfo?.adjustmentMax
+				(amount as number) > adjustmentLimitInfo?.adjustmentMax
 			) {
 				checkPasswordModal.onOpen()
 			} else {
@@ -238,6 +246,7 @@ const BalanceAdjustment: FC<{
 				reasonId,
 				transId,
 				memo,
+				methodType,
 			}).unwrap()
 
 			form.setFieldsValue({

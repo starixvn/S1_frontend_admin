@@ -8,6 +8,7 @@ import {
 	ITpLogResponse,
 	IGetTpLogArgs,
 } from './type'
+import { IGetReasonListRequest } from '../balanceAdjustment/type'
 
 interface IGetCustInfoWithTpBalanceArgs {
 	siteId?: number
@@ -48,7 +49,10 @@ export const thirdPartyAdjustmentApi = rootApi.injectEndpoints({
 			}),
 		}),
 		// * 取得調帳原因清單，用於下拉選單
-		getAdjustmentReasonList: builder.query<IAdjustmentReasonResponse, null>({
+		getAdjustmentReasonList: builder.query<
+			IAdjustmentReasonResponse,
+			IGetReasonListRequest
+		>({
 			query: data => ({
 				url: 'BalanceAdjustment/GetReasonList',
 				method: 'POST',
