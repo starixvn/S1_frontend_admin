@@ -410,6 +410,7 @@
 	"Label_Others": "Others",
 	"Label_LastActiveDate": "Last Active Date",
 	"Label_RegisterDate": "Register Date",
+	"Label_CallMarkDate": "Call Mark Date",
 	"Label_Pending1stCall": "Pending 1st Call",
 	"Label_Pending2stCall": "Pending 2st Call",
 	"Label_Pending3stCall": "Pending 3st Call",
@@ -1206,8 +1207,8 @@
 	"Label_EWalletNumber": "E-Wallet Number",
 	"Label_Message": "Message",
 	"Label_MemberListUpload": "Member List Upload",
-	"Label_DeviceScoresHint": "Above 75 is Low Risk",
-	"Label_IncludeTestData": "Include Test Data",
+	"Label_TotalRefereeCountPayout": "Total Referee Count (with payout)",
 	"Label_MemberList": "Member List",
-	"Label_TotalRefereeCountPayout": "Total Referee Count (with payout)"
+	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_IncludeTestData": "Include Test Data"
 }
