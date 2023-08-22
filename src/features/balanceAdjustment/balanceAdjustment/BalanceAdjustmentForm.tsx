@@ -172,7 +172,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
-									name='withdrawID'
+									name='transId'
 									label={t('Label_DepositId')}
 									rules={[
 										{
