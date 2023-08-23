@@ -97,7 +97,10 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 								name='adjustmentType'
 								label={t('Label_AdjustmentType')}
 							>
-								<Select placeholder='select'>
+								<Select
+									placeholder='select'
+									onChange={() => form.resetFields(['reasonId'])}
+								>
 									{adjustmentTypeList.map(item => (
 										<Option key={item.id} value={item.id}>
 											{t(item.displayKey)}
