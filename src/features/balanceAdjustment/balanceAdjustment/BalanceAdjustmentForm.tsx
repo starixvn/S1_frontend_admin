@@ -113,7 +113,10 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 									},
 								]}
 							>
-								<Select placeholder={t('Label_Select')}>
+								<Select
+									placeholder={t('Label_Select')}
+									onChange={() => form.resetFields(['reasonId'])}
+								>
 									{adjustmentTypeList?.map(type => (
 										<Option key={type.id} value={type.id}>
 											{type.name}
