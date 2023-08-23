@@ -95,4 +95,5 @@ export interface ISetTpFundsAdjustmentArgs {
 	memo: string
 	reasonId: number
 	transId: string // * transId(DepositId)，reasonId=9 才需要帶
+	methodType: number
 }

@@ -17,6 +17,7 @@ import { FormInstance } from 'antd/es/form/Form'
 import { numberFormatter } from 'common/utils/format'
 import { IAdjustmentData, ITpBySiteData, ITpWalletData } from './type'
 import { adjustmentTypeList } from './constants'
+import { ReasonIdEnum } from '../balanceAdjustment/type'
 
 const { Option } = Select
 
@@ -53,7 +54,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 					<Col lg={12} md={24} xs={24}>
 						<Descriptions layout='vertical' bordered size='small'>
 							{tpWalletList?.map(tpWallet => (
-								<Descriptions.Item label={tpWallet.tpName}>
+								<Descriptions.Item key={tpWallet.tpId} label={tpWallet.tpName}>
 									{numberFormatter.format(tpWallet.balance)}
 								</Descriptions.Item>
 							))}
@@ -119,9 +120,29 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					{reasonId === 9 && (
+					{reasonId === ReasonIdEnum.Withdrawal && (
 						<Row align='middle' gutter={16}>
-							<Col lg={6} md={12} xs={12}>
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='transId'
+									label={t('Label_WithdrawalId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_WithdrawalId'),
+											}),
+										},
+									]}
+								>
+									<Input allowClear placeholder={t('Label_WithdrawalId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+					{reasonId === ReasonIdEnum.Deposit && (
+						<Row align='middle' gutter={16}>
+							<Col lg={8} md={24} xs={24}>
 								<Form.Item
 									name='transId'
 									label={t('Label_DepositId')}

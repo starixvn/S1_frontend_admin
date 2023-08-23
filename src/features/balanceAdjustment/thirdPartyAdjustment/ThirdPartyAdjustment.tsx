@@ -45,6 +45,8 @@ const ThirdPartyAdjustment: FC<{
 		transId: string
 	}>()
 
+	const formAdjustmentType = Form.useWatch('adjustmentType', infoForm)
+
 	const {
 		data: { data: tpListBySiteId = [] } = {},
 		isFetching: isGetTpListBySiteIdFetching,
@@ -57,7 +59,14 @@ const ThirdPartyAdjustment: FC<{
 	const {
 		data: { data: adjustmentReasonList = [] } = {},
 		isFetching: isGetAdjustmentReasonListFetching,
-	} = useGetAdjustmentReasonListQuery(null)
+	} = useGetAdjustmentReasonListQuery(
+		{
+			methodTypeID: methodType,
+			adjustmentTypeID: formAdjustmentType,
+		},
+
+		{ skip: !methodType || !formAdjustmentType }
+	)
 
 	const [
 		getCustInfoWithTpBalance,
@@ -125,6 +134,7 @@ const ThirdPartyAdjustment: FC<{
 			memo,
 			reasonId,
 			transId,
+			methodType,
 		}
 
 		try {

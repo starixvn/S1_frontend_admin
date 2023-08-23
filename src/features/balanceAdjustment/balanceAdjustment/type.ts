@@ -48,6 +48,7 @@ export interface ISubmitAdjustmentArgs {
 	memo: string
 	reasonId: number | null
 	transId: string
+	methodType: number
 }
 
 export interface IAdjustmentLimitInfo {
@@ -70,4 +71,14 @@ export interface IGetAdjustmentLimitInfoArgs {
 export interface ICheckPasswordArgs {
 	siteId: number
 	password: string
+}
+
+export interface IGetReasonListArgs {
+	methodTypeID: number
+	adjustmentTypeID: number
+}
+
+export enum ReasonIdEnum {
+	Deposit = 1,
+	Withdrawal = 2,
 }
