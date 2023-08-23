@@ -96,6 +96,7 @@ export interface IGetBonusListData {
 	promotionDisplayCondition: IPromotionDisplayConditionData[]
 	currencyList: string[]
 	currencys: string[]
+	isPopUp: boolean
 }
 
 export type IGetBonusListResponse = IAxiosResponse<IGetBonusListData[]>
@@ -158,6 +159,7 @@ export interface ISetArgs {
 		sameRealNameRestrictAvailableCount: number
 		blockTagList: number[]
 		hideForUnlogin: boolean
+		isPopUp: boolean
 	}
 	displayConditionAboutVipLevel: IDisplayCondition
 }

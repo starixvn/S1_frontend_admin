@@ -241,6 +241,21 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									{t('Label_hideForUnLogin')}
 								</Checkbox>
 							</Form.Item>
+
+							{/* // * 如果 BonusType 為 RetentionFreeBet 才需要勾選 isPopUp CheckBox
+							    // * isPopUp 決定該用戶是否在首頁出現此優惠活動的彈窗
+							*/}
+							{currentBonusType === BonusTypeEnum.RetentionFreeBet && (
+								<Form.Item
+									name='isPopUp'
+									valuePropName='checked'
+									style={{ marginBottom: '10px' }}
+								>
+									<Checkbox disabled={!editPermission?.canUse}>
+										{t('Label_Popup')}
+									</Checkbox>
+								</Form.Item>
+							)}
 						</Space>
 					</Row>
 					<Row gutter={16}>
@@ -298,9 +313,12 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 												'sameIPRestrictAvailableCount',
 											])
 										}
-										// 只有 Manual 可以設定 promotionAction 其餘預設都是 detail
+
+										// *  只有 Manual 可以設定 promotionAction 其餘預設都是 detail
+										// * 初始 isPopUp 為 undefined
 										form?.setFieldsValue({
 											promotionAction: PromotionActionEnum.Detail,
+											isPopUp: undefined,
 										})
 									}}
 								>
@@ -314,6 +332,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 								</Select>
 							</Form.Item>
 						</Col>
+
 						{multiEqual(currentBonusType as number, [
 							BonusTypeEnum.FirstDeposit as number,
 							BonusTypeEnum.ReDeposit as number,
