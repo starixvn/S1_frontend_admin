@@ -9,7 +9,7 @@ import {
 	IGetCustInfoWithBalanceArgs,
 	IGetReasonListResponse,
 	ISubmitAdjustmentArgs,
-	IGetReasonListRequest,
+	IGetReasonListArgs,
 } from './type'
 
 export const balanceAdjustmentApi = rootApi.injectEndpoints({
@@ -21,15 +21,13 @@ export const balanceAdjustmentApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getReasonList: builder.query<IGetReasonListResponse, IGetReasonListRequest>(
-			{
-				query: data => ({
-					url: 'BalanceAdjustment/GetReasonList',
-					method: 'POST',
-					data,
-				}),
-			}
-		),
+		getReasonList: builder.query<IGetReasonListResponse, IGetReasonListArgs>({
+			query: data => ({
+				url: 'BalanceAdjustment/GetReasonList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		// * # 取得客戶資料及主錢包餘額
 		getCustInfoWithBalance: builder.query<
 			ICustInfoWithBalanceResponse,

@@ -73,7 +73,7 @@ export interface ICheckPasswordArgs {
 	password: string
 }
 
-export interface IGetReasonListRequest {
+export interface IGetReasonListArgs {
 	methodTypeID: number
 	adjustmentTypeID: number
 }

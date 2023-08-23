@@ -45,7 +45,7 @@ const ThirdPartyAdjustment: FC<{
 		transId: string
 	}>()
 
-	const adjustmentTypeValue = Form.useWatch('adjustmentType', infoForm)
+	const formAdjustmentType = Form.useWatch('adjustmentType', infoForm)
 
 	const {
 		data: { data: tpListBySiteId = [] } = {},
@@ -62,10 +62,10 @@ const ThirdPartyAdjustment: FC<{
 	} = useGetAdjustmentReasonListQuery(
 		{
 			methodTypeID: methodType,
-			adjustmentTypeID: adjustmentTypeValue,
+			adjustmentTypeID: formAdjustmentType,
 		},
 
-		{ skip: !adjustmentTypeValue }
+		{ skip: !methodType || !formAdjustmentType }
 	)
 
 	const [
