@@ -3,6 +3,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 export interface IGetAdjustmentTypeData {
 	id: number
 	name: string
+	type: number
 }
 
 export type IGetAdjustmentTypeResponse = IAxiosResponse<
@@ -79,6 +80,7 @@ export interface IGetReasonListArgs {
 }
 
 export enum ReasonIdEnum {
+	Others = 0,
 	Deposit = 1,
 	Withdrawal = 2,
 }
