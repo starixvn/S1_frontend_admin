@@ -50,6 +50,8 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 		)
 		if (selectedReason) {
 			setSelectedReasonType(selectedReason.type)
+		} else {
+			setSelectedReasonType(ReasonTypeEum.Others)
 		}
 	}
 
@@ -111,7 +113,10 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							>
 								<Select
 									placeholder='select'
-									onChange={() => form.resetFields(['reasonId'])}
+									onChange={() => {
+										form.resetFields(['reasonId'])
+										setSelectedReasonType(null)
+									}}
 								>
 									{adjustmentTypeList.map(item => (
 										<Option key={item.id} value={item.id}>

@@ -77,6 +77,8 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 		)
 		if (selectedReason) {
 			setSelectedReasonType(selectedReason.type)
+		} else {
+			setSelectedReasonType(ReasonTypeEum.Others)
 		}
 	}
 
@@ -127,7 +129,10 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 							>
 								<Select
 									placeholder={t('Label_Select')}
-									onChange={() => form.resetFields(['reasonId'])}
+									onChange={() => {
+										form.resetFields(['reasonId'])
+										setSelectedReasonType(null)
+									}}
 								>
 									{adjustmentTypeList?.map(type => (
 										<Option key={type.id} value={type.id}>
