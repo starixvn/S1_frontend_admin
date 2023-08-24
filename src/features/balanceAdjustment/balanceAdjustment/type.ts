@@ -79,7 +79,7 @@ export interface IGetReasonListArgs {
 	adjustmentTypeID: number
 }
 
-export enum ReasonIdEnum {
+export enum ReasonTypeEum {
 	Others = 0,
 	Deposit = 1,
 	Withdrawal = 2,

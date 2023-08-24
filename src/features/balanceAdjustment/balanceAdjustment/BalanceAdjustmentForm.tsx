@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import {
 	IGetAdjustmentTypeData,
 	IGetCustDetailData,
-	ReasonIdEnum,
+	ReasonTypeEum,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
 import {
 	Button,
@@ -166,7 +166,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 						</Col>
 					</Row>
 
-					{selectedReasonType === ReasonIdEnum.Deposit && (
+					{selectedReasonType === ReasonTypeEum.Deposit && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
@@ -187,7 +187,7 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 						</Row>
 					)}
 
-					{selectedReasonType === ReasonIdEnum.Withdrawal && (
+					{selectedReasonType === ReasonTypeEum.Withdrawal && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item

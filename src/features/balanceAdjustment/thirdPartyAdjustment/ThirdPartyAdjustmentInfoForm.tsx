@@ -17,7 +17,7 @@ import { FormInstance } from 'antd/es/form/Form'
 import { numberFormatter } from 'common/utils/format'
 import { IAdjustmentData, ITpBySiteData, ITpWalletData } from './type'
 import { adjustmentTypeList } from './constants'
-import { ReasonIdEnum } from '../balanceAdjustment/type'
+import { ReasonTypeEum } from '../balanceAdjustment/type'
 
 const { Option } = Select
 
@@ -135,7 +135,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					{selectedReasonType === ReasonIdEnum.Deposit && (
+					{selectedReasonType === ReasonTypeEum.Deposit && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
@@ -156,7 +156,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 						</Row>
 					)}
 
-					{selectedReasonType === ReasonIdEnum.Withdrawal && (
+					{selectedReasonType === ReasonTypeEum.Withdrawal && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
