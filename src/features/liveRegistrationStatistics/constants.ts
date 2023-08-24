@@ -34,6 +34,7 @@ export enum DateTypeEnum {
 	All = 0,
 	RegisterDate,
 	LastActiveDate,
+	CallMarkDate,
 }
 
 export enum StatusEnum {
@@ -85,6 +86,10 @@ export const DATE_TYPE_OPTIONS = [
 	{
 		displayKey: 'Label_RegisterDate',
 		value: DateTypeEnum.RegisterDate,
+	},
+	{
+		displayKey: 'Label_CallMarkDate',
+		value: DateTypeEnum.CallMarkDate,
 	},
 ]
 

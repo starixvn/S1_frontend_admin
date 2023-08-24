@@ -410,6 +410,7 @@
 	"Label_Others": "Others",
 	"Label_LastActiveDate": "Last Active Date",
 	"Label_RegisterDate": "Register Date",
+	"Label_CallMarkDate": "Call Mark Date",
 	"Label_Pending1stCall": "Pending 1st Call",
 	"Label_Pending2stCall": "Pending 2st Call",
 	"Label_Pending3stCall": "Pending 3st Call",
