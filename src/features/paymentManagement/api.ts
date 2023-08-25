@@ -27,6 +27,8 @@ import {
 	IAddAutoVerifyRuleArgs,
 	ISetAutoVerifyRuleArgs,
 	IDeleteAutoVerifyRuleArgs,
+	ISystemBankInfoData,
+	ISetSystemBankInfoArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -39,6 +41,7 @@ export const paymentManagementApi = createApi({
 		'SetCryptoStatus',
 		'SetAutoWithdrawalRule',
 		'SetAutoVerifyRule',
+		'SetSystemBankInfo',
 	],
 	endpoints: builder => ({
 		// 取得global status 列表
@@ -260,6 +263,30 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetAutoVerifyRule'],
 		}),
+		// 取得支付三方列表
+		getSystemBankInfoList: builder.query<
+			IAxiosResponse<ISystemBankInfoData[]>,
+			null
+		>({
+			query: data => ({
+				url: 'BankSetting/GetSystemBankInfoList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetSystemBankInfo'],
+		}),
+		// 設定支付三方狀態
+		setSystemBankInfo: builder.mutation<
+			IAxiosResponse<null>,
+			ISetSystemBankInfoArgs
+		>({
+			query: data => ({
+				url: 'BankSetting/SetSystemBankInfo',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetSystemBankInfo'],
+		}),
 	}),
 })
 
@@ -284,4 +311,6 @@ export const {
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
 	useDeleteAutoVerifyRuleMutation,
+	useGetSystemBankInfoListQuery,
+	useSetSystemBankInfoMutation,
 } = paymentManagementApi

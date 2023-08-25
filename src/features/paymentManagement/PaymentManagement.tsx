@@ -34,6 +34,8 @@ import {
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
 	useDeleteAutoVerifyRuleMutation,
+	useGetSystemBankInfoListQuery,
+	useSetSystemBankInfoMutation,
 } from 'features/paymentManagement/api'
 import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManagementFilter'
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
@@ -62,6 +64,7 @@ import { AutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AutoW
 import { AddAutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AddAutoWithdrawalRuleModal'
 import { AutoVerifyRuleModal } from 'features/paymentManagement/modals/AutoVerifyRuleModal'
 import { AddAutoVerifyRuleModal } from 'features/paymentManagement/modals/AddAutoVerifyRuleModal'
+import BankMaintenanceModal from 'features/paymentManagement/modals/BankMaintenanceModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -72,6 +75,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			setFeePermission,
 			editAutoWithdrawalRulePermission,
 			editWithdrawalAutoVerifyRulePermission,
+			editSystemBankInfoPermission,
 		} = {},
 	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -93,6 +97,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const addAutoWithdrawalRuleModal = useModal()
 	const autoVerifyRuleModal = useModal()
 	const addAutoVerifyRuleModal = useModal()
+	const systemBankInfoModal = useModal()
 
 	const [editForm] = Form.useForm<IEditForm>()
 
@@ -240,6 +245,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [deleteAutoVerifyRule, { isLoading: isDeleteAutoVerifyRuleLoading }] =
 		useDeleteAutoVerifyRuleMutation()
+
+	// SetSystemBankInfo 相關
+	const {
+		data: { data: systemBankInfoList = [] } = {},
+		isFetching: isGetSystemBankInfoListFetching,
+	} = useGetSystemBankInfoListQuery(null)
+
+	const [setSystemBankInfo, { isLoading: isSetSystemBankInfoLoading }] =
+		useSetSystemBankInfoMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -712,6 +726,28 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	// 修改 SystemBankInfo
+	const handleSetSystemBankInfo = async (
+		sysId: number,
+		bankCode: string,
+		bankName: string,
+		status: boolean
+	) => {
+		try {
+			await setSystemBankInfo({
+				sysId,
+				bankCode,
+				bankName,
+				status: status ? 1 : 0,
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -778,6 +814,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
 				onAutoWithdrawalRuleClicked={autoWithdrawalRuleModal.onOpen}
 				onAutoVerifyRuleClicked={autoVerifyRuleModal.onOpen}
+				onSystemBankInfoClicked={systemBankInfoModal.onOpen}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -880,6 +917,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				autoVerifyRuleList={autoVerifyRuleList}
 				onCancel={addAutoVerifyRuleModal.onCancel}
 				onSubmit={handleAddAutoVerifyRule}
+			/>
+			<BankMaintenanceModal
+				loading={isGetSystemBankInfoListFetching || isSetSystemBankInfoLoading}
+				visible={systemBankInfoModal.visible}
+				onCancel={systemBankInfoModal.onCancel}
+				currencyListBySite={currencyListBySite}
+				editSystemBankInfoPermission={editSystemBankInfoPermission}
+				systemBankInfoList={systemBankInfoList}
+				onSetStatus={handleSetSystemBankInfo}
 			/>
 		</LayoutContent.Main>
 	)

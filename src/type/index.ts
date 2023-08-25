@@ -102,6 +102,7 @@ export interface ActionPermissions {
 	exclusiveVipPermission: PermissionInterface
 	resetOtpLimitPermission: PermissionInterface
 	editWithdrawalAutoVerifyRulePermission: PermissionInterface
+	editSystemBankInfoPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
