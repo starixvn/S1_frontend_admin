@@ -82,12 +82,22 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 				{
 					label: (
 						<Link
+							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/newReferralHistory/${custId}`}
+						>
+							{t('MemberProfile.Menu.CustomerInfo.Label_NewReferralHistory')}
+						</Link>
+					),
+					key: '4',
+				},
+				{
+					label: (
+						<Link
 							to={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/customerInfo/notes/${custId}`}
 						>
 							{t('MemberProfile.Menu.CustomerInfo.Label_Notes')}
 						</Link>
 					),
-					key: '4',
+					key: '5',
 				},
 				{
 					label: (
@@ -97,7 +107,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 							{t('MemberProfile.Menu.CustomerInfo.Label_SMSInfo')}
 						</Link>
 					),
-					key: '5',
+					key: '6',
 				},
 				{
 					label: (
@@ -107,7 +117,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 							{t('MemberProfile.Menu.CustomerInfo.Label_LoginLog')}
 						</Link>
 					),
-					key: '6',
+					key: '7',
 				},
 				{
 					label: (
@@ -117,7 +127,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 							{t('MemberProfile.Menu.CustomerInfo.Label_DeviceList')}
 						</Link>
 					),
-					key: '7',
+					key: '8',
 				},
 				{
 					label: (
@@ -127,7 +137,7 @@ const MemberProfileHeader = ({ onOpenDrawer }: IMemberProfileHeaderProps) => {
 							{t('MemberProfile.Menu.CustomerInfo.Label_IPList')}
 						</Link>
 					),
-					key: '8',
+					key: '9',
 				},
 			]}
 		/>
