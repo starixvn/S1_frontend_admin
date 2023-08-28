@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
 	IGetAdjustmentTypeData,
 	IGetCustDetailData,
-	ReasonIdEnum,
+	ReasonTypeEum,
 } from 'features/balanceAdjustment/balanceAdjustment/type'
 import {
 	Button,
@@ -47,9 +47,11 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 	form,
 	methodType,
 }) => {
+	const [selectedReasonType, setSelectedReasonType] = useState<number | null>(
+		null
+	)
 	const { t } = useTranslation()
 	const conditionAvailable = Form.useWatch('withdrawalLimitOption', form)
-	const reasonId = Form.useWatch('reasonId', form)
 	const fileList = Form.useWatch('fileList', form)
 
 	const props: UploadProps = {
@@ -66,6 +68,18 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 			return false
 		},
 		fileList,
+	}
+
+	// 判斷選擇的reason為何，並且把type的值存到state: selectedReasonType
+	const handleReasonChange = (selectedReasonId: number) => {
+		const selectedReason = reasonList.find(
+			reason => reason.id === selectedReasonId
+		)
+		if (selectedReason) {
+			setSelectedReasonType(selectedReason.type)
+		} else {
+			setSelectedReasonType(ReasonTypeEum.Others)
+		}
 	}
 
 	return (
@@ -115,7 +129,10 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 							>
 								<Select
 									placeholder={t('Label_Select')}
-									onChange={() => form.resetFields(['reasonId'])}
+									onChange={() => {
+										form.resetFields(['reasonId'])
+										setSelectedReasonType(null)
+									}}
 								>
 									{adjustmentTypeList?.map(type => (
 										<Option key={type.id} value={type.id}>
@@ -140,7 +157,10 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 									},
 								]}
 							>
-								<Select placeholder={t('Label_Select')}>
+								<Select
+									placeholder={t('Label_Select')}
+									onChange={handleReasonChange}
+								>
 									{reasonList?.map(type => (
 										<Option key={type.id} value={type.id}>
 											{type.name}
@@ -150,28 +170,8 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					{reasonId === ReasonIdEnum.Withdrawal && (
-						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
-								<Form.Item
-									name='transId'
-									label={t('Label_WithdrawalId')}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_WithdrawalId'),
-											}),
-										},
-									]}
-								>
-									<Input allowClear placeholder={t('Label_WithdrawalId')} />
-								</Form.Item>
-							</Col>
-						</Row>
-					)}
 
-					{reasonId === ReasonIdEnum.Deposit && (
+					{selectedReasonType === ReasonTypeEum.Deposit && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
@@ -187,6 +187,27 @@ const BalanceAdjustmentForm: FC<IBalanceAdjustmentFormProps> = ({
 									]}
 								>
 									<Input allowClear placeholder={t('Label_DepositId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+
+					{selectedReasonType === ReasonTypeEum.Withdrawal && (
+						<Row align='middle' gutter={16}>
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='transId'
+									label={t('Label_WithdrawalId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_WithdrawalId'),
+											}),
+										},
+									]}
+								>
+									<Input allowClear placeholder={t('Label_WithdrawalId')} />
 								</Form.Item>
 							</Col>
 						</Row>

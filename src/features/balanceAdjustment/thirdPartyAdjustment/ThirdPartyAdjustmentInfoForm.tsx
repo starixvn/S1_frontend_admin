@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { head } from 'lodash'
 import {
 	Col,
@@ -17,7 +17,7 @@ import { FormInstance } from 'antd/es/form/Form'
 import { numberFormatter } from 'common/utils/format'
 import { IAdjustmentData, ITpBySiteData, ITpWalletData } from './type'
 import { adjustmentTypeList } from './constants'
-import { ReasonIdEnum } from '../balanceAdjustment/type'
+import { ReasonTypeEum } from '../balanceAdjustment/type'
 
 const { Option } = Select
 
@@ -38,8 +38,22 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 	adjustmentReasonList,
 	tpListBySiteId,
 }) => {
+	const [selectedReasonType, setSelectedReasonType] = useState<number | null>(
+		null
+	)
 	const { t } = useTranslation()
-	const reasonId = Form.useWatch('reasonId', form)
+
+	// 判斷選擇的reason為何，並且把type的值存到state: selectedReasonType
+	const handleReasonChange = (selectedReasonId: number) => {
+		const selectedReason = adjustmentReasonList.find(
+			reason => reason.id === selectedReasonId
+		)
+		if (selectedReason) {
+			setSelectedReasonType(selectedReason.type)
+		} else {
+			setSelectedReasonType(ReasonTypeEum.Others)
+		}
+	}
 
 	return (
 		<LayoutContent.Card>
@@ -99,7 +113,10 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							>
 								<Select
 									placeholder='select'
-									onChange={() => form.resetFields(['reasonId'])}
+									onChange={() => {
+										form.resetFields(['reasonId'])
+										setSelectedReasonType(null)
+									}}
 								>
 									{adjustmentTypeList.map(item => (
 										<Option key={item.id} value={item.id}>
@@ -113,7 +130,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item name='reasonId' label={t('Label_AdjustmentReason')}>
-								<Select placeholder='select'>
+								<Select placeholder='select' onChange={handleReasonChange}>
 									{adjustmentReasonList?.map(item => (
 										<Option key={item.id} value={item.id}>
 											{item.name}
@@ -123,27 +140,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							</Form.Item>
 						</Col>
 					</Row>
-					{reasonId === ReasonIdEnum.Withdrawal && (
-						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
-								<Form.Item
-									name='transId'
-									label={t('Label_WithdrawalId')}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_WithdrawalId'),
-											}),
-										},
-									]}
-								>
-									<Input allowClear placeholder={t('Label_WithdrawalId')} />
-								</Form.Item>
-							</Col>
-						</Row>
-					)}
-					{reasonId === ReasonIdEnum.Deposit && (
+					{selectedReasonType === ReasonTypeEum.Deposit && (
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
 								<Form.Item
@@ -163,6 +160,28 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 							</Col>
 						</Row>
 					)}
+
+					{selectedReasonType === ReasonTypeEum.Withdrawal && (
+						<Row align='middle' gutter={16}>
+							<Col lg={8} md={24} xs={24}>
+								<Form.Item
+									name='transId'
+									label={t('Label_WithdrawalId')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_WithdrawalId'),
+											}),
+										},
+									]}
+								>
+									<Input allowClear placeholder={t('Label_WithdrawalId')} />
+								</Form.Item>
+							</Col>
+						</Row>
+					)}
+
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
 							<Form.Item
