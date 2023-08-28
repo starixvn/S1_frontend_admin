@@ -58,7 +58,7 @@ const ThirdPartyAdjustment: FC<{
 
 	const {
 		data: { data: adjustmentReasonList = [] } = {},
-		isFetching: isGetAdjustmentReasonListFetching,
+		// isFetching: isGetAdjustmentReasonListFetching,
 	} = useGetAdjustmentReasonListQuery(
 		{
 			methodTypeID: methodType,
@@ -164,14 +164,14 @@ const ThirdPartyAdjustment: FC<{
 		}
 	}, [isGetTpListBySiteIdLoading])
 
-	// * 等待 fetch 完成並初始 infoForm 資訊
-	useEffect(() => {
-		if (!isGetAdjustmentReasonListFetching) {
-			infoForm.setFieldsValue({
-				reasonId: head(adjustmentReasonList)?.id,
-			})
-		}
-	}, [isGetAdjustmentReasonListFetching])
+	// 等待 fetch 完成並初始 infoForm 資訊
+	// useEffect(() => {
+	// 	if (!isGetAdjustmentReasonListFetching) {
+	// 		infoForm.setFieldsValue({
+	// 			reasonId: head(adjustmentReasonList)?.id,
+	// 		})
+	// 	}
+	// }, [isGetAdjustmentReasonListFetching])
 
 	useEffect(() => {
 		const { userName = '', sabaId = '' } = queryParams

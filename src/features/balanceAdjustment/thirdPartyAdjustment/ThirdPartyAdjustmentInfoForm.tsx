@@ -142,7 +142,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 					</Row>
 					{selectedReasonType === ReasonTypeEum.Deposit && (
 						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='transId'
 									label={t('Label_DepositId')}
@@ -163,7 +163,7 @@ const ThirdPartyAdjustmentInfoForm: FC<IThirdPartyAdjustmentInfoFormProps> = ({
 
 					{selectedReasonType === ReasonTypeEum.Withdrawal && (
 						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='transId'
 									label={t('Label_WithdrawalId')}
