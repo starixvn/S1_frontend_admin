@@ -207,7 +207,7 @@ export const paymentManagementApi = createApi({
 			null
 		>({
 			query: data => ({
-				url: 'AutoWithdrawalRule/WithdrawalType',
+				url: 'AutoPaymentRule/WithdrawalType',
 				method: 'POST',
 				data,
 			}),

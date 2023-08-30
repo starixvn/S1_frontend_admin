@@ -201,6 +201,7 @@ export interface IAutoWithdrawalRuleData {
 
 export interface IGetAutoWithdrawalRuleArgs {
 	siteId?: number
+	autoType?: number
 }
 
 export interface IAddAutoWithdrawalRuleArgs {
@@ -326,4 +327,9 @@ export type IAddAutoVerifyRuleForm = {
 	tags: number[]
 	deviceLevel: string[]
 	deviceScores: number
+}
+
+export enum AutoTypeEnums {
+	AutoVerify = 'AutoVerify',
+	AutoApproved = 'AutoApproved',
 }

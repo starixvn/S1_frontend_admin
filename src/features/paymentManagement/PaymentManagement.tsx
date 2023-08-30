@@ -51,6 +51,7 @@ import {
 	IAddAutoWithdrawalRuleForm,
 	IEditAutoVerifyRuleForm,
 	IAddAutoVerifyRuleForm,
+	AutoTypeEnums,
 } from 'features/paymentManagement/type'
 import { PaymentManagementTable } from 'features/paymentManagement/PaymentManagementTable'
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
@@ -210,7 +211,17 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: autoWithdrawalRuleList = [] } = {},
 		isFetching: isGetAutoWithdrawalRuleLoading,
-	} = useGetAutoWithdrawalRuleListQuery({ siteId })
+	} = useGetAutoWithdrawalRuleListQuery(
+		{
+			siteId,
+			autoType: autoTypeList.find(
+				({ name }) => name === AutoTypeEnums.AutoApproved
+			)?.value,
+		},
+		{
+			skip: isEmpty(autoTypeList),
+		}
+	)
 
 	const [setAutoWithdrawalRule, { isLoading: isSetAutoWithdrawalRuleLoading }] =
 		useSetAutoWithdrawalRuleMutation()
@@ -227,10 +238,17 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: autoVerifyRuleList = [] } = {},
 		isFetching: isGetAutoVerifyRuleLoading,
-	} = useGetAutoVerifyRuleListQuery({
-		siteId,
-		autoType: autoTypeList.find(({ name }) => name === 'AutoVerify')?.value,
-	})
+	} = useGetAutoVerifyRuleListQuery(
+		{
+			siteId,
+			autoType: autoTypeList.find(
+				({ name }) => name === AutoTypeEnums.AutoVerify
+			)?.value,
+		},
+		{
+			skip: isEmpty(autoTypeList),
+		}
+	)
 
 	const [setAutoVerifyRule, { isLoading: isSetAutoVerifyRuleLoading }] =
 		useSetAutoVerifyRuleMutation()
