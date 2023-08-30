@@ -1084,6 +1084,13 @@ const RebateExcludeGame = lazy(
 		)
 )
 
+const ConfiscatedSummaryReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ConfiscatedSummaryReport' */ 'features/confiscatedSummaryReport/ConfiscatedSummaryReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2685,6 +2692,16 @@ const routes: RouteObject[] = [
 						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
 					>
 						<RebateExcludeGame />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.confiscatedSummaryReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.confiscatedSummaryReport.functionId}
+					>
+						<ConfiscatedSummaryReport />
 					</AuthRequire>
 				),
 			},

@@ -467,6 +467,10 @@ const paths = {
 				root: 'report/bonusInfoReport',
 				functionId: 72,
 			},
+			confiscatedSummaryReport: {
+				root: 'report/confiscatedSummaryReport',
+				functionId: 149,
+			},
 		},
 	},
 	member: {
