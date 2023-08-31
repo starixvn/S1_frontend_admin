@@ -26,10 +26,6 @@ import {
 	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
-	useGetAutoWithdrawalRuleListQuery,
-	useSetAutoWithdrawalRuleMutation,
-	useAddAutoWithdrawalRuleMutation,
-	useDeleteAutoWithdrawalRuleMutation,
 	useGetAutoVerifyRuleListQuery,
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
@@ -52,6 +48,7 @@ import {
 	IEditAutoVerifyRuleForm,
 	IAddAutoVerifyRuleForm,
 	AutoTypeEnums,
+	AutoTypeDisplayNameEnums,
 } from 'features/paymentManagement/type'
 import { PaymentManagementTable } from 'features/paymentManagement/PaymentManagementTable'
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
@@ -211,11 +208,11 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: autoWithdrawalRuleList = [] } = {},
 		isFetching: isGetAutoWithdrawalRuleLoading,
-	} = useGetAutoWithdrawalRuleListQuery(
+	} = useGetAutoVerifyRuleListQuery(
 		{
 			siteId,
 			autoType: autoTypeList.find(
-				({ name }) => name === AutoTypeEnums.AutoApproved
+				({ name }) => name === AutoTypeDisplayNameEnums.AutoApproved
 			)?.value,
 		},
 		{
@@ -224,15 +221,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	)
 
 	const [setAutoWithdrawalRule, { isLoading: isSetAutoWithdrawalRuleLoading }] =
-		useSetAutoWithdrawalRuleMutation()
+		useSetAutoVerifyRuleMutation()
 
 	const [addAutoWithdrawalRule, { isLoading: isAddAutoWithdrawalRuleLoading }] =
-		useAddAutoWithdrawalRuleMutation()
+		useAddAutoVerifyRuleMutation()
 
 	const [
 		deleteAutoWithdrawalRule,
 		{ isLoading: isDeleteAutoWithdrawalRuleLoading },
-	] = useDeleteAutoWithdrawalRuleMutation()
+	] = useDeleteAutoVerifyRuleMutation()
 
 	// autoVerifyRule 相關
 	const {
@@ -242,7 +239,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		{
 			siteId,
 			autoType: autoTypeList.find(
-				({ name }) => name === AutoTypeEnums.AutoVerify
+				({ name }) => name === AutoTypeDisplayNameEnums.AutoVerify
 			)?.value,
 		},
 		{
@@ -554,6 +551,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// 修改 Auto Withdrawal Rule
 	const handleSetAutoWithdrawalRule = async (
 		id: number,
+		currencyId: number,
 		setEditingKey: (type: undefined) => void
 	) => {
 		const {
@@ -562,18 +560,21 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			status,
 			tags,
 			vipLevels,
-			withdrawalTypes,
+			withdrawalType,
 		} = await editAutoWithdrawalRuleForm.validateFields()
 
 		const payload = {
 			id,
+			siteId,
+			currencyId,
 			withdrawalAmount,
 			accountWithdrawalCount,
 			// status 1: open, 0: close
 			status: status ? 1 : 0,
 			vipLevels,
 			tags,
-			withdrawalTypes,
+			deviceLevel: [],
+			withdrawalType,
 		}
 
 		try {
@@ -595,17 +596,19 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			accountWithdrawalCount,
 			tags,
 			vipLevels,
-			withdrawalTypes,
+			withdrawalType,
 		} = await addAutoWithdrawalRuleForm.validateFields()
 
 		const payload = {
+			autoType: AutoTypeEnums.AutoApproved,
 			siteId,
 			currencyId,
 			withdrawalAmount,
 			accountWithdrawalCount,
 			vipLevels,
 			tags,
-			withdrawalTypes,
+			deviceLevel: [],
+			withdrawalType,
 		}
 
 		try {

@@ -183,51 +183,6 @@ export enum EditModalTypeEnum {
 	FeeSetting,
 }
 
-export interface IAutoWithdrawalRuleData {
-	currencyId: number
-	isoCode: string
-	withdrawalAmount: number
-	accountWithdrawalCount: number
-	vipLevels: number[]
-	tags: number[]
-	withdrawalTypes: number[]
-	id: number
-	status: number
-	createTime: string
-	createUser: string
-	lastUpdateTime: string
-	lastUpdateUser: string
-}
-
-export interface IGetAutoWithdrawalRuleArgs {
-	siteId?: number
-	autoType?: number
-}
-
-export interface IAddAutoWithdrawalRuleArgs {
-	siteId?: number
-	currencyId: number
-	withdrawalAmount: number
-	accountWithdrawalCount: number
-	vipLevels: number[]
-	tags: number[]
-	withdrawalTypes: number[]
-}
-
-export interface ISetAutoWithdrawalRuleArgs {
-	id: number
-	withdrawalAmount: number
-	accountWithdrawalCount: number
-	status: number
-	vipLevels: number[]
-	tags: number[]
-	withdrawalTypes: number[]
-}
-
-export interface IDeleteAutoWithdrawalRuleArgs {
-	id: number
-}
-
 export interface IWithdrawalTypeData {
 	name: string
 	value: number
@@ -241,7 +196,7 @@ export type IEditAutoWithdrawalRuleForm = {
 	accountWithdrawalCount: number
 	vipLevels: number[]
 	tags: number[]
-	withdrawalTypes: number[]
+	withdrawalType: number
 }
 
 export type IAddAutoWithdrawalRuleForm = {
@@ -250,7 +205,7 @@ export type IAddAutoWithdrawalRuleForm = {
 	accountWithdrawalCount: number
 	vipLevels: number[]
 	tags: number[]
-	withdrawalTypes: number[]
+	withdrawalType: number
 }
 
 export interface IAutoVerifyRuleData {
@@ -268,6 +223,7 @@ export interface IAutoVerifyRuleData {
 	createUser: string
 	lastUpdateTime: string
 	lastUpdateUser: string
+	withdrawalType?: number
 }
 
 export interface IGetAutoVerifyRuleArgs {
@@ -276,7 +232,7 @@ export interface IGetAutoVerifyRuleArgs {
 }
 
 export interface IAddAutoVerifyRuleArgs {
-	autoType?: number
+	autoType: number
 	siteId?: number
 	currencyId: number
 	withdrawalAmount: number
@@ -284,7 +240,8 @@ export interface IAddAutoVerifyRuleArgs {
 	vipLevels: number[]
 	tags: number[]
 	deviceLevel: string[]
-	deviceScores: number
+	deviceScores?: number // *
+	withdrawalType?: number // * Auto Verify Rule Modal 沒有這個值 --> 帶空
 }
 
 export interface ISetAutoVerifyRuleArgs {
@@ -296,8 +253,9 @@ export interface ISetAutoVerifyRuleArgs {
 	vipLevels: number[]
 	tags: number[]
 	deviceLevel: string[]
-	deviceScores: number
+	deviceScores?: number // *
 	status: number
+	withdrawalType?: number // * Auto Verify Rule Modal 沒有這個值 --> 帶空
 }
 
 export interface IDeleteAutoVerifyRuleArgs {
@@ -330,6 +288,11 @@ export type IAddAutoVerifyRuleForm = {
 }
 
 export enum AutoTypeEnums {
+	AutoVerify = 1,
+	AutoApproved,
+}
+
+export enum AutoTypeDisplayNameEnums {
 	AutoVerify = 'AutoVerify',
 	AutoApproved = 'AutoApproved',
 }

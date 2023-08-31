@@ -6,14 +6,14 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
 import { useGetVipLevelQuery } from 'common/service/allDataApi'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
-import { IAutoWithdrawalRuleData } from 'features/paymentManagement/type'
+import { IAutoVerifyRuleData } from 'features/paymentManagement/type'
 import { useGetWithdrawalTypeListQuery } from 'features/paymentManagement/api'
 
 interface IAddAutoWithdrawalRuleModalProps {
 	form: FormInstance
 	dataFetchingLoading: boolean
 	visible: boolean
-	autoWithdrawalRuleList: IAutoWithdrawalRuleData[]
+	autoWithdrawalRuleList: IAutoVerifyRuleData[]
 	onCancel: () => void
 	onSubmit: () => void
 }
@@ -176,23 +176,10 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const withdrawalTypeSelector = () => {
-		const handleChangeType = (newTypes: number[]) => {
-			// -1 means all (0 already defined)
-			if (newTypes.includes(-1)) {
-				form.setFieldsValue({
-					withdrawalTypes: typeList.map(({ value }) => value),
-				})
-			} else {
-				form.setFieldsValue({
-					withdrawalTypes: newTypes,
-				})
-			}
-		}
-
 		return (
 			<Form.Item
-				name='withdrawalTypes'
-				label={t('Label_WithdrawalType')}
+				name='withdrawalType'
+				style={{ margin: '0', width: '100%' }}
 				rules={[
 					{
 						required: true,
@@ -201,18 +188,15 @@ const AddAutoWithdrawalRuleModal = ({
 						}),
 					},
 				]}
+				label={t('Label_WithdrawalType')}
 			>
-				<MultipleSelect
-					onChange={handleChangeType}
-					placeholder={t('Label_Select')}
-				>
-					{typeList.length > 1 && <Option value={-1}>{t('Label_All')}</Option>}
+				<Select placeholder={t('Label_Select')} allowClear>
 					{typeList.map(tag => (
 						<Option key={tag.value} value={tag.value}>
 							{tag.name}
 						</Option>
 					))}
-				</MultipleSelect>
+				</Select>
 			</Form.Item>
 		)
 	}
