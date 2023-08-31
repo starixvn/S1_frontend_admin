@@ -1,24 +1,13 @@
 import { rootApi } from 'common/service/rootApi/api'
-import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IExportPaymentAdjustmentReportArgs,
 	IGetPaymentAdjustmentReportArgs,
 	IGetPaymentAdjustmentReportResponse,
-	IGetReasonListData,
 	ISetAdjustmentArgs,
 } from 'features/paymentAdjustment/type'
 
 export const paymentAdjustmentApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getPaymentReasonList: builder.query<
-			IAxiosResponse<IGetReasonListData[]>,
-			null
-		>({
-			query: () => ({
-				url: 'BalanceAdjustment/GetReasonList',
-				method: 'POST',
-			}),
-		}),
 		exportPaymentAdjustmentReport: builder.mutation<
 			Blob,
 			IExportPaymentAdjustmentReportArgs
@@ -54,7 +43,6 @@ export const paymentAdjustmentApi = rootApi.injectEndpoints({
 
 export const {
 	useLazyGetPaymentAdjustmentReportQuery,
-	useGetPaymentReasonListQuery,
 	useExportPaymentAdjustmentReportMutation,
 	useSetPaymentAdjustmentMutation,
 } = paymentAdjustmentApi

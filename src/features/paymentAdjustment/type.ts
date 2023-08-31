@@ -41,6 +41,7 @@ export interface IGetPaymentAdjustmentReportData {
 	walletType: string
 	categoryName: string
 	depositId: string
+	methodType: number
 }
 
 export type ICurrencyAmountRecordData = {
