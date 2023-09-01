@@ -1,3 +1,4 @@
+import { filter } from 'lodash'
 import { Col, Row, Form, Spin, Modal, Select, FormInstance } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { InputNumber } from 'components'
@@ -31,6 +32,7 @@ const AddAutoWithdrawalRuleModal = ({
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const formCurrencyId = Form.useWatch('currencyId', form)
 
 	const {
 		data: { data: typeList = [] } = {},
@@ -52,10 +54,6 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const currencySelector = () => {
-		const existedCurrencyId = autoWithdrawalRuleList.map(
-			({ currencyId }) => currencyId
-		)
-
 		const handleChangeCurrency = (newCurrencyId: number[]) => {
 			form.setFieldsValue({ currencyId: newCurrencyId })
 		}
@@ -77,15 +75,11 @@ const AddAutoWithdrawalRuleModal = ({
 					placeholder={t('Label_Select') + t('Label_Currency')}
 					onChange={handleChangeCurrency}
 				>
-					{currencyListBySite
-						?.filter(
-							({ currencyId }) => !existedCurrencyId.includes(currencyId)
-						)
-						?.map(({ currencyId, isoCode }) => (
-							<Option key={currencyId} value={currencyId}>
-								{isoCode}
-							</Option>
-						))}
+					{currencyListBySite?.map(({ currencyId, isoCode }) => (
+						<Option key={currencyId} value={currencyId}>
+							{isoCode}
+						</Option>
+					))}
 				</Select>
 			</Form.Item>
 		)
@@ -176,6 +170,19 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const withdrawalTypeSelector = () => {
+		const existedAutoWithdrawalRuleList: IAutoVerifyRuleData[] = filter(
+			autoWithdrawalRuleList,
+			{
+				currencyId: formCurrencyId,
+			}
+		)
+
+		const filteredTypeList = typeList.filter(
+			({ value }) =>
+				!existedAutoWithdrawalRuleList
+					.map(({ withdrawalType: withdrawalTypeId }) => withdrawalTypeId)
+					.includes(value)
+		)
 		return (
 			<Form.Item
 				name='withdrawalType'
@@ -191,7 +198,7 @@ const AddAutoWithdrawalRuleModal = ({
 				label={t('Label_WithdrawalType')}
 			>
 				<Select placeholder={t('Label_Select')} allowClear>
-					{typeList.map(tag => (
+					{filteredTypeList.map(tag => (
 						<Option key={tag.value} value={tag.value}>
 							{tag.name}
 						</Option>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { find } from 'lodash'
+import { find, filter, without } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import {
 	Col,
@@ -161,31 +161,6 @@ const AutoWithdrawalRuleModal = ({
 		)
 	}
 
-	const withdrawalTypeSelector = () => {
-		return (
-			<Form.Item
-				name='withdrawalType'
-				style={{ margin: '0', width: '100%' }}
-				rules={[
-					{
-						required: true,
-						message: t('Label_Required', {
-							key: t('Label_WithdrawalType'),
-						}),
-					},
-				]}
-			>
-				<Select placeholder={t('Label_Select')} allowClear>
-					{typeList.map(tag => (
-						<Option key={tag.value} value={tag.value}>
-							{tag.name}
-						</Option>
-					))}
-				</Select>
-			</Form.Item>
-		)
-	}
-
 	const onClosed = () => {
 		setEditingKey(undefined)
 	}
@@ -341,13 +316,53 @@ const AutoWithdrawalRuleModal = ({
 			align: 'center' as 'center',
 			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
-				const { withdrawalType } = data
+				const { withdrawalType, currencyId } = data
 
 				const withdrawalTypeName = find(typeList, {
 					value: withdrawalType,
 				})?.name
+				// * 篩出相同的 currencyId
+				const existedAutoWithdrawalRuleList: IAutoVerifyRuleData[] = filter(
+					autoWithdrawalRuleList,
+					{
+						currencyId,
+					}
+				)
+				// * 排除自己當前的 edit 狀態列篩出還未選的 typeList
+				const nonAddedTypeList = typeList.filter(
+					({ value }) =>
+						!without(
+							existedAutoWithdrawalRuleList.map(
+								({ withdrawalType: withdrawalTypeId }) => withdrawalTypeId
+							),
+							withdrawalType
+						).includes(value)
+				)
 
-				return editable ? withdrawalTypeSelector() : withdrawalTypeName
+				return editable ? (
+					<Form.Item
+						name='withdrawalType'
+						style={{ margin: '0', width: '100%' }}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_WithdrawalType'),
+								}),
+							},
+						]}
+					>
+						<Select placeholder={t('Label_Select')} allowClear>
+							{nonAddedTypeList.map(tag => (
+								<Option key={tag.value} value={tag.value}>
+									{tag.name}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				) : (
+					withdrawalTypeName
+				)
 			},
 		},
 		{
