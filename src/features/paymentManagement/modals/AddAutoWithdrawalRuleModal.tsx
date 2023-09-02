@@ -1,4 +1,4 @@
-import { filter } from 'lodash'
+import { filter, groupBy, values, uniq, flatten } from 'lodash'
 import { Col, Row, Form, Spin, Modal, Select, FormInstance } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { InputNumber } from 'components'
@@ -54,6 +54,22 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const currencySelector = () => {
+		// * 分類出相同 currencyId
+		const groupByCurrencyIdList = values(
+			groupBy(autoWithdrawalRuleList, 'currencyId')
+		)
+		// * 找出在相同 currencyId 下已滿的 Withdrawal Type
+		const filledWithdrawalTypeList = groupByCurrencyIdList.filter(
+			item => item.length === typeList.length
+		)
+		// * 列出 已滿的 Withdrawal Type 的 currencyId List (篩掉重複)
+		const existedCurrencyIdList = values(
+			flatten(
+				filledWithdrawalTypeList.map(item =>
+					uniq(item.map(items => items.currencyId))
+				)
+			)
+		)
 		const handleChangeCurrency = (newCurrencyId: number[]) => {
 			form.setFieldsValue({ currencyId: newCurrencyId })
 		}
@@ -75,11 +91,15 @@ const AddAutoWithdrawalRuleModal = ({
 					placeholder={t('Label_Select') + t('Label_Currency')}
 					onChange={handleChangeCurrency}
 				>
-					{currencyListBySite?.map(({ currencyId, isoCode }) => (
-						<Option key={currencyId} value={currencyId}>
-							{isoCode}
-						</Option>
-					))}
+					{currencyListBySite
+						?.filter(
+							({ currencyId }) => !existedCurrencyIdList.includes(currencyId)
+						)
+						?.map(({ currencyId, isoCode }) => (
+							<Option key={currencyId} value={currencyId}>
+								{isoCode}
+							</Option>
+						))}
 				</Select>
 			</Form.Item>
 		)

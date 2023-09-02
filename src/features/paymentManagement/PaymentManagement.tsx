@@ -573,7 +573,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			status: status ? 1 : 0,
 			vipLevels,
 			tags,
-			deviceLevel: [],
+			deviceLevel: [], // * Auto Withdrawal Rule 沒有這參數 帶空陣列
 			withdrawalType,
 		}
 
@@ -607,7 +607,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			accountWithdrawalCount,
 			vipLevels,
 			tags,
-			deviceLevel: [],
+			deviceLevel: [], // * Auto Withdrawal Rule 沒有這參數 帶空陣列
 			withdrawalType,
 		}
 
@@ -663,6 +663,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			// Nova88 using deviceLevel, other sites using deviceScores
 			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
 			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+			// withdrawalType: 0, --> 不帶也可
 		}
 
 		try {
@@ -708,6 +709,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			// Nova88 using deviceLevel, other sites using deviceScores
 			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
 			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+			// withdrawalType: 0, --> 不帶也可
 		}
 
 		try {

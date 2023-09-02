@@ -223,7 +223,7 @@ export interface IAutoVerifyRuleData {
 	createUser: string
 	lastUpdateTime: string
 	lastUpdateUser: string
-	withdrawalType?: number
+	withdrawalType: number
 }
 
 export interface IGetAutoVerifyRuleArgs {
