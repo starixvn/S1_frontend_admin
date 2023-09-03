@@ -164,6 +164,36 @@ export type IGetReferralHistoryResponse = IAxiosResponse<
 	IGetReferralHistoryData[]
 >
 
+// NewReferral History 頁面
+export type IGetNewReferralHistoryArgs = IGetVipLevelLogArgs
+
+export interface NewReferralDetailData {
+	depositDate: string | null
+	siteName: string | null
+	agentId: number
+	agentUserName: string | null
+	custId: number
+	userName: string
+	currency: string | null
+	totalDeposit: number
+	referralAmount: number
+	regTime: string
+}
+
+export interface INewReferralHistoryData {
+	detail: NewReferralDetailData[]
+	referral_TotalRewardCount: number
+	depositReferral_TotalRewardCount: number
+	depositReferral__TotalRewardAmount: number
+	referral_TotalPayoutAmount: number
+	depositReferral_TotalPayoutAmount: number
+	totalRefereeWithPayoutCount: number
+}
+
+export type IGetNewReferralHistoryResponse = IAxiosResponse<
+	INewReferralHistoryData[]
+>
+
 // Notes 頁面
 export type IGetCustNotesArgs = IGetVipLevelLogArgs
 
