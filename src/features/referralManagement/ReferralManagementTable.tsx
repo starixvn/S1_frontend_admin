@@ -15,6 +15,7 @@ import { PermissionInterface } from 'type'
 import { Link } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { ReferralStatusEnum } from 'features/newReferralManagement/type'
 import { IReferralsState } from './type'
 
 interface IReferralManagementTableProps {
@@ -39,6 +40,20 @@ const ReferralManagementTable: FC<IReferralManagementTableProps> = ({
 	onUpdateReferralStatus,
 }) => {
 	const { t } = useTranslation()
+
+	// 目前舊的推薦系統是在 status 0 1 做切換，但原始資料也有可能有2的狀態(新舊系統互相影響)
+	const isReferralStatus = (status: number) => {
+		switch (status) {
+			case ReferralStatusEnum.Disable:
+				return false
+			case ReferralStatusEnum.ReferralEnable:
+				return true
+			case ReferralStatusEnum.DepositReferralEnable:
+				return false
+			default:
+				return false
+		}
+	}
 
 	const columns = [
 		{
@@ -67,11 +82,14 @@ const ReferralManagementTable: FC<IReferralManagementTableProps> = ({
 							disabled={!setActivePermission?.canUse}
 							title={t('Label_AreYouSure')}
 							onConfirm={() =>
-								onUpdateReferralStatus({ currencyId, status: !status })
+								onUpdateReferralStatus({
+									currencyId,
+									status: !isReferralStatus(status),
+								})
 							}
 						>
 							<Switch
-								checked={Boolean(status)}
+								checked={isReferralStatus(status)}
 								disabled={!setActivePermission?.canUse}
 							/>
 						</Popconfirm>
