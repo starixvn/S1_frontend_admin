@@ -26,10 +26,6 @@ import {
 	useSetPayListLoginInfoMutation,
 	useSetPaySettingMutation,
 	useSetPaySettingStatusMutation,
-	useGetAutoWithdrawalRuleListQuery,
-	useSetAutoWithdrawalRuleMutation,
-	useAddAutoWithdrawalRuleMutation,
-	useDeleteAutoWithdrawalRuleMutation,
 	useGetAutoVerifyRuleListQuery,
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
@@ -53,6 +49,8 @@ import {
 	IAddAutoWithdrawalRuleForm,
 	IEditAutoVerifyRuleForm,
 	IAddAutoVerifyRuleForm,
+	AutoTypeEnums,
+	AutoTypeDisplayNameEnums,
 } from 'features/paymentManagement/type'
 import { PaymentManagementTable } from 'features/paymentManagement/PaymentManagementTable'
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
@@ -215,27 +213,44 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: autoWithdrawalRuleList = [] } = {},
 		isFetching: isGetAutoWithdrawalRuleLoading,
-	} = useGetAutoWithdrawalRuleListQuery({ siteId })
+	} = useGetAutoVerifyRuleListQuery(
+		{
+			siteId,
+			autoType: autoTypeList.find(
+				({ name }) => name === AutoTypeDisplayNameEnums.AutoApproved
+			)?.value,
+		},
+		{
+			skip: isEmpty(autoTypeList),
+		}
+	)
 
 	const [setAutoWithdrawalRule, { isLoading: isSetAutoWithdrawalRuleLoading }] =
-		useSetAutoWithdrawalRuleMutation()
+		useSetAutoVerifyRuleMutation()
 
 	const [addAutoWithdrawalRule, { isLoading: isAddAutoWithdrawalRuleLoading }] =
-		useAddAutoWithdrawalRuleMutation()
+		useAddAutoVerifyRuleMutation()
 
 	const [
 		deleteAutoWithdrawalRule,
 		{ isLoading: isDeleteAutoWithdrawalRuleLoading },
-	] = useDeleteAutoWithdrawalRuleMutation()
+	] = useDeleteAutoVerifyRuleMutation()
 
 	// autoVerifyRule 相關
 	const {
 		data: { data: autoVerifyRuleList = [] } = {},
 		isFetching: isGetAutoVerifyRuleLoading,
-	} = useGetAutoVerifyRuleListQuery({
-		siteId,
-		autoType: autoTypeList.find(({ name }) => name === 'AutoVerify')?.value,
-	})
+	} = useGetAutoVerifyRuleListQuery(
+		{
+			siteId,
+			autoType: autoTypeList.find(
+				({ name }) => name === AutoTypeDisplayNameEnums.AutoVerify
+			)?.value,
+		},
+		{
+			skip: isEmpty(autoTypeList),
+		}
+	)
 
 	const [setAutoVerifyRule, { isLoading: isSetAutoVerifyRuleLoading }] =
 		useSetAutoVerifyRuleMutation()
@@ -550,6 +565,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	// 修改 Auto Withdrawal Rule
 	const handleSetAutoWithdrawalRule = async (
 		id: number,
+		currencyId: number,
 		setEditingKey: (type: undefined) => void
 	) => {
 		const {
@@ -558,18 +574,21 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			status,
 			tags,
 			vipLevels,
-			withdrawalTypes,
+			withdrawalType,
 		} = await editAutoWithdrawalRuleForm.validateFields()
 
 		const payload = {
 			id,
+			siteId,
+			currencyId,
 			withdrawalAmount,
 			accountWithdrawalCount,
 			// status 1: open, 0: close
 			status: status ? 1 : 0,
 			vipLevels,
 			tags,
-			withdrawalTypes,
+			deviceLevel: [], // * Auto Withdrawal Rule 沒有這參數 帶空陣列
+			withdrawalType,
 		}
 
 		try {
@@ -591,17 +610,19 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			accountWithdrawalCount,
 			tags,
 			vipLevels,
-			withdrawalTypes,
+			withdrawalType,
 		} = await addAutoWithdrawalRuleForm.validateFields()
 
 		const payload = {
+			autoType: AutoTypeEnums.AutoApproved,
 			siteId,
 			currencyId,
 			withdrawalAmount,
 			accountWithdrawalCount,
 			vipLevels,
 			tags,
-			withdrawalTypes,
+			deviceLevel: [], // * Auto Withdrawal Rule 沒有這參數 帶空陣列
+			withdrawalType,
 		}
 
 		try {
@@ -656,6 +677,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			// Nova88 using deviceLevel, other sites using deviceScores
 			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
 			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+			// withdrawalType: 0, --> 不帶也可
 		}
 
 		try {
@@ -701,6 +723,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			// Nova88 using deviceLevel, other sites using deviceScores
 			deviceLevel: siteId === SiteIds.Nova88 ? deviceLevel : [],
 			deviceScores: siteId === SiteIds.Nova88 ? 0 : deviceScores,
+			// withdrawalType: 0, --> 不帶也可
 		}
 
 		try {
