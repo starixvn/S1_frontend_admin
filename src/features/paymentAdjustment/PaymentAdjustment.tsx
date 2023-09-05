@@ -180,11 +180,13 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			category: adjustCategory,
 			memo,
 			adjustType,
+			methodType: selectedMethodType,
 		}
 		const afterData: IAdjustmentData = {
 			category: afterCategory,
 			memo: afterMemo,
 			adjustType: afterAdjustType,
+			methodType: selectedMethodType,
 		}
 		try {
 			await setPaymentAdjustment({
@@ -193,6 +195,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				transId,
 				before: beforeData,
 				after: afterData,
+				methodType: selectedMethodType,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setEditingTransId(undefined)
