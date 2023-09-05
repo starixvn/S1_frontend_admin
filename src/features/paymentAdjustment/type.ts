@@ -61,6 +61,7 @@ export type IAdjustmentData = {
 	category: number
 	memo: string
 	adjustType: number
+	methodType: number
 }
 
 export interface ISetAdjustmentArgs {
@@ -69,6 +70,7 @@ export interface ISetAdjustmentArgs {
 	transId: string
 	before: IAdjustmentData
 	after: IAdjustmentData
+	methodType: number
 }
 
 export interface IGetReasonListData {
