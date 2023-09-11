@@ -1,3 +1,4 @@
+import { filter, groupBy, values, uniq, flatten } from 'lodash'
 import { Col, Row, Form, Spin, Modal, Select, FormInstance } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { InputNumber } from 'components'
@@ -6,14 +7,14 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite, selectCurrencyListBySite } from 'common/enum'
 import { useGetVipLevelQuery } from 'common/service/allDataApi'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
-import { IAutoWithdrawalRuleData } from 'features/paymentManagement/type'
+import { IAutoVerifyRuleData } from 'features/paymentManagement/type'
 import { useGetWithdrawalTypeListQuery } from 'features/paymentManagement/api'
 
 interface IAddAutoWithdrawalRuleModalProps {
 	form: FormInstance
 	dataFetchingLoading: boolean
 	visible: boolean
-	autoWithdrawalRuleList: IAutoWithdrawalRuleData[]
+	autoWithdrawalRuleList: IAutoVerifyRuleData[]
 	onCancel: () => void
 	onSubmit: () => void
 }
@@ -31,6 +32,7 @@ const AddAutoWithdrawalRuleModal = ({
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const formCurrencyId = Form.useWatch('currencyId', form)
 
 	const {
 		data: { data: typeList = [] } = {},
@@ -52,10 +54,22 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const currencySelector = () => {
-		const existedCurrencyId = autoWithdrawalRuleList.map(
-			({ currencyId }) => currencyId
+		// * 分類出相同 currencyId
+		const groupByCurrencyIdList = values(
+			groupBy(autoWithdrawalRuleList, 'currencyId')
 		)
-
+		// * 找出在相同 currencyId 下已滿的 Withdrawal Type
+		const filledWithdrawalTypeList = groupByCurrencyIdList.filter(
+			item => item.length === typeList.length
+		)
+		// * 列出 已滿的 Withdrawal Type 的 currencyId List (篩掉重複)
+		const existedCurrencyIdList = values(
+			flatten(
+				filledWithdrawalTypeList.map(item =>
+					uniq(item.map(items => items.currencyId))
+				)
+			)
+		)
 		const handleChangeCurrency = (newCurrencyId: number[]) => {
 			form.setFieldsValue({ currencyId: newCurrencyId })
 		}
@@ -79,7 +93,7 @@ const AddAutoWithdrawalRuleModal = ({
 				>
 					{currencyListBySite
 						?.filter(
-							({ currencyId }) => !existedCurrencyId.includes(currencyId)
+							({ currencyId }) => !existedCurrencyIdList.includes(currencyId)
 						)
 						?.map(({ currencyId, isoCode }) => (
 							<Option key={currencyId} value={currencyId}>
@@ -176,23 +190,23 @@ const AddAutoWithdrawalRuleModal = ({
 	}
 
 	const withdrawalTypeSelector = () => {
-		const handleChangeType = (newTypes: number[]) => {
-			// -1 means all (0 already defined)
-			if (newTypes.includes(-1)) {
-				form.setFieldsValue({
-					withdrawalTypes: typeList.map(({ value }) => value),
-				})
-			} else {
-				form.setFieldsValue({
-					withdrawalTypes: newTypes,
-				})
+		const existedAutoWithdrawalRuleList: IAutoVerifyRuleData[] = filter(
+			autoWithdrawalRuleList,
+			{
+				currencyId: formCurrencyId,
 			}
-		}
+		)
 
+		const filteredTypeList = typeList.filter(
+			({ value }) =>
+				!existedAutoWithdrawalRuleList
+					.map(({ withdrawalType: withdrawalTypeId }) => withdrawalTypeId)
+					.includes(value)
+		)
 		return (
 			<Form.Item
-				name='withdrawalTypes'
-				label={t('Label_WithdrawalType')}
+				name='withdrawalType'
+				style={{ margin: '0', width: '100%' }}
 				rules={[
 					{
 						required: true,
@@ -201,18 +215,15 @@ const AddAutoWithdrawalRuleModal = ({
 						}),
 					},
 				]}
+				label={t('Label_WithdrawalType')}
 			>
-				<MultipleSelect
-					onChange={handleChangeType}
-					placeholder={t('Label_Select')}
-				>
-					{typeList.length > 1 && <Option value={-1}>{t('Label_All')}</Option>}
-					{typeList.map(tag => (
+				<Select placeholder={t('Label_Select')} allowClear>
+					{filteredTypeList.map(tag => (
 						<Option key={tag.value} value={tag.value}>
 							{tag.name}
 						</Option>
 					))}
-				</MultipleSelect>
+				</Select>
 			</Form.Item>
 		)
 	}
