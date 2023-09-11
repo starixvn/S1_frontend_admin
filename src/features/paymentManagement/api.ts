@@ -16,11 +16,6 @@ import {
 	IGetCryptoInfoData,
 	ISetCryptoInfoArgs,
 	ISetPaySettingChargeFeeArgs,
-	IAutoWithdrawalRuleData,
-	IGetAutoWithdrawalRuleArgs,
-	IAddAutoWithdrawalRuleArgs,
-	ISetAutoWithdrawalRuleArgs,
-	IDeleteAutoWithdrawalRuleArgs,
 	IWithdrawalTypeData,
 	IAutoVerifyRuleData,
 	IGetAutoVerifyRuleArgs,
@@ -153,61 +148,13 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetPaySetting'],
 		}),
-		// Auto Withdrawal Rule - 取得自動提款規則列表
-		getAutoWithdrawalRuleList: builder.query<
-			IAxiosResponse<IAutoWithdrawalRuleData[]>,
-			IGetAutoWithdrawalRuleArgs
-		>({
-			query: data => ({
-				url: 'AutoWithdrawalRule/GetDataList',
-				method: 'POST',
-				data,
-			}),
-			providesTags: ['SetAutoWithdrawalRule'],
-		}),
-		//  Auto Withdrawal Rule - 新增自動提款規則
-		AddAutoWithdrawalRule: builder.mutation<
-			IAxiosResponse<null>,
-			IAddAutoWithdrawalRuleArgs
-		>({
-			query: data => ({
-				url: 'AutoWithdrawalRule/Create',
-				method: 'POST',
-				data,
-			}),
-			invalidatesTags: ['SetAutoWithdrawalRule'],
-		}),
-		//  Auto Withdrawal Rule - 更新自動提款規則
-		setAutoWithdrawalRule: builder.mutation<
-			IAxiosResponse<null>,
-			ISetAutoWithdrawalRuleArgs
-		>({
-			query: data => ({
-				url: 'AutoWithdrawalRule/Set',
-				method: 'POST',
-				data,
-			}),
-			invalidatesTags: ['SetAutoWithdrawalRule'],
-		}),
-		//  Auto Withdrawal Rule - 刪除自動提款規則
-		deleteAutoWithdrawalRule: builder.mutation<
-			IAxiosResponse<null>,
-			IDeleteAutoWithdrawalRuleArgs
-		>({
-			query: data => ({
-				url: 'AutoWithdrawalRule/Delete',
-				method: 'POST',
-				data,
-			}),
-			invalidatesTags: ['SetAutoWithdrawalRule'],
-		}),
 		// 取得自動提款的提款類型列表
 		getWithdrawalTypeList: builder.query<
 			IAxiosResponse<IWithdrawalTypeData[]>,
 			null
 		>({
 			query: data => ({
-				url: 'AutoWithdrawalRule/WithdrawalType',
+				url: 'AutoPaymentRule/WithdrawalType',
 				method: 'POST',
 				data,
 			}),
@@ -275,10 +222,6 @@ export const {
 	useGetCryptoInfoQuery,
 	useSetCryptoInfoMutation,
 	useSetChargeFeeMutation,
-	useGetAutoWithdrawalRuleListQuery,
-	useAddAutoWithdrawalRuleMutation,
-	useSetAutoWithdrawalRuleMutation,
-	useDeleteAutoWithdrawalRuleMutation,
 	useGetWithdrawalTypeListQuery,
 	useGetAutoVerifyRuleListQuery,
 	useAddAutoVerifyRuleMutation,

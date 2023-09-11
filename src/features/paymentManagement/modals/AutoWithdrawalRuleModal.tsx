@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { find } from 'lodash'
+import { find, filter, without } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import {
 	Col,
@@ -23,7 +23,7 @@ import { MultipleSelect } from 'components/Select'
 import { numberFormatter } from 'common/utils/format'
 import { useGetVipLevelQuery } from 'common/service/allDataApi'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
-import { IAutoWithdrawalRuleData } from 'features/paymentManagement/type'
+import { IAutoVerifyRuleData } from 'features/paymentManagement/type'
 import { useGetWithdrawalTypeListQuery } from 'features/paymentManagement/api'
 
 interface IAutoWithdrawalRuleModalProps {
@@ -31,11 +31,12 @@ interface IAutoWithdrawalRuleModalProps {
 	visible: boolean
 	editPermission?: PermissionInterface
 	dataFetchingLoading: boolean
-	autoWithdrawalRuleList: IAutoWithdrawalRuleData[]
+	autoWithdrawalRuleList: IAutoVerifyRuleData[]
 	onCancel: () => void
 	onAddClick: () => void
 	onSetAutoWithdrawalRule: (
 		id: number,
+		currencyId: number,
 		setEditingKey: (type: undefined) => void
 	) => void
 	onDeleteAutoWithdrawalRule: (id: number) => void
@@ -73,12 +74,11 @@ const AutoWithdrawalRuleModal = ({
 		isLoading: isGetAllTagListLoading,
 	} = useGetAllTagQuery()
 
-	const isEditing = (data: IAutoWithdrawalRuleData) =>
-		data.currencyId === editingKey
+	const isEditing = (data: IAutoVerifyRuleData) => data.id === editingKey
 
-	const onEdit = (data: IAutoWithdrawalRuleData) => {
+	const onEdit = (data: IAutoVerifyRuleData) => {
 		form.setFieldsValue({ ...data })
-		setEditingKey(data.currencyId)
+		setEditingKey(data.id)
 	}
 
 	const vipLevelSelector = () => {
@@ -161,46 +161,6 @@ const AutoWithdrawalRuleModal = ({
 		)
 	}
 
-	const withdrawalTypeSelector = () => {
-		const handleChangeType = (newTypes: number[]) => {
-			// -1 means all (0 is already defined)
-			if (newTypes.includes(-1)) {
-				form.setFieldsValue({
-					withdrawalTypes: typeList.map(({ value }) => value),
-				})
-			} else {
-				form.setFieldsValue({ withdrawalTypes: newTypes })
-			}
-		}
-
-		return (
-			<Form.Item
-				name='withdrawalTypes'
-				style={{ margin: '0', width: '100%' }}
-				rules={[
-					{
-						required: true,
-						message: t('Label_Required', {
-							key: t('Label_WithdrawalType'),
-						}),
-					},
-				]}
-			>
-				<MultipleSelect
-					onChange={handleChangeType}
-					placeholder={t('Label_Select')}
-				>
-					{typeList.length > 1 && <Option value={-1}>{t('Label_All')}</Option>}
-					{typeList.map(tag => (
-						<Option key={tag.value} value={tag.value}>
-							{tag.name}
-						</Option>
-					))}
-				</MultipleSelect>
-			</Form.Item>
-		)
-	}
-
 	const onClosed = () => {
 		setEditingKey(undefined)
 	}
@@ -211,14 +171,16 @@ const AutoWithdrawalRuleModal = ({
 			key: 'currencyName',
 			align: 'center' as 'center',
 			width: '10%',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
-				const { id } = data
+				const { id, currencyId } = data
 
 				return editable ? (
 					<Space size='middle'>
 						<Typography.Link
-							onClick={() => onSetAutoWithdrawalRule(id, setEditingKey)}
+							onClick={() =>
+								onSetAutoWithdrawalRule(id, currencyId, setEditingKey)
+							}
 						>
 							{t('Label_Save')}
 						</Typography.Link>
@@ -260,7 +222,7 @@ const AutoWithdrawalRuleModal = ({
 			key: 'withdrawalAmount',
 			width: '10%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
 				const { withdrawalAmount } = data
 
@@ -289,7 +251,7 @@ const AutoWithdrawalRuleModal = ({
 			key: 'accountWithdrawalCount',
 			width: '5%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
 				const { accountWithdrawalCount } = data
 
@@ -318,7 +280,7 @@ const AutoWithdrawalRuleModal = ({
 			key: 'vipLevels',
 			width: '20%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
 				const { vipLevels } = data
 
@@ -336,7 +298,7 @@ const AutoWithdrawalRuleModal = ({
 			key: 'tags',
 			width: '20%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
 				const { tags } = data
 
@@ -349,18 +311,58 @@ const AutoWithdrawalRuleModal = ({
 		},
 		{
 			title: t('Label_WithdrawalType'),
-			key: 'withdrawalTypes',
+			key: 'withdrawalType',
 			width: '20%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
-				const { withdrawalTypes } = data
+				const { withdrawalType, currencyId } = data
 
-				const withdrawalTypeNameList = withdrawalTypes
-					.map((type: number) => find(typeList, { value: type })?.name)
-					.join(', ')
+				const withdrawalTypeName = find(typeList, {
+					value: withdrawalType,
+				})?.name
+				// * 篩出相同的 currencyId
+				const existedAutoWithdrawalRuleList: IAutoVerifyRuleData[] = filter(
+					autoWithdrawalRuleList,
+					{
+						currencyId,
+					}
+				)
+				// * 排除自己當前的 edit 狀態列篩出還未選的 typeList
+				const nonAddedTypeList = typeList.filter(
+					({ value }) =>
+						!without(
+							existedAutoWithdrawalRuleList.map(
+								({ withdrawalType: withdrawalTypeId }) => withdrawalTypeId
+							),
+							withdrawalType
+						).includes(value)
+				)
 
-				return editable ? withdrawalTypeSelector() : withdrawalTypeNameList
+				return editable ? (
+					<Form.Item
+						name='withdrawalType'
+						style={{ margin: '0', width: '100%' }}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_WithdrawalType'),
+								}),
+							},
+						]}
+					>
+						<Select placeholder={t('Label_Select')} allowClear>
+							{nonAddedTypeList.map(tag => (
+								<Option key={tag.value} value={tag.value}>
+									{tag.name}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				) : (
+					withdrawalTypeName
+				)
 			},
 		},
 		{
@@ -368,7 +370,7 @@ const AutoWithdrawalRuleModal = ({
 			key: 'status',
 			width: '5%',
 			align: 'center' as 'center',
-			render: (data: IAutoWithdrawalRuleData) => {
+			render: (data: IAutoVerifyRuleData) => {
 				const editable = isEditing(data)
 				const { status } = data
 
