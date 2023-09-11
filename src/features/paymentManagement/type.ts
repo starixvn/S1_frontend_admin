@@ -296,3 +296,15 @@ export enum AutoTypeDisplayNameEnums {
 	AutoVerify = 'AutoVerify',
 	AutoApproved = 'AutoApproved',
 }
+
+export interface IWithdrawalBlockSwitchData {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
+export interface ISetWithdrawalBlockSwitchArgs {
+	currencyId: number
+	type: number
+	status: boolean
+}

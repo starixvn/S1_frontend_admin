@@ -30,6 +30,8 @@ import {
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
 	useDeleteAutoVerifyRuleMutation,
+	useGetWithdrawalBlockSwitchListQuery,
+	useSetWithdrawalBlockSwitchMutation,
 } from 'features/paymentManagement/api'
 import { PaymentManagementFilter } from 'features/paymentManagement/PaymentManagementFilter'
 import { GlobalStatusModal } from 'features/paymentManagement/modals/GlobalStatusModal'
@@ -60,6 +62,7 @@ import { AutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AutoW
 import { AddAutoWithdrawalRuleModal } from 'features/paymentManagement/modals/AddAutoWithdrawalRuleModal'
 import { AutoVerifyRuleModal } from 'features/paymentManagement/modals/AutoVerifyRuleModal'
 import { AddAutoVerifyRuleModal } from 'features/paymentManagement/modals/AddAutoVerifyRuleModal'
+import { WithdrawalOptionStatusModal } from 'features/paymentManagement/modals/WhitdrawalOptionStatusModal'
 
 const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -70,6 +73,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			setFeePermission,
 			editAutoWithdrawalRulePermission,
 			editWithdrawalAutoVerifyRulePermission,
+			editWithdrawalBlockSwitchPermission,
 		} = {},
 	} = useAuth()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
@@ -91,6 +95,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const addAutoWithdrawalRuleModal = useModal()
 	const autoVerifyRuleModal = useModal()
 	const addAutoVerifyRuleModal = useModal()
+	const withdrawalOptionStatusModal = useModal()
 
 	const [editForm] = Form.useForm<IEditForm>()
 
@@ -255,6 +260,18 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [deleteAutoVerifyRule, { isLoading: isDeleteAutoVerifyRuleLoading }] =
 		useDeleteAutoVerifyRuleMutation()
+
+	// Withdrawal Option Status 相關
+
+	const {
+		data: { data: withdrawalBlockSwitchList = [] } = {},
+		isFetching: isGetWithdrawalBlockSwitchFetching,
+	} = useGetWithdrawalBlockSwitchListQuery(null)
+
+	const [
+		setWithdrawalBlockSwitch,
+		{ isLoading: isSetWithdrawalBlockSwitchLoading },
+	] = useSetWithdrawalBlockSwitchMutation()
 
 	// 主 Table 搜尋
 	const handleSearch = async ({
@@ -735,6 +752,25 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleSetWithdrawalBlockSwitch = async (
+		currencyId: number,
+		type: number,
+		status: boolean
+	) => {
+		try {
+			await setWithdrawalBlockSwitch({
+				currencyId,
+				type,
+				status,
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		const init = () => {
 			if (!isEmpty(queryParams)) {
@@ -801,6 +837,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				onSetGlobalStatusClicked={globalStatusModal.onOpen}
 				onAutoWithdrawalRuleClicked={autoWithdrawalRuleModal.onOpen}
 				onAutoVerifyRuleClicked={autoVerifyRuleModal.onOpen}
+				onWithdrawalBlockSwitchClick={withdrawalOptionStatusModal.onOpen}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentManagementTable
@@ -903,6 +940,18 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				autoVerifyRuleList={autoVerifyRuleList}
 				onCancel={addAutoVerifyRuleModal.onCancel}
 				onSubmit={handleAddAutoVerifyRule}
+			/>
+			<WithdrawalOptionStatusModal
+				loading={
+					isGetWithdrawalBlockSwitchFetching ||
+					isSetWithdrawalBlockSwitchLoading
+				}
+				visible={withdrawalOptionStatusModal.visible}
+				onCancel={withdrawalOptionStatusModal.onCancel}
+				currencyListBySite={currencyListBySite}
+				editPermission={editWithdrawalBlockSwitchPermission}
+				withdrawalBlockSwitchList={withdrawalBlockSwitchList}
+				onSetStatus={handleSetWithdrawalBlockSwitch}
 			/>
 		</LayoutContent.Main>
 	)
