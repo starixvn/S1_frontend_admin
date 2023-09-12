@@ -108,10 +108,8 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 		try {
 			await getConfiscatedSummary({
 				siteIds: [siteId],
-				startDate,
-				endDate,
 				...args,
-			})
+			}).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -192,6 +190,25 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const loading =
 		isGetConfiscatedListFetching || isGetConfiscatedSummaryFetching
 
+	useEffect(() => {
+		const initSummary = async () => {
+			try {
+				await getConfiscatedSummary({
+					// * 以下初始化參數皆為定值
+					siteIds: [1, 2, 3],
+					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
+					baseCurrencyId: 2,
+					userName: null,
+				}).unwrap()
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
+		}
+		initSummary()
+	}, [])
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
@@ -210,14 +227,15 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
-
-			<ConfiscatedListTable
-				loading={loading}
-				pagination={pagination}
-				timeZoneUtcOffset={timeZoneUtcOffset}
-				confiscatedList={confiscatedList}
-				onTableChange={handleTableChange}
-			/>
+			{!isEmpty(queryParams) && (
+				<ConfiscatedListTable
+					loading={loading}
+					pagination={pagination}
+					timeZoneUtcOffset={timeZoneUtcOffset}
+					confiscatedList={confiscatedList}
+					onTableChange={handleTableChange}
+				/>
+			)}
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

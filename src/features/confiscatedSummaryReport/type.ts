@@ -7,7 +7,7 @@ export interface IGetConfiscatedListArgs {
 	startDate: string
 	endDate: string
 	baseCurrencyId: number
-	userName: string | number
+	userName: string | null
 	pageNumber: number
 	pageSize: number
 }
@@ -32,7 +32,7 @@ export type IConfiscatedResponse = IAxiosResponse<IConfiscatedData[]>
 
 export type IGetConfiscatedSummaryArgs = Omit<
 	IGetConfiscatedListArgs,
-	'pageNumber' | 'pageSize'
+	'pageNumber' | 'pageSize' | 'startDate' | 'endDate'
 >
 
 export interface IConfiscatedSummaryData {
@@ -48,7 +48,7 @@ export type IConfiscatedSummaryResponse =
 	IAxiosResponse<IConfiscatedSummaryData>
 
 export type IExportConfiscatedArgs = Omit<
-	IGetConfiscatedSummaryArgs,
+	IGetConfiscatedListArgs,
 	'pageNumber' | 'pageSize'
 >
 
