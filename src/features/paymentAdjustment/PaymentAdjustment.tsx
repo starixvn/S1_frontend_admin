@@ -63,7 +63,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			methodTypeID: selectedMethodType,
 			adjustmentTypeID: formAdjustmentType,
 		},
-		{ skip: !selectedMethodType || !formAdjustmentType }
+		{ skip: !formAdjustmentType }
 	)
 	const {
 		data: { data: adjustTypeList = [] } = {} as IEnumTypeResponse,
