@@ -1,6 +1,6 @@
 const ADJUSTMENT_TYPE = {
-	ADD: 1,
-	MINUS: 2,
+	ADD: 5,
+	MINUS: 6,
 }
 
 export const adjustmentTypeList: { id: number; displayKey: string }[] = [

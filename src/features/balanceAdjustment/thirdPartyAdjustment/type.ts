@@ -42,6 +42,7 @@ export type ICustInfoWithTpBalanceResponse =
 export interface IAdjustmentData {
 	id: number
 	name: string
+	type: number
 }
 
 export type IAdjustmentReasonResponse = IAxiosResponse<IAdjustmentData[]>
@@ -95,4 +96,5 @@ export interface ISetTpFundsAdjustmentArgs {
 	memo: string
 	reasonId: number
 	transId: string // * transId(DepositId)，reasonId=9 才需要帶
+	methodType: number
 }
