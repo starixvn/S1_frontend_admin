@@ -41,6 +41,7 @@ export interface IGetPaymentAdjustmentReportData {
 	walletType: string
 	categoryName: string
 	depositId: string
+	methodType: number
 }
 
 export type ICurrencyAmountRecordData = {
@@ -60,6 +61,7 @@ export type IAdjustmentData = {
 	category: number
 	memo: string
 	adjustType: number
+	methodType: number
 }
 
 export interface ISetAdjustmentArgs {
@@ -68,6 +70,7 @@ export interface ISetAdjustmentArgs {
 	transId: string
 	before: IAdjustmentData
 	after: IAdjustmentData
+	methodType: number
 }
 
 export interface IGetReasonListData {

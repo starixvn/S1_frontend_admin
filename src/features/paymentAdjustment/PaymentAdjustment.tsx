@@ -6,7 +6,6 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
 	useExportPaymentAdjustmentReportMutation,
-	useGetPaymentReasonListQuery,
 	useLazyGetPaymentAdjustmentReportQuery,
 	useSetPaymentAdjustmentMutation,
 } from 'features/paymentAdjustment/api'
@@ -33,6 +32,8 @@ import {
 } from 'features/paymentAdjustment/type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
+import { IGetReasonListResponse } from 'features/balanceAdjustment/balanceAdjustment/type'
+import { useGetReasonListQuery } from 'features/balanceAdjustment/balanceAdjustment/api'
 
 const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -50,11 +51,20 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 
-	const {
-		data: { data: reasonList = [] } = {},
-		isLoading: isGetReasonListLoading,
-	} = useGetPaymentReasonListQuery(null)
+	const [selectedMethodType, setSelectedMethodType] = useState<number>(0)
 
+	const formAdjustmentType = Form.useWatch('adjustType', editForm)
+
+	const {
+		data: { data: reasonList } = {} as IGetReasonListResponse,
+		isLoading: isGetReasonListLoading,
+	} = useGetReasonListQuery(
+		{
+			methodTypeID: selectedMethodType,
+			adjustmentTypeID: formAdjustmentType,
+		},
+		{ skip: !selectedMethodType || !formAdjustmentType }
+	)
 	const {
 		data: { data: adjustTypeList = [] } = {} as IEnumTypeResponse,
 		isLoading: isGetAdjustTypeListLoading,
@@ -170,11 +180,13 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			category: adjustCategory,
 			memo,
 			adjustType,
+			methodType: selectedMethodType,
 		}
 		const afterData: IAdjustmentData = {
 			category: afterCategory,
 			memo: afterMemo,
 			adjustType: afterAdjustType,
+			methodType: selectedMethodType,
 		}
 		try {
 			await setPaymentAdjustment({
@@ -183,6 +195,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 				transId,
 				before: beforeData,
 				after: afterData,
+				methodType: selectedMethodType,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setEditingTransId(undefined)
@@ -314,6 +327,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentAdjustmentTable
+					setSelectedMethodType={setSelectedMethodType}
 					loading={loading}
 					paymentAdjustmentReport={paymentAdjustmentReport}
 					pagination={pagination}
