@@ -9,6 +9,7 @@ import {
 	IGetCustInfoWithBalanceArgs,
 	IGetReasonListResponse,
 	ISubmitAdjustmentArgs,
+	IGetReasonListArgs,
 } from './type'
 
 export const balanceAdjustmentApi = rootApi.injectEndpoints({
@@ -20,7 +21,7 @@ export const balanceAdjustmentApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getReasonList: builder.query<IGetReasonListResponse, null>({
+		getReasonList: builder.query<IGetReasonListResponse, IGetReasonListArgs>({
 			query: data => ({
 				url: 'BalanceAdjustment/GetReasonList',
 				method: 'POST',

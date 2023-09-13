@@ -38,6 +38,7 @@ interface IPaymentAdjustmentTableProps {
 	setEditingKey: React.Dispatch<React.SetStateAction<string | undefined>>
 	onSaved: (before: IGetPaymentAdjustmentReportData) => void
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	setSelectedMethodType: React.Dispatch<React.SetStateAction<number>>
 }
 
 const { Option } = Select
@@ -55,12 +56,15 @@ const PaymentAdjustmentTable = ({
 	onSaved,
 	setEditingKey,
 	onTableChange,
+	setSelectedMethodType,
 }: IPaymentAdjustmentTableProps) => {
 	const { t } = useTranslation()
 
 	const onEdit = (record: IGetPaymentAdjustmentReportData) => {
+		const { transId, methodType } = record
 		form.setFieldsValue({ ...record })
-		setEditingKey(record.transId)
+		setEditingKey(transId)
+		setSelectedMethodType(methodType)
 	}
 
 	const isEditing = (transId: string) => transId === editingKey
@@ -253,7 +257,7 @@ const PaymentAdjustmentTable = ({
 			render: (record: IGetPaymentAdjustmentReportData) => {
 				const { adjustCategoryName, transId } = record
 				const editable = isEditing(transId)
-				return editable ? (
+				return editable && reasonList ? (
 					<Form.Item name='adjustCategory' style={{ margin: 0 }}>
 						<Select>
 							{reasonList?.map(({ id, name }) => (
