@@ -3,6 +3,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 export interface IGetAdjustmentTypeData {
 	id: number
 	name: string
+	type: number
 }
 
 export type IGetAdjustmentTypeResponse = IAxiosResponse<
@@ -48,6 +49,7 @@ export interface ISubmitAdjustmentArgs {
 	memo: string
 	reasonId: number | null
 	transId: string
+	methodType: number
 }
 
 export interface IAdjustmentLimitInfo {
@@ -70,4 +72,15 @@ export interface IGetAdjustmentLimitInfoArgs {
 export interface ICheckPasswordArgs {
 	siteId: number
 	password: string
+}
+
+export interface IGetReasonListArgs {
+	methodTypeID: number
+	adjustmentTypeID: number
+}
+
+export enum ReasonTypeEum {
+	Others = 0,
+	Deposit = 1,
+	Withdrawal = 2,
 }

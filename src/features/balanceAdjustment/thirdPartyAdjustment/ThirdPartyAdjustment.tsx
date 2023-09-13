@@ -45,6 +45,8 @@ const ThirdPartyAdjustment: FC<{
 		transId: string
 	}>()
 
+	const formAdjustmentType = Form.useWatch('adjustmentType', infoForm)
+
 	const {
 		data: { data: tpListBySiteId = [] } = {},
 		isFetching: isGetTpListBySiteIdFetching,
@@ -56,8 +58,15 @@ const ThirdPartyAdjustment: FC<{
 
 	const {
 		data: { data: adjustmentReasonList = [] } = {},
-		isFetching: isGetAdjustmentReasonListFetching,
-	} = useGetAdjustmentReasonListQuery(null)
+		// isFetching: isGetAdjustmentReasonListFetching,
+	} = useGetAdjustmentReasonListQuery(
+		{
+			methodTypeID: methodType,
+			adjustmentTypeID: formAdjustmentType,
+		},
+
+		{ skip: !methodType || !formAdjustmentType }
+	)
 
 	const [
 		getCustInfoWithTpBalance,
@@ -125,6 +134,7 @@ const ThirdPartyAdjustment: FC<{
 			memo,
 			reasonId,
 			transId,
+			methodType,
 		}
 
 		try {
@@ -154,14 +164,14 @@ const ThirdPartyAdjustment: FC<{
 		}
 	}, [isGetTpListBySiteIdLoading])
 
-	// * 等待 fetch 完成並初始 infoForm 資訊
-	useEffect(() => {
-		if (!isGetAdjustmentReasonListFetching) {
-			infoForm.setFieldsValue({
-				reasonId: head(adjustmentReasonList)?.id,
-			})
-		}
-	}, [isGetAdjustmentReasonListFetching])
+	// 等待 fetch 完成並初始 infoForm 資訊
+	// useEffect(() => {
+	// 	if (!isGetAdjustmentReasonListFetching) {
+	// 		infoForm.setFieldsValue({
+	// 			reasonId: head(adjustmentReasonList)?.id,
+	// 		})
+	// 	}
+	// }, [isGetAdjustmentReasonListFetching])
 
 	useEffect(() => {
 		const { userName = '', sabaId = '' } = queryParams
