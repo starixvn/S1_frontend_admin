@@ -74,7 +74,8 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}) => {
 		if (!siteId) return
 
-		const { dateRange, ...args } = await filterForm.validateFields()
+		const { dateRange, currencyIds, ...args } =
+			await filterForm.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
@@ -87,6 +88,7 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 				endDate,
 				pageNumber: current,
 				pageSize,
+				currencyIds,
 				...args,
 			}).unwrap()
 			setQueryParams({
@@ -96,6 +98,7 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZone: timeZoneUtcOffset,
 				pageNumber: current,
 				pageSize,
+				currencyIds,
 				...args,
 			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -108,6 +111,8 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 		try {
 			await getConfiscatedSummary({
 				siteIds: [siteId],
+				// currencyIds 不會被 search 影響 Summary 只會受到 baseCurrencyId 影響
+				currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 				...args,
 			}).unwrap()
 		} catch (error) {
@@ -192,10 +197,11 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		const initSummary = async () => {
+			if (!siteId) return
 			try {
 				await getConfiscatedSummary({
 					// * 以下初始化參數皆為定值
-					siteIds: [1, 2, 3],
+					siteIds: [siteId],
 					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 					baseCurrencyId: 2,
 					userName: null,
