@@ -24,6 +24,8 @@ import {
 	IDeleteAutoVerifyRuleArgs,
 	ISystemBankInfoData,
 	ISetSystemBankInfoArgs,
+	IWithdrawalBlockSwitchData,
+	ISetWithdrawalBlockSwitchArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -37,6 +39,7 @@ export const paymentManagementApi = createApi({
 		'SetAutoWithdrawalRule',
 		'SetAutoVerifyRule',
 		'SetSystemBankInfo',
+		'SetWithdrawalBlockSwitch',
 	],
 	endpoints: builder => ({
 		// 取得global status 列表
@@ -234,6 +237,30 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetSystemBankInfo'],
 		}),
+		// Withdrawal Option Status Management - 取得提款列表(針對前台 Bank Card/E-Wallet/Crypto)
+		getWithdrawalBlockSwitchList: builder.query<
+			IAxiosResponse<IWithdrawalBlockSwitchData[]>,
+			null
+		>({
+			query: data => ({
+				url: 'WithdrawalBlockSwitch/GetList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetWithdrawalBlockSwitch'],
+		}),
+		//  Withdrawal Option Status Management - 更新提款列表(針對前台 Bank Card/E-Wallet/Crypto)
+		setWithdrawalBlockSwitch: builder.mutation<
+			IAxiosResponse<null>,
+			ISetWithdrawalBlockSwitchArgs
+		>({
+			query: data => ({
+				url: 'WithdrawalBlockSwitch/Set',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetWithdrawalBlockSwitch'],
+		}),
 	}),
 })
 
@@ -256,4 +283,6 @@ export const {
 	useDeleteAutoVerifyRuleMutation,
 	useGetSystemBankInfoListQuery,
 	useSetSystemBankInfoMutation,
+	useGetWithdrawalBlockSwitchListQuery,
+	useSetWithdrawalBlockSwitchMutation,
 } = paymentManagementApi

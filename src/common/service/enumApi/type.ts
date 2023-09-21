@@ -68,7 +68,7 @@ export type EnumNameType =
 	| 'BonusSummaryTransactionType'
 	| 'ReferralStatusEnum'
 	| 'AutoType'
-	| 'ReferralStatusEnum'
+	| 'WithdrawalBlockTypeEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -111,10 +111,10 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  TriggeredPoints - 取得 TriggerPoints 列表
 	 * @argument {string}  ShieldRiskTagged - 取得 Tagged 列表
 	 * @argument {string}  TaggedIssue - 取得 TaggedIssue 狀態列表
+	 * @argument {string}  VipStatus - 取得Vip狀態列表
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
-	 * @argument {string}  VipStatus - 取得Vip狀態列表
 	 * @argument {string}  BlockCryptoStatus - 取得 Block Crypto Status 列表
 	 * @argument {string}  CustCryptoWalletDetailSatatus - 取得 Customer Crypto Wallet Status 列表
 	 * @argument {string}  DirectionEnum - 取得 Direction 列表
@@ -128,7 +128,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  CustTpGameTypeSettingGetType - 取得 CustTpGameTypeSettingGetType 列表 (遊戲可玩可不玩 顯示與不顯示)
 	 * @argument {string}  ReferralStatusEnum - 取得 ReferralStatusEnum 列表
 	 * @argument {string}  AutoType - 取得 AutoType 列表
-	 * @argument {string}  ReferralStatusEnum - 取得 ReferralStatusEnum 列表
+	 * @argument {string}  WithdrawalBlockTypeEnum - 取得 WithdrawalBlockTypeEnum 列表
 	 */
 	enumName: EnumNameType
 }

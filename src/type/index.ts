@@ -103,6 +103,7 @@ export interface ActionPermissions {
 	resetOtpLimitPermission: PermissionInterface
 	editWithdrawalAutoVerifyRulePermission: PermissionInterface
 	editSystemBankInfoPermission: PermissionInterface
+	editWithdrawalBlockSwitchPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

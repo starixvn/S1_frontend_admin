@@ -1,5 +1,4 @@
 // 取得支付第三方列表
-
 export interface IGetGlobalStatusArgs {
 	siteId?: number
 }
@@ -286,6 +285,18 @@ export type IAddAutoVerifyRuleForm = {
 	tags: number[]
 	deviceLevel: string[]
 	deviceScores: number
+}
+
+export interface IWithdrawalBlockSwitchData {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
+export interface ISetWithdrawalBlockSwitchArgs {
+	currencyId: number
+	type: number
+	status: boolean
 }
 
 export interface ISystemBankInfoData {

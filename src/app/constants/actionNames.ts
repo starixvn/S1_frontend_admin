@@ -82,4 +82,5 @@ export const ACTION_NAMES: {
 	87: 'resetOtpLimitPermission',
 	89: 'editWithdrawalAutoVerifyRulePermission',
 	90: 'editSystemBankInfoPermission',
+	91: 'editWithdrawalBlockSwitchPermission',
 }
