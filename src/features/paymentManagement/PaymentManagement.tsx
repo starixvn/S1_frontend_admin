@@ -266,7 +266,9 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: withdrawalBlockSwitchList = [] } = {},
 		isFetching: isGetWithdrawalBlockSwitchFetching,
-	} = useGetWithdrawalBlockSwitchListQuery(null)
+	} = useGetWithdrawalBlockSwitchListQuery(null, {
+		refetchOnMountOrArgChange: true, // 切換 site 時 會被 cache 住
+	})
 
 	const [
 		setWithdrawalBlockSwitch,
