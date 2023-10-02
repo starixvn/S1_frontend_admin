@@ -56,7 +56,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
 					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
 					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
-				}[siteId] ?? ''
+				}[siteId] ?? 'Highest Club'
 			)
 		}
 		const vintageClubTitle = () => {
@@ -65,9 +65,10 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
 					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
 					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
-				}[siteId] ?? ''
+				}[siteId] ?? t('GameLevel.Label_VintageClub') // * 默認值
 			)
 		}
+
 		return [
 			{
 				title: t('Label_Action'),
