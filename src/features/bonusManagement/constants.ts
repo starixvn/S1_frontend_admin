@@ -44,7 +44,7 @@ export enum WalletTypeEnum {
 }
 
 export const walletTypeList: ListType = [
-	{ value: WalletTypeEnum.Transfer, displayName: 'Label_Transfer' },
+	// { value: WalletTypeEnum.Transfer, displayName: 'Label_Transfer' },
 	{ value: WalletTypeEnum.Seamless, displayName: 'Label_Seamless' },
 ]
 

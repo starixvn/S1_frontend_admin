@@ -1209,5 +1209,13 @@
 	"Label_MemberList": "Member List",
 	"Label_TotalRefereeCountPayout": "Total Referee Count (with payout)",
 	"Label_DeviceScoresHint": "Above 75 is Low Risk",
-	"Label_IncludeTestData": "Include Test Data"
+	"Label_IncludeTestData": "Include Test Data",
+	"Label_SuspendDate": "Suspend Date",
+	"Label_RegistrationDate": "Registration Date",
+	"Label_PTWallet": "PT Wallet",
+	"Label_V8": "V8 Wallet",
+	"Label_NetDeposit": "Net Deposit",
+	"Label_NetConfiscatedCash": "Net Confiscated Cash",
+	"Label_ToTalNetDeposit": "ToTal Net Deposit",
+	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash"
 }

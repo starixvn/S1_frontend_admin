@@ -208,7 +208,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						sameByActive: false,
 						mainFormActive: false,
 						promotionDeviceType: DevicesDetailEnum.All,
-						walletType: WalletTypeEnum?.Transfer,
+						walletType: WalletTypeEnum?.Seamless,
 						selectedVipLevel: ['all'],
 						periodType: PeriodTypeEnum.Daily,
 						promotionAction: PromotionActionEnum.Detail,
@@ -443,21 +443,35 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						{multiEqual(currentBonusType as number, [
 							BonusTypeEnum.ReDeposit as number,
 							BonusTypeEnum.DeviceBonus as number,
+							BonusTypeEnum.CashBack as number,
 						]) && (
 							<Col lg={6} md={6} sm={6}>
 								<Form.Item name='periodType' label={t('Label_PeriodType')}>
 									<Select
 										placeholder={t('Label_Select')}
 										disabled={
-											// 此欄位只有 當BonusType = ReDeposit 時在 edit 狀態不可修改
-											currentBonusType === BonusTypeEnum.ReDeposit && isEdit
+											// 此欄位只有 當BonusType = ReDeposit / CashBack 時在 edit 狀態不可修改
+											(currentBonusType === BonusTypeEnum.ReDeposit ||
+												currentBonusType === BonusTypeEnum.CashBack) &&
+											isEdit
 										}
 									>
-										{periodTypeList?.map(type => (
-											<Option key={type.value} value={type.value}>
-												{t(type.displayName)}
-											</Option>
-										))}
+										{
+											// 使用三元式判斷: 當BonusType = CashBack 時只能選 Daily 或 Weekly
+											// 其餘 BonusType(上面有限定過，所以剩下ReDeposit和DeviceBonus)可選擇全部 PeriodType
+											(currentBonusType === BonusTypeEnum.CashBack
+												? periodTypeList?.filter(
+														type =>
+															type.value === PeriodTypeEnum.Daily ||
+															type.value === PeriodTypeEnum.Weekly
+												  )
+												: periodTypeList
+											)?.map(type => (
+												<Option key={type.value} value={type.value}>
+													{t(type.displayName)}
+												</Option>
+											))
+										}
 									</Select>
 								</Form.Item>
 							</Col>
@@ -727,6 +741,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										onChange={() => {
 											form?.resetFields(['categoryId'])
 										}}
+										disabled
 									>
 										{walletTypeList?.map(type => (
 											<Option key={type.value} value={type.value}>
