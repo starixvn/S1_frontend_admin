@@ -151,10 +151,10 @@ const WithdrawalRequestInfo = ({
 			if (hasEWallet) {
 				result.push(
 					<Option
-						value={WithdrawalTypeEnum.OnlinePayment}
-						key={WithdrawalTypeEnum.OnlinePayment}
+						value={WithdrawalTypeEnum.EWalletPayment}
+						key={WithdrawalTypeEnum.EWalletPayment}
 					>
-						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.OnlinePayment])}
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.EWalletPayment])}
 					</Option>
 				)
 			}
@@ -185,6 +185,15 @@ const WithdrawalRequestInfo = ({
 
 	const getPaymentOptions = () => {
 		if (type === WithdrawalTypeEnum.OnlinePayment) {
+			// onlinePayment
+			return onlinePayList?.map(({ payId, payName }) => (
+				<Option value={payId} key={payId}>
+					{payName}
+				</Option>
+			))
+		}
+
+		if (type === WithdrawalTypeEnum.EWalletPayment) {
 			if (isEWallet) {
 				// ewallet
 				return eWalletList?.map(({ payId, payName }) => (
@@ -193,12 +202,6 @@ const WithdrawalRequestInfo = ({
 					</Option>
 				))
 			}
-			// onlinePayment
-			return onlinePayList?.map(({ payId, payName }) => (
-				<Option value={payId} key={payId}>
-					{payName}
-				</Option>
-			))
 		}
 		// cryptoPay
 		return cryptoPayList?.map(({ payId, payName }) => (
@@ -413,6 +416,7 @@ const WithdrawalRequestInfo = ({
 					{multiEqual(type, [
 						WithdrawalTypeEnum.CryptoPay,
 						WithdrawalTypeEnum.OnlinePayment,
+						WithdrawalTypeEnum.EWalletPayment,
 					]) && (
 						<Item label={t('Label_Select') + t('Label_Pay')}>
 							<Row justify='space-between' align='middle'>

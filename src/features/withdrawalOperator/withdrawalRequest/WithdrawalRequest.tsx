@@ -502,7 +502,10 @@ const WithdrawalRequest = () => {
 							withdrawalInfo,
 							action,
 							selId: rawSelId,
-							withdrawalType,
+							withdrawalType:
+								accountType === AccountTypeEnum.EWallet
+									? WithdrawalTypeEnum.EWalletPayment
+									: withdrawalType,
 							channelId,
 						}).unwrap()
 					} catch (error) {
