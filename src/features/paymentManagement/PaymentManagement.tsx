@@ -743,47 +743,6 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	useEffect(() => {
-		const init = () => {
-			if (!isEmpty(queryParams)) {
-				const {
-					currencyIds,
-					status,
-					method,
-					globalStatus,
-					type,
-					payId,
-					pageNumber,
-					pageSize,
-				} = queryParams
-
-				filterForm.setFieldsValue({
-					currencyIds: currencyIds.map((currency: string) => Number(currency)),
-					status: !Number(status) ? status : Number(status),
-					method: !Number(method) ? method : Number(method),
-					globalStatus: !Number(globalStatus)
-						? globalStatus
-						: Number(globalStatus),
-					type: !Number(type) ? type : Number(type),
-					payId: !Number(payId) ? payId : Number(payId),
-				})
-				handleSearch({
-					current: Number(pageNumber),
-					pageSize: Number(pageSize),
-				})
-			}
-		}
-		init()
-	}, [])
-
-	useEffect(() => {
-		if (!isGetMethodListLoading) {
-			filterForm.setFieldsValue({
-				method: head(methodList)?.value,
-			})
-		}
-	}, [isGetMethodListLoading])
-
 	const filterLoading =
 		isGetMethodListLoading ||
 		isGetTypeListLoading ||
@@ -800,6 +759,47 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetAutoVerifyRuleLoading ||
 		isSetAutoVerifyRuleLoading ||
 		isDeleteAutoVerifyRuleLoading
+
+	useEffect(() => {
+		const init = () => {
+			if (!filterLoading) {
+				if (!isEmpty(queryParams)) {
+					const {
+						currencyIds,
+						status,
+						method,
+						globalStatus,
+						type,
+						payId,
+						pageNumber,
+						pageSize,
+					} = queryParams
+
+					filterForm.setFieldsValue({
+						currencyIds: currencyIds.map((currency: string) =>
+							Number(currency)
+						),
+						status: !Number(status) ? status : Number(status),
+						method: !Number(method) ? method : Number(method),
+						globalStatus: !Number(globalStatus)
+							? globalStatus
+							: Number(globalStatus),
+						type: !Number(type) ? type : Number(type),
+						payId: !Number(payId) ? payId : Number(payId),
+					})
+					handleSearch({
+						current: Number(pageNumber),
+						pageSize: Number(pageSize),
+					})
+				} else {
+					filterForm.setFieldsValue({
+						method: head(methodList)?.value,
+					})
+				}
+			}
+		}
+		init()
+	}, [filterLoading])
 
 	return (
 		<LayoutContent.Main>

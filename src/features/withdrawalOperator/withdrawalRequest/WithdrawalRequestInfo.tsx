@@ -399,6 +399,10 @@ const WithdrawalRequestInfo = ({
 										form.setFieldsValue({
 											selId: head(cryptoPayList)?.payId,
 										})
+									} else if (value === WithdrawalTypeEnum.EWalletPayment) {
+										form.setFieldsValue({
+											selId: head(eWalletList)?.payId,
+										})
 									}
 								}}
 							>
