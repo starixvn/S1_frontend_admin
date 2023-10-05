@@ -1216,6 +1216,6 @@
 	"Label_V8": "V8 Wallet",
 	"Label_NetDeposit": "Net Deposit",
 	"Label_NetConfiscatedCash": "Net Confiscated Cash",
-	"Label_ToTalNetDeposit": "ToTal Net Deposit",
+	"Label_ToTalNetDeposit": "Total Net Deposit",
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash"
 }
