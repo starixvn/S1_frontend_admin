@@ -1026,4 +1026,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.confiscatedSummaryReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.confiscatedSummaryReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.confiscatedSummaryReport.root,
+	},
 ]
