@@ -133,7 +133,7 @@ export enum AmountRuleEnum {
 
 export type IFilterForm = {
 	currencyIds: number[]
-	method: number | string
+	method: number
 	payId: number | string
 	type: number | string
 	globalStatus: number | string
@@ -323,4 +323,9 @@ export enum AutoTypeEnums {
 export enum AutoTypeDisplayNameEnums {
 	AutoVerify = 'AutoVerify',
 	AutoApproved = 'AutoApproved',
+}
+
+export enum MethodsTypeEnums {
+	Deposit = 1,
+	Withdrawal,
 }

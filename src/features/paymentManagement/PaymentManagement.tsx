@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, head } from 'lodash'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -53,6 +53,7 @@ import {
 	IAddAutoVerifyRuleForm,
 	AutoTypeEnums,
 	AutoTypeDisplayNameEnums,
+	MethodsTypeEnums,
 } from 'features/paymentManagement/type'
 import { PaymentManagementTable } from 'features/paymentManagement/PaymentManagementTable'
 import { OnlineBankInfoModal } from 'features/paymentManagement/modals/OnlineBankInfoModal'
@@ -105,6 +106,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [editForm] = Form.useForm<IEditForm>()
 
 	const [filterForm] = Form.useForm<IFilterForm>()
+	const filterFormMethod = Form.useWatch('method', filterForm)
 
 	const [loginInfoForm] = Form.useForm<ILoginInfoForm>()
 
@@ -141,9 +143,15 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: typeList = [] } = {},
 		isLoading: isGetTypeListLoading,
-	} = useGetEnumTypeQuery({
-		enumName: 'PayChannelTypeEnum',
-	})
+	} = useGetEnumTypeQuery(
+		{
+			enumName:
+				filterFormMethod === MethodsTypeEnums.Deposit
+					? 'DepositChannelTypeEnum'
+					: 'WithdrawalChannelTypeEnum',
+		},
+		{ skip: !filterFormMethod, refetchOnMountOrArgChange: true }
+	)
 
 	// GlobalStatus 下拉選單
 	const {
@@ -304,7 +312,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId,
 				currencyIds,
 				status: status === 'all' ? null : Number(status),
-				method: method === 'all' ? null : Number(method),
+				method,
 				globalStatus: globalStatus === 'all' ? null : Number(globalStatus),
 				type: type === 'all' ? null : Number(type),
 				payId: payId === 'all' ? null : Number(payId),
@@ -809,38 +817,6 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	useEffect(() => {
-		const init = () => {
-			if (!isEmpty(queryParams)) {
-				const {
-					currencyIds,
-					status,
-					method,
-					globalStatus,
-					type,
-					payId,
-					pageNumber,
-					pageSize,
-				} = queryParams
-				filterForm.setFieldsValue({
-					currencyIds: currencyIds.map((currency: string) => Number(currency)),
-					status: !Number(status) ? status : Number(status),
-					method: !Number(method) ? method : Number(method),
-					globalStatus: !Number(globalStatus)
-						? globalStatus
-						: Number(globalStatus),
-					type: !Number(type) ? type : Number(type),
-					payId: !Number(payId) ? payId : Number(payId),
-				})
-				handleSearch({
-					current: Number(pageNumber),
-					pageSize: Number(pageSize),
-				})
-			}
-		}
-		init()
-	}, [])
-
 	const filterLoading =
 		isGetMethodListLoading ||
 		isGetTypeListLoading ||
@@ -857,6 +833,47 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetAutoVerifyRuleLoading ||
 		isSetAutoVerifyRuleLoading ||
 		isDeleteAutoVerifyRuleLoading
+
+	useEffect(() => {
+		const init = () => {
+			if (!filterLoading) {
+				if (!isEmpty(queryParams)) {
+					const {
+						currencyIds,
+						status,
+						method,
+						globalStatus,
+						type,
+						payId,
+						pageNumber,
+						pageSize,
+					} = queryParams
+
+					filterForm.setFieldsValue({
+						currencyIds: currencyIds.map((currency: string) =>
+							Number(currency)
+						),
+						status: !Number(status) ? status : Number(status),
+						method: !Number(method) ? method : Number(method),
+						globalStatus: !Number(globalStatus)
+							? globalStatus
+							: Number(globalStatus),
+						type: !Number(type) ? type : Number(type),
+						payId: !Number(payId) ? payId : Number(payId),
+					})
+					handleSearch({
+						current: Number(pageNumber),
+						pageSize: Number(pageSize),
+					})
+				} else {
+					filterForm.setFieldsValue({
+						method: head(methodList)?.value,
+					})
+				}
+			}
+		}
+		init()
+	}, [filterLoading])
 
 	return (
 		<LayoutContent.Main>

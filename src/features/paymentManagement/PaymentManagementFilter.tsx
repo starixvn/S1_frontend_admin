@@ -1,3 +1,4 @@
+import { head } from 'lodash'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { useTranslation } from 'react-i18next'
 import {
@@ -62,6 +63,10 @@ const PaymentManagementFilter = ({
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
 
+	const handleFormMethod = () => {
+		form.resetFields(['type'])
+	}
+
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
@@ -106,7 +111,7 @@ const PaymentManagementFilter = ({
 							size='middle'
 							onFinish={() => onSearch({})}
 							initialValues={{
-								method: 'all',
+								method: head(methodList)?.value,
 								payId: 'all',
 								type: 'all',
 								globalStatus: 'all',
@@ -122,10 +127,7 @@ const PaymentManagementFilter = ({
 								</Col>
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item name='method' label={t('Label_MethodType')}>
-										<Select>
-											<Option key='all' value='all'>
-												{t('Label_All')}
-											</Option>
+										<Select onChange={handleFormMethod}>
 											{methodList?.map(method => (
 												<Option key={method.value} value={method.value}>
 													{method.name}

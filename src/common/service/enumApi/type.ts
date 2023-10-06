@@ -69,6 +69,8 @@ export type EnumNameType =
 	| 'ReferralStatusEnum'
 	| 'AutoType'
 	| 'WithdrawalBlockTypeEnum'
+	| 'DepositChannelTypeEnum'
+	| 'WithdrawalChannelTypeEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -129,6 +131,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  ReferralStatusEnum - 取得 ReferralStatusEnum 列表
 	 * @argument {string}  AutoType - 取得 AutoType 列表
 	 * @argument {string}  WithdrawalBlockTypeEnum - 取得 WithdrawalBlockTypeEnum 列表
+	 * @argument {string}  DepositChannelTypeEnum - 取得 DepositChannelTypeEnum 列表
+	 * @argument {string}  WithdrawalChannelTypeEnum - 取得 WithdrawalChannelTypeEnum 列表
 	 */
 	enumName: EnumNameType
 }
