@@ -127,7 +127,9 @@ const IssueBonusManagementInfoContent = ({
 	const handleCheckPasswordModal = async (newAmount: number) => {
 		if (!isNumber(adjustmentMax)) return
 
-		if (newAmount >= adjustmentMax) {
+		if (adjustmentMax === 0) {
+			handleSetBonusPayout(newAmount)
+		} else if (newAmount >= adjustmentMax) {
 			setBonusPayoutAmount(newAmount)
 			checkPasswordModal.onOpen()
 		} else {
