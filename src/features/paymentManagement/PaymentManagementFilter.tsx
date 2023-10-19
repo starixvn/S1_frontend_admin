@@ -216,47 +216,49 @@ const PaymentManagementFilter = ({
 										{t('Label_Search')}
 									</Button>
 								</Col>
-								<Col>
-									<Button
-										type='primary'
-										disabled={!editPermission?.canUse}
-										onClick={onSetGlobalStatusClicked}
-									>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
-								</Col>
-								<Col>
-									<Button
-										type='primary'
-										disabled={!editPermission?.canUse}
-										onClick={onSetCryptoInfoClicked}
-									>
-										{t('Label_CryptoSetting')}
-									</Button>
-								</Col>
 
-								<Col>
-									<Button
-										type='primary'
-										disabled={!editWithdrawalAutoVerifyRulePermission?.canUse}
-										onClick={onAutoWithdrawalRuleClicked}
-									>
-										{t('Label_AutoWithdrawalRule')}
-									</Button>
-								</Col>
+								{editPermission?.canUse && (
+									<Col>
+										<Button
+											type='primary'
+											onClick={onSetGlobalStatusClicked}
+										>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
+									</Col>
+								)}
 
-								<Col>
-									<Button
-										type='primary'
-										disabled={!editAutoWithdrawalRulePermission?.canUse}
-										onClick={onAutoVerifyRuleClicked}
-									>
-										{t('Label_AutoVerifyRule')}
-									</Button>
-								</Col>
+								{editPermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onSetCryptoInfoClicked}>
+											{t('Label_CryptoSetting')}
+										</Button>
+									</Col>
+								)}
+
+								{editWithdrawalAutoVerifyRulePermission?.canUse && (
+									<Col>
+										<Button
+											type='primary'
+											onClick={onAutoWithdrawalRuleClicked}
+										>
+											{t('Label_AutoWithdrawalRule')}
+										</Button>
+									</Col>
+								)}
+
+								{editAutoWithdrawalRulePermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onAutoVerifyRuleClicked}>
+											{t('Label_AutoVerifyRule')}
+										</Button>
+									</Col>
+								)}
+
 								<Col>
 									<Button type='primary' onClick={onSystemBankInfoClicked}>
 										{t('Label_BankMaintenance')}
 									</Button>
 								</Col>
+
 								<Col>
 									<Button type='primary' onClick={onWithdrawalBlockSwitchClick}>
 										{t('Label_WithdrawalOptionStatus')}
