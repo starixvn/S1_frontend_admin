@@ -16,6 +16,7 @@ import { IGetGlobalStatusData } from 'features/paymentManagement/type'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
+import { useAuth } from 'common/hooks'
 
 interface IPaymentManagementFilterProps {
 	filterLoading: boolean
@@ -62,6 +63,13 @@ const PaymentManagementFilter = ({
 	onWithdrawalBlockSwitchClick,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
+	const {
+		actionPermissions: {
+			editPermission,
+			editAutoWithdrawalRulePermission,
+			editWithdrawalAutoVerifyRulePermission,
+		} = {},
+	} = useAuth()
 
 	const handleFormMethod = () => {
 		form.resetFields(['type'])
@@ -211,21 +219,36 @@ const PaymentManagementFilter = ({
 								<Col>
 									<Button
 										type='primary'
+										disabled={!editPermission?.canUse}
 										onClick={onSetGlobalStatusClicked}
 									>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
 								</Col>
 								<Col>
-									<Button type='primary' onClick={onSetCryptoInfoClicked}>
+									<Button
+										type='primary'
+										disabled={!editPermission?.canUse}
+										onClick={onSetCryptoInfoClicked}
+									>
 										{t('Label_CryptoSetting')}
 									</Button>
 								</Col>
+
 								<Col>
-									<Button type='primary' onClick={onAutoWithdrawalRuleClicked}>
+									<Button
+										type='primary'
+										disabled={!editWithdrawalAutoVerifyRulePermission?.canUse}
+										onClick={onAutoWithdrawalRuleClicked}
+									>
 										{t('Label_AutoWithdrawalRule')}
 									</Button>
 								</Col>
+
 								<Col>
-									<Button type='primary' onClick={onAutoVerifyRuleClicked}>
+									<Button
+										type='primary'
+										disabled={!editAutoWithdrawalRulePermission?.canUse}
+										onClick={onAutoVerifyRuleClicked}
+									>
 										{t('Label_AutoVerifyRule')}
 									</Button>
 								</Col>
