@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Col, Form, FormInstance, Input, message, Row } from 'antd'
 import { ConfirmPasswordModal } from 'components/Modal'
 import { useModal } from 'common/hooks'
+import { isNumber } from 'lodash'
 import {
 	useLazyCheckBonusCodeQuery,
 	useLazyCheckTierRedepositBonusQuery,
@@ -124,7 +125,7 @@ const IssueBonusManagementInfoContent = ({
 	}
 
 	const handleCheckPasswordModal = async (newAmount: number) => {
-		if (!adjustmentMax) return
+		if (!isNumber(adjustmentMax)) return
 
 		if (newAmount >= adjustmentMax) {
 			setBonusPayoutAmount(newAmount)
