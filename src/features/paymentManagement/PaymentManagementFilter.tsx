@@ -227,7 +227,7 @@ const PaymentManagementFilter = ({
 									</Col>
 								)}
 
-								{editWithdrawalAutoVerifyRulePermission?.canUse && (
+								{editAutoWithdrawalRulePermission?.canUse && (
 									<Col>
 										<Button
 											type='primary'
@@ -238,7 +238,7 @@ const PaymentManagementFilter = ({
 									</Col>
 								)}
 
-								{editAutoWithdrawalRulePermission?.canUse && (
+								{editWithdrawalAutoVerifyRulePermission?.canUse && (
 									<Col>
 										<Button type='primary' onClick={onAutoVerifyRuleClicked}>
 											{t('Label_AutoVerifyRule')}
