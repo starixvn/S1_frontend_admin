@@ -4,7 +4,7 @@ import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCatego
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
 import {
-	useGetSlotTpListQuery,
+	useGetSlotGamesTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
 	useSetSlotGameAllCurrencyMutation,
@@ -29,13 +29,14 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
 import { AuthContext } from 'common/auth'
+import { CurrencyEnum } from 'type'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { userData } = useContext(AuthContext)
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { siteId = 0 } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<{
 		tpId: number
 		name: string
@@ -63,7 +64,10 @@ const SlotGameCategory: FC<{
 	const {
 		data: { data: tpList } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
-	} = useGetSlotTpListQuery(null)
+	} = useGetSlotGamesTpListQuery({
+		siteId: [siteId],
+		currencyId: CurrencyEnum.All,
+	})
 
 	const [getSlotGameList, { isFetching: isGetSlotGameListLoading }] =
 		useLazyGetSlotGameListQuery()
@@ -103,6 +107,7 @@ const SlotGameCategory: FC<{
 						siteId,
 						pageSize,
 						pageNumber: current,
+
 						...formValue,
 					}).unwrap()
 				const { dataSource, tableColumns } = slotGameResponseConverter(

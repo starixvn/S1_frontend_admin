@@ -1,14 +1,4 @@
-export enum CurrencyEnum {
-	MYR = 2,
-	USD,
-	THB,
-	CNY = 13,
-	IDR = 15,
-	VND = 51,
-	INR = 61,
-	KHM = 72,
-	BDT = 74,
-}
+import { CurrencyEnum } from 'type'
 
 export const LangObj: { [key: string]: number } = {
 	en: 1,

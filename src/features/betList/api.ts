@@ -30,10 +30,16 @@ export const betListApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
-		getProducts: builder.query<IGetProductsResponse, null>({
-			query: () => ({
+		getProducts: builder.query<
+			IGetProductsResponse,
+			{
+				siteId?: number[]
+			}
+		>({
+			query: data => ({
 				url: 'GetAllData/GetTpGameType',
 				method: 'POST',
+				data,
 			}),
 		}),
 		getVipLevels: builder.query<IGetVipLevelsResponse, null>({

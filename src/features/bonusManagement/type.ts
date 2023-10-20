@@ -218,6 +218,8 @@ export interface IGenScratchCardCodeArgs {
 }
 
 export interface IGetCashBackGameListArgs {
+	siteId?: number[]
+	currencyId: number
 	tpId: number
 	categoryId: number
 }
