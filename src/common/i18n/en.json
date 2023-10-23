@@ -1209,6 +1209,7 @@
 	"Label_MemberList": "Member List",
 	"Label_TotalRefereeCountPayout": "Total Referee Count (with payout)",
 	"Label_DeviceScoresHint": "Above 75 is Low Risk",
+	"Label_EWalletPayment": "EWallet Payment",
 	"Label_IncludeTestData": "Include Test Data",
 	"Label_SuspendDate": "Suspend Date",
 	"Label_RegistrationDate": "Registration Date",
