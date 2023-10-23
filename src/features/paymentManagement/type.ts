@@ -297,6 +297,18 @@ export enum AutoTypeDisplayNameEnums {
 	AutoApproved = 'AutoApproved',
 }
 
+export interface IWithdrawalBlockSwitchData {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
+export interface ISetWithdrawalBlockSwitchArgs {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
 export enum MethodsTypeEnums {
 	Deposit = 1,
 	Withdrawal,

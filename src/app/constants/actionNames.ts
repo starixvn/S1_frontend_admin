@@ -81,4 +81,5 @@ export const ACTION_NAMES: {
 	86: 'exclusiveVipPermission',
 	87: 'resetOtpLimitPermission',
 	89: 'editWithdrawalAutoVerifyRulePermission',
+	91: 'editWithdrawalBlockSwitchPermission',
 }
