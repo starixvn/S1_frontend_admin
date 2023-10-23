@@ -38,6 +38,7 @@ interface IPaymentManagementFilterProps {
 	onSetCryptoInfoClicked: () => void
 	onAutoWithdrawalRuleClicked: () => void
 	onAutoVerifyRuleClicked: () => void
+	onSystemBankInfoClicked: () => void
 	onWithdrawalBlockSwitchClick: () => void
 }
 
@@ -58,6 +59,7 @@ const PaymentManagementFilter = ({
 	onSetGlobalStatusClicked,
 	onAutoWithdrawalRuleClicked,
 	onAutoVerifyRuleClicked,
+	onSystemBankInfoClicked,
 	onWithdrawalBlockSwitchClick,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
@@ -72,6 +74,7 @@ const PaymentManagementFilter = ({
 			editAutoWithdrawalRulePermission,
 			editWithdrawalAutoVerifyRulePermission,
 			editWithdrawalBlockSwitchPermission,
+			editSystemBankInfoPermission,
 		} = {},
 	} = useAuth()
 	const currencyIdsSelector = () => {
@@ -258,6 +261,13 @@ const PaymentManagementFilter = ({
 											onClick={onWithdrawalBlockSwitchClick}
 										>
 											{t('Label_WithdrawalOptionStatus')}
+										</Button>
+									</Col>
+								)}
+								{editSystemBankInfoPermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onSystemBankInfoClicked}>
+											{t('Label_BankMaintenance')}
 										</Button>
 									</Col>
 								)}
