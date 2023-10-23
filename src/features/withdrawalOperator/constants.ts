@@ -51,6 +51,7 @@ export enum WithdrawalTypeEnum {
 	Undefined = 0,
 	OnlinePayment = 1,
 	LocalBank = 2,
+	EWalletPayment,
 	CryptoPay = 4,
 	CryptoWallet = 5,
 }
@@ -58,6 +59,7 @@ export enum WithdrawalTypeEnum {
 export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
 	[WithdrawalTypeEnum.Undefined]: 'Label_Undefined',
 	[WithdrawalTypeEnum.OnlinePayment]: 'Label_OnlinePayment',
+	[WithdrawalTypeEnum.EWalletPayment]: 'Label_EWalletPayment',
 	[WithdrawalTypeEnum.LocalBank]: 'Label_LocalBanking',
 	[WithdrawalTypeEnum.CryptoPay]: 'Label_CryptoPay',
 	[WithdrawalTypeEnum.CryptoWallet]: 'Label_CryptoWallet',
