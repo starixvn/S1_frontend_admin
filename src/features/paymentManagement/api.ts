@@ -22,6 +22,10 @@ import {
 	IAddAutoVerifyRuleArgs,
 	ISetAutoVerifyRuleArgs,
 	IDeleteAutoVerifyRuleArgs,
+	IWithdrawalBlockSwitchData,
+	ISetWithdrawalBlockSwitchArgs,
+	ISystemBankInfoData,
+	ISetSystemBankInfoArgs,
 } from 'features/paymentManagement/type'
 
 export const paymentManagementApi = createApi({
@@ -34,6 +38,8 @@ export const paymentManagementApi = createApi({
 		'SetCryptoStatus',
 		'SetAutoWithdrawalRule',
 		'SetAutoVerifyRule',
+		'SetWithdrawalBlockSwitch',
+		'SetSystemBankInfo',
 	],
 	endpoints: builder => ({
 		// 取得global status 列表
@@ -207,6 +213,54 @@ export const paymentManagementApi = createApi({
 			}),
 			invalidatesTags: ['SetAutoVerifyRule'],
 		}),
+		// Withdrawal Option Status Management - 取得提款列表(針對前台 Bank Card/E-Wallet/Crypto)
+		getWithdrawalBlockSwitchList: builder.query<
+			IAxiosResponse<IWithdrawalBlockSwitchData[]>,
+			null
+		>({
+			query: data => ({
+				url: 'WithdrawalBlockSwitch/GetList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetWithdrawalBlockSwitch'],
+		}),
+		//  Withdrawal Option Status Management - 更新提款列表(針對前台 Bank Card/E-Wallet/Crypto)
+		setWithdrawalBlockSwitch: builder.mutation<
+			IAxiosResponse<null>,
+			ISetWithdrawalBlockSwitchArgs
+		>({
+			query: data => ({
+				url: 'WithdrawalBlockSwitch/Set',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetWithdrawalBlockSwitch'],
+		}),
+		// 取得支付三方列表
+		getSystemBankInfoList: builder.query<
+			IAxiosResponse<ISystemBankInfoData[]>,
+			null
+		>({
+			query: data => ({
+				url: 'BankSetting/GetSystemBankInfoList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['SetSystemBankInfo'],
+		}),
+		// 設定支付三方狀態
+		setSystemBankInfo: builder.mutation<
+			IAxiosResponse<null>,
+			ISetSystemBankInfoArgs
+		>({
+			query: data => ({
+				url: 'BankSetting/SetSystemBankInfo',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetSystemBankInfo'],
+		}),
 	}),
 })
 
@@ -227,4 +281,8 @@ export const {
 	useAddAutoVerifyRuleMutation,
 	useSetAutoVerifyRuleMutation,
 	useDeleteAutoVerifyRuleMutation,
+	useGetWithdrawalBlockSwitchListQuery,
+	useSetWithdrawalBlockSwitchMutation,
+	useGetSystemBankInfoListQuery,
+	useSetSystemBankInfoMutation,
 } = paymentManagementApi

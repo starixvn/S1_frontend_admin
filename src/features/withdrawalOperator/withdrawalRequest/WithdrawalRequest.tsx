@@ -486,13 +486,8 @@ const WithdrawalRequest = () => {
 					break
 				case WithdrawalTypeEnum.OnlinePayment:
 					try {
-						const paymentList =
-							accountType === AccountTypeEnum.EWallet
-								? eWalletList
-								: onlinePayList
-
 						const channelId = find(
-							paymentList,
+							onlinePayList,
 							({ payId }) => payId === rawSelId
 						)?.channelId
 
@@ -512,6 +507,30 @@ const WithdrawalRequest = () => {
 						)
 					}
 					break
+				case WithdrawalTypeEnum.EWalletPayment:
+					try {
+						const channelId = find(
+							eWalletList,
+							({ payId }) => payId === rawSelId
+						)?.channelId
+
+						await setWithdrawalStatus({
+							comment,
+							transId,
+							withdrawalInfo,
+							action,
+							selId: rawSelId,
+							withdrawalType,
+							channelId,
+						}).unwrap()
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
+
 				default:
 					break
 			}

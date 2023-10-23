@@ -24,5 +24,17 @@ pipeline {
                 sh 'ansible-playbook -i ${ansible_path}/DEV.AWS.yml ${ansible_path}/deploy.docker.yml --extra-vars "host=linux-dev docker_name=dev_adminweb ver=desktop/admin-dev:${version} env=${env} docker_ports=5071:5071,443:443 volume=/nginx/admin:/etc/nginx/conf.d"'
             }
         }
+        stage('ArgoCD'){
+            agent { node { label 'Build' } }
+                steps{
+                    dir('/jenkins/frontend-manifest/galaxy/leobet'){
+                        sh 'git pull'
+                        sh "yq -i '.spec.template.spec.containers[0].image = \"harbor.ailabpte.co/desktop/admin-dev:${version}\"' adminweb-deploy.yaml"
+                        sh 'git add adminweb-deploy.yaml'
+                        sh "git commit -m 'update admin ver:${version}'"
+                        sh 'git push'
+                    }
+                }
+            }
     }
 }

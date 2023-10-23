@@ -1,4 +1,5 @@
 // 取得支付第三方列表
+
 export interface IGetGlobalStatusArgs {
 	siteId?: number
 }
@@ -133,7 +134,7 @@ export enum AmountRuleEnum {
 
 export type IFilterForm = {
 	currencyIds: number[]
-	method: number | string
+	method: number
 	payId: number | string
 	type: number | string
 	globalStatus: number | string
@@ -295,4 +296,37 @@ export enum AutoTypeEnums {
 export enum AutoTypeDisplayNameEnums {
 	AutoVerify = 'AutoVerify',
 	AutoApproved = 'AutoApproved',
+}
+
+export interface IWithdrawalBlockSwitchData {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
+export interface ISetWithdrawalBlockSwitchArgs {
+	currencyId: number
+	type: number
+	status: boolean
+}
+
+export enum MethodsTypeEnums {
+	Deposit = 1,
+	Withdrawal,
+}
+
+export interface ISystemBankInfoData {
+	sysId: number
+	currencyId: number
+	isoCode: string
+	bankCode: string
+	bankName: string
+	status: number
+}
+
+export interface ISetSystemBankInfoArgs {
+	sysId: number
+	bankCode: string
+	bankName: string
+	status: number
 }
