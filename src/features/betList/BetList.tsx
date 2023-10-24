@@ -48,10 +48,12 @@ const BetList: FC<{
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const [form] = Form.useForm()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { siteId = 0 } = useAppSelector(selectUserSite) ?? {}
+
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
+
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const {
@@ -62,7 +64,7 @@ const BetList: FC<{
 	const {
 		data: { data: products } = {} as IGetProductsResponse,
 		isFetching: isGetProductsFetching,
-	} = useGetProductsQuery(null)
+	} = useGetProductsQuery({ siteId: [siteId] })
 
 	const {
 		data: { data: categories } = {} as IGetCategoryResponse,

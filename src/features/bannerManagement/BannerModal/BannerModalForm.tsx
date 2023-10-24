@@ -65,7 +65,7 @@ const BannerModalForm = ({
 	showStatusList,
 	bannerActionModeList,
 	languageList,
-	siteId,
+	siteId = 0,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onChangeTab,
@@ -86,7 +86,7 @@ const BannerModalForm = ({
 		data: { data: tpList = [] } = {} as IGetTpBySiteAndCurrencyResponse,
 		isLoading: isGetTpListLoading,
 	} = useGetTpBySiteAndCurrencyQuery(
-		{ siteId, currencyId },
+		{ siteId: [siteId], currencyId },
 		{ skip: !siteId || !currencyId }
 	)
 
@@ -122,6 +122,7 @@ const BannerModalForm = ({
 		onChangeTab(formCurrency)
 		languageList.forEach(lang => {
 			form.resetFields([
+				['tpId'],
 				['specific', lang, 'bannerLink'],
 				['specific', lang, 'bannerPCUrl'],
 				['specific', lang, 'bannerMobileUrl'],

@@ -13,10 +13,17 @@ import {
 
 export const slotGameCategoryApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
-		getSlotTpList: builder.query<IGetTpListResponse, null>({
-			query: () => ({
+		getSlotGamesTpList: builder.query<
+			IGetTpListResponse,
+			{
+				siteId?: number[]
+				currencyId: number
+			}
+		>({
+			query: data => ({
 				url: 'slotGamesManagement/GetTpList',
 				method: 'POST',
+				data,
 			}),
 		}),
 		getSlotGameList: builder.query<
@@ -71,7 +78,7 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 })
 
 export const {
-	useGetSlotTpListQuery,
+	useGetSlotGamesTpListQuery,
 	useLazyGetSlotGameListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useSetSlotGameMutation,
