@@ -20,7 +20,6 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
-import { SiteIds } from 'app/constants/siteIds'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { Currency } from 'common/enum/type'
@@ -81,15 +80,8 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 }) => {
 	const { t } = useTranslation()
 
-	// * IvorySport 為測試網站，不開放部分過濾條件，但保持默認參數，因此只隱藏元件
-	const isHidePartOfFilter = siteId === SiteIds.IvorySport
-
 	const vipLevelSelect = () => (
-		<Form.Item
-			name='vipLevel'
-			label={t('Label_VipLevel')}
-			hidden={isHidePartOfFilter}
-		>
+		<Form.Item name='vipLevel' label={t('Label_VipLevel')}>
 			<Select placeholder={t('Label_Select')} allowClear>
 				{vipLevels
 					?.filter(item => item.siteId === siteId)
@@ -115,7 +107,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 			}
 		}
 		return (
-			<Form.Item name='tags' label={t('Label_Tag')} hidden={isHidePartOfFilter}>
+			<Form.Item name='tags' label={t('Label_Tag')}>
 				<MultipleSelect onChange={onChangeTags} placeholder={t('Label_Select')}>
 					{tagList?.length > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
@@ -142,13 +134,8 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 				})
 			}
 		}
-
 		return (
-			<Form.Item
-				name='memberTypes'
-				label={t('Label_MemberType')}
-				hidden={isHidePartOfFilter}
-			>
+			<Form.Item name='memberTypes' label={t('Label_MemberType')}>
 				<MultipleSelect
 					onChange={handleChangeMemberType}
 					placeholder={t('Label_Select') + t('Label_MemberType')}
@@ -251,11 +238,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='tpId'
-									label={t('Label_Provider')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='tpId' label={t('Label_Provider')}>
 									<Select
 										showSearch
 										placeholder={t('Label_Select')}
@@ -275,11 +258,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='gameType'
-									label={t('Label_Product')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='gameType' label={t('Label_Product')}>
 									<Select
 										showSearch
 										placeholder={t('Label_Select')}
@@ -299,11 +278,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='category'
-									label={t('Label_Category')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='category' label={t('Label_Category')}>
 									<Select
 										showSearch
 										placeholder={t('Label_Select')}
@@ -323,74 +298,42 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='game'
-									label={t('Label_Game')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='game' label={t('Label_Game')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='title'
-									label={t('Label_Title')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='title' label={t('Label_Title')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='matchID'
-									label={t('Label_MatchId')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='matchID' label={t('Label_MatchId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='betType'
-									label={t('Label_BetType')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='betType' label={t('Label_BetType')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='stake'
-									label={t('Label_StakeRange')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='stake' label={t('Label_StakeRange')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='winLostAmount'
-									label={t('Label_WinLoseRange')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='winLostAmount' label={t('Label_WinLoseRange')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='transId'
-									label={t('Label_TransId')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='transId' label={t('Label_TransId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='userName'
-									label={t('Label_MemberId')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
@@ -400,11 +343,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='refNo'
-									label={t('Label_RefNo')}
-									hidden={isHidePartOfFilter}
-								>
+								<Form.Item name='refNo' label={t('Label_RefNo')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
