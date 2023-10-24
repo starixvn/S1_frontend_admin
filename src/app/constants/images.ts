@@ -1,18 +1,27 @@
+import { SiteIds } from './siteIds'
+
+const { Nova88, Goal123, Bwing, IvorySport } = SiteIds
+
 export const SITE_LOGO_IMAGE: {
 	[siteId: number]: { url: string; height: number; width: number }
 } = {
-	1: {
+	[Nova88]: {
 		url: 'https://image.0814media.net/SiteSkin/img/logo.png',
 		height: 32,
 		width: 90,
 	},
-	2: {
+	[Goal123]: {
 		url: 'https://banner.goal123.org/desktop/img/logo.png',
 		height: 20,
 		width: 90,
 	},
-	3: {
+	[Bwing]: {
 		url: 'https://banner.bw88.io/desktop/img/logo.png',
+		height: 32,
+		width: 90,
+	},
+	[IvorySport]: {
+		url: 'https://banner.ivorysport.com/desktop/img/logo.png',
 		height: 32,
 		width: 90,
 	},
