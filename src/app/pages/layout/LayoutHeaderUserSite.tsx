@@ -6,7 +6,6 @@ import paths from 'app/constants/paths'
 
 const LayoutHeaderUserSite = () => {
 	const maxWidthMediaMatches = useMediaQuery('(max-width: 768px)')
-
 	const { userSite, userSiteList } = useAppSelector(state => state.allEnum)
 	const siteMenu = (
 		<Menu>
