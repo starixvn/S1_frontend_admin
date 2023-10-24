@@ -1,4 +1,5 @@
 // 取得支付第三方列表
+
 export interface IGetGlobalStatusArgs {
 	siteId?: number
 }

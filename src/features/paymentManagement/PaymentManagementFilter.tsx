@@ -63,11 +63,14 @@ const PaymentManagementFilter = ({
 	onWithdrawalBlockSwitchClick,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
+
 	const {
 		actionPermissions: {
 			editPermission,
 			editAutoWithdrawalRulePermission,
 			editWithdrawalAutoVerifyRulePermission,
+			editWithdrawalBlockSwitchPermission,
+			editSystemBankInfoPermission,
 		} = {},
 	} = useAuth()
 
@@ -252,18 +255,23 @@ const PaymentManagementFilter = ({
 										</Button>
 									</Col>
 								)}
-
-								<Col>
-									<Button type='primary' onClick={onSystemBankInfoClicked}>
-										{t('Label_BankMaintenance')}
-									</Button>
-								</Col>
-
-								<Col>
-									<Button type='primary' onClick={onWithdrawalBlockSwitchClick}>
-										{t('Label_WithdrawalOptionStatus')}
-									</Button>
-								</Col>
+								{editWithdrawalBlockSwitchPermission?.canUse && (
+									<Col>
+										<Button
+											type='primary'
+											onClick={onWithdrawalBlockSwitchClick}
+										>
+											{t('Label_WithdrawalOptionStatus')}
+										</Button>
+									</Col>
+								)}
+								{editSystemBankInfoPermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onSystemBankInfoClicked}>
+											{t('Label_BankMaintenance')}
+										</Button>
+									</Col>
+								)}
 							</Row>
 						</Form>
 					</LayoutContent.Card>
