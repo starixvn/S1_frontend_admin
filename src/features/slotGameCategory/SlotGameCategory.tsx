@@ -65,7 +65,7 @@ const SlotGameCategory: FC<{
 		data: { data: tpList } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
 	} = useGetSlotGamesTpListQuery({
-		siteId: [siteId],
+		siteIds: [siteId],
 		currencyId: CurrencyEnum.All,
 	})
 

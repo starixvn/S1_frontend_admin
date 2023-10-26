@@ -33,7 +33,8 @@ export const betListApi = rootApi.injectEndpoints({
 		getProducts: builder.query<
 			IGetProductsResponse,
 			{
-				siteId?: number[]
+				siteId?: number
+				siteIds?: number[]
 			}
 		>({
 			query: data => ({

@@ -80,7 +80,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 		await getCashBackGameList({
 			tpId,
 			categoryId: currentCategory,
-			siteId: [siteId],
+			siteIds: [siteId],
 			currencyId,
 		})
 	}
