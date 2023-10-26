@@ -16,7 +16,8 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 		getSlotGamesTpList: builder.query<
 			IGetTpListResponse,
 			{
-				siteId?: number[]
+				siteId?: number
+				siteIds?: number[]
 				currencyId: number
 			}
 		>({

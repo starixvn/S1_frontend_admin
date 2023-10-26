@@ -137,7 +137,8 @@ export interface IDeleteBannerArgs {
 export type IDeleteBannerResponse = IAxiosResponse<null>
 
 export interface IGetTpBySiteAndCurrencyArgs {
-	siteId?: number[]
+	siteId?: number
+	siteIds?: number[]
 	currencyId: number
 }
 

@@ -64,7 +64,7 @@ const BetList: FC<{
 	const {
 		data: { data: products } = {} as IGetProductsResponse,
 		isFetching: isGetProductsFetching,
-	} = useGetProductsQuery({ siteId: [siteId] })
+	} = useGetProductsQuery({ siteIds: [siteId] })
 
 	const {
 		data: { data: categories } = {} as IGetCategoryResponse,

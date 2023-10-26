@@ -86,7 +86,7 @@ const BannerModalForm = ({
 		data: { data: tpList = [] } = {} as IGetTpBySiteAndCurrencyResponse,
 		isLoading: isGetTpListLoading,
 	} = useGetTpBySiteAndCurrencyQuery(
-		{ siteId: [siteId], currencyId },
+		{ siteIds: [siteId], currencyId },
 		{ skip: !siteId || !currencyId }
 	)
 
