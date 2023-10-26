@@ -71,8 +71,10 @@ const AdjustmentFilter = ({
 									style={{ width: '100%' }}
 									ranges={MOMENT_RANGE_PICKER_RANGES([
 										'Today',
-										'Last 7 Day',
+										'Yesterday',
+										'Last Week',
 										'This Month',
+										'Last Month',
 									])}
 								/>
 							</Form.Item>
