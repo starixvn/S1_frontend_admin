@@ -79,6 +79,8 @@ const EditHotGameModal = ({
 				tpId,
 				tpGameType,
 				tpCategory,
+				hotGamePcUrl,
+				hotGameMobileUrl,
 				topCategory,
 				tpCategoryName,
 			} = hotGameDetail ?? {}
@@ -90,6 +92,8 @@ const EditHotGameModal = ({
 				tpId,
 				tpGameType,
 				tpCategory,
+				hotGamePcUrl,
+				hotGameMobileUrl,
 				topCategory,
 				tpName: tpCategoryName,
 			})
@@ -282,6 +286,40 @@ const EditHotGameModal = ({
 							{/* gameId 的值不可手動改 透過 gameName 下拉選單給  */}
 							<Form.Item name='gameId' label={t('Label_GameId')}>
 								<Input disabled />
+							</Form.Item>
+						</Col>
+
+						<Col span={24}>
+							<Form.Item
+								name='hotGamePcUrl'
+								label={t('Label_HotGamePcPicUrl')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_Url'),
+										}),
+									},
+								]}
+							>
+								<Input />
+							</Form.Item>
+						</Col>
+
+						<Col span={24}>
+							<Form.Item
+								name='hotGameMobileUrl'
+								label={t('Label_HotGameMobilePicUrl')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_Url'),
+										}),
+									},
+								]}
+							>
+								<Input />
 							</Form.Item>
 						</Col>
 					</Row>
