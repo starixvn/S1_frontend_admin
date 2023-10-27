@@ -1,6 +1,6 @@
 import { SiteIds } from './siteIds'
 
-const { Nova88, Goal123, Bwing, IvorySport } = SiteIds
+const { Nova88, Goal123, Bwing, IvorySport, Leobet } = SiteIds
 
 export const SITE_LOGO_IMAGE: {
 	[siteId: number]: { url: string; height: number; width: number }
@@ -24,6 +24,11 @@ export const SITE_LOGO_IMAGE: {
 		url: 'https://banner.ivorysport.com/desktop/img/logo.png',
 		height: 32,
 		width: 90,
+	},
+	[Leobet]: {
+		url: 'https://banner.leoking88.net/desktop/img/logo.png',
+		height: 35,
+		width: 140,
 	},
 }
 
