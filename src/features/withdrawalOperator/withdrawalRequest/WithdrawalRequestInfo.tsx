@@ -348,6 +348,7 @@ const WithdrawalRequestInfo = ({
 					{multiEqual(responseType, [
 						WithdrawalTypeEnum.CryptoPay,
 						WithdrawalTypeEnum.OnlinePayment,
+						WithdrawalTypeEnum.EWalletPayment,
 					]) && (
 						<Item label={t('Label_Pay')}>
 							<Row justify='space-between' align='middle'>
@@ -365,6 +366,16 @@ const WithdrawalRequestInfo = ({
 										} else if (responseType === WithdrawalTypeEnum.CryptoPay) {
 											const record = find(
 												cryptoPayList,
+												item => item.payId === responsePayId
+											)
+											if (record !== undefined) {
+												onPayInfoClicked(record)
+											}
+										} else if (
+											responseType === WithdrawalTypeEnum.EWalletPayment
+										) {
+											const record = find(
+												eWalletList,
 												item => item.payId === responsePayId
 											)
 											if (record !== undefined) {
