@@ -29,9 +29,11 @@ export type IWinLossBasicData = {
 	validTurnOver: number
 	ggr: number
 	playerWinLoss: number
+	baPlayerWinLoss: number
 	progressiveWin: number
 	progressiveBet: number
 	commission: number
+	baCommission: number
 	betCount: number
 	avgBetAmount: number
 	uniquePlayers: number
