@@ -571,6 +571,10 @@ const paths = {
 				root: 'productManagement/slotGameCategory',
 				functionId: 126,
 			},
+			headerManagement: {
+				root: 'productManagement/headerManagement',
+				functionId: 150,
+			},
 		},
 	},
 	rewardProgram: {
