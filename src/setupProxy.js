@@ -22,7 +22,7 @@ module.exports = app => {
 			"/images"
 		],
 		createProxyMiddleware({
-			target: "http://admin.n88dev.com",
+			target: "http://ecs.nova88dev.com:5070",
 			changeOrigin: true
 		})
 	);
