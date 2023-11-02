@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import moment from 'moment/moment'
+import { filter } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { timeFormat } from 'common/utils/format'
@@ -11,7 +12,10 @@ import {
 	DragHandle,
 	Table,
 } from 'components'
-import { IHeaderSettingData } from 'features/headerManagement/type'
+import {
+	IHeaderSettingData,
+	IHeaderSettingEnum,
+} from 'features/headerManagement/type'
 
 interface IHeaderManagementTableProps {
 	loading: boolean
@@ -29,6 +33,10 @@ const HeaderManagementTable = ({
 	handleSetSort,
 }: IHeaderManagementTableProps) => {
 	const { t } = useTranslation()
+
+	const headerManagementWithStatusList = filter(headerManagementList, {
+		status: IHeaderSettingEnum.True,
+	})
 
 	const columns = [
 		isSortMode && {
@@ -116,7 +124,7 @@ const HeaderManagementTable = ({
 		<LayoutContent.Card>
 			<Table
 				loading={loading}
-				dataSource={headerManagementList}
+				dataSource={headerManagementWithStatusList}
 				columns={columns}
 				components={{
 					body: {
@@ -126,7 +134,7 @@ const HeaderManagementTable = ({
 						row: (row: any) => (
 							<DraggableBodyRow
 								{...row}
-								dataSource={headerManagementList}
+								dataSource={headerManagementWithStatusList}
 								rowKey='id'
 							/>
 						),

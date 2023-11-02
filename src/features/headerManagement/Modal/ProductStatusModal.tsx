@@ -1,4 +1,4 @@
-import { head, filter } from 'lodash'
+import { head } from 'lodash'
 import { Table } from 'components'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,6 @@ import {
 	IHeaderSettingData,
 	ILobbyCategoryData,
 	IFilterProductStatusModalForm,
-	IHeaderSettingEnum,
 } from 'features/headerManagement/type'
 import { useGetHeaderSettingListQuery } from 'features/headerManagement/api'
 
@@ -48,11 +47,6 @@ const ProductStatusModal = ({
 			},
 			{ skip: !siteId || !formCurrencyId || !formLobbyCategoryId }
 		)
-
-	// 單向開關 status 是 1 才會顯示在 Modal
-	const headerManagementWithStatusList = filter(headerManagementModalList, {
-		status: IHeaderSettingEnum.True,
-	})
 
 	const columns = [
 		{
@@ -123,7 +117,7 @@ const ProductStatusModal = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={headerManagementWithStatusList}
+				dataSource={headerManagementModalList}
 				pagination={false}
 				scroll={{ y: 400 }}
 			/>
