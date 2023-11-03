@@ -24,6 +24,7 @@ const useUserSiteEffect = () => {
 		if (!Number(queryParams?.siteId)) return
 
 		if (siteId !== Number(queryParams?.siteId)) {
+			dispatch(onChangeUserSite({}))
 			changeBrand({ siteId: Number(queryParams?.siteId) })
 		}
 	}, [queryParams?.siteId])
