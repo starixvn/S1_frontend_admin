@@ -2,7 +2,12 @@ import { useAuth } from 'common/hooks'
 import { Layout, Spin } from 'antd'
 import { useCheckBrandQuery } from 'common/service/homeApi/api'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { fetchAllEnumAsync, selectEnumStatus } from 'common/enum'
+import {
+	fetchAllEnumAsync,
+	selectEnumStatus,
+	selectUserSite,
+} from 'common/enum'
+import { isEmpty } from 'lodash'
 import { useState, FC, useEffect, Suspense } from 'react'
 import { RequestStatusType } from 'type'
 import { useMenuCollapsed, useUserSiteEffect } from './hooks'
@@ -14,6 +19,7 @@ import LayoutSuspense from './LayoutSuspense'
 const BaseLayout: FC = () => {
 	const dispatch = useAppDispatch()
 	const enumStatus = useAppSelector(selectEnumStatus)
+	const userSite = useAppSelector(selectUserSite)
 	const auth = useAuth()
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const { data: { data: siteId } = {} } = useCheckBrandQuery()
@@ -37,11 +43,13 @@ const BaseLayout: FC = () => {
 		init()
 	}, [siteId])
 
-	const loading = enumStatus === 'pending' || requestStatus === 'pending'
+	const loading =
+		isEmpty(userSite) || enumStatus === 'pending' || requestStatus === 'pending'
 
 	return (
 		<Layout hasSider style={{ height: '100vh' }}>
 			<LayoutSideBar
+				loading={loading}
 				collapsed={collapsed}
 				onCloseCollapsed={onCloseCollapsed}
 			/>

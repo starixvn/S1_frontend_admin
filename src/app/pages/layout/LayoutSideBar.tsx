@@ -11,9 +11,11 @@ import { LayoutMenu } from './LayoutMenu'
 const { Header, Sider } = Layout
 
 const LayoutSideBar = ({
+	loading,
 	collapsed,
 	onCloseCollapsed,
 }: {
+	loading: boolean
 	collapsed: boolean
 	onCloseCollapsed: () => void
 }) => {
@@ -34,6 +36,7 @@ const LayoutSideBar = ({
 				overflow: 'auto',
 				height: '100vh',
 				position: 'static',
+				pointerEvents: loading ? 'none' : 'auto', // * 如果還在 loading 狀態不開放選擇 menu
 			}}
 		>
 			<Header
