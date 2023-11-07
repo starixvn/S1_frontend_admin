@@ -37,8 +37,6 @@ export interface IHotGameDetailData {
 	tpGameType: number
 	tpCategory: number
 	tpCategoryName: string
-	hotGamePcUrl: string
-	hotGameMobileUrl: string
 	topCategory: number
 }
 
@@ -53,8 +51,6 @@ export interface ISetDataArgs {
 	tpName: string
 	tpGameType: number
 	tpCategory: number
-	hotGamePcUrl: string
-	hotGameMobileUrl: string
 	topCategory: number
 }
 
