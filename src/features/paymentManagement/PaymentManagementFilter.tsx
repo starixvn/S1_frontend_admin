@@ -15,6 +15,7 @@ import { IGetGlobalStatusData } from 'features/paymentManagement/type'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
+import { useAuth } from 'common/hooks'
 
 interface IPaymentManagementFilterProps {
 	filterLoading: boolean
@@ -57,7 +58,13 @@ const PaymentManagementFilter = ({
 	onAutoVerifyRuleClicked,
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
-
+	const {
+		actionPermissions: {
+			editPermission,
+			editAutoWithdrawalRulePermission,
+			editWithdrawalAutoVerifyRulePermission,
+		} = {},
+	} = useAuth()
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
@@ -202,27 +209,42 @@ const PaymentManagementFilter = ({
 										{t('Label_Search')}
 									</Button>
 								</Col>
-								<Col>
-									<Button
-										type='primary'
-										onClick={onSetGlobalStatusClicked}
-									>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
-								</Col>
-								<Col>
-									<Button type='primary' onClick={onSetCryptoInfoClicked}>
-										{t('Label_CryptoSetting')}
-									</Button>
-								</Col>
-								<Col>
-									<Button type='primary' onClick={onAutoWithdrawalRuleClicked}>
-										{t('Label_AutoWithdrawalRule')}
-									</Button>
-								</Col>
-								<Col>
-									<Button type='primary' onClick={onAutoVerifyRuleClicked}>
-										{t('Label_AutoVerifyRule')}
-									</Button>
-								</Col>
+
+								{editPermission?.canUse && (
+									<Col>
+										<Button
+											type='primary'
+											onClick={onSetGlobalStatusClicked}
+										>{`${t('Label_Set')} ${t('Label_GlobalStatus')}`}</Button>
+									</Col>
+								)}
+
+								{editPermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onSetCryptoInfoClicked}>
+											{t('Label_CryptoSetting')}
+										</Button>
+									</Col>
+								)}
+
+								{editWithdrawalAutoVerifyRulePermission?.canUse && (
+									<Col>
+										<Button
+											type='primary'
+											onClick={onAutoWithdrawalRuleClicked}
+										>
+											{t('Label_AutoWithdrawalRule')}
+										</Button>
+									</Col>
+								)}
+
+								{editAutoWithdrawalRulePermission?.canUse && (
+									<Col>
+										<Button type='primary' onClick={onAutoVerifyRuleClicked}>
+											{t('Label_AutoVerifyRule')}
+										</Button>
+									</Col>
+								)}
 							</Row>
 						</Form>
 					</LayoutContent.Card>
