@@ -50,6 +50,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	} = useContext(EditBonusContext)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const active = Form.useWatch(['specific', isoCode, 'active'], form)
+
 	// amount type , percentage 或 amount
 	const bonusType = Form.useWatch(['specific', isoCode, 'bonusType'], form)
 	const minLoss = Form.useWatch(['specific', isoCode, 'minLoss'], form)
@@ -72,11 +73,16 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			categoryList,
 			category => category.id === currentCategory
 		)?.tpId
-		if (tpId === undefined) return
+		if (tpId === undefined || !siteId) return
 		form?.setFieldsValue({
 			tpId,
 		})
-		await getCashBackGameList({ tpId, categoryId: currentCategory })
+		await getCashBackGameList({
+			tpId,
+			categoryId: currentCategory,
+			siteIds: [siteId],
+			currencyId,
+		})
 	}
 
 	const productsSelect = () => {
@@ -153,7 +159,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	}, [active])
 
 	useEffect(() => {
-		if (currentCategory && !loading) {
+		// * 有異動且為數字型態時更新下拉選單
+		if (isNumber(currentCategory) && !loading) {
 			handleGetCashBackGameList()
 		}
 	}, [currentCategory, loading])
