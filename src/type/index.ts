@@ -156,3 +156,16 @@ export enum DepositTypeEnum {
 	BankAutoChannel,
 	CryptoWallet,
 }
+
+export enum CurrencyEnum {
+	All = 0,
+	MYR = 2,
+	USD,
+	THB,
+	CNY = 13,
+	IDR = 15,
+	VND = 51,
+	INR = 61,
+	KHM = 72,
+	BDT = 74,
+}
