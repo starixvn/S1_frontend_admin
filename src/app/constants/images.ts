@@ -1,9 +1,15 @@
+import { CSSProperties } from 'react'
 import { SiteIds } from './siteIds'
 
 const { Nova88, Goal123, Bwing, IvorySport, Leobet } = SiteIds
 
 export const SITE_LOGO_IMAGE: {
-	[siteId: number]: { url: string; height: number; width: number }
+	[siteId: number]: {
+		url: string
+		height: number
+		width: number
+		style?: CSSProperties
+	}
 } = {
 	[Nova88]: {
 		url: 'https://image.0814media.net/SiteSkin/img/logo.png',
@@ -16,9 +22,12 @@ export const SITE_LOGO_IMAGE: {
 		width: 90,
 	},
 	[Bwing]: {
-		url: 'https://banner.bw88.io/desktop/img/logo.png',
+		url: 'https://banner.bw88.io/desktop/img/4.0/logo.png',
 		height: 32,
 		width: 90,
+		style: {
+			filter: 'drop-shadow(2px 2px 1px white)',
+		},
 	},
 	[IvorySport]: {
 		url: 'https://banner.ivorysport.com/desktop/img/logo.png',
