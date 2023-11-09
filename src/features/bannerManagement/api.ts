@@ -22,6 +22,12 @@ import {
 	IUpdateStatusResponse,
 } from 'features/bannerManagement/type'
 
+export interface IPostUploadImageResponse {
+	data: {
+		returnImagePath: string
+	}
+}
+
 export const bannerManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBannerList: builder.query<IGetBannerListResponse, IGetBannerListArgs>({
@@ -110,6 +116,17 @@ export const bannerManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		uploadImage: builder.mutation<IPostUploadImageResponse, FormData>({
+			query: data => ({
+				url: 'UploadImage/BannerManagement',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -124,4 +141,5 @@ export const {
 	useLazyGetLanguageListQuery,
 	useLazyGetBannerQuery,
 	useGetGameIdListQuery,
+	useUploadImageMutation,
 } = bannerManagementApi

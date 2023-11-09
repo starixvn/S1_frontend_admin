@@ -7,6 +7,7 @@ import {
 	ISetNewsArgs,
 	ISetNewsStatusArgs,
 } from 'features/newsManagement/type'
+import { IPostUploadImageResponse } from 'features/bannerManagement/api'
 
 const newsManagementApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
@@ -42,6 +43,17 @@ const newsManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		uploadImage: builder.mutation<IPostUploadImageResponse, FormData>({
+			query: data => ({
+				url: 'UploadImage/NewsManagement',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -50,4 +62,5 @@ export const {
 	useGetNewsByIdQuery,
 	useSetNewsMutation,
 	useSetNewsStatusMutation,
+	useUploadImageMutation,
 } = newsManagementApi

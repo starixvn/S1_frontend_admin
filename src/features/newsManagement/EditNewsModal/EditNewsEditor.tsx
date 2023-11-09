@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Col, Row, Tabs, Form, Input, FormInstance } from 'antd'
 import { PermissionInterface } from 'type'
 import { IEditForm } from 'features/newsManagement/type'
+import EditImageUploader from './EditImageUploader'
 
 interface INewsManagementEditorProps {
 	langCodes: string[]
@@ -61,6 +62,7 @@ const NewsManagementEditor = ({
 								]}
 							>
 								<Input />
+								<EditImageUploader langCode={langCode} form={form} />
 							</Form.Item>
 						</Col>
 						<Col span={24}>

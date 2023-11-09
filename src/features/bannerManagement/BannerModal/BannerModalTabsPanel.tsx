@@ -2,6 +2,10 @@ import { Col, Form, FormInstance, Input, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { ActionModeEnum } from 'features/bannerManagement/constants'
 import { IAddForm } from 'features/bannerManagement/type'
+import { useAppSelector } from 'app/store'
+import { selectUserSite } from 'common/enum'
+import BannerDesktopImageUploader from './BannerMobileImageUploader'
+import BannerMobileImageUploader from './BannerDesktopImageUploader'
 
 interface IBannerModalTabsPanelProps {
 	form: FormInstance<IAddForm>
@@ -15,6 +19,9 @@ const BannerModalTabsPanel = ({
 	actionMode,
 }: IBannerModalTabsPanelProps) => {
 	const { t } = useTranslation()
+	const { siteId } = useAppSelector(selectUserSite) as {
+		siteId: number
+	}
 	return (
 		<Form
 			form={form}
@@ -43,7 +50,7 @@ const BannerModalTabsPanel = ({
 					</Col>
 				</Row>
 			)}
-			<Row align='middle' gutter={16}>
+			{/* <Row align='middle' gutter={16}>
 				<Col lg={16} md={24} xs={24}>
 					<Form.Item
 						name={['specific', lang, 'bannerPCUrl']}
@@ -62,6 +69,37 @@ const BannerModalTabsPanel = ({
 						rules={[{ required: true }]}
 					>
 						<Input allowClear />
+					</Form.Item>
+				</Col>
+
+
+			</Row> */}
+
+			<Row gutter={16}>
+				<Col lg={12} md={12} xs={24}>
+					<Form.Item
+						name={['specific', lang, 'bannerPCUrl']}
+						label={t('Label_BannerPcPicUrl')}
+						rules={[{ required: true }]}
+					>
+						<BannerMobileImageUploader
+							form={form}
+							lang={lang}
+							siteId={siteId}
+						/>
+					</Form.Item>
+				</Col>
+				<Col lg={12} md={12} xs={24}>
+					<Form.Item
+						name={['specific', lang, 'bannerMobileUrl']}
+						label={t('Label_BannerMobilePicUrl')}
+						rules={[{ required: true }]}
+					>
+						<BannerDesktopImageUploader
+							form={form}
+							lang={lang}
+							siteId={siteId}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>
