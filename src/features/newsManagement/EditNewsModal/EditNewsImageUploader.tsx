@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Button, Upload, message, Image, FormInstance, Spin } from 'antd'
+import React, { useState } from 'react'
+import { Button, Upload, message, Image, FormInstance, Spin } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
+import { useWatch } from 'antd/es/form/Form'
 import { useUploadNewsImageMutation } from '../api'
 
 interface Props {
@@ -11,23 +12,12 @@ interface Props {
 	langCode: string
 }
 
-const EditNewsImageUploader: React.FC<Props> = ({ form, langCode }) => {
+const EditNewsImageUploader = ({ form, langCode }: Props) => {
 	const [fileList, setFileList] = useState<UploadFile[]>([])
-	const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
 	const [uploadNewsImage, { isLoading }] = useUploadNewsImageMutation()
+	const formImageUrl = useWatch(['imageUrl', langCode, 'imageUrl'], form)
 
 	const { siteId } = useAppSelector(selectUserSite) as { siteId: number }
-
-	useEffect(() => {
-		const initialImageUrl = form.getFieldValue([
-			'imageUrl',
-			langCode,
-			'imageUrl',
-		])
-		if (initialImageUrl) {
-			setUploadedImageUrl(initialImageUrl)
-		}
-	}, [form, langCode])
 
 	const handleUpload = async (file: Blob) => {
 		const formData = new FormData()
@@ -37,10 +27,6 @@ const EditNewsImageUploader: React.FC<Props> = ({ form, langCode }) => {
 
 		try {
 			const res = await uploadNewsImage(formData).unwrap()
-			form.setFieldsValue({
-				imageUrl: res.data.returnImagePath,
-			})
-			setUploadedImageUrl(res.data.returnImagePath)
 			form.setFieldsValue({
 				imageUrl: {
 					[langCode]: {
@@ -68,27 +54,23 @@ const EditNewsImageUploader: React.FC<Props> = ({ form, langCode }) => {
 	}
 
 	return (
-		<Form form={form}>
-			<Form.Item name='bannerImageUrl'>
-				<Upload
-					name='banner'
-					maxCount={1}
-					listType='picture'
-					fileList={fileList}
-					onChange={onChange}
-					beforeUpload={beforeUpload}
-					onRemove={() => true}
-					showUploadList={false}
-				>
-					<Button icon={<UploadOutlined />}>Select File</Button>
-				</Upload>
-			</Form.Item>
+		<>
+			<Upload
+				name='banner'
+				maxCount={1}
+				listType='picture'
+				fileList={fileList}
+				onChange={onChange}
+				beforeUpload={beforeUpload}
+				onRemove={() => true}
+				showUploadList={false}
+			>
+				<Button icon={<UploadOutlined />}>Select File</Button>
+			</Upload>
 			<Spin spinning={isLoading}>
-				{uploadedImageUrl && (
-					<Image src={uploadedImageUrl} alt='Banner Image' />
-				)}
+				{formImageUrl && <Image src={formImageUrl} alt='Banner Image' />}
 			</Spin>
-		</Form>
+		</>
 	)
 }
 
