@@ -3,10 +3,13 @@ import { useMediaQuery } from 'usehooks-ts'
 import { useAppSelector } from 'app/store'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
+import { useAuth } from 'common/hooks'
 
 const LayoutHeaderUserSite = () => {
 	const maxWidthMediaMatches = useMediaQuery('(max-width: 768px)')
 	const { userSite, userSiteList } = useAppSelector(state => state.allEnum)
+	const { allSiteMode } = useAuth()
+
 	const siteMenu = (
 		<Menu>
 			{userSiteList.map(({ siteId, siteName }) => (
@@ -19,7 +22,8 @@ const LayoutHeaderUserSite = () => {
 
 	const isDropdown = userSiteList.length > 4 || maxWidthMediaMatches
 
-	return isDropdown ? (
+	// * site selector
+	const siteSelector = isDropdown ? (
 		<Col flex='96px'>
 			<Dropdown trigger={['click']} overlay={siteMenu}>
 				<Button block type='primary'>
@@ -46,6 +50,20 @@ const LayoutHeaderUserSite = () => {
 			</Row>
 		</Col>
 	)
+
+	const allSiteButton = (
+		<Col flex='400px'>
+			<Row justify='end' gutter={8}>
+				<Col flex='96px'>
+					<Button block type='primary'>
+						All
+					</Button>
+				</Col>
+			</Row>
+		</Col>
+	)
+
+	return allSiteMode ? allSiteButton : siteSelector
 }
 
 export { LayoutHeaderUserSite }

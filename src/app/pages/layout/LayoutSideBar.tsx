@@ -5,7 +5,7 @@ import { selectUserSite } from 'common/enum'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'usehooks-ts'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-
+import { useAuth } from 'common/hooks'
 import { LayoutMenu } from './LayoutMenu'
 
 const { Header, Sider } = Layout
@@ -21,6 +21,7 @@ const LayoutSideBar = ({
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { allSiteMode } = useAuth()
 	const logoImage = siteId && SITE_LOGO_IMAGE[siteId]
 
 	return (
@@ -43,7 +44,7 @@ const LayoutSideBar = ({
 				className='header'
 				style={{ display: 'flex', justifyContent: 'center' }}
 			>
-				{!collapsed && logoImage && (
+				{!allSiteMode && !collapsed && !!logoImage && (
 					<Link to='/'>
 						<LazyLoadImage
 							alt='site-logo'
