@@ -82,9 +82,9 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 								},
 							]}
 						>
-							{/* 這邊改放元件 */}
-							<EditBannerImageUploader form={form} tabsKey={tabsKey} />
-							{/* <Input allowClear /> */}
+							{form && (
+								<EditBannerImageUploader form={form} tabsKey={tabsKey} />
+							)}
 						</Form.Item>
 					</Col>
 					<Col span={24}>

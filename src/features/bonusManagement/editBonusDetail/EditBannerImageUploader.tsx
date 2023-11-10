@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Button, Upload, message, Image } from 'antd'
+import { Form, Button, Upload, message, Image, FormInstance, Spin } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import { useAppSelector } from 'app/store'
@@ -7,8 +7,8 @@ import { selectUserSite } from 'common/enum'
 import { useUploadImageMutation } from '../api'
 
 interface Props {
-	form: any
-	tabsKey: any
+	form: FormInstance
+	tabsKey: string
 }
 
 const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
@@ -28,25 +28,7 @@ const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
 		}
 	}, [form, tabsKey])
 
-	const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
-		setFileList(info.fileList)
-		if (info.file.status === 'done') {
-			await handleUpload()
-		}
-	}
-
-	const handleUpload = async () => {
-		if (fileList.length === 0) {
-			message.error('Please select a file to upload.')
-			return
-		}
-
-		const file = fileList[0].originFileObj
-		if (!file) {
-			message.error('File not found after selection')
-			return
-		}
-
+	const handleUpload = async (file: Blob) => {
 		const formData = new FormData()
 		formData.append('ReturnFullPath', 'true')
 		formData.append('SiteId', siteId.toString())
@@ -55,7 +37,7 @@ const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
 		try {
 			const res = await uploadImage(formData).unwrap()
 			form.setFieldsValue({
-				bannerImageUrl: res.data.returnImagePath,
+				bannerUrl: res.data.returnImagePath,
 			})
 			setUploadedImageUrl(res.data.returnImagePath)
 			form.setFieldsValue({
@@ -73,29 +55,38 @@ const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
 		}
 	}
 
+	const onChange = async ({
+		fileList: newFileList,
+	}: UploadChangeParam<UploadFile<any>>) => {
+		setFileList(newFileList)
+	}
+
+	const beforeUpload = (file: Blob) => {
+		handleUpload(file)
+		return false
+	}
+
 	return (
 		<Form form={form}>
-			{uploadedImageUrl && <Image src={uploadedImageUrl} alt='BannerImage' />}
 			<Form.Item name='bannerImageUrl'>
 				<Upload
 					name='banner'
+					maxCount={1}
 					listType='picture'
 					fileList={fileList}
-					beforeUpload={() => false}
-					onChange={handleChange}
+					onChange={onChange}
+					beforeUpload={beforeUpload}
 					onRemove={() => true}
+					showUploadList={false}
 				>
 					<Button icon={<UploadOutlined />}>Select File</Button>
 				</Upload>
 			</Form.Item>
-			<Button
-				type='primary'
-				onClick={handleUpload}
-				disabled={fileList.length === 0}
-				loading={isLoading}
-			>
-				Upload
-			</Button>
+			<Spin spinning={isLoading}>
+				{uploadedImageUrl && (
+					<Image src={uploadedImageUrl} alt='Banner Image' />
+				)}
+			</Spin>
 		</Form>
 	)
 }

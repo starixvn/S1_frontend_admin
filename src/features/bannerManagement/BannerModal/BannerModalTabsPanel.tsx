@@ -50,30 +50,6 @@ const BannerModalTabsPanel = ({
 					</Col>
 				</Row>
 			)}
-			{/* <Row align='middle' gutter={16}>
-				<Col lg={16} md={24} xs={24}>
-					<Form.Item
-						name={['specific', lang, 'bannerPCUrl']}
-						label={t('Label_BannerPcPicUrl')}
-						rules={[{ required: true }]}
-					>
-						<Input allowClear />
-					</Form.Item>
-				</Col>
-			</Row>
-			<Row align='middle' gutter={16}>
-				<Col lg={16} md={24} xs={24}>
-					<Form.Item
-						name={['specific', lang, 'bannerMobileUrl']}
-						label={t('Label_BannerMobilePicUrl')}
-						rules={[{ required: true }]}
-					>
-						<Input allowClear />
-					</Form.Item>
-				</Col>
-
-
-			</Row> */}
 
 			<Row gutter={16}>
 				<Col lg={12} md={12} xs={24}>

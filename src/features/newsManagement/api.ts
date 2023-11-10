@@ -43,7 +43,7 @@ const newsManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		uploadImage: builder.mutation<IPostUploadImageResponse, FormData>({
+		uploadNewsImage: builder.mutation<IPostUploadImageResponse, FormData>({
 			query: data => ({
 				url: 'UploadImage/NewsManagement',
 				method: 'POST',
@@ -62,5 +62,5 @@ export const {
 	useGetNewsByIdQuery,
 	useSetNewsMutation,
 	useSetNewsStatusMutation,
-	useUploadImageMutation,
+	useUploadNewsImageMutation,
 } = newsManagementApi
