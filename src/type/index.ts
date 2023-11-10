@@ -102,6 +102,8 @@ export interface ActionPermissions {
 	exclusiveVipPermission: PermissionInterface
 	resetOtpLimitPermission: PermissionInterface
 	editWithdrawalAutoVerifyRulePermission: PermissionInterface
+	editSystemBankInfoPermission: PermissionInterface
+	editWithdrawalBlockSwitchPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number
@@ -153,4 +155,17 @@ export enum DepositTypeEnum {
 	QRPay,
 	BankAutoChannel,
 	CryptoWallet,
+}
+
+export enum CurrencyEnum {
+	All = 0,
+	MYR = 2,
+	USD,
+	THB,
+	CNY = 13,
+	IDR = 15,
+	VND = 51,
+	INR = 61,
+	KHM = 72,
+	BDT = 74,
 }

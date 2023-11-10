@@ -4,4 +4,6 @@ export enum SiteIds {
 	Goal123,
 	Bwing,
 	Soon88,
+	IvorySport,
+	Leobet,
 }

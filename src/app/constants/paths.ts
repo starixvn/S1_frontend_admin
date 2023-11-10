@@ -475,6 +475,10 @@ const paths = {
 				root: 'report/leaderboardReport',
 				functionId: 143,
 			},
+			confiscatedSummaryReport: {
+				root: 'report/confiscatedSummaryReport',
+				functionId: 149,
+			},
 			newReferralReport: {
 				root: 'report/newReferralReport',
 				functionId: 147,

@@ -50,6 +50,7 @@ const LayoutSideBar = ({
 							src={logoImage.url}
 							width={logoImage.width}
 							height={logoImage.height}
+							style={logoImage.style}
 						/>
 					</Link>
 				)}

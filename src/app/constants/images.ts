@@ -1,20 +1,43 @@
+import { CSSProperties } from 'react'
+import { SiteIds } from './siteIds'
+
+const { Nova88, Goal123, Bwing, IvorySport, Leobet } = SiteIds
+
 export const SITE_LOGO_IMAGE: {
-	[siteId: number]: { url: string; height: number; width: number }
+	[siteId: number]: {
+		url: string
+		height: number
+		width: number
+		style?: CSSProperties
+	}
 } = {
-	1: {
+	[Nova88]: {
 		url: 'https://image.0814media.net/SiteSkin/img/logo.png',
 		height: 32,
 		width: 90,
 	},
-	2: {
+	[Goal123]: {
 		url: 'https://banner.goal123.org/desktop/img/logo.png',
 		height: 20,
 		width: 90,
 	},
-	3: {
-		url: 'https://banner.bw88.io/desktop/img/logo.png',
+	[Bwing]: {
+		url: 'https://banner.bw88.io/desktop/img/4.0/logo.png',
 		height: 32,
 		width: 90,
+		style: {
+			filter: 'drop-shadow(2px 2px 1px white)',
+		},
+	},
+	[IvorySport]: {
+		url: 'https://banner.ivorysport.com/desktop/img/logo.png',
+		height: 32,
+		width: 90,
+	},
+	[Leobet]: {
+		url: 'https://banner.leoking88.net/desktop/img/logo.png',
+		height: 35,
+		width: 140,
 	},
 }
 
