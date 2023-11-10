@@ -487,10 +487,6 @@ const paths = {
 				root: 'report/newReferralReport/log',
 				functionId: 147,
 			},
-			confiscatedSummaryReport: {
-				root: 'report/confiscatedSummaryReport',
-				functionId: 149,
-			},
 		},
 	},
 	member: {
