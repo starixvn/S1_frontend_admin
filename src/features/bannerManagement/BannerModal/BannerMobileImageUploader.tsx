@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Button, Upload, message, Image, FormInstance, Spin } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
@@ -10,7 +10,7 @@ interface ImageUploadProps {
 	siteId: number
 }
 
-const BannerDesktopImageUploader = ({
+const BannerMobileImageUploader = ({
 	form,
 	lang,
 	siteId,
@@ -96,4 +96,4 @@ const BannerDesktopImageUploader = ({
 	)
 }
 
-export default BannerDesktopImageUploader
+export default BannerMobileImageUploader

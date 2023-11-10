@@ -4,8 +4,8 @@ import { ActionModeEnum } from 'features/bannerManagement/constants'
 import { IAddForm } from 'features/bannerManagement/type'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import BannerDesktopImageUploader from './BannerMobileImageUploader'
-import BannerMobileImageUploader from './BannerDesktopImageUploader'
+import BannerDesktopImageUploader from './BannerDesktopImageUploader'
+import BannerMobileImageUploader from './BannerMobileImageUploader'
 
 interface IBannerModalTabsPanelProps {
 	form: FormInstance<IAddForm>
@@ -58,7 +58,7 @@ const BannerModalTabsPanel = ({
 						label={t('Label_BannerPcPicUrl')}
 						rules={[{ required: true }]}
 					>
-						<BannerMobileImageUploader
+						<BannerDesktopImageUploader
 							form={form}
 							lang={lang}
 							siteId={siteId}
@@ -71,7 +71,7 @@ const BannerModalTabsPanel = ({
 						label={t('Label_BannerMobilePicUrl')}
 						rules={[{ required: true }]}
 					>
-						<BannerDesktopImageUploader
+						<BannerMobileImageUploader
 							form={form}
 							lang={lang}
 							siteId={siteId}

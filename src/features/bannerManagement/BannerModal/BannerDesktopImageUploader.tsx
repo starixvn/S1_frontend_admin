@@ -10,7 +10,7 @@ interface ImageUploadProps {
 	siteId: number
 }
 
-const BannerMobileImageUploader = ({
+const BannerDesktopImageUploader = ({
 	form,
 	lang,
 	siteId,
@@ -110,4 +110,4 @@ const BannerMobileImageUploader = ({
 	)
 }
 
-export default BannerMobileImageUploader
+export default BannerDesktopImageUploader
