@@ -2,6 +2,7 @@ export interface UserSite {
 	currencyList: Array<number>
 	defLang: string
 	iLangList: Array<string>
+	iCurrencyList: number[]
 	langList: Array<string>
 	siteId: number
 	siteName: string

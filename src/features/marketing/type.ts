@@ -57,6 +57,7 @@ export type IPerformanceHighlightResponse =
 	IAxiosResponse<IPerformanceHighlightData>
 
 export interface IFilterForm {
+	siteIds: number[]
 	dateRange: [Moment, Moment]
 	isCompared: boolean
 	periodTime: number

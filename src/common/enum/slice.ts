@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'app/store'
-import { filter, some } from 'lodash'
+import { filter, find, some, union } from 'lodash'
 import { RequestStatusType } from 'type'
 import { fetchAllEnumAsync, IAllEnumState } from './thunk'
 import {
@@ -120,6 +120,31 @@ export const selectUserSite = (state: RootState) => state.allEnum.userSite
 
 export const selectUserSiteList = (state: RootState) =>
 	state.allEnum.userSiteList
+
+/**
+ *  根據已選擇品牌回傳「已選擇品牌」的所有幣別
+ */
+export const selectCurrencyIdsBySiteIds = (
+	state: RootState,
+	siteIds: number[]
+) => {
+	const { allCurrencyList } = state.allEnum
+	// * 根據已選擇品牌 (siteIds) 連集出所有支援幣別
+	const currencyIds = union(
+		siteIds.flatMap(
+			siteId => find(state.allEnum.userSiteList, { siteId })?.iCurrencyList
+		)
+	)
+	// * 根據幣別陣列撈出幣別資訊
+	let result: Currency[] = []
+	currencyIds.forEach(currencyId => {
+		const res = find(allCurrencyList, { currencyId })
+		if (res) {
+			result = [...result, res]
+		}
+	})
+	return result
+}
 
 export const selectAllCurrencyList = (state: RootState) =>
 	state.allEnum.allCurrencyList

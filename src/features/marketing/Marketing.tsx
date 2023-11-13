@@ -9,7 +9,12 @@ import { LayoutContent } from 'app/pages/layout'
 import { useQueryParams, useAuth } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { selectAllSiteEnableCurrencyList, selectUserSite } from 'common/enum'
+import {
+	selectCurrencyIdsBySiteIds,
+	selectAllSiteEnableCurrencyList,
+	selectUserSite,
+	selectUserSiteList,
+} from 'common/enum'
 import MarketingFilter from 'features/marketing/MarketingFilter'
 import MarketingStatistic from 'features/marketing/MarketingStatistic'
 import {
@@ -23,12 +28,18 @@ import {
 
 const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
+	const [filterForm] = Form.useForm<IFilterForm>()
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const [filterForm] = Form.useForm<IFilterForm>()
+
 	const [isInOneDay, setIsInOneDay] = useState<boolean>(false)
 	const [selectDate, setSelectDate] = useState(null)
 
@@ -171,6 +182,8 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				currencyListByAllSite={currencyListByAllSite}
 				selectDate={selectDate}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				setSelectDate={setSelectDate}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
