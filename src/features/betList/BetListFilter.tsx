@@ -229,9 +229,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
-						</Row>
 
-						<Row align='middle' gutter={16}>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='currencyIds' label={t('Label_Currency')}>
 									<MultipleSelect
@@ -248,6 +246,11 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 											</Option>
 										))}
 									</MultipleSelect>
+								</Form.Item>
+							</Col>
+							<Col lg={4} md={12} xs={12}>
+								<Form.Item name='userName' label={t('Label_MemberId')}>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 
@@ -386,17 +389,13 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 									<Input allowClear />
 								</Form.Item>
 							</Col>
+
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item
-									name='userName'
-									label={t('Label_MemberId')}
+									name='tpUserName'
+									label={t('Label_TpUserName')}
 									hidden={isHidePartOfFilter}
 								>
-									<Input allowClear />
-								</Form.Item>
-							</Col>
-							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='tpUserName' label={t('Label_TpUserName')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
