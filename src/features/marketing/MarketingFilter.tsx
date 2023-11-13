@@ -238,8 +238,8 @@ const MarketingFilter = ({
 							siteIds: userSiteList.map(item => item.siteId),
 							isCompared: false,
 							periodTime: first(compareDateList)?.value,
-							// * 會因為 siteIds 而異動
-							currencyIds: currencyIdsBySiteIds.map(
+							// * 初始使用全部已啟用貨幣
+							currencyIds: currencyListByAllSite.map(
 								({ currencyId }) => currencyId
 							),
 							baseCurrencyId: first(currencyListByAllSite)?.currencyId,

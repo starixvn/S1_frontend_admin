@@ -1,8 +1,11 @@
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from 'common/service/rootApi/api'
 import {
 	IGetPerformanceHighlightArgs,
 	IPerformanceHighlightResponse,
 	IExportPerformanceHighlightArgs,
+	IPerformanceHighlightDataForMultiSitesData,
+	IGetPerformanceHighlightDataForMultiSitesArgs,
 } from 'features/marketing/type'
 
 export const marketingDashBoardApi = rootApi.injectEndpoints({
@@ -28,10 +31,23 @@ export const marketingDashBoardApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+
+		// * support multi site api
+		getPerformanceHighlightDataForMultiSites: builder.query<
+			IAxiosResponse<IPerformanceHighlightDataForMultiSitesData[]>,
+			IGetPerformanceHighlightDataForMultiSitesArgs
+		>({
+			query: data => ({
+				url: 'MpaMarketingDashboard/GetPerformanceHighlightDataForMultiSites',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
 export const {
 	useLazyGetPerformanceHighlightQuery,
 	useExportPerformanceHighlightMutation,
+	useLazyGetPerformanceHighlightDataForMultiSitesQuery,
 } = marketingDashBoardApi

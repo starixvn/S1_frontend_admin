@@ -45,6 +45,23 @@ export interface IPerformanceHighlightData {
 	basedOnReportTotalUsers: number
 }
 
+export interface IPerformanceHighlightDataForMultiSitesData
+	extends IPerformanceHighlightData {
+	siteId: number
+	siteName: string
+}
+
+export interface IGetPerformanceHighlightDataForMultiSitesArgs {
+	siteIds: number[]
+	currencyIds: number[]
+	startDate: string
+	endDate: string
+	comparedStartDate: string
+	comparedEndDate: string
+	isCompared: boolean
+	baseCurrencyId: number
+}
+
 export interface IExportPerformanceHighlightArgs {
 	siteId: number
 	currencyIds: number[]
