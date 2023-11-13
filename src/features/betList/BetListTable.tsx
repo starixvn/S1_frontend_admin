@@ -4,7 +4,11 @@ import { Table } from 'components'
 import { Space, TablePaginationConfig, Tag, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
-import { numberFormatter, timeFormat } from 'common/utils/format'
+import {
+	numberFormatter,
+	numFormatToDigits,
+	timeFormat,
+} from 'common/utils/format'
 import moment from 'moment'
 import { find, isNumber, isObject, isString } from 'lodash'
 import { isJSON } from 'common/utils'
@@ -203,7 +207,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			dataIndex: 'product',
 			align: 'center' as 'center',
 			render: (product: string) => (
-				<div style={{ width: '100px' }}>
+				<div style={{ width: '150px' }}>
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 						{product ?? ''}
 					</Typography.Text>
@@ -303,7 +307,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 			align: 'center' as 'center',
 			sorter: true,
 			render: (odds: number) => (
-				<div style={{ width: '60px' }}>{numberFormatter.format(odds)}</div>
+				<div style={{ width: '60px' }}>{numFormatToDigits(odds)}</div>
 			),
 		},
 		{
