@@ -97,12 +97,13 @@ const useMenuItems = ({
 			}
 
 			// * make menu item
-			const { path, icon } = getMapMenu(Number(functionId))
+			const { path, icon, allSiteMode } = getMapMenu(Number(functionId))
+			const labelName = `${name} ${allSiteMode ? '(+)' : ''}`
 			const menuItem: MenuItem = {
 				style: { fontSize: '12px' },
 				key: menuKey,
 				icon,
-				label: <Link to={path}>{name}</Link>,
+				label: <Link to={path}>{labelName}</Link>,
 				onClick: ({ keyPath }) => {
 					onChangeOpenKeys(keyPath)
 					onClickMenuItem()
@@ -110,7 +111,10 @@ const useMenuItems = ({
 			}
 
 			if (path && path !== '/') {
-				newMenuPaths = [...(newMenuPaths || []), { value: path, label: name }]
+				newMenuPaths = [
+					...(newMenuPaths || []),
+					{ value: path, label: labelName },
+				]
 			}
 
 			return menuItem

@@ -33,7 +33,6 @@ interface IMpaMarketingFilterProps {
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
-	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
 	selectDate: any
 	setSelectDate: (date: any) => void
@@ -53,7 +52,6 @@ const MarketingFilter = ({
 	loading,
 	form,
 	timeZoneUtcOffset,
-	currencyListBySite,
 	currencyListByAllSite,
 	selectDate,
 	setSelectDate,
@@ -88,7 +86,9 @@ const MarketingFilter = ({
 		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
+					currencyIds: currencyListByAllSite?.map(
+						({ currencyId }) => currencyId
+					),
 				})
 			} else {
 				form.setFieldsValue({
@@ -115,11 +115,11 @@ const MarketingFilter = ({
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
-					{(currencyListBySite?.length as number) > 1 && (
+					{(currencyListByAllSite?.length as number) > 1 && (
 						<Option value='all'>{t('Label_SelectAll')}</Option>
 					)}
 
-					{currencyListBySite?.map(item => (
+					{currencyListByAllSite?.map(item => (
 						<Option key={item.currencyId} value={item.currencyId}>
 							{item.isoCode}
 						</Option>
@@ -191,7 +191,7 @@ const MarketingFilter = ({
 						initialValues={{
 							isCompared: false,
 							periodTime: first(compareDateList)?.value,
-							currencyIds: currencyListBySite.map(
+							currencyIds: currencyListByAllSite.map(
 								({ currencyId }) => currencyId
 							),
 							baseCurrencyId: first(currencyListByAllSite)?.currencyId,

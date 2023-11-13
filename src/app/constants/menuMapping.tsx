@@ -558,6 +558,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/RebateInfoReport',
 		newAdminPath: paths.report.sub.bonusInfoReport.root,
+		allSiteMode: true,
 	},
 	{
 		name: 'Bonus Report',
@@ -567,6 +568,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/BonusInfoReport',
 		newAdminPath: paths.report.sub.bonusReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -618,6 +620,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Report/LicWinLost',
 		newAdminPath: paths.report.sub.winLostReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -857,6 +860,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.rewardBonusExport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.rewardBonusExport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -943,6 +947,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		icon: null,
 		functionId: paths.report.sub.mpaMarketingReport.functionId,
 		pathMode: 'NewAdmin',
+		allSiteMode: true,
 		newAdminPath: paths.report.sub.mpaMarketingReport.root,
 	},
 	{
