@@ -9,11 +9,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { useQueryParams, useAuth } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import {
-	selectCurrencyListBySite,
-	selectAllSiteEnableCurrencyList,
-	selectUserSite,
-} from 'common/enum'
+import { selectAllSiteEnableCurrencyList, selectUserSite } from 'common/enum'
 import MarketingFilter from 'features/marketing/MarketingFilter'
 import MarketingStatistic from 'features/marketing/MarketingStatistic'
 import {
@@ -28,7 +24,6 @@ import {
 const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -174,7 +169,6 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetPerformanceHighlightFetching}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
