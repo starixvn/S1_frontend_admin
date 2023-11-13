@@ -7,7 +7,7 @@ import {
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { dateFormat } from 'common/utils/format'
 import { MultipleSelect } from 'components/Select'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -35,6 +35,8 @@ interface IMpaMarketingFilterProps {
 	timeZoneUtcOffset: number
 	currencyListByAllSite: Currency[]
 	selectDate: any
+	userSiteList: UserSite[]
+	currencyIdsBySiteIds: Currency[]
 	setSelectDate: (date: any) => void
 	onSearch: ({
 		currentTimeZoneUtcOffset,
@@ -54,6 +56,8 @@ const MarketingFilter = ({
 	timeZoneUtcOffset,
 	currencyListByAllSite,
 	selectDate,
+	userSiteList,
+	currencyIdsBySiteIds,
 	setSelectDate,
 	onSearch,
 	onTimeZoneChange,
@@ -82,11 +86,54 @@ const MarketingFilter = ({
 		}
 	}
 
+	// * siteIds 異動時須清空 currencyIds
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
-					currencyIds: currencyListByAllSite?.map(
+					currencyIds: currencyIdsBySiteIds?.map(
 						({ currencyId }) => currencyId
 					),
 				})
@@ -95,7 +142,6 @@ const MarketingFilter = ({
 					currencyIds: newCurrencyIds,
 				})
 			}
-			form.resetFields(['langIds'])
 		}
 
 		return (
@@ -115,11 +161,11 @@ const MarketingFilter = ({
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
-					{(currencyListByAllSite?.length as number) > 1 && (
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
 						<Option value='all'>{t('Label_SelectAll')}</Option>
 					)}
 
-					{currencyListByAllSite?.map(item => (
+					{currencyIdsBySiteIds?.map(item => (
 						<Option key={item.currencyId} value={item.currencyId}>
 							{item.isoCode}
 						</Option>
@@ -189,9 +235,11 @@ const MarketingFilter = ({
 						size='middle'
 						onFinish={() => onSearch({})}
 						initialValues={{
+							siteIds: userSiteList.map(item => item.siteId),
 							isCompared: false,
 							periodTime: first(compareDateList)?.value,
-							currencyIds: currencyListByAllSite.map(
+							// * 會因為 siteIds 而異動
+							currencyIds: currencyIdsBySiteIds.map(
 								({ currencyId }) => currencyId
 							),
 							baseCurrencyId: first(currencyListByAllSite)?.currencyId,
@@ -296,6 +344,9 @@ const MarketingFilter = ({
 						</Row>
 
 						<Row align='middle' gutter={16}>
+							<Col lg={6} md={24} xs={24}>
+								{siteIdsSelector()}
+							</Col>
 							<Col lg={6} md={24} xs={24}>
 								{currencyIdsSelector()}
 							</Col>
