@@ -1,32 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Form, Button, Upload, message, Image, FormInstance, Spin } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { useUploadImageMutation } from '../api'
+import { useWatch } from 'antd/lib/form/Form'
+import { useTranslation } from 'react-i18next'
+import { useUploadBonusImageMutation } from '../api'
 
-interface Props {
+interface EditBannerImageUploaderArgs {
 	form: FormInstance
 	tabsKey: string
 }
 
-const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
+const EditBannerImageUploader = ({
+	form,
+	tabsKey,
+}: EditBannerImageUploaderArgs) => {
 	const [fileList, setFileList] = useState<UploadFile[]>([])
-	const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
-	const [uploadImage, { isLoading }] = useUploadImageMutation()
+	const [uploadBonusImage, { isLoading }] = useUploadBonusImageMutation()
+	const { t } = useTranslation()
+	const formImageUrl = useWatch(['details', tabsKey, 'bannerUrl'], form)
 	const { siteId } = useAppSelector(selectUserSite) as { siteId: number }
-
-	useEffect(() => {
-		const initialImageUrl = form.getFieldValue([
-			'details',
-			tabsKey,
-			'bannerUrl',
-		])
-		if (initialImageUrl) {
-			setUploadedImageUrl(initialImageUrl)
-		}
-	}, [form, tabsKey])
 
 	const handleUpload = async (file: Blob) => {
 		const formData = new FormData()
@@ -35,11 +30,7 @@ const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
 		formData.append('File', file)
 
 		try {
-			const res = await uploadImage(formData).unwrap()
-			form.setFieldsValue({
-				bannerUrl: res.data.returnImagePath,
-			})
-			setUploadedImageUrl(res.data.returnImagePath)
+			const res = await uploadBonusImage(formData).unwrap()
 			form.setFieldsValue({
 				details: {
 					[tabsKey]: {
@@ -79,13 +70,13 @@ const EditBannerImageUploader: React.FC<Props> = ({ form, tabsKey }) => {
 					onRemove={() => true}
 					showUploadList={false}
 				>
-					<Button icon={<UploadOutlined />}>Select File</Button>
+					<Button icon={<UploadOutlined />}>
+						{t('Label_Upload', { key: t('Label_File') })}
+					</Button>
 				</Upload>
 			</Form.Item>
 			<Spin spinning={isLoading}>
-				{uploadedImageUrl && (
-					<Image src={uploadedImageUrl} alt='Banner Image' />
-				)}
+				{formImageUrl && <Image src={formImageUrl} alt='Banner Image' />}
 			</Spin>
 		</Form>
 	)

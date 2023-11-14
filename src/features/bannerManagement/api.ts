@@ -116,7 +116,7 @@ export const bannerManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		uploadImage: builder.mutation<IPostUploadImageResponse, FormData>({
+		uploadBannerImage: builder.mutation<IPostUploadImageResponse, FormData>({
 			query: data => ({
 				url: 'UploadImage/BannerManagement',
 				method: 'POST',
@@ -141,5 +141,5 @@ export const {
 	useLazyGetLanguageListQuery,
 	useLazyGetBannerQuery,
 	useGetGameIdListQuery,
-	useUploadImageMutation,
+	useUploadBannerImageMutation,
 } = bannerManagementApi

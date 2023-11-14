@@ -152,7 +152,7 @@ export const bonusManagementApi = createApi({
 				},
 			}),
 		}),
-		uploadImage: builder.mutation<IPostUploadImageResponse, FormData>({
+		uploadBonusImage: builder.mutation<IPostUploadImageResponse, FormData>({
 			query: data => ({
 				url: 'UploadImage/BonusManagement',
 				method: 'POST',
@@ -180,5 +180,5 @@ export const {
 	useLazyGetCashBackGameListQuery,
 	useLazyGetBonusUsingListQuery,
 	useSetBonusUsingListMutation,
-	useUploadImageMutation,
+	useUploadBonusImageMutation,
 } = bonusManagementApi

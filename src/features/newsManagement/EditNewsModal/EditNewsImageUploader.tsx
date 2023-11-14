@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
-import { Button, Upload, message, Image, FormInstance, Spin } from 'antd'
+import { useState } from 'react'
+import { Button, Upload, message, Image, Spin, FormInstance } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useWatch } from 'antd/es/form/Form'
+import { useTranslation } from 'react-i18next'
 import { useUploadNewsImageMutation } from '../api'
 
-interface Props {
+interface EditNewsImageUploaderArgs {
 	form: FormInstance
 	langCode: string
 }
 
-const EditNewsImageUploader = ({ form, langCode }: Props) => {
+const EditNewsImageUploader = ({
+	form,
+	langCode,
+}: EditNewsImageUploaderArgs) => {
 	const [fileList, setFileList] = useState<UploadFile[]>([])
 	const [uploadNewsImage, { isLoading }] = useUploadNewsImageMutation()
+	const { t } = useTranslation()
 	const formImageUrl = useWatch(['imageUrl', langCode, 'imageUrl'], form)
-
 	const { siteId } = useAppSelector(selectUserSite) as { siteId: number }
 
 	const handleUpload = async (file: Blob) => {
@@ -65,7 +69,9 @@ const EditNewsImageUploader = ({ form, langCode }: Props) => {
 				onRemove={() => true}
 				showUploadList={false}
 			>
-				<Button icon={<UploadOutlined />}>Select File</Button>
+				<Button icon={<UploadOutlined />}>
+					{t('Label_Upload', { key: t('Label_File') })}
+				</Button>
 			</Upload>
 			<Spin spinning={isLoading}>
 				{formImageUrl && <Image src={formImageUrl} alt='Banner Image' />}
