@@ -5,9 +5,10 @@ import {
 	OverviewDescriptions,
 	renderOverviewDescriptionsItems,
 } from 'components'
-import { ICurrencyAmountRecord } from 'features/bonusReport/type'
+
 import { numberFormatter } from 'common/utils/format'
 import { Collapse } from 'antd'
+import { ICurrencyAmountRecord } from 'features/depositOperator/type'
 
 interface IDepositOperatorOverviewTableProps {
 	loading: boolean
