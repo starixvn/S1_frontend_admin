@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import {
 	selectAllSiteEnableCurrencyList,
-	selectCurrencyListBySite,
-	selectUserSite,
+	selectCurrencyIdsBySiteIds,
+	selectUserSiteList,
 } from 'common/enum'
 import { BonusInfoFilter } from 'features/bonusInfo/BonusInfoFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -27,6 +27,7 @@ import {
 import {
 	IBonusDetailForm,
 	IBonusDetailListData,
+	IBonusDetailOptions,
 	IBonusInfoData,
 	IFilterForm,
 } from 'features/bonusInfo/type'
@@ -34,8 +35,8 @@ import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useEffect, useState } from 'react'
 import { dateRangeToUtcFormatter, utcFormatter } from 'common/utils'
 import { GroupByEnum } from 'features/bonusInfo/constants'
-import { isEmpty, orderBy as lodashOrderBy, uniq } from 'lodash'
 import { BonusInfoTable } from 'features/bonusInfo/BonusInfoTable'
+import { isEmpty, orderBy as lodashOrderBy, uniq } from 'lodash'
 import { SorterResult } from 'antd/es/table/interface'
 import { OrderByTypeEnum } from 'features/betList/type'
 import { orderDirectionConverter } from 'features/betList/converter'
@@ -45,17 +46,22 @@ import { dateFormat, monthFormat } from 'common/utils/format'
 
 const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const [filterForm] = Form.useForm<IFilterForm>()
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 	// 存放 bonusDetail Table 的資料
 	const [bonusDetailForm] = Form.useForm<IBonusDetailForm>()
 	// 當前搜出來的資料所含的 bonusCodes
-	const [currentBonusCodes, setCurrentBonusCodes] = useState<string[]>([])
+	const [currentBonusCodes, setCurrentBonusCodes] = useState<
+		IBonusDetailOptions[]
+	>([])
 	// 當前搜出來的資料所含的 date，只有 formGroupType 時會用到
 	const [currentDates, setCurrentDates] = useState<string[]>([])
 	// 僅用來控制 detail table 是否顯示
@@ -137,6 +143,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const {
+			siteIds,
 			groupByType,
 			bonusCode,
 			bonusTypes,
@@ -157,6 +164,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 
 		const args = {
 			bonusCode,
+			siteIds,
 			bonusTypes,
 			bonusStatus,
 			startDate,
@@ -173,11 +181,9 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 		try {
 			await getBonusInfo({
-				siteId,
 				...args,
 			}).unwrap()
 			await getInfoSummary({
-				siteId,
 				...args,
 			}).unwrap()
 			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset })
@@ -228,12 +234,13 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleExportBonusInfo = async () => {
 		const {
 			bonusCode = '',
+			siteIds = [],
 			bonusTypes = [],
+			currencyIds = [],
 			bonusStatus = [],
+			claimStatuses = [],
 			startDate,
 			endDate,
-			claimStatuses = [],
-			currencyIds = [],
 			baseCurrencyId = 0,
 			groupByType = 0,
 			orderBy,
@@ -243,10 +250,10 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 
 		try {
 			const blob = await exportBonusInfo({
-				siteId,
 				bonusCode,
 				startDate,
 				endDate,
+				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 				bonusTypes: bonusTypes.map((value: string) => Number(value)),
 				bonusStatus: bonusStatus.map((value: string) => Number(value)),
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
@@ -267,10 +274,12 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleClickBonusCode = (record: IBonusInfoData) => {
-		const { bonusCode, recordDate } = record
-		// groupBy Date 時會用到 recordDate 這個參數
+		const { bonusCode, recordDate, siteId: recordSiteId } = record
+		// groupBy Date 時會用到 recordDate , recordSiteId這個參數
 		bonusDetailForm.setFieldsValue({
 			bonusCode,
+			recordSiteId,
+			bonusSelector: JSON.stringify({ bonusCode, siteId: recordSiteId }),
 			recordDate: moment(recordDate).format(dateFormat),
 		})
 		if (formGroupType === GroupByEnum.Date) {
@@ -283,7 +292,15 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 								moment(dataRecordDate).format(dateFormat) ===
 								moment(recordDate).format(dateFormat)
 						)
-						.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+						.map(
+							({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
+								return {
+									bonusCode: dataBonusCode,
+									siteId: dataSiteId,
+									siteName,
+								}
+							}
+						)
 				)
 			)
 			// 先取所有時間 => 去重 => 排序
@@ -306,7 +323,15 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 								moment(dataRecordDate).format(monthFormat) ===
 								moment(recordDate).format(monthFormat)
 						)
-						.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+						.map(
+							({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
+								return {
+									bonusCode: dataBonusCode,
+									siteId: dataSiteId,
+									siteName,
+								}
+							}
+						)
 				)
 			)
 			// 假設用戶選取日期是 5月28~ 7月3號
@@ -352,11 +377,17 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}
 		} else {
 			setCurrentBonusCodes(
-				uniq(bonusInfo.map(({ bonusCode: dataBonusCode }) => dataBonusCode))
+				uniq(
+					bonusInfo.map(
+						({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
+							return { bonusCode: dataBonusCode, siteId: dataSiteId, siteName }
+						}
+					)
+				)
 			)
 		}
 
-		handleGetBonusDetail({ bonusCode })
+		handleGetBonusDetail({ bonusCode, recordSiteId })
 		setShowDetails(true)
 	}
 
@@ -367,7 +398,9 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					({ recordDate: dataRecordDate }) =>
 						moment(dataRecordDate).format(dateFormat) === date
 				)
-				.map(({ bonusCode: dataBonusCode }) => dataBonusCode)
+				.map(({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
+					return { bonusCode: dataBonusCode, siteId: dataSiteId, siteName }
+				})
 		)
 		bonusDetailForm.resetFields(['bonusCode'])
 		setCurrentBonusCodes(newBonusCodes)
@@ -378,6 +411,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 	// getBonusDetail
 	const handleGetBonusDetail = async ({
 		bonusCode,
+		recordSiteId,
 		current = PAGINATION.defaultCurrent,
 		pageSize = PAGINATION.defaultPageSize,
 		// 預設用 claimStatus 做排序
@@ -385,6 +419,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		orderByDirection = OrderByTypeEnum.ascend as number,
 	}: {
 		bonusCode: string
+		recordSiteId: number
 		current?: number | undefined
 		pageSize?: number | undefined
 		orderByProperty?: string
@@ -409,11 +444,13 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 
 		try {
 			bonusDetailForm.setFieldsValue({
+				bonusCode,
+				recordSiteId,
 				orderByProperty,
 				orderByDirection,
 			})
 			const { data: bonusDetailData = [] } = await getBonusDetail({
-				siteId,
+				siteId: recordSiteId,
 				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
 							date: moment(
@@ -458,7 +495,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		_: any,
 		sorter: SorterResult<IBonusInfoData>
 	) => {
-		const { bonusCode } = bonusDetailForm.getFieldsValue()
+		const { bonusCode, recordSiteId } = bonusDetailForm.getFieldsValue(true)
 		const {
 			current = PAGINATION.defaultCurrent,
 			pageSize = PAGINATION.defaultPageSize,
@@ -466,6 +503,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		if (sorter.order) {
 			await handleGetBonusDetail({
 				bonusCode,
+				recordSiteId,
 				current,
 				pageSize,
 				orderByProperty: sorter.field as string,
@@ -474,6 +512,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		} else {
 			await handleGetBonusDetail({
 				bonusCode,
+				recordSiteId,
 				current,
 				pageSize,
 			})
@@ -498,6 +537,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			orderByDirection,
 			recordDate,
 			dateRange,
+			recordSiteId,
 		} = bonusDetailForm.getFieldsValue(true)
 
 		const [startTimeByMonth, endTimeByMonth] = dateRangeToUtcFormatter(
@@ -508,7 +548,6 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 		try {
 			const blob = await exportBonusDetail({
 				bonusCode,
-				siteId,
 				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
 							date: moment(
@@ -531,6 +570,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				orderByProperty,
 				orderByDirection,
 				baseCurrencyId: Number(baseCurrencyId),
+				siteId: recordSiteId,
 				claimStatuses: claimStatuses.map((value: string) => Number(value)),
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 			}).unwrap()
@@ -547,7 +587,12 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 
 	// Detail Table 上的 BonusCode 異動
 	const handleBonusCodeChange = (value: string) => {
-		handleGetBonusDetail({ bonusCode: value })
+		// value 的資訊受 JSON 字串話，需 parse 回來
+		const { bonusCode, siteId } = JSON.parse(value) as {
+			bonusCode: string
+			siteId: number
+		}
+		handleGetBonusDetail({ bonusCode, recordSiteId: siteId })
 	}
 
 	const filterLoading =
@@ -574,12 +619,14 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					pageSize,
 					pageNumber,
 					timeZone,
+					siteIds = [],
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
 					bonusCode,
 					orderBy: !!orderBy,
 					orderByProperty,
+					siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 					groupByType: Number(groupByType),
 					orderByDirection: Number(orderByDirection),
 					baseCurrencyId: Number(baseCurrencyId),
@@ -612,7 +659,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				loading={isGetBonusInfoLoading}
 				filterLoading={filterLoading}
 				form={filterForm}
-				currencyListBySite={currencyListBySite}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				claimStatusList={claimStatusList}

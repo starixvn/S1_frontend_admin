@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
 import moment from 'moment/moment'
-import { Form, message } from 'antd'
+import { Form, message, Tabs } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
@@ -10,42 +10,46 @@ import { useQueryParams, useAuth } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import {
-	selectCurrencyListBySite,
+	selectCurrencyIdsBySiteIds,
 	selectAllSiteEnableCurrencyList,
 	selectUserSite,
+	selectUserSiteList,
 } from 'common/enum'
 import MarketingFilter from 'features/marketing/MarketingFilter'
 import MarketingStatistic from 'features/marketing/MarketingStatistic'
 import {
 	IFilterForm,
-	IPerformanceHighlightResponse,
+	IGetPerformanceHighlightDataForMultiSitesArgs,
 } from 'features/marketing/type'
 import {
-	useLazyGetPerformanceHighlightQuery,
 	useExportPerformanceHighlightMutation,
+	useLazyGetPerformanceHighlightDataForMultiSitesQuery,
 } from 'features/marketing/api'
 
 const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
+	const [filterForm] = Form.useForm<IFilterForm>()
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const [filterForm] = Form.useForm<IFilterForm>()
+
 	const [isInOneDay, setIsInOneDay] = useState<boolean>(false)
 	const [selectDate, setSelectDate] = useState(null)
 
 	const [
-		getPerformanceHighlight,
+		getPerformanceHighlightDataForMultiSites,
 		{
-			data: {
-				data: performanceHighlightData,
-			} = {} as IPerformanceHighlightResponse,
-			isFetching: isGetPerformanceHighlightFetching,
+			data: { data: performanceHighlightDataForMultiSites = [] } = {},
+			isFetching: isPerformanceHighlightDataForMultiSitesFetching,
 		},
-	] = useLazyGetPerformanceHighlightQuery()
+	] = useLazyGetPerformanceHighlightDataForMultiSitesQuery()
 
 	const [exportPerformanceHighlight] = useExportPerformanceHighlightMutation()
 
@@ -57,10 +61,10 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 
 		const {
+			siteIds,
 			currencyIds,
 			baseCurrencyId,
 			isCompared = false,
-			periodTime,
 			dateRange,
 			compareDateRange,
 		} = filterForm.getFieldsValue()
@@ -79,20 +83,19 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 			currentTimeZoneUtcOffset
 		)
 
-		const args = {
-			siteId,
+		const args: IGetPerformanceHighlightDataForMultiSitesArgs = {
+			siteIds,
+			currencyIds,
 			startDate,
 			endDate,
 			isCompared,
-			periodTime,
 			comparedStartDate,
 			comparedEndDate,
-			currencyIds,
 			baseCurrencyId,
 		}
 
 		try {
-			await getPerformanceHighlight(args).unwrap()
+			await getPerformanceHighlightDataForMultiSites(args).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -105,13 +108,17 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 		})
 	}
 
-	const handleExportPerformanceHighlight = async () => {
-		if (!siteId) return
+	const handleExportPerformanceHighlight = async ({
+		exportSiteId,
+	}: {
+		exportSiteId: number
+	}) => {
+		if (!exportSiteId) return
 		const { currencyIds, startDate, endDate, baseCurrencyId } = queryParams
 
 		try {
 			const blob = await exportPerformanceHighlight({
-				siteId,
+				siteId: exportSiteId,
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				startDate,
 				endDate,
@@ -135,13 +142,14 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 		// init
 		const init = () => {
 			const {
+				siteIds = [],
+				currencyIds = [],
 				startDate,
 				endDate,
 				isCompared,
 				periodTime = 0,
 				comparedStartDate,
 				comparedEndDate,
-				currencyIds = [],
 				baseCurrencyId,
 				timeZone,
 			} = queryParams
@@ -149,11 +157,12 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 
 			filterForm.setFieldsValue({
+				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
+				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				dateRange: [moment(startDate), moment(endDate)],
 				isCompared: Boolean(isCompared),
 				periodTime: Number(periodTime),
 				compareDateRange: [moment(comparedStartDate), moment(comparedEndDate)],
-				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				baseCurrencyId: Number(baseCurrencyId),
 			})
 
@@ -170,25 +179,36 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
+
 			<MarketingFilter
-				loading={isGetPerformanceHighlightFetching}
+				loading={isPerformanceHighlightDataForMultiSitesFetching}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
 				selectDate={selectDate}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				setSelectDate={setSelectDate}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>
+
 			{!isEmpty(queryParams) && (
-				<MarketingStatistic
-					loading={isGetPerformanceHighlightFetching}
-					isInOneDay={isInOneDay}
-					exportExcelPermission={exportExcelPermission}
-					performanceHighlightData={performanceHighlightData ?? {}}
-					onExportClick={handleExportPerformanceHighlight}
-				/>
+				<LayoutContent.Card>
+					<Tabs defaultActiveKey='1' type='card'>
+						{performanceHighlightDataForMultiSites.map(item => (
+							<Tabs.TabPane tab={item.siteName} key={item.siteId}>
+								<MarketingStatistic
+									loading={isPerformanceHighlightDataForMultiSitesFetching}
+									isInOneDay={isInOneDay}
+									exportExcelPermission={exportExcelPermission}
+									performanceHighlightData={item ?? {}}
+									onExportClick={handleExportPerformanceHighlight}
+								/>
+							</Tabs.TabPane>
+						))}
+					</Tabs>
+				</LayoutContent.Card>
 			)}
 		</LayoutContent.Main>
 	)

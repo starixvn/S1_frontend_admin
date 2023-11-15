@@ -11,10 +11,11 @@ import {
 } from 'type'
 import { message } from 'antd'
 import paths from 'app/constants/paths'
-import { getMapMenu } from 'app/constants/menuMapping'
+import { getMapMenu, MENU_MAPPING } from 'app/constants/menuMapping'
 
 export interface AuthContextType {
 	internalAuth: AuthState
+	allSiteMode: boolean
 	onInternalCheckSignIn: () => void
 	onInternalSignIn: (
 		userName: string,
@@ -71,6 +72,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [internalAuth, setInternalAuth] = useState<AuthState>(initialAuth)
 
 	const [userMenuList, setUserMenuList] = useState<MenuInterface[]>([])
+
+	// * 透過路徑取得 menu 清單的正確資訊，並使用 `allSiteMode`
+	// * allSiteMode: 決定該頁面是否支援多品牌操作
+	const { pathname } = location
+	const { allSiteMode = false } =
+		MENU_MAPPING.find(
+			item =>
+				pathname.match(item.newAdminPath || '!!!') ||
+				pathname.match(item.internalPath || '!!!')
+		) ?? {}
 
 	const onGetUserData = async (siteId: number) => {
 		const newUserData = await BoApi.getUserData(siteId)
@@ -222,8 +233,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const userMenuFunctionData: MenuFunctionData[] = getUserMenuFunctionData()
 
-	const value = {
+	const value: AuthContextType = {
 		internalAuth,
+		allSiteMode,
 		onInternalCheckSignIn,
 		onInternalSignIn,
 		onInternalSignOut,

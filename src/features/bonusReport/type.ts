@@ -1,10 +1,12 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment/moment'
 
 export interface IGetBonusReportDataListArgs {
-	siteId: number
+	siteIds?: number[]
+	siteId?: number
 	bonusCode: null | string
 	promotionTypes: number[]
-	currencyId: number
+	currencyIds: number[]
 	startDate: string
 	endDate: string
 	userName: null | string
@@ -43,6 +45,7 @@ export interface IBonusReportData {
 }
 
 export interface ICurrencyAmountRecord {
+	siteName: string
 	currency: string
 	amount: number
 	record: number
@@ -54,10 +57,11 @@ export interface IBonusReportResponse
 }
 
 export interface IExportBonusReportArgs {
-	siteId: number
+	siteIds?: number[]
+	siteId?: number
 	bonusCode: null | string
 	promotionTypes: number[]
-	currencyId: number
+	currencyIds: number[]
 	startDate: string
 	endDate: string
 	userName: null | string
@@ -78,3 +82,17 @@ export interface IPromotionCategoryOptionData {
 export type IPromotionCategoryOptionsResponse = IAxiosResponse<
 	IPromotionCategoryOptionData[]
 >
+
+export interface IFilterForm {
+	siteIds: number[]
+	currencyIds: number[]
+	baseCurrencyId: number
+	promotionTypes: number[]
+	statuses: number[]
+	promotionCategoryIds: number[]
+	userName: string
+	transId: string
+	bonusCode: string
+	dateRange: [Moment, Moment]
+	atPages: number[]
+}

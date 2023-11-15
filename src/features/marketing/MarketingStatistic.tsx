@@ -8,15 +8,15 @@ import { useTranslation } from 'react-i18next'
 import { CustomStatistic } from 'components'
 import { numberFormatter } from 'common/utils/format'
 import { Collapse, Col, Card, Row, Typography, Spin, Empty } from 'antd'
-import { IPerformanceHighlightData } from 'features/marketing/type'
+import { IPerformanceHighlightDataForMultiSitesData } from 'features/marketing/type'
 import { ExcelExportButton } from 'features/marketing/components/ExcelExportButton'
 
 interface MpaMarketingStatisticProps {
 	loading: boolean
 	isInOneDay: boolean
 	exportExcelPermission?: PermissionInterface
-	performanceHighlightData: IPerformanceHighlightData
-	onExportClick: () => void
+	performanceHighlightData: IPerformanceHighlightDataForMultiSitesData
+	onExportClick: ({ exportSiteId }: { exportSiteId: number }) => void
 }
 
 const { Panel } = Collapse
@@ -39,7 +39,11 @@ const MarketingStatistic = ({
 				<Panel header={t('Label_BusinessPerformanceHighlights')} key='1'>
 					{!isEmpty(performanceHighlightData) && (
 						<ExcelExportButton
-							onClick={onExportClick}
+							onClick={() =>
+								onExportClick({
+									exportSiteId: performanceHighlightData.siteId,
+								})
+							}
 							disabled={!exportExcelPermission?.canUse}
 						/>
 					)}
