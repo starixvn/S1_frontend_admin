@@ -594,6 +594,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VerificationRewardReport',
 		newAdminPath: paths.report.sub.verificationReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
