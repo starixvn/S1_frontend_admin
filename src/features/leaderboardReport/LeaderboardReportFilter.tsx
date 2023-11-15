@@ -20,6 +20,7 @@ import {
 	ILeaderBoardCategoryEnumData,
 } from 'features/leaderboardReport/type'
 import { LeaderBoardCategoryEnum } from 'features/leaderboardReport/constants'
+import { head } from 'lodash'
 
 interface ILeaderboardReportFilterProps {
 	loading: boolean
@@ -72,6 +73,8 @@ const LeaderboardReportFilter = ({
 						initialValues={{
 							// 現在時間
 							monthRange: moment(),
+							currencyId: head(currencyListBySite)?.currencyId,
+							categoryId: 0,
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -79,7 +82,14 @@ const LeaderboardReportFilter = ({
 								<Form.Item
 									name='currencyId'
 									label={t('Label_Currency')}
-									rules={[{ required: true }]}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Currency'),
+											}),
+										},
+									]}
 								>
 									<Select placeholder={t('Label_Currency')}>
 										{currencyListBySite?.map(({ currencyId, isoCode }) => (
@@ -94,7 +104,14 @@ const LeaderboardReportFilter = ({
 								<Form.Item
 									name='categoryId'
 									label={t('Label_Category')}
-									rules={[{ required: true }]}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Category'),
+											}),
+										},
+									]}
 								>
 									<Select
 										placeholder={t('Label_Category')}

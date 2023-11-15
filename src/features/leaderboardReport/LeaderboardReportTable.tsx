@@ -24,7 +24,7 @@ const LeaderboardReportTable = ({
 			key: 'isoCode',
 			dataIndex: 'isoCode',
 			align: 'center' as 'center',
-			width: '20%',
+			width: '15%',
 			render: (isoCode: string) => isoCode || '-',
 		},
 		{
@@ -32,14 +32,14 @@ const LeaderboardReportTable = ({
 			key: 'ranking',
 			dataIndex: 'ranking',
 			align: 'center' as 'center',
-			width: '20%',
+			width: '15%',
 			render: (ranking: string) => ranking || '-',
 		},
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
 			align: 'center' as 'center',
-			width: '30%',
+			width: '25%',
 			render: ({ custId, userName }: ILeaderboardReportData) =>
 				userName ? (
 					<Typography.Link
@@ -57,8 +57,16 @@ const LeaderboardReportTable = ({
 			key: 'points',
 			dataIndex: 'points',
 			align: 'center' as 'center',
-			width: '30%',
+			width: '25%',
 			render: (points: number) => numFormatToDigits(points || 0),
+		},
+		{
+			title: t('Label_Reward'),
+			key: 'reward',
+			dataIndex: 'reward',
+			align: 'center' as 'center',
+			width: '20%',
+			render: (reward: number) => numFormatToDigits(reward || 0),
 		},
 	]
 

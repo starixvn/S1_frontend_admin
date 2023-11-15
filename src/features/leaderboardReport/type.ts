@@ -20,6 +20,7 @@ export interface ILeaderboardReportData {
 	isoCode: string
 	turnOver: number
 	points: number
+	reward: number
 }
 
 export interface ILeaderBoardCategoryEnumData {
