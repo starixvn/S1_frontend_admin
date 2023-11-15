@@ -2,6 +2,7 @@ import { Moment } from 'moment'
 
 export interface IGetBonusInfoArgs {
 	siteId?: number
+	siteIds?: number[]
 	bonusCode: string
 	bonusTypes: number[]
 	bonusStatus: number[]
@@ -24,6 +25,8 @@ export type IExportBonusInfoArgs = Omit<
 >
 
 export interface IBonusInfoData {
+	siteId: number
+	siteName: string
 	recordDate: string
 	bonusName: string
 	bonusCode: string
@@ -77,6 +80,7 @@ export interface IBonusDetailListData {
 
 export interface IFilterForm {
 	dateRange: [Moment, Moment]
+	siteIds: number[]
 	bonusCode: string
 	bonusTypes: number[]
 	bonusStatus: number[]
@@ -91,8 +95,16 @@ export interface IFilterForm {
 
 export interface IBonusDetailForm {
 	dateRange: [Moment, Moment]
+	recordSiteId: number
 	bonusCode: string
+	bonusSelector: string
 	orderByProperty: string
 	orderByDirection: number
 	recordDate: string
+}
+
+export interface IBonusDetailOptions {
+	bonusCode: string
+	siteId: number
+	siteName: string
 }

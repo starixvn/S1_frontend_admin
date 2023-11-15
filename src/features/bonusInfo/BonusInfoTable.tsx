@@ -51,6 +51,15 @@ const BonusInfoTable = ({
 	// 這張 Table 希望盡可能全部看到  不要有 scroll，所以寬度抓得很緊
 	const columns = [
 		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 100,
+			align: 'center' as 'center',
+			sorter: true,
+			render: (siteName: string) => siteName || '-',
+		},
+		{
 			title: t('Label_BonusName'),
 			key: 'bonusName',
 			dataIndex: 'bonusName',
@@ -310,8 +319,8 @@ const BonusInfoTable = ({
 										colSpan={
 											formGroupType === GroupByEnum.Date ||
 											formGroupType === GroupByEnum.Month
-												? 6
-												: 5
+												? 7
+												: 6
 										}
 										align='center'
 									>
@@ -347,8 +356,8 @@ const BonusInfoTable = ({
 										index={
 											formGroupType === GroupByEnum.Date ||
 											formGroupType === GroupByEnum.Month
-												? 14
-												: 15
+												? 15
+												: 14
 										}
 										align='center'
 									>
@@ -358,8 +367,8 @@ const BonusInfoTable = ({
 										index={
 											formGroupType === GroupByEnum.Date ||
 											formGroupType === GroupByEnum.Month
-												? 15
-												: 16
+												? 16
+												: 15
 										}
 										align='center'
 									>
