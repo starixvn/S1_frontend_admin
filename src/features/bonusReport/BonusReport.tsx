@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
 import {
@@ -10,7 +10,11 @@ import {
 } from 'common/service/allDataApi'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
-import { selectUserSite } from 'common/enum'
+import {
+	selectCurrencyIdsBySiteIds,
+	selectUserSite,
+	selectUserSiteList,
+} from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -21,6 +25,7 @@ import {
 } from 'common/hooks'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useTimeZone } from 'components/TimeZoneSelect'
+import { IFilterForm } from 'features/bonusReport/type'
 import {
 	useGetPromotionCategoryOptionsQuery,
 	useExportBonusReportMutation,
@@ -39,19 +44,14 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const [form] = Form.useForm<{
-		currencyId: number
-		baseCurrencyId: number
-		promotionTypes: number[]
-		statuses: number[]
-		promotionCategoryIds: number[]
-		userName: string
-		transId: string
-		bonusCode: string
-		dateRange: [Moment, Moment]
-		atPages: number[]
-	}>()
+	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 
 	const {
 		data: { data: bonusAtPageEnum = [] } = {},
@@ -99,14 +99,13 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	}) => {
 		if (!siteId) return
 		const { dateRange, transId, bonusCode, userName, ...args } =
-			await form.validateFields()
+			await filterForm.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 		try {
 			await getBonusReportDataList({
-				siteId,
 				transId: transId || null,
 				bonusCode: bonusCode || null,
 				userName: userName || null,
@@ -149,7 +148,8 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		if (!siteId) return
 
 		const {
-			currencyId,
+			currencyIds = [],
+			siteIds = [],
 			baseCurrencyId,
 			promotionTypes,
 			statuses,
@@ -165,11 +165,13 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		} = queryParams
 
 		const args = {
-			siteId,
 			bonusCode,
 			promotionCategoryIds:
 				promotionCategoryIds?.map((category: string) => Number(category)) ?? [],
-			currencyId: Number(currencyId) || 0,
+			currencyIds: currencyIds.map((queryCurrency: string) =>
+				Number(queryCurrency)
+			),
+			siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 			startDate,
 			endDate,
 			userName,
@@ -207,7 +209,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 
 	useEffect(() => {
 		if (!filterListLoading) {
-			form.setFieldsValue({
+			filterForm.setFieldsValue({
 				promotionCategoryIds: categories.map(
 					category => category.promotionCategoryId
 				),
@@ -220,7 +222,8 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	useEffect(() => {
 		const init = () => {
 			const {
-				currencyId,
+				currencyIds = [],
+				siteIds = [],
 				baseCurrencyId,
 				promotionTypes,
 				statuses,
@@ -237,8 +240,11 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 
-			form.setFieldsValue({
-				currencyId: Number(currencyId) || 0,
+			filterForm.setFieldsValue({
+				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
+				currencyIds: currencyIds.map((queryCurrency: string) =>
+					Number(queryCurrency)
+				),
 				baseCurrencyId: Number(baseCurrencyId) || 0,
 				promotionTypes:
 					promotionTypes?.map((type: string) => Number(type)) ?? [],
@@ -267,8 +273,10 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 			<BonusReportFilter
-				form={form}
+				form={filterForm}
 				loading={loading}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				promotionList={promotionList}
 				categories={categories}
 				bonusAtPageEnum={bonusAtPageEnum}

@@ -19,6 +19,7 @@ import { Table } from 'components'
 import {
 	IBonusDetailForm,
 	IBonusDetailListData,
+	IBonusDetailOptions,
 	IBonusInfoData,
 } from 'features/bonusInfo/type'
 import { find } from 'lodash'
@@ -36,7 +37,7 @@ interface IBonusDetailTableProps {
 	form: FormInstance<IBonusDetailForm>
 	loading: boolean
 	formGroupType: number
-	currentBonusCodes: string[]
+	currentBonusCodes: Array<IBonusDetailOptions>
 	currentDates: string[]
 	bonusDetail: IBonusDetailListData[]
 	timeZoneUtcOffset: number
@@ -246,11 +247,17 @@ const BonusDetailTable = ({
 							</Col>
 						)}
 						<Col span={6}>
-							<Form.Item name='bonusCode' label={t('Label_BonusCode')}>
+							{/* 因為加入支援多 site , 這邊 form 欄位改成儲存 bonusCode + siteId 而非單純 bonusCode */}
+							{/* 因為不同 site 會有重複的 bonusCode */}
+							<Form.Item name='bonusSelector' label={t('Label_BonusCode')}>
 								<Select onChange={onBonusCodeChange}>
-									{currentBonusCodes.map(value => (
-										<Option value={value} key={value}>
-											{value}
+									{currentBonusCodes.map(({ bonusCode, siteId, siteName }) => (
+										<Option
+											// 因為需要儲存兩項資訊，value 只接受存 string
+											value={JSON.stringify({ bonusCode, siteId })}
+											key={`${bonusCode}-${siteId}`}
+										>
+											{`${bonusCode}(${siteName})`}
 										</Option>
 									))}
 								</Select>

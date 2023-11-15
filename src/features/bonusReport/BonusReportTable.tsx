@@ -41,6 +41,14 @@ const BonusReportTable = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 120,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName || '-',
+		},
+		{
 			title: t('Label_BonusType'),
 			key: 'promotionName',
 			dataIndex: 'promotionName',

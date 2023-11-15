@@ -45,7 +45,7 @@ const itemRenderer = (label: string, values: (string | number)[]) => {
 
 const BonusReportSumTable = ({
 	loading,
-	currencyAmountRecord,
+	currencyAmountRecord = [],
 }: IBonusReportSumTableProps) => {
 	const { t } = useTranslation()
 
@@ -56,7 +56,8 @@ const BonusReportSumTable = ({
 					layout='vertical'
 					bordered
 					size='small'
-					column={10}
+					// 根據資料長度動態 + 1
+					column={currencyAmountRecord.length + 1}
 					style={{
 						marginTop: '10px',
 						marginBottom: '10px',
@@ -65,11 +66,12 @@ const BonusReportSumTable = ({
 				>
 					{itemRenderer('', [t('Label_Record'), t('Label_Bonus')])}
 
-					{currencyAmountRecord.map(({ currency, record, amount }) =>
-						itemRenderer(currency, [
-							numberFormatter.format(record),
-							numberFormatter.format(amount),
-						])
+					{currencyAmountRecord.map(
+						({ currency, record, amount, siteName = '' }) =>
+							itemRenderer(
+								currency === 'Total' ? currency : `${currency}-${siteName}`,
+								[numberFormatter.format(record), numberFormatter.format(amount)]
+							)
 					)}
 				</Descriptions>
 			</Spin>
