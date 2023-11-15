@@ -2,6 +2,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { Moment } from 'moment'
 
 export interface IVerificationRewardReportArgs {
+	siteIds: number[]
 	pageNumber: number
 	pageSize: number
 	userName: string
@@ -34,6 +35,7 @@ export type IVerificationRewardReportResponse = IAxiosResponse<
 >
 
 export interface IExportVerificationRewardReportArgs {
+	siteIds: number[]
 	currencyIds: number[]
 	userName: string
 	sabaId: string
@@ -42,6 +44,7 @@ export interface IExportVerificationRewardReportArgs {
 }
 
 export interface IFilterForm {
+	siteIds: number[]
 	memberId: string
 	sabaId: string
 	currencyIds: number[]

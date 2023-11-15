@@ -1,4 +1,5 @@
-import { Table, TablePaginationConfig, Typography } from 'antd'
+import { TablePaginationConfig, Typography } from 'antd'
+import { Table } from 'components'
 import { isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
@@ -26,6 +27,14 @@ const VerificationReportTable = ({
 }: IVerificationReportTableProps) => {
 	const { t } = useTranslation()
 	const columns = [
+		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName || '-',
+		},
 		{
 			title: t('Label_Currency'),
 			key: 'currency',
