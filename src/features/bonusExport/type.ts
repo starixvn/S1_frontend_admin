@@ -1,7 +1,7 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IExportBonusListArgs {
-	siteId?: number
+	siteIds: number[]
 	currencyIds: number[]
 	baseCurrencyId: number
 	userName: string
