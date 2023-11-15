@@ -11,7 +11,7 @@ import {
 	Select,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
@@ -36,6 +36,9 @@ interface IBonusExportFilterProps {
 	form: FormInstance
 	loading: boolean
 	timeZoneUtcOffset?: number
+	userSiteList: UserSite[]
+	currencyIdsBySiteIds: Currency[]
+	currencyListByAllSite: Currency[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -61,6 +64,9 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 	form,
 	loading,
 	timeZoneUtcOffset,
+	userSiteList,
+	currencyIdsBySiteIds,
+	currencyListByAllSite,
 	onSearch,
 	onTimeZoneChange,
 	currencyList,
@@ -71,17 +77,6 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const eventType = Form.useWatch('eventTypeId', form)
-	const onChangeCurrency = (newCurrencyIds: number[]) => {
-		if (newCurrencyIds.includes(0)) {
-			form.setFieldsValue({
-				currencyIds: currencyList?.map(item => item.currencyId),
-			})
-		} else {
-			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
-			})
-		}
-	}
 
 	const bonusSelectRenderer = () => {
 		const onChangeEventNames = (newEventNames: string[]) => {
@@ -254,6 +249,95 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 		}
 	}
 
+	// * siteIds 異動時須清空 currencyIds
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const currencyIdsSelector = () => {
+		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
+			if (newCurrencyIds.includes('all')) {
+				form.setFieldsValue({
+					currencyIds: currencyIdsBySiteIds?.map(
+						({ currencyId }) => currencyId
+					),
+				})
+			} else {
+				form.setFieldsValue({
+					currencyIds: newCurrencyIds,
+				})
+			}
+		}
+
+		return (
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect
+					onChange={onChangeCurrency}
+					placeholder={t('Label_Select')}
+				>
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{currencyIdsBySiteIds?.map(item => (
+						<Option key={item.currencyId} value={item.currencyId}>
+							{item.isoCode}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -264,7 +348,10 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 						form={form}
 						onFinish={() => onSearch({})}
 						initialValues={{
-							currencyIds: currencyList?.map(item => item.currencyId),
+							siteIds: userSiteList.map(item => item.siteId),
+							currencyIds: currencyListByAllSite?.map(
+								({ currencyId }) => currencyId
+							),
 							baseCurrencyId: 0,
 							eventTypeId: 0,
 							userName: '',
@@ -316,22 +403,10 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									<MultipleSelect
-										onChange={onChangeCurrency}
-										placeholder={t('Label_Select')}
-									>
-										{(currencyList?.length as number) > 1 && (
-											<Option value={0}>{t('Label_SelectAll')}</Option>
-										)}
-
-										{currencyList?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</MultipleSelect>
-								</Form.Item>
+								{siteIdsSelector()}
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								{currencyIdsSelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item

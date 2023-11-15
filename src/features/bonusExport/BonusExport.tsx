@@ -14,7 +14,13 @@ import {
 import { AffixButtons } from 'components/AffixButtons'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
+	selectCurrencyListBySite,
+	selectUserSite,
+	selectUserSiteList,
+} from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
@@ -41,6 +47,7 @@ const BonusExport: FC<{
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const [form] = Form.useForm<{
+		siteIds: []
 		dateRange: [moment.Moment, moment.Moment]
 		currencyIds: number[]
 		baseCurrencyId: number
@@ -52,6 +59,13 @@ const BonusExport: FC<{
 		transId: string
 	}>()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const watchSiteIds = Form.useWatch('siteIds', form)
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
+
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -117,7 +131,6 @@ const BonusExport: FC<{
 
 		try {
 			await getBonusList({
-				siteId,
 				startDate,
 				endDate,
 				eventNames,
@@ -158,6 +171,7 @@ const BonusExport: FC<{
 	const handleExport = async () => {
 		if (!siteId) return
 		const {
+			siteIds = [],
 			startDate,
 			endDate,
 			eventNames,
@@ -172,7 +186,7 @@ const BonusExport: FC<{
 
 		try {
 			const blob = await exportBonusList({
-				siteId,
+				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 				startDate,
 				endDate,
 				eventNames,
@@ -250,14 +264,17 @@ const BonusExport: FC<{
 			<BonusExportFilter
 				form={form}
 				loading={loading}
-				onSearch={handleSearch}
-				onTimeZoneChange={onTimeZoneChange}
 				currencyList={currencyListBySite}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
+				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				drawPrizesEventNames={drawPrizesEventNames}
 				vipUpgradeEventNames={vipUpgradeEventNames}
 				vipRebateEventNames={vipRebateEventNames}
 				bonusEventNames={bonusEventNames}
+				onSearch={handleSearch}
+				onTimeZoneChange={onTimeZoneChange}
 			/>
 
 			{!isEmpty(queryParams) && (
