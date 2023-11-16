@@ -30,6 +30,14 @@ const VipRebateReportTable = ({
 	const { t } = useTranslation()
 	const columns = [
 		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName || '-',
+		},
+		{
 			title: t('Label_Currency'),
 			key: 'Currency',
 			dataIndex: 'currency',

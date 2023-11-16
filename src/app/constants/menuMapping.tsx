@@ -586,6 +586,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateInfoReport',
 		newAdminPath: paths.report.sub.vipRebateReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
