@@ -17,7 +17,13 @@ import {
 } from 'common/hooks'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { selectUserSite, selectVipCurrencyListBySite } from 'common/enum'
+import {
+	selectVipCurrencyListBySite,
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
+	selectUserSiteList,
+} from 'common/enum'
+
 import { AffixButtons } from 'components/AffixButtons'
 import {
 	useExportForVipMutation,
@@ -31,6 +37,7 @@ import { useTranslation } from 'react-i18next'
 import VipRebateReportFilter from 'features/vipRebateReport/VipRebateReportFilter'
 import VipRebateReportDetailModal from 'features/vipRebateReport/VipRebateReportDetailModal'
 import VipRebateReportOverviewTable from 'features/vipRebateReport/VipRebateReportOverviewTable'
+
 import { isEmpty } from 'lodash'
 
 interface IBonusReportProps {
@@ -38,6 +45,7 @@ interface IBonusReportProps {
 }
 
 export interface IFilterForm {
+	siteIds: number[]
 	dateRange: [moment.Moment, moment.Moment]
 	userName: string
 	categoryIds: number[]
@@ -54,9 +62,16 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const currencyListBySite = useAppSelector(selectVipCurrencyListBySite)
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
+
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
+
 	const detailModal = useModal()
 	const [selectedDetailTarget, setSelectedDetailTarget] =
 		useState<IVipRebateInfoData | null>(null)
@@ -104,6 +119,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const {
+			siteIds,
 			dateRange,
 			categoryIds,
 			currencyIds,
@@ -111,13 +127,14 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 			payoutStatuses,
 			userName,
 		} = filterForm.getFieldsValue()
+
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
 		try {
 			const args = {
-				siteIds: siteId ? [siteId] : [],
+				siteIds,
 				currencyIds,
 				startDate,
 				endDate,
@@ -129,9 +146,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 				pageSize,
 			}
 			await getVipList(args).unwrap()
-
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
-
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -151,8 +166,8 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 
 	const handleExport = async () => {
 		const {
-			siteIds,
-			currencyIds,
+			siteIds = [],
+			currencyIds = [],
 			startDate,
 			endDate,
 			userName = '',
@@ -162,7 +177,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 		} = queryParams
 
 		const args = {
-			siteIds: siteIds?.map((value: string) => Number(value)) ?? [],
+			siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 			currencyIds:
 				currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 			startDate,
@@ -218,6 +233,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 	useEffect(() => {
 		if (!isEmpty(queryParams)) {
 			const {
+				siteIds = [],
 				startDate,
 				endDate,
 				userName,
@@ -226,11 +242,12 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 				pageSize,
 				timeZone,
 				categoryIds,
-				currencyIds,
 				baseCurrencyId,
+				currencyIds = [],
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
+				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 				categoryIds: categoryIds?.map((categoryId: string) =>
 					Number(categoryId)
 				),
@@ -261,6 +278,9 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 				onSearch={handleSearch}
 				categoryList={categoryList}
 				currencyListBySite={currencyListBySite}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
+				currencyListByAllSite={currencyListByAllSite}
+				userSiteList={userSiteList}
 			/>
 			{!isEmpty(queryParams) && (
 				<VipRebateReportTable
