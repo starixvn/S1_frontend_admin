@@ -22,7 +22,7 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import {
 	IGetDepositTypeData,
 	IFilterForm,
@@ -35,7 +35,9 @@ interface IDepositPaymentReportFilterProps {
 	filterLoading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
-	currencyListBySite: Currency[]
+	userSiteList: UserSite[]
+	currencyIdsBySiteIds: Currency[]
+	currencyListByAllSite: Currency[]
 	groupByList: IEnumTypeData[]
 	gateWayList: IGateWayData[]
 	getDepositTypeList: IGetDepositTypeData[]
@@ -56,7 +58,10 @@ const DepositPaymentReportFilter = ({
 	filterLoading,
 	form,
 	timeZoneUtcOffset,
-	currencyListBySite,
+	userSiteList,
+	currencyIdsBySiteIds,
+	currencyListByAllSite,
+
 	groupByList,
 	gateWayList,
 	getDepositTypeList,
@@ -65,11 +70,54 @@ const DepositPaymentReportFilter = ({
 }: IDepositPaymentReportFilterProps) => {
 	const { t } = useTranslation()
 
+	const siteIdsSelector = () => {
+		const onSiteIdsChange = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', { key: t('Label_Site') }),
+					},
+				]}
+			>
+				<MultipleSelect
+					placeholder={t('Label_Select')}
+					onChange={onSiteIdsChange}
+				>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+					{userSiteList?.map(({ siteId, siteName }) => (
+						<Option key={siteId} value={siteId}>
+							{siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
+					currencyIds: currencyIdsBySiteIds?.map(
+						({ currencyId }) => currencyId
+					),
 				})
 			} else {
 				form.setFieldsValue({
@@ -79,16 +127,25 @@ const DepositPaymentReportFilter = ({
 		}
 
 		return (
-			<Form.Item name='currencyIds' label={t('Label_Currency')}>
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', { key: t('Label_Currency') }),
+					},
+				]}
+			>
 				<MultipleSelect
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
-					{(currencyListBySite.length as number) > 1 && (
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
 
-					{currencyListBySite.map(({ currencyId, isoCode }) => (
+					{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
 						<Option key={currencyId} value={currencyId}>
 							{isoCode}
 						</Option>
@@ -112,7 +169,16 @@ const DepositPaymentReportFilter = ({
 		}
 
 		return (
-			<Form.Item name='payIds' label={t('Label_PaymentGateway')}>
+			<Form.Item
+				name='payIds'
+				label={t('Label_PaymentGateway')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', { key: t('Label_PaymentGateway') }),
+					},
+				]}
+			>
 				<MultipleSelect
 					placeholder={t('Label_Select')}
 					allowClear
@@ -153,7 +219,16 @@ const DepositPaymentReportFilter = ({
 		}
 
 		return (
-			<Form.Item name='types' label={t('Label_PayType')}>
+			<Form.Item
+				name='types'
+				label={t('Label_PayType')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', { key: t('Label_PayType') }),
+					},
+				]}
+			>
 				<MultipleSelect
 					placeholder={t('Label_Select')}
 					onChange={handleChangePayType}
@@ -189,11 +264,6 @@ const DepositPaymentReportFilter = ({
 							size='middle'
 							form={form}
 							onFinish={() => onSearch({})}
-							initialValues={{
-								currencyIds: currencyListBySite?.map(
-									({ currencyId }) => currencyId
-								),
-							}}
 						>
 							<Row align='middle' gutter={16}>
 								<Col lg={10} md={24} xs={24}>
@@ -237,6 +307,10 @@ const DepositPaymentReportFilter = ({
 							</Row>
 							<Row align='middle' gutter={16}>
 								<Col lg={6} md={12} xs={12}>
+									{siteIdsSelector()}
+								</Col>
+
+								<Col lg={6} md={12} xs={12}>
 									{currencyIdsSelector()}
 								</Col>
 
@@ -260,9 +334,17 @@ const DepositPaymentReportFilter = ({
 									<Form.Item
 										name='baseCurrencyId'
 										label={t('Label_BaseCurrencyShow')}
+										rules={[
+											{
+												required: true,
+												message: t('Label_Required', {
+													key: t('Label_BaseCurrency'),
+												}),
+											},
+										]}
 									>
 										<Select placeholder={t('Label_Select')} allowClear>
-											{currencyListBySite?.map(({ currencyId, isoCode }) => (
+											{currencyListByAllSite?.map(({ currencyId, isoCode }) => (
 												<Option key={currencyId} value={currencyId}>
 													{isoCode}
 												</Option>

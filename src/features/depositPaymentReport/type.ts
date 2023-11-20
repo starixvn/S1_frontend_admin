@@ -1,8 +1,8 @@
 import moment from 'moment'
 
 export interface IGetDepositReportArgs {
-	siteId?: number
 	currencyIds: number[]
+	siteIds: number[]
 	baseCurrencyId: number
 	payIds: number[]
 	types: number[]
@@ -26,6 +26,7 @@ export interface IGetDepositReportData {
 
 export type IFilterForm = {
 	dateRange: [moment.Moment, moment.Moment]
+	siteIds: number[]
 	currencyIds: number[]
 	baseCurrencyId: number
 	payIds: number[]
