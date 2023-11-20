@@ -103,7 +103,7 @@ export const allDataApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
-		// 這裡有帶 siteId
+		// 這裡有帶 siteIds
 		getGateWay: builder.query<IAxiosResponse<IGateWayData[]>, IGateWayArgs>({
 			query: data => ({
 				url: 'GetAllData/GetPayList',

@@ -586,6 +586,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/VipRebateInfoReport',
 		newAdminPath: paths.report.sub.vipRebateReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -639,6 +640,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -895,6 +897,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,

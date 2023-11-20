@@ -12,7 +12,6 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import {
 	selectCurrencyIdsBySiteIds,
 	selectAllSiteEnableCurrencyList,
-	selectUserSite,
 	selectUserSiteList,
 } from 'common/enum'
 import MarketingFilter from 'features/marketing/MarketingFilter'
@@ -30,7 +29,6 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const watchSiteIds = Form.useWatch('siteIds', filterForm)
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const userSiteList = useAppSelector(selectUserSiteList)
 	const currencyIdsBySiteIds = useAppSelector(state =>
 		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
@@ -58,8 +56,6 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 	}: {
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
-
 		const {
 			siteIds,
 			currencyIds,

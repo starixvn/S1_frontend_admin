@@ -6,7 +6,11 @@ import WithdrawalPaymentReportFilter from 'features/withdrawalPaymentReport/With
 import { useTranslation } from 'react-i18next'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
+	selectUserSiteList,
+} from 'common/enum'
 import { Form, message } from 'antd'
 import { useGetGateWayQuery } from 'common/service/allDataApi'
 import { useGetEnumTypeQuery, IEnumTypeResponse } from 'common/service/enumApi'
@@ -27,11 +31,15 @@ import download from 'downloadjs'
 const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const [filterForm] = Form.useForm<IFilterForm>()
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const [filterForm] = Form.useForm<IFilterForm>()
 	const [tableData, setTableData] = useState<object[]>([])
 
 	const {
@@ -42,7 +50,7 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: gateWayList = [] } = {},
 		isLoading: isGateWayListLoading,
-	} = useGetGateWayQuery({ siteId })
+	} = useGetGateWayQuery({ siteIds: watchSiteIds }, { skip: !watchSiteIds })
 
 	const {
 		data: { data: getWithdrawalTypeList = [] } = {},
@@ -62,9 +70,9 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}: {
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
 		const {
 			dateRange,
+			siteIds,
 			currencyIds,
 			baseCurrencyId,
 			payIds,
@@ -77,10 +85,11 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
+
 		try {
 			const { data: withdrawalPaymentReport } = await getWithdrawalReport({
-				siteId,
 				currencyIds,
+				siteIds,
 				baseCurrencyId,
 				payIds,
 				types,
@@ -106,6 +115,7 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 				userNames,
 				groupBy,
 				timeZone: currentTimeZoneUtcOffset,
+				siteIds,
 			})
 		} catch (error) {
 			message.error(
@@ -115,22 +125,21 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
 		const {
 			startTime,
 			endTime,
-			currencyIds = [],
 			baseCurrencyId,
 			payIds,
 			types,
 			userNames,
 			groupBy,
+			currencyIds,
+			siteIds,
 		} = queryParams
-
 		try {
 			const blob = await exportBankFinancialReport({
-				siteId,
 				currencyIds,
+				siteIds,
 				baseCurrencyId,
 				payIds,
 				types,
@@ -153,28 +162,34 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const filterLoading =
 		isGroupByListLoading || isGateWayListLoading || isGetWithdrawalTypeLoading
-
 	useEffect(() => {
 		// init
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
+					siteIds: userSiteList.map(item => item.siteId),
 					payIds: gateWayList?.map(({ payId }) => payId),
 					types: getWithdrawalTypeList?.map(({ value }) => value),
-					baseCurrencyId: first(currencyListBySite)?.currencyId,
+					baseCurrencyId:
+						first(currencyIdsBySiteIds)?.currencyId ??
+						currencyListByAllSite[0].currencyId,
 					groupBy: first(groupByList)?.name,
+					currencyIds: currencyListByAllSite?.map(
+						({ currencyId }) => currencyId
+					),
 				})
 			} else {
 				const {
 					startTime,
 					endTime,
 					currencyIds = [],
-					baseCurrencyId = first(currencyListBySite)?.currencyId,
+					baseCurrencyId = first(currencyIdsBySiteIds)?.currencyId,
 					payIds,
 					types,
 					userNames,
 					groupBy,
 					timeZone,
+					siteIds,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
@@ -185,6 +200,7 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 					types: types ? types.map((value: string) => Number(value)) : [],
 					userNames,
 					groupBy: groupBy ?? '',
+					siteIds: siteIds ? siteIds.map((value: string) => Number(value)) : [],
 				})
 
 				handleSearch({
@@ -205,7 +221,9 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 				filterLoading={filterLoading}
 				form={filterForm}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				currencyListBySite={currencyListBySite}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
+				currencyListByAllSite={currencyListByAllSite}
 				groupByList={groupByList}
 				gateWayList={gateWayList}
 				getWithdrawalTypeList={getWithdrawalTypeList}
