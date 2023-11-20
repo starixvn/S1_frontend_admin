@@ -896,6 +896,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.withdrawalPaymentReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.withdrawalPaymentReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
