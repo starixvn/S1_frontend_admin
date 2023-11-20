@@ -639,6 +639,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		internalPath: 'Report/DepositReport',
 		newAdminPath: paths.report.sub.depositPaymentReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
