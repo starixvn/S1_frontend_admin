@@ -249,7 +249,7 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 		}
 	}
 
-	// * siteIds 異動時須清空 currencyIds
+	// * siteIds 異動時須清空 currencyIds, eventNames 讓使用者重新選擇
 	const siteIdsSelector = () => {
 		const onChangeSite = (newSiteIds: Array<number | string>) => {
 			if (newSiteIds.includes('all')) {
@@ -261,7 +261,11 @@ const BonusExportFilter: FC<IBonusExportFilterProps> = ({
 					siteIds: newSiteIds,
 				})
 			}
-			form.setFieldValue('currencyIds', [])
+
+			form.setFieldsValue({
+				currencyIds: [],
+				eventNames: [],
+			})
 		}
 
 		return (

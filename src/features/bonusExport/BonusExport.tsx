@@ -18,7 +18,6 @@ import {
 	selectAllSiteEnableCurrencyList,
 	selectCurrencyIdsBySiteIds,
 	selectCurrencyListBySite,
-	selectUserSite,
 	selectUserSiteList,
 } from 'common/enum'
 import {
@@ -58,7 +57,6 @@ const BonusExport: FC<{
 		bonusCode: string
 		transId: string
 	}>()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const watchSiteIds = Form.useWatch('siteIds', form)
 	const userSiteList = useAppSelector(selectUserSiteList)
 	const currencyIdsBySiteIds = useAppSelector(state =>
@@ -79,7 +77,7 @@ const BonusExport: FC<{
 	const {
 		data: { data: vipUpgradeEventNames } = {} as IVipLevelsResponse,
 		isLoading: isGetVipUpgradeEventNamesLoading,
-	} = useGetVipLevelQuery({ siteIdForFilter: siteId })
+	} = useGetVipLevelQuery({ siteIdsForFilter: watchSiteIds })
 
 	const {
 		data: { data: vipRebateEventNames } = {} as IGetCategoryResponse,
@@ -169,7 +167,6 @@ const BonusExport: FC<{
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
 		const {
 			siteIds = [],
 			startDate,
