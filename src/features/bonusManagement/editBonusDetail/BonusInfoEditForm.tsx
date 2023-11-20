@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { EditOutlined } from '@ant-design/icons'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { PromotionActionEnum } from 'features/bonusManagement/constants'
+import EditBannerImageUploader from './EditBannerImageUploader'
 
 interface IBonusInfoEditForm {
 	loading: boolean
@@ -81,7 +82,9 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 								},
 							]}
 						>
-							<Input allowClear />
+							{form && (
+								<EditBannerImageUploader form={form} tabsKey={tabsKey} />
+							)}
 						</Form.Item>
 					</Col>
 					<Col span={24}>
