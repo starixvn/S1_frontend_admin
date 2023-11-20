@@ -1,8 +1,8 @@
 import moment from 'moment/moment'
 
 export interface IGetWithdrawalReportArgs {
-	siteId?: number
 	currencyIds: number[]
+	siteIds: number[]
 	baseCurrencyId: number
 	payIds: number[]
 	types: number[]
@@ -26,6 +26,7 @@ export interface IGetWithdrawalReportData {
 
 export type IFilterForm = {
 	dateRange: [moment.Moment, moment.Moment]
+	siteIds: number[]
 	currencyIds: number[]
 	baseCurrencyId: number
 	payIds: number[]
