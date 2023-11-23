@@ -339,6 +339,98 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 			],
 		},
+		{
+			title: t('Label_QuickTransfer'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'quickTransferStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='quickTransferStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'quickTransferMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='quickTransferMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('quickTransferMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('quickTransferMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'quickTransferMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='quickTransferMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('quickTransferMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('quickTransferMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
 	]
 
 	useEffect(() => {

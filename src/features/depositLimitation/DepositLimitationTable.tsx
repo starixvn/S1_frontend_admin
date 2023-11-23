@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction } from 'react'
-import { PermissionInterface } from 'type'
+import { DepositTypeEnum, PermissionInterface } from 'type'
 import {
 	Form,
 	FormInstance,
@@ -14,10 +14,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { isNull, isNumber } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
-import {
-	DepositTypeEnum,
-	IDepositTableData,
-} from 'features/depositLimitation/type'
+import { IDepositTableData } from 'features/depositLimitation/type'
 
 interface IDepositLimitationProps {
 	form: FormInstance
@@ -606,6 +603,170 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						}
 						return isNumber(localBankingMax)
 							? numberFormatter.format(localBankingMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_QuickTransfer'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'qu',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { quickTransferStatus, quickTransferMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='quickTransferStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(quickTransferMax) ||
+											isNull(quickTransferStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !quickTransferStatus,
+												depositType: DepositTypeEnum.QuickTransfer,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(quickTransferStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(quickTransferMax) ||
+												isNull(quickTransferStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'quickTransferMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { quickTransferMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(quickTransferMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='quickTransferMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('quickTransferMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('quickTransferMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(quickTransferMin)
+							? numberFormatter.format(quickTransferMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'quickTransferMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { quickTransferMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(quickTransferMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='quickTransferMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('quickTransferMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('quickTransferMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(quickTransferMax)
+							? numberFormatter.format(quickTransferMax)
 							: 'N/A'
 					},
 				},
