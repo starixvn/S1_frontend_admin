@@ -195,6 +195,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 						{performanceHighlightDataForMultiSites.map(item => (
 							<Tabs.TabPane tab={item.siteName} key={item.siteId}>
 								<MarketingStatistic
+									siteId={item.siteId}
 									loading={isPerformanceHighlightDataForMultiSitesFetching}
 									isInOneDay={isInOneDay}
 									exportExcelPermission={exportExcelPermission}
