@@ -45,9 +45,9 @@ const VipRebateReportOverviewTable = ({
 		itemRenderer('', t('Label_Record'), t('Label_Amount'))
 
 	const overviewElements = () =>
-		currencyInfo.map(({ currencyName, totalRecord, totalAmount }) =>
+		currencyInfo.map(({ currencyName, siteName, totalRecord, totalAmount }) =>
 			itemRenderer(
-				currencyName,
+				`${currencyName} (${siteName})`,
 				numberFormatter.format(totalRecord),
 				numberFormatter.format(totalAmount)
 			)

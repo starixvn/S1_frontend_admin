@@ -36,6 +36,7 @@ export interface IVipRebateCurrencyInfoData {
 	currencyName: string
 	totalAmount: number
 	totalRecord: number
+	siteName: string
 }
 
 export interface IGetListForVipData {
