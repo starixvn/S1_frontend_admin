@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isEmpty, omit } from 'lodash'
+import { find, isEmpty, omit } from 'lodash'
 import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
 import { useAppSelector } from 'app/store'
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { message, TablePaginationConfig } from 'antd'
 import { SorterResult } from 'antd/es/table/interface'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectUserSite } from 'common/enum'
+import { selectUserSiteList } from 'common/enum'
 import {
 	PAGINATION,
 	useAuth,
@@ -33,15 +33,18 @@ import {
 	useExportMarketingNruReportMutation,
 } from 'features/marketing/nru/api'
 
+// * 多品牌操作頁面: 送出的 siteId 由 by cookie 改為 by url
 const Nru = () => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const userSiteList = useAppSelector(selectUserSiteList)
+
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const isInitRef = useRef(false)
 
 	const {
+		siteId,
 		startDate,
 		endDate,
 		comparedStartDate,
@@ -70,6 +73,8 @@ const Nru = () => {
 		orderByProperty,
 		orderByDirection: Number(orderByDirection),
 	}
+
+	const { siteName } = find(userSiteList, { siteId: Number(siteId) }) || {}
 
 	const {
 		data: { data: marketingNruReportData = {} as IMarketingNruReportData } = {},
@@ -235,13 +240,18 @@ const Nru = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_NewlyRegisteredUsers')} />
+			<LayoutContent.Title
+				// * 顯示品牌名稱讓使用者知道正在操作哪個品牌
+				title={`${t('Label_NewlyRegisteredUsers')} (${siteName})`}
+			/>
+
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
 					hasQueryParams={!isEmpty(queryParams)}
 					exportExcelPermission={exportExcelPermission!}
 					onExportClick={handleExport}
 					// title 欄位需要參數
+
 					title={t('Label_NewlyRegisteredUsers')}
 					baseCurrencyId={Number(baseCurrencyId)}
 					startDate={startDate}
