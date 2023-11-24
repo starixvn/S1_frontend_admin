@@ -1,11 +1,11 @@
 import moment from 'moment'
-import { isEmpty, omit } from 'lodash'
+import { find, isEmpty, omit } from 'lodash'
 import download from 'downloadjs'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
+import { selectUserSiteList } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { SorterResult } from 'antd/es/table/interface'
 import { message, TablePaginationConfig } from 'antd'
@@ -33,13 +33,15 @@ import BonusAmountClaimedDetailTable from 'features/marketing/bonusAmountClaimed
 
 const BonusAmountClaimed = () => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const userSiteList = useAppSelector(selectUserSiteList)
+
 	const isInitRef = useRef(false)
 
 	const {
+		siteId,
 		startDate,
 		endDate,
 		comparedStartDate,
@@ -68,6 +70,8 @@ const BonusAmountClaimed = () => {
 		orderByProperty,
 		orderByDirection: Number(orderByDirection),
 	}
+
+	const { siteName } = find(userSiteList, { siteId: Number(siteId) }) || {}
 
 	const {
 		data: {
@@ -216,7 +220,10 @@ const BonusAmountClaimed = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_BonusAmountClaimed')} />
+			<LayoutContent.Title
+				// * 顯示品牌名稱讓使用者知道正在操作哪個品牌
+				title={`${t('Label_BonusAmountClaimed')} (${siteName})`}
+			/>
 
 			<MarketingTableLayout>
 				<MarketingTableLayout.Summary
