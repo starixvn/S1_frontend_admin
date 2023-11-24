@@ -1,13 +1,13 @@
 import moment from 'moment'
 import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
-import { isEmpty, omit } from 'lodash'
+import { find, isEmpty, omit } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { SorterResult } from 'antd/es/table/interface'
 import { message, TablePaginationConfig } from 'antd'
-import { selectUserSite } from 'common/enum'
+import { selectUserSiteList } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
 	PAGINATION,
@@ -33,15 +33,17 @@ import DepositSummaryTable from 'features/marketing/depositAmount/table/DepositS
 import DepositSignUpUrlSummaryTable from 'features/marketing/depositAmount/table/DepositSignUpUrlSummaryTable'
 import DepositSignUpDetailTable from 'features/marketing/depositAmount/table/DepositSignUpDetailTable'
 
+// * 多品牌操作頁面: 送出的 siteId 由 by cookie 改為 by url
 const DepositAmount = () => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const isInitRef = useRef(false)
 
 	const {
+		siteId,
 		startDate,
 		endDate,
 		comparedStartDate,
@@ -72,6 +74,8 @@ const DepositAmount = () => {
 		orderByProperty,
 		orderByDirection: Number(orderByDirection),
 	}
+
+	const { siteName } = find(userSiteList, { siteId: Number(siteId) }) || {}
 
 	const {
 		data: {
@@ -234,7 +238,10 @@ const DepositAmount = () => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={t('Label_DepositAmount')} />
+			<LayoutContent.Title
+				// * 顯示品牌名稱讓使用者知道正在操作哪個品牌
+				title={`${t('Label_DepositAmount')} (${siteName})`}
+			/>
 			<MarketingTableLayout>
 				{/* Summary */}
 				<MarketingTableLayout.Summary
