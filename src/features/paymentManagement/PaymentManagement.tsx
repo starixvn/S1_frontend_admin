@@ -413,11 +413,11 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleSetBankInfoStatus = async ({
 		sysId,
 		status,
-		method,
+		channelId,
 	}: {
 		sysId: number
 		status: boolean
-		method: number
+		channelId: number
 	}) => {
 		if (!payIdRef.current) return
 		try {
@@ -425,7 +425,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId,
 				payId: payIdRef.current,
 				sysId,
-				method,
+				channelId,
 				status: status ? PaymentStatusEnum.True : PaymentStatusEnum.False,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
