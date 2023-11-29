@@ -23,7 +23,7 @@ import {
 	GroupByEnum,
 	groupByList,
 } from 'features/winLostReport/constants'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { IGetTpGameTypeData } from 'features/bettingMonitorSetting/type'
 import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -44,10 +44,12 @@ interface IWinLostReportFilterProps {
 	tpGameList: IGetTpGameTypeData[]
 	categories: IGetCategoryData[]
 	memberTypeEnums: IMemberTypeData[]
-	currencyListBySite: Currency[]
 	currencyListByAllSite: Currency[]
+	currencyIdsBySiteIds: Currency[]
+	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
 	selectDate: any
+
 	setSelectDate: (date: any) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -67,8 +69,9 @@ const WinLostReportFilter = ({
 	tpGameList,
 	categories,
 	memberTypeEnums,
-	currencyListBySite,
 	currencyListByAllSite,
+	currencyIdsBySiteIds,
+	userSiteList,
 	timeZoneUtcOffset,
 	selectDate,
 	setSelectDate,
@@ -99,11 +102,43 @@ const WinLostReportFilter = ({
 		}
 	}
 
+	const siteIdsSelector = () => {
+		const onSiteIdsChange = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+		return (
+			<MultipleSelect
+				placeholder={t('Label_Select')}
+				onChange={onSiteIdsChange}
+			>
+				{(userSiteList?.length as number) > 1 && (
+					<Option value='all'>{t('Label_SelectAll')}</Option>
+				)}
+				{userSiteList?.map(({ siteId, siteName }) => (
+					<Option key={siteId} value={siteId}>
+						{siteName}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
+
 	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: Array<string | number>) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
+					currencyIds: currencyIdsBySiteIds?.map(
+						({ currencyId }) => currencyId
+					),
 				})
 			} else {
 				form.setFieldsValue({
@@ -116,11 +151,11 @@ const WinLostReportFilter = ({
 				onChange={onChangeCurrency}
 				placeholder={t('Label_Select')}
 			>
-				{(currencyListBySite?.length as number) > 1 && (
+				{(currencyIdsBySiteIds?.length as number) > 1 && (
 					<Option value='all'>{t('Label_SelectAll')}</Option>
 				)}
 
-				{currencyListBySite?.map(({ currencyId, isoCode }) => (
+				{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
 					<Option key={currencyId} value={currencyId}>
 						{isoCode}
 					</Option>
@@ -243,9 +278,6 @@ const WinLostReportFilter = ({
 						initialValues={{
 							dateType: DateTypeEnum.SettledDate,
 							groupBy: GroupByEnum.Date,
-							currencyIds: currencyListBySite?.map(
-								({ currencyId }) => currencyId
-							),
 							baseCurrencyId: currencyListByAllSite[0]?.currencyId,
 							includeFreeSpins: true,
 							includeTest: true,
@@ -322,6 +354,20 @@ const WinLostReportFilter = ({
 							</Col>
 						</Row>
 						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='siteIds'
+									label={t('Label_Site')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', { key: t('Label_Site') }),
+										},
+									]}
+								>
+									{siteIdsSelector()}
+								</Form.Item>
+							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='currencyIds'
