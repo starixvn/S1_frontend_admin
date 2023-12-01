@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import moment from 'moment/moment'
 import { find, isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
+import { selectUserSiteList } from 'common/enum'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
@@ -33,6 +33,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const userSiteList = useAppSelector(selectUserSiteList)
 	// 避免複寫 filter 的時間區間
 	const {
 		timeZoneUtcOffset: timeZoneUtcOffsetModal,
@@ -41,7 +42,6 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { editPermission, deletePermission } = {} } =
 		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const editModal = useModal()
 
 	const [
@@ -72,8 +72,8 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
 		const { dateRange, status } = await filterForm.validateFields()
+		const { siteId } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
@@ -95,7 +95,9 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				statuses: ArrayStatus,
 			}).unwrap()
+
 			setQueryParams({
+				siteId,
 				startDate,
 				endDate,
 				timeZone: timeZoneUtcOffset,
@@ -145,9 +147,8 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleAddAnnouncement = async (
 		currentTimeZoneUtcOffset = timeZoneUtcOffsetModal
 	) => {
-		if (!siteId) return
 		try {
-			const { dateRange, seq, status, isTest, subject, content } =
+			const { siteId, dateRange, seq, status, isTest, subject, content } =
 				await editForm.validateFields()
 
 			const [startTime, endTime] = dateRangeToUtcFormatter(
@@ -178,7 +179,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 			}
 		} catch (error) {
 			// 驗證層
-			const { errorFields = [] } = error
+			const { errorFields = [] }: any = error
 			// 因只有 en 需要驗證並彈窗 , 故判斷 name.length > 1 ，只要有出現就跳特定 msg
 			// name.length > 1 代表是巢狀結構內的資料
 			if (
@@ -195,10 +196,9 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleUpdateAnnouncement = async (
 		currentTimeZoneUtcOffset = timeZoneUtcOffsetModal
 	) => {
-		if (!siteId) return
 		try {
 			await editForm.validateFields()
-			const { dateRange, id, seq, status, isTest } =
+			const { siteId, dateRange, id, seq, status, isTest } =
 				editForm.getFieldsValue(true)
 
 			const { subject, content } = editForm.getFieldsValue(true)
@@ -224,7 +224,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 			editModal.onCancel()
 		} catch (error) {
 			// 驗證層
-			const { errorFields = [] } = error
+			const { errorFields = [] }: any = error
 			// 因只有 en 需要驗證並彈窗 , 故判斷 name.length > 1 ，只要有出現就跳特定 msg
 			// name.length > 1 代表是巢狀結構內的資料
 			if (
@@ -250,10 +250,18 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (!isEmpty(queryParams)) {
-			const { startDate, endDate, pageNumber, pageSize, timeZone, status } =
-				queryParams
+			const {
+				siteId,
+				startDate,
+				endDate,
+				pageNumber,
+				pageSize,
+				timeZone,
+				status,
+			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
+				siteId: Number(siteId),
 				dateRange: [moment(startDate), moment(endDate)],
 				status,
 			})
@@ -275,6 +283,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
+				userSiteList={userSiteList}
 			/>
 			{!isEmpty(queryParams) && (
 				<AnnouncementTable
@@ -299,6 +308,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 				onTimeZoneChange={onTimeZoneChangeModal}
 				onCancel={editModal.onCancel}
 				onFinish={handleSubmitAnnouncement}
+				userSiteList={userSiteList}
 			/>
 
 			<AffixButtons>

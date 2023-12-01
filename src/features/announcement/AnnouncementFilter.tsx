@@ -20,8 +20,10 @@ import { FormInstance } from 'antd/es/form/Form'
 import { SearchOutlined } from '@ant-design/icons'
 import { IFilterForm } from 'features/announcement/type'
 import { STATUS_OPTIONS } from 'features/announcement/constants'
+import { UserSite } from 'common/enum/type'
 
 interface AnnouncementFilterProps {
+	userSiteList: UserSite[]
 	filterLoading: boolean
 	form: FormInstance<IFilterForm>
 	timeZoneUtcOffset: number
@@ -47,8 +49,35 @@ const AnnouncementFilter = ({
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onSearch,
+	userSiteList,
 }: AnnouncementFilterProps) => {
 	const { t } = useTranslation()
+
+	const siteIdSelector = () => {
+		return (
+			<Form.Item
+				name='siteId'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<Select placeholder={t('Label_Select')}>
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key={1}>
@@ -60,10 +89,11 @@ const AnnouncementFilter = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							status: first(STATUS_OPTIONS)?.value,
+							siteId: first(userSiteList)?.siteId,
 						}}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={12} md={12} xs={24}>
+							<Col lg={8} md={12} xs={12}>
 								<Form.Item label={t('Label_ActiveDate')}>
 									<Input.Group
 										compact
@@ -99,11 +129,11 @@ const AnnouncementFilter = ({
 
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={24}>
-								<Form.Item
-									name='status'
-									label={t('Label_Status')}
-									style={{ margin: 0, width: 200 }}
-								>
+								{siteIdSelector()}
+							</Col>
+
+							<Col lg={6} md={12} xs={24}>
+								<Form.Item name='status' label={t('Label_Status')}>
 									<Select placeholder={t('Label_SelectStatus')}>
 										{STATUS_OPTIONS.map(({ value, displayKey }) => (
 											<Option key={value} value={value}>
