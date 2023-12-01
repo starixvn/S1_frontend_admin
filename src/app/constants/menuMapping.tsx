@@ -124,6 +124,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		newAdminPath:
 			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
 				.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
