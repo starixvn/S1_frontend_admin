@@ -30,7 +30,6 @@ export interface IGetNewsByIdArgs {
 
 export interface ISetNewsArgs {
 	isAdd: boolean
-	siteId?: number
 	title: string
 	content: string
 	imageUrl: string
@@ -46,11 +45,13 @@ export interface ISetNewsStatusArgs {
 }
 
 export type IFilterForm = {
+	siteId: number
 	dateRange: [Moment, Moment]
 	status: number[]
 }
 
 export interface IEditForm {
+	siteId: number
 	newsId: number | 'Add'
 	postTime: Moment
 	sort: number
