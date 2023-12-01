@@ -50,7 +50,7 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const {
 		data: { data: gateWayList = [] } = {},
 		isLoading: isGateWayListLoading,
-	} = useGetGateWayQuery({ siteIds: watchSiteIds }, { skip: !watchSiteIds })
+	} = useGetGateWayQuery({ siteIds: watchSiteIds })
 
 	const {
 		data: { data: getDepositTypeList = [] } = {},
