@@ -22,7 +22,10 @@ import {
 	Typography,
 	DatePicker,
 } from 'antd'
-import { ICON_STATUS_TAGS, icon } from 'features/headerManagement/constatns'
+import {
+	ICON_STATUS_TAGS,
+	IconTypeList,
+} from 'features/headerManagement/constatns'
 import {
 	IHeaderSettingGroupByTpGameIdNoData,
 	ILobbyCategoryData,
@@ -154,14 +157,14 @@ const ProductStatusModal = ({
 			title: t('Label_Category'),
 			key: 'lobbyCategory',
 			dataIndex: 'lobbyCategory',
-			width: 80,
+			width: 100,
 			align: 'center' as 'center',
 		},
 		{
 			title: t('Label_Product'),
 			key: 'productName',
 			dataIndex: 'productName',
-			width: 80,
+			width: 120,
 			align: 'center' as 'center',
 		},
 		{
@@ -201,9 +204,9 @@ const ProductStatusModal = ({
 
 				return editable ? (
 					<Form.Item noStyle name='iconType'>
-						<Select placeholder='select'>
-							{icon.map(({ id, name }) => (
-								<Option key={id} value={id}>
+						<Select defaultValue={iconType} placeholder='select'>
+							{IconTypeList.map(({ value, name }) => (
+								<Option key={value} value={value}>
 									{name}
 								</Option>
 							))}

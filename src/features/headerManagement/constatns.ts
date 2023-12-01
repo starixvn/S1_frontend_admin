@@ -13,13 +13,13 @@ export const ICON_STATUS_TAGS: {
 	},
 }
 
-export const icon = [
+export const IconTypeList = [
 	{
-		id: 0,
+		value: IconTypeEnum.Null,
 		name: 'Null',
 	},
 	{
-		id: 1,
+		value: IconTypeEnum.New,
 		name: 'New',
 	},
 ] as const
