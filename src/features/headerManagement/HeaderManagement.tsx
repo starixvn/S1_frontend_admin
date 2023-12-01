@@ -11,10 +11,9 @@ import {
 	useLazyGetHeaderSettingListQuery,
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
-	useUpdateHeaderStatusMutation,
 } from 'features/headerManagement/api'
 import { Form, message } from 'antd'
-import { IFilterForm, IHeaderSettingEnum } from 'features/headerManagement/type'
+import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
@@ -26,7 +25,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
-	const formCurrencyId = Form.useWatch('currencyId', filterForm)
 	const [isSortMode, setIsSortMode] = useState(false)
 
 	const productStatusModal = useModal()
@@ -48,9 +46,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		updateHeaderManagementSort,
 		{ isLoading: isUpdateHeaderManagementSortLoading },
 	] = useUpdateHeaderManagementSortMutation()
-
-	const [updateHeaderStatus, { isLoading: isUpdateHeaderStatusLoading }] =
-		useUpdateHeaderStatusMutation()
 
 	const handleSearch = async () => {
 		if (!siteId) return
@@ -86,20 +81,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 		}
 		setIsSortMode(false)
-	}
-
-	const handleSetHeaderStatus = async (id: number, status: boolean) => {
-		try {
-			await updateHeaderStatus({
-				id,
-				status: status ? IHeaderSettingEnum.True : IHeaderSettingEnum.False,
-			}).unwrap()
-			message.success(t('System.Label_Success'))
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
 	}
 
 	const filterLoading = isLobbyCategoryListLoading
@@ -153,13 +134,10 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)}
 
 			<ProductStatusModal
-				loading={isUpdateHeaderStatusLoading}
 				visible={productStatusModal.visible}
 				onCancel={productStatusModal.onCancel}
 				lobbyCategoryList={lobbyCategoryList}
-				formCurrencyId={formCurrencyId}
 				editPermission={editPermission}
-				onSetStatus={handleSetHeaderStatus}
 			/>
 
 			<AffixButtons>

@@ -6,7 +6,9 @@ import {
 	IHeaderSettingResponse,
 	IUpdateSortArgs,
 	ILobbyCategoryData,
-	IUpdateHeaderStatusArgs,
+	IGetHeaderSettingGroupByTpGameIdNoArgs,
+	HeaderSettingGroupByTpGameIdNoResponse,
+	IUpdateHeaderSettingByTpGameIdArgs,
 } from 'features/headerManagement/type'
 
 export const headerManagementApi = rootApi.injectEndpoints({
@@ -30,6 +32,28 @@ export const headerManagementApi = rootApi.injectEndpoints({
 				}),
 			}
 		),
+		getHeaderSettingGroupByTpGameIdNoList: builder.query<
+			HeaderSettingGroupByTpGameIdNoResponse,
+			IGetHeaderSettingGroupByTpGameIdNoArgs
+		>({
+			query: data => ({
+				url: 'HeaderManagement/GetHeaderSettingGroupByTpGameIdNo',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['UPDATE_MODAL'],
+		}),
+		updateHeaderSettingByTpGameId: builder.mutation<
+			IAxiosResponse<null>,
+			IUpdateHeaderSettingByTpGameIdArgs
+		>({
+			query: data => ({
+				url: 'HeaderManagement/UpdateHeaderSettingByTpGameId',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['UPDATE_MODAL'],
+		}),
 		updateHeaderManagementSort: builder.mutation<
 			IAxiosResponse<null>,
 			IUpdateSortArgs
@@ -41,24 +65,13 @@ export const headerManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
-		updateHeaderStatus: builder.mutation<
-			IAxiosResponse<null>,
-			IUpdateHeaderStatusArgs
-		>({
-			query: data => ({
-				url: 'HeaderManagement/UpdateHeaderStatus',
-				method: 'POST',
-				data,
-			}),
-			invalidatesTags: ['POST'],
-		}),
 	}),
 })
 
 export const {
 	useLazyGetHeaderSettingListQuery,
-	useGetHeaderSettingListQuery,
+	useGetHeaderSettingGroupByTpGameIdNoListQuery,
+	useUpdateHeaderSettingByTpGameIdMutation,
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
-	useUpdateHeaderStatusMutation,
 } = headerManagementApi

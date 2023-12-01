@@ -1224,5 +1224,8 @@
 	"Label_LobbyCategory": "Lobby Category",
 	"Label_ProductName": "Product Name",
 	"Label_CurrencyGameName": "Currency Game Name",
-	"Label_ProductStatus": "Product Status"
+	"Label_ProductStatus": "Product Status",
+	"Label_IconType": "Icon Type",
+	"Label_IconStartTime": "Icon StartTime",
+	"Label_IconEndTime": "Icon EndTime"
 }

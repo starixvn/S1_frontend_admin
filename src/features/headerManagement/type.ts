@@ -1,4 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { Moment } from 'moment/moment'
 
 export interface IGetHeaderSettingArgs {
 	siteId?: number
@@ -25,6 +26,35 @@ export interface IHeaderSettingData {
 	updater: string
 }
 
+export interface IGetHeaderSettingGroupByTpGameIdNoArgs {
+	siteId?: number
+	lobbyCategoryId: number
+}
+
+export interface IHeaderSettingGroupByTpGameIdNoData {
+	siteId: number
+	lobbyCategory: string
+	productName: string
+	tpGameIdNo: number
+	status: number
+	iconType: number
+	iconStartTime: string
+	iconEndTime: string
+}
+
+export type HeaderSettingGroupByTpGameIdNoResponse = IAxiosResponse<
+	IHeaderSettingGroupByTpGameIdNoData[]
+>
+
+export interface IUpdateHeaderSettingByTpGameIdArgs {
+	siteId?: number
+	tpGameIdNo: number
+	status: number
+	iconType: number
+	iconStartTime: string
+	iconEndTime: string
+}
+
 export interface ILobbyCategoryData {
 	id: string
 	name: string
@@ -37,16 +67,6 @@ export interface IUpdateSortArgs {
 	sort: number
 }
 
-export interface IUpdateHeaderStatusArgs {
-	id: number
-	status: number
-}
-
-export interface IFilterForm {
-	currencyId: number
-	lobbyCategoryId: number
-}
-
 export interface IFilterProductStatusModalForm {
 	lobbyCategoryId: number
 }
@@ -54,4 +74,15 @@ export interface IFilterProductStatusModalForm {
 export enum IHeaderSettingEnum {
 	False,
 	True,
+}
+
+export interface IFilterForm {
+	currencyId: number
+	lobbyCategoryId: number
+}
+
+export interface IEditProductStatusForm {
+	dateRange: [Moment, Moment]
+	status: boolean
+	iconType: number
 }
