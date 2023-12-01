@@ -18,6 +18,7 @@ export interface EnumState {
 	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
 	actionTypeList: ActionType[]
 	adminUserCurrencyList: number[]
+	adminAllSiteCurrencyList: number[]
 	rewardsCurrencyList: number[]
 	vipCurrencyList: number[]
 	allSiteEnableCurrencyList: number[]
@@ -31,6 +32,7 @@ const initialState: EnumState = {
 	adjustmentInfoLogMenu: [],
 	actionTypeList: [],
 	adminUserCurrencyList: [],
+	adminAllSiteCurrencyList: [],
 	rewardsCurrencyList: [],
 	vipCurrencyList: [],
 	allSiteEnableCurrencyList: [],
@@ -59,6 +61,7 @@ const enumSlice = createSlice({
 					adjustmentInfoLogMenu,
 					actionTypeList,
 					siteCurrencyList,
+					allSiteCurrencyList,
 					rewardsCurrencyList,
 					vipCurrencyList,
 					allSiteEnableCurrencyList,
@@ -69,6 +72,7 @@ const enumSlice = createSlice({
 				state.adjustmentInfoLogMenu = adjustmentInfoLogMenu
 				state.actionTypeList = actionTypeList
 				state.adminUserCurrencyList = siteCurrencyList
+				state.adminAllSiteCurrencyList = allSiteCurrencyList
 				state.rewardsCurrencyList = rewardsCurrencyList
 				state.vipCurrencyList = vipCurrencyList
 				state.allSiteEnableCurrencyList = allSiteEnableCurrencyList
@@ -77,6 +81,7 @@ const enumSlice = createSlice({
 			}),
 })
 
+// * 回傳根據 cookie siteId 過濾出來的幣別
 export const selectCurrencyListBySite = (state: RootState) => {
 	const { allCurrencyList, adminUserCurrencyList } = state.allEnum
 
@@ -86,6 +91,12 @@ export const selectCurrencyListBySite = (state: RootState) => {
 	)
 }
 
+// * 回傳目前帳號所支援的品牌所支援的幣別
+export const selectAdminAllSiteCurrencyList = (state: RootState) => {
+	return state.allEnum.adminAllSiteCurrencyList
+}
+
+// * 回傳所有支援換匯的幣別
 export const selectAllSiteEnableCurrencyList = (state: RootState) => {
 	const { allCurrencyList, allSiteEnableCurrencyList } = state.allEnum
 	return filter(allCurrencyList, currency =>

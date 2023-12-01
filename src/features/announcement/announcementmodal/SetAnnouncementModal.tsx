@@ -1,8 +1,6 @@
 import moment from 'moment'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
 import { useGetLangCodesQuery } from 'common/service/allDataApi'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import {
@@ -22,6 +20,7 @@ import {
 	DatePicker,
 	Switch,
 	InputNumber,
+	Select,
 } from 'antd'
 import {
 	IAnnouncementByIdResponse,
@@ -30,8 +29,11 @@ import {
 import { announcementResConverter } from 'features/announcement/utils'
 import AnnouncementTabs from 'features/announcement/announcementmodal/AnnouncementTabs'
 import { useGetAnnouncementByIdQuery } from 'features/announcement/api'
+import { UserSite } from 'common/enum/type'
+import { head } from 'lodash'
 
 interface SetAnnouncementModalProps {
+	userSiteList: UserSite[]
 	open: boolean
 	form: FormInstance<IEditForm>
 	loading: boolean
@@ -43,6 +45,7 @@ interface SetAnnouncementModalProps {
 }
 
 const { RangePicker } = DatePicker
+const { Option } = Select
 
 const SetAnnouncementModal = ({
 	open,
@@ -53,12 +56,12 @@ const SetAnnouncementModal = ({
 	onTimeZoneChange,
 	onCancel,
 	onFinish,
+	userSiteList,
 }: SetAnnouncementModalProps) => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const formSiteId = Form.useWatch('siteId', form)
 	const id = form.getFieldValue(['id'])
 	const isAdd = id === 'Add'
-
 	// 每次開都重撈資料
 	const {
 		data: { data: announcementDetail } = {} as IAnnouncementByIdResponse,
@@ -72,18 +75,55 @@ const SetAnnouncementModal = ({
 			refetchOnMountOrArgChange: true,
 		}
 	)
-	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
+	const { data: { data: infos } = {} } = useGetLangCodesQuery({
+		siteId: formSiteId,
+	})
 	const { iLangList: langCodes = [] } = infos ?? {}
+
+	const siteIdSelector = () => {
+		return (
+			<Form.Item
+				name='siteId'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<Select placeholder={t('Label_Select')} disabled={!isAdd}>
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
 
 	useEffect(() => {
 		if (!isGetAnnouncementDetailLoading && !isAdd && open) {
-			const { status, isTest, seq, subject, content, startTime, endTime } =
-				announcementDetail ?? {}
+			const {
+				siteId,
+				status,
+				isTest,
+				seq,
+				subject,
+				content,
+				startTime,
+				endTime,
+			} = announcementDetail ?? {}
 			// subject content 型態相同 帶入固定參數判斷
+
 			const subjectResult = announcementResConverter(subject, 'subject')
 			const contentResult = announcementResConverter(content, 'content')
 
 			form.setFieldsValue({
+				siteId,
 				dateRange: [moment(startTime), moment(endTime)],
 				status: Boolean(status),
 				isTest: Boolean(isTest),
@@ -151,6 +191,7 @@ const SetAnnouncementModal = ({
 					form={form}
 					layout='vertical'
 					initialValues={{
+						siteId: head(userSiteList)?.siteId,
 						seq: '',
 						status: false,
 						isTest: false,
@@ -158,6 +199,9 @@ const SetAnnouncementModal = ({
 					disabled={!editPermission?.canUse}
 				>
 					<Row align='middle' gutter={16}>
+						<Col lg={6} md={12} xs={12}>
+							{siteIdSelector()}
+						</Col>
 						<Col lg={12} md={12} xs={24}>
 							<Form.Item label={t('Label_ActiveDate')}>
 								<Input.Group compact style={{ width: '100%', display: 'flex' }}>
@@ -196,7 +240,7 @@ const SetAnnouncementModal = ({
 							</Form.Item>
 						</Col>
 
-						<Col lg={3} md={12} xs={24} offset={1}>
+						<Col lg={{ span: 3, offset: 1 }} md={12} xs={24}>
 							<Form.Item
 								name='status'
 								label={t('Label_Status')}

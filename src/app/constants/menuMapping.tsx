@@ -124,6 +124,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		newAdminPath:
 			paths.customerSupport.sub.operatorService.sub.liveRegistrationStatistics
 				.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -393,6 +394,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalPath: 'Message/Announcement',
 		internalFunctionKey: allowedRoles.MessageAnnouncement,
 		newAdminPath: paths.cms.sub.announcement.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -401,6 +403,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalPath: 'Marketing/NewsManage',
 		internalFunctionKey: allowedRoles.MarketingNewsManage,
 		newAdminPath: paths.content.sub.newsManage.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
@@ -958,6 +961,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.leaderboardReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.leaderboardReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,

@@ -13,7 +13,11 @@ import {
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectUserSite,
+	selectUserSiteList,
+	selectCurrencyIdsBySiteIds,
+} from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { LayoutContent } from 'app/pages/layout'
@@ -45,13 +49,15 @@ import LiveRegistrationStatisticsNoteModal from './LiveRegistrationStatisticsNot
 const LiveRegistrationStatistics: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { t } = useTranslation()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 
 	const [searchForm] = Form.useForm<{
+		siteIds: number[]
 		currencyId: number
 		depositStatus: number
 		status: number
@@ -63,6 +69,11 @@ const LiveRegistrationStatistics: FC<{
 		dateType: number
 		userName: string
 	}>()
+
+	const watchSiteIds = Form.useWatch('siteIds', searchForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const noteModal = useModal()
@@ -108,7 +119,7 @@ const LiveRegistrationStatistics: FC<{
 		orderByProperty?: 'RegTime' | 'LastActiveTime'
 		orderByDirection?: 0 | 1 | null
 	}) => {
-		const { dateRange, affiliatesCode, dormantUser, ...values } =
+		const { siteIds, dateRange, affiliatesCode, dormantUser, ...values } =
 			await searchForm.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
@@ -116,8 +127,8 @@ const LiveRegistrationStatistics: FC<{
 		)
 		try {
 			await getRegistrationManagementList({
-				siteId,
 				...values,
+				siteIds,
 				affiliatesCode: affiliatesCode || null,
 				dormantUser: dormantUser || DormantMemberEnum.All,
 				pageNumber: current,
@@ -134,6 +145,7 @@ const LiveRegistrationStatistics: FC<{
 			}))
 			setQueryParams({
 				...values,
+				siteIds,
 				affiliatesCode: affiliatesCode || null,
 				dormantUser: dormantUser || DormantMemberEnum.All,
 				orderByProperty,
@@ -153,8 +165,10 @@ const LiveRegistrationStatistics: FC<{
 
 	const handleExport = async () => {
 		try {
+			const { siteIds } = await searchForm.validateFields()
+
 			const {
-				currencyId = currencyListBySite[0]?.currencyId,
+				currencyId = currencyIdsBySiteIds[0]?.currencyId,
 				depositStatus = DateTypeEnum.All,
 				status = StatusEnum.All,
 				affiliatesCode = null,
@@ -166,8 +180,9 @@ const LiveRegistrationStatistics: FC<{
 				startDate,
 				endDate,
 			} = queryParams
+
 			const blob = await exportRegistrationManagement({
-				siteId,
+				siteIds,
 				currencyId: Number(currencyId),
 				depositStatus: Number(depositStatus),
 				status,
@@ -258,7 +273,8 @@ const LiveRegistrationStatistics: FC<{
 		if (isEmpty(queryParams)) return
 
 		const {
-			currencyId = currencyListBySite[0]?.currencyId,
+			siteIds,
+			currencyId,
 			dateType = DateTypeEnum.LastActiveDate,
 			status = StatusEnum.All,
 			affiliatesCode = '',
@@ -275,8 +291,10 @@ const LiveRegistrationStatistics: FC<{
 			orderByDirection,
 			timeZone,
 		} = queryParams
+
 		onTimeZoneChange(Number(timeZone))
 		searchForm.setFieldsValue({
+			siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 			currencyId: Number(currencyId),
 			depositStatus: Number(depositStatus),
 			status: Number(status),
@@ -313,8 +331,9 @@ const LiveRegistrationStatistics: FC<{
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<LiveRegistrationStatisticsFilter
-				loading={loading}
 				form={searchForm}
+				loading={loading}
+				userSiteList={userSiteList}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}

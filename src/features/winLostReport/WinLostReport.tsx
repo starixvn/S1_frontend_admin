@@ -4,12 +4,14 @@ import moment from 'moment/moment'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	useExportWinLossByBrandMutation,
 	useExportWinLossByCurrencyMutation,
 	useExportWinLossByDateMutation,
 	useExportWinLossByMonthMutation,
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByTpCategoryTypeMutation,
 	useExportWinLossByTpGameTypeMutation,
+	useLazyGetWinLossByBrandQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByDateQuery,
 	useLazyGetWinLossByMonthQuery,
@@ -41,8 +43,8 @@ import {
 } from 'common/hooks'
 import {
 	selectAllSiteEnableCurrencyList,
-	selectCurrencyListBySite,
-	selectUserSite,
+	selectCurrencyIdsBySiteIds,
+	selectUserSiteList,
 } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { cloneDeep, isArray, isEmpty, reject } from 'lodash'
@@ -55,12 +57,15 @@ import { useGetCategoryQuery } from 'features/betList/api'
 
 const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm()
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 	const { t } = useTranslation()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
 	const [expandList, setExpandList] = useState<Array<string | number>>([])
@@ -108,6 +113,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [getWinLossByCurrency, { isFetching: isGetWinLossByCurrencyFetching }] =
 		useLazyGetWinLossByCurrencyQuery()
 
+	const [getWinLossByBrand, { isFetching: isGetWinLossByBrandFetching }] =
+		useLazyGetWinLossByBrandQuery()
+
 	const [exportWinLossByDate, { isLoading: isExportWinLossByDateLoading }] =
 		useExportWinLossByDateMutation()
 
@@ -131,6 +139,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		exportWinLossByCurrency,
 		{ isLoading: isExportWinLossByCurrencyLoading },
 	] = useExportWinLossByCurrencyMutation()
+
+	const [exportWinLossByBrand, { isLoading: isExportWinLossByBrandLoading }] =
+		useExportWinLossByBrandMutation()
 
 	const {
 		data: { data: memberTypeEnums = [] } = {},
@@ -156,8 +167,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		orderByProperty?: string
 		orderByDirection?: number
 	}) => {
-		if (!siteId) return
 		const {
+			siteIds,
 			dateType,
 			dateRange,
 			currencyIds,
@@ -184,7 +195,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 
 		const args = {
-			siteId,
+			siteIds,
 			starTime,
 			endTime,
 			tpCategorys: tpCategorys ?? [],
@@ -274,6 +285,16 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Brand:
+					try {
+						result = await getWinLossByBrand(args).unwrap()
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -341,7 +362,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleExport = () => {
 		const exportSelector = async () => {
 			const {
-				siteId: querySiteId,
+				siteIds: querySiteIds,
 				starTime,
 				endTime,
 				tpCategorys = [],
@@ -362,7 +383,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 
 			const args = {
-				siteId: Number(querySiteId),
+				siteIds: Number(querySiteIds),
 				starTime,
 				endTime,
 				tpCategorys: tpCategorys.map((categoryId: string) =>
@@ -478,6 +499,20 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Brand:
+					try {
+						blob = await exportWinLossByBrand(args).unwrap()
+						download(
+							blob,
+							`WinLostReportByBrand_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						)
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -488,7 +523,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const expandDetailHandler = async (expanded: boolean, record: any) => {
 		if (record.children.length === 0) {
 			const {
-				siteId: querySiteId,
+				siteIds: querySiteIds,
 				starTime,
 				endTime,
 				tpGameTypes = [],
@@ -504,7 +539,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			try {
 				const args = {
-					siteId: Number(querySiteId),
+					siteIds: Number(querySiteIds),
 					starTime,
 					endTime,
 					tpGameTypes: tpGameTypes.map((tpGameType: string) =>
@@ -560,9 +595,14 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						'value',
 						UserTypeEnum.LiveStreaming,
 					]).map(({ value }) => Number(value)),
+					siteIds: userSiteList.map(item => item.siteId),
+					currencyIds: currencyListByAllSite?.map(
+						({ currencyId }) => currencyId
+					),
 				})
 			} else {
 				const {
+					siteIds,
 					dateType,
 					starTime,
 					endTime,
@@ -581,6 +621,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
+					siteIds: siteIds ? siteIds.map((value: string) => Number(value)) : [],
 					dateType: Number(dateType),
 					dateRange: [moment(starTime), moment(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
@@ -618,7 +659,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isExportWinLossByTpGameTypeLoading ||
 		isExportWinLossByTpCategoryTypeLoading ||
 		isExportWinLossByPlayerLoading ||
-		isExportWinLossByCurrencyLoading
+		isExportWinLossByCurrencyLoading ||
+		isExportWinLossByBrandLoading
 
 	const loading =
 		isGetTpGameListLoading ||
@@ -630,6 +672,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWinLossByPlayerFetching ||
 		isGetWinLossByPlayerDetailFetching ||
 		isGetWinLossByCurrencyFetching ||
+		isGetWinLossByBrandFetching ||
 		isMemberTypeEnumsLoading ||
 		exportLoading
 
@@ -642,8 +685,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				tpGameList={tpGameList}
 				categories={categories}
 				memberTypeEnums={memberTypeEnums}
-				currencyListBySite={currencyListBySite}
 				currencyListByAllSite={currencyListByAllSite}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
+				userSiteList={userSiteList}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
