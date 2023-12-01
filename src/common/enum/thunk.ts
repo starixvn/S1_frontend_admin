@@ -22,6 +22,7 @@ export interface IAllEnumState {
 	adjustmentInfoLogMenu: AdjustmentInfoLogMenuItem[]
 	actionTypeList: ActionType[]
 	siteCurrencyList: number[]
+	allSiteCurrencyList: number[]
 	rewardsCurrencyList: number[]
 	vipCurrencyList: number[]
 	allSiteEnableCurrencyList: number[]
@@ -50,6 +51,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 
 		const {
 			siteCurrencyList = [],
+			allSiteCurrencyList = [],
 			rewardsCurrencyList = [],
 			vipCurrencyList = [],
 			allSiteEnableCurrencyList = [],
@@ -61,6 +63,7 @@ export const fetchAllEnumAsync = createAsyncThunk(
 			adjustmentInfoLogMenu,
 			actionTypeList,
 			siteCurrencyList,
+			allSiteCurrencyList,
 			rewardsCurrencyList,
 			vipCurrencyList,
 			allSiteEnableCurrencyList,

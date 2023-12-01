@@ -438,8 +438,6 @@ const WinLostReportFilter = ({
 									{productSelector()}
 								</Form.Item>
 							</Col>
-						</Row>
-						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
 									<Input allowClear />
@@ -449,6 +447,7 @@ const WinLostReportFilter = ({
 								{memberTypeSelector()}
 							</Col>
 						</Row>
+
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='includeTest' valuePropName='checked' noStyle>
