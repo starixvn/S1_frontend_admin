@@ -54,6 +54,14 @@ const AnnouncementTable = ({
 
 	const columns = [
 		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName || '-',
+		},
+		{
 			title: t('Label_Id'),
 			key: 'id',
 			dataIndex: 'id',

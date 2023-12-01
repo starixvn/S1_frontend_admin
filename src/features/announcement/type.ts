@@ -77,6 +77,7 @@ export interface IAnnouncementByIdData {
 export type IAnnouncementByIdResponse = IAxiosResponse<IAnnouncementByIdData>
 
 export interface IFilterForm {
+	siteId: number
 	dateRange: [Moment, Moment]
 	status: string
 }
