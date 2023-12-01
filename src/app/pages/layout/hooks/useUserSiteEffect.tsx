@@ -27,7 +27,7 @@ const useUserSiteEffect = () => {
 			dispatch(onChangeUserSite({}))
 			changeBrand({ siteId: Number(queryParams?.siteId) })
 		}
-	}, [queryParams?.siteId])
+	}, [queryParams?.siteId, siteId])
 
 	useEffect(() => {
 		if (enumStatus === 'succeeded') {

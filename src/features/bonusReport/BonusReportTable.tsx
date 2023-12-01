@@ -32,6 +32,7 @@ const BonusReportTable = ({
 	const { t } = useTranslation()
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
 		useVisibilityColumnsButtonHook()
+
 	const baseColumns = [
 		{
 			title: t('Label_TransId'),
@@ -131,10 +132,10 @@ const BonusReportTable = ({
 			key: 'userName',
 			width: 120,
 			align: 'center' as 'center',
-			render: ({ custId, userName }: IBonusReportData) =>
+			render: ({ custId, userName, siteId }: IBonusReportData) =>
 				userName ? (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}
