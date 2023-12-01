@@ -978,4 +978,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.confiscatedSummaryReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.leaderboardManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.leaderboardManagement.root,
+	},
 ]

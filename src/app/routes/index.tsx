@@ -1126,6 +1126,13 @@ const ConfiscatedSummaryReport = lazy(
 		)
 )
 
+const LeaderboardManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LeaderboardManagement' */ 'features/leaderboardManagement/LeaderboardManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2787,6 +2794,16 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.confiscatedSummaryReport.functionId}
 					>
 						<ConfiscatedSummaryReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.leaderboardManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.cms.sub.leaderboardManagement.functionId}
+					>
+						<LeaderboardManagement />
 					</AuthRequire>
 				),
 			},
