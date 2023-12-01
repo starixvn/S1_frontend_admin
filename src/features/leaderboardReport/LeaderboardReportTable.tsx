@@ -43,10 +43,10 @@ const LeaderboardReportTable = ({
 			key: 'userName',
 			align: 'center' as 'center',
 			width: '30%',
-			render: ({ custId, userName }: ILeaderboardReportData) =>
+			render: ({ custId, userName, siteId }: ILeaderboardReportData) =>
 				userName ? (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}

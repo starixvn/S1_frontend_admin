@@ -50,10 +50,10 @@ const VipRebateReportTable = ({
 			key: 'MemberId',
 			width: 100,
 			align: 'center' as 'center',
-			render: ({ custId, userName }: IVipRebateInfoData) =>
+			render: ({ custId, userName, siteId }: IVipRebateInfoData) =>
 				userName ? (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}

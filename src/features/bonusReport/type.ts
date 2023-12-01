@@ -20,6 +20,7 @@ export interface IGetBonusReportDataListArgs {
 }
 
 export interface IBonusReportData {
+	siteId: number
 	siteName: string
 	custId: number
 	transId: string
