@@ -13,7 +13,11 @@ import {
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAdminAllSiteCurrencyList,
+	selectCurrencyListBySite,
+	selectUserSite,
+} from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { LayoutContent } from 'app/pages/layout'
@@ -48,6 +52,9 @@ const LiveRegistrationStatistics: FC<{
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const adminAllSiteCurrencyList = useAppSelector(
+		selectAdminAllSiteCurrencyList
+	)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 
