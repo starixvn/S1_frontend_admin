@@ -402,6 +402,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		internalPath: 'Marketing/NewsManage',
 		internalFunctionKey: allowedRoles.MarketingNewsManage,
 		newAdminPath: paths.content.sub.newsManage.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,

@@ -14,7 +14,7 @@ import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
-import { selectUserSite } from 'common/enum'
+import { selectUserSiteList } from 'common/enum'
 import { utcFormatter, dateRangeToUtcFormatter } from 'common/utils'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { IFilterForm, IEditForm } from 'features/newsManagement/type'
@@ -29,14 +29,17 @@ import { NewsManagementModal } from 'features/newsManagement/EditNewsModal/EditN
 
 const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
+	const [filterForm] = Form.useForm<IFilterForm>()
+	const [editForm] = Form.useForm<IEditForm>()
+
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 
-	const [filterForm] = Form.useForm<IFilterForm>()
-	const [editForm] = Form.useForm<IEditForm>()
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const editModal = useModal()
+
+	const formSiteId = Form.useWatch('siteId', editForm)
 
 	const {
 		data: { data: statusEnumList = [] } = {},
@@ -66,14 +69,13 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		const { dateRange, status } = filterForm.getFieldsValue()
+		const { dateRange, status, siteId } = filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
 
 		const payload = {
-			siteIds: siteId ? [siteId] : [],
 			startDate,
 			endDate,
 			status,
@@ -82,8 +84,15 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		}
 
 		try {
-			await getNewsList(payload).unwrap()
-			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...payload })
+			await getNewsList({
+				siteIds: [siteId],
+				...payload,
+			}).unwrap()
+			setQueryParams({
+				timeZone: currentTimeZoneUtcOffset,
+				siteId,
+				...payload,
+			})
 			setPagination(prev => ({ ...prev, current, pageSize }))
 		} catch (error) {
 			message.error(
@@ -129,7 +138,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 			const payload = {
 				isAdd,
-				siteId,
+				siteId: formSiteId,
 				title: JSONConverter(title),
 				content: JSONConverter(content),
 				imageUrl: JSONConverter(imageUrl),
@@ -148,7 +157,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					(error as Error)?.message || t('System.Label_NotExpectedServerError')
 				)
 			}
-		} catch (error) {
+		} catch (error: any) {
 			const { errorFields = [] } = error
 			// can find name inside errorField means missed required content in form
 			if (find(errorFields, (item: any) => item?.name.length > 0)) {
@@ -159,11 +168,19 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (!isEmpty(queryParams)) {
-			const { startDate, endDate, pageNumber, pageSize, timeZone, status } =
-				queryParams
+			const {
+				siteId,
+				startDate,
+				endDate,
+				pageNumber,
+				pageSize,
+				timeZone,
+				status,
+			} = queryParams
 
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
+				siteId: siteId ? Number(siteId) : undefined,
 				dateRange: [moment(startDate), moment(endDate)],
 				status: status ? status?.map((value: string) => Number(value)) : [],
 			})
@@ -193,6 +210,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
+				userSiteList={userSiteList}
 			/>
 			{!isEmpty(queryParams) && (
 				<NewsManagementTable
@@ -214,6 +232,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				onCancel={editModal.onCancel}
 				onFinish={handleSetNews}
 				onTimeZoneChange={onTimeZoneChange}
+				userSiteList={userSiteList}
 			/>
 			<AffixButtons>
 				<AffixButtons.Create
