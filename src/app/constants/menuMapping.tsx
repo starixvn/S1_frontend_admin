@@ -935,6 +935,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.leaderboardReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.leaderboardReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
