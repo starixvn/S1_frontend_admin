@@ -6,6 +6,7 @@ import { numFormatToDigits } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
 import { ILeaderboardReportData } from 'features/leaderboardReport/type'
+import { head } from 'lodash'
 
 interface ILeaderboardReportTableProps {
 	loading: boolean
@@ -17,6 +18,8 @@ const LeaderboardReportTable = ({
 	leaderboardReportList,
 }: ILeaderboardReportTableProps) => {
 	const { t } = useTranslation()
+
+	const data = head(leaderboardReportList)?.detail
 
 	const columns = [
 		{
@@ -67,7 +70,7 @@ const LeaderboardReportTable = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={leaderboardReportList}
+				dataSource={data}
 				pagination={false}
 			/>
 		</LayoutContent.Card>
