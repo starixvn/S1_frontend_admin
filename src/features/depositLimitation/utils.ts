@@ -1,5 +1,4 @@
 import {
-	DepositTypeEnum,
 	IDepositTableData,
 	IDepositTableFormData,
 	IGetDepositLimitData,
@@ -15,6 +14,7 @@ import {
 	isNull,
 	isNumber,
 } from 'lodash'
+import { DepositTypeEnum } from 'type'
 
 // S2C response converter
 export const depositLimitationResponseConverter = (
@@ -26,8 +26,10 @@ export const depositLimitationResponseConverter = (
 			DepositTypeEnum.LocalBanking as number,
 			DepositTypeEnum.OnlineBanking as number,
 			DepositTypeEnum.MobilePay as number,
+			DepositTypeEnum.QuickTransfer as number,
 		])
 	)
+
 	const result: IDepositTableData[] = []
 	const sampleObj: IDepositTableData = {
 		vipLevel: 0,
@@ -40,6 +42,9 @@ export const depositLimitationResponseConverter = (
 		localBankingMax: null,
 		localBankingMin: null,
 		localBankingStatus: null,
+		quickTransferMax: null,
+		quickTransferMin: null,
+		quickTransferStatus: null,
 	}
 
 	filteredData?.forEach(data => {
@@ -66,6 +71,13 @@ export const depositLimitationResponseConverter = (
 					localBankingMax: depositMax,
 					localBankingMin: depositMin,
 					localBankingStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.QuickTransfer:
+				obj = {
+					quickTransferMax: depositMax,
+					quickTransferMin: depositMin,
+					quickTransferStatus: depositStatus,
 				}
 				break
 			default:
@@ -111,6 +123,13 @@ export class DepositLimitationC2S {
 			depositMax: 0,
 			depositStatus: 0,
 		},
+		{
+			depositType: DepositTypeEnum.QuickTransfer as number,
+			vipLevel: 0,
+			depositMin: 0,
+			depositMax: 0,
+			depositStatus: 0,
+		},
 	]
 
 	static update({
@@ -136,6 +155,9 @@ export class DepositLimitationC2S {
 			localBankingStatus: localBankingStatusBefore,
 			localBankingMax: localBankingMaxBefore,
 			localBankingMin: localBankingMinBefore,
+			quickTransferStatus: quickTransferStatusBefore,
+			quickTransferMax: quickTransferMaxBefore,
+			quickTransferMin: quickTransferMinBefore,
 		} = record
 
 		// after
@@ -149,6 +171,9 @@ export class DepositLimitationC2S {
 			localBankingStatus,
 			localBankingMax,
 			localBankingMin,
+			quickTransferStatus,
+			quickTransferMax,
+			quickTransferMin,
 		} = formData
 
 		const beforeData = cloneDeep(this.exampleData)
@@ -169,6 +194,11 @@ export class DepositLimitationC2S {
 						example.depositStatus = Number(localBankingStatusBefore)
 						example.depositMax = localBankingMaxBefore
 						example.depositMin = localBankingMinBefore
+						break
+					case DepositTypeEnum.QuickTransfer:
+						example.depositStatus = Number(quickTransferStatusBefore)
+						example.depositMax = quickTransferMaxBefore
+						example.depositMin = quickTransferMinBefore
 						break
 					default:
 						break
@@ -204,6 +234,11 @@ export class DepositLimitationC2S {
 					example.depositStatus = Number(localBankingStatus)
 					example.depositMax = localBankingMax
 					example.depositMin = localBankingMin
+					break
+				case DepositTypeEnum.QuickTransfer:
+					example.depositStatus = Number(quickTransferStatus)
+					example.depositMax = quickTransferMax
+					example.depositMin = quickTransferMin
 					break
 				default:
 					break
@@ -242,6 +277,9 @@ export class DepositLimitationC2S {
 			localBankingStatus,
 			localBankingMax,
 			localBankingMin,
+			quickTransferStatus,
+			quickTransferMax,
+			quickTransferMin,
 		} = formData
 
 		const result = cloneDeep(this.exampleData).map(example => {
@@ -261,6 +299,11 @@ export class DepositLimitationC2S {
 					example.depositStatus = Number(localBankingStatus)
 					example.depositMax = localBankingMax
 					example.depositMin = localBankingMin
+					break
+				case DepositTypeEnum.QuickTransfer:
+					example.depositStatus = Number(quickTransferStatus)
+					example.depositMax = quickTransferMax
+					example.depositMin = quickTransferMin
 					break
 				default:
 					break
@@ -300,6 +343,8 @@ export class DepositLimitationC2S {
 			mobilePayMin,
 			localBankingMax,
 			localBankingMin,
+			quickTransferMax,
+			quickTransferMin,
 		} = record
 
 		switch (depositType) {
@@ -323,6 +368,13 @@ export class DepositLimitationC2S {
 				result.depositStatus = Number(status)
 				result.depositMax = localBankingMax
 				result.depositMin = localBankingMin
+				break
+			case DepositTypeEnum.QuickTransfer:
+				result.depositType = DepositTypeEnum.QuickTransfer as number
+				result.vipLevel = vipLevel
+				result.depositStatus = Number(status)
+				result.depositMax = quickTransferMax
+				result.depositMin = quickTransferMin
 				break
 			default:
 				break
