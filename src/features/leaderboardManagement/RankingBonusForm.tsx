@@ -65,8 +65,8 @@ const RankingBonusForm = ({
 		},
 		{
 			title: t('Label_Ranking'),
-			key: 'ranking',
-			dataIndex: 'ranking',
+			key: 'rankingName',
+			dataIndex: 'rankingName',
 			width: '20%',
 			align: 'center' as 'center',
 		},

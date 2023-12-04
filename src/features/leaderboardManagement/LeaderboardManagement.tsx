@@ -18,7 +18,6 @@ import {
 	IRankingData,
 } from 'features/leaderboardManagement/type'
 import { RankingBonusTab } from 'features/leaderboardManagement/RankingBonusTab'
-import { last } from 'lodash'
 
 const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -99,9 +98,8 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const handleUpdateRankingForm = async (currencyId: number) => {
 		if (!siteId) return
 		const { bonus, minPoint } = await rankingForm.validateFields()
-		const { ranking: rawRanking } = rankingForm.getFieldsValue(true)
-		// 待確認 api
-		const ranking = last(rawRanking.split(' ')) as string
+		const { ranking } = rankingForm.getFieldsValue(true)
+
 		try {
 			await setLeaderboardRankingBonus({
 				ranking,
