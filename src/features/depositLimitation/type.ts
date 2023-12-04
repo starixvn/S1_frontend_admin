@@ -42,13 +42,6 @@ export interface IDeleteDepositLimitArgs extends IGetDepositLimitArgs {
 	before: IDeleteDepositLimitData
 }
 
-// 目前有使用到的 depositType 有需要再手動加
-export enum DepositTypeEnum {
-	OnlineBanking = 1,
-	MobilePay,
-	LocalBanking,
-}
-
 export type IDepositTableData = {
 	vipLevel: number
 	onlineBankingMax: number | null
@@ -60,6 +53,9 @@ export type IDepositTableData = {
 	localBankingMax: number | null
 	localBankingMin: number | null
 	localBankingStatus: number | null
+	quickTransferMax: number | null
+	quickTransferMin: number | null
+	quickTransferStatus: number | null
 }
 
 // form 在 input 就不允許有 null , switch 可能有 number , boolean , null
@@ -74,6 +70,9 @@ export type IDepositTableFormData = {
 	localBankingMax: number
 	localBankingMin: number
 	localBankingStatus: number | boolean | null
+	quickTransferMax: number
+	quickTransferMin: number
+	quickTransferStatus: number | boolean | null
 }
 
 export enum ErrorCodeEnum {
