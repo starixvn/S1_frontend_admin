@@ -762,6 +762,10 @@ const paths = {
 				root: 'cms/bannerManage',
 				functionId: 55,
 			},
+			leaderboardManagement: {
+				root: 'cms/leaderboardManagement',
+				functionId: 151,
+			},
 		},
 	},
 }

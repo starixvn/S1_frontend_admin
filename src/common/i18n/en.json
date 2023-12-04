@@ -1225,5 +1225,11 @@
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash",
 	"Label_IncludeTestData": "Include Test Data",
 	"Label_BankMaintenance": "Bank Maintenance",
-	"Label_Site": "Site"
+	"Label_Site": "Site",
+	"Label_Reward": "Reward",
+	"Label_SportValidTurnover": "Sport Valid Turnover",
+	"Label_SlotValidTurnover": "Slot Valid Turnover",
+	"Label_LiveCasinoValidTurnover": "Live Casino Valid Turnover",
+	"Label_SetPointCalculation": "Set Point Calculation",
+	"Label_SetRankingBonus": "Set Ranking Bonus"
 }
