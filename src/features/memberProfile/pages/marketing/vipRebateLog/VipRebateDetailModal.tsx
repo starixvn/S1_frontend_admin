@@ -68,7 +68,7 @@ const VipRebateDetailModal = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (percentage: number) =>
-				typeof percentage === 'number' ? `${percentage.toFixed(1)} %` : '',
+				typeof percentage === 'number' ? `${percentage.toFixed(2)} %` : '',
 		},
 		{
 			title: t('Label_RedeemAmount'),

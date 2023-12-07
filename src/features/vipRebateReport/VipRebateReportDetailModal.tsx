@@ -111,7 +111,7 @@ const VipRebateReportDetailModal = ({
 		return itemRenderer(
 			t('Label_RebateByGame'),
 			vipRebateDetail.map(({ percentage }) =>
-				typeof percentage === 'number' ? `${percentage.toFixed(1)}%` : ''
+				typeof percentage === 'number' ? `${percentage.toFixed(2)}%` : ''
 			),
 			''
 		)
