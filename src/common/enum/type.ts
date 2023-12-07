@@ -2,6 +2,7 @@ export interface UserSite {
 	currencyList: Array<number>
 	defLang: string
 	iLangList: Array<string>
+	iCurrencyList: number[]
 	langList: Array<string>
 	siteId: number
 	siteName: string
@@ -27,6 +28,7 @@ export interface ActionType {
 
 export interface IAdminUserCurrency {
 	siteCurrencyList: number[]
+	allSiteCurrencyList: number[]
 	rewardsCurrencyList: number[]
 	vipCurrencyList: number[]
 	allSiteEnableCurrencyList: number[]

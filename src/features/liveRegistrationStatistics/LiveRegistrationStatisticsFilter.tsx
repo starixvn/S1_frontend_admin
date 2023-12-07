@@ -19,10 +19,15 @@ import {
 	MOMENT_RANGE_PICKER_RANGES,
 } from 'app/constants/moment'
 import moment from 'moment'
+import { UserSite } from 'common/enum/type'
 import { dateFormat } from 'common/utils/format'
+import {
+	selectAdminAllSiteCurrencyList,
+	selectCurrencyIdsBySiteIds,
+} from 'common/enum'
 import TimeZoneSelect from 'components/TimeZoneSelect'
+import { MultipleSelect } from 'components/Select'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite } from 'common/enum'
 import { SearchOutlined } from '@ant-design/icons'
 import { useCountdown } from 'usehooks-ts'
 import {
@@ -47,6 +52,7 @@ const { Option } = Select
 interface ILiveRegistrationStatisticsFilterProps {
 	loading: boolean
 	form: FormInstance
+	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
 	onSearch: (values: any) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
@@ -56,15 +62,23 @@ interface ILiveRegistrationStatisticsFilterProps {
 const LiveRegistrationStatisticsFilter: FC<
 	ILiveRegistrationStatisticsFilterProps
 > = ({
-	loading,
 	form,
+	loading,
+	userSiteList,
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
 	countDownOverCallBack,
 }) => {
 	const { t } = useTranslation()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const watchSiteIds = Form.useWatch('siteIds', form)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
+	const adminAllSiteCurrencyList = useAppSelector(
+		selectAdminAllSiteCurrencyList
+	)
+
 	const [refreshCount, { startCountdown, stopCountdown, resetCountdown }] =
 		useCountdown({
 			countStart: REFRESH_DATA_COUNT,
@@ -80,6 +94,49 @@ const LiveRegistrationStatisticsFilter: FC<
 
 		// 同天ㄧ定大於15 天 不用精確到小時
 		return moment(endDate).diff(moment(startDate), 'day') < 15
+	}
+
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+
+			form.setFieldValue('currencyId', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(({ siteId, siteName }) => (
+						<Option key={siteId} value={siteId}>
+							{siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
 	}
 
 	// * 計時器時間到時送出 callback
@@ -115,7 +172,8 @@ const LiveRegistrationStatisticsFilter: FC<
 						form={form}
 						onFinish={() => onSearch({})}
 						initialValues={{
-							currencyId: currencyListBySite[0]?.currencyId,
+							siteIds: userSiteList.map(({ siteId }) => siteId),
+							currencyId: adminAllSiteCurrencyList[0],
 							dateType: DateTypeEnum.RegisterDate,
 							depositStatus: DepositStatusEnum.All,
 							status: StatusEnum.All,
@@ -183,9 +241,24 @@ const LiveRegistrationStatisticsFilter: FC<
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='currencyId' label={t('Label_Currency')}>
+								{siteIdsSelector()}
+							</Col>
+
+							<Col lg={4} md={12} xs={12}>
+								<Form.Item
+									name='currencyId'
+									label={t('Label_Currency')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Currency'),
+											}),
+										},
+									]}
+								>
 									<Select>
-										{currencyListBySite?.map(currency => (
+										{currencyIdsBySiteIds?.map(currency => (
 											<Option
 												key={currency.currencyId}
 												value={currency.currencyId}

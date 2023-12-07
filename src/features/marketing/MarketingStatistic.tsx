@@ -8,21 +8,23 @@ import { useTranslation } from 'react-i18next'
 import { CustomStatistic } from 'components'
 import { numberFormatter } from 'common/utils/format'
 import { Collapse, Col, Card, Row, Typography, Spin, Empty } from 'antd'
-import { IPerformanceHighlightData } from 'features/marketing/type'
+import { IPerformanceHighlightDataForMultiSitesData } from 'features/marketing/type'
 import { ExcelExportButton } from 'features/marketing/components/ExcelExportButton'
 
 interface MpaMarketingStatisticProps {
+	siteId: number
 	loading: boolean
 	isInOneDay: boolean
 	exportExcelPermission?: PermissionInterface
-	performanceHighlightData: IPerformanceHighlightData
-	onExportClick: () => void
+	performanceHighlightData: IPerformanceHighlightDataForMultiSitesData
+	onExportClick: ({ exportSiteId }: { exportSiteId: number }) => void
 }
 
 const { Panel } = Collapse
 const { Text, Title } = Typography
 
 const MarketingStatistic = ({
+	siteId,
 	loading,
 	isInOneDay,
 	exportExcelPermission,
@@ -32,6 +34,9 @@ const MarketingStatistic = ({
 	const { t } = useTranslation()
 	const [searchParams] = useSearchParams()
 
+	// *  此處的 siteId 是經由點擊 tab 而來
+	const params = `siteId=${siteId}&${searchParams.toString()}`
+
 	// 由於 performanceHighlightData 是物件格式並包含了些不需要顯示的參數 故這裡直接拿取所需要的顯示
 	return (
 		<Spin spinning={loading}>
@@ -39,7 +44,11 @@ const MarketingStatistic = ({
 				<Panel header={t('Label_BusinessPerformanceHighlights')} key='1'>
 					{!isEmpty(performanceHighlightData) && (
 						<ExcelExportButton
-							onClick={onExportClick}
+							onClick={() =>
+								onExportClick({
+									exportSiteId: performanceHighlightData.siteId,
+								})
+							}
 							disabled={!exportExcelPermission?.canUse}
 						/>
 					)}
@@ -304,7 +313,7 @@ const MarketingStatistic = ({
 
 								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
-										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/nru?${searchParams}`}
+										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/nru?${params}`}
 										target='_blank'
 									>
 										<Card
@@ -439,7 +448,7 @@ const MarketingStatistic = ({
 
 								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
-										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/depositAmount?${searchParams}`}
+										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/depositAmount?${params}`}
 										target='_blank'
 									>
 										<Card
@@ -509,7 +518,7 @@ const MarketingStatistic = ({
 
 								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
-										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/withdrawalAmount?${searchParams}`}
+										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/withdrawalAmount?${params}`}
 										target='_blank'
 									>
 										<Card
@@ -579,7 +588,7 @@ const MarketingStatistic = ({
 
 								<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6}>
 									<Link
-										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/bonusAmountClaimed?${searchParams}`}
+										to={`/${NEW_SITE_PREFIX_URL}/${paths.report.sub.mpaMarketingReport.root}/bonusAmountClaimed?${params}`}
 										target='_blank'
 									>
 										<Card

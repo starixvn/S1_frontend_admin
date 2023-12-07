@@ -17,7 +17,7 @@ import { SearchOutlined } from '@ant-design/icons'
 import { IGetCategoryData } from 'common/service/allDataApi'
 import { MultipleSelect } from 'components/Select'
 import { isPayoutList } from 'features/memberProfile/constants'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -41,6 +41,9 @@ interface VipRebateReportFilterProps {
 	timeZoneUtcOffset: number
 	categoryList: IGetCategoryData[]
 	currencyListBySite: Currency[]
+	currencyIdsBySiteIds: Currency[]
+	userSiteList: UserSite[]
+	currencyListByAllSite: Currency[]
 }
 
 const VipRebateReportFilter = ({
@@ -51,6 +54,9 @@ const VipRebateReportFilter = ({
 	timeZoneUtcOffset,
 	categoryList,
 	currencyListBySite,
+	currencyIdsBySiteIds,
+	currencyListByAllSite,
+	userSiteList,
 }: VipRebateReportFilterProps) => {
 	const { t } = useTranslation()
 
@@ -113,11 +119,53 @@ const VipRebateReportFilter = ({
 		)
 	}
 
-	const currencySelectRenderer = () => {
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const currencySelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(item => item.currencyId),
+					currencyIds: currencyIdsBySiteIds?.map(item => item.currencyId),
 				})
 			} else {
 				form.setFieldsValue({
@@ -126,20 +174,33 @@ const VipRebateReportFilter = ({
 			}
 		}
 		return (
-			<MultipleSelect
-				onChange={onChangeCurrency}
-				placeholder={t('Label_Select')}
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
 			>
-				{(currencyListBySite?.length as number) > 1 && (
-					<Option value={0}>{t('Label_SelectAll')}</Option>
-				)}
+				<MultipleSelect
+					onChange={onChangeCurrency}
+					placeholder={t('Label_Select')}
+				>
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
 
-				{currencyListBySite?.map(({ currencyId, isoCode }) => (
-					<Option key={currencyId} value={currencyId}>
-						{isoCode}
-					</Option>
-				))}
-			</MultipleSelect>
+					{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
+						<Option key={currencyId} value={currencyId}>
+							{isoCode}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
 		)
 	}
 
@@ -153,7 +214,11 @@ const VipRebateReportFilter = ({
 						form={form}
 						onFinish={onSearch}
 						initialValues={{
-							currencyIds: currencyListBySite?.map(item => item.currencyId),
+							siteIds: userSiteList.map(item => item.siteId),
+							// 預設全選
+							currencyIds: currencyListByAllSite?.map(
+								({ currencyId }) => currencyId
+							),
 							baseCurrencyId: head(currencyListBySite)?.currencyId,
 							payoutStatuses: isPayoutList?.map(({ value }) => value),
 						}}
@@ -199,9 +264,10 @@ const VipRebateReportFilter = ({
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									{currencySelectRenderer()}
-								</Form.Item>
+								{siteIdsSelector()}
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								{currencySelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item

@@ -11,7 +11,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	MOMENT_DATE_RANGES,
@@ -30,7 +30,8 @@ interface IBonusInfoFilterProps {
 	loading: boolean
 	filterLoading: boolean
 	form: FormInstance<IFilterForm>
-	currencyListBySite: Currency[]
+	currencyIdsBySiteIds: Currency[]
+	userSiteList: UserSite[]
 	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
 	bonusStatusList: IEnumTypeData[]
@@ -50,7 +51,8 @@ const BonusInfoFilter = ({
 	loading,
 	filterLoading,
 	form,
-	currencyListBySite,
+	userSiteList,
+	currencyIdsBySiteIds,
 	currencyListByAllSite,
 	timeZoneUtcOffset,
 	bonusStatusList,
@@ -73,6 +75,48 @@ const BonusInfoFilter = ({
 
 		return false
 	}
+	// * siteIds 異動時須清空 currencyIds
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
 
 	const onOpenChange = (open: boolean) => {
 		if (open) {
@@ -89,7 +133,7 @@ const BonusInfoFilter = ({
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
 				form.setFieldsValue({
-					currencyIds: currencyListBySite?.map(item => item.currencyId),
+					currencyIds: currencyIdsBySiteIds?.map(item => item.currencyId),
 				})
 			} else {
 				form.setFieldsValue({
@@ -98,16 +142,27 @@ const BonusInfoFilter = ({
 			}
 		}
 		return (
-			<Form.Item name='currencyIds' label={t('Label_Currency')}>
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
+			>
 				<MultipleSelect
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
-					{(currencyListBySite?.length as number) > 1 && (
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
 
-					{currencyListBySite?.map(({ currencyId, isoCode }) => (
+					{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
 						<Option key={currencyId} value={currencyId}>
 							{isoCode}
 						</Option>
@@ -209,6 +264,7 @@ const BonusInfoFilter = ({
 			</Form.Item>
 		)
 	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -220,7 +276,9 @@ const BonusInfoFilter = ({
 							form={form}
 							onFinish={onSearch}
 							initialValues={{
-								currencyIds: currencyListBySite?.map(
+								siteIds: userSiteList.map(item => item.siteId),
+								// 因為預設 allSite 全選，所以預設值直接先拿全部資料塞值
+								currencyIds: currencyListByAllSite?.map(
 									({ currencyId }) => currencyId
 								),
 								baseCurrencyId: 0,
@@ -271,6 +329,9 @@ const BonusInfoFilter = ({
 								</Col>
 							</Row>
 							<Row gutter={16} align='middle'>
+								<Col lg={6} md={12} xs={12}>
+									{siteIdsSelector()}
+								</Col>
 								<Col lg={6} md={12} xs={12}>
 									{currencySelector()}
 								</Col>

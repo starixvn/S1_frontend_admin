@@ -1,7 +1,7 @@
 import { Moment } from 'moment'
 
 export interface IGetLeaderboardReportArgs {
-	siteId: number
+	siteIds: number[]
 	currencyId: number
 	startDate: string
 	endDate: string
@@ -12,8 +12,11 @@ export interface IGetLeaderboardReportExport
 	extends IGetLeaderboardReportArgs {}
 
 export interface ILeaderboardReportData {
+	detail: never[]
 	ranking: string
-	siteId: number
+	siteId?: number
+	siteIds?: number[]
+	siteName: string
 	custId: number
 	userName: string
 	currencyId: number

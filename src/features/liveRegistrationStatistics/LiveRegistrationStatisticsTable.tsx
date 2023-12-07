@@ -50,7 +50,16 @@ const LiveRegistrationStatisticsTable: FC<{
 	onCallingRecord,
 }) => {
 	const { t } = useTranslation()
+
 	const columns = [
+		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 120,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName ?? '',
+		},
 		{
 			title: t('Label_Currency'),
 			key: 'currency',
@@ -79,9 +88,9 @@ const LiveRegistrationStatisticsTable: FC<{
 			key: 'userName',
 			width: 80,
 			align: 'center' as 'center',
-			render: ({ userName, custId }: IRegistrationManagementData) => (
+			render: ({ userName, custId, siteId }: IRegistrationManagementData) => (
 				<Typography.Link
-					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+					href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 					target='_blank'
 				>
 					{userName}

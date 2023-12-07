@@ -1,4 +1,4 @@
-import { assign, filter, includes } from 'lodash'
+import { assign, filter, includes, unionBy } from 'lodash'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from '../rootApi/api'
 import {
@@ -18,13 +18,14 @@ import {
 	ISlotTpData,
 	ILocalPaySettingData,
 	ISlotGameData,
+	IVipLevelsData,
 } from './type'
 
 export const allDataApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getVipLevel: builder.query<
 			IVipLevelsResponse,
-			{ siteIdForFilter?: number }
+			{ siteIdForFilter?: number; siteIdsForFilter?: number[] }
 		>({
 			query: () => ({
 				url: 'GetAllData/GetAllSiteVipLevelList',
@@ -33,13 +34,31 @@ export const allDataApi = rootApi.injectEndpoints({
 			transformResponse: (
 				returnResponse: IVipLevelsResponse,
 				meta,
-				{ siteIdForFilter }: { siteIdForFilter?: number }
+				{
+					siteIdForFilter,
+					siteIdsForFilter = [],
+				}: { siteIdForFilter?: number; siteIdsForFilter?: number[] }
 			) => {
 				const { data: vipLevels } = returnResponse
-				const newData = vipLevels?.filter(
-					({ siteId }) => siteId === siteIdForFilter
-				)
-				const newReturnResponse: any = assign(returnResponse, {
+				let newData: IVipLevelsData[] = []
+				// * 以單選品牌作為基準過濾
+				if (siteIdForFilter) {
+					newData = vipLevels?.filter(
+						({ siteId }) => siteId === siteIdForFilter
+					)
+				}
+				// * 以複選品牌作為基準過濾並去除重複
+				else if (siteIdsForFilter.length > 0) {
+					// * api 是以 eventNames string[] 送 payload, 因此當是多品牌時，以 levelName 為基準去重
+					newData = unionBy(
+						vipLevels?.filter(({ siteId }) =>
+							siteIdsForFilter.includes(siteId)
+						),
+						'levelName'
+					)
+				}
+
+				const newReturnResponse: IVipLevelsResponse = assign(returnResponse, {
 					data: [...newData],
 				})
 				return newReturnResponse
@@ -84,7 +103,7 @@ export const allDataApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
-		// 這裡有帶 siteId
+		// 這裡有帶 siteIds
 		getGateWay: builder.query<IAxiosResponse<IGateWayData[]>, IGateWayArgs>({
 			query: data => ({
 				url: 'GetAllData/GetPayList',

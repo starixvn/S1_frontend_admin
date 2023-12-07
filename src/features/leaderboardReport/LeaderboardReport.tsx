@@ -10,10 +10,14 @@ import { dateRangeToUtcFormatter } from 'common/utils'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectCurrencyIdsBySiteIds,
+	selectCurrencyListBySite,
+	selectUserSiteList,
+} from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import {
-	useLazyGetLeaderboardQuery,
+	useLazyGetLeaderboardBySiteIdsQuery,
 	useExportLeaderboardReportMutation,
 } from 'features/leaderboardReport/api'
 import { IFilterForm } from 'features/leaderboardReport/type'
@@ -21,13 +25,19 @@ import LeaderboardReportTable from 'features/leaderboardReport/LeaderboardReport
 import LeaderboardReportFilter from 'features/leaderboardReport/LeaderboardReportFilter'
 
 const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
+	const [form] = Form.useForm<IFilterForm>()
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
+	const userSiteList = useAppSelector(selectUserSiteList)
+
+	const watchSiteIds = Form.useWatch('siteId', form)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds ? [watchSiteIds] : [])
+	)
+
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const [form] = Form.useForm<IFilterForm>()
 
 	const [
 		getLeaderboardReport,
@@ -35,7 +45,7 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 			data: { data: leaderboardReportList = [] } = {},
 			isFetching: isGetLeaderboardFetching,
 		},
-	] = useLazyGetLeaderboardQuery()
+	] = useLazyGetLeaderboardBySiteIdsQuery()
 
 	const {
 		data: { data: LeaderBoardCategoryList = [] } = {},
@@ -54,9 +64,12 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}: {
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
-
-		const { monthRange, categoryId, currencyId = 0 } = form.getFieldsValue()
+		const {
+			siteId,
+			monthRange,
+			categoryId,
+			currencyId = 0,
+		} = form.getFieldsValue()
 		// 如果是選到當月 則 startDate 是這月ㄧ號0時0分0秒 到 現在確切時間的 endDate
 		// 如果不是則 startDate 是這月ㄧ號0時0分0秒 到 這月底23:23:59的 endDate
 		const [startDate, endDate] = moment(monthRange).isSame(moment(), 'month')
@@ -73,7 +86,6 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 			  )
 
 		const args = {
-			siteId,
 			startDate,
 			endDate,
 			currencyId,
@@ -81,9 +93,13 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 
 		try {
-			await getLeaderboardReport(args).unwrap()
+			await getLeaderboardReport({
+				siteIds: [siteId],
+				...args,
+			}).unwrap()
 			setQueryParams({
 				timeZone: currentTimeZoneUtcOffset,
+				siteId,
 				...args,
 			})
 		} catch (error) {
@@ -94,12 +110,11 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
-		const { startDate, endDate, currencyId, categoryId } = queryParams
+		const { siteId, startDate, endDate, currencyId, categoryId } = queryParams
 
 		try {
 			const blob = await exportLeaderboardReport({
-				siteId,
+				siteIds: [siteId],
 				startDate,
 				endDate,
 				currencyId: Number(currencyId),
@@ -123,10 +138,17 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 		// init
 		const init = () => {
 			// 因為只顯示同個月份 所以取 startDate endDate 相同
-			const { startDate, currencyId, categoryId = 0, timeZone } = queryParams
+			const {
+				siteId,
+				startDate,
+				currencyId,
+				categoryId = 0,
+				timeZone,
+			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 
 			form.setFieldsValue({
+				siteId: Number(siteId),
 				monthRange: moment(startDate).isSame(moment(), 'month')
 					? moment()
 					: moment(startDate),
@@ -151,6 +173,8 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				LeaderBoardCategoryList={LeaderBoardCategoryList}
 				onSearch={handleSearch}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 			/>
 			{!isEmpty(queryParams) && (
 				<LeaderboardReportTable
