@@ -494,6 +494,7 @@
 	"Label_OnlineBanking": "Online Banking",
 	"Label_MobilePay": "Mobile Pay",
 	"Label_LocalBanking": "Local Banking",
+	"Label_QuickTransfer": "Quick Transfer",
 	"Label_CryptoPay": "Crypto Pay",
 	"Label_CryptoWallet": "Crypto Wallet",
 	"Label_LoadCard": "Load Card",
@@ -1222,6 +1223,7 @@
 	"Label_NetConfiscatedCash": "Net Confiscated Cash",
 	"Label_ToTalNetDeposit": "Total Net Deposit",
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash",
+	"Label_Site": "Site",
 	"Label_BankMaintenance": "Bank Maintenance",
-	"Label_Site": "Site"
+	"Label_Finished": "Finished"
 }

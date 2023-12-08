@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { IPostUploadImageResponse } from 'features/bannerManagement/api'
 import {
 	IBonusUsingListData,
 	IDuplicateArgs,
@@ -151,6 +152,17 @@ export const bonusManagementApi = createApi({
 				},
 			}),
 		}),
+		uploadBonusImage: builder.mutation<IPostUploadImageResponse, FormData>({
+			query: data => ({
+				url: 'UploadImage/BonusManagement',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -168,4 +180,5 @@ export const {
 	useLazyGetCashBackGameListQuery,
 	useLazyGetBonusUsingListQuery,
 	useSetBonusUsingListMutation,
+	useUploadBonusImageMutation,
 } = bonusManagementApi

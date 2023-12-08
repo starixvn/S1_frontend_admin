@@ -17,11 +17,11 @@ interface IOnlineBankInfoModalProps {
 	onSetStatus: ({
 		sysId,
 		status,
-		method,
+		channelId,
 	}: {
 		sysId: number
 		status: boolean
-		method: number
+		channelId: number
 	}) => void
 	currencyListBySite: Currency[]
 }
@@ -50,14 +50,14 @@ const OnlineBankInfoModal = ({
 			width: 80,
 			align: 'center' as 'center',
 			render: (record: IGetBankInfoData) => {
-				const { id: sysId, status, bankName, method } = record
+				const { id: sysId, status, bankName, channelId } = record
 				return (
 					<Switch
 						// * 修復分頁相同索引職，發現 Antd Table 的 Key 沒辦法對 Switch 起作用，可能是他們的 bug
 						key={bankName}
 						defaultChecked={status === PaymentStatusEnum.True}
 						onClick={value => {
-							onSetStatus({ sysId, status: value, method })
+							onSetStatus({ sysId, status: value, channelId })
 						}}
 					/>
 				)
