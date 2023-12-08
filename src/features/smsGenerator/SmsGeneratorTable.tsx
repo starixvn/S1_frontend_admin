@@ -1,11 +1,14 @@
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import { Table } from 'components'
 import { IMessageData } from 'features/smsGenerator/type'
+import {
+	AccountStatusEnum,
+	batchMessageStatusMap,
+} from 'features/smsGenerator/constants'
 import { PaginationInterface } from 'common/hooks'
 import { LayoutContent } from 'app/pages/layout'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
-import { statusList } from 'features/smsGenerator/constants'
 import moment from 'moment/moment'
 import { timeFormat } from 'common/utils/format'
 import React from 'react'
@@ -84,8 +87,8 @@ const SmsGeneratorTable = ({
 			dataIndex: 'status',
 			width: 80,
 			align: 'center' as 'center',
-			render: (status: number) =>
-				statusList[status] ? t(statusList[status]) : '-',
+			render: (status: AccountStatusEnum) =>
+				t(batchMessageStatusMap[status]) || '-',
 		},
 		{
 			title: t('Label_Title'),
