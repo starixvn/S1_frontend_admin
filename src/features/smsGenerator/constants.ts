@@ -34,11 +34,11 @@ export const methodList = [
 // * 批次發送訊息狀態 enum
 export enum BatchMessageStatusEnum {
 	Pending,
-	Running,
+	Finished,
 }
 
 // * 列表 status map
 export const batchMessageStatusMap: { [key: number]: string } = {
 	[BatchMessageStatusEnum.Pending]: 'Label_Pending',
-	[BatchMessageStatusEnum.Running]: 'Label_Running',
+	[BatchMessageStatusEnum.Finished]: 'Label_Finished',
 }
