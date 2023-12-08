@@ -1,21 +1,23 @@
-export enum StatusEnum {
+// * 會員狀態 enum
+export enum AccountStatusEnum {
 	Running = 1,
 	Lock = 4,
 }
 
-export const statusList: { [key: number]: string } = {
-	[StatusEnum.Running]: 'Label_Running',
-	[StatusEnum.Lock]: 'Label_Lock',
+export const accountStatusMap: { [key: number]: string } = {
+	[AccountStatusEnum.Running]: 'Label_Running',
+	[AccountStatusEnum.Lock]: 'Label_Lock',
 }
 
+// * 建單時使用
 export const accountStatusList = [
 	{
-		value: StatusEnum.Running,
-		displayName: statusList[StatusEnum.Running],
+		value: AccountStatusEnum.Running,
+		displayName: accountStatusMap[AccountStatusEnum.Running],
 	},
 	{
-		value: StatusEnum.Lock,
-		displayName: statusList[StatusEnum.Lock],
+		value: AccountStatusEnum.Lock,
+		displayName: accountStatusMap[AccountStatusEnum.Lock],
 	},
 ]
 
@@ -28,3 +30,15 @@ export const methodList = [
 	{ value: MethodEnum.ByUserStatus, displayName: 'Label_ByUserStatus' },
 	{ value: MethodEnum.BatchUpload, displayName: 'Label_BatchUpload' },
 ]
+
+// * 批次發送訊息狀態 enum
+export enum BatchMessageStatusEnum {
+	Pending,
+	Running,
+}
+
+// * 列表 status map
+export const batchMessageStatusMap: { [key: number]: string } = {
+	[BatchMessageStatusEnum.Pending]: 'Label_Pending',
+	[BatchMessageStatusEnum.Running]: 'Label_Running',
+}
