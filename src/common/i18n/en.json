@@ -1221,5 +1221,6 @@
 	"Label_ToTalNetDeposit": "Total Net Deposit",
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash",
 	"Label_IncludeTestData": "Include Test Data",
-	"Label_BankMaintenance": "Bank Maintenance"
+	"Label_BankMaintenance": "Bank Maintenance",
+	"Label_Finished": "Finished"
 }
