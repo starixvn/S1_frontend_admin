@@ -1231,5 +1231,6 @@
 	"Label_SlotValidTurnover": "Slot Valid Turnover",
 	"Label_LiveCasinoValidTurnover": "Live Casino Valid Turnover",
 	"Label_SetPointCalculation": "Set Point Calculation",
-	"Label_SetRankingBonus": "Set Ranking Bonus"
+	"Label_SetRankingBonus": "Set Ranking Bonus",
+	"Label_Finished": "Finished"
 }
