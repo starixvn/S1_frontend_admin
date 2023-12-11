@@ -53,7 +53,7 @@ Your app is ready to be deployed!
 
 #### # 編輯器 - tinymce-react
 
-[相關說明](./README/tinymec.md)
+[相關說明](./README/tinymce.md)
 
 使用 [tinymce-react](https://www.npmjs.com/package/@tinymce/tinymce-react) 作為共用元件編輯器
 
