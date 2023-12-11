@@ -44,9 +44,19 @@ Your app is ready to be deployed!
 
 ---
 
-##### 更改頁面標題
+##### # 更改頁面標題
 
 我們使用 [react-document-title](https://www.npmjs.com/package/react-document-title) 來更改頁面標題，其主要優勢為：
 
 - 可以像 React 組件一樣使用，傳入 props 來決定 title
 - 可以在 App 的多個地方使用，不用各個地方寫 `useEffect` 和 `document.title`
+
+#### # 編輯器 - tinymce-react
+
+[相關說明](./README/tinymec.md)
+
+使用 [tinymce-react](https://www.npmjs.com/package/@tinymce/tinymce-react) 作為共用元件編輯器
+
+```
+"@tinymce/tinymce-react": "^4.1.0" // 目前使用 `^4.1.0` 版本
+```
