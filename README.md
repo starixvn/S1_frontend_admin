@@ -52,3 +52,13 @@ Your app is ready to be deployed!
 - 可以在 App 的多個地方使用，不用各個地方寫 `useEffect` 和 `document.title`
 
 ##### [# 單一品牌操作 & 多品牌操作模式](./README/單一品牌與多品牌模式.md)
+
+#### # 編輯器 - tinymce-react
+
+[相關說明](./README/tinymce.md)
+
+使用 [tinymce-react](https://www.npmjs.com/package/@tinymce/tinymce-react) 作為共用元件編輯器
+
+```
+"@tinymce/tinymce-react": "^4.1.0" // 目前使用 `^4.1.0` 版本
+```
