@@ -83,17 +83,17 @@ const UpdateBonus: FC<{
 	const usingListModal = useModal()
 
 	const {
-		data: { data: bonusTypeList } = {} as IGetPromotionTypeResponse,
+		data: { data: bonusTypeList = [] } = {} as IGetPromotionTypeResponse,
 		isFetching: isGetPromotionListDataLoading,
 	} = useGetPromotionListQuery(null)
 
 	const {
-		data: { data: vipLevelList } = {} as IVipLevelsResponse,
+		data: { data: vipLevelList = [] } = {} as IVipLevelsResponse,
 		isLoading: isGetVipLevelListLoading,
 	} = useGetVipLevelQuery({ siteIdForFilter: siteId })
 
 	const {
-		data: { data: categoryListData } = {} as IGetPromotionCategoryResponse,
+		data: { data: categoryListData = [] } = {} as IGetPromotionCategoryResponse,
 		isFetching: isGetCategoryListLoading,
 	} = useGetPromotionCategoryQuery({ walletType: currentWalletType })
 
