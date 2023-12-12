@@ -20,7 +20,7 @@ import {
 import { multiEqual } from 'features/bonusManagement/utils'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
-import { find, isNumber } from 'lodash'
+import { isNumber } from 'lodash'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { useLazyGetCashBackGameListQuery } from 'features/bonusManagement/api'
 import { IGetCashBackGameListResponse } from 'features/bonusManagement/type'
@@ -41,13 +41,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const { isoCode, currencyId } = currency
-	const {
-		form,
-		categoryList,
-		editPermission,
-		setCurrentTabActive,
-		onSetGroupBonusClick,
-	} = useContext(EditBonusContext)
+	const { form, editPermission, setCurrentTabActive, onSetGroupBonusClick } =
+		useContext(EditBonusContext)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const active = Form.useWatch(['specific', isoCode, 'active'], form)
 
@@ -69,16 +64,9 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	] = useLazyGetCashBackGameListQuery()
 
 	const handleGetCashBackGameList = async () => {
-		const tpId = find(
-			categoryList,
-			category => category.id === currentCategory
-		)?.tpId
-		if (tpId === undefined || !siteId) return
-		form?.setFieldsValue({
-			tpId,
-		})
+		if (!siteId) return
+
 		await getCashBackGameList({
-			tpId,
 			categoryId: currentCategory,
 			siteIds: [siteId],
 			currencyId,
