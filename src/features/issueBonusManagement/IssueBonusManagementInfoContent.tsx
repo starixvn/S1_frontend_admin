@@ -81,15 +81,17 @@ const IssueBonusManagementInfoContent = ({
 		}
 	}
 
-	const handleSetBonusPayout = async (newAmount: number | null) => {
+	const handleSetBonusPayout = async (
+		newAmount: number | null,
+		newRolloverAmount?: number
+	) => {
 		const { rollOver, promotionType } = bonusCodeInfo ?? {}
-
 		try {
 			await setBonusPayout({
 				custId,
 				amount: newAmount ?? bonusPayoutAmount,
 				bonusCode,
-				rollOver,
+				rollOver: newRolloverAmount ?? rollOver,
 				promotionType,
 				depositId,
 			}).unwrap()
@@ -124,16 +126,18 @@ const IssueBonusManagementInfoContent = ({
 		}
 	}
 
-	const handleCheckPasswordModal = async (newAmount: number) => {
+	const handleCheckPasswordModal = async (
+		newAmount: number,
+		newRolloverAmount?: number
+	) => {
 		if (!isNumber(adjustmentMax)) return
-
 		if (adjustmentMax === 0) {
-			handleSetBonusPayout(newAmount)
+			handleSetBonusPayout(newAmount, newRolloverAmount)
 		} else if (newAmount >= adjustmentMax) {
 			setBonusPayoutAmount(newAmount)
 			checkPasswordModal.onOpen()
 		} else {
-			handleSetBonusPayout(newAmount)
+			handleSetBonusPayout(newAmount, newRolloverAmount)
 		}
 	}
 
