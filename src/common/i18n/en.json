@@ -1222,5 +1222,8 @@
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash",
 	"Label_IncludeTestData": "Include Test Data",
 	"Label_BankMaintenance": "Bank Maintenance",
-	"Label_Finished": "Finished"
+	"Label_Finished": "Finished",
+	"Label_MultipleOfWinning": "multiple of winning",
+	"Label_WinProfit": "Win profit",
+	"Label_BigWinPopUpSetting": "Big Win Pop up Setting"
 }
