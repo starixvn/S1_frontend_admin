@@ -11,7 +11,7 @@ interface IIssueBonusManagementInfoFormProps {
 	bonusCodeInfo: ICheckBonusCodeData
 	tierDepositBonusInfo: ICheckTierRedepositBonusData
 	onClear: () => void
-	onCheckPasswordModal: (newAmount: number) => void
+	onCheckPasswordModal: (newAmount: number, newRolloverAmount?: number) => void
 	onCheckTierRedepositBonus: (depositId: string) => void
 }
 
@@ -33,14 +33,14 @@ const IssueBonusManagementInfoForm = ({
 	const { bonus: initialAmount, rollOver, promotionType } = bonusCodeInfo
 
 	const handleFinish = async () => {
-		const { amount } = await form.validateFields()
-
-		onCheckPasswordModal(amount)
+		onCheckPasswordModal(
+			tierDepositBonusInfo.bonusAmount,
+			tierDepositBonusInfo.rolloverAmount
+		)
 	}
 
 	const handleCheckTierRedepositBonus = async () => {
 		const { depositId } = await form.validateFields()
-
 		onCheckTierRedepositBonus(depositId)
 	}
 
