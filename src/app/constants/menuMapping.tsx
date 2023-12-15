@@ -1044,14 +1044,20 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.report.sub.confiscatedSummaryReport.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.report.sub.confiscatedSummaryReport.root,
-	},
-	{
-		icon: null,
 		functionId: paths.cms.sub.leaderboardManagement.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.leaderboardManagement.root,
+	},
+	{
+		icon: null,
+		functionId: paths.cms.sub.bigWinPopUpSetting.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.cms.sub.bigWinPopUpSetting.root,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.bigWinPopUpReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.bigWinPopUpReport.root,
 	},
 ]

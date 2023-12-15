@@ -1132,6 +1132,20 @@ const LeaderboardManagement = lazy(
 		)
 )
 
+const BigWinPopUpSetting = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BigWinPopUpSetting' */ 'features/bigWinPopUpSetting/BigWinPopUpSetting'
+		)
+)
+
+const BigWinPopUpReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'BigWinPopUpReport' */ 'features/bigWinPopUpReport/BigWinPopUpReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2939,6 +2953,24 @@ const routes: RouteObject[] = [
 						functionId={paths.cms.sub.leaderboardManagement.functionId}
 					>
 						<LeaderboardManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bigWinPopUpSetting.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.bigWinPopUpSetting.functionId}>
+						<BigWinPopUpSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bigWinPopUpReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.bigWinPopUpReport.functionId}
+					>
+						<BigWinPopUpReport />
 					</AuthRequire>
 				),
 			},

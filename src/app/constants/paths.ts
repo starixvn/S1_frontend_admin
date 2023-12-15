@@ -487,6 +487,10 @@ const paths = {
 				root: 'report/newReferralReport/log',
 				functionId: 147,
 			},
+			bigWinPopUpReport: {
+				root: 'report/bigWinPopUpReport',
+				functionId: 153,
+			},
 		},
 	},
 	member: {
@@ -753,6 +757,10 @@ const paths = {
 			hotEventManagement: {
 				root: 'cms/hotEventManagement',
 				functionId: 56,
+			},
+			bigWinPopUpSetting: {
+				root: 'cms/bigWinPopUpSetting',
+				functionId: 152,
 			},
 			hotGameManagement: {
 				root: 'cms/hotGameManagement',
