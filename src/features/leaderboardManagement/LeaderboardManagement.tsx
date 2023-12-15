@@ -18,6 +18,7 @@ import {
 	IRankingData,
 } from 'features/leaderboardManagement/type'
 import { RankingBonusTab } from 'features/leaderboardManagement/RankingBonusTab'
+import { isPositiveInteger } from 'features/leaderboardManagement/utils'
 
 const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -77,6 +78,16 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			await calculationForm.validateFields()
 		const { currencyId } = calculationForm.getFieldsValue(true)
 
+		// 非 >= 1 的正整數不給送出
+		if (
+			!isPositiveInteger(sportTurnOver) ||
+			!isPositiveInteger(slotTurnOver) ||
+			!isPositiveInteger(liveCasinoTurnOver)
+		) {
+			message.error(t('Label_PositiveIntegerError'))
+			return
+		}
+
 		try {
 			await setLeaderboardPointCalculation({
 				siteId,
@@ -99,6 +110,12 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 		const { bonus, minPoint } = await rankingForm.validateFields()
 		const { ranking } = rankingForm.getFieldsValue(true)
+
+		// 非 >= 1 的正整數不給送出
+		if (!isPositiveInteger(bonus) || !isPositiveInteger(minPoint)) {
+			message.error(t('Label_PositiveIntegerError'))
+			return
+		}
 
 		try {
 			await setLeaderboardRankingBonus({
