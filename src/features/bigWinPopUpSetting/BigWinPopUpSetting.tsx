@@ -46,7 +46,7 @@ const BigWinPopUpSetting = ({ pageTitle }: { pageTitle?: string }) => {
 	const [setBigWinSetting, { isLoading: isSetBigWinSettingLoading }] =
 		useSetBigWinSettingMutation()
 
-	const onToggle = async (
+	const handleStatusToggle = async (
 		targetStatus: boolean,
 		targetSiteId: number,
 		targetCurrencyId: number
@@ -93,7 +93,7 @@ const BigWinPopUpSetting = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const onEdit = ({
+	const handleModalOpen = ({
 		siteId,
 		currencyId,
 		iTpCategoryList,
@@ -124,12 +124,12 @@ const BigWinPopUpSetting = ({ pageTitle }: { pageTitle?: string }) => {
 		})
 	}
 
-	const onCancel = () => {
+	const handleModalClose = () => {
 		bigWinPopUpSettingModal.onCancel()
 		navigate(`/${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bigWinPopUpSetting.root}`)
 	}
 
-	const onSubmit = async () => {
+	const handleBigWinSettingSubmit = async () => {
 		const { multipleOfWinning, minOfWinning, iTpCategoryList } =
 			form.getFieldsValue()
 
@@ -184,15 +184,15 @@ const BigWinPopUpSetting = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 				bigWinSettingList={bigWinSettingList}
 				categoryList={categoryList}
-				onToggle={onToggle}
-				onEdit={onEdit}
+				onToggle={handleStatusToggle}
+				onEdit={handleModalOpen}
 			/>
 			<BigWinPopUpSettingModal
 				form={form}
 				visible={bigWinPopUpSettingModal.visible}
 				loading={loading}
-				onCancel={onCancel}
-				onSubmit={onSubmit}
+				onCancel={handleModalClose}
+				onSubmit={handleBigWinSettingSubmit}
 			/>
 		</LayoutContent.Main>
 	)

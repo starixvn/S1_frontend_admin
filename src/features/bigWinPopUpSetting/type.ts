@@ -2,7 +2,7 @@ export interface IGetBigWinSettingArgs {
 	siteId?: number
 }
 
-export interface IGetBigWinSettingData {
+export interface IBigWinSettingData {
 	siteId: number
 	currencyId: number
 	tpCategory: string

@@ -1,15 +1,15 @@
 import { rootApi } from 'common/service/rootApi/api'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
+	IBigWinSettingData,
 	IGetBigWinSettingArgs,
-	IGetBigWinSettingData,
 	ISetBigWinSettingArgs,
 } from 'features/bigWinPopUpSetting/type'
 
 export const bigWinPopUpSettingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getBigWinSetting: builder.query<
-			IAxiosResponse<IGetBigWinSettingData[]>,
+			IAxiosResponse<IBigWinSettingData[]>,
 			IGetBigWinSettingArgs
 		>({
 			query: data => ({

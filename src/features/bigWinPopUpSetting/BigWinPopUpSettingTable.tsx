@@ -6,12 +6,12 @@ import { numberFormatter } from 'common/utils/format'
 import { IGetCategoryData } from 'common/service/allDataApi'
 import { Table } from 'components'
 import { PermissionInterface } from 'type'
-import { IGetBigWinSettingData } from 'features/bigWinPopUpSetting/type'
+import { IBigWinSettingData } from 'features/bigWinPopUpSetting/type'
 
 interface IBigWinPopUpSettingTableProps {
 	loading: boolean
 	editPermission?: PermissionInterface
-	bigWinSettingList: IGetBigWinSettingData[]
+	bigWinSettingList: IBigWinSettingData[]
 	categoryList: IGetCategoryData[]
 	onToggle: (status: boolean, siteId: number, currencyId: number) => void
 	onEdit: ({
@@ -47,7 +47,7 @@ const BigWinPopUpSettingTable = ({
 			key: 'status',
 			width: 100,
 			align: 'center' as 'center',
-			render: (record: IGetBigWinSettingData) => {
+			render: (record: IBigWinSettingData) => {
 				const {
 					siteId,
 					currencyId,
