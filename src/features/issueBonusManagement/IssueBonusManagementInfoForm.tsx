@@ -33,10 +33,18 @@ const IssueBonusManagementInfoForm = ({
 	const { bonus: initialAmount, rollOver, promotionType } = bonusCodeInfo
 
 	const handleFinish = async () => {
-		onCheckPasswordModal(
-			tierDepositBonusInfo.bonusAmount,
-			tierDepositBonusInfo.rolloverAmount
-		)
+		// * ReDeposit 類別的 amount、rollover 皆為 api 來源的固定值 (form CheckTierRedepositBonus )
+		if (promotionType === PromotionTypeEnum.ReDeposit) {
+			onCheckPasswordModal(
+				tierDepositBonusInfo.bonusAmount,
+				tierDepositBonusInfo.rolloverAmount
+			)
+		}
+		// *  其餘的類別為：amount:手動輸入; rollover: from CheckBonusCode
+		else {
+			const { amount } = form.getFieldsValue()
+			onCheckPasswordModal(amount, rollOver)
+		}
 	}
 
 	const handleCheckTierRedepositBonus = async () => {
