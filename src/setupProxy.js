@@ -22,7 +22,8 @@ module.exports = app => {
 			"/images"
 		],
 		createProxyMiddleware({
-			target: "http://ecs.nova88dev.com:5070",
+			// * 開放給 辦公室 IP 與公司 VPN 直連 LoadBalance 的 Domain
+			target: "http://adminsiteservice.nova88dev.com",
 			changeOrigin: true
 		})
 	);
