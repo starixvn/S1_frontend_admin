@@ -23,7 +23,7 @@ interface ICalculationFormProps {
 	editingKey: number | undefined
 	editPermission?: PermissionInterface
 	leaderboardCalculationData: ILeaderboardPointCalculationData[]
-	onSave: () => void
+	onSave: (record: ILeaderboardPointCalculationData) => void
 	setEditingKey: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 const CalculationForm = ({
@@ -56,7 +56,11 @@ const CalculationForm = ({
 
 				return editable ? (
 					<Space>
-						<Typography.Link onClick={onSave}>
+						<Typography.Link
+							onClick={() => {
+								onSave(record)
+							}}
+						>
 							{t('Label_Save')}
 						</Typography.Link>
 						<Typography.Link onClick={() => setEditingKey(undefined)}>

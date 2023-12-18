@@ -71,12 +71,34 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		{ isLoading: isSetLeaderboardRankingBonusLoading },
 	] = useSetLeaderboardRankingBonusMutation()
 
-	const handleUpdateCalculation = async () => {
+	const handleUpdateCalculation = async (
+		record: ILeaderboardPointCalculationData
+	) => {
 		if (!siteId) return
 
 		const { status, sportTurnOver, slotTurnOver, liveCasinoTurnOver } =
 			await calculationForm.validateFields()
 		const { currencyId } = calculationForm.getFieldsValue(true)
+		const {
+			status: rawStatus,
+			sportTurnOver: rawSportTurnOver,
+			slotTurnOver: rawSlotTurnOver,
+			liveCasinoTurnOver: rawLiveCasinoTurnOver,
+		} = record
+
+		const before = {
+			status: rawStatus,
+			sportTurnOver: rawSportTurnOver,
+			slotTurnOver: rawSlotTurnOver,
+			liveCasinoTurnOver: rawLiveCasinoTurnOver,
+		}
+
+		const after = {
+			status: Number(status),
+			sportTurnOver,
+			slotTurnOver,
+			liveCasinoTurnOver,
+		}
 
 		// 非 >= 1 的正整數不給送出
 		if (
@@ -91,11 +113,9 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		try {
 			await setLeaderboardPointCalculation({
 				siteId,
-				status: Number(status),
 				currencyId,
-				sportTurnOver,
-				slotTurnOver,
-				liveCasinoTurnOver,
+				before,
+				after,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setCalculationKey(undefined)
@@ -106,10 +126,18 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleUpdateRankingForm = async (currencyId: number) => {
+	const handleUpdateRankingForm = async ({
+		currencyId,
+		record,
+	}: {
+		currencyId: number
+		record: IRankingData
+	}) => {
 		if (!siteId) return
 		const { bonus, minPoint } = await rankingForm.validateFields()
 		const { ranking } = rankingForm.getFieldsValue(true)
+
+		const { bonus: rawBonus, minPoint: rawMinPoint } = record
 
 		// 非 >= 1 的正整數不給送出
 		if (!isPositiveInteger(bonus) || !isPositiveInteger(minPoint)) {
@@ -117,13 +145,24 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			return
 		}
 
+		const before = {
+			bonus: rawBonus,
+			minPoint: rawMinPoint,
+			ranking,
+		}
+
+		const after = {
+			bonus,
+			minPoint,
+			ranking,
+		}
+
 		try {
 			await setLeaderboardRankingBonus({
-				ranking,
 				siteId,
-				bonus,
-				minPoint,
 				currencyId,
+				before,
+				after,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setRankingFormKey(undefined)

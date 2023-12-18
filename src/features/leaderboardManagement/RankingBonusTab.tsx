@@ -15,7 +15,13 @@ interface IRankingBonusTabProps {
 	editingKey: string | undefined
 	editPermission?: PermissionInterface
 	leaderboardRankingBonusData: ILeaderboardRankingBonusData[]
-	onSave: (currencyId: number) => void
+	onSave: ({
+		currencyId,
+		record,
+	}: {
+		currencyId: number
+		record: IRankingData
+	}) => void
 	setEditingKey: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 const RankingBonusTab = ({

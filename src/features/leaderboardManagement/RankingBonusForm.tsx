@@ -15,7 +15,13 @@ interface IRankingBonusFormProps {
 	editPermission?: PermissionInterface
 	rankingBonusData: IRankingData[]
 	setEditingKey: React.Dispatch<React.SetStateAction<string | undefined>>
-	onSave: (currencyId: number) => void
+	onSave: ({
+		currencyId,
+		record,
+	}: {
+		currencyId: number
+		record: IRankingData
+	}) => void
 }
 const RankingBonusForm = ({
 	isInEdit,
@@ -46,7 +52,7 @@ const RankingBonusForm = ({
 
 				return editable ? (
 					<Space>
-						<Typography.Link onClick={() => onSave(currencyId)}>
+						<Typography.Link onClick={() => onSave({ currencyId, record })}>
 							{t('Label_Save')}
 						</Typography.Link>
 						<Typography.Link onClick={() => setEditingKey(undefined)}>

@@ -31,19 +31,27 @@ export interface ILeaderboardPointCalculationData {
 	updateTime: string
 }
 
-export interface ISetLeaderboardRankingBonusArgs {
-	siteId: number
-	currencyId: number
+export type ILeaderboardRankingData = {
 	ranking: string
 	minPoint: number
 	bonus: number
 }
-
-export interface ISetLeaderboardPointCalculation {
+export interface ISetLeaderboardRankingBonusArgs {
 	siteId: number
 	currencyId: number
+	before: ILeaderboardRankingData
+	after: ILeaderboardRankingData
+}
+
+export type ILeaderboardPointData = {
 	sportTurnOver: number
 	slotTurnOver: number
 	liveCasinoTurnOver: number
 	status: number
+}
+export interface ISetLeaderboardPointCalculation {
+	siteId: number
+	currencyId: number
+	before: ILeaderboardPointData
+	after: ILeaderboardPointData
 }
