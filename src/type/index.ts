@@ -156,6 +156,7 @@ export enum DepositTypeEnum {
 	BankAutoChannel,
 	CryptoWallet,
 	QuickTransfer,
+	ChatTransfer,
 }
 
 export enum CurrencyEnum {
