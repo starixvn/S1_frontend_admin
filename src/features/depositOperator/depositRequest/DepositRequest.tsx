@@ -264,7 +264,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			try {
 				const args: ICryptoAmountCalculationArgs = {
 					currencyId: depositInfo.currencyId,
-					exchangeRate,
+					exchangeRate: Number(exchangeRate),
 					cryptoAmount: afterAmount,
 				}
 
