@@ -405,7 +405,9 @@ const DepositRequestDepositInfo = ({
 									<Button
 										type='link'
 										style={{ padding: '0px' }}
-										onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
+										onClick={() =>
+											onOpenPaymentInfoModal(Number(depositInfo?.payId))
+										}
 									>
 										<InfoCircleOutlined style={{ fontSize: '18px' }} />
 									</Button>
