@@ -104,7 +104,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.CryptoPay ||
 		depositType === DepositTypeEnum.LoadCard ||
 		depositType === DepositTypeEnum.QRPay ||
-		depositType === DepositTypeEnum.QuickTransfer
+		depositType === DepositTypeEnum.QuickTransfer ||
+		depositType === DepositTypeEnum.ChatTransfer
 
 	const depositInfo = jsonToObject(originDepositInfo) ?? {}
 
