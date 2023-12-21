@@ -80,16 +80,16 @@ export interface IDepositOperatorResponse
  * * 轉回來預期為 Object，用到 channelName、exchangeAmount、actualExchangeAmount、sysId
  */
 export interface IDepositInfo {
-	payId?: number
-	sysId?: number
+	payId?: string
+	sysId?: string
 	accountNo?: string
 	accountName?: string
 	channelName?: string
-	exchangeAmount?: number
-	actualExchangeAmount?: number
-	bankId?: number
+	exchangeAmount?: string
+	actualExchangeAmount?: string
+	bankId?: string
 	currencyName?: string
-	exchangeRate?: number
+	exchangeRate?: string
 	frontendDisplayName?: string
 	network?: string
 }
@@ -101,10 +101,10 @@ export interface IDepositFrom {
 }
 
 export interface IODepositInfo {
-	channelId?: number
-	currencyId?: number
-	payId?: number
-	ver?: number
+	channelId?: string
+	currencyId?: string
+	payId?: string
+	ver?: string
 	code?: string
 	isLocalPay?: boolean
 }
