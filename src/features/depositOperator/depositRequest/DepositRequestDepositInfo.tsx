@@ -422,25 +422,6 @@ const DepositRequestDepositInfo = ({
 						{depositCnt ?? '-'}
 					</Descriptions.Item>
 				)}
-				<Descriptions.Item label={t('Label_RefId')}>
-					{refId || oDepositInfo?.code || '-'}
-				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_Payment')}>
-					<Row align='middle' justify='space-between'>
-						{payName || '-'}
-						{thirdPartyDepositType && (
-							<Button
-								type='link'
-								style={{ padding: '0px' }}
-								onClick={() =>
-									onOpenPaymentInfoModal(Number(depositInfo?.payId))
-								}
-							>
-								<InfoCircleOutlined style={{ fontSize: '18px' }} />
-							</Button>
-						)}
-					</Row>
-				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_FlowEndTime')}>
 					{flowEndTime &&
 						moment(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
