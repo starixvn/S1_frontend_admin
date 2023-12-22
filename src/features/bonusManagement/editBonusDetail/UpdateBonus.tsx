@@ -229,6 +229,7 @@ const UpdateBonus: FC<{
 								walletType: Number(walletType),
 								categoryId: Number(categoryId),
 								tpId: Number(tpId),
+								promotionType,
 							}),
 							blockTagList,
 							sameDeviceIDRestrict,
@@ -419,6 +420,7 @@ const UpdateBonus: FC<{
 					vN_AffCodes,
 					tierAmountList,
 					cashBackSetting,
+					turnoverTpGameTypeList,
 				} = specificData
 				// cashBack setting only cash back need this
 				const { lossAmount, cashBackTpInfos } = cashBackSetting
@@ -445,6 +447,7 @@ const UpdateBonus: FC<{
 								usage,
 								vN_AffCodes,
 								tierAmountList,
+								turnoverTpGameTypeList,
 							},
 						},
 					})

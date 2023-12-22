@@ -60,6 +60,7 @@ export enum BonusTypeEnum {
 	ManualBonus,
 	RetentionFreeBet,
 	DeviceBonus,
+	MissionBonus,
 }
 
 export enum PeriodTypeEnum {

@@ -23,6 +23,7 @@ export type ITierAmountListData = {
 	bonus: number
 	maxBonus?: number
 	requiredAmount: number
+	requiredTurnover?: number
 	winOver: number
 	rollOver: number
 }
@@ -46,6 +47,7 @@ export type ISpecificData = {
 	totalUsageLimit: number
 	cashBackSetting: ICashBackSettingData
 	tierAmountList: ITierAmountListData[]
+	turnoverTpGameTypeList?: number[]
 }
 
 export interface ISpecificDataFrontend extends ISpecificData {
@@ -115,6 +117,7 @@ export interface IGetByBonusCodeData extends IGetBonusListData {
 	sameRealNameRestrictAvailableCount: number
 	blockTagList: number[]
 	hideForUnlogin: boolean
+	turnoverTpGameTypeList?: number[]
 }
 
 export type IGetByBonusCodeResponse = IAxiosResponse<IGetByBonusCodeData>

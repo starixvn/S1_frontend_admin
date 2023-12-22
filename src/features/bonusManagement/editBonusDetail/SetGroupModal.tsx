@@ -3,7 +3,10 @@ import { Button, Form, InputNumber, message, Modal, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { AmountTypeEnum } from 'features/bonusManagement/constants'
+import {
+	AmountTypeEnum,
+	BonusTypeEnum,
+} from 'features/bonusManagement/constants'
 import { isEmpty, trim } from 'lodash'
 
 interface ISetGroupModalProps {
@@ -14,6 +17,7 @@ interface ISetGroupModalProps {
 const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const { t } = useTranslation()
 	const { form, currentActiveCurrency } = useContext(EditBonusContext)
+	const formData = form?.getFieldsValue()
 	const { isoCode } = currentActiveCurrency
 	const type = form?.getFieldValue(['specific', isoCode, 'bonusType'])
 
@@ -62,7 +66,6 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 			})
 		}
 	}, [visible])
-
 	return (
 		<Modal
 			open={visible}
@@ -88,13 +91,28 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										label={key === 0 ? t('Label_RedepositAmount') : null}
 										rules={[
 											{
-												required: true,
-												message: t('Label_RequiredText'),
-											},
-											{
 												type: 'number',
 												min: 0,
 												message: t('Label_GreaterThanZero'),
+											},
+											{
+												validator: (_, value) => {
+													if (
+														formData?.bonusType === BonusTypeEnum.MissionBonus
+													) {
+														const { tierAmountList } =
+															modalForm.getFieldsValue()
+														const requiredTurnover =
+															tierAmountList[name]?.requiredTurnover
+
+														if (!value && !requiredTurnover) {
+															return Promise.reject(t('Label_RequiredText'))
+														}
+													} else if (!value) {
+														return Promise.reject(t('Label_RequiredText'))
+													}
+													return Promise.resolve()
+												},
 											},
 										]}
 									>
@@ -104,21 +122,29 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
-									{type === AmountTypeEnum.Percentage && (
+									{formData?.bonusType === BonusTypeEnum.MissionBonus && (
 										<>
 											<Form.Item
 												{...restField}
-												name={[name, 'bonus']}
-												label={key === 0 ? t('Label_Percentage') : null}
+												name={[name, 'requiredTurnover']}
+												label={key === 0 ? t('Label_RequiredTurnover') : null}
 												rules={[
-													{
-														required: true,
-														message: t('Label_RequiredText'),
-													},
 													{
 														type: 'number',
 														min: 0,
 														message: t('Label_GreaterThanZero'),
+													},
+													{
+														validator: (_, value) => {
+															const { tierAmountList } =
+																modalForm.getFieldsValue()
+															const requiredAmount =
+																tierAmountList[name]?.requiredAmount
+															if (!value && !requiredAmount) {
+																return Promise.reject(t('Label_RequiredText'))
+															}
+															return Promise.resolve()
+														},
 													},
 												]}
 											>
@@ -126,13 +152,12 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 													type='number'
 													controls={false}
 													style={{ width: '100%' }}
-													placeholder={t('Label_Percentage')}
 												/>
 											</Form.Item>
 											<Form.Item
 												{...restField}
-												name={[name, 'maxBonus']}
-												label={key === 0 ? t('Label_MaxBonus') : null}
+												name={[name, 'bonus']}
+												label={key === 0 ? t('Label_Bonus') : null}
 												rules={[
 													{
 														required: true,
@@ -148,37 +173,89 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												<InputNumber
 													type='number'
 													controls={false}
+													placeholder={t('Label_Bonus')}
 													style={{ width: '100%' }}
-													placeholder={t('Label_MaxBonus')}
 												/>
 											</Form.Item>
 										</>
 									)}
-									{type === AmountTypeEnum.Amount && (
-										<Form.Item
-											{...restField}
-											name={[name, 'bonus']}
-											label={key === 0 ? t('Label_Bonus') : null}
-											rules={[
-												{
-													required: true,
-													message: t('Label_RequiredText'),
-												},
-												{
-													type: 'number',
-													min: 0,
-													message: t('Label_GreaterThanZero'),
-												},
-											]}
-										>
-											<InputNumber
-												type='number'
-												controls={false}
-												placeholder={t('Label_Bonus')}
-												style={{ width: '100%' }}
-											/>
-										</Form.Item>
-									)}
+									{type === AmountTypeEnum.Percentage &&
+										formData?.bonusType !== BonusTypeEnum.MissionBonus && (
+											<>
+												<Form.Item
+													{...restField}
+													name={[name, 'bonus']}
+													label={key === 0 ? t('Label_Percentage') : null}
+													rules={[
+														{
+															required: true,
+															message: t('Label_RequiredText'),
+														},
+														{
+															type: 'number',
+															min: 0,
+															message: t('Label_GreaterThanZero'),
+														},
+													]}
+												>
+													<InputNumber
+														type='number'
+														controls={false}
+														style={{ width: '100%' }}
+														placeholder={t('Label_Percentage')}
+													/>
+												</Form.Item>
+												<Form.Item
+													{...restField}
+													name={[name, 'maxBonus']}
+													label={key === 0 ? t('Label_MaxBonus') : null}
+													rules={[
+														{
+															required: true,
+															message: t('Label_RequiredText'),
+														},
+														{
+															type: 'number',
+															min: 0,
+															message: t('Label_GreaterThanZero'),
+														},
+													]}
+												>
+													<InputNumber
+														type='number'
+														controls={false}
+														style={{ width: '100%' }}
+														placeholder={t('Label_MaxBonus')}
+													/>
+												</Form.Item>
+											</>
+										)}
+									{type === AmountTypeEnum.Amount &&
+										formData?.bonusType !== BonusTypeEnum.MissionBonus && (
+											<Form.Item
+												{...restField}
+												name={[name, 'bonus']}
+												label={key === 0 ? t('Label_Bonus') : null}
+												rules={[
+													{
+														required: true,
+														message: t('Label_RequiredText'),
+													},
+													{
+														type: 'number',
+														min: 0,
+														message: t('Label_GreaterThanZero'),
+													},
+												]}
+											>
+												<InputNumber
+													type='number'
+													controls={false}
+													placeholder={t('Label_Bonus')}
+													style={{ width: '100%' }}
+												/>
+											</Form.Item>
+										)}
 									<Form.Item
 										{...restField}
 										name={[name, 'rollOver']}
