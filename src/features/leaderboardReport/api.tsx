@@ -29,10 +29,22 @@ const leaderboardReportApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+
+		getLeaderboardBySiteIds: builder.query<
+			IAxiosResponse<ILeaderboardReportData[]>,
+			IGetLeaderboardReportArgs
+		>({
+			query: data => ({
+				url: 'LeaderBoardReport/GetLeaderboardReportBySiteIds',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
 export const {
 	useLazyGetLeaderboardQuery,
+	useLazyGetLeaderboardBySiteIdsQuery,
 	useExportLeaderboardReportMutation,
 } = leaderboardReportApi

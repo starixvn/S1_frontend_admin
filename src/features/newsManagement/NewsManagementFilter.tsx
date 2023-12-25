@@ -21,11 +21,14 @@ import { MultipleSelect } from 'components/Select'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { dateFormat } from 'common/utils/format'
 import { IFilterForm } from 'features/newsManagement/type'
+import { UserSite } from 'common/enum/type'
+import { head } from 'lodash'
 
 interface INewsManagementFilterProps {
 	form: FormInstance<IFilterForm>
 	loading: boolean
 	statusEnumList: IEnumTypeData[]
+	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
 	onSearch: ({
 		current,
@@ -47,6 +50,7 @@ const NewsManagementFilter = ({
 	form,
 	loading,
 	statusEnumList,
+	userSiteList,
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
@@ -85,6 +89,31 @@ const NewsManagementFilter = ({
 		)
 	}
 
+	const siteIdsSelector = () => {
+		return (
+			<Form.Item
+				name='siteId'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<Select placeholder={t('Label_Select')}>
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -94,9 +123,12 @@ const NewsManagementFilter = ({
 						size='middle'
 						form={form}
 						onFinish={() => onSearch({})}
+						initialValues={{
+							siteId: head(userSiteList)?.siteId,
+						}}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
+							<Col lg={8} md={12} xs={12}>
 								<Form.Item label={t('Label_DateRange')}>
 									<Input.Group
 										compact
@@ -125,6 +157,7 @@ const NewsManagementFilter = ({
 												format={dateFormat}
 											/>
 										</Form.Item>
+
 										<div>
 											<TimeZoneSelect
 												value={timeZoneUtcOffset}
@@ -134,6 +167,13 @@ const NewsManagementFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
+						</Row>
+
+						<Row align='middle' gutter={16}>
+							<Col lg={6} md={12} xs={12}>
+								{siteIdsSelector()}
+							</Col>
+
 							<Col lg={6} md={12} xs={12}>
 								{statusSelector()}
 							</Col>

@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { SearchOutlined } from '@ant-design/icons'
 import type { RangePickerProps } from 'antd/es/date-picker'
 import {
@@ -20,11 +20,14 @@ import {
 	ILeaderBoardCategoryEnumData,
 } from 'features/leaderboardReport/type'
 import { LeaderBoardCategoryEnum } from 'features/leaderboardReport/constants'
+import { head } from 'lodash'
 
 interface ILeaderboardReportFilterProps {
+	userSiteList: UserSite[]
 	loading: boolean
 	form: FormInstance<IFilterForm>
 	currencyListBySite: Currency[]
+	currencyIdsBySiteIds: Currency[]
 	LeaderBoardCategoryList: ILeaderBoardCategoryEnumData[]
 	onSearch: ({
 		currentTimeZoneUtcOffset,
@@ -40,7 +43,9 @@ const LeaderboardReportFilter = ({
 	loading,
 	form,
 	currencyListBySite,
+	currencyIdsBySiteIds,
 	LeaderBoardCategoryList,
+	userSiteList,
 	onSearch,
 }: ILeaderboardReportFilterProps) => {
 	const { t } = useTranslation()
@@ -60,6 +65,65 @@ const LeaderboardReportFilter = ({
 		}
 	}
 
+	const siteIdSelector = () => {
+		const onChangeSite = () => {
+			form.setFieldValue('currencyId', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteId'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<Select placeholder={t('Label_Select')} onChange={onChangeSite}>
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
+
+	const currencySelector = () => {
+		const onChangeCurrency = (newCurrencyIds: number) => {
+			form.setFieldsValue({
+				currencyId: newCurrencyIds,
+			})
+		}
+		return (
+			<Form.Item
+				name='currencyId'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
+			>
+				<Select onChange={onChangeCurrency} placeholder={t('Label_Select')}>
+					{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
+						<Option key={currencyId} value={currencyId}>
+							{isoCode}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
+
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -72,29 +136,31 @@ const LeaderboardReportFilter = ({
 						initialValues={{
 							// 現在時間
 							monthRange: moment(),
+							siteId: head(userSiteList)?.siteId,
+							currencyId: head(currencyListBySite)?.currencyId,
+							categoryId: 0,
 						}}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={8} md={24} xs={24}>
-								<Form.Item
-									name='currencyId'
-									label={t('Label_Currency')}
-									rules={[{ required: true }]}
-								>
-									<Select placeholder={t('Label_Currency')}>
-										{currencyListBySite?.map(({ currencyId, isoCode }) => (
-											<Option key={currencyId} value={currencyId}>
-												{isoCode}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
+							<Col lg={6} md={12} xs={12}>
+								{siteIdSelector()}
 							</Col>
-							<Col lg={8} md={24} xs={24}>
+
+							<Col lg={6} md={12} xs={12}>
+								{currencySelector()}
+							</Col>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item
 									name='categoryId'
 									label={t('Label_Category')}
-									rules={[{ required: true }]}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Category'),
+											}),
+										},
+									]}
 								>
 									<Select
 										placeholder={t('Label_Category')}
@@ -112,7 +178,7 @@ const LeaderboardReportFilter = ({
 									</Select>
 								</Form.Item>
 							</Col>
-							<Col lg={8} md={24} xs={24}>
+							<Col lg={6} md={12} xs={12}>
 								<Form.Item label={t('Label_Month')}>
 									<Form.Item
 										noStyle

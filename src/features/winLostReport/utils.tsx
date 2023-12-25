@@ -114,7 +114,7 @@ export const tableColumnConverter = (tableList: object[]) => {
 				}
 			}
 			return {
-				title: t(i18nKeyInfo[upperFirst(dataIndex)]),
+				title: t(i18nKeyInfo[upperFirst(dataIndex)]) || upperFirst(dataIndex),
 				key: dataIndex,
 				dataIndex,
 				align: 'right' as AlignType,

@@ -58,7 +58,7 @@ export interface IGetPayEnumData {
 export type IGetPayEnumListResponse = IAxiosResponse<IGetPayEnumData[]>
 
 export interface IGateWayArgs {
-	siteId?: number
+	siteIds: number[]
 }
 
 export interface IGateWayData {

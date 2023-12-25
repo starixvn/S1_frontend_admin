@@ -30,6 +30,14 @@ const WithdrawalPaymentReportTable = ({
 			),
 		},
 		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			align: 'center' as 'center',
+			width: '20%',
+			render: (siteName: string) => siteName ?? '-',
+		},
+		{
 			title: t('Label_TotalWithdrawalCount'),
 			key: 'totalWithdrawalCount',
 			dataIndex: 'totalWithdrawalCount',

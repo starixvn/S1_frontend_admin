@@ -20,6 +20,9 @@ import {
 	IGetWinLossByTpGameTypeExportArgs,
 	IWinLossByTpGameTypeResponse,
 	IWinLossByPlayerResponse,
+	IWinLossByBrandResponse,
+	IGetWinLossByBrandArgs,
+	IGetWinLossByBrandExportArgs,
 } from 'features/winLostReport/type'
 
 export const winLostReportApi = rootApi.injectEndpoints({
@@ -154,6 +157,24 @@ export const winLostReportApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+		getWinLossByBrand: builder.query<
+			IWinLossByBrandResponse,
+			IGetWinLossByBrandArgs
+		>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByBrand',
+				method: 'POST',
+				data,
+			}),
+		}),
+		exportWinLossByBrand: builder.mutation<Blob, IGetWinLossByBrandExportArgs>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByBrandExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 	}),
 })
 export const {
@@ -164,10 +185,12 @@ export const {
 	useLazyGetWinLossByPlayerQuery,
 	useLazyGetWinLossByPlayerDetailQuery,
 	useLazyGetWinLossByCurrencyQuery,
+	useLazyGetWinLossByBrandQuery,
 	useExportWinLossByDateMutation,
 	useExportWinLossByMonthMutation,
 	useExportWinLossByTpGameTypeMutation,
 	useExportWinLossByTpCategoryTypeMutation,
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByCurrencyMutation,
+	useExportWinLossByBrandMutation,
 } = winLostReportApi

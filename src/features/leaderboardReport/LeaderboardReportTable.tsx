@@ -6,6 +6,7 @@ import { numFormatToDigits } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
 import { ILeaderboardReportData } from 'features/leaderboardReport/type'
+import { head } from 'lodash'
 
 interface ILeaderboardReportTableProps {
 	loading: boolean
@@ -18,13 +19,15 @@ const LeaderboardReportTable = ({
 }: ILeaderboardReportTableProps) => {
 	const { t } = useTranslation()
 
+	const data = head(leaderboardReportList)?.detail
+
 	const columns = [
 		{
 			title: t('Label_Currency'),
 			key: 'isoCode',
 			dataIndex: 'isoCode',
 			align: 'center' as 'center',
-			width: '20%',
+			width: '15%',
 			render: (isoCode: string) => isoCode || '-',
 		},
 		{
@@ -32,18 +35,18 @@ const LeaderboardReportTable = ({
 			key: 'ranking',
 			dataIndex: 'ranking',
 			align: 'center' as 'center',
-			width: '20%',
+			width: '15%',
 			render: (ranking: string) => ranking || '-',
 		},
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
 			align: 'center' as 'center',
-			width: '30%',
-			render: ({ custId, userName }: ILeaderboardReportData) =>
+			width: '25%',
+			render: ({ custId, userName, siteId }: ILeaderboardReportData) =>
 				userName ? (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}
@@ -57,8 +60,16 @@ const LeaderboardReportTable = ({
 			key: 'points',
 			dataIndex: 'points',
 			align: 'center' as 'center',
-			width: '30%',
+			width: '25%',
 			render: (points: number) => numFormatToDigits(points || 0),
+		},
+		{
+			title: t('Label_Reward'),
+			key: 'reward',
+			dataIndex: 'reward',
+			align: 'center' as 'center',
+			width: '20%',
+			render: (reward: number) => numFormatToDigits(reward || 0),
 		},
 	]
 
@@ -67,7 +78,7 @@ const LeaderboardReportTable = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={leaderboardReportList}
+				dataSource={data}
 				pagination={false}
 			/>
 		</LayoutContent.Card>

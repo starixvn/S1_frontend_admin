@@ -9,7 +9,11 @@ import VerificationReportTable from 'features/verificationReport/VerificationRep
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { selectCurrencyListBySite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
+	selectUserSiteList,
+} from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -32,8 +36,14 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const userSiteList = useAppSelector(selectUserSiteList)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const [filterForm] = Form.useForm<IFilterForm>()
+
+	const watchSiteIds = Form.useWatch('siteIds', filterForm)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 
 	const [
 		getVerificationRewardReport,
@@ -65,6 +75,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 		currentTimeZoneUtcOffset?: number
 	}) => {
 		const {
+			siteIds,
 			memberId: userName,
 			sabaId: filterFormSabaId,
 			dateRange,
@@ -76,6 +87,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 		)
 
 		const args = {
+			siteIds,
 			pageNumber: current,
 			pageSize,
 			userName: userName ?? '',
@@ -108,7 +120,8 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const handleExport = async () => {
 		const {
-			currencyIds,
+			siteIds = [],
+			currencyIds = [],
 			userName,
 			sabaId: querySabaId,
 			startDate,
@@ -116,6 +129,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 		} = queryParams
 
 		const args = {
+			siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 			currencyIds: currencyIds.map((currency: string) => Number(currency)),
 			userName,
 			sabaId: querySabaId,
@@ -142,14 +156,16 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				userName,
 				sabaId: querySabaId,
-				currencyIds,
+				currencyIds = [],
 				startDate,
 				endDate,
 				timeZone,
+				siteIds = [],
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				dateRange: [moment(startDate), moment(endDate)],
+				siteIds: siteIds.map((querySite: string) => Number(querySite)),
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				memberId: userName,
 				sabaId: querySabaId,
@@ -175,7 +191,9 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 			<VerificationReportFilter
 				form={filterForm}
 				loading={loading}
-				currencyListBySite={currencyListBySite}
+				userSiteList={userSiteList}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
+				currencyListByAllSite={currencyListByAllSite}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}

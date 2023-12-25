@@ -18,6 +18,7 @@ export enum GroupByEnum {
 	Category,
 	Currency,
 	Player,
+	Brand,
 }
 
 export const groupByList: Array<{ value: number; displayName: string }> = [
@@ -27,6 +28,7 @@ export const groupByList: Array<{ value: number; displayName: string }> = [
 	{ displayName: 'Label_Category', value: GroupByEnum.Category },
 	{ displayName: 'Label_Currency', value: GroupByEnum.Currency },
 	{ displayName: 'Label_Player', value: GroupByEnum.Player },
+	{ displayName: 'Label_Brand', value: GroupByEnum.Brand },
 ]
 
 export enum OrderEnum {
@@ -41,6 +43,7 @@ export const groupName: { [groupBy: number]: string } = {
 	[GroupByEnum.Category]: 'TpCategoryName',
 	[GroupByEnum.Currency]: 'Currency',
 	[GroupByEnum.Player]: 'UserName',
+	[GroupByEnum.Brand]: 'Site',
 }
 
 export const i18nKeyInfo: { [i18nKey: string]: string } = {
@@ -50,9 +53,11 @@ export const i18nKeyInfo: { [i18nKey: string]: string } = {
 	ValidTurnOver: 'Label_ValidTurnover',
 	Ggr: 'Label_GGR',
 	PlayerWinLoss: 'Label_PlayerWinLoss',
+	BaPlayerWinLoss: 'Label_BaPlayerWinLoss',
 	ProgressiveWin: 'Label_ProgressiveWin',
 	ProgressiveBet: 'Label_ProgressiveBet',
 	Commission: 'Label_Commission',
+	BaCommission: 'Label_BaCommission',
 	BetCount: 'Label_BetCount',
 	AvgBetAmount: 'Label_AvgBetAmount',
 	UniquePlayers: 'Label_UniquePlayers',

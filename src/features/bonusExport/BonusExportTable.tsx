@@ -46,11 +46,11 @@ const BonusExportTable: FC<IBonusExportTableProps> = ({
 			title: t('Label_MemberId'),
 			key: 'userName',
 			align: 'center' as 'center',
-			render: ({ custId, userName }: IGetBonusListData) =>
+			render: ({ custId, userName, siteId }: IGetBonusListData) =>
 				userName ? (
 					<Typography.Link
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}

@@ -11,19 +11,21 @@ import {
 	Switch,
 	Button,
 	DatePicker,
+	Select,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { PermissionInterface } from 'type'
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useGetLangCodesQuery } from 'common/service/allDataApi'
 import { IEditForm } from 'features/newsManagement/type'
 import { JSONParser } from 'features/newsManagement/utils'
 import { useGetNewsByIdQuery } from 'features/newsManagement/api'
 import { NewsManagementEditor } from 'features/newsManagement/EditNewsModal/EditNewsEditor'
+import { UserSite } from 'common/enum/type'
+import { head } from 'lodash'
 
 interface INewsManagementModalProps {
+	userSiteList: UserSite[]
 	open: boolean
 	form: FormInstance<IEditForm>
 	loading: boolean
@@ -38,6 +40,7 @@ const NewsManagementModal = ({
 	open,
 	form,
 	loading,
+	userSiteList,
 	editPermission,
 	timeZoneUtcOffset,
 	onCancel,
@@ -45,13 +48,17 @@ const NewsManagementModal = ({
 	onTimeZoneChange,
 }: INewsManagementModalProps) => {
 	const { t } = useTranslation()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const formSiteId = Form.useWatch('siteId', form)
+	const { data: { data: infos } = {} } = useGetLangCodesQuery({
+		siteId: formSiteId,
+	})
 
-	const { data: { data: infos } = {} } = useGetLangCodesQuery({ siteId })
-	const { iLangList: langCodes = [] } = infos ?? {}
+	const { Option } = Select
 
 	const newsId = form.getFieldValue(['newsId'])
 	const isAdd = newsId === 'Add'
+
+	const { iLangList: langCodes = [] } = infos ?? {}
 
 	const { data: { data: newsById } = {}, isFetching: isGetNewsByIdLoading } =
 		useGetNewsByIdQuery(
@@ -59,9 +66,35 @@ const NewsManagementModal = ({
 			{ skip: isAdd || !newsId, refetchOnMountOrArgChange: true }
 		)
 
+	const siteIdSelector = () => {
+		return (
+			<Form.Item
+				name='siteId'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<Select placeholder={t('Label_Select')} disabled={!isAdd}>
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</Select>
+			</Form.Item>
+		)
+	}
+
 	useEffect(() => {
 		if (!isGetNewsByIdLoading && !isAdd && open) {
 			const {
+				siteId,
 				postTime: rawPostTime,
 				status: rawStatus,
 				sort,
@@ -77,6 +110,7 @@ const NewsManagementModal = ({
 			const status = Boolean(rawStatus === 1)
 
 			form.setFieldsValue({
+				siteId,
 				status,
 				newsId,
 				postTime,
@@ -122,6 +156,7 @@ const NewsManagementModal = ({
 					layout='vertical'
 					disabled={!editPermission?.canUse}
 					initialValues={{
+						siteId: head(userSiteList)?.siteId,
 						sort: 0,
 						status: false,
 					}}
@@ -136,6 +171,10 @@ const NewsManagementModal = ({
 						</Row>
 					)}
 					<Row align='middle' gutter={16}>
+						<Col lg={6} md={12} xs={12}>
+							{siteIdSelector()}
+						</Col>
+
 						<Col md={12} xs={24}>
 							<Form.Item label={t('Label_PostTime')}>
 								<Input.Group compact style={{ width: '100%', display: 'flex' }}>

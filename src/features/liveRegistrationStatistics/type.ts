@@ -1,7 +1,7 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetRegistrationManagementListArgs {
-	siteId?: number
+	siteIds: number[]
 	currencyId: number
 	depositStatus: number
 	status: number
@@ -48,7 +48,7 @@ export interface ISetRegistrationManagementArgs {
 }
 
 export interface IExportRegistrationManagementArgs {
-	siteId?: number
+	siteIds: number[]
 	currencyId?: number
 	depositStatus: number
 	status: number

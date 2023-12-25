@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import {
 	MOMENT_DATE_RANGES,
 	MOMENT_RANGE_PICKER_RANGES,
@@ -28,7 +28,9 @@ const { Panel } = Collapse
 interface IVerificationReportFilterProps {
 	form: FormInstance<IFilterForm>
 	loading: boolean
-	currencyListBySite: Currency[]
+	userSiteList: UserSite[]
+	currencyIdsBySiteIds: Currency[]
+	currencyListByAllSite: Currency[]
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
@@ -45,23 +47,99 @@ interface IVerificationReportFilterProps {
 const VerificationReportFilter = ({
 	form,
 	loading,
-	currencyListBySite,
+	userSiteList,
+	currencyIdsBySiteIds,
+	currencyListByAllSite,
 	timeZoneUtcOffset,
 	onTimeZoneChange,
 	onSearch,
 }: IVerificationReportFilterProps) => {
 	const { t } = useTranslation()
 
-	const onChangeCurrency = (newCurrencyIds: Array<string | number>) => {
-		if (newCurrencyIds.includes('all')) {
-			form.setFieldsValue({
-				currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
-			})
-		} else {
-			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
-			})
+	// * siteIds 異動時須清空 currencyIds
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(({ siteId }) => siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds,
+				})
+			}
+			form.setFieldValue('currencyIds', [])
 		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const currencySelector = () => {
+		const onChangeCurrency = (newCurrencyIds: number[]) => {
+			if (newCurrencyIds.includes(0)) {
+				form.setFieldsValue({
+					currencyIds: currencyIdsBySiteIds?.map(item => item.currencyId),
+				})
+			} else {
+				form.setFieldsValue({
+					currencyIds: newCurrencyIds,
+				})
+			}
+		}
+		return (
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect
+					onChange={onChangeCurrency}
+					placeholder={t('Label_Select')}
+				>
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{currencyIdsBySiteIds?.map(({ currencyId, isoCode }) => (
+						<Option key={currencyId} value={currencyId}>
+							{isoCode}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
 	}
 
 	return (
@@ -74,7 +152,8 @@ const VerificationReportFilter = ({
 						form={form}
 						onFinish={onSearch}
 						initialValues={{
-							currencyIds: currencyListBySite.map(
+							siteIds: userSiteList.map(item => item.siteId),
+							currencyIds: currencyListByAllSite.map(
 								({ currencyId }) => currencyId
 							),
 						}}
@@ -120,21 +199,10 @@ const VerificationReportFilter = ({
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									<MultipleSelect
-										placeholder={t('Label_Select') + t('Label_Currency')}
-										onChange={onChangeCurrency}
-									>
-										{currencyListBySite?.length > 1 && (
-											<Option value='all'>{t('Label_SelectAll')}</Option>
-										)}
-										{currencyListBySite?.map(({ currencyId, isoCode }) => (
-											<Option key={currencyId} value={currencyId}>
-												{isoCode}
-											</Option>
-										))}
-									</MultipleSelect>
-								</Form.Item>
+								{siteIdsSelector()}
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								{currencySelector()}
 							</Col>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='memberId' label={t('Label_MemberId')}>

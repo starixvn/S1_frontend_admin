@@ -1,5 +1,6 @@
-import { Table, TablePaginationConfig, Typography } from 'antd'
-import { isEmpty } from 'lodash'
+import { TablePaginationConfig, Typography } from 'antd'
+import { Table } from 'components'
+import { find, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -8,6 +9,8 @@ import { PaginationInterface } from 'common/hooks'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { IVerificationRewardReportData } from 'features/verificationReport/type'
 import moment from 'moment/moment'
+import { useAppSelector } from 'app/store'
+import { selectUserSiteList } from 'common/enum'
 
 interface IVerificationReportTableProps {
 	loading: boolean
@@ -24,8 +27,18 @@ const VerificationReportTable = ({
 	timeZoneUtcOffset,
 	onTableChange,
 }: IVerificationReportTableProps) => {
+	const userSiteList = useAppSelector(selectUserSiteList)
+
 	const { t } = useTranslation()
 	const columns = [
+		{
+			title: t('Label_SiteName'),
+			key: 'siteName',
+			dataIndex: 'siteName',
+			width: 100,
+			align: 'center' as 'center',
+			render: (siteName: string) => siteName || '-',
+		},
 		{
 			title: t('Label_Currency'),
 			key: 'currency',
@@ -38,17 +51,22 @@ const VerificationReportTable = ({
 			key: 'userName',
 			width: 100,
 			align: 'center' as 'center',
-			render: ({ custId, userName }: IVerificationRewardReportData) =>
-				userName ? (
+			render: ({
+				custId,
+				userName,
+				siteName,
+			}: IVerificationRewardReportData) => {
+				if (!userName) return '-'
+				const { siteId } = find(userSiteList, { siteName }) || {}
+				return (
 					<Typography.Link
-						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}`}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.memberProfile.root}/dashboard/${custId}?siteId=${siteId}`}
 						target='_blank'
 					>
 						{userName}
 					</Typography.Link>
-				) : (
-					'-'
-				),
+				)
+			},
 		},
 		{
 			title: t('Label_SabaId'),

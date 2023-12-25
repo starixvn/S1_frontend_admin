@@ -1,5 +1,3 @@
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
 import { endsWith, replace } from 'lodash'
 import { useSearchParams } from 'react-router-dom'
 
@@ -47,12 +45,13 @@ const useQueryParams = (): [
 	(values: object) => void
 ] => {
 	const [searchParams, setSearchParams] = useSearchParams()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	// * 後台開始支援多品牌操作，在 setSearchParams 時取消記住 cookieSiteId，如有無預期bug再行修復
+	// const { siteId: cookieSiteId } = useAppSelector(selectUserSite) ?? {}
 	const queryParams = readParams(searchParams)
 
 	const setQueryParams = (values: object) => {
 		if (values) {
-			setSearchParams(buildParams({ ...values, siteId }))
+			setSearchParams(buildParams({ ...values }))
 		}
 	}
 	return [queryParams, setQueryParams]
