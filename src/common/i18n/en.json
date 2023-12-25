@@ -1224,6 +1224,13 @@
 	"Label_TotalNetConfiscatedCash": "Total Net Confiscated Cash",
 	"Label_IncludeTestData": "Include Test Data",
 	"Label_BankMaintenance": "Bank Maintenance",
+	"Label_Reward": "Reward",
+	"Label_SportValidTurnover": "Sport Valid Turnover",
+	"Label_SlotValidTurnover": "Slot Valid Turnover",
+	"Label_LiveCasinoValidTurnover": "Live Casino Valid Turnover",
+	"Label_SetPointCalculation": "Set Point Calculation",
 	"Label_Finished": "Finished",
+	"Label_SetRankingBonus": "Set Ranking Bonus",
+	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_Site": "Site"
 }
