@@ -156,11 +156,21 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 		const onChangeProducts = (newProduct: Array<number | string>) => {
 			if (newProduct.includes('all')) {
 				form?.setFieldsValue({
-					turnoverTpGameTypeList: allProductList?.map(product => product.type),
+					specific: {
+						[isoCode]: {
+							turnoverTpGameTypeList: allProductList?.map(
+								product => product.type
+							),
+						},
+					},
 				})
 			} else {
 				form?.setFieldsValue({
-					turnoverTpGameTypeList: newProduct,
+					specific: {
+						[isoCode]: {
+							turnoverTpGameTypeList: newProduct,
+						},
+					},
 				})
 			}
 		}
