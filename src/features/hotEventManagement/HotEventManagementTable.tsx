@@ -17,6 +17,8 @@ import { timeFormat } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from 'app/store'
+import { selectAllCurrencyList } from 'common/enum'
 
 interface IHotEventManagementTableProps {
 	loading: boolean
@@ -43,6 +45,7 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
+	const allCurrencyList = useAppSelector(selectAllCurrencyList)
 	const columns = [
 		{
 			title: t('Label_Action'),
@@ -95,6 +98,34 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 						/>
 					</Popconfirm>
 				)
+			},
+		},
+		{
+			title: t('Label_LiveBroadCaster'),
+			dataIndex: `isLiveStreaming`,
+			width: 100,
+			align: 'center' as 'center',
+			render: (isLiveStreaming: boolean) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					{isLiveStreaming ? t('Label_Yes') : t('Label_No')}
+				</Typography.Text>
+			),
+		},
+		{
+			title: t('Label_Currency'),
+			dataIndex: `iCurrencyList`,
+			width: 100,
+			align: 'center' as 'center',
+			render: (iCurrencyList: number[]) => {
+				const currencyNames = iCurrencyList?.map(
+					currency =>
+						allCurrencyList.find(({ currencyId }) => currencyId === currency)
+							?.isoCode
+				)
+				if (currencyNames && currencyNames.length > 0) {
+					return currencyNames.join(',')
+				}
+				return '-'
 			},
 		},
 		{
