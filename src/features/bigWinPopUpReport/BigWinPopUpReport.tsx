@@ -50,8 +50,9 @@ const BigWinPopUpReport = ({ pageTitle }: { pageTitle?: string }) => {
 			currentTimeZoneUtcOffset
 		)
 		try {
-			await getBigWinReport({ startDate, endDate, currencyId }).unwrap()
-			setQueryParams({ startDate, endDate, currencyId })
+			const args = { startDate, endDate, currencyId, siteId }
+			await getBigWinReport(args).unwrap()
+			setQueryParams(args)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -60,13 +61,13 @@ const BigWinPopUpReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
-		const { startDate, endDate, currencyId } = queryParams
+		const { startDate, endDate, currencyId, siteId: querySiteId } = queryParams
 		try {
 			const blob = await exportBigWinReport({
 				startDate,
 				endDate,
 				currencyId,
+				siteId: querySiteId,
 			}).unwrap()
 			download(
 				blob,
