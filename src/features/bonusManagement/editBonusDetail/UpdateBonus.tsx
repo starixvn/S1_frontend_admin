@@ -140,6 +140,7 @@ const UpdateBonus: FC<{
 		try {
 			await form.validateFields()
 			const formData = form.getFieldsValue(true)
+
 			const {
 				bonusCode: formBonusCode,
 				autoExtend,
@@ -190,9 +191,23 @@ const UpdateBonus: FC<{
 				return tpId
 			}
 
+			let foundEmptyTier = false
+			// 如果bonusType為MissionBonus,提交前要判斷是否有添加級距
+			if (promotionType === BonusTypeEnum.MissionBonus) {
+				foundEmptyTier = Object.keys(rawSpecific).some(currency => {
+					const { tierAmountList } = rawSpecific[currency]
+					return Array.isArray(tierAmountList) && tierAmountList.length === 0
+				})
+			}
+
 			// 在送單時才驗證時間，displayDate 結束不可超過 periodDate結束時間
 			if (displayToTime > periodToTime) {
 				message.error(t('Label_BonusManagementDisplayTimeErrorMsg'))
+			} else if (
+				foundEmptyTier &&
+				promotionType === BonusTypeEnum.MissionBonus
+			) {
+				message.error(t('Label_Required', { key: t('Label_SetAmountGroup') }))
 			} else {
 				try {
 					await setBonus({
