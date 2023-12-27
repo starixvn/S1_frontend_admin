@@ -4,6 +4,7 @@ export interface IGetBigWinReportArgs {
 	startDate: string
 	endDate: string
 	currencyId: number[]
+	siteId: number
 }
 
 export interface IBigWinReportData {
