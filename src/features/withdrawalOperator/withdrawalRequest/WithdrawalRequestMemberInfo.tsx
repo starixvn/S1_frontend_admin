@@ -95,6 +95,17 @@ const WithdrawalRequestMemberInfo = ({
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
+	const alertColor = (
+		byTotalWinLoss: number | undefined,
+		byTotalDeposit: number | undefined
+	) => {
+		if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
+			return byTotalWinLoss > byTotalDeposit * 5
+		}
+
+		return false
+	}
+
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
@@ -152,7 +163,14 @@ const WithdrawalRequestMemberInfo = ({
 					{actStatus === ActStatusEnum.unActive && t('Label_No')}
 				</Item>
 
-				<Item label={t('Label_TotalDeposit')}>
+				<Item
+					style={{
+						backgroundColor: alertColor(totalWinLoss, totalDeposit)
+							? '#F9F900'
+							: '',
+					}}
+					label={t('Label_TotalDeposit')}
+				>
 					{numberFormatter.format(totalDeposit || 0)}
 				</Item>
 				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
@@ -180,7 +198,14 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
-				<Item label={t('Label_TotalWinLoss')}>
+				<Item
+					label={t('Label_TotalWinLoss')}
+					style={{
+						backgroundColor: alertColor(totalWinLoss, totalDeposit)
+							? '#F9F900'
+							: '',
+					}}
+				>
 					{numberFormatter.format(totalWinLoss || 0)}
 				</Item>
 
