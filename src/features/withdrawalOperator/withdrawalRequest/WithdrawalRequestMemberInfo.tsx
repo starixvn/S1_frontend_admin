@@ -100,7 +100,7 @@ const WithdrawalRequestMemberInfo = ({
 		byTotalDeposit: number | undefined
 	) => {
 		if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
-			return byTotalWinLoss > byTotalDeposit * 5
+			return byTotalWinLoss > byTotalDeposit
 		}
 
 		return false
