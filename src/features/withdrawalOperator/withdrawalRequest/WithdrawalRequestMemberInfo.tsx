@@ -95,6 +95,60 @@ const WithdrawalRequestMemberInfo = ({
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
+	const alertColor = (
+		byTotalWinLoss: number | undefined,
+		byTotalDeposit: number | undefined
+	) => {
+		if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
+			return Math.abs(byTotalWinLoss) > byTotalDeposit
+		}
+
+		return false
+	}
+
+	// * winLoss TotalDeposit 警示動畫
+	const elements = [
+		Array.from(document.getElementsByClassName('winLoss-description-element')),
+		Array.from(
+			document.getElementsByClassName('totalDeposit-description-element')
+		),
+	]
+
+	try {
+		elements.forEach(elementList => {
+			if (elementList !== null) {
+				elementList.forEach(element => {
+					element.animate(
+						[
+							{
+								// from
+								opacity: 1.0,
+								backgroundColor: '#F9F900',
+							},
+							{
+								// from
+								opacity: 0.2,
+								backgroundColor: '#F9F900',
+							},
+							{
+								// to
+								opacity: 1.0,
+								backgroundColor: '#F9F900',
+							},
+						],
+						{
+							// timing options
+							duration: 1500,
+							iterations: Infinity,
+						}
+					)
+				})
+			}
+		})
+	} catch {
+		//
+	}
+
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
@@ -151,8 +205,35 @@ const WithdrawalRequestMemberInfo = ({
 					{actStatus === ActStatusEnum.Active && t('Label_Yes')}
 					{actStatus === ActStatusEnum.unActive && t('Label_No')}
 				</Item>
-
-				<Item label={t('Label_TotalDeposit')}>
+				<Item
+					label={t('Label_TotalDeposit')}
+					// * WinLoss 大於 TotalDeposit css 警示
+					className={
+						alertColor(totalWinLoss, totalDeposit)
+							? 'totalDeposit-description-element'
+							: undefined
+					}
+					contentStyle={
+						alertColor(totalWinLoss, totalDeposit)
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderRight: '1px solid #FFA042',
+							  }
+							: undefined
+					}
+					labelStyle={
+						alertColor(totalWinLoss, totalDeposit)
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderLeft: '2px solid #FFA042',
+							  }
+							: undefined
+					}
+				>
 					{numberFormatter.format(totalDeposit || 0)}
 				</Item>
 				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
@@ -177,13 +258,40 @@ const WithdrawalRequestMemberInfo = ({
 					</Typography.Link>
 				</Item>
 
-				<Item label={t('Label_DeviceScore')}>
+				<Item style={{ animationName: '54' }} label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
-				<Item label={t('Label_TotalWinLoss')}>
+				<Item
+					label={t('Label_TotalWinLoss')}
+					// * WinLoss 大於 TotalDeposit css 警示
+					className={
+						alertColor(totalWinLoss, totalDeposit)
+							? 'winLoss-description-element'
+							: undefined
+					}
+					contentStyle={
+						alertColor(totalWinLoss, totalDeposit)
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderRight: '1px solid #FFA042',
+							  }
+							: undefined
+					}
+					labelStyle={
+						alertColor(totalWinLoss, totalDeposit)
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderLeft: '2px solid #FFA042',
+							  }
+							: undefined
+					}
+				>
 					{numberFormatter.format(totalWinLoss || 0)}
 				</Item>
-
 				<Item
 					label={t('Label_DOB')}
 				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
