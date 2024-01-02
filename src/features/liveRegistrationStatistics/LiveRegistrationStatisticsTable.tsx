@@ -31,14 +31,16 @@ const LiveRegistrationStatisticsTable: FC<{
 		sorter: SorterResult<IRegistrationManagementData>
 	) => void
 	onStatusChange: ({
+		siteId,
 		custId,
 		status,
 	}: {
+		siteId: number
 		custId: number
 		status: number
 	}) => void
 	onOpenNoteLogModal: (record: IRegistrationManagementData) => void
-	onCallingRecord: (custId: number) => void
+	onCallingRecord: (siteId: number, custId: number) => void
 }> = ({
 	loading,
 	timeZoneUtcOffset,
@@ -169,7 +171,13 @@ const LiveRegistrationStatisticsTable: FC<{
 				<Select
 					style={{ width: '140px' }}
 					value={record.status}
-					onChange={status => onStatusChange({ custId: record.custId, status })}
+					onChange={status =>
+						onStatusChange({
+							siteId: record.siteId,
+							custId: record.custId,
+							status,
+						})
+					}
 				>
 					{STATUS_OPTIONS.filter(option => option.value !== StatusEnum.All).map(
 						option => (
@@ -184,11 +192,18 @@ const LiveRegistrationStatisticsTable: FC<{
 		{
 			title: t('Label_CallMark'),
 			align: 'center' as 'center',
-			render: ({ custId, updateRemark }: IRegistrationManagementData) => {
+			render: ({
+				siteId,
+				custId,
+				updateRemark,
+			}: IRegistrationManagementData) => {
 				return (
 					<Space direction='vertical'>
 						{isArray(updateRemark) && updateRemark.map(remark => remark)}
-						<Button type='primary' onClick={() => onCallingRecord(custId)}>
+						<Button
+							type='primary'
+							onClick={() => onCallingRecord(siteId, custId)}
+						>
 							{t('Label_CompleteOnce')}
 						</Button>
 					</Space>
