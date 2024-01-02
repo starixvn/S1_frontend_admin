@@ -13,11 +13,7 @@ import {
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import {
-	selectUserSite,
-	selectUserSiteList,
-	selectCurrencyIdsBySiteIds,
-} from 'common/enum'
+import { selectUserSiteList, selectCurrencyIdsBySiteIds } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { LayoutContent } from 'app/pages/layout'
@@ -52,7 +48,6 @@ const LiveRegistrationStatistics: FC<{
 	const { t } = useTranslation()
 
 	const userSiteList = useAppSelector(selectUserSiteList)
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 
@@ -206,9 +201,7 @@ const LiveRegistrationStatistics: FC<{
 		}
 	}
 
-	const handleCallingRecord = async (custId: number) => {
-		if (!siteId) return
-
+	const handleCallingRecord = async (siteId: number, custId: number) => {
 		try {
 			await callingRecordRegistrationManagement({ siteId, custId }).unwrap()
 			message.success(t('System.Label_Success'))
@@ -253,9 +246,11 @@ const LiveRegistrationStatistics: FC<{
 	}
 
 	const handleStatusChange = async ({
+		siteId,
 		custId,
 		status,
 	}: {
+		siteId: number
 		custId: number
 		status: number
 	}) => {
