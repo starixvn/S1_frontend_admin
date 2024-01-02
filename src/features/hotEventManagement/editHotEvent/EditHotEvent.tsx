@@ -42,6 +42,8 @@ const EditHotEvent = () => {
 		awaySportLeaguesId: number
 		homeTeamNameId: number
 		awayTeamNameId: number
+		isLiveStreaming: boolean
+		currency: number[]
 	}>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
@@ -82,6 +84,8 @@ const EditHotEvent = () => {
 				awaySportLeaguesId,
 				homeTeamNameId,
 				awayTeamNameId,
+				isLiveStreaming,
+				iCurrencyList,
 			} = hotEventDetail
 
 			form.setFieldsValue({
@@ -94,6 +98,8 @@ const EditHotEvent = () => {
 				awaySportLeaguesId,
 				homeTeamNameId,
 				awayTeamNameId,
+				isLiveStreaming,
+				currency: iCurrencyList,
 			})
 		} catch (error) {
 			message.error(
@@ -113,6 +119,8 @@ const EditHotEvent = () => {
 			battleTime: rawBattleTime,
 			startTime: rawStartTime,
 			endTime: rawEndTime,
+			isLiveStreaming,
+			currency,
 		} = await form.validateFields()
 		const battleTime = utcFormatter({
 			date: rawBattleTime,
@@ -138,6 +146,8 @@ const EditHotEvent = () => {
 				battleTime,
 				startTime,
 				endTime,
+				currency: JSON.stringify(currency),
+				isLiveStreaming,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			navigate(-1)
@@ -153,6 +163,7 @@ const EditHotEvent = () => {
 			battleTime: rawBattleTime,
 			startTime: rawStartTime,
 			endTime: rawEndTime,
+			currency,
 			...rest
 		} = await form.validateFields()
 		const battleTime = utcFormatter({
@@ -173,6 +184,7 @@ const EditHotEvent = () => {
 				battleTime,
 				startTime,
 				endTime,
+				currency: JSON.stringify(currency),
 				...rest,
 			}).unwrap()
 			message.success(t('System.Label_Success'))

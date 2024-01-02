@@ -104,7 +104,8 @@ const DepositRequestDepositInfo = ({
 		depositType === DepositTypeEnum.CryptoPay ||
 		depositType === DepositTypeEnum.LoadCard ||
 		depositType === DepositTypeEnum.QRPay ||
-		depositType === DepositTypeEnum.QuickTransfer
+		depositType === DepositTypeEnum.QuickTransfer ||
+		depositType === DepositTypeEnum.ChatTransfer
 
 	const depositInfo = jsonToObject(originDepositInfo) ?? {}
 
@@ -405,7 +406,9 @@ const DepositRequestDepositInfo = ({
 									<Button
 										type='link'
 										style={{ padding: '0px' }}
-										onClick={() => onOpenPaymentInfoModal(depositInfo?.payId)}
+										onClick={() =>
+											onOpenPaymentInfoModal(Number(depositInfo?.payId))
+										}
 									>
 										<InfoCircleOutlined style={{ fontSize: '18px' }} />
 									</Button>

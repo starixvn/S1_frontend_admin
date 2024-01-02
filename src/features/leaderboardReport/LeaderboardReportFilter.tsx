@@ -153,7 +153,14 @@ const LeaderboardReportFilter = ({
 								<Form.Item
 									name='categoryId'
 									label={t('Label_Category')}
-									rules={[{ required: true }]}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_Category'),
+											}),
+										},
+									]}
 								>
 									<Select
 										placeholder={t('Label_Category')}
