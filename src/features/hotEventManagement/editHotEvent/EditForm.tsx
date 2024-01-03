@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import {
+	Checkbox,
 	Col,
 	DatePicker,
 	Form,
@@ -10,6 +11,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
+import { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	IGetSportLeaguesData,
@@ -20,6 +22,10 @@ import { useTranslation } from 'react-i18next'
 import moment from 'moment/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useLazyGetSportTeamsQuery } from 'features/hotEventManagement/api'
+import { MultipleSelect } from 'components/Select'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
+import { CurrencyEnum } from 'type'
 import { gameIdTypes } from '../constants'
 
 interface IEditFormProps {
@@ -44,13 +50,19 @@ const EditForm: FC<IEditFormProps> = ({
 	isEditing,
 }) => {
 	const { t } = useTranslation()
-
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	// teamList 在 form 頁根據當下的 League 做處理
 	const [homeTeamList, setHomeTeamList] = useState<IGetSportTeamsData[]>([])
 	const [awayTeamList, setAwayTeamList] = useState<IGetSportTeamsData[]>([])
 
 	const homeLeague = Form.useWatch('homeSportLeaguesId', form)
 	const awayLeague = Form.useWatch('awaySportLeaguesId', form)
+	const currentIsLiveStreaming = Form.useWatch('isLiveStreaming', form)
+
+	const liveStreamingCurrency = [CurrencyEnum.THB, CurrencyEnum.VND]
+	const filteredCurrencyListBySite = currencyListBySite.filter(
+		({ currencyId }) => liveStreamingCurrency.includes(currencyId)
+	)
 
 	const [getSportTeams, { isFetching: isGetSportTeamsLoading }] =
 		useLazyGetSportTeamsQuery()
@@ -78,6 +90,50 @@ const EditForm: FC<IEditFormProps> = ({
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
+		}
+	}
+
+	const currencySelector = () => {
+		const handleChangeCurrency = (newCurrencyId: Array<number | string>) => {
+			if (newCurrencyId.includes('all')) {
+				form.setFieldsValue({
+					currency: filteredCurrencyListBySite?.map(
+						({ currencyId }) => currencyId
+					),
+				})
+			} else {
+				form.setFieldsValue({
+					currency: newCurrencyId,
+				})
+			}
+		}
+
+		return (
+			<Form.Item name='currency' label={t('Label_Currency')}>
+				<MultipleSelect
+					placeholder={t('Label_Select') + t('Label_Currency')}
+					onChange={handleChangeCurrency}
+				>
+					{filteredCurrencyListBySite?.length > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+					{filteredCurrencyListBySite?.map(({ currencyId, isoCode }) => (
+						<Option key={currencyId} value={currencyId}>
+							{isoCode}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const handleLiveStreamingChange = (e: CheckboxChangeEvent) => {
+		if (e.target.checked) {
+			form.setFieldsValue({
+				currency: filteredCurrencyListBySite?.map(
+					({ currencyId }) => currencyId
+				),
+			})
 		}
 	}
 
@@ -262,6 +318,11 @@ const EditForm: FC<IEditFormProps> = ({
 								<DatePicker showTime disabled style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
+						{currentIsLiveStreaming && (
+							<Col lg={6} md={12} xs={12}>
+								{currencySelector()}
+							</Col>
+						)}
 					</Row>
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>
@@ -330,6 +391,13 @@ const EditForm: FC<IEditFormProps> = ({
 										</Option>
 									))}
 								</Select>
+							</Form.Item>
+						</Col>
+						<Col lg={6} md={12} xs={12}>
+							<Form.Item name='isLiveStreaming' valuePropName='checked' noStyle>
+								<Checkbox onChange={handleLiveStreamingChange}>
+									{t('Label_LiveBroadCaster')}
+								</Checkbox>
 							</Form.Item>
 						</Col>
 					</Row>
