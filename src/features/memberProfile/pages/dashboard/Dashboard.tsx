@@ -339,6 +339,9 @@ const Dashboard = () => {
 										{numFormatToDigits(walletBalanceInfo?.totalAdjustment || 0)}
 									</Text>
 								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_EggTickets')}>
+									<Text>{bonusWalletDetailData?.eggTickets}</Text>
+								</Descriptions.Item>
 							</Descriptions>
 						</Spin>
 

@@ -1233,5 +1233,6 @@
 	"Label_SetRankingBonus": "Set Ranking Bonus",
 	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_Site": "Site",
-	"Label_LiveBroadCaster": "Live Broadcaster"
+	"Label_LiveBroadCaster": "Live Broadcaster",
+	"Label_EggTickets": "Egg Tickets"
 }
