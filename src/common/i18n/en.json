@@ -1237,5 +1237,6 @@
 	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_Site": "Site",
 	"Label_LiveBroadCaster": "Live Broadcaster",
-	"Label_AffiliateAccount": "Affiliate Account"
+	"Label_AffiliateAccount": "Affiliate Account",
+	"Label_EggTickets": "Egg Tickets"
 }
