@@ -250,7 +250,7 @@ const WithdrawalRequestMemberInfo = ({
 					</Typography.Link>
 				</Item>
 
-				<Item style={{ animationName: '54' }} label={t('Label_DeviceScore')}>
+				<Item label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
 				<Item
