@@ -192,5 +192,6 @@ export const {
 	useGetTpListQuery,
 	useGetLocalPaySettingListQuery,
 	useGetProductsQuery,
+	useLazyGetProductsQuery,
 	useGetSlotGameListQuery,
 } = allDataApi

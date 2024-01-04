@@ -446,6 +446,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 							BonusTypeEnum.ReDeposit as number,
 							BonusTypeEnum.DeviceBonus as number,
 							BonusTypeEnum.CashBack as number,
+							BonusTypeEnum.MissionBonus as number,
 						]) && (
 							<Col lg={6} md={6} sm={6}>
 								<Form.Item name='periodType' label={t('Label_PeriodType')}>

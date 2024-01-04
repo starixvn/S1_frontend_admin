@@ -23,10 +23,17 @@ import { MultipleSelect } from 'components/Select'
 import { isNumber } from 'lodash'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { useLazyGetCashBackGameListQuery } from 'features/bonusManagement/api'
-import { IGetCashBackGameListResponse } from 'features/bonusManagement/type'
+import {
+	IGetCashBackGameListResponse,
+	ITierAmountListData,
+} from 'features/bonusManagement/type'
 import { EditOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
+import {
+	IGetProductsResponse,
+	useLazyGetProductsQuery,
+} from 'common/service/allDataApi'
 
 interface IBonusDetailSubFormProps {
 	loading: boolean
@@ -62,6 +69,14 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			isLoading: isGetCashBackListLoading,
 		},
 	] = useLazyGetCashBackGameListQuery()
+
+	const [
+		getProductList,
+		{
+			data: { data: allProductList } = {} as IGetProductsResponse,
+			isLoading: isGetAllProductListLoading,
+		},
+	] = useLazyGetProductsQuery()
 
 	const handleGetCashBackGameList = async () => {
 		if (!siteId) return
@@ -125,6 +140,47 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 		)
 	}
 
+	const turnoverProductSelector = () => {
+		const onChangeProducts = (newProduct: Array<number | string>) => {
+			if (newProduct.includes('all')) {
+				form?.setFieldsValue({
+					specific: {
+						[isoCode]: {
+							turnoverTpGameTypeList: allProductList?.map(
+								product => product.type
+							),
+						},
+					},
+				})
+			} else {
+				form?.setFieldsValue({
+					specific: {
+						[isoCode]: {
+							turnoverTpGameTypeList: newProduct,
+						},
+					},
+				})
+			}
+		}
+		return (
+			<MultipleSelect
+				onChange={onChangeProducts}
+				placeholder={t('Label_Select')}
+				disabled={!active}
+				style={{ width: '100%' }}
+			>
+				{allProductList?.length > 1 && (
+					<Option value='all'>{t('Label_All')}</Option>
+				)}
+				{allProductList?.map(({ type, typeName }) => (
+					<Option key={type} value={type}>
+						{typeName}
+					</Option>
+				))}
+			</MultipleSelect>
+		)
+	}
+
 	useEffect(() => {
 		// 紀錄當前 currencyId 供 detail card 獲取語系資料
 		if (!loading) {
@@ -152,6 +208,15 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			handleGetCashBackGameList()
 		}
 	}, [currentCategory, loading])
+
+	useEffect(() => {
+		if (currentBonusType === BonusTypeEnum.MissionBonus) {
+			const handleGetAllProductList = async () => {
+				await getProductList(null).unwrap()
+			}
+			handleGetAllProductList()
+		}
+	}, [currentBonusType])
 
 	useEffect(() => {
 		// cashBack 才需要計算 minLoss
@@ -203,7 +268,11 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	}, [currentBonusType])
 
 	return (
-		<Spin spinning={loading || isGetCashBackListLoading}>
+		<Spin
+			spinning={
+				loading || isGetCashBackListLoading || isGetAllProductListLoading
+			}
+		>
 			{currentBonusType === BonusTypeEnum.Null ? (
 				<Row justify='center' align='middle' style={{ minHeight: '200px' }}>
 					{/* 垂直水平居中,高度200px  */}
@@ -952,6 +1021,70 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 							<Typography.Title level={5} type='secondary'>
 								{t('Label_RebateTypeMessage')}
 							</Typography.Title>
+						</Row>
+					)}
+					{currentBonusType === BonusTypeEnum.MissionBonus && (
+						<Row gutter={16}>
+							<Col lg={12} md={12} xs={24}>
+								<Form.Item
+									name={['specific', isoCode, 'turnoverTpGameTypeList']}
+									label={t('Label_TurnOverProduct')}
+									rules={[
+										{
+											required: true,
+											message: t('Label_Required', {
+												key: t('Label_TurnOverProduct'),
+											}),
+										},
+									]}
+								>
+									{turnoverProductSelector()}
+								</Form.Item>
+							</Col>
+							<Col lg={12} md={12} xs={24}>
+								<Form.Item
+									label=' '
+									rules={[
+										{
+											validator: () => {
+												const formData = form?.getFieldsValue(true)
+												Object.values(formData.specific).forEach(data => {
+													const { tierAmountList } = data as {
+														tierAmountList: ITierAmountListData[]
+													}
+													return tierAmountList.forEach(
+														({
+															bonus: bonusAmount,
+															requiredAmount,
+															requiredTurnover,
+															rollOver,
+															winOver,
+														}) => {
+															if (
+																!bonusAmount ||
+																!(requiredAmount || requiredTurnover) ||
+																!(rollOver || winOver)
+															) {
+																return Promise.reject(t('Label_RequiredText'))
+															}
+															return Promise.resolve()
+														}
+													)
+												})
+											},
+										},
+									]}
+								>
+									<Button
+										type='primary'
+										icon={<EditOutlined />}
+										onClick={onSetGroupBonusClick}
+										disabled={!active}
+									>
+										{t('Label_SetAmountGroup')}
+									</Button>
+								</Form.Item>
+							</Col>
 						</Row>
 					)}
 				</Form>
