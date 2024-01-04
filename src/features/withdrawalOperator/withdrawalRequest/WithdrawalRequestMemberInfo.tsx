@@ -37,6 +37,18 @@ interface IWithdrawalRequestMemberInfoProps {
 
 const { Item } = Descriptions
 
+// * 檢查 winLoss 是否大於 totalDeposit 某個的倍數
+const checkWinLossExceedAlert = (
+	byTotalWinLoss: number | undefined,
+	byTotalDeposit: number | undefined
+) => {
+	if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
+		return Math.abs(byTotalWinLoss) > byTotalDeposit * 2
+	}
+
+	return false
+}
+
 const WithdrawalRequestMemberInfo = ({
 	loading,
 	memberInfo,
@@ -95,55 +107,35 @@ const WithdrawalRequestMemberInfo = ({
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
-	const alertColor = (
-		byTotalWinLoss: number | undefined,
-		byTotalDeposit: number | undefined
-	) => {
-		if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
-			return Math.abs(byTotalWinLoss) > byTotalDeposit
-		}
-
-		return false
-	}
-
 	// * winLoss TotalDeposit 警示動畫
-	const elements = [
-		Array.from(document.getElementsByClassName('winLoss-description-element')),
-		Array.from(
-			document.getElementsByClassName('totalDeposit-description-element')
-		),
-	]
-
 	try {
-		elements.forEach(elementList => {
-			if (elementList !== null) {
-				elementList.forEach(element => {
-					element.animate(
-						[
-							{
-								// from
-								opacity: 1.0,
-								backgroundColor: '#F9F900',
-							},
-							{
-								// from
-								opacity: 0.2,
-								backgroundColor: '#F9F900',
-							},
-							{
-								// to
-								opacity: 1.0,
-								backgroundColor: '#F9F900',
-							},
-						],
-						{
-							// timing options
-							duration: 1500,
-							iterations: Infinity,
-						}
-					)
-				})
-			}
+		Array.from(
+			document.getElementsByClassName('alert-description-element')
+		).forEach(element => {
+			element.animate(
+				[
+					{
+						// from
+						opacity: 1.0,
+						backgroundColor: '#F9F900',
+					},
+					{
+						// from
+						opacity: 0.2,
+						backgroundColor: '#F9F900',
+					},
+					{
+						// to
+						opacity: 1.0,
+						backgroundColor: '#F9F900',
+					},
+				],
+				{
+					// timing options
+					duration: 1500,
+					iterations: Infinity,
+				}
+			)
 		})
 	} catch {
 		//
@@ -209,12 +201,12 @@ const WithdrawalRequestMemberInfo = ({
 					label={t('Label_TotalDeposit')}
 					// * WinLoss 大於 TotalDeposit css 警示
 					className={
-						alertColor(totalWinLoss, totalDeposit)
-							? 'totalDeposit-description-element'
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+							? 'alert-description-element'
 							: undefined
 					}
 					contentStyle={
-						alertColor(totalWinLoss, totalDeposit)
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -224,7 +216,7 @@ const WithdrawalRequestMemberInfo = ({
 							: undefined
 					}
 					labelStyle={
-						alertColor(totalWinLoss, totalDeposit)
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -265,12 +257,12 @@ const WithdrawalRequestMemberInfo = ({
 					label={t('Label_TotalWinLoss')}
 					// * WinLoss 大於 TotalDeposit css 警示
 					className={
-						alertColor(totalWinLoss, totalDeposit)
-							? 'winLoss-description-element'
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+							? 'alert-description-element'
 							: undefined
 					}
 					contentStyle={
-						alertColor(totalWinLoss, totalDeposit)
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -280,7 +272,7 @@ const WithdrawalRequestMemberInfo = ({
 							: undefined
 					}
 					labelStyle={
-						alertColor(totalWinLoss, totalDeposit)
+						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
