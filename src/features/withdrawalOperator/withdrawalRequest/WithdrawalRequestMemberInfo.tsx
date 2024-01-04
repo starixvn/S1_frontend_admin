@@ -38,6 +38,7 @@ interface IWithdrawalRequestMemberInfoProps {
 const { Item } = Descriptions
 
 /**
+ * 檢查贏錢是否超過存款太多，畫面亮警示燈
  * @returns boolon
  * @description 檢查 winLoss 是否大於 totalDeposit 5倍 (測試為2倍)
  * @requires byTotalWinLoss number | undefined
@@ -117,13 +118,18 @@ const WithdrawalRequestMemberInfo = ({
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
-	// * winLoss TotalDeposit 警示動畫
-	const elements = Array.from(
-		document.getElementsByClassName('alert-description-element')
+	const isWinLossExceedAlert = checkWinLossExceedAlert(
+		totalWinLoss,
+		totalDeposit
 	)
 
 	useEffect(() => {
-		if (elements.length > 0) {
+		if (isWinLossExceedAlert) {
+			// * winLoss TotalDeposit 警示動畫
+			const elements = Array.from(
+				document.getElementsByClassName('alert-description-element')
+			)
+
 			elements.forEach(el => {
 				el.animate(
 					[
@@ -151,7 +157,7 @@ const WithdrawalRequestMemberInfo = ({
 				)
 			})
 		}
-	}, [elements])
+	}, [isWinLossExceedAlert])
 
 	return (
 		<Spin spinning={loading}>
@@ -212,13 +218,9 @@ const WithdrawalRequestMemberInfo = ({
 				<Item
 					label={t('Label_TotalDeposit')}
 					// * WinLoss 大於 TotalDeposit css 警示
-					className={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
-							? 'alert-description-element'
-							: undefined
-					}
+					className={isWinLossExceedAlert ? 'alert-description-element' : ''}
 					contentStyle={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+						isWinLossExceedAlert
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -228,7 +230,7 @@ const WithdrawalRequestMemberInfo = ({
 							: undefined
 					}
 					labelStyle={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+						isWinLossExceedAlert
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -268,13 +270,10 @@ const WithdrawalRequestMemberInfo = ({
 				<Item
 					label={t('Label_TotalWinLoss')}
 					// * WinLoss 大於 TotalDeposit css 警示
-					className={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
-							? 'alert-description-element'
-							: undefined
-					}
+
+					className={isWinLossExceedAlert ? 'alert-description-element' : ''}
 					contentStyle={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+						isWinLossExceedAlert
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
@@ -284,7 +283,7 @@ const WithdrawalRequestMemberInfo = ({
 							: undefined
 					}
 					labelStyle={
-						checkWinLossExceedAlert(totalWinLoss, totalDeposit)
+						isWinLossExceedAlert
 							? {
 									backgroundColor: '#F9F900',
 									borderBottom: '1px solid #FFA042',
