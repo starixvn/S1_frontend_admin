@@ -10,7 +10,7 @@ import {
 import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks/useMemberInfo'
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
 import {
 	IAdjustmentLogLimitData,
@@ -37,13 +37,23 @@ interface IWithdrawalRequestMemberInfoProps {
 
 const { Item } = Descriptions
 
-// * 檢查 winLoss 是否大於 totalDeposit 某個的倍數
+/**
+ * @returns boolon
+ * @description 檢查 winLoss 是否大於 totalDeposit 5倍 (測試為2倍)
+ * @requires byTotalWinLoss number | undefined
+ * @requires byTotalDeposit number | undefined
+ *
+ * ```tsx
+ * checkWinLossExceedAlert(300, 100) // true
+ * checkWinLossExceedAlert(300, 300) // false
+ * ```
+ */
 const checkWinLossExceedAlert = (
 	byTotalWinLoss: number | undefined,
 	byTotalDeposit: number | undefined
 ) => {
 	if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
-		return Math.abs(byTotalWinLoss) > byTotalDeposit * 2
+		return byTotalWinLoss > byTotalDeposit * 2
 	}
 
 	return false
@@ -108,38 +118,40 @@ const WithdrawalRequestMemberInfo = ({
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
 	// * winLoss TotalDeposit 警示動畫
-	try {
-		Array.from(
-			document.getElementsByClassName('alert-description-element')
-		).forEach(element => {
-			element.animate(
-				[
+	const elements = Array.from(
+		document.getElementsByClassName('alert-description-element')
+	)
+
+	useEffect(() => {
+		if (elements.length > 0) {
+			elements.forEach(el => {
+				el.animate(
+					[
+						{
+							// from
+							opacity: 1.0,
+							backgroundColor: '#F9F900',
+						},
+						{
+							// from
+							opacity: 0.2,
+							backgroundColor: '#F9F900',
+						},
+						{
+							// to
+							opacity: 1.0,
+							backgroundColor: '#F9F900',
+						},
+					],
 					{
-						// from
-						opacity: 1.0,
-						backgroundColor: '#F9F900',
-					},
-					{
-						// from
-						opacity: 0.2,
-						backgroundColor: '#F9F900',
-					},
-					{
-						// to
-						opacity: 1.0,
-						backgroundColor: '#F9F900',
-					},
-				],
-				{
-					// timing options
-					duration: 1500,
-					iterations: Infinity,
-				}
-			)
-		})
-	} catch {
-		//
-	}
+						// timing options
+						duration: 1500,
+						iterations: Infinity,
+					}
+				)
+			})
+		}
+	}, [elements])
 
 	return (
 		<Spin spinning={loading}>
