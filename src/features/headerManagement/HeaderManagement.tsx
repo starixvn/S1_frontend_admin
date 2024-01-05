@@ -80,7 +80,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
 			)
 		}
-		setIsSortMode(false)
 	}
 
 	const filterLoading = isLobbyCategoryListLoading

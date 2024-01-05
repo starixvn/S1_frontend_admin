@@ -294,12 +294,12 @@ const ProductStatusModal = ({
 			width='60%'
 			open={visible}
 			title={
-				<div style={{ textAlign: 'center' }}>{t('Label_ProductStatus')}</div>
+				<div style={{ textAlign: 'left' }}>{t('Label_ProductStatus')}</div>
 			}
 			onCancel={onCancel}
 			footer={false}
 		>
-			<Row align='middle' justify='center'>
+			<Row align='middle' gutter={16}>
 				<Col span={12}>
 					<Form
 						layout='vertical'
