@@ -79,7 +79,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 				<Form.List name='tierAmountList'>
 					{(fields, { add, remove }) => (
 						<>
-							{fields.map(({ key, name, ...restField }) => (
+							{fields.map(({ key, name, ...restField }, index) => (
 								<Space
 									key={key}
 									style={{ display: 'flex', marginBottom: 8 }}
@@ -88,7 +88,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'requiredAmount']}
-										label={key === 0 ? t('Label_RedepositAmount') : null}
+										label={index === 0 ? t('Label_RedepositAmount') : null}
 										rules={[
 											{
 												type: 'number',
@@ -127,7 +127,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											<Form.Item
 												{...restField}
 												name={[name, 'requiredTurnover']}
-												label={key === 0 ? t('Label_RequiredTurnover') : null}
+												label={index === 0 ? t('Label_RequiredTurnover') : null}
 												rules={[
 													{
 														type: 'number',
@@ -157,7 +157,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											<Form.Item
 												{...restField}
 												name={[name, 'bonus']}
-												label={key === 0 ? t('Label_Bonus') : null}
+												label={index === 0 ? t('Label_Bonus') : null}
 												rules={[
 													{
 														required: true,
@@ -185,7 +185,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												<Form.Item
 													{...restField}
 													name={[name, 'bonus']}
-													label={key === 0 ? t('Label_Percentage') : null}
+													label={index === 0 ? t('Label_Percentage') : null}
 													rules={[
 														{
 															required: true,
@@ -208,7 +208,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												<Form.Item
 													{...restField}
 													name={[name, 'maxBonus']}
-													label={key === 0 ? t('Label_MaxBonus') : null}
+													label={index === 0 ? t('Label_MaxBonus') : null}
 													rules={[
 														{
 															required: true,
@@ -235,7 +235,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											<Form.Item
 												{...restField}
 												name={[name, 'bonus']}
-												label={key === 0 ? t('Label_Bonus') : null}
+												label={index === 0 ? t('Label_Bonus') : null}
 												rules={[
 													{
 														required: true,
@@ -259,7 +259,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'rollOver']}
-										label={key === 0 ? t('Label_Rollover') : null}
+										label={index === 0 ? t('Label_Rollover') : null}
 										rules={[
 											{
 												validator: (_, value) => {
@@ -291,7 +291,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'winOver']}
-										label={key === 0 ? t('Label_WinOver') : null}
+										label={index === 0 ? t('Label_WinOver') : null}
 										rules={[
 											{
 												validator: (_, value) => {
@@ -319,7 +319,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
-									<Form.Item label={key === 0 ? ' ' : null}>
+									<Form.Item label={index === 0 ? ' ' : null}>
 										{/* 為了讓第一筆 的刪除符號可以在正確位置 , 所以在 label 動了手腳  */}
 										<MinusCircleOutlined onClick={() => remove(name)} />
 									</Form.Item>
