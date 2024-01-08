@@ -10,7 +10,7 @@ import {
 import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks/useMemberInfo'
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
 import {
 	IAdjustmentLogLimitData,
@@ -36,6 +36,29 @@ interface IWithdrawalRequestMemberInfoProps {
 }
 
 const { Item } = Descriptions
+
+/**
+ * 檢查贏錢是否超過存款太多，畫面亮警示燈
+ * @returns boolon
+ * @description 檢查 winLoss 是否大於 totalDeposit 5倍 (測試為2倍)
+ * @requires byTotalWinLoss number | undefined
+ * @requires byTotalDeposit number | undefined
+ *
+ * ```tsx
+ * checkWinLossExceedAlert(300, 100) // true
+ * checkWinLossExceedAlert(300, 300) // false
+ * ```
+ */
+const checkWinLossExceedAlert = (
+	byTotalWinLoss: number | undefined,
+	byTotalDeposit: number | undefined
+) => {
+	if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
+		return byTotalWinLoss > byTotalDeposit * 5
+	}
+
+	return false
+}
 
 const WithdrawalRequestMemberInfo = ({
 	loading,
@@ -95,6 +118,47 @@ const WithdrawalRequestMemberInfo = ({
 	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
+	const isWinLossExceedAlert = checkWinLossExceedAlert(
+		totalWinLoss,
+		totalDeposit
+	)
+
+	useEffect(() => {
+		if (isWinLossExceedAlert) {
+			// * winLoss TotalDeposit 警示動畫
+			const elements = Array.from(
+				document.getElementsByClassName('alert-description-element')
+			)
+
+			elements.forEach(el => {
+				el.animate(
+					[
+						{
+							// from
+							opacity: 1.0,
+							backgroundColor: '#F9F900',
+						},
+						{
+							// from
+							opacity: 0.2,
+							backgroundColor: '#F9F900',
+						},
+						{
+							// to
+							opacity: 1.0,
+							backgroundColor: '#F9F900',
+						},
+					],
+					{
+						// timing options
+						duration: 1500,
+						iterations: Infinity,
+					}
+				)
+			})
+		}
+	}, [isWinLossExceedAlert])
+
 	return (
 		<Spin spinning={loading}>
 			<Descriptions
@@ -151,8 +215,31 @@ const WithdrawalRequestMemberInfo = ({
 					{actStatus === ActStatusEnum.Active && t('Label_Yes')}
 					{actStatus === ActStatusEnum.unActive && t('Label_No')}
 				</Item>
-
-				<Item label={t('Label_TotalDeposit')}>
+				<Item
+					label={t('Label_TotalDeposit')}
+					// * WinLoss 大於 TotalDeposit css 警示
+					className={isWinLossExceedAlert ? 'alert-description-element' : ''}
+					contentStyle={
+						isWinLossExceedAlert
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderRight: '1px solid #FFA042',
+							  }
+							: undefined
+					}
+					labelStyle={
+						isWinLossExceedAlert
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderLeft: '2px solid #FFA042',
+							  }
+							: undefined
+					}
+				>
 					{numberFormatter.format(totalDeposit || 0)}
 				</Item>
 				<Item label={t('Label_WithdrawalCount')}>{withdrawlCnt}</Item>
@@ -180,10 +267,34 @@ const WithdrawalRequestMemberInfo = ({
 				<Item label={t('Label_DeviceScore')}>
 					{risk && score ? `${risk}(${score})` : '-'}
 				</Item>
-				<Item label={t('Label_TotalWinLoss')}>
+				<Item
+					label={t('Label_TotalWinLoss')}
+					// * WinLoss 大於 TotalDeposit css 警示
+
+					className={isWinLossExceedAlert ? 'alert-description-element' : ''}
+					contentStyle={
+						isWinLossExceedAlert
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderRight: '1px solid #FFA042',
+							  }
+							: undefined
+					}
+					labelStyle={
+						isWinLossExceedAlert
+							? {
+									backgroundColor: '#F9F900',
+									borderBottom: '1px solid #FFA042',
+									borderTop: '1px solid #FFA042',
+									borderLeft: '2px solid #FFA042',
+							  }
+							: undefined
+					}
+				>
 					{numberFormatter.format(totalWinLoss || 0)}
 				</Item>
-
 				<Item
 					label={t('Label_DOB')}
 				>{`${birthDay}/${birthMonth}/${birthYear}`}</Item>
