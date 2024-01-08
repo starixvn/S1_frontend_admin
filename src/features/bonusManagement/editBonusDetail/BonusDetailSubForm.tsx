@@ -1031,7 +1031,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 									label={t('Label_TurnOverProduct')}
 									rules={[
 										{
-											required: true,
+											required: active,
 											message: t('Label_Required', {
 												key: t('Label_TurnOverProduct'),
 											}),

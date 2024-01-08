@@ -195,8 +195,15 @@ const UpdateBonus: FC<{
 			// 如果bonusType為MissionBonus,提交前要判斷是否有添加級距
 			if (promotionType === BonusTypeEnum.MissionBonus) {
 				foundEmptyTier = Object.keys(rawSpecific).some(currency => {
-					const { tierAmountList } = rawSpecific[currency]
-					return Array.isArray(tierAmountList) && tierAmountList.length === 0
+					const { tierAmountList, turnoverTpGameTypeList } =
+						rawSpecific[currency]
+					return (
+						// 檢查已選擇產品未填寫級距的幣別
+						turnoverTpGameTypeList &&
+						turnoverTpGameTypeList.length > 0 &&
+						Array.isArray(tierAmountList) &&
+						tierAmountList.length === 0
+					)
 				})
 			}
 
