@@ -1146,6 +1146,13 @@ const BigWinPopUpReport = lazy(
 		)
 )
 
+const HeaderManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HeaderManagement' */ 'features/headerManagement/HeaderManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2633,24 +2640,6 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.maintenance.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.productManagement.sub.maintenance.functionId}
-					>
-						<ProductMaintenance />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.betLimit.root}`,
-				element: (
-					<AuthRequire functionId={paths.member.sub.betLimit.functionId}>
-						<BetLimit />
-					</AuthRequire>
-				),
-			},
-			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
 				element: (
 					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
@@ -2857,16 +2846,6 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.rebateExcludeGame.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
-					>
-						<RebateExcludeGame />
-					</AuthRequire>
-				),
-			},
-			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
 				element: (
 					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
@@ -2971,6 +2950,16 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.bigWinPopUpReport.functionId}
 					>
 						<BigWinPopUpReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.headerManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.headerManagement.functionId}
+					>
+						<HeaderManagement />
 					</AuthRequire>
 				),
 			},

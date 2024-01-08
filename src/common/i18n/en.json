@@ -1237,5 +1237,12 @@
 	"Label_Site": "Site",
 	"Label_LiveBroadCaster": "Live Broadcaster",
 	"Label_EggTickets": "Egg Tickets",
-	"Label_AffiliateAccount": "Affiliate Account"
+	"Label_AffiliateAccount": "Affiliate Account",
+	"Label_LobbyCategory": "Lobby Category",
+	"Label_ProductName": "Product Name",
+	"Label_CurrencyGameName": "Currency Game Name",
+	"Label_ProductStatus": "Product Status",
+	"Label_IconType": "Icon Type",
+	"Label_IconStartTime": "Icon StartTime",
+	"Label_IconEndTime": "Icon EndTime"
 }
