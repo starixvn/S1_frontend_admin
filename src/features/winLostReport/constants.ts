@@ -19,6 +19,7 @@ export enum GroupByEnum {
 	Currency,
 	Player,
 	Brand,
+	Affiliate,
 }
 
 export const groupByList: Array<{ value: number; displayName: string }> = [
@@ -29,6 +30,7 @@ export const groupByList: Array<{ value: number; displayName: string }> = [
 	{ displayName: 'Label_Currency', value: GroupByEnum.Currency },
 	{ displayName: 'Label_Player', value: GroupByEnum.Player },
 	{ displayName: 'Label_Brand', value: GroupByEnum.Brand },
+	{ displayName: 'Label_Affiliate', value: GroupByEnum.Affiliate },
 ]
 
 export enum OrderEnum {
@@ -44,6 +46,7 @@ export const groupName: { [groupBy: number]: string } = {
 	[GroupByEnum.Currency]: 'Currency',
 	[GroupByEnum.Player]: 'UserName',
 	[GroupByEnum.Brand]: 'Site',
+	[GroupByEnum.Affiliate]: 'UserName',
 }
 
 export const i18nKeyInfo: { [i18nKey: string]: string } = {

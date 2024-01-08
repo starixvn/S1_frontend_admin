@@ -4,6 +4,7 @@ import moment from 'moment/moment'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	useExportWinLossByAffiliateMutation,
 	useExportWinLossByBrandMutation,
 	useExportWinLossByCurrencyMutation,
 	useExportWinLossByDateMutation,
@@ -11,6 +12,7 @@ import {
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByTpCategoryTypeMutation,
 	useExportWinLossByTpGameTypeMutation,
+	useLazyGetWinLossByAffiliateQuery,
 	useLazyGetWinLossByBrandQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByDateQuery,
@@ -116,6 +118,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [getWinLossByBrand, { isFetching: isGetWinLossByBrandFetching }] =
 		useLazyGetWinLossByBrandQuery()
 
+	const [
+		getWinLossByAffiliate,
+		{ isFetching: isGetWinLossByAffiliateFetching },
+	] = useLazyGetWinLossByAffiliateQuery()
+
 	const [exportWinLossByDate, { isLoading: isExportWinLossByDateLoading }] =
 		useExportWinLossByDateMutation()
 
@@ -142,6 +149,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [exportWinLossByBrand, { isLoading: isExportWinLossByBrandLoading }] =
 		useExportWinLossByBrandMutation()
+
+	const [
+		exportWinLossByAffiliate,
+		{ isLoading: isExportWinLossByAffiliateLoading },
+	] = useExportWinLossByAffiliateMutation()
 
 	const {
 		data: { data: memberTypeEnums = [] } = {},
@@ -182,6 +194,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			memberTypes,
 			includeTest,
 			tpCategorys = [],
+			affiliate,
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -295,6 +308,22 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Affiliate:
+					try {
+						result = await getWinLossByAffiliate({
+							...args,
+							affiliateAccount: affiliate,
+							pageNumber: current,
+							// payload 傳pageSize api回傳資料數為 pageSize+1 ,故這邊-1
+							pageSize: pageSize - 1,
+						}).unwrap()
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -310,7 +339,12 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 			setTableList(list)
 			setExpandList([])
-			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset, groupBy })
+			setQueryParams({
+				...args,
+				timeZone: currentTimeZoneUtcOffset,
+				groupBy,
+				affiliate,
+			})
 			// 除了player之外的group都需一頁呈現,故pageSize預設100,兼容其餘group
 			setPagination(prev => ({
 				...prev,
@@ -380,6 +414,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				groupBy,
 				baseCurrencyId,
 				memberTypes = [],
+				affiliate,
 			} = queryParams
 
 			const args = {
@@ -513,6 +548,25 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Affiliate:
+					try {
+						blob = await exportWinLossByAffiliate({
+							...args,
+							affiliateAccount: affiliate,
+						}).unwrap()
+						download(
+							blob,
+							`WinLostReportByAffiliate_${moment().format(
+								'YYYYMMDDHHmmss'
+							)}.xlsx`
+						)
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -618,6 +672,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					displayGroupBreakdownInOriginalCurrency,
 					groupBy,
 					memberTypes,
+					affiliate,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
@@ -643,6 +698,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					memberTypes: isArray(memberTypes)
 						? memberTypes.map((value: string) => Number(value))
 						: [],
+					affiliate,
 				})
 
 				handleSearch({ currentTimeZoneUtcOffset: Number(timeZone) })
@@ -660,7 +716,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isExportWinLossByTpCategoryTypeLoading ||
 		isExportWinLossByPlayerLoading ||
 		isExportWinLossByCurrencyLoading ||
-		isExportWinLossByBrandLoading
+		isExportWinLossByBrandLoading ||
+		isExportWinLossByAffiliateLoading
 
 	const loading =
 		isGetTpGameListLoading ||
@@ -673,6 +730,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWinLossByPlayerDetailFetching ||
 		isGetWinLossByCurrencyFetching ||
 		isGetWinLossByBrandFetching ||
+		isGetWinLossByAffiliateFetching ||
 		isMemberTypeEnumsLoading ||
 		exportLoading
 
