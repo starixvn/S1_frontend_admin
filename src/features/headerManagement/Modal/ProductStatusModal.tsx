@@ -113,9 +113,11 @@ const ProductStatusModal = ({
 		iconStartTime,
 		iconEndTime,
 		tpGameIdNo,
+		status,
 	}: IHeaderSettingGroupByTpGameIdNoData) => {
 		editForm.setFieldsValue({
 			dateRange: [moment(iconStartTime), moment(iconEndTime)],
+			status: Boolean(status),
 		})
 		setEditingKey(tpGameIdNo)
 	}
@@ -182,10 +184,7 @@ const ProductStatusModal = ({
 						style={{ margin: 0 }}
 						valuePropName='checked'
 					>
-						<Switch
-							checked={Boolean(status)}
-							disabled={!editPermission?.canUse}
-						/>
+						<Switch disabled={!editPermission?.canUse} />
 					</Form.Item>
 				) : (
 					<Switch checked={Boolean(status)} disabled />
@@ -297,10 +296,11 @@ const ProductStatusModal = ({
 				<div style={{ textAlign: 'left' }}>{t('Label_ProductStatus')}</div>
 			}
 			onCancel={onCancel}
+			destroyOnClose
 			footer={false}
 		>
 			<Row align='middle' gutter={16}>
-				<Col span={12}>
+				<Col lg={4} md={12} xs={12}>
 					<Form
 						layout='vertical'
 						size='middle'
