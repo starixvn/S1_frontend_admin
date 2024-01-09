@@ -115,6 +115,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												},
 											},
 										]}
+										initialValue={0}
 									>
 										<InputNumber
 											type='number'
@@ -147,6 +148,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 														},
 													},
 												]}
+												initialValue={0}
 											>
 												<InputNumber
 													type='number'
