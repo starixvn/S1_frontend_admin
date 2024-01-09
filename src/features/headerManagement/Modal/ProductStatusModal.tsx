@@ -22,6 +22,7 @@ import {
 	Typography,
 	DatePicker,
 } from 'antd'
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import {
 	ICON_STATUS_TAGS,
 	IconTypeList,
@@ -114,10 +115,12 @@ const ProductStatusModal = ({
 		iconEndTime,
 		tpGameIdNo,
 		status,
+		iconType,
 	}: IHeaderSettingGroupByTpGameIdNoData) => {
 		editForm.setFieldsValue({
 			dateRange: [moment(iconStartTime), moment(iconEndTime)],
 			status: Boolean(status),
+			iconType,
 		})
 		setEditingKey(tpGameIdNo)
 	}
@@ -152,6 +155,24 @@ const ProductStatusModal = ({
 							{t('Label_Edit')}
 						</Typography.Link>
 					</Space>
+				)
+			},
+		},
+		{
+			title: t('Label_Active'),
+			key: 'active',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
+				const { iconType, iconStartTime, iconEndTime } = record
+				const isActiveDateTime = moment().isBetween(iconStartTime, iconEndTime)
+
+				const isActive = Boolean(iconType) && isActiveDateTime
+
+				return isActive ? (
+					<CheckCircleOutlined style={{ fontSize: 16, color: '#3EA62E' }} />
+				) : (
+					<CloseCircleOutlined style={{ fontSize: 16, color: '#C70707' }} />
 				)
 			},
 		},
@@ -203,7 +224,7 @@ const ProductStatusModal = ({
 
 				return editable ? (
 					<Form.Item noStyle name='iconType'>
-						<Select defaultValue={iconType} placeholder='select'>
+						<Select placeholder='select'>
 							{IconTypeList.map(({ value, name }) => (
 								<Option key={value} value={value}>
 									{name}
