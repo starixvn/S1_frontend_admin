@@ -95,6 +95,7 @@ const TurnoverPoint: FC<{
 			).unwrap()
 			const { data: tpGameType } = await getTpGameType({
 				categoryId,
+				currencyId: Number(tabActiveKey),
 			}).unwrap()
 			const pointStatusData: IGetTurnoverPointStatusSettingData[] =
 				tpGameType.map(item => {

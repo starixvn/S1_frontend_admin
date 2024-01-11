@@ -221,7 +221,6 @@ export interface IGetCashBackGameListArgs {
 	siteId?: number
 	siteIds?: number[]
 	currencyId: number
-	tpId: number
 	categoryId: number
 }
 
@@ -241,7 +240,6 @@ export interface IGetPromotionCategoryArgs {
 export interface IGetPromotionCategoryData {
 	id: number
 	name: string
-	tpId: number
 }
 
 export type IGetPromotionCategoryResponse = IAxiosResponse<

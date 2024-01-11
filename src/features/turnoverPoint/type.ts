@@ -80,6 +80,7 @@ export interface IGetTurnoverPointStatusSettingData {
 }
 
 export interface IGetTpGameTypeArg {
+	currencyId: number
 	categoryId: number
 }
 

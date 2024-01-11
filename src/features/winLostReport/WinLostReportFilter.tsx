@@ -446,6 +446,11 @@ const WinLostReportFilter = ({
 							<Col lg={6} md={12} xs={12}>
 								{memberTypeSelector()}
 							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='affiliate' label={t('Label_AffiliateAccount')}>
+									<Input allowClear />
+								</Form.Item>
+							</Col>
 						</Row>
 
 						<Row align='middle' gutter={16}>

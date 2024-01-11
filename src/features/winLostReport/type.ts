@@ -119,3 +119,16 @@ export interface IGetWinLossByBrandArgs extends IWinLossBasicArgs {}
 export type IWinLossByBrandResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByBrandExportArgs extends IWinLossBasicExportArgs {}
+
+export interface IGetWinLossByAffiliateArgs extends IWinLossBasicArgs {
+	affiliateAccount: string
+	pageNumber: number
+	pageSize: number
+}
+
+export type IWinLossByAffiliateResponse = IAxiosResponse<IWinLossTableData[]>
+
+export interface IGetWinLossByAffiliateExportArgs
+	extends IWinLossBasicExportArgs {
+	affiliateAccount: string
+}

@@ -1236,5 +1236,6 @@
 	"Label_LiveBroadCaster": "Live Broadcaster",
 	"Label_MultipleOfWinning": "multiple of winning",
 	"Label_WinProfit": "Win profit",
-	"Label_BigWinPopUpSetting": "Big Win Pop up Setting"
+	"Label_BigWinPopUpSetting": "Big Win Pop up Setting",
+	"Label_AffiliateAccount": "Affiliate Account"
 }

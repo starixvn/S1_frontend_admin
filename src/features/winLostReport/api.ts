@@ -23,6 +23,9 @@ import {
 	IWinLossByBrandResponse,
 	IGetWinLossByBrandArgs,
 	IGetWinLossByBrandExportArgs,
+	IGetWinLossByAffiliateArgs,
+	IGetWinLossByAffiliateExportArgs,
+	IWinLossByAffiliateResponse,
 } from 'features/winLostReport/type'
 
 export const winLostReportApi = rootApi.injectEndpoints({
@@ -175,6 +178,27 @@ export const winLostReportApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+		getWinLossByAffiliate: builder.query<
+			IWinLossByAffiliateResponse,
+			IGetWinLossByAffiliateArgs
+		>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByAffiliate',
+				method: 'POST',
+				data,
+			}),
+		}),
+		exportWinLossByAffiliate: builder.mutation<
+			Blob,
+			IGetWinLossByAffiliateExportArgs
+		>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByAffiliateExport',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 	}),
 })
 export const {
@@ -186,6 +210,7 @@ export const {
 	useLazyGetWinLossByPlayerDetailQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByBrandQuery,
+	useLazyGetWinLossByAffiliateQuery,
 	useExportWinLossByDateMutation,
 	useExportWinLossByMonthMutation,
 	useExportWinLossByTpGameTypeMutation,
@@ -193,4 +218,5 @@ export const {
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByCurrencyMutation,
 	useExportWinLossByBrandMutation,
+	useExportWinLossByAffiliateMutation,
 } = winLostReportApi
