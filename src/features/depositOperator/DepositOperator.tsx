@@ -32,6 +32,7 @@ import {
 	useLazyGetDepositOperatorListQuery,
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
+	useSetDepositManualApprovalMutation,
 } from 'features/depositOperator/api'
 import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
 import { DateTypeEnum } from 'features/depositOperator/constants'
@@ -89,6 +90,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isFetching: isGetVipLevelEnumFetching,
 	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
+	const [
+		setDepositManualApproval,
+		{ isLoading: isSetDepositManualApprovalLoading },
+	] = useSetDepositManualApprovalMutation()
+
 	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
 		useGetCalCodeListQuery(
 			{
@@ -137,6 +143,21 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const resetSelectedTransIds = () => {
 		setTableSelectedTransIds([])
+	}
+
+	// * 在列表中直接操作單據設定為 Approval
+	const handleDepositManualApproval = async ({
+		transId,
+	}: {
+		transId: string
+	}) => {
+		try {
+			await setDepositManualApproval({ transId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	const handleExport = async () => {
@@ -386,6 +407,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		({ currencyId }) => includes(formCurrencyIds, currencyId)
 	)
 
+	const loading =
+		isGetDepositOperatorListFetching || isSetDepositManualApprovalLoading
+
 	const hasSelectedRow = tableSelectedRowTransIds.length > 0
 
 	// * 處理多選 checkbox
@@ -418,7 +442,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			<DepositOperatorFilter
 				isAllSite={formIsAllSite}
 				form={form}
-				loading={isGetDepositOperatorListFetching}
+				loading={loading}
 				enumLoading={enumLoading}
 				currencyListBySite={currencyListBySite}
 				statusesEnum={statusesEnum}
@@ -433,17 +457,18 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			/>
 			<DepositOperatorTable
 				isAllSite={queryParams?.isAllSite}
-				loading={isGetDepositOperatorListFetching}
+				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				depositOperatorList={depositOperatorList}
 				pagination={pagination}
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
+				onDepositManualApproval={handleDepositManualApproval}
 			/>
 
 			{!isEmpty(currencyAmountRecordList) && (
 				<DepositOperatorOverviewTable
-					loading={isGetDepositOperatorListFetching}
+					loading={loading}
 					currencyAmountRecordList={currencyAmountRecordList}
 					currencyAmountRecordTotal={currencyAmountRecordTotal}
 				/>
