@@ -49,9 +49,10 @@ const HeaderManagementTable = ({
 		{
 			title: t('Label_Sort'),
 			key: 'sort',
-			dataIndex: 'sort',
 			width: 120,
 			align: 'center' as 'center',
+			// * 這裡因會有從 product status 關掉的情況，所以用 index 顯示
+			render: (_: any, __: any, idx: number) => idx + 1,
 		},
 		{
 			title: t('Label_Currency'),
@@ -114,8 +115,8 @@ const HeaderManagementTable = ({
 	const onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
 		// 有效 sorting
 		if (oldIndex !== newIndex) {
-			const { id } = headerManagementList[oldIndex]
-			const { sort } = headerManagementList[newIndex]
+			const { id } = headerManagementWithStatusList[oldIndex]
+			const { sort } = headerManagementWithStatusList[newIndex]
 			handleSetSort(id, sort)
 		}
 	}
@@ -126,6 +127,7 @@ const HeaderManagementTable = ({
 				loading={loading}
 				dataSource={headerManagementWithStatusList}
 				columns={columns}
+				pagination={false}
 				components={{
 					body: {
 						wrapper: (wrapper: any) => (
