@@ -1062,6 +1062,12 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.productManagement.sub.headerManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.productManagement.sub.headerManagement.root,
+	},
+	{
+		icon: null,
 		functionId: paths.report.sub.bigWinPopUpReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.bigWinPopUpReport.root,

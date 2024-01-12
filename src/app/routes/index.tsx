@@ -2981,6 +2981,16 @@ const routes: RouteObject[] = [
 					</AuthRequire>
 				),
 			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.headerManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.headerManagement.functionId}
+					>
+						<HeaderManagement />
+					</AuthRequire>
+				),
+			},
 		],
 	},
 	{
