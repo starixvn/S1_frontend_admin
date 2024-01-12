@@ -142,6 +142,7 @@ const HeaderManagementTable = ({
 						),
 					},
 				}}
+				scroll={{ y: 800 }}
 				rowKey='id'
 			/>
 		</LayoutContent.Card>
