@@ -54,7 +54,7 @@ const checkWinLossExceedAlert = (
 	byTotalDeposit: number | undefined
 ) => {
 	if (byTotalWinLoss !== undefined && byTotalDeposit !== undefined) {
-		return byTotalWinLoss > byTotalDeposit * 2
+		return byTotalWinLoss > byTotalDeposit * 5
 	}
 
 	return false
