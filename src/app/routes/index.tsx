@@ -1126,13 +1126,6 @@ const ConfiscatedSummaryReport = lazy(
 		)
 )
 
-const LeaderboardManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'LeaderboardManagement' */ 'features/leaderboardManagement/LeaderboardManagement'
-		)
-)
-
 const BigWinPopUpSetting = lazy(
 	() =>
 		import(
@@ -1144,6 +1137,13 @@ const BigWinPopUpReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BigWinPopUpReport' */ 'features/bigWinPopUpReport/BigWinPopUpReport'
+		)
+)
+
+const LeaderboardManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LeaderboardManagement' */ 'features/leaderboardManagement/LeaderboardManagement'
 		)
 )
 
@@ -2873,6 +2873,24 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.confiscatedSummaryReport.functionId}
 					>
 						<ConfiscatedSummaryReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bigWinPopUpSetting.root}`,
+				element: (
+					<AuthRequire functionId={paths.cms.sub.bigWinPopUpSetting.functionId}>
+						<BigWinPopUpSetting />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bigWinPopUpReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.bigWinPopUpReport.functionId}
+					>
+						<BigWinPopUpReport />
 					</AuthRequire>
 				),
 			},
