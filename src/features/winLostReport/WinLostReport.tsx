@@ -72,6 +72,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
 	const [expandList, setExpandList] = useState<Array<string | number>>([])
 	const [selectDate, setSelectDate] = useState(null)
+	const [isSort, setIsSort] = useState(false)
 
 	const {
 		data: { data: tpGameList = [] } = {},
@@ -352,6 +353,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize: GroupByEnum.Player === groupBy ? pageSize : 100,
 				disabled: GroupByEnum.Player !== groupBy,
 			}))
+			setIsSort(false)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -709,6 +711,16 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	useEffect(() => {
+		// 當groupBy Affiliate時搜尋,預設sortBy GGR
+		if (!isGetWinLossByAffiliateFetching && isSort) {
+			handleTableChange({}, null, {
+				order: 'ascend',
+				field: 'ggr',
+			})
+		}
+	}, [isGetWinLossByAffiliateFetching])
+
 	const exportLoading =
 		isExportWinLossByDateLoading ||
 		isExportWinLossByMonthLoading ||
@@ -749,6 +761,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
+				setIsSort={setIsSort}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>

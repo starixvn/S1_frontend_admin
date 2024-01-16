@@ -49,8 +49,8 @@ interface IWinLostReportFilterProps {
 	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
 	selectDate: any
-
 	setSelectDate: (date: any) => void
+	setIsSort: (value: boolean) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
 	onSearch: ({
 		current,
@@ -75,6 +75,7 @@ const WinLostReportFilter = ({
 	timeZoneUtcOffset,
 	selectDate,
 	setSelectDate,
+	setIsSort,
 	onTimeZoneChange,
 	onSearch,
 }: IWinLostReportFilterProps) => {
@@ -274,7 +275,10 @@ const WinLostReportFilter = ({
 						layout='vertical'
 						size='middle'
 						form={form}
-						onFinish={onSearch}
+						onFinish={values => {
+							onSearch(values)
+							setIsSort(true)
+						}}
 						initialValues={{
 							dateType: DateTypeEnum.SettledDate,
 							groupBy: GroupByEnum.Date,
