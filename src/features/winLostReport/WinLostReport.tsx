@@ -104,7 +104,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		getWinLossByPlayer,
 		{
 			isFetching: isGetWinLossByPlayerFetching,
-			data: { rowCount: paginationTotal = 0 } = {},
+			data: { rowCount: byPlayerPaginationTotal = 0 } = {},
 		},
 	] = useLazyGetWinLossByPlayerQuery()
 
@@ -121,7 +121,10 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [
 		getWinLossByAffiliate,
-		{ isFetching: isGetWinLossByAffiliateFetching },
+		{
+			isFetching: isGetWinLossByAffiliateFetching,
+			data: { rowCount: byAffiliatePaginationTotal = 0 } = {},
+		},
 	] = useLazyGetWinLossByAffiliateQuery()
 
 	const [exportWinLossByDate, { isLoading: isExportWinLossByDateLoading }] =
@@ -163,7 +166,19 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		enumName: 'MemberTypeEnum',
 	})
 
-	const [pagination, setPagination] = usePagination({ paginationTotal })
+	const getPaginationTotal = () => {
+		const { groupBy } = filterForm.getFieldsValue()
+		if (groupBy === GroupByEnum.Player) {
+			return byPlayerPaginationTotal
+		}
+		if (groupBy === GroupByEnum.Affiliate) {
+			return byAffiliatePaginationTotal
+		}
+		return 0
+	}
+	const [pagination, setPagination] = usePagination({
+		paginationTotal: getPaginationTotal(),
+	})
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -350,8 +365,12 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			setPagination(prev => ({
 				...prev,
 				current,
-				pageSize: GroupByEnum.Player === groupBy ? pageSize : 100,
-				disabled: GroupByEnum.Player !== groupBy,
+				pageSize:
+					GroupByEnum.Player === groupBy || GroupByEnum.Affiliate === groupBy
+						? pageSize
+						: 100,
+				disabled:
+					GroupByEnum.Player !== groupBy && GroupByEnum.Affiliate !== groupBy,
 			}))
 			setIsSort(false)
 		} catch (error) {
