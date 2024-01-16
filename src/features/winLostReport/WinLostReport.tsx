@@ -72,6 +72,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
 	const [expandList, setExpandList] = useState<Array<string | number>>([])
 	const [selectDate, setSelectDate] = useState(null)
+	const [isSort, setIsSort] = useState(false)
 
 	const {
 		data: { data: tpGameList = [] } = {},
@@ -103,7 +104,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		getWinLossByPlayer,
 		{
 			isFetching: isGetWinLossByPlayerFetching,
-			data: { rowCount: paginationTotal = 0 } = {},
+			data: { rowCount: byPlayerPaginationTotal = 0 } = {},
 		},
 	] = useLazyGetWinLossByPlayerQuery()
 
@@ -120,7 +121,10 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [
 		getWinLossByAffiliate,
-		{ isFetching: isGetWinLossByAffiliateFetching },
+		{
+			isFetching: isGetWinLossByAffiliateFetching,
+			data: { rowCount: byAffiliatePaginationTotal = 0 } = {},
+		},
 	] = useLazyGetWinLossByAffiliateQuery()
 
 	const [exportWinLossByDate, { isLoading: isExportWinLossByDateLoading }] =
@@ -162,7 +166,19 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		enumName: 'MemberTypeEnum',
 	})
 
-	const [pagination, setPagination] = usePagination({ paginationTotal })
+	const getPaginationTotal = () => {
+		const { groupBy } = filterForm.getFieldsValue()
+		if (groupBy === GroupByEnum.Player) {
+			return byPlayerPaginationTotal
+		}
+		if (groupBy === GroupByEnum.Affiliate) {
+			return byAffiliatePaginationTotal
+		}
+		return 0
+	}
+	const [pagination, setPagination] = usePagination({
+		paginationTotal: getPaginationTotal(),
+	})
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -349,9 +365,14 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			setPagination(prev => ({
 				...prev,
 				current,
-				pageSize: GroupByEnum.Player === groupBy ? pageSize : 100,
-				disabled: GroupByEnum.Player !== groupBy,
+				pageSize:
+					GroupByEnum.Player === groupBy || GroupByEnum.Affiliate === groupBy
+						? pageSize
+						: 100,
+				disabled:
+					GroupByEnum.Player !== groupBy && GroupByEnum.Affiliate !== groupBy,
 			}))
+			setIsSort(false)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -709,6 +730,16 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	useEffect(() => {
+		// 當groupBy Affiliate時搜尋,預設sortBy GGR
+		if (!isGetWinLossByAffiliateFetching && isSort) {
+			handleTableChange({}, null, {
+				order: 'ascend',
+				field: 'ggr',
+			})
+		}
+	}, [isGetWinLossByAffiliateFetching])
+
 	const exportLoading =
 		isExportWinLossByDateLoading ||
 		isExportWinLossByMonthLoading ||
@@ -749,6 +780,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
+				setIsSort={setIsSort}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
