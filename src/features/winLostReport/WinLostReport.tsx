@@ -4,6 +4,7 @@ import moment from 'moment/moment'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	useExportWinLossByAffiliateMutation,
 	useExportWinLossByBrandMutation,
 	useExportWinLossByCurrencyMutation,
 	useExportWinLossByDateMutation,
@@ -11,6 +12,7 @@ import {
 	useExportWinLossByPlayerMutation,
 	useExportWinLossByTpCategoryTypeMutation,
 	useExportWinLossByTpGameTypeMutation,
+	useLazyGetWinLossByAffiliateQuery,
 	useLazyGetWinLossByBrandQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByDateQuery,
@@ -70,6 +72,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
 	const [expandList, setExpandList] = useState<Array<string | number>>([])
 	const [selectDate, setSelectDate] = useState(null)
+	const [isSort, setIsSort] = useState(false)
 
 	const {
 		data: { data: tpGameList = [] } = {},
@@ -101,7 +104,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		getWinLossByPlayer,
 		{
 			isFetching: isGetWinLossByPlayerFetching,
-			data: { rowCount: paginationTotal = 0 } = {},
+			data: { rowCount: byPlayerPaginationTotal = 0 } = {},
 		},
 	] = useLazyGetWinLossByPlayerQuery()
 
@@ -115,6 +118,14 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [getWinLossByBrand, { isFetching: isGetWinLossByBrandFetching }] =
 		useLazyGetWinLossByBrandQuery()
+
+	const [
+		getWinLossByAffiliate,
+		{
+			isFetching: isGetWinLossByAffiliateFetching,
+			data: { rowCount: byAffiliatePaginationTotal = 0 } = {},
+		},
+	] = useLazyGetWinLossByAffiliateQuery()
 
 	const [exportWinLossByDate, { isLoading: isExportWinLossByDateLoading }] =
 		useExportWinLossByDateMutation()
@@ -143,6 +154,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const [exportWinLossByBrand, { isLoading: isExportWinLossByBrandLoading }] =
 		useExportWinLossByBrandMutation()
 
+	const [
+		exportWinLossByAffiliate,
+		{ isLoading: isExportWinLossByAffiliateLoading },
+	] = useExportWinLossByAffiliateMutation()
+
 	const {
 		data: { data: memberTypeEnums = [] } = {},
 		isLoading: isMemberTypeEnumsLoading,
@@ -150,7 +166,19 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		enumName: 'MemberTypeEnum',
 	})
 
-	const [pagination, setPagination] = usePagination({ paginationTotal })
+	const getPaginationTotal = () => {
+		const { groupBy } = filterForm.getFieldsValue()
+		if (groupBy === GroupByEnum.Player) {
+			return byPlayerPaginationTotal
+		}
+		if (groupBy === GroupByEnum.Affiliate) {
+			return byAffiliatePaginationTotal
+		}
+		return 0
+	}
+	const [pagination, setPagination] = usePagination({
+		paginationTotal: getPaginationTotal(),
+	})
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -182,6 +210,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			memberTypes,
 			includeTest,
 			tpCategorys = [],
+			affiliate,
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -295,6 +324,22 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Affiliate:
+					try {
+						result = await getWinLossByAffiliate({
+							...args,
+							affiliateAccount: affiliate,
+							pageNumber: current,
+							// payload 傳pageSize api回傳資料數為 pageSize+1 ,故這邊-1
+							pageSize: pageSize - 1,
+						}).unwrap()
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -310,14 +355,24 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 			setTableList(list)
 			setExpandList([])
-			setQueryParams({ ...args, timeZone: currentTimeZoneUtcOffset, groupBy })
+			setQueryParams({
+				...args,
+				timeZone: currentTimeZoneUtcOffset,
+				groupBy,
+				affiliate,
+			})
 			// 除了player之外的group都需一頁呈現,故pageSize預設100,兼容其餘group
 			setPagination(prev => ({
 				...prev,
 				current,
-				pageSize: GroupByEnum.Player === groupBy ? pageSize : 100,
-				disabled: GroupByEnum.Player !== groupBy,
+				pageSize:
+					GroupByEnum.Player === groupBy || GroupByEnum.Affiliate === groupBy
+						? pageSize
+						: 100,
+				disabled:
+					GroupByEnum.Player !== groupBy && GroupByEnum.Affiliate !== groupBy,
 			}))
+			setIsSort(false)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -380,6 +435,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				groupBy,
 				baseCurrencyId,
 				memberTypes = [],
+				affiliate,
 			} = queryParams
 
 			const args = {
@@ -513,6 +569,25 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						)
 					}
 					break
+				case GroupByEnum.Affiliate:
+					try {
+						blob = await exportWinLossByAffiliate({
+							...args,
+							affiliateAccount: affiliate,
+						}).unwrap()
+						download(
+							blob,
+							`WinLostReportByAffiliate_${moment().format(
+								'YYYYMMDDHHmmss'
+							)}.xlsx`
+						)
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				default:
 					break
 			}
@@ -618,6 +693,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					displayGroupBreakdownInOriginalCurrency,
 					groupBy,
 					memberTypes,
+					affiliate,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
@@ -643,6 +719,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					memberTypes: isArray(memberTypes)
 						? memberTypes.map((value: string) => Number(value))
 						: [],
+					affiliate,
 				})
 
 				handleSearch({ currentTimeZoneUtcOffset: Number(timeZone) })
@@ -653,6 +730,16 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	useEffect(() => {
+		// 當groupBy Affiliate時搜尋,預設sortBy GGR
+		if (!isGetWinLossByAffiliateFetching && isSort) {
+			handleTableChange({}, null, {
+				order: 'ascend',
+				field: 'ggr',
+			})
+		}
+	}, [isGetWinLossByAffiliateFetching])
+
 	const exportLoading =
 		isExportWinLossByDateLoading ||
 		isExportWinLossByMonthLoading ||
@@ -660,7 +747,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isExportWinLossByTpCategoryTypeLoading ||
 		isExportWinLossByPlayerLoading ||
 		isExportWinLossByCurrencyLoading ||
-		isExportWinLossByBrandLoading
+		isExportWinLossByBrandLoading ||
+		isExportWinLossByAffiliateLoading
 
 	const loading =
 		isGetTpGameListLoading ||
@@ -673,6 +761,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWinLossByPlayerDetailFetching ||
 		isGetWinLossByCurrencyFetching ||
 		isGetWinLossByBrandFetching ||
+		isGetWinLossByAffiliateFetching ||
 		isMemberTypeEnumsLoading ||
 		exportLoading
 
@@ -691,6 +780,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
+				setIsSort={setIsSort}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 			/>
