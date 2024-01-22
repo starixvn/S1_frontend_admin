@@ -3,7 +3,10 @@ import { Button, Form, InputNumber, message, Modal, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { AmountTypeEnum } from 'features/bonusManagement/constants'
+import {
+	AmountTypeEnum,
+	BonusTypeEnum,
+} from 'features/bonusManagement/constants'
 import { isEmpty, trim } from 'lodash'
 
 interface ISetGroupModalProps {
@@ -14,6 +17,7 @@ interface ISetGroupModalProps {
 const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const { t } = useTranslation()
 	const { form, currentActiveCurrency } = useContext(EditBonusContext)
+	const formData = form?.getFieldsValue()
 	const { isoCode } = currentActiveCurrency
 	const type = form?.getFieldValue(['specific', isoCode, 'bonusType'])
 
@@ -62,7 +66,6 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 			})
 		}
 	}, [visible])
-
 	return (
 		<Modal
 			open={visible}
@@ -76,7 +79,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 				<Form.List name='tierAmountList'>
 					{(fields, { add, remove }) => (
 						<>
-							{fields.map(({ key, name, ...restField }) => (
+							{fields.map(({ key, name, ...restField }, index) => (
 								<Space
 									key={key}
 									style={{ display: 'flex', marginBottom: 8 }}
@@ -85,18 +88,34 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'requiredAmount']}
-										label={key === 0 ? t('Label_RedepositAmount') : null}
+										label={index === 0 ? t('Label_RedepositAmount') : null}
 										rules={[
-											{
-												required: true,
-												message: t('Label_RequiredText'),
-											},
 											{
 												type: 'number',
 												min: 0,
 												message: t('Label_GreaterThanZero'),
 											},
+											{
+												validator: (_, value) => {
+													if (
+														formData?.bonusType === BonusTypeEnum.MissionBonus
+													) {
+														const { tierAmountList } =
+															modalForm.getFieldsValue()
+														const requiredTurnover =
+															tierAmountList[name]?.requiredTurnover
+
+														if (!value && !requiredTurnover) {
+															return Promise.reject(t('Label_RequiredText'))
+														}
+													} else if (!value) {
+														return Promise.reject(t('Label_RequiredText'))
+													}
+													return Promise.resolve()
+												},
+											},
 										]}
+										initialValue={0}
 									>
 										<InputNumber
 											type='number'
@@ -104,35 +123,43 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
-									{type === AmountTypeEnum.Percentage && (
+									{formData?.bonusType === BonusTypeEnum.MissionBonus && (
 										<>
 											<Form.Item
 												{...restField}
-												name={[name, 'bonus']}
-												label={key === 0 ? t('Label_Percentage') : null}
+												name={[name, 'requiredTurnover']}
+												label={index === 0 ? t('Label_RequiredTurnover') : null}
 												rules={[
-													{
-														required: true,
-														message: t('Label_RequiredText'),
-													},
 													{
 														type: 'number',
 														min: 0,
 														message: t('Label_GreaterThanZero'),
 													},
+													{
+														validator: (_, value) => {
+															const { tierAmountList } =
+																modalForm.getFieldsValue()
+															const requiredAmount =
+																tierAmountList[name]?.requiredAmount
+															if (!value && !requiredAmount) {
+																return Promise.reject(t('Label_RequiredText'))
+															}
+															return Promise.resolve()
+														},
+													},
 												]}
+												initialValue={0}
 											>
 												<InputNumber
 													type='number'
 													controls={false}
 													style={{ width: '100%' }}
-													placeholder={t('Label_Percentage')}
 												/>
 											</Form.Item>
 											<Form.Item
 												{...restField}
-												name={[name, 'maxBonus']}
-												label={key === 0 ? t('Label_MaxBonus') : null}
+												name={[name, 'bonus']}
+												label={index === 0 ? t('Label_Bonus') : null}
 												rules={[
 													{
 														required: true,
@@ -148,41 +175,93 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												<InputNumber
 													type='number'
 													controls={false}
+													placeholder={t('Label_Bonus')}
 													style={{ width: '100%' }}
-													placeholder={t('Label_MaxBonus')}
 												/>
 											</Form.Item>
 										</>
 									)}
-									{type === AmountTypeEnum.Amount && (
-										<Form.Item
-											{...restField}
-											name={[name, 'bonus']}
-											label={key === 0 ? t('Label_Bonus') : null}
-											rules={[
-												{
-													required: true,
-													message: t('Label_RequiredText'),
-												},
-												{
-													type: 'number',
-													min: 0,
-													message: t('Label_GreaterThanZero'),
-												},
-											]}
-										>
-											<InputNumber
-												type='number'
-												controls={false}
-												placeholder={t('Label_Bonus')}
-												style={{ width: '100%' }}
-											/>
-										</Form.Item>
-									)}
+									{type === AmountTypeEnum.Percentage &&
+										formData?.bonusType !== BonusTypeEnum.MissionBonus && (
+											<>
+												<Form.Item
+													{...restField}
+													name={[name, 'bonus']}
+													label={index === 0 ? t('Label_Percentage') : null}
+													rules={[
+														{
+															required: true,
+															message: t('Label_RequiredText'),
+														},
+														{
+															type: 'number',
+															min: 0,
+															message: t('Label_GreaterThanZero'),
+														},
+													]}
+												>
+													<InputNumber
+														type='number'
+														controls={false}
+														style={{ width: '100%' }}
+														placeholder={t('Label_Percentage')}
+													/>
+												</Form.Item>
+												<Form.Item
+													{...restField}
+													name={[name, 'maxBonus']}
+													label={index === 0 ? t('Label_MaxBonus') : null}
+													rules={[
+														{
+															required: true,
+															message: t('Label_RequiredText'),
+														},
+														{
+															type: 'number',
+															min: 0,
+															message: t('Label_GreaterThanZero'),
+														},
+													]}
+												>
+													<InputNumber
+														type='number'
+														controls={false}
+														style={{ width: '100%' }}
+														placeholder={t('Label_MaxBonus')}
+													/>
+												</Form.Item>
+											</>
+										)}
+									{type === AmountTypeEnum.Amount &&
+										formData?.bonusType !== BonusTypeEnum.MissionBonus && (
+											<Form.Item
+												{...restField}
+												name={[name, 'bonus']}
+												label={index === 0 ? t('Label_Bonus') : null}
+												rules={[
+													{
+														required: true,
+														message: t('Label_RequiredText'),
+													},
+													{
+														type: 'number',
+														min: 0,
+														message: t('Label_GreaterThanZero'),
+													},
+												]}
+											>
+												<InputNumber
+													type='number'
+													controls={false}
+													placeholder={t('Label_Bonus')}
+													style={{ width: '100%' }}
+												/>
+											</Form.Item>
+										)}
 									<Form.Item
 										{...restField}
 										name={[name, 'rollOver']}
-										label={key === 0 ? t('Label_Rollover') : null}
+										label={index === 0 ? t('Label_Rollover') : null}
 										rules={[
 											{
 												validator: (_, value) => {
@@ -214,7 +293,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'winOver']}
-										label={key === 0 ? t('Label_WinOver') : null}
+										label={index === 0 ? t('Label_WinOver') : null}
 										rules={[
 											{
 												validator: (_, value) => {
@@ -242,7 +321,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
-									<Form.Item label={key === 0 ? ' ' : null}>
+									<Form.Item label={index === 0 ? ' ' : null}>
 										{/* 為了讓第一筆 的刪除符號可以在正確位置 , 所以在 label 動了手腳  */}
 										<MinusCircleOutlined onClick={() => remove(name)} />
 									</Form.Item>
