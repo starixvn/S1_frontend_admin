@@ -7,7 +7,11 @@ import {
 } from 'features/bonusManagement/type'
 import { Currency } from 'common/enum/type'
 import { assign, cloneDeep, find, includes, omit } from 'lodash'
-import { StatusEnum, WalletTypeEnum } from 'features/bonusManagement/constants'
+import {
+	BonusTypeEnum,
+	StatusEnum,
+	WalletTypeEnum,
+} from 'features/bonusManagement/constants'
 
 // 多重比對 , 可用在條件渲染時  A = B | C | D 時顯示
 // 第一個參數放 value 第二個放 條件 使用 Array 把所有該條件的參數放進 Array
@@ -58,6 +62,8 @@ export const specificRequestDataConverter = ({
 	walletType,
 	categoryId,
 	tpId,
+	promotionType,
+	turnoverTpGameTypeList,
 }: {
 	specific: any
 	details: any
@@ -65,6 +71,8 @@ export const specificRequestDataConverter = ({
 	walletType: number
 	categoryId: number
 	tpId: number
+	promotionType?: number
+	turnoverTpGameTypeList?: number[]
 }): ISpecificData[] => {
 	const rawSpecificData: any[] = []
 	Object.values(specific).forEach(data => {
@@ -128,6 +136,13 @@ export const specificRequestDataConverter = ({
 	// return 時才將 details 全部轉成字串
 	return rawSpecificData.map(data => {
 		const { details: detailsObj, ...rest } = data
+		if (promotionType === BonusTypeEnum.MissionBonus) {
+			return {
+				details: JSON.stringify(detailsObj),
+				turnoverTpGameTypeList,
+				...rest,
+			}
+		}
 		return {
 			details: JSON.stringify(detailsObj),
 			...rest,
