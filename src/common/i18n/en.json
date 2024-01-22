@@ -1237,8 +1237,6 @@
 	"Label_SetRankingBonus": "Set Ranking Bonus",
 	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_LiveBroadCaster": "Live Broadcaster",
-	"Label_MultipleOfWinning": "multiple of winning",
-	"Label_WinProfit": "Win profit",
-	"Label_BigWinPopUpSetting": "Big Win Pop up Setting",
-	"Label_AffiliateAccount": "Affiliate Account"
+	"Label_AffiliateAccount": "Affiliate Account",
+	"Label_EggTickets": "Egg Tickets"
 }
