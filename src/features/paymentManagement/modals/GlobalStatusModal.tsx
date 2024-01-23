@@ -66,7 +66,7 @@ const GlobalStatusModal = ({
 				return (
 					<Switch
 						disabled={!editPermission?.canUse}
-						defaultChecked={status === PaymentStatusEnum.True}
+						checked={status === PaymentStatusEnum.True}
 						onClick={value => {
 							onSetStatus(currentPayId, value)
 						}}
