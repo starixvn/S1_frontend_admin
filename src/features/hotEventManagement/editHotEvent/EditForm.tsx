@@ -59,7 +59,11 @@ const EditForm: FC<IEditFormProps> = ({
 	const awayLeague = Form.useWatch('awaySportLeaguesId', form)
 	const currentIsLiveStreaming = Form.useWatch('isLiveStreaming', form)
 
-	const liveStreamingCurrency = [CurrencyEnum.THB, CurrencyEnum.VND]
+	const liveStreamingCurrency = [
+		CurrencyEnum.THB,
+		CurrencyEnum.VND,
+		CurrencyEnum.MYR,
+	]
 	const filteredCurrencyListBySite = currencyListBySite.filter(
 		({ currencyId }) => liveStreamingCurrency.includes(currencyId)
 	)
