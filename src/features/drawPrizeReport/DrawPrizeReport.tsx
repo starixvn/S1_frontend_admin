@@ -115,6 +115,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 
 			setQueryParams({
+				siteId,
 				startDate,
 				endDate,
 				pageNumber: current,
@@ -149,7 +150,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 		} = queryParams
 		try {
 			const blob = await exportDrawPrizeReport({
-				siteId: querySiteId,
+				siteId: Number(querySiteId),
 				startDate,
 				endDate,
 				currencyIds:
