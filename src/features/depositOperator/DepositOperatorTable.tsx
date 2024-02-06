@@ -20,7 +20,7 @@ import {
 	VisibilityColumnsButton,
 } from 'components'
 import { PaginationInterface } from 'common/hooks'
-import { DepositTypeEnum } from 'type'
+import { DepositTypeEnum, PermissionInterface } from 'type'
 import {
 	numberFormatter,
 	timeFormat,
@@ -42,6 +42,7 @@ interface IDepositOperatorTableProps {
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositOperatorList: IDepositOperatorData[]
+	approvedPermission: PermissionInterface | undefined
 	pagination: PaginationInterface
 	rowSelection: {
 		selectedRowKeys: Key[]
@@ -56,6 +57,7 @@ const DepositOperatorTable = ({
 	loading,
 	timeZoneUtcOffset,
 	depositOperatorList,
+	approvedPermission,
 	pagination,
 	rowSelection,
 	onTableChange,
@@ -175,7 +177,13 @@ const DepositOperatorTable = ({
 							title={t('Label_AreYouSure')}
 							onConfirm={() => onDepositManualApproval({ transId })}
 						>
-							<OperatorButton loading={loading} size='small' color='Green'>
+							<OperatorButton
+								loading={loading}
+								size='small'
+								// * 沒有權限 approved 的帳號按鈕呈現灰色
+								color={approvedPermission?.canUse ? 'Green' : 'Gray'}
+								disabled={!approvedPermission?.canUse}
+							>
 								{t('Label_Approve')}
 							</OperatorButton>
 						</Popconfirm>
