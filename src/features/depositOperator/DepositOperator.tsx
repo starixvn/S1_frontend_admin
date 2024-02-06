@@ -46,7 +46,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [form] = Form.useForm<IForm>()
 
 	const {
-		actionPermissions: { exportExcelPermission, rejectPermission } = {},
+		actionPermissions: {
+			approvedPermission,
+			exportExcelPermission,
+			rejectPermission,
+		} = {},
 	} = useAuth()
 
 	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
@@ -460,6 +464,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				depositOperatorList={depositOperatorList}
+				approvedPermission={approvedPermission}
 				pagination={pagination}
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
