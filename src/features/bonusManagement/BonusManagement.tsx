@@ -114,7 +114,7 @@ const BonusManagement: FC<{
 				pageNumber: current,
 				pageSize,
 				bonusCode: isEmpty(bonusCode) ? null : trim(bonusCode),
-				scratchCardCode,
+				scratchCardCode: isEmpty(scratchCardCode) ? null : trim(bonusCode),
 				...args,
 			}).unwrap()
 
