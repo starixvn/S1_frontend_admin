@@ -102,6 +102,7 @@ const BonusManagement: FC<{
 	}) => {
 		const { dateRange, bonusCode, scratchCardCode, ...args } =
 			filterForm.getFieldsValue()
+
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			0
@@ -114,7 +115,9 @@ const BonusManagement: FC<{
 				pageNumber: current,
 				pageSize,
 				bonusCode: isEmpty(bonusCode) ? null : trim(bonusCode),
-				scratchCardCode: isEmpty(scratchCardCode) ? null : trim(bonusCode),
+				scratchCardCode: isEmpty(scratchCardCode)
+					? null
+					: trim(scratchCardCode),
 				...args,
 			}).unwrap()
 
