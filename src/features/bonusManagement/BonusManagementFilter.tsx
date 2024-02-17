@@ -176,13 +176,31 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='bonusCode' label={t('Label_BonusCode')}>
+								<Form.Item
+									name='bonusCode'
+									label={t('Label_BonusCode')}
+									style={{ width: '100%' }}
+								>
 									<Input allowClear />
 								</Form.Item>
-							</Col>
-							<Col span={3}>
-								<Form.Item name='isSpecial' valuePropName='checked' noStyle>
+								<Form.Item
+									name='isSpecial'
+									valuePropName='checked'
+									style={{
+										position: 'absolute',
+										right: '0',
+										top: '-5px',
+									}}
+								>
 									<Checkbox>{t('Label_IsScratch')}</Checkbox>
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item
+									name='scratchCardCode'
+									label={t('Label_ScratchCardCode')}
+								>
+									<Input allowClear />
 								</Form.Item>
 							</Col>
 						</Row>
