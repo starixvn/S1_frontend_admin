@@ -11,6 +11,7 @@ export interface IGetBonusListArgs {
 	isSpecial: boolean
 	pageNumber: number
 	pageSize: number
+	scratchCardCode: string | null
 }
 
 export type ICashBackSettingData = {

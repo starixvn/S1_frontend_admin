@@ -54,6 +54,7 @@ const BonusManagement: FC<{
 		isSpecial: boolean
 		status: number
 		device: number
+		scratchCardCode: string
 	}>()
 
 	const [duplicateForm] = Form.useForm<{
@@ -99,7 +100,8 @@ const BonusManagement: FC<{
 		current?: number | undefined
 		pageSize?: number | undefined
 	}) => {
-		const { dateRange, bonusCode, ...args } = filterForm.getFieldsValue()
+		const { dateRange, bonusCode, scratchCardCode, ...args } =
+			filterForm.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			0
@@ -112,6 +114,7 @@ const BonusManagement: FC<{
 				pageNumber: current,
 				pageSize,
 				bonusCode: isEmpty(bonusCode) ? null : trim(bonusCode),
+				scratchCardCode,
 				...args,
 			}).unwrap()
 
