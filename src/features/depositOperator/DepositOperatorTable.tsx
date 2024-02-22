@@ -156,41 +156,41 @@ const DepositOperatorTable = ({
 				)
 			},
 		},
-		{
-			title: t('Label_Action'),
-			key: 'depositType',
-			width: 60,
-			align: 'center' as 'center',
-			render: ({ depositType, transId, status }: IDepositOperatorData) => {
-				// * 只有 Pending 狀態 及 存款類別為 LocalBanking 可操作 Approve 按鈕
-				if (
-					status !== DepositStatusEnum.Pending ||
-					depositType !== DepositTypeEnum.LocalBanking
-				) {
-					return null
-				}
-
-				// *  只有Local Bank Transfer 以及 FullName 有值的才出現 Approve 按紐
-				return (
-					<Space>
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							onConfirm={() => onDepositManualApproval({ transId })}
-						>
-							<OperatorButton
-								loading={loading}
-								size='small'
-								// * 沒有權限 approved 的帳號按鈕呈現灰色
-								color={approvedPermission?.canUse ? 'Green' : 'Gray'}
-								disabled={!approvedPermission?.canUse}
-							>
-								{t('Label_Approve')}
-							</OperatorButton>
-						</Popconfirm>
-					</Space>
-				)
-			},
-		},
+		// {
+		// 	title: t('Label_Action'),
+		// 	key: 'depositType',
+		// 	width: 60,
+		// 	align: 'center' as 'center',
+		// 	render: ({ depositType, transId, status }: IDepositOperatorData) => {
+		// 		// * 只有 Pending 狀態 及 存款類別為 LocalBanking 可操作 Approve 按鈕
+		// 		if (
+		// 			status !== DepositStatusEnum.Pending ||
+		// 			depositType !== DepositTypeEnum.LocalBanking
+		// 		) {
+		// 			return null
+		// 		}
+		//
+		// 		// *  只有Local Bank Transfer 以及 FullName 有值的才出現 Approve 按紐
+		// 		return (
+		// 			<Space>
+		// 				<Popconfirm
+		// 					title={t('Label_AreYouSure')}
+		// 					onConfirm={() => onDepositManualApproval({ transId })}
+		// 				>
+		// 					<OperatorButton
+		// 						loading={loading}
+		// 						size='small'
+		// 						// * 沒有權限 approved 的帳號按鈕呈現灰色
+		// 						color={approvedPermission?.canUse ? 'Green' : 'Gray'}
+		// 						disabled={!approvedPermission?.canUse}
+		// 					>
+		// 						{t('Label_Approve')}
+		// 					</OperatorButton>
+		// 				</Popconfirm>
+		// 			</Space>
+		// 		)
+		// 	},
+		// },
 		{
 			title: t('Label_DepositType'),
 			key: 'depositType',
