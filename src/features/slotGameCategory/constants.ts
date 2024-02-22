@@ -40,3 +40,17 @@ export const slotGameCategoryList: Array<{
 		displayName: 'Label_Megaways',
 	},
 ]
+
+export enum DeviceEnum {
+	All,
+	Web,
+	Mobile,
+	App,
+}
+
+export const deviceList: Array<{ value: number; displayName: string }> = [
+	{ value: DeviceEnum.All, displayName: 'Label_All' },
+	{ value: DeviceEnum.Web, displayName: 'Label_Web' },
+	{ value: DeviceEnum.Mobile, displayName: 'Label_Mobile' },
+	{ value: DeviceEnum.App, displayName: 'Label_App' },
+]

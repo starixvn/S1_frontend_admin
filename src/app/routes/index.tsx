@@ -405,6 +405,13 @@ const SlotGameCategory = lazy(
 		)
 )
 
+const AddSlotGame = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AddSlotGame' */ 'features/slotGameCategory/addSlotGame/AddSlotGame'
+		)
+)
+
 const HotEventManagement = lazy(
 	() =>
 		import(
@@ -1829,6 +1836,16 @@ const routes: RouteObject[] = [
 						functionId={paths.productManagement.sub.slotGameCategory.functionId}
 					>
 						<SlotGameCategory />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/add`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.slotGameCategory.functionId}
+					>
+						<AddSlotGame />
 					</AuthRequire>
 				),
 			},
