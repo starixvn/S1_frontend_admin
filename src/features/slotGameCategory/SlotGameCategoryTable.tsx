@@ -50,6 +50,13 @@ interface ISlotGameCategoryTableProps {
 		slotGameId: number
 		activeInactiveAll: boolean
 	}) => void
+	setGoToPRD: ({
+		slotGameId,
+		isGoToPRD,
+	}: {
+		slotGameId: number
+		isGoToPRD: boolean
+	}) => void
 	categoryForm: FormInstance
 }
 
@@ -65,6 +72,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	onTableChange,
 	setStatus,
 	setAllStatus,
+	setGoToPRD,
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
@@ -142,6 +150,26 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					{cName ?? '-'}
 				</Typography.Text>
 			),
+		},
+		{
+			title: t('Label_GoToPRD'),
+			key: 'goToPrd',
+			align: 'center' as 'center',
+			render: (record: any) => {
+				const { id: slotGameId, isGoToPRD } = record
+				return (
+					<Switch
+						checked={isGoToPRD}
+						disabled={!editPermission?.canUse}
+						onChange={() => {
+							setGoToPRD({
+								slotGameId,
+								isGoToPRD: !isGoToPRD,
+							})
+						}}
+					/>
+				)
+			},
 		},
 		{
 			title: t('Label_ActiveInactiveAll'),

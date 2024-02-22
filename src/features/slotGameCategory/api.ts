@@ -9,7 +9,10 @@ import {
 	ISetSlotGameArgs,
 	IGetSlotCategoryListResponse,
 	ISlotGameAllCurrencyArgs,
+	ISetSlogGameEnvironmentArgs,
+	ISetNewSlotGameArgs,
 } from 'features/slotGameCategory/type'
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export const slotGameCategoryApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
@@ -75,6 +78,36 @@ export const slotGameCategoryApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		setSlotGameEnvironment: builder.mutation<void, ISetSlogGameEnvironmentArgs>(
+			{
+				query: data => ({
+					url: 'SlotGamesManagement/SetSlotGameEnvironment',
+					method: 'POST',
+					data,
+				}),
+			}
+		),
+		setNewSlotGame: builder.mutation<void, ISetNewSlotGameArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/SetNewSlotGame',
+				method: 'POST',
+				data,
+			}),
+		}),
+		updateSlotGameImage: builder.mutation<
+			IAxiosResponse<{ returnImagePath: string }>,
+			FormData
+		>({
+			query: data => ({
+				url: 'UploadImage/SlotGameManagement',
+				method: 'POST',
+				data,
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
 	}),
 })
 
@@ -86,4 +119,7 @@ export const {
 	useSetSlotGameCategoryMutation,
 	useGetSlotCategoryListQuery,
 	useSetSlotGameAllCurrencyMutation,
+	useSetSlotGameEnvironmentMutation,
+	useSetNewSlotGameMutation,
+	useUpdateSlotGameImageMutation,
 } = slotGameCategoryApi
