@@ -1246,6 +1246,7 @@
 	"Label_SetRankingBonus": "Set Ranking Bonus",
 	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_Site": "Site",
+	"Label_RLS_TO_PRD": "RLS TO PRD",
 	"Label_LiveBroadCaster": "Live Broadcaster",
 	"Label_AffiliateAccount": "Affiliate Account",
 	"Label_EggTickets": "Egg Tickets",
