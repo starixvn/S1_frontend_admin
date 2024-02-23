@@ -10,17 +10,18 @@ import { timeFormat } from 'common/utils/format'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import {
-	Tag,
 	Col,
+	DatePicker,
 	Form,
 	message,
 	Modal,
+	Popconfirm,
 	Row,
 	Select,
 	Space,
 	Switch,
+	Tag,
 	Typography,
-	DatePicker,
 } from 'antd'
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import {
@@ -28,15 +29,18 @@ import {
 	IconTypeList,
 } from 'features/headerManagement/constatns'
 import {
-	IHeaderSettingGroupByTpGameIdNoData,
-	ILobbyCategoryData,
+	IEditProductStatusForm,
 	IFilterProductStatusModalForm,
 	IHeaderSettingEnum,
-	IEditProductStatusForm,
+	IHeaderSettingGroupByTpGameIdNoData,
+	IHeaderSettingRlsToPrdArgsEnum,
+	IHeaderSettingRlsToPrdEnum,
+	ILobbyCategoryData,
 } from 'features/headerManagement/type'
 import {
 	useGetHeaderSettingGroupByTpGameIdNoListQuery,
 	useUpdateHeaderSettingByTpGameIdMutation,
+	useUpdateHeaderSettingEnvironmentMutation,
 } from 'features/headerManagement/api'
 import {
 	MOMENT_DATE_RANGES,
@@ -83,6 +87,11 @@ const ProductStatusModal = ({
 		{ isLoading: isUpdateHeaderSettingByTpGameIdLoading },
 	] = useUpdateHeaderSettingByTpGameIdMutation()
 
+	const [
+		updateHeaderSettingEnvironment,
+		{ isLoading: isUpdateHeaderSettingEnvironmentLoading },
+	] = useUpdateHeaderSettingEnvironmentMutation()
+
 	const handleRowSaved = async (tpGameIdNo: number) => {
 		if (!editingKey && !siteId) return
 		const { dateRange, status, iconType } = await editForm.validateFields()
@@ -101,6 +110,32 @@ const ProductStatusModal = ({
 				iconStartTime,
 				iconEndTime,
 			})
+			message.success(t('System.Label_Success'))
+			setEditingKey(undefined)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSwitchRlsPrd = async ({
+		tpGameIdNo,
+		status,
+	}: {
+		tpGameIdNo: number
+		status: boolean
+	}) => {
+		if (!siteId) return
+
+		try {
+			await updateHeaderSettingEnvironment({
+				siteId,
+				tpGameIdNo,
+				isPRD: status
+					? IHeaderSettingRlsToPrdArgsEnum.True
+					: IHeaderSettingRlsToPrdArgsEnum.False,
+			}).unwrap()
 			message.success(t('System.Label_Success'))
 			setEditingKey(undefined)
 		} catch (error) {
@@ -129,6 +164,36 @@ const ProductStatusModal = ({
 		record.tpGameIdNo === editingKey
 
 	const columns = [
+		{
+			title: t('Label_RLS_TO_PRD'),
+			key: 'switchToPrd',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
+				const { status, tpGameIdNo } = record
+				// * 這裡跟 status 共用參數，但狀態是 rls:1,prd: 3 (status 是開：1, 關:0)
+				const rlsToPrdStatus = status === IHeaderSettingRlsToPrdEnum.Production
+				return (
+					<Popconfirm
+						disabled={
+							// * status 狀態在0 時不可打開
+							!editPermission?.canUse || status === IHeaderSettingEnum.False
+						}
+						title={t('Label_AreYouSure')}
+						onConfirm={() =>
+							handleSwitchRlsPrd({ tpGameIdNo, status: !rlsToPrdStatus })
+						}
+					>
+						<Switch
+							checked={rlsToPrdStatus}
+							disabled={
+								!editPermission?.canUse || status === IHeaderSettingEnum.False
+							}
+						/>
+					</Popconfirm>
+				)
+			},
+		},
 		{
 			title: t('Label_Action'),
 			width: 160,
@@ -346,7 +411,8 @@ const ProductStatusModal = ({
 				<Table
 					loading={
 						headerSettingGroupByTpGameIdNoListFetching ||
-						isUpdateHeaderSettingByTpGameIdLoading
+						isUpdateHeaderSettingByTpGameIdLoading ||
+						isUpdateHeaderSettingEnvironmentLoading
 					}
 					columns={columns}
 					dataSource={headerSettingGroupByTpGameIdNoList}

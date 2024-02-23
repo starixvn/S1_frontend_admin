@@ -1,7 +1,7 @@
 import { rootApi } from 'common/service/rootApi/api'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
-import {
+import type {
 	IGetHeaderSettingArgs,
 	IHeaderSettingResponse,
 	IUpdateSortArgs,
@@ -9,6 +9,7 @@ import {
 	IGetHeaderSettingGroupByTpGameIdNoArgs,
 	HeaderSettingGroupByTpGameIdNoResponse,
 	IUpdateHeaderSettingByTpGameIdArgs,
+	IUpdateHeaderSettingEnvironmentArgs,
 } from 'features/headerManagement/type'
 
 export const headerManagementApi = rootApi.injectEndpoints({
@@ -65,6 +66,17 @@ export const headerManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		updateHeaderSettingEnvironment: builder.mutation<
+			IAxiosResponse<null>,
+			IUpdateHeaderSettingEnvironmentArgs
+		>({
+			query: data => ({
+				url: 'HeaderManagement/updateHeaderSettingEnvironment',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['UPDATE_MODAL'],
+		}),
 	}),
 })
 
@@ -74,4 +86,5 @@ export const {
 	useUpdateHeaderSettingByTpGameIdMutation,
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
+	useUpdateHeaderSettingEnvironmentMutation,
 } = headerManagementApi

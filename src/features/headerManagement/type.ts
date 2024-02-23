@@ -67,6 +67,12 @@ export interface IUpdateSortArgs {
 	sort: number
 }
 
+export interface IUpdateHeaderSettingEnvironmentArgs {
+	siteId?: number
+	tpGameIdNo: number
+	isPRD: number
+}
+
 export interface IFilterProductStatusModalForm {
 	lobbyCategoryId: number
 }
@@ -74,6 +80,16 @@ export interface IFilterProductStatusModalForm {
 export enum IHeaderSettingEnum {
 	False,
 	True,
+}
+
+export enum IHeaderSettingRlsToPrdArgsEnum {
+	True,
+	False,
+}
+
+export enum IHeaderSettingRlsToPrdEnum {
+	Release = 1,
+	Production = 3,
 }
 
 export interface IFilterForm {
