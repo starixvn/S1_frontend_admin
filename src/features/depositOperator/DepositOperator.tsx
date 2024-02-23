@@ -32,9 +32,13 @@ import {
 	useLazyGetDepositOperatorListQuery,
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
-	useSetDepositManualApprovalMutation,
+	useSetDepositStatusMutation,
 } from 'features/depositOperator/api'
-import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
+import {
+	DepositStatusEnum,
+	IForm,
+	ISetDepositStatusArgs,
+} from 'features/depositOperator/type'
 import { DateTypeEnum } from 'features/depositOperator/constants'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
@@ -94,10 +98,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isFetching: isGetVipLevelEnumFetching,
 	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
 
-	const [
-		setDepositManualApproval,
-		{ isLoading: isSetDepositManualApprovalLoading },
-	] = useSetDepositManualApprovalMutation()
+	const [setDepositStatus, { isLoading: isSetDepositStatusLoading }] =
+		useSetDepositStatusMutation()
 
 	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
 		useGetCalCodeListQuery(
@@ -150,13 +152,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	}
 
 	// * 在列表中直接操作單據設定為 Approval
-	const handleDepositManualApproval = async ({
-		transId,
-	}: {
-		transId: string
-	}) => {
+	const handleDepositApproval = async (args: ISetDepositStatusArgs) => {
 		try {
-			await setDepositManualApproval({ transId }).unwrap()
+			await setDepositStatus(args).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -411,8 +409,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		({ currencyId }) => includes(formCurrencyIds, currencyId)
 	)
 
-	const loading =
-		isGetDepositOperatorListFetching || isSetDepositManualApprovalLoading
+	const loading = isGetDepositOperatorListFetching || isSetDepositStatusLoading
 
 	const hasSelectedRow = tableSelectedRowTransIds.length > 0
 
@@ -468,7 +465,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				pagination={pagination}
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
-				onDepositManualApproval={handleDepositManualApproval}
+				onDepositApproval={handleDepositApproval}
 			/>
 
 			{!isEmpty(currencyAmountRecordList) && (
