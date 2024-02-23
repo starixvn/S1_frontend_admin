@@ -30,12 +30,14 @@ import {
 import {
 	IDepositOperatorData,
 	DepositStatusEnum,
+	ISetDepositStatusArgs,
 } from 'features/depositOperator/type'
 import {
 	DEPOSIT_STATUS_TAGS_COLOR,
 	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
 import { OperatorButton } from 'components/OperatorButton/OperatorButton'
+import { multiEqual } from 'common/utils'
 
 interface IDepositOperatorTableProps {
 	isAllSite: boolean
@@ -49,7 +51,7 @@ interface IDepositOperatorTableProps {
 		onChange: (newSelectedRowKeys: Key[]) => void
 	}
 	onTableChange: (newPagination: TablePaginationConfig) => void
-	onDepositManualApproval: ({ transId }: { transId: string }) => void
+	onDepositApproval: (args: ISetDepositStatusArgs) => void
 }
 
 const DepositOperatorTable = ({
@@ -61,7 +63,7 @@ const DepositOperatorTable = ({
 	pagination,
 	rowSelection,
 	onTableChange,
-	onDepositManualApproval,
+	onDepositApproval,
 }: IDepositOperatorTableProps) => {
 	const { t } = useTranslation()
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
@@ -156,41 +158,64 @@ const DepositOperatorTable = ({
 				)
 			},
 		},
-		// {
-		// 	title: t('Label_Action'),
-		// 	key: 'depositType',
-		// 	width: 60,
-		// 	align: 'center' as 'center',
-		// 	render: ({ depositType, transId, status }: IDepositOperatorData) => {
-		// 		// * 只有 Pending 狀態 及 存款類別為 LocalBanking 可操作 Approve 按鈕
-		// 		if (
-		// 			status !== DepositStatusEnum.Pending ||
-		// 			depositType !== DepositTypeEnum.LocalBanking
-		// 		) {
-		// 			return null
-		// 		}
-		//
-		// 		// *  只有Local Bank Transfer 以及 FullName 有值的才出現 Approve 按紐
-		// 		return (
-		// 			<Space>
-		// 				<Popconfirm
-		// 					title={t('Label_AreYouSure')}
-		// 					onConfirm={() => onDepositManualApproval({ transId })}
-		// 				>
-		// 					<OperatorButton
-		// 						loading={loading}
-		// 						size='small'
-		// 						// * 沒有權限 approved 的帳號按鈕呈現灰色
-		// 						color={approvedPermission?.canUse ? 'Green' : 'Gray'}
-		// 						disabled={!approvedPermission?.canUse}
-		// 					>
-		// 						{t('Label_Approve')}
-		// 					</OperatorButton>
-		// 				</Popconfirm>
-		// 			</Space>
-		// 		)
-		// 	},
-		// },
+		{
+			title: t('Label_Action'),
+			key: 'depositType',
+			width: 60,
+			align: 'center' as 'center',
+			render: (record: IDepositOperatorData) => {
+				const {
+					depositType,
+					transId,
+					status,
+					actualDeposit,
+					comment = '',
+					amount,
+					bankId,
+				} = record
+				// * 只有 Pending 狀態 及 存款類別為 LocalBanking 可操作 Approve 按鈕
+				if (
+					status !== DepositStatusEnum.Pending ||
+					depositType !== DepositTypeEnum.LocalBanking
+				) {
+					return null
+				}
+
+				const args = {
+					action: DepositStatusEnum.Approved,
+					actualDeposit,
+					comment,
+					transId,
+					actualCryptoAmount: amount,
+					// * bankId 在 action 是 approved 時需要送出
+					...(multiEqual(status, [
+						DepositStatusEnum.OnHold,
+						DepositStatusEnum.Approved,
+					]) && { bankId }),
+					bankId,
+				}
+
+				// *  只有Local Bank Transfer 以及 FullName 有值的才出現 Approve 按紐
+				return (
+					<Space>
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							onConfirm={() => onDepositApproval(args)}
+						>
+							<OperatorButton
+								loading={loading}
+								size='small'
+								// * 沒有權限 approved 的帳號按鈕呈現灰色
+								color={approvedPermission?.canUse ? 'Green' : 'Gray'}
+								disabled={!approvedPermission?.canUse}
+							>
+								{t('Label_Approve')}
+							</OperatorButton>
+						</Popconfirm>
+					</Space>
+				)
+			},
+		},
 		{
 			title: t('Label_DepositType'),
 			key: 'depositType',
