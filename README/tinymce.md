@@ -35,7 +35,7 @@ export default function App() {
 
 登入 [tiny 雲端後台](https://www.tiny.cloud/auth/login/?redirect_to=%2Fmy-account%2Fintegrate%2F)
 
-> 目前是使用 luke.lin@ailabpte.co 註冊金鑰，有空也可以換成公司通用帳號申請
+> 使用 ailabpte@gmail.com 註冊金鑰
 > ![tinymce-01](./images/tinymce-01.png)
 
 登入後就可以看到 金鑰與 domain 配置
