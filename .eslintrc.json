@@ -20,7 +20,7 @@
 		"sourceType": "module",
 		"project": "./tsconfig.json"
 	},
-	"plugins": ["react", "@typescript-eslint", "prettier"],
+	"plugins": ["react", "@typescript-eslint", "prettier", "react-refresh"],
 	"ignorePatterns": ["config-overrides.js"],
 	"rules": {
 		"react/jsx-filename-extension": [
@@ -29,7 +29,10 @@
 				"extensions": [".ts", ".tsx", ".js", ".jsx"]
 			}
 		],
-
+		"react-refresh/only-export-components": [
+			"warn",
+			{ "allowConstantExport": true }
+		],
 		"import/no-unresolved": "off",
 		"prefer-const": "warn",
 		"arrow-body-style": "off",
