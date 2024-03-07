@@ -278,15 +278,25 @@ const SlotGameCategory: FC<{
 	const handleSetAllCurrencyStatus = async ({
 		slotGameId,
 		activeInactiveAll,
+		isGoToPRD,
 	}: {
 		slotGameId: number
 		activeInactiveAll: boolean
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!activeInactiveAll) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
 			await setSlotGameAllCurrency({
 				siteId: Number(siteId),
 				slotGameId,
-				status: activeInactiveAll ? 1 : 0,
+				status: hashedStatus,
 			}).unwrap()
 
 			// 更動儲存在前端的資料
@@ -297,9 +307,13 @@ const SlotGameCategory: FC<{
 			)
 			columnInfos.forEach(({ dataIndex }) =>
 				assign(rawSource[sourceIndex], {
-					[dataIndex]: activeInactiveAll ? 1 : 0,
+					[dataIndex]: hashedStatus,
 				})
 			)
+			if (!activeInactiveAll) {
+				// 如果全關則 goToPRD 一起關
+				assign(rawSource[sourceIndex], { isGoToPRD: false })
+			}
 			assign(rawSource[sourceIndex], { activeInactiveAll })
 			assign(rawSource[sourceIndex], { operator: userData?.userName })
 			setTableDataSource(rawSource)
