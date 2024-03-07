@@ -49,9 +49,11 @@ interface ISlotGameCategoryTableProps {
 	setAllStatus: ({
 		slotGameId,
 		activeInactiveAll,
+		isGoToPRD,
 	}: {
 		slotGameId: number
 		activeInactiveAll: boolean
+		isGoToPRD: boolean
 	}) => void
 	setGoToPRD: ({
 		slotGameId,
@@ -90,7 +92,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 		target: any[],
 		currencyColumns: ITableColumnsInfo[]
 	) => {
-		currencyColumns.forEach((currency, index) => {
+		currencyColumns.forEach(currency => {
 			const { title, dataIndex } = currency
 			const insertItem = {
 				title,
@@ -118,7 +120,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				},
 			}
 			// 依照
-			target.splice(4 + index, 0, insertItem)
+			target.splice(target.length - 2, 0, insertItem)
 		})
 		return target
 	}
@@ -181,7 +183,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 			key: 'activeInactiveAll',
 			align: 'center' as 'center',
 			render: (record: any) => {
-				const { id: slotGameId, activeInactiveAll } = record
+				const { id: slotGameId, activeInactiveAll, isGoToPRD } = record
 				return (
 					<Switch
 						checked={activeInactiveAll}
@@ -189,6 +191,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 						onChange={() => {
 							setAllStatus({
 								slotGameId,
+								isGoToPRD,
 								activeInactiveAll: !activeInactiveAll,
 							})
 						}}
@@ -220,7 +223,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	].filter(column => {
 		// 只有 allCategory 狀態要顯示 PRD 欄位，選 category狀態則不用
 		if (isAllCategory) return true
-		return column.key !== 'goToPrd'
+		return column.key !== 'goToPrd' && column.key !== 'activeInactiveAll'
 	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
