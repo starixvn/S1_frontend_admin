@@ -80,3 +80,27 @@ export interface ISlotGameAllCurrencyArgs {
 	slotGameId: number
 	status: number
 }
+
+export interface ISetSlogGameEnvironmentArgs {
+	slotGameId: number
+	siteId: number
+	isPRD: number
+}
+
+export interface ISetNewSlotGameArgs {
+	tpId: number
+	gameId: number
+	enName: string
+	csName: string
+	rtp: number
+	reel: string
+	device: number
+	payline: string
+	fun: number
+	currencyIds: number[]
+	categoryIds: number[]
+}
+
+export interface ISlotGameForm extends Omit<ISetNewSlotGameArgs, 'fun'> {
+	fun: boolean
+}

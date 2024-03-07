@@ -3,12 +3,15 @@ import { LayoutContent } from 'app/pages/layout'
 import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCategoryFilter'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
+import paths from 'app/constants/paths'
+import { useNavigate } from 'react-router-dom'
 import {
 	useGetSlotGamesTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
 	useSetSlotGameAllCurrencyMutation,
 	useSetSlotGameCategoryMutation,
+	useSetSlotGameEnvironmentMutation,
 	useSetSlotGameMutation,
 } from 'features/slotGameCategory/api'
 import {
@@ -30,6 +33,8 @@ import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
 import { AuthContext } from 'common/auth'
 import { CurrencyEnum } from 'type'
+import { AffixButtons } from 'components/AffixButtons'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
@@ -43,6 +48,7 @@ const SlotGameCategory: FC<{
 		status: number
 		gameId: string
 	}>()
+	const navigate = useNavigate()
 	// format 過後的 tableDataSource
 	const [tableDataSource, setTableDataSource] = useState<any[]>([])
 	// 當前 response 需要新增的 Table Columns 資訊
@@ -87,6 +93,11 @@ const SlotGameCategory: FC<{
 
 	const [setSlotGameCategory, { isLoading: isSetSlotGameCategoryLoading }] =
 		useSetSlotGameCategoryMutation()
+
+	const [
+		setSlotGameEnvironment,
+		{ isLoading: isSetSlotGameEnvironmentLoading },
+	] = useSetSlotGameEnvironmentMutation()
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -286,6 +297,37 @@ const SlotGameCategory: FC<{
 		}
 	}
 
+	const handleSetSlotGameEnvironment = async ({
+		slotGameId,
+		isGoToPRD,
+	}: {
+		slotGameId: number
+		isGoToPRD: boolean
+	}) => {
+		// 設定是否上到 PRD
+		try {
+			await setSlotGameEnvironment({
+				siteId: Number(siteId),
+				slotGameId,
+				isPRD: isGoToPRD ? 1 : 0,
+			}).unwrap()
+
+			// 更動儲存在前端的資料
+			const rawSource = cloneDeep(tableDataSource)
+			const sourceIndex = findIndex(
+				rawSource,
+				source => source.id === slotGameId
+			)
+			assign(rawSource[sourceIndex], { isGoToPRD })
+			assign(rawSource[sourceIndex], { operator: userData?.userName })
+			setTableDataSource(rawSource)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		if (currentCategoryId !== undefined) {
 			handleSearch({})
@@ -336,7 +378,8 @@ const SlotGameCategory: FC<{
 		isSetSlotGameLoading ||
 		isGetSlotGameCategoryListLoading ||
 		isSetSlotGameCategoryLoading ||
-		isSetSlotGameAllCurrencyLoading
+		isSetSlotGameAllCurrencyLoading ||
+		isSetSlotGameEnvironmentLoading
 
 	return (
 		<LayoutContent.Main>
@@ -358,9 +401,20 @@ const SlotGameCategory: FC<{
 					onTableChange={handleTableChange}
 					setStatus={handleSetStatus}
 					setAllStatus={handleSetAllCurrencyStatus}
+					setGoToPRD={handleSetSlotGameEnvironment}
 					categoryForm={categoryForm}
 				/>
 			)}
+			<AffixButtons>
+				<AffixButtons.Create
+					disabled={!editPermission?.canUse}
+					onClick={() => {
+						navigate(
+							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/add`
+						)
+					}}
+				/>
+			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }
