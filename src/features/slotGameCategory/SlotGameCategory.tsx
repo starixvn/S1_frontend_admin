@@ -67,6 +67,11 @@ const SlotGameCategory: FC<{
 	const [categoryForm] = Form.useForm<{ categoryId: number }>()
 	const currentCategoryId = Form.useWatch('categoryId', categoryForm)
 
+	// 判斷是否為狀態控制而非 category 顯示與否的控制
+	const isAllCategory =
+		currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
+		currentCategoryId === undefined
+
 	const {
 		data: { data: tpList } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
@@ -189,26 +194,34 @@ const SlotGameCategory: FC<{
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!status) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
-			if (
-				currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
-				currentCategoryId === undefined
-			) {
+			if (isAllCategory) {
 				// Default
 				await setSlotGame({
 					siteId,
 					currencyId,
 					slotGameId,
-					status: Number(status),
+					status: hashedStatus,
 				}).unwrap()
 			} else {
 				// Category
+				// 調整 category 時不需要根據是否上 PRD 做 status value 調整
 				await setSlotGameCategory({
 					siteId,
 					currencyId,
@@ -265,15 +278,25 @@ const SlotGameCategory: FC<{
 	const handleSetAllCurrencyStatus = async ({
 		slotGameId,
 		activeInactiveAll,
+		isGoToPRD,
 	}: {
 		slotGameId: number
 		activeInactiveAll: boolean
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!activeInactiveAll) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
 			await setSlotGameAllCurrency({
 				siteId: Number(siteId),
 				slotGameId,
-				status: activeInactiveAll ? 1 : 0,
+				status: hashedStatus,
 			}).unwrap()
 
 			// 更動儲存在前端的資料
@@ -284,9 +307,13 @@ const SlotGameCategory: FC<{
 			)
 			columnInfos.forEach(({ dataIndex }) =>
 				assign(rawSource[sourceIndex], {
-					[dataIndex]: activeInactiveAll ? 1 : 0,
+					[dataIndex]: hashedStatus,
 				})
 			)
+			if (!activeInactiveAll) {
+				// 如果全關則 goToPRD 一起關
+				assign(rawSource[sourceIndex], { isGoToPRD: false })
+			}
 			assign(rawSource[sourceIndex], { activeInactiveAll })
 			assign(rawSource[sourceIndex], { operator: userData?.userName })
 			setTableDataSource(rawSource)
@@ -393,6 +420,7 @@ const SlotGameCategory: FC<{
 			{tableDataSource.length > 0 && (
 				<SlotGameCategoryTable
 					loading={loading}
+					isAllCategory={isAllCategory}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					dataSource={tableDataSource}
 					columnInfos={columnInfos}
