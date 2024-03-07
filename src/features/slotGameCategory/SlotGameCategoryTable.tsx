@@ -37,11 +37,13 @@ interface ISlotGameCategoryTableProps {
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => void
 	setAllStatus: ({
 		slotGameId,
@@ -93,7 +95,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				key: dataIndex,
 				align: 'center' as 'center',
 				render: (record: any) => {
-					const { id: slotGameId } = record
+					const { id: slotGameId, isGoToPRD } = record
 					const { currencyId } = JSON.parse(dataIndex)
 					const currentStatus = Boolean(record[dataIndex])
 					return (
@@ -106,6 +108,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									slotGameId,
 									status: !currentStatus,
 									dataIndex,
+									isGoToPRD,
 								})
 							}}
 						/>

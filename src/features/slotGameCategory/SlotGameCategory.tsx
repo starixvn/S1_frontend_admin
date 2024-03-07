@@ -189,12 +189,22 @@ const SlotGameCategory: FC<{
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!status) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
 			if (
 				currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
@@ -205,7 +215,7 @@ const SlotGameCategory: FC<{
 					siteId,
 					currencyId,
 					slotGameId,
-					status: Number(status),
+					status: hashedStatus,
 				}).unwrap()
 			} else {
 				// Category
@@ -213,7 +223,7 @@ const SlotGameCategory: FC<{
 					siteId,
 					currencyId,
 					slotGameId,
-					status: Number(status),
+					status: hashedStatus,
 					categoryId: currentCategoryId,
 				}).unwrap()
 			}
