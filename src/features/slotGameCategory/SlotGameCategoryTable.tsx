@@ -26,6 +26,7 @@ import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 
 interface ISlotGameCategoryTableProps {
 	loading: boolean
+	isAllCategory: boolean
 	timeZoneUtcOffset: number
 	dataSource: any[]
 	columnInfos: ITableColumnsInfo[]
@@ -37,11 +38,13 @@ interface ISlotGameCategoryTableProps {
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => void
 	setAllStatus: ({
 		slotGameId,
@@ -64,6 +67,7 @@ const { Option } = Select
 
 const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	loading,
+	isAllCategory,
 	timeZoneUtcOffset,
 	dataSource,
 	columnInfos,
@@ -93,7 +97,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				key: dataIndex,
 				align: 'center' as 'center',
 				render: (record: any) => {
-					const { id: slotGameId } = record
+					const { id: slotGameId, isGoToPRD } = record
 					const { currencyId } = JSON.parse(dataIndex)
 					const currentStatus = Boolean(record[dataIndex])
 					return (
@@ -106,6 +110,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									slotGameId,
 									status: !currentStatus,
 									dataIndex,
+									isGoToPRD,
 								})
 							}}
 						/>
@@ -212,7 +217,11 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					''
 				),
 		},
-	]
+	].filter(column => {
+		// 只有 allCategory 狀態要顯示 PRD 欄位，選 category狀態則不用
+		if (isAllCategory) return true
+		return column.key !== 'goToPrd'
+	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
 	return (
