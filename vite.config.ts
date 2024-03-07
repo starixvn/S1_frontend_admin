@@ -1,4 +1,5 @@
 import { defineConfig, ProxyOptions } from 'vite'
+import styleImport from 'vite-plugin-style-import'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
@@ -39,6 +40,9 @@ export default defineConfig({
 		},
 	},
 	server: {
+		// 啟動後自動打開瀏覽器
+		open: true,
+		// dev proxy
 		proxy: proxyPaths.reduce((acc, proxyPath) => {
 			acc[proxyPath] = {
 				target: 'http://adminsiteservice.nova88dev.com',
