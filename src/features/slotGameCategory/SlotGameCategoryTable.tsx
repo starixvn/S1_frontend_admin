@@ -26,6 +26,7 @@ import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 
 interface ISlotGameCategoryTableProps {
 	loading: boolean
+	isAllCategory: boolean
 	timeZoneUtcOffset: number
 	dataSource: any[]
 	columnInfos: ITableColumnsInfo[]
@@ -66,6 +67,7 @@ const { Option } = Select
 
 const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	loading,
+	isAllCategory,
 	timeZoneUtcOffset,
 	dataSource,
 	columnInfos,
@@ -215,7 +217,11 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					''
 				),
 		},
-	]
+	].filter(column => {
+		// 只有 allCategory 狀態要顯示 PRD 欄位，選 category狀態則不用
+		if (isAllCategory) return true
+		return column.key !== 'goToPrd'
+	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
 	return (

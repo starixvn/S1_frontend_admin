@@ -67,6 +67,11 @@ const SlotGameCategory: FC<{
 	const [categoryForm] = Form.useForm<{ categoryId: number }>()
 	const currentCategoryId = Form.useWatch('categoryId', categoryForm)
 
+	// 判斷是否為狀態控制而非 category 顯示與否的控制
+	const isAllCategory =
+		currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
+		currentCategoryId === undefined
+
 	const {
 		data: { data: tpList } = {} as IGetTpListResponse,
 		isLoading: isGetTpListLoading,
@@ -206,10 +211,7 @@ const SlotGameCategory: FC<{
 		})()
 
 		try {
-			if (
-				currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
-				currentCategoryId === undefined
-			) {
+			if (isAllCategory) {
 				// Default
 				await setSlotGame({
 					siteId,
@@ -219,11 +221,12 @@ const SlotGameCategory: FC<{
 				}).unwrap()
 			} else {
 				// Category
+				// 調整 category 時不需要根據是否上 PRD 做 status value 調整
 				await setSlotGameCategory({
 					siteId,
 					currencyId,
 					slotGameId,
-					status: hashedStatus,
+					status: Number(status),
 					categoryId: currentCategoryId,
 				}).unwrap()
 			}
@@ -403,6 +406,7 @@ const SlotGameCategory: FC<{
 			{tableDataSource.length > 0 && (
 				<SlotGameCategoryTable
 					loading={loading}
+					isAllCategory={isAllCategory}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					dataSource={tableDataSource}
 					columnInfos={columnInfos}
