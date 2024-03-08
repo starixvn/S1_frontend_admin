@@ -421,7 +421,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 
 			const args = {
-				siteIds: Number(querySiteIds),
+				siteIds: querySiteIds?.map((value: string) => Number(value)) ?? [],
 				starTime,
 				endTime,
 				tpCategorys: tpCategorys.map((categoryId: string) =>
