@@ -90,23 +90,6 @@ export type IWinLossByPlayerResponse = IAxiosResponse<IWinLossTableData[]>
 export interface IGetWinLossByPlayerExportArgs
 	extends IWinLossBasicExportArgs {}
 
-export interface IGetWinLossByPlayerDetailArgs {
-	siteIds: number
-	starTime: string
-	endTime: string
-	tpGameTypes: number[]
-	currencyIds: number[]
-	userName: string
-	orderBy: boolean
-	orderByProperty: string
-	orderByDirection: number
-	dateType: number
-	displayGroupBreakdownInOriginalCurrency: boolean
-	baseCurrencyId: number
-}
-
-export type IWinLossByPlayerDetailResponse = IAxiosResponse<IWinLossTableData[]>
-
 export interface IGetWinLossByCurrencyArgs extends IWinLossBasicArgs {}
 
 export type IWinLossByCurrencyResponse = IAxiosResponse<IWinLossTableData[]>

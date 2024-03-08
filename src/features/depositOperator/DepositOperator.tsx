@@ -32,8 +32,13 @@ import {
 	useLazyGetDepositOperatorListQuery,
 	useBatchRejectedDepositTransIdsMutation,
 	useExportDepositMutation,
+	useSetDepositStatusMutation,
 } from 'features/depositOperator/api'
-import { DepositStatusEnum, IForm } from 'features/depositOperator/type'
+import {
+	DepositStatusEnum,
+	IForm,
+	ISetDepositStatusArgs,
+} from 'features/depositOperator/type'
 import { DateTypeEnum } from 'features/depositOperator/constants'
 import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
@@ -45,7 +50,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [form] = Form.useForm<IForm>()
 
 	const {
-		actionPermissions: { exportExcelPermission, rejectPermission } = {},
+		actionPermissions: {
+			approvedPermission,
+			exportExcelPermission,
+			rejectPermission,
+		} = {},
 	} = useAuth()
 
 	const { siteId: originSiteId } = useAppSelector(selectUserSite) ?? {}
@@ -88,6 +97,9 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		data: { data: vipLevelEnum = [] } = {},
 		isFetching: isGetVipLevelEnumFetching,
 	} = useGetVipLevelEnumBySiteIdQuery({ siteId })
+
+	const [setDepositStatus, { isLoading: isSetDepositStatusLoading }] =
+		useSetDepositStatusMutation()
 
 	const { data: calCodeList = [], isFetching: isGetCalCodeListFetching } =
 		useGetCalCodeListQuery(
@@ -137,6 +149,17 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const resetSelectedTransIds = () => {
 		setTableSelectedTransIds([])
+	}
+
+	// * 在列表中直接操作單據設定為 Approval
+	const handleDepositApproval = async (args: ISetDepositStatusArgs) => {
+		try {
+			await setDepositStatus(args).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
 	}
 
 	const handleExport = async () => {
@@ -386,6 +409,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		({ currencyId }) => includes(formCurrencyIds, currencyId)
 	)
 
+	const loading = isGetDepositOperatorListFetching || isSetDepositStatusLoading
+
 	const hasSelectedRow = tableSelectedRowTransIds.length > 0
 
 	// * 處理多選 checkbox
@@ -418,7 +443,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			<DepositOperatorFilter
 				isAllSite={formIsAllSite}
 				form={form}
-				loading={isGetDepositOperatorListFetching}
+				loading={loading}
 				enumLoading={enumLoading}
 				currencyListBySite={currencyListBySite}
 				statusesEnum={statusesEnum}
@@ -433,17 +458,19 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			/>
 			<DepositOperatorTable
 				isAllSite={queryParams?.isAllSite}
-				loading={isGetDepositOperatorListFetching}
+				loading={loading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				depositOperatorList={depositOperatorList}
+				approvedPermission={approvedPermission}
 				pagination={pagination}
 				rowSelection={rowSelection}
 				onTableChange={handleTableChange}
+				onDepositApproval={handleDepositApproval}
 			/>
 
 			{!isEmpty(currencyAmountRecordList) && (
 				<DepositOperatorOverviewTable
-					loading={isGetDepositOperatorListFetching}
+					loading={loading}
 					currencyAmountRecordList={currencyAmountRecordList}
 					currencyAmountRecordTotal={currencyAmountRecordTotal}
 				/>

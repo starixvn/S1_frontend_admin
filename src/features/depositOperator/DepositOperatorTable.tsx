@@ -12,6 +12,7 @@ import {
 	Popover,
 	Typography,
 	TablePaginationConfig,
+	Popconfirm,
 } from 'antd'
 import {
 	Table,
@@ -19,29 +20,38 @@ import {
 	VisibilityColumnsButton,
 } from 'components'
 import { PaginationInterface } from 'common/hooks'
+import { DepositTypeEnum, PermissionInterface } from 'type'
 import {
 	numberFormatter,
 	timeFormat,
 	jsonToObject,
 	numFormatToDigits,
 } from 'common/utils/format'
-import { IDepositOperatorData } from 'features/depositOperator/type'
+import {
+	IDepositOperatorData,
+	DepositStatusEnum,
+	ISetDepositStatusArgs,
+} from 'features/depositOperator/type'
 import {
 	DEPOSIT_STATUS_TAGS_COLOR,
 	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
+import { OperatorButton } from 'components/OperatorButton/OperatorButton'
+import { multiEqual } from 'common/utils'
 
 interface IDepositOperatorTableProps {
 	isAllSite: boolean
 	loading: boolean
 	timeZoneUtcOffset: number
 	depositOperatorList: IDepositOperatorData[]
+	approvedPermission: PermissionInterface | undefined
 	pagination: PaginationInterface
 	rowSelection: {
 		selectedRowKeys: Key[]
 		onChange: (newSelectedRowKeys: Key[]) => void
 	}
 	onTableChange: (newPagination: TablePaginationConfig) => void
+	onDepositApproval: (args: ISetDepositStatusArgs) => void
 }
 
 const DepositOperatorTable = ({
@@ -49,9 +59,11 @@ const DepositOperatorTable = ({
 	loading,
 	timeZoneUtcOffset,
 	depositOperatorList,
+	approvedPermission,
 	pagination,
 	rowSelection,
 	onTableChange,
+	onDepositApproval,
 }: IDepositOperatorTableProps) => {
 	const { t } = useTranslation()
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
@@ -147,6 +159,64 @@ const DepositOperatorTable = ({
 			},
 		},
 		{
+			title: t('Label_Action'),
+			key: 'depositType',
+			width: 60,
+			align: 'center' as 'center',
+			render: (record: IDepositOperatorData) => {
+				const {
+					depositType,
+					transId,
+					status,
+					actualDeposit,
+					comment = '',
+					amount,
+					bankId,
+				} = record
+				// * 只有 Pending 狀態 及 存款類別為 LocalBanking 可操作 Approve 按鈕
+				if (
+					status !== DepositStatusEnum.Pending ||
+					depositType !== DepositTypeEnum.LocalBanking
+				) {
+					return null
+				}
+
+				const args = {
+					action: DepositStatusEnum.Approved,
+					actualDeposit,
+					comment,
+					transId,
+					actualCryptoAmount: amount,
+					// * bankId 在 action 是 approved 時需要送出
+					...(multiEqual(status, [
+						DepositStatusEnum.OnHold,
+						DepositStatusEnum.Approved,
+					]) && { bankId }),
+					bankId,
+				}
+
+				// *  只有Local Bank Transfer 以及 FullName 有值的才出現 Approve 按紐
+				return (
+					<Space>
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							onConfirm={() => onDepositApproval(args)}
+						>
+							<OperatorButton
+								loading={loading}
+								size='small'
+								// * 沒有權限 approved 的帳號按鈕呈現灰色
+								color={approvedPermission?.canUse ? 'Green' : 'Gray'}
+								disabled={!approvedPermission?.canUse}
+							>
+								{t('Label_Approve')}
+							</OperatorButton>
+						</Popconfirm>
+					</Space>
+				)
+			},
+		},
+		{
 			title: t('Label_DepositType'),
 			key: 'depositType',
 			width: 60,
@@ -207,6 +277,20 @@ const DepositOperatorTable = ({
 				),
 		},
 		{
+			title: t('Label_Remark'),
+			key: 'remark',
+			dataIndex: 'remark',
+			width: 80,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_FullName'),
+			key: 'accountName',
+			dataIndex: 'accountName',
+			width: 80,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_VipLevel'),
 			key: 'vipLevel',
 			width: 120,
@@ -236,7 +320,10 @@ const DepositOperatorTable = ({
 				const { exchangeAmount, actualExchangeAmount } =
 					jsonToObject(depositInfo) ?? {}
 				// * approved 時使用 ActualExchangeAmount，其餘皆用 exchangeAmount
-				const amount = status === 3 ? actualExchangeAmount : exchangeAmount
+				const amount =
+					status === DepositStatusEnum.Approved
+						? actualExchangeAmount
+						: exchangeAmount
 
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
