@@ -10,8 +10,6 @@ import {
 	IGetWinLossByMonthExportArgs,
 	IWinLossByMonthResponse,
 	IGetWinLossByPlayerArgs,
-	IGetWinLossByPlayerDetailArgs,
-	IWinLossByPlayerDetailResponse,
 	IGetWinLossByPlayerExportArgs,
 	IGetWinLossByTpCategoryTypeArgs,
 	IGetWinLossByTpCategoryTypeExportArgs,
@@ -129,16 +127,6 @@ export const winLostReportApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
-		getWinLossByPlayerDetail: builder.query<
-			IWinLossByPlayerDetailResponse,
-			IGetWinLossByPlayerDetailArgs
-		>({
-			query: data => ({
-				url: 'MpaWinLossReport/GetWinLossByPlayerDetail',
-				method: 'POST',
-				data,
-			}),
-		}),
 		getWinLossByCurrency: builder.query<
 			IWinLossByCurrencyResponse,
 			IGetWinLossByCurrencyArgs
@@ -207,7 +195,6 @@ export const {
 	useLazyGetWinLossByTpGameTypeQuery,
 	useLazyGetWinLossByTpCategoryTypeQuery,
 	useLazyGetWinLossByPlayerQuery,
-	useLazyGetWinLossByPlayerDetailQuery,
 	useLazyGetWinLossByCurrencyQuery,
 	useLazyGetWinLossByBrandQuery,
 	useLazyGetWinLossByAffiliateQuery,
