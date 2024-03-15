@@ -55,3 +55,23 @@ export interface ISetLeaderboardPointCalculation {
 	before: ILeaderboardPointData
 	after: ILeaderboardPointData
 }
+
+export interface IGetLeaderboardTagExcludeListArgs {
+	siteId?: number
+}
+
+export interface ILeaderboardTagExcludeData {
+	siteId: number
+	tagExcludeList: string
+	tagsExclude: number[]
+	updater: string
+	updateTime: string
+}
+
+export interface ISetLeaderboardTagExcludeArgs {
+	siteId?: number
+	before: {
+		tagExcludeList: number[]
+	}
+	after: { tagExcludeList: number[] }
+}

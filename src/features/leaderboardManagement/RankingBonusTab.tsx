@@ -60,7 +60,7 @@ const RankingBonusTab = ({
 		<Card
 			title={t('Label_SetRankingBonus')}
 			bordered={false}
-			style={{ marginTop: 20, width: '50vw', marginBottom: 20 }}
+			style={{ marginTop: 20, marginBottom: 20 }}
 		>
 			<Tabs
 				defaultActiveKey='1'
