@@ -10,7 +10,14 @@ import { axiosBaseQuery } from 'common/service/axiosBaseQuery'
 export const rootApi = createApi({
 	reducerPath: 'rootApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	// POST2 用於處理對應單一 api 有一對以上 標籤對照時使用的通用 Tag
-	tagTypes: ['POST', 'POST2', 'NOTE_POST', 'UPDATE_PIC', 'UPDATE_MODAL'],
+	// POST2 以上用於處理對應單一 api 有一對以上 標籤對照時使用的通用 Tag
+	tagTypes: [
+		'POST',
+		'POST2',
+		'POST3',
+		'NOTE_POST',
+		'UPDATE_PIC',
+		'UPDATE_MODAL',
+	],
 	endpoints: () => ({}),
 })

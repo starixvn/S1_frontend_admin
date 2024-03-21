@@ -1,24 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import { Form, message } from 'antd'
+import { Form, message, Col, Row } from 'antd'
 import {
 	useGetLeaderboardPointCalculationQuery,
 	useGetLeaderboardRankingBonusQuery,
 	useSetLeaderboardPointCalculationMutation,
 	useSetLeaderboardRankingBonusMutation,
+	useGetLeaderboardTagExcludeListQuery,
+	useSetLeaderboardTagExcludeListMutation,
 } from 'features/leaderboardManagement/api'
 import { SiteIds } from 'app/constants/siteIds'
 import { CalculationForm } from 'features/leaderboardManagement/CalculationForm'
 import {
 	ILeaderboardPointCalculationData,
+	ILeaderboardTagExcludeData,
 	IRankingData,
 } from 'features/leaderboardManagement/type'
 import { RankingBonusTab } from 'features/leaderboardManagement/RankingBonusTab'
 import { isPositiveInteger } from 'features/leaderboardManagement/utils'
+import TaggingRestrictInput from 'features/leaderboardManagement/TaggingRestrictInput'
+import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
+import { isEmpty } from 'lodash'
 
 const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -28,6 +34,7 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [calculationKey, setCalculationKey] = useState<number | undefined>(
 		undefined
 	)
+	const [excludeForm] = Form.useForm<{ tagsExclude: number[] }>()
 
 	const [rankingForm] = Form.useForm<IRankingData>()
 	const [rankingFormKey, setRankingFormKey] = useState<string | undefined>(
@@ -61,6 +68,22 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	)
 
+	const {
+		data: {
+			data: leaderboardTagExcludeObject = {} as ILeaderboardTagExcludeData,
+		} = {},
+		isFetching: isGetLeaderboardTagExcludeListFetching,
+	} = useGetLeaderboardTagExcludeListQuery(
+		{
+			siteId,
+		},
+		{
+			skip: !siteId,
+		}
+	)
+
+	const { data: { data: tagList = [] } = {} } = useGetAllTagQuery()
+
 	const [
 		setLeaderboardPointCalculation,
 		{ isLoading: isSetLeaderboardPointCalculationLoading },
@@ -70,6 +93,11 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		setLeaderboardRankingBonus,
 		{ isLoading: isSetLeaderboardRankingBonusLoading },
 	] = useSetLeaderboardRankingBonusMutation()
+
+	const [
+		setLeaderboardTagExcludeList,
+		{ isLoading: isSetLeaderboardTagExcludeListLoading },
+	] = useSetLeaderboardTagExcludeListMutation()
 
 	const handleUpdateCalculation = async (
 		record: ILeaderboardPointCalculationData
@@ -173,12 +201,51 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleUpdateExcludeTagForm = async () => {
+		if (!siteId) return
+		const { tagsExclude: tagsExcludeFormData } =
+			await excludeForm.getFieldsValue(true)
+		const { tagsExclude } = leaderboardTagExcludeObject
+		const before = {
+			tagExcludeList: isEmpty(tagsExclude) ? [] : tagsExclude,
+		}
+
+		const after = {
+			tagExcludeList: tagsExcludeFormData,
+		}
+
+		try {
+			await setLeaderboardTagExcludeList({
+				siteId,
+				before,
+				after,
+			}).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	const calculationLoading =
 		isGetLeaderboardCalculationFetching ||
 		isSetLeaderboardPointCalculationLoading
 
 	const rankingBonusLoading =
 		isGetLeaderboardRankingBonusFetching || isSetLeaderboardRankingBonusLoading
+
+	const tagExcludeListLoading =
+		isGetLeaderboardTagExcludeListFetching ||
+		isSetLeaderboardTagExcludeListLoading
+
+	useEffect(() => {
+		if (!isEmpty(leaderboardTagExcludeObject)) {
+			excludeForm.setFieldsValue({
+				tagsExclude: leaderboardTagExcludeObject?.tagsExclude,
+			})
+		}
+	}, [isGetLeaderboardTagExcludeListFetching])
 
 	return (
 		<LayoutContent.Main>
@@ -194,16 +261,29 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				setEditingKey={setCalculationKey}
 				onSave={handleUpdateCalculation}
 			/>
-			<RankingBonusTab
-				isInEdit={isInEdit}
-				form={rankingForm}
-				loading={rankingBonusLoading}
-				leaderboardRankingBonusData={leaderboardRankingBonusData}
-				editingKey={rankingFormKey}
-				setEditingKey={setRankingFormKey}
-				onSave={handleUpdateRankingForm}
-				editPermission={editPermission}
-			/>
+
+			<Row gutter={16}>
+				<Col span={14}>
+					<RankingBonusTab
+						isInEdit={isInEdit}
+						form={rankingForm}
+						loading={rankingBonusLoading}
+						leaderboardRankingBonusData={leaderboardRankingBonusData}
+						editingKey={rankingFormKey}
+						setEditingKey={setRankingFormKey}
+						onSave={handleUpdateRankingForm}
+						editPermission={editPermission}
+					/>
+				</Col>
+				<Col span={10}>
+					<TaggingRestrictInput
+						isLoading={tagExcludeListLoading}
+						form={excludeForm}
+						tagList={tagList}
+						handleUpdateExcludeTagForm={handleUpdateExcludeTagForm}
+					/>
+				</Col>
+			</Row>
 		</LayoutContent.Main>
 	)
 }
