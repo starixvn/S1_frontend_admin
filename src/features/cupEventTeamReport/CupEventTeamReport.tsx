@@ -10,15 +10,15 @@ import { message } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { getTimezoneInfo } from 'common/utils'
 import { useTranslation } from 'react-i18next'
-import { WorldCupTeamReportTable } from './WorldCupTeamReportTable'
+import { CupEventTeamReportTable } from 'features/cupEventTeamReport/CupEventTeamReportTable'
 import {
-	useExportWorldCupTeamReportMutation,
-	useGetWorldCupTeamReportQuery,
+	useExportCupEventTeamReportMutation,
+	useGetCupEventTeamReportQuery,
 	useSetPayoutMutation,
 } from './api'
-import { IGetWorldCupReportResponse } from './type'
+import { IGetCupEventReportResponse } from './type'
 
-const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
+const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
 		useAuth()
@@ -26,16 +26,16 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 
 	const {
-		data: { data: worldCupTeamReportData } = {} as IGetWorldCupReportResponse,
-		isFetching: isGetWorldCupTeamReportDataLoading,
-	} = useGetWorldCupTeamReportQuery({
+		data: { data: cupEventTeamReportData } = {} as IGetCupEventReportResponse,
+		isFetching: isGetCupEventTeamReportDataLoading,
+	} = useGetCupEventTeamReportQuery({
 		siteId,
 	})
 
 	const [
-		exportWorldCupTeamReport,
-		{ isLoading: isExportWorldCupTeamReportLoading },
-	] = useExportWorldCupTeamReportMutation()
+		exportCupEventTeamReport,
+		{ isLoading: isExportCupEventTeamReportLoading },
+	] = useExportCupEventTeamReportMutation()
 
 	const [setPayout, { isLoading: isSetPayoutLoading }] = useSetPayoutMutation()
 
@@ -43,14 +43,14 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 		try {
 			const { utcOffsetStr } = getTimezoneInfo(timeZoneUtcOffset)
 
-			const blob = await exportWorldCupTeamReport({
+			const blob = await exportCupEventTeamReport({
 				siteId,
 				teamId,
 				timezone: utcOffsetStr,
 			}).unwrap()
 			download(
 				blob,
-				`ExportWorldCupTeamReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportCupEventTeamReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -74,16 +74,16 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 	}
 
 	const loading =
-		isGetWorldCupTeamReportDataLoading ||
-		isExportWorldCupTeamReportLoading ||
+		isGetCupEventTeamReportDataLoading ||
+		isExportCupEventTeamReportLoading ||
 		isSetPayoutLoading
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-			<WorldCupTeamReportTable
+			<CupEventTeamReportTable
 				loading={loading}
-				worldCupTeamReportData={worldCupTeamReportData}
+				cupEventTeamReportData={cupEventTeamReportData}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				exportExcelPermission={exportExcelPermission}
 				editPermission={editPermission}
@@ -97,4 +97,4 @@ const WorldCupTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 	)
 }
 
-export default WorldCupTeamReport
+export default CupEventTeamReport
