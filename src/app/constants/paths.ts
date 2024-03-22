@@ -423,12 +423,12 @@ const paths = {
 				root: 'report/betList',
 				functionId: 100,
 			},
-			worldCupTeamReport: {
-				root: 'report/worldCupTeamReport',
+			cupEventTeamReport: {
+				root: 'report/cupEventTeamReport',
 				functionId: 116,
 			},
-			worldCupMemberReport: {
-				root: 'report/worldCupMemberReport',
+			cupEventMemberReport: {
+				root: 'report/cupEventMemberReport',
 				functionId: 115,
 			},
 			rewardBonusExport: {
@@ -721,8 +721,8 @@ const paths = {
 				root: 'cms/announcement',
 				functionId: 53,
 			},
-			worldCupSetting: {
-				root: 'cms/worldCupSetting',
+			cupEventSetting: {
+				root: 'cms/cupEventSetting',
 				functionId: 114,
 			},
 			siteMaintenance: {
