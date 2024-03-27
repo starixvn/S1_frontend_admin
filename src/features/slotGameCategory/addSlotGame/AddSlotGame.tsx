@@ -1,4 +1,4 @@
-import { find, head } from 'lodash'
+import { find, head, trim } from 'lodash'
 import { CurrencyEnum } from 'type'
 import { useAuth } from 'common/hooks'
 import { Form, message, Modal } from 'antd'
@@ -55,7 +55,14 @@ const AddSlotGame = ({ pageTitle }: { pageTitle?: string }) => {
 	const [updateSlotGameImage] = useUpdateSlotGameImageMutation()
 
 	const handleSetNewSlotGame = async () => {
-		const { fun, ...restValue } = await slotGameForm.validateFields()
+		const {
+			fun,
+			reel = '',
+			rtp = 0,
+			payline = '',
+			gameId,
+			...restValue
+		} = await slotGameForm.validateFields()
 		confirm({
 			title: t('Label_Confirm'),
 			icon: <ExclamationCircleOutlined />,
@@ -63,7 +70,11 @@ const AddSlotGame = ({ pageTitle }: { pageTitle?: string }) => {
 			onOk: async () => {
 				try {
 					await setNewSlotGame({
-						fun: fun ? 1 : 0,
+						fun: fun ? 1 : 2,
+						reel,
+						rtp,
+						payline,
+						gameId: trim(gameId),
 						...restValue,
 					}).unwrap()
 					setUpdatedStep1(true)

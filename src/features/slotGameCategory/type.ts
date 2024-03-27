@@ -89,7 +89,7 @@ export interface ISetSlogGameEnvironmentArgs {
 
 export interface ISetNewSlotGameArgs {
 	tpId: number
-	gameId: number
+	gameId: string
 	enName: string
 	csName: string
 	rtp: number
