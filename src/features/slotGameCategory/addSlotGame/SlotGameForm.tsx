@@ -212,34 +212,12 @@ const SlotGameForm = ({
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item
-								name='rtp'
-								label={`${t('Label_RTP')} (%)`}
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_RTP'),
-										}),
-									},
-								]}
-							>
+							<Form.Item name='rtp' label={`${t('Label_RTP')} (%)`}>
 								<InputNumber />
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item
-								name='reel'
-								label={t('Label_Reel')}
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_Reel'),
-										}),
-									},
-								]}
-							>
+							<Form.Item name='reel' label={t('Label_Reel')}>
 								<Input />
 							</Form.Item>
 						</Col>
@@ -273,18 +251,7 @@ const SlotGameForm = ({
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item
-								name='payLine'
-								label={t('Label_PayLine')}
-								rules={[
-									{
-										required: true,
-										message: t('Label_Required', {
-											key: t('Label_PayLine'),
-										}),
-									},
-								]}
-							>
+							<Form.Item name='payLine' label={t('Label_PayLine')}>
 								<Input />
 							</Form.Item>
 						</Col>
