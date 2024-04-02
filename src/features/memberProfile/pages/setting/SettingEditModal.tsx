@@ -138,7 +138,7 @@ const SettingEditModal = ({
 										key: t('Label_Country'),
 									}),
 								},
-								{ max: 10, message: ' ' },
+								{ max: 100, message: ' ' },
 							]}
 						>
 							<Input />
@@ -154,7 +154,7 @@ const SettingEditModal = ({
 										key: t('Label_State'),
 									}),
 								},
-								{ max: 10, message: ' ' },
+								{ max: 100, message: ' ' },
 							]}
 						>
 							<Input />
@@ -170,7 +170,7 @@ const SettingEditModal = ({
 										key: t('Label_PostCode'),
 									}),
 								},
-								{ max: 10, message: ' ' },
+								{ max: 100, message: ' ' },
 							]}
 						>
 							<Input />
@@ -186,7 +186,7 @@ const SettingEditModal = ({
 										key: t('Label_City'),
 									}),
 								},
-								{ max: 10, message: ' ' },
+								{ max: 100, message: ' ' },
 							]}
 						>
 							<Input />
