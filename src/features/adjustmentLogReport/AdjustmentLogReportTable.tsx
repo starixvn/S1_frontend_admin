@@ -3,10 +3,9 @@ import moment from 'moment'
 import { Table, TablePaginationConfig, Tag } from 'antd'
 import styled from 'styled-components'
 import { LayoutContent } from 'app/pages/layout'
-import { useAppSelector } from 'app/store'
 import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
-import { selectAdjustmentLogReportList } from './slice'
+import { ILogReportData } from './type'
 
 const StaticTitle = styled.span`
 	color: rgba(0, 0, 0, 0.45);
@@ -45,19 +44,22 @@ const renderDetailContent = (value: any): any => {
 	)
 }
 
+interface IAdjustmentLogReportTableProp {
+	loading: boolean
+	timeZoneUtcOffset: number
+	pagination: PaginationInterface
+	onTableChange: (newPagination: TablePaginationConfig) => void
+	adjustmentLogReportList: ILogReportData[]
+}
+
 const AdjustmentLogReportTable = ({
 	loading,
 	timeZoneUtcOffset,
 	pagination,
 	onTableChange,
-}: {
-	loading: boolean
-	timeZoneUtcOffset: number
-	pagination: PaginationInterface
-	onTableChange: (newPagination: TablePaginationConfig) => void
-}) => {
+	adjustmentLogReportList,
+}: IAdjustmentLogReportTableProp) => {
 	const { t } = useTranslation()
-	const adjustmentLogReportList = useAppSelector(selectAdjustmentLogReportList)
 
 	const columns = [
 		{

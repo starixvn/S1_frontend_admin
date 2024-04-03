@@ -2,7 +2,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 export interface IWinLossBasicExportArgs {
-	siteIds: number
+	siteIds: number[]
 	starTime: string
 	endTime: string
 	tpCategorys: number[]
@@ -85,7 +85,17 @@ export interface IGetWinLossByPlayerArgs extends IWinLossBasicArgs {
 	pageSize: number
 }
 
-export type IWinLossByPlayerResponse = IAxiosResponse<IWinLossTableData[]>
+export interface IWinLossByPlayerData extends IWinLossTableData {
+	custId: string
+}
+
+export type IWinLossByPlayerResponse = IAxiosResponse<IWinLossByPlayerData[]>
+
+export interface IGetWinLossByPlayerDetailArgs extends IWinLossBasicExportArgs {
+	custId: string
+}
+
+export type IWinLossByPlayerDetailResponse = IAxiosResponse<IWinLossTableData[]>
 
 export interface IGetWinLossByPlayerExportArgs
 	extends IWinLossBasicExportArgs {}
