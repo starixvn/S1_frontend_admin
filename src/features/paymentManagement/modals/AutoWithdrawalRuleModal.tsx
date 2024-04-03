@@ -426,7 +426,7 @@ const AutoWithdrawalRuleModal = ({
 							onAddClick()
 							setEditingKey(undefined)
 						}}
-						disabled={!!editingKey}
+						disabled={!!editingKey || !editPermission?.canUse}
 					>
 						{t('Label_Add')}
 					</Button>

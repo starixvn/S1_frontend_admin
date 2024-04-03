@@ -407,7 +407,7 @@ const AutoVerifyRuleModal = ({
 						style={{ margin: '0' }}
 						valuePropName='checked'
 					>
-						<Switch />
+						<Switch disabled={!editPermission?.canUse} />
 					</Form.Item>
 				) : (
 					<Switch checked={!!status} disabled />
@@ -448,7 +448,7 @@ const AutoVerifyRuleModal = ({
 							onAddClick()
 							setEditingKey(undefined)
 						}}
-						disabled={!!editingKey}
+						disabled={!!editingKey || !editPermission?.canUse}
 					>
 						{t('Label_Add')}
 					</Button>

@@ -36,8 +36,13 @@ const TransferAccountManagement: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission, viewPermission } = {} } =
-		useAuth()
+	const {
+		actionPermissions: {
+			exportExcelPermission,
+			viewPermission,
+			editPermission,
+		} = {},
+	} = useAuth()
 	const [form] = Form.useForm<IForm>()
 	const navigate = useNavigate()
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -215,6 +220,7 @@ const TransferAccountManagement: FC<{
 			<TransferAccountManagementTable
 				loading={loading}
 				viewPermission={viewPermission}
+				editPermission={editPermission}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				bankTransferAccounts={bankTransferAccounts}
 				transferChannelEnum={transferChannelEnum}
