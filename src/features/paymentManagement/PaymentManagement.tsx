@@ -81,6 +81,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			editWithdrawalBlockSwitchPermission,
 		} = {},
 	} = useAuth()
+
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -459,6 +460,7 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleSubmit = async () => {
+		if (!editPermission?.canUse) return
 		const {
 			fixedAmountList,
 			minAmount,
@@ -550,7 +552,8 @@ const PaymentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleSetLoginInfo = async () => {
-		if (!globalStatusLoginInfo.current?.payId) return
+		if (!globalStatusLoginInfo.current?.payId || !editInfoPermission?.canUse)
+			return
 		const { payId } = globalStatusLoginInfo.current
 		const {
 			transferPin = '',

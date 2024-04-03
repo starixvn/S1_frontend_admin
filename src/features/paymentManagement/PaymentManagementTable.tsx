@@ -72,12 +72,11 @@ const PaymentManagementTable = ({
 			render: (record: IGetPaySettingData) => (
 				<Space>
 					<Typography.Link
-						disabled={!editPermission?.canUse}
 						onClick={() => {
 							onEditClick(record, EditModalTypeEnum.Edit)
 						}}
 					>
-						{t('Label_Edit')}
+						{editPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 					</Typography.Link>
 					<Typography.Link
 						disabled={!setFeePermission?.canUse}

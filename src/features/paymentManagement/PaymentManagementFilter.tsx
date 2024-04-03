@@ -64,20 +64,11 @@ const PaymentManagementFilter = ({
 }: IPaymentManagementFilterProps) => {
 	const { t } = useTranslation()
 
-	const {
-		actionPermissions: {
-			editPermission,
-			editAutoWithdrawalRulePermission,
-			editWithdrawalAutoVerifyRulePermission,
-			editWithdrawalBlockSwitchPermission,
-			editSystemBankInfoPermission,
-		} = {},
-	} = useAuth()
-
 	const handleFormMethod = () => {
 		form.resetFields(['type'])
 	}
 
+	const { actionPermissions: { viewPermission } = {} } = useAuth()
 	const currencyIdsSelector = () => {
 		const onChangeCurrency = (newCurrencyIds: number[]) => {
 			if (newCurrencyIds.includes(0)) {
@@ -220,7 +211,7 @@ const PaymentManagementFilter = ({
 									</Button>
 								</Col>
 
-								{editPermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button
 											type='primary'
@@ -229,7 +220,7 @@ const PaymentManagementFilter = ({
 									</Col>
 								)}
 
-								{editPermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button type='primary' onClick={onSetCryptoInfoClicked}>
 											{t('Label_CryptoSetting')}
@@ -237,7 +228,7 @@ const PaymentManagementFilter = ({
 									</Col>
 								)}
 
-								{editAutoWithdrawalRulePermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button
 											type='primary'
@@ -248,14 +239,14 @@ const PaymentManagementFilter = ({
 									</Col>
 								)}
 
-								{editWithdrawalAutoVerifyRulePermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button type='primary' onClick={onAutoVerifyRuleClicked}>
 											{t('Label_AutoVerifyRule')}
 										</Button>
 									</Col>
 								)}
-								{editWithdrawalBlockSwitchPermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button
 											type='primary'
@@ -265,7 +256,7 @@ const PaymentManagementFilter = ({
 										</Button>
 									</Col>
 								)}
-								{editSystemBankInfoPermission?.canUse && (
+								{viewPermission?.canUse && (
 									<Col>
 										<Button type='primary' onClick={onSystemBankInfoClicked}>
 											{t('Label_BankMaintenance')}
