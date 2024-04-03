@@ -1,17 +1,19 @@
-import BoApi from 'common/service/Api'
-import { FetchLogReportListProps, FetchLogReportListResponse } from './type'
+import { rootApi } from 'common/service/rootApi/api'
+import { IGetLogReportListArgs, IGetLogReportListResponse } from './type'
 
-export const fetchLogReportList = async (
-	body: FetchLogReportListProps
-): Promise<FetchLogReportListResponse> => {
-	const response = await BoApi.post('SettingLogReport/GetList', body)
+export const adjustmentLogReportApi = rootApi.injectEndpoints({
+	endpoints: builder => ({
+		getLogReportList: builder.query<
+			IGetLogReportListResponse,
+			IGetLogReportListArgs
+		>({
+			query: data => ({
+				url: 'SettingLogReport/GetList',
+				method: 'POST',
+				data,
+			}),
+		}),
+	}),
+})
 
-	if (response?.data?.errorCode !== 0) {
-		throw new Error(response?.data?.message)
-	}
-
-	return {
-		data: response?.data?.data ?? [],
-		rowCount: response?.data?.rowCount,
-	}
-}
+export const { useLazyGetLogReportListQuery } = adjustmentLogReportApi
