@@ -15,7 +15,7 @@ const { Option } = Select
 
 interface TransferAccountManagementTableProps {
 	loading: boolean
-	editPermission?: PermissionInterface
+	viewPermission?: PermissionInterface
 	bankTransferAccounts: IBankTransferAccountData[]
 	transferChannelEnum: IEnumTypeData[]
 	transferAccountStatusEnum: IEnumTypeData[]
@@ -29,7 +29,7 @@ const TransferAccountManagementTable: FC<
 	TransferAccountManagementTableProps
 > = ({
 	loading,
-	editPermission,
+	viewPermission,
 	bankTransferAccounts,
 	transferChannelEnum,
 	transferAccountStatusEnum,
@@ -59,7 +59,7 @@ const TransferAccountManagementTable: FC<
 			render: ({ id: editId }: IBankTransferAccountData) => {
 				return (
 					<Typography.Link
-						disabled={!editPermission?.canUse}
+						disabled={!viewPermission?.canUse}
 						onClick={() => {
 							setQueryParams({ editId })
 							updateModal.onOpen()

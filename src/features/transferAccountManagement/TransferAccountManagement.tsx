@@ -36,7 +36,7 @@ const TransferAccountManagement: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
-	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
+	const { actionPermissions: { exportExcelPermission, viewPermission } = {} } =
 		useAuth()
 	const [form] = Form.useForm<IForm>()
 	const navigate = useNavigate()
@@ -214,7 +214,7 @@ const TransferAccountManagement: FC<{
 
 			<TransferAccountManagementTable
 				loading={loading}
-				editPermission={editPermission}
+				viewPermission={viewPermission}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				bankTransferAccounts={bankTransferAccounts}
 				transferChannelEnum={transferChannelEnum}

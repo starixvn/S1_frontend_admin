@@ -29,6 +29,7 @@ import {
 } from 'features/transferAccountManagement/api'
 import { ChannelEnum } from 'features/transferAccountManagement/constants'
 import TimeZoneSelect from 'components/TimeZoneSelect'
+import { useAuth } from '../../common/hooks'
 
 const { Option } = Select
 
@@ -48,6 +49,7 @@ const TransferAccountManagementForm: FC<
 	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formChannel = Form.useWatch('channel', form)
 	const formCryptoCurrency = Form.useWatch('cryptoCurrencyId', form)
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 
 	const {
 		data: { data: transferAccountStatusEnum = [] } = {},
@@ -120,6 +122,7 @@ const TransferAccountManagementForm: FC<
 					cryptoCurrencyId: null,
 					network: null,
 				}}
+				disabled={!editPermission?.canUse}
 			>
 				<Row align='middle' gutter={16}>
 					<Col lg={8} md={12} xs={24}>
