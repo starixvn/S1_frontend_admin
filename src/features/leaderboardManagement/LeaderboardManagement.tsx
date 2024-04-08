@@ -205,7 +205,7 @@ const LeaderboardManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		if (!siteId) return
 		const { tagsExclude: tagsExcludeFormData } =
 			await excludeForm.getFieldsValue(true)
-		const { tagsExclude } = leaderboardTagExcludeObject
+		const { tagsExclude } = leaderboardTagExcludeObject || {}
 		const before = {
 			tagExcludeList: isEmpty(tagsExclude) ? [] : tagsExclude,
 		}
