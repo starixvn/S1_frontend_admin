@@ -3,12 +3,15 @@ import { LayoutContent } from 'app/pages/layout'
 import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCategoryFilter'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
+import paths from 'app/constants/paths'
+import { useNavigate } from 'react-router-dom'
 import {
 	useGetSlotGamesTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
 	useSetSlotGameAllCurrencyMutation,
 	useSetSlotGameCategoryMutation,
+	useSetSlotGameEnvironmentMutation,
 	useSetSlotGameMutation,
 } from 'features/slotGameCategory/api'
 import {
@@ -30,6 +33,8 @@ import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
 import { AuthContext } from 'common/auth'
 import { CurrencyEnum } from 'type'
+import { AffixButtons } from 'components/AffixButtons'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
 
 const SlotGameCategory: FC<{
 	pageTitle?: string
@@ -43,6 +48,7 @@ const SlotGameCategory: FC<{
 		status: number
 		gameId: string
 	}>()
+	const navigate = useNavigate()
 	// format 過後的 tableDataSource
 	const [tableDataSource, setTableDataSource] = useState<any[]>([])
 	// 當前 response 需要新增的 Table Columns 資訊
@@ -60,6 +66,11 @@ const SlotGameCategory: FC<{
 
 	const [categoryForm] = Form.useForm<{ categoryId: number }>()
 	const currentCategoryId = Form.useWatch('categoryId', categoryForm)
+
+	// 判斷是否為狀態控制而非 category 顯示與否的控制
+	const isAllCategory =
+		currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
+		currentCategoryId === undefined
 
 	const {
 		data: { data: tpList } = {} as IGetTpListResponse,
@@ -87,6 +98,11 @@ const SlotGameCategory: FC<{
 
 	const [setSlotGameCategory, { isLoading: isSetSlotGameCategoryLoading }] =
 		useSetSlotGameCategoryMutation()
+
+	const [
+		setSlotGameEnvironment,
+		{ isLoading: isSetSlotGameEnvironmentLoading },
+	] = useSetSlotGameEnvironmentMutation()
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -178,26 +194,34 @@ const SlotGameCategory: FC<{
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!status) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
-			if (
-				currentCategoryId === SlotCategoryEnum.AllAndSetStatus ||
-				currentCategoryId === undefined
-			) {
+			if (isAllCategory) {
 				// Default
 				await setSlotGame({
 					siteId,
 					currencyId,
 					slotGameId,
-					status: Number(status),
+					status: hashedStatus,
 				}).unwrap()
 			} else {
 				// Category
+				// 調整 category 時不需要根據是否上 PRD 做 status value 調整
 				await setSlotGameCategory({
 					siteId,
 					currencyId,
@@ -254,15 +278,25 @@ const SlotGameCategory: FC<{
 	const handleSetAllCurrencyStatus = async ({
 		slotGameId,
 		activeInactiveAll,
+		isGoToPRD,
 	}: {
 		slotGameId: number
 		activeInactiveAll: boolean
+		isGoToPRD: boolean
 	}) => {
+		const hashedStatus = ((): number => {
+			if (!activeInactiveAll) {
+				return 0
+			}
+			// 再 prd 上的話 set 1 , 否的話 set 3
+			return isGoToPRD ? 1 : 3
+		})()
+
 		try {
 			await setSlotGameAllCurrency({
 				siteId: Number(siteId),
 				slotGameId,
-				status: activeInactiveAll ? 1 : 0,
+				status: hashedStatus,
 			}).unwrap()
 
 			// 更動儲存在前端的資料
@@ -273,10 +307,45 @@ const SlotGameCategory: FC<{
 			)
 			columnInfos.forEach(({ dataIndex }) =>
 				assign(rawSource[sourceIndex], {
-					[dataIndex]: activeInactiveAll ? 1 : 0,
+					[dataIndex]: hashedStatus,
 				})
 			)
+			if (!activeInactiveAll) {
+				// 如果全關則 goToPRD 一起關
+				assign(rawSource[sourceIndex], { isGoToPRD: false })
+			}
 			assign(rawSource[sourceIndex], { activeInactiveAll })
+			assign(rawSource[sourceIndex], { operator: userData?.userName })
+			setTableDataSource(rawSource)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSetSlotGameEnvironment = async ({
+		slotGameId,
+		isGoToPRD,
+	}: {
+		slotGameId: number
+		isGoToPRD: boolean
+	}) => {
+		// 設定是否上到 PRD
+		try {
+			await setSlotGameEnvironment({
+				siteId: Number(siteId),
+				slotGameId,
+				isPRD: isGoToPRD ? 1 : 0,
+			}).unwrap()
+
+			// 更動儲存在前端的資料
+			const rawSource = cloneDeep(tableDataSource)
+			const sourceIndex = findIndex(
+				rawSource,
+				source => source.id === slotGameId
+			)
+			assign(rawSource[sourceIndex], { isGoToPRD })
 			assign(rawSource[sourceIndex], { operator: userData?.userName })
 			setTableDataSource(rawSource)
 		} catch (error) {
@@ -336,7 +405,8 @@ const SlotGameCategory: FC<{
 		isSetSlotGameLoading ||
 		isGetSlotGameCategoryListLoading ||
 		isSetSlotGameCategoryLoading ||
-		isSetSlotGameAllCurrencyLoading
+		isSetSlotGameAllCurrencyLoading ||
+		isSetSlotGameEnvironmentLoading
 
 	return (
 		<LayoutContent.Main>
@@ -350,6 +420,7 @@ const SlotGameCategory: FC<{
 			{tableDataSource.length > 0 && (
 				<SlotGameCategoryTable
 					loading={loading}
+					isAllCategory={isAllCategory}
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					dataSource={tableDataSource}
 					columnInfos={columnInfos}
@@ -358,9 +429,20 @@ const SlotGameCategory: FC<{
 					onTableChange={handleTableChange}
 					setStatus={handleSetStatus}
 					setAllStatus={handleSetAllCurrencyStatus}
+					setGoToPRD={handleSetSlotGameEnvironment}
 					categoryForm={categoryForm}
 				/>
 			)}
+			<AffixButtons>
+				<AffixButtons.Create
+					disabled={!editPermission?.canUse}
+					onClick={() => {
+						navigate(
+							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/add`
+						)
+					}}
+				/>
+			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }
