@@ -18,6 +18,7 @@ export const slotGameResponseConverter = (
 		const { currencyStatusList, ...rest } = game
 		const gameItem = { ...rest }
 		let isAllActive = true
+		let isGoToPRD = false
 
 		currencyStatusList.forEach(currencyStatus => {
 			const { currencyId, status } = currencyStatus
@@ -28,6 +29,9 @@ export const slotGameResponseConverter = (
 			if (currentIsoCode) {
 				if (!status) {
 					isAllActive = false
+				}
+				if (status === 1) {
+					isGoToPRD = true
 				}
 				const dataIndex = JSON.stringify({
 					isoCode: currentIsoCode,
@@ -51,6 +55,9 @@ export const slotGameResponseConverter = (
 			activeInactiveAll: isAllActive,
 		})
 
+		assign(gameItem, {
+			isGoToPRD,
+		})
 		result.push(gameItem)
 	})
 
