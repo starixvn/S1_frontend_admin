@@ -1,4 +1,4 @@
-import { rootApi } from 'common/service/rootApi/api'
+import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import {
 	IGetSlotGameCategoryListArgs,
 	IGetSlotGameCategoryListResponse,
@@ -12,9 +12,12 @@ import {
 	ISetSlogGameEnvironmentArgs,
 	ISetNewSlotGameArgs,
 } from 'features/slotGameCategory/type'
-import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
+import { baseUrl } from '../../common/service/Api'
 
-export const slotGameCategoryApi = rootApi.injectEndpoints({
+export const slotGameCategoryApi = createApi({
+	reducerPath: 'slotGameManagementApi',
+	baseQuery: axiosBaseQuery({ baseUrl }),
 	endpoints: builder => ({
 		getSlotGamesTpList: builder.query<
 			IGetTpListResponse,
