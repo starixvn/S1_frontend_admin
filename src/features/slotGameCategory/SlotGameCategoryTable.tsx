@@ -26,6 +26,7 @@ import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 
 interface ISlotGameCategoryTableProps {
 	loading: boolean
+	isAllCategory: boolean
 	timeZoneUtcOffset: number
 	dataSource: any[]
 	columnInfos: ITableColumnsInfo[]
@@ -37,18 +38,29 @@ interface ISlotGameCategoryTableProps {
 		slotGameId,
 		status,
 		dataIndex,
+		isGoToPRD,
 	}: {
 		currencyId: number
 		slotGameId: number
 		status: boolean
 		dataIndex: string
+		isGoToPRD: boolean
 	}) => void
 	setAllStatus: ({
 		slotGameId,
 		activeInactiveAll,
+		isGoToPRD,
 	}: {
 		slotGameId: number
 		activeInactiveAll: boolean
+		isGoToPRD: boolean
+	}) => void
+	setGoToPRD: ({
+		slotGameId,
+		isGoToPRD,
+	}: {
+		slotGameId: number
+		isGoToPRD: boolean
 	}) => void
 	categoryForm: FormInstance
 }
@@ -57,6 +69,7 @@ const { Option } = Select
 
 const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	loading,
+	isAllCategory,
 	timeZoneUtcOffset,
 	dataSource,
 	columnInfos,
@@ -65,6 +78,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	onTableChange,
 	setStatus,
 	setAllStatus,
+	setGoToPRD,
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
@@ -78,14 +92,14 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 		target: any[],
 		currencyColumns: ITableColumnsInfo[]
 	) => {
-		currencyColumns.forEach((currency, index) => {
+		currencyColumns.forEach(currency => {
 			const { title, dataIndex } = currency
 			const insertItem = {
 				title,
 				key: dataIndex,
 				align: 'center' as 'center',
 				render: (record: any) => {
-					const { id: slotGameId } = record
+					const { id: slotGameId, isGoToPRD } = record
 					const { currencyId } = JSON.parse(dataIndex)
 					const currentStatus = Boolean(record[dataIndex])
 					return (
@@ -98,6 +112,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									slotGameId,
 									status: !currentStatus,
 									dataIndex,
+									isGoToPRD,
 								})
 							}}
 						/>
@@ -105,7 +120,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				},
 			}
 			// 依照
-			target.splice(4 + index, 0, insertItem)
+			target.splice(target.length - 2, 0, insertItem)
 		})
 		return target
 	}
@@ -144,11 +159,31 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 			),
 		},
 		{
+			title: t('Label_GoToPRD'),
+			key: 'goToPrd',
+			align: 'center' as 'center',
+			render: (record: any) => {
+				const { id: slotGameId, isGoToPRD } = record
+				return (
+					<Switch
+						checked={isGoToPRD}
+						disabled={!editPermission?.canUse}
+						onChange={() => {
+							setGoToPRD({
+								slotGameId,
+								isGoToPRD: !isGoToPRD,
+							})
+						}}
+					/>
+				)
+			},
+		},
+		{
 			title: t('Label_ActiveInactiveAll'),
 			key: 'activeInactiveAll',
 			align: 'center' as 'center',
 			render: (record: any) => {
-				const { id: slotGameId, activeInactiveAll } = record
+				const { id: slotGameId, activeInactiveAll, isGoToPRD } = record
 				return (
 					<Switch
 						checked={activeInactiveAll}
@@ -156,6 +191,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 						onChange={() => {
 							setAllStatus({
 								slotGameId,
+								isGoToPRD,
 								activeInactiveAll: !activeInactiveAll,
 							})
 						}}
@@ -184,7 +220,11 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					''
 				),
 		},
-	]
+	].filter(column => {
+		// 只有 allCategory 狀態要顯示 PRD 欄位，選 category狀態則不用
+		if (isAllCategory) return true
+		return column.key !== 'goToPrd' && column.key !== 'activeInactiveAll'
+	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
 	return (
