@@ -3,10 +3,13 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IGetLeaderboardPointCalculationArgs,
 	IGetLeaderboardRankingBonusArgs,
+	IGetLeaderboardTagExcludeListArgs,
 	ILeaderboardPointCalculationData,
 	ILeaderboardRankingBonusData,
+	ILeaderboardTagExcludeData,
 	ISetLeaderboardPointCalculation,
 	ISetLeaderboardRankingBonusArgs,
+	ISetLeaderboardTagExcludeArgs,
 } from 'features/leaderboardManagement/type'
 
 export const leaderboardManagementApi = rootApi.injectEndpoints({
@@ -55,6 +58,28 @@ export const leaderboardManagementApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		getLeaderboardTagExcludeList: builder.query<
+			IAxiosResponse<ILeaderboardTagExcludeData>,
+			IGetLeaderboardTagExcludeListArgs
+		>({
+			query: data => ({
+				url: 'LeaderBoardManagement/GetLeaderboardTagExcludeList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['POST3'],
+		}),
+		setLeaderboardTagExcludeList: builder.mutation<
+			void,
+			ISetLeaderboardTagExcludeArgs
+		>({
+			query: data => ({
+				url: 'LeaderBoardManagement/SetLeaderboardTagExcludeList',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['POST3'],
+		}),
 	}),
 })
 
@@ -63,4 +88,6 @@ export const {
 	useGetLeaderboardRankingBonusQuery,
 	useSetLeaderboardPointCalculationMutation,
 	useSetLeaderboardRankingBonusMutation,
+	useGetLeaderboardTagExcludeListQuery,
+	useSetLeaderboardTagExcludeListMutation,
 } = leaderboardManagementApi
