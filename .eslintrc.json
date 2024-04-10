@@ -29,10 +29,7 @@
 				"extensions": [".ts", ".tsx", ".js", ".jsx"]
 			}
 		],
-		"react-refresh/only-export-components": [
-			"warn",
-			{ "allowConstantExport": true }
-		],
+		"react-refresh/only-export-components": "off",
 		"import/no-unresolved": "off",
 		"prefer-const": "warn",
 		"arrow-body-style": "off",

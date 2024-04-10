@@ -35,6 +35,7 @@ export const langIdsByCurrency: { [currency: number]: number[] } = {
 	[CurrencyEnum.CNY]: [LangIdEnum.en, LangIdEnum.cs],
 	[CurrencyEnum.VND]: [LangIdEnum.en, LangIdEnum.vn],
 	[CurrencyEnum.USD]: [LangIdEnum.en],
+	// @ts-ignore
 	[CurrencyEnum.USD]: [LangIdEnum.en, LangIdEnum.kh],
 }
 

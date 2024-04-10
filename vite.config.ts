@@ -1,6 +1,6 @@
 import { defineConfig, ProxyOptions } from 'vite'
-import styleImport from 'vite-plugin-style-import'
 import react from '@vitejs/plugin-react'
+import eslint from 'vite-plugin-eslint'
 import path from 'path'
 
 // https://vitejs.dev/config/
@@ -27,7 +27,12 @@ const proxyPaths = [
 ]
 
 export default defineConfig({
-	plugins: [react()],
+	plugins: [
+		react(),
+		eslint({
+			include: ['src/**/*.js', 'src/**/*.ts', 'src/**/*.tsx', 'src/**/*.ts'],
+		}),
+	],
 	resolve: {
 		alias: {
 			app: path.resolve(__dirname, 'src/app'),
