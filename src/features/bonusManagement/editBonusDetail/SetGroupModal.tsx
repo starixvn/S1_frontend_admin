@@ -39,7 +39,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 			})
 			onFinish()
 		} catch (error) {
-			const { errorFields } = error
+			const { errorFields } = error as any
 			const { errors } = errorFields[0]
 			if (isEmpty(trim(errors[0]))) {
 				// winOver 和 rollOver 的message 沒有秀在 form 上面 , 僅展示紅匡 , 透過 message.error 推播
