@@ -2,6 +2,7 @@ import { Modal, Spin, Switch, Typography } from 'antd'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { IGetCryptoInfoData } from 'features/paymentManagement/type'
+import { useAuth } from '../../../common/hooks'
 
 interface ICryptoSettingModalProps {
 	loading: boolean
@@ -19,6 +20,8 @@ const CryptoSettingModal = ({
 	onSetCryptoInfo,
 }: ICryptoSettingModalProps) => {
 	const { t } = useTranslation()
+
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 
 	const columns = [
 		{
@@ -48,6 +51,7 @@ const CryptoSettingModal = ({
 						onChange={value => {
 							onSetCryptoInfo(record, Number(value))
 						}}
+						disabled={!editPermission?.canUse}
 					/>
 				)
 			},
