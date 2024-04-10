@@ -1,5 +1,6 @@
 import { Col, Form, FormInstance, Input, Modal, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../../../common/hooks'
 
 interface IEditLoginInfoModalProps {
 	form: FormInstance
@@ -19,6 +20,8 @@ const EditLoginInfoModal = ({
 	onSubmit,
 }: IEditLoginInfoModalProps) => {
 	const { t } = useTranslation()
+
+	const { actionPermissions: { editInfoPermission } = {} } = useAuth()
 
 	const onClosed = () => {
 		form.resetFields()
@@ -47,6 +50,7 @@ const EditLoginInfoModal = ({
 					loginPin: '',
 					corporateId: '',
 				}}
+				disabled={!editInfoPermission?.canUse}
 			>
 				<Row gutter={16}>
 					<Col span={24}>

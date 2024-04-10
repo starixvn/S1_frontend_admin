@@ -81,11 +81,8 @@ const GlobalStatusModal = ({
 			align: 'center' as 'center',
 			render: (record: IGetGlobalStatusData) => {
 				return (
-					<Typography.Link
-						disabled={!editInfoPermission?.canUse}
-						onClick={() => onEditClick(record)}
-					>
-						{t('Label_Edit')}
+					<Typography.Link onClick={() => onEditClick(record)}>
+						{editInfoPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 					</Typography.Link>
 				)
 			},

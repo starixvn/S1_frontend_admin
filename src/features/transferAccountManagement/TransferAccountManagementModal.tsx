@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react'
 import { Form, message, Modal, Space, Typography } from 'antd'
 import { isNaN } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useQueryParams } from 'common/hooks'
+import { useAuth, useQueryParams } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -38,6 +38,8 @@ const TransferAccountManagementModal: FC<
 	const [queryParams] = useQueryParams()
 	const editId = Number(queryParams?.editId)
 
+	const { actionPermissions: { editPermission } = {} } = useAuth()
+
 	const [
 		getBankTransferAccountById,
 		{
@@ -58,6 +60,7 @@ const TransferAccountManagementModal: FC<
 	} = useGetBankTransferAccountAgentListQuery({ siteId })
 
 	const handleSubmit = async () => {
+		if (!editPermission?.canUse) return
 		const { initialTime, ...values } = await form.validateFields()
 		const { siteId: recordSiteId } = form.getFieldsValue(true)
 		try {

@@ -20,6 +20,7 @@ import {
 	IEditForm,
 } from 'features/paymentManagement/type'
 import { InputNumber } from 'components'
+import { useAuth } from '../../../common/hooks'
 
 interface IEditPaymentModalProps {
 	loading: boolean
@@ -46,6 +47,7 @@ const EditPaymentModal = ({
 	const { payName, currencyId, channelName, type, editType } =
 		form.getFieldsValue(true)
 	const amountRule = Form.useWatch('amountRule', form)
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 
 	return (
 		<Modal
@@ -82,7 +84,12 @@ const EditPaymentModal = ({
 					</Descriptions.Item>
 				</Descriptions>
 				<Divider />
-				<Form form={form} layout='horizontal' size='middle'>
+				<Form
+					form={form}
+					layout='horizontal'
+					size='middle'
+					disabled={!editPermission?.canUse}
+				>
 					{editType === EditModalTypeEnum.Edit ? (
 						// Edit
 						<Row gutter={16}>
