@@ -20,8 +20,7 @@ import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
-import { SelectOptions, TicketTypeOptions } from './constants'
-import { ICupEventTeams } from './type'
+import { SelectOptions } from './constants'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -31,7 +30,6 @@ interface ReferralReportFilterInterface {
 	form: FormInstance
 	loading: boolean
 	timeZoneUtcOffset?: number
-	cupEventTeamsList: ICupEventTeams[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -49,7 +47,6 @@ const CupEventMemberReportFilter: FC<ReferralReportFilterInterface> = ({
 	loading,
 	timeZoneUtcOffset,
 	onSearch,
-	cupEventTeamsList,
 	onTimeZoneChange,
 }) => {
 	const { t } = useTranslation()
@@ -123,32 +120,6 @@ const CupEventMemberReportFilter: FC<ReferralReportFilterInterface> = ({
 										{currencyListBySite?.map(item => (
 											<Option key={item.currencyId} value={item.currencyId}>
 												{item.isoCode}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='ticketType' label={t('Label_TicketType')}>
-									<Select placeholder={t('Label_Select')}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{TicketTypeOptions?.map(item => (
-											<Option key={item.key} value={item.key}>
-												{t(item.displayKey, { key: item.key })}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='teamId' label={t('Label_Team')}>
-									<Select placeholder={t('Label_Select')}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{cupEventTeamsList?.map(item => (
-											<Option key={item.countryId} value={item.countryId}>
-												{item.countryName}
 											</Option>
 										))}
 									</Select>

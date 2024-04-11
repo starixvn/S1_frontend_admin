@@ -20,10 +20,9 @@ import { CupEventMemberReportFilter } from 'features/cupEventMemberReport/CupEve
 import { CupEventMemberReportTable } from 'features/cupEventMemberReport/CupEventMemberReportTable'
 import {
 	useExportMemberReportMutation,
-	useGetCupEventTeamsQuery,
 	useLazyGetMemberReportQuery,
 } from './api'
-import { IGetMemberReportResponse, ICupEventTeamResponse } from './type'
+import { IGetMemberReportResponse } from './type'
 
 const CupEventMemberReport: FC<{
 	pageTitle?: string
@@ -50,11 +49,6 @@ const CupEventMemberReport: FC<{
 	})
 	const [exportMemberReport, { isLoading: isExportMemberReportLoading }] =
 		useExportMemberReportMutation()
-
-	const {
-		data: { data: cupEventTeamsList } = {} as ICupEventTeamResponse,
-		isLoading: isGetCupEventTeamsLoading,
-	} = useGetCupEventTeamsQuery(null)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -184,7 +178,7 @@ const CupEventMemberReport: FC<{
 		init()
 	}, [])
 
-	const loading = isGetMemberReportLoading || isGetCupEventTeamsLoading
+	const loading = isGetMemberReportLoading
 
 	return (
 		<LayoutContent.Main>
@@ -195,7 +189,6 @@ const CupEventMemberReport: FC<{
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				cupEventTeamsList={cupEventTeamsList}
 			/>
 			<CupEventMemberReportTable
 				loading={loading}
