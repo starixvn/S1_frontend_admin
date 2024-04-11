@@ -1249,6 +1249,7 @@
 	"Label_IconType": "Icon Type",
 	"Label_IconStartTime": "Icon StartTime",
 	"Label_IconEndTime": "Icon EndTime",
+  "Label_RLS_TO_PRD": "RLS TO PRD",
 	"Label_GoToPRD": "GO to PRD",
 	"Label_AddNewSlotGame": "Add New Slot Game",
 	"Label_EnName": "EN Name",
@@ -1265,5 +1266,6 @@
 	"Label_CsPic": "Cs Image",
 	"Label_ImageUploaded": "Image Uploaded",
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
-	"Label_RLS_TO_PRD": "RLS TO PRD"
+	"Label_DepositDate" : "Deposit Date",
+	"Label_TotalReferee" : "Total Referee"
 }
