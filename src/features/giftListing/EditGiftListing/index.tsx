@@ -12,7 +12,7 @@ import {
 	useUpdateGiftMutation,
 	useUploadGiftImageMutation,
 } from '../api'
-import { IEditGiftForm } from '../type'
+import { GiftTypeEnum, IEditGiftForm } from '../type'
 import GiftFormTabs from '../components/GiftFormTabs'
 
 const EditGiftListing = () => {
@@ -41,9 +41,10 @@ const EditGiftListing = () => {
 			const {
 				infos: originInfos,
 				stock,
+				freeSpin,
+				gifttype,
 				...values
 			} = await form.validateFields()
-
 			const pictureUrls = await Promise.all(
 				Object.keys(originInfos).map(async lang => {
 					const { fileList } = originInfos[lang]
@@ -76,7 +77,10 @@ const EditGiftListing = () => {
 				status: Boolean(status),
 				giftId: Number(editGiftId),
 				stock: stock || undefined,
+				round: gifttype ? freeSpin : 0,
+				gifttype: gifttype ? GiftTypeEnum.FreeSpin : GiftTypeEnum.Common,
 			}).unwrap()
+
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(-1)
 		} catch (error) {

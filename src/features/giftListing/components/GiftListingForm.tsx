@@ -14,7 +14,12 @@ import {
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { ICategoriesData, IGiftTagsData } from 'features/giftListing/type'
+import { CalendarOutlined } from '@ant-design/icons'
 import ImageUploader from './ImageUploader'
+import {
+	GIFT_LIST_GAME_OPTIONS,
+	GIFT_LIST_PROVIDER_OPTIONS,
+} from '../constants'
 
 const { Option } = Select
 
@@ -35,7 +40,8 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const showStock = Form.useWatch<boolean>('showStock', form)
-
+	// 是否勾選gifttype
+	const isGifttype = Form.useWatch<boolean>('gifttype', form)
 	// * 只回傳當前語系的資料
 	const categories = originCategories.filter(category => category.lang === lang)
 	const giftTags = originGiftTags.filter(giftTag => giftTag.lang === lang)
@@ -107,6 +113,85 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 				</Col>
 			</Row>
 
+			<Divider />
+			<Row gutter={24}>
+				<Col span={4}>
+					<Form.Item name='gifttype' valuePropName='checked' noStyle>
+						<Checkbox>{t('Label_FreeSpin')}</Checkbox>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item name='provider'>
+						<Select
+							placeholder={t('Label_Select')}
+							defaultValue={GIFT_LIST_PROVIDER_OPTIONS[0].value}
+							disabled={!isGifttype}
+						>
+							{GIFT_LIST_PROVIDER_OPTIONS.map(({ key, value }) => (
+								<Option key={key} value={value}>
+									{value}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item
+						name='freeSpin'
+						rules={[
+							{
+								required: isGifttype,
+								message: t('Label_Required', {
+									key: t('Label_FreeSpin'),
+								}),
+							},
+						]}
+					>
+						<InputNumber
+							placeholder={t('Label_FreeSpin')}
+							disabled={!isGifttype}
+							min={1}
+							style={{ width: '100%' }}
+						/>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item name='gameId'>
+						<Select
+							placeholder={t('Label_Select')}
+							defaultValue={GIFT_LIST_GAME_OPTIONS[0].value}
+							disabled={!isGifttype}
+						>
+							{GIFT_LIST_GAME_OPTIONS.map(({ key, value }) => (
+								<Option key={key} value={value}>
+									{value}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item>
+						<Input.Group
+							compact
+							style={{ width: '100%', display: 'flex', alignItems: 'center' }}
+						>
+							<CalendarOutlined
+								style={{ fontSize: '20px', marginRight: '5px' }}
+							/>
+							<Form.Item noStyle name='expire'>
+								<InputNumber
+									defaultValue={1}
+									disabled={!isGifttype}
+									min={1}
+									type='number'
+									style={{ width: '100%' }}
+								/>
+							</Form.Item>
+						</Input.Group>
+					</Form.Item>
+				</Col>
+			</Row>
 			<Divider />
 
 			<Row gutter={24}>
