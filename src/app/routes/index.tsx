@@ -198,24 +198,24 @@ const EditGiftListing = lazy(
 		)
 )
 
-const WorldCupTeamReport = lazy(
+const CupEventTeamReport = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'WorldCupTeamReport' */ 'features/worldCupTeamReport/WorldCupTeamReport'
+			/* webpackChunkName: 'CupEventTeamReport' */ 'features/cupEventTeamReport/CupEventTeamReport'
 		)
 )
 
-const WorldCupMemberReport = lazy(
+const CupEventMemberReport = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'WorldCupMemberReport' */ 'features/worldCupMemberReport/WorldCupMemberReport'
+			/* webpackChunkName: 'CupEventMemberReport' */ 'features/cupEventMemberReport/CupEventMemberReport'
 		)
 )
 
-const WorldCupMemberSetting = lazy(
+const CupEventSetting = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'WorldCupMemberSetting' */ 'features/worldCupSetting/WorldCupSetting'
+			/* webpackChunkName: 'CupEventSetting' */ 'features/cupEventSetting/CupEventSetting'
 		)
 )
 const RedemptionListing = lazy(
@@ -1488,30 +1488,30 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupTeamReport.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.cupEventTeamReport.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.report.sub.worldCupTeamReport.functionId}
+						functionId={paths.report.sub.cupEventTeamReport.functionId}
 					>
-						<WorldCupTeamReport />
+						<CupEventTeamReport />
 					</AuthRequire>
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.worldCupMemberReport.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.cupEventMemberReport.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.report.sub.worldCupMemberReport.functionId}
+						functionId={paths.report.sub.cupEventMemberReport.functionId}
 					>
-						<WorldCupMemberReport />
+						<CupEventMemberReport />
 					</AuthRequire>
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.worldCupSetting.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.cupEventSetting.root}`,
 				element: (
-					<AuthRequire functionId={paths.cms.sub.worldCupSetting.functionId}>
-						<WorldCupMemberSetting />
+					<AuthRequire functionId={paths.cms.sub.cupEventSetting.functionId}>
+						<CupEventSetting />
 					</AuthRequire>
 				),
 			},

@@ -800,21 +800,21 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.report.sub.worldCupTeamReport.functionId,
+		functionId: paths.report.sub.cupEventTeamReport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.report.sub.worldCupTeamReport.root,
+		newAdminPath: paths.report.sub.cupEventTeamReport.root,
 	},
 	{
 		icon: null,
-		functionId: paths.report.sub.worldCupMemberReport.functionId,
+		functionId: paths.report.sub.cupEventMemberReport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.report.sub.worldCupMemberReport.root,
+		newAdminPath: paths.report.sub.cupEventMemberReport.root,
 	},
 	{
 		icon: null,
-		functionId: paths.cms.sub.worldCupSetting.functionId,
+		functionId: paths.cms.sub.cupEventSetting.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.cms.sub.worldCupSetting.root,
+		newAdminPath: paths.cms.sub.cupEventSetting.root,
 	},
 	{
 		icon: null,

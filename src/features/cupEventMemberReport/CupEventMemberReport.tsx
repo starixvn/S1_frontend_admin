@@ -16,16 +16,15 @@ import {
 import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { selectUserSite } from 'common/enum'
-import { WorldCupMemberReportFilter } from './WorldCupMemberReportFilter'
+import { CupEventMemberReportFilter } from 'features/cupEventMemberReport/CupEventMemberReportFilter'
+import { CupEventMemberReportTable } from 'features/cupEventMemberReport/CupEventMemberReportTable'
 import {
 	useExportMemberReportMutation,
-	useGetWorldCupTeamsQuery,
 	useLazyGetMemberReportQuery,
 } from './api'
-import { IGetMemberReportResponse, IWorldCupTeamResponse } from './type'
-import { WorldCupMemberReportTable } from './WorldCupMemberReportTable'
+import { IGetMemberReportResponse } from './type'
 
-const WorldCupMemberReport: FC<{
+const CupEventMemberReport: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
@@ -50,11 +49,6 @@ const WorldCupMemberReport: FC<{
 	})
 	const [exportMemberReport, { isLoading: isExportMemberReportLoading }] =
 		useExportMemberReportMutation()
-
-	const {
-		data: { data: worldCupTeamsList } = {} as IWorldCupTeamResponse,
-		isLoading: isGetWorldCupTeamsLoading,
-	} = useGetWorldCupTeamsQuery(null)
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -140,7 +134,7 @@ const WorldCupMemberReport: FC<{
 			}).unwrap()
 			download(
 				blob,
-				`ExportWorldCupMemberReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportCupEventMemberReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -184,22 +178,21 @@ const WorldCupMemberReport: FC<{
 		init()
 	}, [])
 
-	const loading = isGetMemberReportLoading || isGetWorldCupTeamsLoading
+	const loading = isGetMemberReportLoading
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-			<WorldCupMemberReportFilter
+			<CupEventMemberReportFilter
 				form={form}
 				loading={loading}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 				timeZoneUtcOffset={timeZoneUtcOffset}
-				worldCupTeamList={worldCupTeamsList}
 			/>
-			<WorldCupMemberReportTable
+			<CupEventMemberReportTable
 				loading={loading}
-				worldCupMemberReportData={memberReportData}
+				cupEventMemberReportData={memberReportData}
 				pagination={pagination}
 				onTableChange={handleTableChange}
 				timeZoneUtcOffset={timeZoneUtcOffset}
@@ -216,4 +209,4 @@ const WorldCupMemberReport: FC<{
 	)
 }
 
-export default WorldCupMemberReport
+export default CupEventMemberReport

@@ -4,36 +4,36 @@ import {
 	IExportMemberReportArgs,
 	IGetMemberReportArgs,
 	IGetMemberReportResponse,
-	IGetWorldCupSettingResponse,
-	IWorldCupTeamResponse,
+	ICupEventTeamResponse,
+	IGetCupEventSettingResponse,
 } from './type'
 
-export const worldCupMemberReportApi = rootApi.injectEndpoints({
+export const cupEventMemberReportApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getMemberReport: builder.query<
 			IGetMemberReportResponse,
 			IGetMemberReportArgs
 		>({
 			query: data => ({
-				url: 'WorldCupPrediction/GetMemberReport',
+				url: 'CupEvent/GetCupEventMemberReport',
 				method: 'POST',
 				data,
 			}),
 		}),
 		exportMemberReport: builder.mutation<Blob, IExportMemberReportArgs>({
 			query: data => ({
-				url: 'WorldCupPrediction/ExportMemberReport',
+				url: 'CupEvent/ExportCupEventMemberReport',
 				method: 'POST',
 				data,
 				responseType: 'blob',
 			}),
 		}),
-		getWorldCupTeams: builder.query<IWorldCupTeamResponse, null>({
+		getCupEventTeams: builder.query<ICupEventTeamResponse, null>({
 			query: () => ({
-				url: 'WorldCupPrediction/GetWorldCupPredictionSetting',
+				url: 'CupEvent/GetCupEventPredictionSetting',
 				method: 'POST',
 			}),
-			transformResponse: (response: IGetWorldCupSettingResponse) => {
+			transformResponse: (response: IGetCupEventSettingResponse) => {
 				const {
 					data: { selectOptions },
 				} = response
@@ -50,5 +50,5 @@ export const worldCupMemberReportApi = rootApi.injectEndpoints({
 export const {
 	useLazyGetMemberReportQuery,
 	useExportMemberReportMutation,
-	useGetWorldCupTeamsQuery,
-} = worldCupMemberReportApi
+	useGetCupEventTeamsQuery,
+} = cupEventMemberReportApi
