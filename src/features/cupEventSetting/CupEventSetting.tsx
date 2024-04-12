@@ -5,37 +5,37 @@ import { Form, message, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from 'common/hooks'
 import { AffixButtons } from 'components/AffixButtons'
+import CupEventSettingImage from 'features/cupEventSetting/CupEventSettingImage'
+import CupEventSettingTable from 'features/cupEventSetting/CupEventSettingTable'
 import {
-	useGetWorldCupPredictionSettingQuery,
-	useSetWorldCupPredictionSettingMutation,
+	useGetCupEventPredictionSettingQuery,
+	useSetCupEventPredictionSettingMutation,
 } from './api'
-import WorldCupSettingTable from './WorldCupSettingTable'
-import { ISortedWorldCupTeamResponse, ISetWorldCupPredictionInfo } from './type'
-import WorldCupSettingImage from './WorldCupSettingImage'
+import { ISortedCupEventTeamResponse, ISetCupEventPredictionInfo } from './type'
 
-const WorldCupSetting: FC<{
+const CupEventSetting: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const [form] = Form.useForm()
 	const {
-		data: { data: sortedWorldCupTeam } = {} as ISortedWorldCupTeamResponse,
-		isFetching: isGetWorldCupPredictionSettingFetching,
-	} = useGetWorldCupPredictionSettingQuery(null)
+		data: { data: sortedCupEventTeam } = {} as ISortedCupEventTeamResponse,
+		isFetching: isGetCupEventPredictionSettingFetching,
+	} = useGetCupEventPredictionSettingQuery(null)
 
 	const [imageVisible, setImageVisible] = useState<boolean>(false)
 
 	const [
-		setWorldCupPredictionSetting,
-		{ isLoading: isSetWorldCupPredictionSettingLoading },
-	] = useSetWorldCupPredictionSettingMutation()
+		setCupEventPredictionSetting,
+		{ isLoading: isSetCupEventPredictionSettingLoading },
+	] = useSetCupEventPredictionSettingMutation()
 
-	const handleWorldCupPredictionSetting = async () => {
+	const handleCupEventPredictionSetting = async () => {
 		try {
 			// * 格式化成 setting 需要的格式
 			const settingForm: any = {
-				top32Team: [],
+				top24Team: [],
 				roundOf16: [],
 				quarterFinals: [],
 				semiFinals: [],
@@ -46,16 +46,14 @@ const WorldCupSetting: FC<{
 			Object.keys(formValues).forEach(sort => {
 				mapKeys(formValues[sort], (value, key) => {
 					if (value?.countryId) {
-						const predictionInfo: ISetWorldCupPredictionInfo = assign(value, {
+						const predictionInfo: ISetCupEventPredictionInfo = assign(value, {
 							sort: Number(sort),
 						})
-
 						settingForm[key] = [...settingForm[key], predictionInfo]
 					}
 				})
 			})
-
-			await setWorldCupPredictionSetting({
+			await setCupEventPredictionSetting({
 				data: settingForm,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
@@ -66,14 +64,14 @@ const WorldCupSetting: FC<{
 		}
 	}
 
-	const { selectOptions = [], sortedWorldCupTeamData = [] } =
-		sortedWorldCupTeam ?? {}
+	const { selectOptions = [], sortedCupEventTeamData = [] } =
+		sortedCupEventTeam ?? {}
 
 	useEffect(() => {
-		if (isGetWorldCupPredictionSettingFetching) return
+		if (isGetCupEventPredictionSettingFetching) return
 
 		// * 初始化 Form 表單
-		const formValues = sortedWorldCupTeamData.reduce((acc, cur) => {
+		const formValues = sortedCupEventTeamData.reduce((acc, cur) => {
 			const newAcc: any = { ...acc }
 
 			newAcc[cur.sort] = cur
@@ -81,25 +79,25 @@ const WorldCupSetting: FC<{
 		}, {})
 
 		form.setFieldsValue(formValues)
-	}, [isGetWorldCupPredictionSettingFetching])
+	}, [isGetCupEventPredictionSettingFetching])
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<Row justify='end'>
-				<WorldCupSettingImage
+				<CupEventSettingImage
 					imageVisible={imageVisible}
 					setImageVisible={setImageVisible}
 				/>
 			</Row>
 
 			<LayoutContent.Card>
-				<WorldCupSettingTable
+				<CupEventSettingTable
 					form={form}
-					loading={isGetWorldCupPredictionSettingFetching}
+					loading={isGetCupEventPredictionSettingFetching}
 					selectOptions={selectOptions}
-					sortedWorldCupTeamData={sortedWorldCupTeamData}
+					sortedCupEventTeamData={sortedCupEventTeamData}
 				/>
 			</LayoutContent.Card>
 
@@ -108,12 +106,12 @@ const WorldCupSetting: FC<{
 
 				<AffixButtons.Saved
 					disabled={!editPermission?.canUse}
-					loading={isSetWorldCupPredictionSettingLoading}
-					onClick={handleWorldCupPredictionSetting}
+					loading={isSetCupEventPredictionSettingLoading}
+					onClick={handleCupEventPredictionSetting}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
 	)
 }
 
-export default WorldCupSetting
+export default CupEventSetting

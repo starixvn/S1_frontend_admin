@@ -8,18 +8,18 @@ import moment from 'moment'
 import { PaginationInterface } from 'common/hooks'
 import { IGetMemberReportData } from './type'
 
-interface IWorldCupMemberReportProps {
+interface ICupEventMemberReportProps {
 	loading: boolean
-	worldCupMemberReportData: IGetMemberReportData[]
+	cupEventMemberReportData: IGetMemberReportData[]
 	pagination: PaginationInterface
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	timeZoneUtcOffset: number
 }
 
-const WorldCupMemberReportTable: FC<IWorldCupMemberReportProps> = ({
+const CupEventMemberReportTable: FC<ICupEventMemberReportProps> = ({
 	loading,
 	timeZoneUtcOffset,
-	worldCupMemberReportData,
+	cupEventMemberReportData,
 	pagination,
 	onTableChange,
 }) => {
@@ -73,11 +73,11 @@ const WorldCupMemberReportTable: FC<IWorldCupMemberReportProps> = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={worldCupMemberReportData ?? []}
+				dataSource={cupEventMemberReportData ?? []}
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 			/>
 		</LayoutContent.Card>
 	)
 }
-export { WorldCupMemberReportTable }
+export { CupEventMemberReportTable }

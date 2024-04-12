@@ -34,13 +34,13 @@ export interface IExportMemberReportArgs {
 	endTime: string
 }
 
-export interface IWorldCupTeams {
+export interface ICupEventTeams {
 	countryId: number
 	countryName: string
 }
 export interface IGetWorldSettingData {
-	selectOptions: IWorldCupTeams[]
+	selectOptions: ICupEventTeams[]
 }
 
-export type IGetWorldCupSettingResponse = IAxiosResponse<IGetWorldSettingData>
-export type IWorldCupTeamResponse = IAxiosResponse<IWorldCupTeams[]>
+export type IGetCupEventSettingResponse = IAxiosResponse<IGetWorldSettingData>
+export type ICupEventTeamResponse = IAxiosResponse<ICupEventTeams[]>

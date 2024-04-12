@@ -6,11 +6,11 @@ import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment'
 import { PermissionInterface } from 'type'
-import { IGetWorldCupReportData } from './type'
+import { IGetCupEventReportData } from './type'
 
-interface IWorldCupTeamReportProps {
+interface ICupEventTeamReportProps {
 	loading: boolean
-	worldCupTeamReportData: IGetWorldCupReportData[]
+	cupEventTeamReportData: IGetCupEventReportData[]
 	timeZoneUtcOffset: number
 	exportExcelPermission?: PermissionInterface
 	editPermission?: PermissionInterface
@@ -18,10 +18,10 @@ interface IWorldCupTeamReportProps {
 	onSetPayout: (teamId: number) => void
 }
 
-const WorldCupTeamReportTable: FC<IWorldCupTeamReportProps> = ({
+const CupEventTeamReportTable: FC<ICupEventTeamReportProps> = ({
 	loading,
 	timeZoneUtcOffset,
-	worldCupTeamReportData,
+	cupEventTeamReportData,
 	exportExcelPermission,
 	editPermission,
 	onExport,
@@ -70,7 +70,7 @@ const WorldCupTeamReportTable: FC<IWorldCupTeamReportProps> = ({
 			key: 'isPayoutDone',
 			width: 80,
 			align: 'center' as 'center',
-			render: (values: IGetWorldCupReportData) => {
+			render: (values: IGetCupEventReportData) => {
 				const { isPayoutDone, teamId } = values
 				return isPayoutDone ? (
 					<Typography.Text type='secondary'>
@@ -116,10 +116,10 @@ const WorldCupTeamReportTable: FC<IWorldCupTeamReportProps> = ({
 			<Table
 				loading={loading}
 				columns={columns}
-				dataSource={worldCupTeamReportData ?? []}
+				dataSource={cupEventTeamReportData ?? []}
 				pagination={false}
 			/>
 		</LayoutContent.Card>
 	)
 }
-export { WorldCupTeamReportTable }
+export { CupEventTeamReportTable }
