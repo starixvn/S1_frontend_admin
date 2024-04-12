@@ -3,12 +3,12 @@ import { Button, Image } from 'antd'
 import image from 'assets/images/worldcup/worldcup.png'
 import { useTranslation } from 'react-i18next'
 
-interface IWorldCupSettingImageProps {
+interface ICupEventSettingImageProps {
 	imageVisible: boolean
 	setImageVisible: Dispatch<SetStateAction<boolean>>
 }
 
-const WorldCupSettingImage: FC<IWorldCupSettingImageProps> = ({
+const CupEventSettingImage: FC<ICupEventSettingImageProps> = ({
 	imageVisible,
 	setImageVisible,
 }) => {
@@ -33,4 +33,4 @@ const WorldCupSettingImage: FC<IWorldCupSettingImageProps> = ({
 	)
 }
 
-export default WorldCupSettingImage
+export default CupEventSettingImage
