@@ -1,10 +1,10 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
-export interface IGetWorldCupReportArg {
+export interface IGetCupEventReportArg {
 	siteId?: number
 }
 
-export interface IGetWorldCupReportData {
+export interface IGetCupEventReportData {
 	teamId: number
 	teamName: string
 	predictUserCount: number
@@ -13,11 +13,11 @@ export interface IGetWorldCupReportData {
 	updateTime: string | null
 }
 
-export type IGetWorldCupReportResponse = IAxiosResponse<
-	IGetWorldCupReportData[]
+export type IGetCupEventReportResponse = IAxiosResponse<
+	IGetCupEventReportData[]
 >
 
-export interface IExportWorldCupReportArgs {
+export interface IExportCupEventReportArgs {
 	siteId?: number
 	teamId: number
 	timezone: number | string

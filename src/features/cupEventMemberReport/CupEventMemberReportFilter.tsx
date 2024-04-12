@@ -20,8 +20,7 @@ import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
-import { SelectOptions, TicketTypeOptions } from './constants'
-import { IWorldCupTeams } from './type'
+import { SelectOptions } from './constants'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -31,7 +30,6 @@ interface ReferralReportFilterInterface {
 	form: FormInstance
 	loading: boolean
 	timeZoneUtcOffset?: number
-	worldCupTeamList: IWorldCupTeams[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -44,12 +42,11 @@ interface ReferralReportFilterInterface {
 	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
-const WorldCupMemberReportFilter: FC<ReferralReportFilterInterface> = ({
+const CupEventMemberReportFilter: FC<ReferralReportFilterInterface> = ({
 	form,
 	loading,
 	timeZoneUtcOffset,
 	onSearch,
-	worldCupTeamList,
 	onTimeZoneChange,
 }) => {
 	const { t } = useTranslation()
@@ -129,32 +126,6 @@ const WorldCupMemberReportFilter: FC<ReferralReportFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='ticketType' label={t('Label_TicketType')}>
-									<Select placeholder={t('Label_Select')}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{TicketTypeOptions?.map(item => (
-											<Option key={item.key} value={item.key}>
-												{t(item.displayKey, { key: item.key })}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='teamId' label={t('Label_Team')}>
-									<Select placeholder={t('Label_Select')}>
-										<Option value={0}>{t('Label_SelectAll')}</Option>
-
-										{worldCupTeamList?.map(item => (
-											<Option key={item.countryId} value={item.countryId}>
-												{item.countryName}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='selected' label={t('Label_Selected')}>
 									<Select placeholder={t('Label_Select')}>
 										<Option value={0}>{t('Label_SelectAll')}</Option>
@@ -193,4 +164,4 @@ const WorldCupMemberReportFilter: FC<ReferralReportFilterInterface> = ({
 	)
 }
 
-export { WorldCupMemberReportFilter }
+export { CupEventMemberReportFilter }

@@ -2,68 +2,65 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { rootApi } from 'common/service/rootApi/api'
 import { assign, find, range } from 'lodash'
 import {
-	IGetWorldCupPredictionResponse,
-	ISetWorldCupPredictionSettingArgs,
-	ISortedWorldCupTeamResponse,
+	IGetCupEventPredictionResponse,
+	ISetCupEventPredictionSettingArgs,
+	ISortedCupEventTeamResponse,
 } from './type'
 
-export const worldCupSettingApi = rootApi.injectEndpoints({
+export const cupEventSettingApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		// * 撈取所有比賽隊伍及已設定清單
-		getWorldCupPredictionSetting: builder.query<
-			ISortedWorldCupTeamResponse,
+		getCupEventPredictionSetting: builder.query<
+			ISortedCupEventTeamResponse,
 			null
 		>({
 			query: data => ({
-				url: 'worldCupPrediction/getWorldCupPredictionSetting',
+				url: 'CupEvent/GetCupEventPredictionSetting',
 				method: 'POST',
 				data,
 			}),
 			providesTags: ['POST'],
 			// * 格式化成適合以 antd table 呈現的資料結構
-			transformResponse: (returnResponse: IGetWorldCupPredictionResponse) => {
+			transformResponse: (returnResponse: IGetCupEventPredictionResponse) => {
 				const {
 					selectOptions,
-					top32Team,
+					top24Team,
 					roundOf16,
 					quarterFinals,
 					semiFinals,
 					final,
 				} = returnResponse.data
 
-				// * 總共３２隊
-				const sortArr = range(1, 33)
+				// * 總共24隊
+				const sortArr = range(1, 25)
 
-				const sortedWorldCupTeamData = sortArr.map((sort, index) => ({
+				const sortedCupEventTeamData = sortArr.map((sort, index) => ({
 					index,
 					sort,
-					top32Team: assign(find(top32Team, { sort }), { sort }),
+					top24Team: assign(find(top24Team, { sort }), { sort }),
 					roundOf16: assign(find(roundOf16, { sort }), { sort }),
 					quarterFinals: assign(find(quarterFinals, { sort }), { sort }),
 					semiFinals: assign(find(semiFinals, { sort }), { sort }),
-					'3rdPlace': assign(find(returnResponse.data['3rdPlace'], { sort }), {
-						sort,
-					}),
 					final: assign(find(final, { sort }), { sort }),
 				}))
 
 				const newReturnResponse: any = assign(returnResponse, {
 					data: {
 						selectOptions,
-						sortedWorldCupTeamData,
+						sortedCupEventTeamData,
 					},
 				})
 
-				return newReturnResponse as ISortedWorldCupTeamResponse
+				return newReturnResponse as ISortedCupEventTeamResponse
 			},
 		}),
 		// * 設定參賽隊伍名單
-		setWorldCupPredictionSetting: builder.mutation<
+		setCupEventPredictionSetting: builder.mutation<
 			IAxiosResponse<void>,
-			ISetWorldCupPredictionSettingArgs
+			ISetCupEventPredictionSettingArgs
 		>({
 			query: data => ({
-				url: 'worldCupPrediction/setWorldCupPredictionSetting',
+				url: 'CupEvent/SetCupEventPredictionSetting',
 				method: 'POST',
 				data,
 			}),
@@ -73,6 +70,6 @@ export const worldCupSettingApi = rootApi.injectEndpoints({
 })
 
 export const {
-	useGetWorldCupPredictionSettingQuery,
-	useSetWorldCupPredictionSettingMutation,
-} = worldCupSettingApi
+	useGetCupEventPredictionSettingQuery,
+	useSetCupEventPredictionSettingMutation,
+} = cupEventSettingApi
