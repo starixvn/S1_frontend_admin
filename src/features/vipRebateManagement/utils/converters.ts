@@ -136,7 +136,7 @@ export const editCellValuesToEditList = (
 
 // 如果沒有值 || 為負數 , 強制為 0
 export const valueFormatter = (value: string | number | null): number => {
-	if (value && isNumber(Number(value)) && value >= 0) {
+	if (value && isNumber(Number(value)) && Number(value) >= 0) {
 		return Number(value)
 	}
 	return 0

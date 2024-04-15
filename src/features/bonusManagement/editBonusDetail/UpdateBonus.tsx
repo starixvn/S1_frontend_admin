@@ -278,7 +278,7 @@ const UpdateBonus: FC<{
 			}
 		} catch (error) {
 			// 驗證層
-			const { errorFields } = error
+			const { errorFields } = error as any
 			const { name, errors } = errorFields[0]
 			// name > 1 代表是巢狀結構 , 為 detail 欄位 , 才需跳出錯誤訊息
 			if ((name.length as number) > 1) {
@@ -310,7 +310,9 @@ const UpdateBonus: FC<{
 			await getBonusUsingList({ siteId, bonusCode }).unwrap()
 			usingListModal.onOpen()
 		} catch (error) {
-			message.error(error?.message || t('System.Label_NotExpectedServerError'))
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
 		}
 	}
 
@@ -324,7 +326,9 @@ const UpdateBonus: FC<{
 			await setBonusUsingList(formData).unwrap()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
-			message.error(error?.message || t('System.Label_NotExpectedServerError'))
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
 		}
 	}
 
