@@ -6,7 +6,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { PAGINATION, usePagination, useQueryParams } from 'common/hooks'
-import { useAppDispatch, useAppSelector } from 'app/store'
+import { useAppSelector } from 'app/store'
 import { dateRangeToUtcFormatter, withOutSiteIdParams } from 'common/utils'
 import {
 	selectActionTypeList,
@@ -16,19 +16,16 @@ import {
 } from 'common/enum'
 import { AffixButtons } from 'components/AffixButtons'
 import { AdjustmentLogReportFilter } from './AdjustmentLogReportFilter'
-import { fetchLogReportListAsync } from './thunk'
+
 import { AdjustmentLogReportTable } from './AdjustmentLogReportTable'
-import {
-	selectAdjustmentLogReportStatus,
-	setAdjustmentLogReportStatus,
-} from './slice'
+
+import { useLazyGetLogReportListQuery } from './api'
 
 const AdjustmentLogReport: FC<{
 	pageTitle?: string
 }> = ({ pageTitle }) => {
 	const { t } = useTranslation()
 
-	const dispatch = useAppDispatch()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm()
 
@@ -39,14 +36,17 @@ const AdjustmentLogReport: FC<{
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
-	const adjustmentLogReportStatus = useAppSelector(
-		selectAdjustmentLogReportStatus
-	)
-	const paginationTotal = useAppSelector(
-		state => state.adjustmentLogReport.paginationTotal
-	)
+	const [
+		getLogReportList,
+		{
+			data: { data: adjustmentLogList = [], rowCount = 0 } = {},
+			isFetching: isGetAdjustmentLogLoading,
+		},
+	] = useLazyGetLogReportListQuery()
 
-	const [pagination, setPagination] = usePagination({ paginationTotal })
+	const [pagination, setPagination] = usePagination({
+		paginationTotal: rowCount,
+	})
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -78,20 +78,18 @@ const AdjustmentLogReport: FC<{
 		})
 
 		try {
-			await dispatch(
-				fetchLogReportListAsync({
-					pageNumber: current,
-					pageSize,
-					actionTypes,
-					currencyIds,
-					menus,
-					transId,
-					userName,
-					startDate,
-					endDate,
-					siteIds: siteId ? [siteId] : [],
-				})
-			)
+			await getLogReportList({
+				pageNumber: current,
+				pageSize,
+				actionTypes,
+				currencyIds,
+				menus,
+				transId,
+				userName,
+				startDate,
+				endDate,
+				siteIds: siteId ? [siteId] : [],
+			}).unwrap()
 
 			setPagination(prev => ({ ...prev, current, pageSize }))
 			onTimeZoneChange(currentTimeZoneUtcOffset)
@@ -196,21 +194,13 @@ const AdjustmentLogReport: FC<{
 		init()
 	}, [])
 
-	useEffect(() => {
-		return () => {
-			dispatch(setAdjustmentLogReportStatus('idle'))
-		}
-	}, [])
-
-	const loading = adjustmentLogReportStatus === 'pending'
-
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<AdjustmentLogReportFilter
 				form={form}
-				loading={loading}
+				loading={isGetAdjustmentLogLoading}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
@@ -219,14 +209,13 @@ const AdjustmentLogReport: FC<{
 				onChangeActionTypes={onChangeActionTypes}
 			/>
 
-			{adjustmentLogReportStatus !== 'idle' && (
-				<AdjustmentLogReportTable
-					loading={loading}
-					timeZoneUtcOffset={timeZoneUtcOffset}
-					pagination={pagination}
-					onTableChange={handleTableChange}
-				/>
-			)}
+			<AdjustmentLogReportTable
+				loading={isGetAdjustmentLogLoading}
+				timeZoneUtcOffset={timeZoneUtcOffset}
+				pagination={pagination}
+				adjustmentLogReportList={adjustmentLogList}
+				onTableChange={handleTableChange}
+			/>
 
 			<AffixButtons>
 				<AffixButtons.BackToTop />

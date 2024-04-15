@@ -1,4 +1,6 @@
-export interface FetchLogReportListProps {
+import { IAxiosResponse } from 'common/service/axiosBaseQuery'
+
+export interface IGetLogReportListArgs {
 	pageNumber: number
 	pageSize: number
 	siteIds: number[]
@@ -11,7 +13,7 @@ export interface FetchLogReportListProps {
 	transId: string
 }
 
-export interface LogReportInterface {
+export interface ILogReportData {
 	createTime: string
 	id: number
 	currencyId: number
@@ -28,7 +30,9 @@ export interface LogReportInterface {
 	operator: string
 }
 
-export interface FetchLogReportListResponse {
-	data: LogReportInterface[]
-	rowCount: number
-}
+// export interface IGetLogReportListResponse {
+// 	data: ILogReportData[]
+// 	rowCount: number
+// }
+
+export type IGetLogReportListResponse = IAxiosResponse<ILogReportData[]>

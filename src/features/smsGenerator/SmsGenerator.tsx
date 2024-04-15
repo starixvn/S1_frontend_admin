@@ -187,7 +187,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 			}
 		} catch (error) {
 			// 驗證層
-			const { errorFields = [] } = error
+			const { errorFields = [] } = error as any
 			// 因只有 en 需要驗證並彈窗 , 故判斷 name.length > 1 ，只要有出現就跳特定 msg
 			// name.length > 1 代表是巢狀結構內的資料
 			if (
@@ -221,7 +221,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 			}
 		} catch (error) {
 			// 驗證層
-			const { errorFields = [] } = error
+			const { errorFields = [] } = error as any
 			// 因只有 en 需要驗證並彈窗 , 故判斷 name.length > 1 ，只要有出現就跳特定 msg
 			// name.length > 1 代表是巢狀結構內的資料
 			if (
