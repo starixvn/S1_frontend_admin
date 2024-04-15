@@ -28,8 +28,13 @@ const CustomStatistic = ({
 			title={title}
 			value={value}
 			precision={precision}
-			valueStyle={{ fontSize: 12, color: value < 0 ? '#cf1322' : '#3f8600' }}
-			prefix={value < 0 ? <ArrowDownOutlined /> : <ArrowUpOutlined />}
+			valueStyle={{
+				fontSize: 12,
+				color: (value as number) < 0 ? '#cf1322' : '#3f8600',
+			}}
+			prefix={
+				(value as number) < 0 ? <ArrowDownOutlined /> : <ArrowUpOutlined />
+			}
 			suffix='%'
 			{...props}
 		/>

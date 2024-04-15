@@ -39,7 +39,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 
 	const columnRender = (value: null | string | number): string => {
 		// 0 會被視為 false , 改為判斷 0是否為 null
-		if (value !== null && isNumber(Number(value)) && value >= 0) {
+		if (value !== null && isNumber(Number(value)) && Number(value) >= 0) {
 			return percentageFormatter(Number(value))
 		}
 		return t('Label_Default')

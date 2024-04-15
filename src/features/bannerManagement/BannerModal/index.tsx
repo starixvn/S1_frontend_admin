@@ -267,7 +267,7 @@ const BannerModal = ({
 				}
 			}
 		} catch (error) {
-			const { errorFields } = error
+			const { errorFields = [] } = error as any
 			const { name, errors } = errorFields[0]
 			if ((name.length as number) > 1) {
 				if (isEmpty(trim(errors[0]))) {
