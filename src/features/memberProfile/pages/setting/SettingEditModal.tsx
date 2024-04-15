@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { DatePicker, Form, Input, InputNumber, Modal } from 'antd'
+import { DatePicker, Form, Input, Modal } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
 import { ModalState } from 'common/hooks'
 import { ISettingForm, SettingEditTypeEnum } from 'features/memberProfile/type'
@@ -100,13 +100,13 @@ const SettingEditModal = ({
 									key: t('Label_PhoneNumber'),
 								}),
 							},
+							{
+								pattern: /^\d+$/,
+								message: t('Label_PhoneNo_Rule'),
+							},
 						]}
 					>
-						<InputNumber
-							type='number'
-							controls={false}
-							style={{ width: '100%' }}
-						/>
+						<Input type='tel' style={{ width: '100%' }} pattern='[0-9]' />
 					</Form.Item>
 				)}
 				{editType === SettingEditTypeEnum.Birthday && (
