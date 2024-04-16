@@ -71,16 +71,11 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleRowSaved = async () => {
+		const { silverClub, goldClub, titaniumClub, diamondClub } =
+			await editForm.validateFields()
 		// typeName,type 沒有出現在編輯框中
-		const {
-			currencyId,
-			typeName,
-			type,
-			silverClub,
-			goldClub,
-			titaniumClub,
-			diamondClub,
-		}: IUpgradeSettingTableData = await editForm.getFieldsValue(true)
+		const { currencyId, typeName, type }: IUpgradeSettingTableData =
+			await editForm.getFieldsValue(true)
 
 		const payload: ISetUpgradeSettingArgs = {
 			siteId,
