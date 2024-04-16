@@ -1266,6 +1266,8 @@
 	"Label_CsPic": "Cs Image",
 	"Label_ImageUploaded": "Image Uploaded",
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
+	"Label_PhoneNo_Rule" : "The phone number must contain only digits.",
+	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_DepositDate" : "Deposit Date",
 	"Label_TotalReferee" : "Total Referee"
 }
