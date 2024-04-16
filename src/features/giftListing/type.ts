@@ -97,6 +97,8 @@ export interface ICreateGiftArgs {
 		description: string
 		pictureUrl: string
 	}[]
+	round: number
+	gifttype: number
 }
 
 export interface IGiftForm {
@@ -109,6 +111,8 @@ export interface IGiftForm {
 	showStock: number | boolean
 	stock: any
 	infos: IInfos
+	giftType: boolean
+	freeSpin: number
 }
 
 export interface IEditGiftForm extends IGiftForm {
@@ -154,4 +158,9 @@ export interface IUpdateGiftArgs {
 		description: string
 		pictureUrl: string
 	}[]
+}
+
+export enum GiftTypeEnum {
+	Common = 1,
+	FreeSpin,
 }

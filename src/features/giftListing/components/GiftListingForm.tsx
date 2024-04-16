@@ -14,7 +14,12 @@ import {
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { ICategoriesData, IGiftTagsData } from 'features/giftListing/type'
+import { useParams } from 'react-router-dom'
 import ImageUploader from './ImageUploader'
+import {
+	GIFT_LIST_GAME_OPTIONS,
+	GIFT_LIST_PROVIDER_OPTIONS,
+} from '../constants'
 
 const { Option } = Select
 
@@ -34,8 +39,11 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 	giftTags: originGiftTags,
 }) => {
 	const { t } = useTranslation()
+	const { editGiftId } = useParams()
 	const showStock = Form.useWatch<boolean>('showStock', form)
-
+	// 是否勾選giftType
+	const isFreeSpin = Form.useWatch<boolean>('giftType', form)
+	const isEdit = Boolean(editGiftId)
 	// * 只回傳當前語系的資料
 	const categories = originCategories.filter(category => category.lang === lang)
 	const giftTags = originGiftTags.filter(giftTag => giftTag.lang === lang)
@@ -107,6 +115,65 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 				</Col>
 			</Row>
 
+			<Divider />
+			<Row gutter={24}>
+				<Col span={4}>
+					<Form.Item name='giftType' valuePropName='checked' noStyle>
+						<Checkbox defaultChecked={isFreeSpin} disabled={isEdit}>
+							{t('Label_FreeSpin')}
+						</Checkbox>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item name='provider'>
+						<Select
+							placeholder={t('Label_Select')}
+							defaultValue={GIFT_LIST_PROVIDER_OPTIONS[0].value}
+							disabled={!isFreeSpin || isEdit}
+						>
+							{GIFT_LIST_PROVIDER_OPTIONS.map(({ key, value }) => (
+								<Option key={key} value={value}>
+									{value}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item
+						name='round'
+						rules={[
+							{
+								required: isFreeSpin,
+								message: t('Label_Required', {
+									key: t('Label_FreeSpin'),
+								}),
+							},
+						]}
+					>
+						<InputNumber
+							placeholder={t('Label_FreeSpin')}
+							disabled={!isFreeSpin || isEdit}
+							style={{ width: '100%' }}
+						/>
+					</Form.Item>
+				</Col>
+				<Col span={4}>
+					<Form.Item name='gameId'>
+						<Select
+							placeholder={t('Label_Select')}
+							defaultValue={GIFT_LIST_GAME_OPTIONS[0].value}
+							disabled={!isFreeSpin || isEdit}
+						>
+							{GIFT_LIST_GAME_OPTIONS.map(({ key, value }) => (
+								<Option key={key} value={value}>
+									{value}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
+				</Col>
+			</Row>
 			<Divider />
 
 			<Row gutter={24}>

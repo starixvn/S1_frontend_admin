@@ -41,9 +41,9 @@ const EditGiftListing = () => {
 			const {
 				infos: originInfos,
 				stock,
+
 				...values
 			} = await form.validateFields()
-
 			const pictureUrls = await Promise.all(
 				Object.keys(originInfos).map(async lang => {
 					const { fileList } = originInfos[lang]
@@ -77,6 +77,7 @@ const EditGiftListing = () => {
 				giftId: Number(editGiftId),
 				stock: stock || undefined,
 			}).unwrap()
+
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(-1)
 		} catch (error) {
