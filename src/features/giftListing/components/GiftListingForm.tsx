@@ -13,7 +13,11 @@ import {
 } from 'antd'
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
-import { ICategoriesData, IGiftTagsData } from 'features/giftListing/type'
+import {
+	GiftTypeEnum,
+	ICategoriesData,
+	IGiftTagsData,
+} from 'features/giftListing/type'
 import { useParams } from 'react-router-dom'
 import ImageUploader from './ImageUploader'
 import {
@@ -41,13 +45,18 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 	const { t } = useTranslation()
 	const { editGiftId } = useParams()
 	const showStock = Form.useWatch<boolean>('showStock', form)
-	// 是否勾選giftType
-	const isFreeSpin = Form.useWatch<boolean>('giftType', form)
 	const isEdit = Boolean(editGiftId)
+	// 是否勾選giftType
+	let isFreeSpin
+	if (isEdit) {
+		isFreeSpin = Form.useWatch<number>('giftType', form)
+		isFreeSpin = isFreeSpin === GiftTypeEnum.FreeSpin
+	} else {
+		isFreeSpin = Form.useWatch<boolean>('giftType', form)
+	}
 	// * 只回傳當前語系的資料
 	const categories = originCategories.filter(category => category.lang === lang)
 	const giftTags = originGiftTags.filter(giftTag => giftTag.lang === lang)
-
 	const onToggleShowStockChecked = () => {
 		form.setFieldsValue({
 			showStock: !showStock,
