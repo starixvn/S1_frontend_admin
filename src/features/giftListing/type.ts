@@ -111,7 +111,7 @@ export interface IGiftForm {
 	showStock: number | boolean
 	stock: any
 	infos: IInfos
-	gifttype: boolean
+	giftType: boolean
 	freeSpin: number
 }
 
@@ -158,8 +158,6 @@ export interface IUpdateGiftArgs {
 		description: string
 		pictureUrl: string
 	}[]
-	round?: number
-	gifttype?: number
 }
 
 export enum GiftTypeEnum {

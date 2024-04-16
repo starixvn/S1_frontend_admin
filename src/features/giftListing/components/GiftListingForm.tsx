@@ -14,7 +14,7 @@ import {
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { ICategoriesData, IGiftTagsData } from 'features/giftListing/type'
-import { CalendarOutlined } from '@ant-design/icons'
+import { useParams } from 'react-router-dom'
 import ImageUploader from './ImageUploader'
 import {
 	GIFT_LIST_GAME_OPTIONS,
@@ -39,9 +39,11 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 	giftTags: originGiftTags,
 }) => {
 	const { t } = useTranslation()
+	const { editGiftId } = useParams()
 	const showStock = Form.useWatch<boolean>('showStock', form)
-	// 是否勾選gifttype
-	const isGifttype = Form.useWatch<boolean>('gifttype', form)
+	// 是否勾選giftType
+	const isFreeSpin = Form.useWatch<boolean>('giftType', form)
+	const isEdit = Boolean(editGiftId)
 	// * 只回傳當前語系的資料
 	const categories = originCategories.filter(category => category.lang === lang)
 	const giftTags = originGiftTags.filter(giftTag => giftTag.lang === lang)
@@ -116,8 +118,10 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 			<Divider />
 			<Row gutter={24}>
 				<Col span={4}>
-					<Form.Item name='gifttype' valuePropName='checked' noStyle>
-						<Checkbox>{t('Label_FreeSpin')}</Checkbox>
+					<Form.Item name='giftType' valuePropName='checked' noStyle>
+						<Checkbox defaultChecked={isFreeSpin} disabled={isEdit}>
+							{t('Label_FreeSpin')}
+						</Checkbox>
 					</Form.Item>
 				</Col>
 				<Col span={4}>
@@ -125,7 +129,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 						<Select
 							placeholder={t('Label_Select')}
 							defaultValue={GIFT_LIST_PROVIDER_OPTIONS[0].value}
-							disabled={!isGifttype}
+							disabled={!isFreeSpin || isEdit}
 						>
 							{GIFT_LIST_PROVIDER_OPTIONS.map(({ key, value }) => (
 								<Option key={key} value={value}>
@@ -137,10 +141,10 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 				</Col>
 				<Col span={4}>
 					<Form.Item
-						name='freeSpin'
+						name='round'
 						rules={[
 							{
-								required: isGifttype,
+								required: isFreeSpin,
 								message: t('Label_Required', {
 									key: t('Label_FreeSpin'),
 								}),
@@ -149,8 +153,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 					>
 						<InputNumber
 							placeholder={t('Label_FreeSpin')}
-							disabled={!isGifttype}
-							min={1}
+							disabled={!isFreeSpin || isEdit}
 							style={{ width: '100%' }}
 						/>
 					</Form.Item>
@@ -160,7 +163,7 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 						<Select
 							placeholder={t('Label_Select')}
 							defaultValue={GIFT_LIST_GAME_OPTIONS[0].value}
-							disabled={!isGifttype}
+							disabled={!isFreeSpin || isEdit}
 						>
 							{GIFT_LIST_GAME_OPTIONS.map(({ key, value }) => (
 								<Option key={key} value={value}>
@@ -168,27 +171,6 @@ const GiftListingForm: FC<IAddGiftListingFormProps> = ({
 								</Option>
 							))}
 						</Select>
-					</Form.Item>
-				</Col>
-				<Col span={4}>
-					<Form.Item>
-						<Input.Group
-							compact
-							style={{ width: '100%', display: 'flex', alignItems: 'center' }}
-						>
-							<CalendarOutlined
-								style={{ fontSize: '20px', marginRight: '5px' }}
-							/>
-							<Form.Item noStyle name='expire'>
-								<InputNumber
-									defaultValue={1}
-									disabled={!isGifttype}
-									min={1}
-									type='number'
-									style={{ width: '100%' }}
-								/>
-							</Form.Item>
-						</Input.Group>
 					</Form.Item>
 				</Col>
 			</Row>

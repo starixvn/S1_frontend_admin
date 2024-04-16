@@ -31,7 +31,7 @@ const AddGiftListing = () => {
 				infos: originInfos,
 				stock,
 				freeSpin,
-				gifttype,
+				giftType,
 				...rest
 			} = (await form.validateFields()) as IGiftForm
 			// * 上傳商品圖片
@@ -65,8 +65,8 @@ const AddGiftListing = () => {
 				currencyId: Number(currencyId),
 				infos: newInfos,
 				stock: stock ?? undefined,
-				round: gifttype ? freeSpin : 0,
-				gifttype: gifttype ? GiftTypeEnum.FreeSpin : GiftTypeEnum.Common,
+				round: giftType ? freeSpin : 0,
+				gifttype: giftType ? GiftTypeEnum.FreeSpin : GiftTypeEnum.Common,
 				...rest,
 			}).unwrap()
 
