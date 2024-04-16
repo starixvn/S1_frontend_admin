@@ -111,7 +111,7 @@ export interface IGiftForm {
 	showStock: number | boolean
 	stock: any
 	infos: IInfos
-	giftType: boolean
+	giftType: number | undefined
 	freeSpin: number
 }
 
