@@ -17,6 +17,7 @@ export interface IListData {
 	currency: string
 	custId: number
 	userName: string
+	totalReferee: number
 	totalDeposit: number
 	payoutAmount: number
 	referralAmount: number

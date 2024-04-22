@@ -38,7 +38,7 @@ const NewReferralReportTable = ({
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
-			width: 120,
+			width: 200,
 			align: 'center' as 'center',
 			render: ({ custId, userName }: IListData) =>
 				userName ? (
@@ -51,6 +51,15 @@ const NewReferralReportTable = ({
 				) : (
 					'-'
 				),
+		},
+		{
+			title: t('Label_TotalReferee'),
+			key: 'totalReferee',
+			dataIndex: 'totalReferee',
+			width: 150,
+			align: 'center' as 'center',
+			render: (totalReferee: number) =>
+				numberFormatter.format(totalReferee) ?? '-',
 		},
 		{
 			title: t('Label_TotalDeposit'),
