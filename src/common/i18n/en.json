@@ -1240,6 +1240,7 @@
 	"Label_SetRankingBonus": "Set Ranking Bonus",
 	"Label_PositiveIntegerError": "Please enter an integer greater than 1.",
 	"Label_Site": "Site",
+	"Label_RLS_TO_PRD": "RLS TO PRD",
 	"Label_LiveBroadCaster": "Live Broadcaster",
 	"Label_EggTickets": "Egg Tickets",
 	"Label_AffiliateAccount": "Affiliate Account",
@@ -1250,7 +1251,6 @@
 	"Label_IconType": "Icon Type",
 	"Label_IconStartTime": "Icon StartTime",
 	"Label_IconEndTime": "Icon EndTime",
-  "Label_RLS_TO_PRD": "RLS TO PRD",
 	"Label_GoToPRD": "GO to PRD",
 	"Label_AddNewSlotGame": "Add New Slot Game",
 	"Label_EnName": "EN Name",
@@ -1266,9 +1266,11 @@
 	"Label_EnPic": "En Image",
 	"Label_CsPic": "Cs Image",
 	"Label_ImageUploaded": "Image Uploaded",
-	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_PhoneNo_Rule" : "The phone number must contain only digits.",
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_DepositDate" : "Deposit Date",
-	"Label_TotalReferee" : "Total Referee"
+	"Label_TotalReferee" : "Total Referee",
+	"Label_Icon_Active": "Icon Active",
+	"Label_HeaderMenu_Product_Description_1": "This function is to change the product in all currencies at one time.",
+	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency."
 }

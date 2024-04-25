@@ -224,24 +224,6 @@ const ProductStatusModal = ({
 			},
 		},
 		{
-			title: t('Label_Active'),
-			key: 'active',
-			width: 80,
-			align: 'center' as 'center',
-			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
-				const { iconType, iconStartTime, iconEndTime } = record
-				const isActiveDateTime = moment().isBetween(iconStartTime, iconEndTime)
-
-				const isActive = Boolean(iconType) && isActiveDateTime
-
-				return isActive ? (
-					<CheckCircleOutlined style={{ fontSize: 16, color: '#3EA62E' }} />
-				) : (
-					<CloseCircleOutlined style={{ fontSize: 16, color: '#C70707' }} />
-				)
-			},
-		},
-		{
 			title: t('Label_Category'),
 			key: 'lobbyCategory',
 			dataIndex: 'lobbyCategory',
@@ -274,6 +256,24 @@ const ProductStatusModal = ({
 					</Form.Item>
 				) : (
 					<Switch checked={Boolean(status)} disabled />
+				)
+			},
+		},
+		{
+			title: t('Label_Icon_Active'),
+			key: 'active',
+			width: 80,
+			align: 'center' as 'center',
+			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
+				const { iconType, iconStartTime, iconEndTime } = record
+				const isActiveDateTime = moment().isBetween(iconStartTime, iconEndTime)
+
+				const isActive = Boolean(iconType) && isActiveDateTime
+
+				return isActive ? (
+					<CheckCircleOutlined style={{ fontSize: 16, color: '#3EA62E' }} />
+				) : (
+					<CloseCircleOutlined style={{ fontSize: 16, color: '#C70707' }} />
 				)
 			},
 		},
@@ -407,6 +407,15 @@ const ProductStatusModal = ({
 					</Form>
 				</Col>
 			</Row>
+
+			<Row align='middle' gutter={16}>
+				<Col lg={24}>
+					<Typography.Text style={{ fontSize: 12 }}>
+						{t('Label_HeaderMenu_Product_Description_1')}
+					</Typography.Text>
+				</Col>
+			</Row>
+
 			<Form form={editForm} component={false}>
 				<Table
 					loading={

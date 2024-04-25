@@ -2971,6 +2971,16 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.headerManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.headerManagement.functionId}
+					>
+						<HeaderManagement />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bigWinPopUpSetting.root}`,
 				element: (
 					<AuthRequire functionId={paths.cms.sub.bigWinPopUpSetting.functionId}>

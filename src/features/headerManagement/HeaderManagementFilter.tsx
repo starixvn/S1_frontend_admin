@@ -6,7 +6,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { selectCurrencyListBySite } from 'common/enum'
 import { FormInstance } from 'antd/es/form/Form'
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, Col, Collapse, Form, Row, Select } from 'antd'
+import { Button, Col, Collapse, Form, Row, Select, Typography } from 'antd'
 import { IFilterForm, ILobbyCategoryData } from 'features/headerManagement/type'
 
 interface IHeaderManagementFilterProps {
@@ -76,7 +76,14 @@ const HeaderManagementFilter = ({
 							</Col>
 						</Row>
 						<br />
-						<Row justify='end' align='middle' gutter={16}>
+
+						<Row justify='space-between' align='middle' gutter={16}>
+							<Col>
+								<Typography.Text style={{ fontSize: 12 }}>
+									{t('Label_HeaderMenu_Product_Description_2')}
+								</Typography.Text>
+							</Col>
+
 							<Col>
 								<Button
 									loading={loading}
