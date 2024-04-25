@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Form, FormInstance, message } from 'antd'
 import { RcFile } from 'antd/es/upload'
 import { LayoutContent } from 'app/pages/layout'
-import { find } from 'lodash'
+import { cloneDeep, find } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from 'common/hooks'
@@ -12,7 +12,7 @@ import {
 	useUpdateGiftMutation,
 	useUploadGiftImageMutation,
 } from '../api'
-import { IEditGiftForm } from '../type'
+import { GiftTypeEnum, IEditGiftForm } from '../type'
 import GiftFormTabs from '../components/GiftFormTabs'
 
 const EditGiftListing = () => {
@@ -24,9 +24,20 @@ const EditGiftListing = () => {
 	const [form]: [FormInstance<IEditGiftForm>] = Form.useForm()
 
 	const { data: { data: giftInfo } = {}, isFetching: isGetGiftInfoFetching } =
-		useGetGiftInfoQuery({
-			giftId: Number(editGiftId),
-		})
+		useGetGiftInfoQuery(
+			{
+				giftId: Number(editGiftId),
+			},
+			{
+				selectFromResult: ({ data: { data } = {}, isFetching }) => {
+					const cloneData = cloneDeep(data)
+					if (cloneData && cloneData.giftType === GiftTypeEnum.Common) {
+						cloneData.giftType = undefined
+					}
+					return { data: { data: cloneData }, isFetching }
+				},
+			}
+		)
 
 	const { status, infos = {} } = giftInfo ?? {}
 
@@ -41,9 +52,9 @@ const EditGiftListing = () => {
 			const {
 				infos: originInfos,
 				stock,
+
 				...values
 			} = await form.validateFields()
-
 			const pictureUrls = await Promise.all(
 				Object.keys(originInfos).map(async lang => {
 					const { fileList } = originInfos[lang]
@@ -77,6 +88,7 @@ const EditGiftListing = () => {
 				giftId: Number(editGiftId),
 				stock: stock || undefined,
 			}).unwrap()
+
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(-1)
 		} catch (error) {
