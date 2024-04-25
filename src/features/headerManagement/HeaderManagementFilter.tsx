@@ -77,7 +77,7 @@ const HeaderManagementFilter = ({
 						</Row>
 						<br />
 
-						<Row justify='space-between' align='middle' gutter={16}>
+						<Row justify='end' align='middle' gutter={16}>
 							<Col>
 								<Typography.Text style={{ fontSize: 12 }}>
 									{t('Label_HeaderMenu_Product_Description_2')}
