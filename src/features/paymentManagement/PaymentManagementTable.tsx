@@ -7,7 +7,7 @@ import {
 } from 'features/paymentManagement/type'
 import { Space, Switch, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { DepositTypeEnum, PermissionInterface } from 'type'
+import { PermissionInterface } from 'type'
 import { Currency } from 'common/enum/type'
 import { find } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
@@ -154,12 +154,8 @@ const PaymentManagementTable = ({
 					typeList,
 					target => target.value === type
 				)?.name
-				// 只有 onlineBank、quickTransfer 有額外 行為可使用 , 直接寫死在此處
-				const isShowExtraAction = [
-					DepositTypeEnum.OnlineBanking,
-					DepositTypeEnum.QuickTransfer,
-				].includes(type)
-				return isShowExtraAction ? (
+
+				return (
 					<Typography.Link
 						style={{ whiteSpace: 'nowrap', padding: '5px' }}
 						onClick={() => {
@@ -168,10 +164,6 @@ const PaymentManagementTable = ({
 					>
 						{displayName}
 					</Typography.Link>
-				) : (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{displayName}
-					</Typography.Text>
 				)
 			},
 		},
