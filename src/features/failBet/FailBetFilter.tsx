@@ -104,7 +104,18 @@ const FailBetFilter = ({
 
 		return (
 			<Form.Item name='tpIds' label={t('Label_Vender')}>
-				<MultipleSelect onChange={onChangeTpId} placeholder={t('Label_Select')}>
+				<MultipleSelect
+					onChange={onChangeTpId}
+					placeholder={t('Label_Select')}
+					showSearch
+					filterOption={(input, option) => {
+						const isIncludes: boolean = (option!.children as unknown as string)
+							.toLowerCase()
+							.includes(input.toLowerCase())
+
+						return isIncludes
+					}}
+				>
 					{(tpIdList?.length as number) > 1 && (
 						<Option value='all'>{t('Label_SelectAll')}</Option>
 					)}

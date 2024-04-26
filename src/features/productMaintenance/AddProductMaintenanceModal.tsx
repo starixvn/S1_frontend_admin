@@ -109,7 +109,19 @@ const AddProductMaintenanceModal = ({
 							rules={[{ required: true }]}
 							label={t('Label_Vender')}
 						>
-							<Select placeholder={t('Label_Select')}>
+							<Select
+								placeholder={t('Label_Select')}
+								showSearch
+								filterOption={(input, option) => {
+									const isIncludes: boolean = (
+										option!.children as unknown as string
+									)
+										.toLowerCase()
+										.includes(input.toLowerCase())
+
+									return isIncludes
+								}}
+							>
 								{tpList?.map(({ id, tpDisplayName }) => (
 									<Option key={id} value={id}>
 										{tpDisplayName}
