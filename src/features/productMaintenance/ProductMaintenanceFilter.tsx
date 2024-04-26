@@ -142,6 +142,16 @@ const ProductMaintenanceFilter = ({
 									<Select
 										onChange={resetTpGameType}
 										placeholder={t('Label_Select')}
+										showSearch
+										filterOption={(input, option) => {
+											const isIncludes: boolean = (
+												option!.children as unknown as string
+											)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+
+											return isIncludes
+										}}
 									>
 										<Option value={0}>{t('Label_SelectAll')}</Option>
 

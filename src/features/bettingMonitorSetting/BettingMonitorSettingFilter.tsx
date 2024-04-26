@@ -92,6 +92,14 @@ const BettingMonitorSettingFilter = ({
 					resetTpGameType()
 				}}
 				placeholder={t('Label_Select')}
+				showSearch
+				filterOption={(input, option) => {
+					const isIncludes: boolean = (option!.children as unknown as string)
+						.toLowerCase()
+						.includes(input.toLowerCase())
+
+					return isIncludes
+				}}
 			>
 				{(tpList?.length as number) > 1 && (
 					<Option value='all'>{t('Label_SelectAll')}</Option>
