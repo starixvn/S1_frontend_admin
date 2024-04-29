@@ -51,11 +51,14 @@ const SlotGameForm = ({
 }: ISlotGameFormProps) => {
 	const { t } = useTranslation()
 
+	// 這裡新增的 Category 下拉跟外面 table Set Category 共用同個 api ， 但因為後端不吃 0 這個參數
+	// 所以需在這裡先濾掉 (從後端直接拔除 All (set Status ) 這個物件會影響搜尋的切換)
+	const filteredSlotCategoryList = slotCategoryList.filter(({ id }) => id !== 0)
 	const categorySelector = () => {
 		const onChangeCategory = (newCategoryIds: Array<number | string>) => {
 			if (newCategoryIds.includes('all')) {
 				form.setFieldsValue({
-					categoryIds: slotCategoryList?.map(item => item.id),
+					categoryIds: filteredSlotCategoryList?.map(item => item.id),
 				})
 			} else {
 				form.setFieldsValue({
@@ -71,11 +74,11 @@ const SlotGameForm = ({
 						onChange={onChangeCategory}
 						placeholder={t('Label_Select')}
 					>
-						{(slotCategoryList?.length as number) > 1 && (
+						{(filteredSlotCategoryList?.length as number) > 1 && (
 							<Option value='all'>{t('Label_SelectAll')}</Option>
 						)}
 
-						{slotCategoryList?.map(({ id, name }) => (
+						{filteredSlotCategoryList?.map(({ id, name }) => (
 							<Option key={id} value={id}>
 								{name}
 							</Option>
