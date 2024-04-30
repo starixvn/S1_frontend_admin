@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { isArray, some } from 'lodash'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Typography, TablePaginationConfig } from 'antd'
@@ -29,6 +30,22 @@ const AdminUserLogTable = ({
 }: IAdminUserLogTableProps) => {
 	const { t } = useTranslation()
 
+	const filteredDirtyData = adminUserLogList.filter(
+		item =>
+			!some(
+				Object.keys(item.beforeDetailInfoObject!).map(key =>
+					// @ts-ignore
+					isArray(item.beforeDetailInfoObject![key])
+				)
+			) ||
+			!some(
+				Object.keys(item.afterDetailInfoObject!).map(key =>
+					// @ts-ignore
+					isArray(item.afterDetailInfoObject![key])
+				)
+			)
+	)
+
 	const renderDetailContent = ({
 		infoObject,
 	}: {
@@ -39,11 +56,16 @@ const AdminUserLogTable = ({
 	}) => {
 		if (!infoObject) return 'N/A'
 
-		return Object.keys(infoObject).map((key: string) => (
-			<div key={key} style={{ width: 180 }}>
-				<DetailTitle>{key}:</DetailTitle> {infoObject[key]}
-			</div>
-		))
+		if (some(Object.keys(infoObject).map(key => isArray(infoObject[key]))))
+			return 'N/A'
+
+		return Object.keys(infoObject).map((key: string) => {
+			return (
+				<div key={key} style={{ width: 180 }}>
+					<DetailTitle>{key}:</DetailTitle> {infoObject[key]}
+				</div>
+			)
+		})
 	}
 
 	const columns = [
@@ -111,7 +133,7 @@ const AdminUserLogTable = ({
 	return (
 		<Table
 			loading={loading}
-			dataSource={adminUserLogList}
+			dataSource={filteredDirtyData}
 			columns={columns}
 			pagination={pagination as TablePaginationConfig}
 			onChange={onTableChange}
