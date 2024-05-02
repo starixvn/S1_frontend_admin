@@ -42,6 +42,7 @@ export interface IGetRedemptionListData {
 	point: number
 	actualCost: number
 	operator: string | null
+	bonusCode: string
 }
 
 export interface IGetRedemptionOverviewData {
