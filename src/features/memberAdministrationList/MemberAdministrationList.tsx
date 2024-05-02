@@ -250,6 +250,7 @@ const MemberAdministrationList = ({
 		}
 	}
 
+	// 🟠
 	const handleRegisterMember = async () => {
 		if (!siteId) return
 		const {
@@ -261,6 +262,7 @@ const MemberAdministrationList = ({
 			areaCode,
 			phoneNo,
 			affCode,
+			realName,
 		} = await addForm.validateFields()
 
 		try {
@@ -274,6 +276,7 @@ const MemberAdministrationList = ({
 				areaCode,
 				phoneNo: String(phoneNo),
 				affCode,
+				realName,
 			}).unwrap()
 			message.success(response?.message || t('System.Label_Success'))
 			registerMemberModal.onCancel()
