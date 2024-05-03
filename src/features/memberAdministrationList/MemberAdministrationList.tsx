@@ -250,7 +250,6 @@ const MemberAdministrationList = ({
 		}
 	}
 
-	// 🟠
 	const handleRegisterMember = async () => {
 		if (!siteId) return
 		const {
