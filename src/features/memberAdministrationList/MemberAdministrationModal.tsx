@@ -77,7 +77,7 @@ const MemberAdministrationModal = ({
 								{
 									required: true,
 									message: t('Label_Required', {
-										key: t('Label_TagName'),
+										key: t('Label_UserName'),
 									}),
 								},
 								{
@@ -112,6 +112,22 @@ const MemberAdministrationModal = ({
 								placeholder={t('Label_Password')}
 								style={{ width: '100%' }}
 							/>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item
+							label={t('Label_FullName')}
+							name='realName'
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_FullName'),
+									}),
+								},
+							]}
+						>
+							<Input allowClear style={{ width: '100%' }} />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
