@@ -1,12 +1,15 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import { Popconfirm, Typography } from 'antd'
+import { Button, Popconfirm, Typography, Row, Col } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import moment from 'moment'
 import { PermissionInterface } from 'type'
 import { IGetCupEventReportData } from './type'
+import { SiteIds } from '../../app/constants/siteIds'
+import { useAppSelector } from '../../app/store'
+import { selectUserSite } from '../../common/enum'
 
 interface ICupEventTeamReportProps {
 	loading: boolean
@@ -15,6 +18,7 @@ interface ICupEventTeamReportProps {
 	exportExcelPermission?: PermissionInterface
 	editPermission?: PermissionInterface
 	onExport: (teamId: number) => void
+	onExportPredictScore: () => void
 	onSetPayout: (teamId: number) => void
 }
 
@@ -25,9 +29,12 @@ const CupEventTeamReportTable: FC<ICupEventTeamReportProps> = ({
 	exportExcelPermission,
 	editPermission,
 	onExport,
+	onExportPredictScore,
 	onSetPayout,
 }) => {
 	const { t } = useTranslation()
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
+
 	const columns = [
 		{
 			title: t('Label_Teams'),
@@ -113,6 +120,18 @@ const CupEventTeamReportTable: FC<ICupEventTeamReportProps> = ({
 
 	return (
 		<LayoutContent.Card>
+			{siteId === SiteIds.Bwing && (
+				<>
+					<br />
+					<Row justify='end' gutter={16}>
+						<Col>
+							<Button type='primary' onClick={onExportPredictScore}>
+								{t('Label_CorrectScoreExport')}
+							</Button>
+						</Col>
+					</Row>
+				</>
+			)}
 			<Table
 				loading={loading}
 				columns={columns}
