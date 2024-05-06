@@ -1269,6 +1269,7 @@
 	"Label_PhoneNo_Rule" : "The phone number must contain only digits.",
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_DepositDate" : "Deposit Date",
+	"Label_CorrectScoreExport": "Correct score Export",
 	"Label_TotalReferee" : "Total Referee",
 	"Label_Icon_Active": "Icon Active",
 	"Label_HeaderMenu_Product_Description_1": "This function is to change the product in all currencies at one time.",
