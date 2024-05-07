@@ -148,6 +148,13 @@ const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 				actualCost > 0 ? numberFormatter.format(actualCost) : '-',
 		},
 		{
+			title: t('Label_BonusCode'),
+			key: 'bonusCode',
+			dataIndex: 'bonusCode',
+			width: 80,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_Operator'),
 			key: 'operator',
 			dataIndex: 'operator',

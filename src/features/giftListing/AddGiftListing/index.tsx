@@ -7,7 +7,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { Form, message } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
-import { IGiftForm } from '../type'
+import { GiftTypeEnum, IGiftForm } from '../type'
 import { useCreateGiftMutation, useUploadGiftImageMutation } from '../api'
 import GiftFormTabs from '../components/GiftFormTabs'
 
@@ -30,6 +30,8 @@ const AddGiftListing = () => {
 			const {
 				infos: originInfos,
 				stock,
+				freeSpin,
+				giftType,
 				...rest
 			} = (await form.validateFields()) as IGiftForm
 			// * 上傳商品圖片
@@ -57,13 +59,17 @@ const AddGiftListing = () => {
 				description: originInfos[lang].description,
 				pictureUrl: find(pictureUrls, { lang })?.pictureUrl ?? '',
 			}))
+
 			await createGift({
 				siteId,
 				currencyId: Number(currencyId),
 				infos: newInfos,
 				stock: stock ?? undefined,
+				round: giftType ? freeSpin : 0,
+				gifttype: giftType ? GiftTypeEnum.FreeSpin : GiftTypeEnum.Common,
 				...rest,
 			}).unwrap()
+
 			message.success(t('System.Label_LoginSuccess'))
 			navigate(-1)
 		} catch (error: any) {
