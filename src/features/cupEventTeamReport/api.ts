@@ -37,6 +37,14 @@ export const cupEventTeamReportApi = rootApi.injectEndpoints({
 			}),
 			invalidatesTags: ['POST'],
 		}),
+		exportCupEventPredictScore: builder.mutation<Blob, null>({
+			query: data => ({
+				url: 'CupEvent/ExportCupEventPredictScore',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 	}),
 })
 
@@ -44,4 +52,5 @@ export const {
 	useGetCupEventTeamReportQuery,
 	useExportCupEventTeamReportMutation,
 	useSetPayoutMutation,
+	useExportCupEventPredictScoreMutation,
 } = cupEventTeamReportApi
