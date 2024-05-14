@@ -76,6 +76,9 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	const { t } = useTranslation()
 	const { form, categoryList, editPermission, currentActiveCurrency } =
 		useContext(EditBonusContext)
+
+	const canEdit = !!editPermission?.canUse
+
 	const currentBonusType = Form.useWatch('bonusType', form)
 	const sameByActive = Form.useWatch('sameByActive', form)
 	// * displayDate => 後端有情境會回傳 [null,null]
@@ -121,6 +124,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 				<MultipleSelect
 					onChange={onChangeVipLevel}
 					placeholder={t('Label_Select')}
+					disabled={!canEdit}
 				>
 					{vipLevelList?.length > 1 && (
 						<Option value='all'>{t('Label_All')}</Option>
@@ -153,7 +157,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 				label={t('Label_TaggingRestrict')}
 				style={{ width: '100%' }}
 			>
-				<MultipleSelect onChange={handleChangeTags}>
+				<MultipleSelect onChange={handleChangeTags} disabled={!canEdit}>
 					{(tagList?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
@@ -219,7 +223,6 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						sameDeviceIDRestrict: false,
 						sameRealNameRestrict: false,
 					}}
-					disabled={!editPermission?.canUse}
 				>
 					<Row>
 						<Space>
@@ -228,16 +231,14 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 								valuePropName='checked'
 								style={{ marginBottom: '10px' }}
 							>
-								<Checkbox disabled={!editPermission?.canUse}>
-									{t('Label_Active')}
-								</Checkbox>
+								<Checkbox disabled={!canEdit}>{t('Label_Active')}</Checkbox>
 							</Form.Item>
 							<Form.Item
 								name='hideForUnlogin'
 								valuePropName='checked'
 								style={{ marginBottom: '10px' }}
 							>
-								<Checkbox disabled={!editPermission?.canUse}>
+								<Checkbox disabled={!canEdit}>
 									{t('Label_hideForUnLogin')}
 								</Checkbox>
 							</Form.Item>
@@ -251,9 +252,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									valuePropName='checked'
 									style={{ marginBottom: '10px' }}
 								>
-									<Checkbox disabled={!editPermission?.canUse}>
-										{t('Label_Popup')}
-									</Checkbox>
+									<Checkbox disabled={!canEdit}>{t('Label_Popup')}</Checkbox>
 								</Form.Item>
 							)}
 						</Space>
@@ -288,7 +287,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<Input />
+								<Input disabled={!canEdit} />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -386,21 +385,27 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 											valuePropName='checked'
 											noStyle
 										>
-											<Checkbox>{t('Label_SameByActive')}</Checkbox>
+											<Checkbox disabled={!canEdit}>
+												{t('Label_SameByActive')}
+											</Checkbox>
 										</Form.Item>
 										<Form.Item
 											name='autoExtend'
 											valuePropName='checked'
 											noStyle
 										>
-											<Checkbox>{t('Label_AutoExtend')}</Checkbox>
+											<Checkbox disabled={!canEdit}>
+												{t('Label_AutoExtend')}
+											</Checkbox>
 										</Form.Item>
 										<Form.Item
 											name='isDisplayDate'
 											valuePropName='checked'
 											noStyle
 										>
-											<Checkbox>{t('Label_isDisplayDate')}</Checkbox>
+											<Checkbox disabled={!canEdit}>
+												{t('Label_isDisplayDate')}
+											</Checkbox>
 										</Form.Item>
 									</Space>
 								}
@@ -421,7 +426,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										]}
 									>
 										<RangePicker
-											disabled={!isDisplayDate}
+											disabled={!(isDisplayDate && canEdit)}
 											style={{ width: '100%' }}
 											ranges={MOMENT_RANGE_PICKER_RANGES([
 												'Today',
@@ -496,7 +501,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										]}
 									>
 										<RangePicker
-											disabled={sameByActive}
+											disabled={sameByActive || !canEdit}
 											style={{ width: '100%' }}
 											ranges={MOMENT_RANGE_PICKER_RANGES([
 												'Today',
@@ -534,14 +539,14 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<InputNumber />
+								<InputNumber disabled={!canEdit} />
 							</Form.Item>
 						</Col>
 					</Row>
 					<Row gutter={16} align='middle'>
 						<Col lg={8} md={12} xs={12}>
 							<Form.Item name='promotionDeviceType' label={t('Label_Device')}>
-								<Select>
+								<Select disabled={!canEdit}>
 									{devicesDetailList?.map(device => (
 										<Option key={device.value} value={device.value}>
 											{t(device.displayName)}
@@ -567,7 +572,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<InputNumber />
+								<InputNumber disabled={!canEdit} />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -583,7 +588,12 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										target='_blank'
 										style={{ color: 'white' }}
 									>
-										<Button type='primary' icon={<DownloadOutlined />} block>
+										<Button
+											type='primary'
+											icon={<DownloadOutlined />}
+											block
+											disabled={!canEdit}
+										>
 											{t('Label_TemplateFile')}
 										</Button>
 									</Link>
@@ -595,7 +605,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										<Button
 											icon={<UploadOutlined />}
 											loading={uploadUsingListLoading}
-											disabled={!isEdit}
+											disabled={!(isEdit && canEdit)}
 										>
 											{t('Label_Upload', { key: t('Label_File') })}
 										</Button>
@@ -770,6 +780,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									]}
 								>
 									<Select
+										disabled={!canEdit}
 										onChange={() =>
 											// 切換category 後重置
 											form?.setFieldsValue({
