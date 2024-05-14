@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import { Col, Divider, Form, message, Modal, PageHeader, Row } from 'antd'
+import { Col, Divider, Form, message, Modal, Row } from 'antd'
 import { filter, find } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -429,7 +429,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	}, [isGetDepositReceiptByTransIdLoading])
 	return (
 		<LayoutContent.Main>
-			<PageHeader title={pageTitle} />
+			<LayoutContent.Title title={pageTitle} />
 			<LayoutContent.Card style={{ marginTop: 0 }}>
 				<Form
 					form={form}

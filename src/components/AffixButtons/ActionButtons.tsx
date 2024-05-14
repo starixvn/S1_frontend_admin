@@ -11,28 +11,24 @@ import { BiExport, BiAddToQueue, BiSortAlt2 } from 'react-icons/bi'
 import { BsX } from 'react-icons/bs'
 import StyledButton from './StyledButton'
 
-const CreateButton = (props: ButtonProps) => {
-	return (
-		<StyledButton
-			icon={<PlusOutlined />}
-			type='primary'
-			shape='circle'
-			{...props}
-		/>
-	)
-}
+const CreateButton = (props: ButtonProps) => (
+	<StyledButton
+		icon={<PlusOutlined />}
+		type='primary'
+		shape='circle'
+		{...props}
+	/>
+)
 
-const RejectButton = (props: ButtonProps) => {
-	return (
-		<StyledButton
-			icon={<BsX style={{ fontSize: 24, marginTop: 8 }} />}
-			type='primary'
-			shape='circle'
-			danger
-			{...props}
-		/>
-	)
-}
+const RejectButton = (props: ButtonProps) => (
+	<StyledButton
+		icon={<BsX style={{ fontSize: 24 }} />}
+		type='primary'
+		shape='circle'
+		danger
+		{...props}
+	/>
+)
 
 const DeleteButton = (props: ButtonProps) => (
 	<StyledButton
@@ -63,7 +59,12 @@ const ReloadButton = (props: ButtonProps) => (
 )
 
 const FileExportButton = (props: ButtonProps) => (
-	<StyledButton icon={<BiExport />} type='primary' shape='circle' {...props} />
+	<StyledButton
+		icon={<BiExport style={{ fontSize: 18 }} />}
+		type='primary'
+		shape='circle'
+		{...props}
+	/>
 )
 
 const EditButton = (props: ButtonProps) => (
@@ -77,7 +78,7 @@ const EditButton = (props: ButtonProps) => (
 
 const AddBatchButton = (props: ButtonProps) => (
 	<StyledButton
-		icon={<BiAddToQueue />}
+		icon={<BiAddToQueue style={{ fontSize: 16 }} />}
 		type='primary'
 		shape='circle'
 		{...props}
@@ -86,7 +87,7 @@ const AddBatchButton = (props: ButtonProps) => (
 
 const DragButton = (props: ButtonProps) => (
 	<StyledButton
-		icon={<BiSortAlt2 style={{ marginTop: '8px' }} />}
+		icon={<BiSortAlt2 style={{ fontSize: 18 }} />}
 		type='primary'
 		shape='circle'
 		{...props}

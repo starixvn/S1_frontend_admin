@@ -28,10 +28,7 @@ import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { ExcelExportButton } from 'features/bonusInfo/components/ExcelExportButton'
 import { GroupByEnum } from 'features/bonusInfo/constants'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 
 interface IBonusDetailTableProps {
 	form: FormInstance<IBonusDetailForm>
@@ -221,7 +218,7 @@ const BonusDetailTable = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={MOMENT_DATE_RANGES.Today}
+												initialValue={DATE_RANGES.Today}
 												rules={[
 													{
 														required: true,
@@ -231,7 +228,7 @@ const BonusDetailTable = ({
 											>
 												<RangePicker
 													style={{ width: '100%' }}
-													ranges={MOMENT_RANGE_PICKER_RANGES([
+													ranges={RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',

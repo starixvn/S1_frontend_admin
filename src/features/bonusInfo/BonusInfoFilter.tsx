@@ -13,10 +13,7 @@ import {
 } from 'antd'
 import { Currency, UserSite } from 'common/enum/type'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
@@ -77,14 +74,14 @@ const BonusInfoFilter = ({
 	}
 	// * siteIds 異動時須清空 currencyIds
 	const siteIdsSelector = () => {
-		const onChangeSite = (newSiteIds: Array<number | string>) => {
+		const onChangeSite = (newSiteIds: ('all' | number)[]) => {
 			if (newSiteIds.includes('all')) {
 				form.setFieldsValue({
 					siteIds: userSiteList?.map(({ siteId }) => siteId),
 				})
 			} else {
 				form.setFieldsValue({
-					siteIds: newSiteIds,
+					siteIds: newSiteIds as number[],
 				})
 			}
 			form.setFieldValue('currencyIds', [])
@@ -173,14 +170,14 @@ const BonusInfoFilter = ({
 	}
 
 	const bonusTypeSelector = () => {
-		const onChangeBonusType = (newType: (number | string)[]) => {
+		const onChangeBonusType = (newType: ('all' | number)[]) => {
 			if (newType.includes('all')) {
 				form.setFieldsValue({
 					bonusTypes: bonusTypeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					bonusTypes: newType,
+					bonusTypes: newType as number[],
 				})
 			}
 		}
@@ -204,14 +201,14 @@ const BonusInfoFilter = ({
 	}
 
 	const bonusStatusSelector = () => {
-		const onChangeBonusStatus = (newStatus: (number | string)[]) => {
+		const onChangeBonusStatus = (newStatus: ('all' | number)[]) => {
 			if (newStatus.includes('all')) {
 				form.setFieldsValue({
 					bonusStatus: bonusStatusList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					bonusStatus: newStatus,
+					bonusStatus: newStatus as number[],
 				})
 			}
 		}
@@ -235,14 +232,14 @@ const BonusInfoFilter = ({
 	}
 
 	const claimStatusSelector = () => {
-		const onChangeClaimStatus = (newStatus: (number | string)[]) => {
+		const onChangeClaimStatus = (newStatus: ('all' | number)[]) => {
 			if (newStatus.includes('all')) {
 				form.setFieldsValue({
 					claimStatuses: claimStatusList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					claimStatuses: newStatus,
+					claimStatuses: newStatus as number[],
 				})
 			}
 		}
@@ -296,7 +293,7 @@ const BonusInfoFilter = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={MOMENT_DATE_RANGES.Today}
+												initialValue={DATE_RANGES.Today}
 												rules={[
 													{
 														required: true,
@@ -306,7 +303,7 @@ const BonusInfoFilter = ({
 											>
 												<RangePicker
 													style={{ width: '100%' }}
-													ranges={MOMENT_RANGE_PICKER_RANGES([
+													ranges={RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',

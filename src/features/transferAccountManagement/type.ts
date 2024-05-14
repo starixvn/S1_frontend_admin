@@ -5,7 +5,7 @@ export interface IForm {
 	currencyIds: number[]
 	channels: number[]
 	status: number[]
-	purposes: number[]
+	purposes: ('all' | number)[]
 	sysIds: number[]
 	accountNo: string
 	agent: string
