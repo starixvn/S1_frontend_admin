@@ -130,7 +130,7 @@ const IssueBonusManagement: FC<{
 				bonusCode,
 			}).unwrap()
 			if (!data.hasBonusCode) {
-				message.warning('BonusCode Error')
+				message.warn('BonusCode Error')
 			}
 			setBatchBonusCodeInfo(data)
 		} catch (error) {

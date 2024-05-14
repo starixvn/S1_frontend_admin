@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import 'antd/dist/reset.css'
+import 'antd/dist/antd.css'
 
 const GlobalStyle = createGlobalStyle`
   
@@ -64,11 +64,6 @@ const GlobalStyle = createGlobalStyle`
     }
   .ant-table-column-sorters{
     word-break: break-word;
-  }
-
-  .ant-picker + * .ant-select-selector {
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
   }
 `
 

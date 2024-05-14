@@ -10,7 +10,10 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import { dateFormat } from 'common/utils/format'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
@@ -62,7 +65,7 @@ const SmsGeneratorFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES.Today}
+											initialValue={MOMENT_DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -72,7 +75,7 @@ const SmsGeneratorFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

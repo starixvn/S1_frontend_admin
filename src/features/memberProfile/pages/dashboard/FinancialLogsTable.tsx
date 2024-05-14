@@ -105,14 +105,14 @@ const FinancialLogsTable = ({
 	]
 
 	const typeSelector = () => {
-		const onChangeType = (newType: ('all' | number)[]) => {
+		const onChangeType = (newType: Array<number | string>) => {
 			if (newType.includes('all')) {
 				form.setFieldsValue({
 					financialType: typeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					financialType: newType as number[],
+					financialType: newType,
 				})
 			}
 		}

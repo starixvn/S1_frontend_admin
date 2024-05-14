@@ -1,8 +1,8 @@
 import { Dispatch, FC, SetStateAction } from 'react'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import { find } from 'lodash'
 import { PermissionInterface } from 'type'
-import { RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { Form, FormInstance, DatePicker, Space, Switch, Typography } from 'antd'
 import { EditableCellRows, Table } from 'components'
 import { useTranslation } from 'react-i18next'
@@ -72,9 +72,9 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 						<RangePicker
 							disabled={!editable}
 							format={time =>
-								dayjs(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
+								moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
 							}
-							ranges={RANGE_PICKER_RANGES([
+							ranges={MOMENT_RANGE_PICKER_RANGES([
 								'Today',
 								'Yesterday',
 								'Last Week',
@@ -87,9 +87,9 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 					<RangePicker
 						disabled={!editable}
 						format={time =>
-							dayjs(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
+							moment(time).utcOffset(timeZoneUtcOffset).format(dateFormat)
 						}
-						value={[dayjs(promotionStartTime), dayjs(promotionEndTime)]}
+						value={[moment(promotionStartTime), moment(promotionEndTime)]}
 					/>
 				)}
 			</Space>
@@ -175,7 +175,7 @@ const DepositPointTable: FC<DepositPointTableProps> = ({
 			editable: false,
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime
-					? dayjs(lastUpdateTime)
+					? moment(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

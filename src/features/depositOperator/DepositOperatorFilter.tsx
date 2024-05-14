@@ -14,7 +14,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import { RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
@@ -165,14 +165,14 @@ const DepositOperatorFilter = ({
 	}
 
 	const bankCodeSelector = () => {
-		const onChangeBankCode = (newBankCode: ('all' | number)[]) => {
+		const onChangeBankCode = (newBankCode: string[]) => {
 			if (newBankCode.includes('all')) {
 				form.setFieldsValue({
 					selectBankCode: bankCodeList?.map(({ sysId }) => sysId),
 				})
 			} else {
 				form.setFieldsValue({
-					selectBankCode: newBankCode as number[],
+					selectBankCode: newBankCode,
 				})
 			}
 		}
@@ -199,14 +199,14 @@ const DepositOperatorFilter = ({
 	}
 
 	const vipLevelSelector = () => {
-		const onVipLevelChange = (newVipLevels: ('all' | number)[]) => {
+		const onVipLevelChange = (newVipLevels: Array<number | string>) => {
 			if (newVipLevels.includes('all')) {
 				form.setFieldsValue({
 					levelStatuses: vipLevelEnum?.map(({ level }) => level),
 				})
 			} else {
 				form.setFieldsValue({
-					levelStatuses: newVipLevels as number[],
+					levelStatuses: newVipLevels,
 				})
 			}
 		}
@@ -327,7 +327,7 @@ const DepositOperatorFilter = ({
 												<RangePicker
 													clearIcon={false}
 													style={{ width: '100%' }}
-													ranges={RANGE_PICKER_RANGES([
+													ranges={MOMENT_RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',

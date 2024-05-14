@@ -72,7 +72,7 @@ const IssueBonusManagementInfoContent = ({
 				bonusCode,
 			}).unwrap()
 			if (!data.hasBonusCode) {
-				message.warning('BonusCode Error')
+				message.warn('BonusCode Error')
 			}
 		} catch (error) {
 			message.error(

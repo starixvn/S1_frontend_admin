@@ -13,7 +13,10 @@ import {
 } from 'antd'
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import {
 	DateTypeEnum,
 	dateTypeList,
@@ -328,7 +331,7 @@ const WinLostReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES.Today}
+											initialValue={MOMENT_DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -338,7 +341,7 @@ const WinLostReportFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',
