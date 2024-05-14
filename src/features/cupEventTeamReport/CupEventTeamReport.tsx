@@ -15,6 +15,7 @@ import {
 	useExportCupEventTeamReportMutation,
 	useGetCupEventTeamReportQuery,
 	useSetPayoutMutation,
+	useExportCupEventPredictScoreMutation,
 } from './api'
 import { IGetCupEventReportResponse } from './type'
 
@@ -37,6 +38,11 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 		{ isLoading: isExportCupEventTeamReportLoading },
 	] = useExportCupEventTeamReportMutation()
 
+	const [
+		exportCupEventPredictScore,
+		{ isLoading: isExportCupEventPredictScoreLoading },
+	] = useExportCupEventPredictScoreMutation()
+
 	const [setPayout, { isLoading: isSetPayoutLoading }] = useSetPayoutMutation()
 
 	const handleExport = async (teamId: number) => {
@@ -51,6 +57,20 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 			download(
 				blob,
 				`ExportCupEventTeamReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+			)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleExportPredictScore = async () => {
+		try {
+			const blob = await exportCupEventPredictScore(null).unwrap()
+			download(
+				blob,
+				`ExportCupEventPredictScore${moment().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -76,7 +96,8 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 	const loading =
 		isGetCupEventTeamReportDataLoading ||
 		isExportCupEventTeamReportLoading ||
-		isSetPayoutLoading
+		isSetPayoutLoading ||
+		isExportCupEventPredictScoreLoading
 
 	return (
 		<LayoutContent.Main>
@@ -88,6 +109,7 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 				exportExcelPermission={exportExcelPermission}
 				editPermission={editPermission}
 				onExport={handleExport}
+				onExportPredictScore={handleExportPredictScore}
 				onSetPayout={handleSetPayout}
 			/>
 			<AffixButtons>
