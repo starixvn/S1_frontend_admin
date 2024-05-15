@@ -11,10 +11,7 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import React from 'react'
 import { SearchOutlined } from '@ant-design/icons'
@@ -56,14 +53,14 @@ const ShieldTaggingReportFilter = ({
 	const { t } = useTranslation()
 
 	const platformTypeSelector = () => {
-		const onChangePlatformType = (newPlatformTypes: Array<number | string>) => {
+		const onChangePlatformType = (newPlatformTypes: ('all' | number)[]) => {
 			if (newPlatformTypes.includes('all')) {
 				form.setFieldsValue({
 					platform: shieldPlatformList.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					platform: newPlatformTypes,
+					platform: newPlatformTypes as number[],
 				})
 			}
 		}
@@ -86,7 +83,7 @@ const ShieldTaggingReportFilter = ({
 
 	const triggerPointTypeSelector = () => {
 		const onChangeTriggerPointType = (
-			newTriggerPointTypes: Array<number | string>
+			newTriggerPointTypes: ('all' | number)[]
 		) => {
 			if (newTriggerPointTypes.includes('all')) {
 				form.setFieldsValue({
@@ -94,7 +91,7 @@ const ShieldTaggingReportFilter = ({
 				})
 			} else {
 				form.setFieldsValue({
-					triggeredPoints: newTriggerPointTypes,
+					triggeredPoints: newTriggerPointTypes as number[],
 				})
 			}
 		}
@@ -116,14 +113,14 @@ const ShieldTaggingReportFilter = ({
 	}
 
 	const taggedTypeSelector = () => {
-		const onChangeTaggedType = (newTaggedTypes: Array<number | string>) => {
+		const onChangeTaggedType = (newTaggedTypes: ('all' | number)[]) => {
 			if (newTaggedTypes.includes('all')) {
 				form.setFieldsValue({
 					tags: shieldRiskList.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					tags: newTaggedTypes,
+					tags: newTaggedTypes as number[],
 				})
 			}
 		}
@@ -159,7 +156,7 @@ const ShieldTaggingReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -169,7 +166,7 @@ const ShieldTaggingReportFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

@@ -11,7 +11,7 @@ import {
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { dateFormat } from 'common/utils/format'
 import { useLazyGetMemberRewardPointLogQuery } from '../api'
 import { IGetMemberRewardPointLogResponse } from '../type'
@@ -107,8 +107,8 @@ const MemberListLog: FC<{
 				<Space size='large' style={{ marginTop: '20px' }}>
 					<RangePicker
 						defaultValue={[
-							moment(startTime, dateFormat),
-							moment(endTime, dateFormat),
+							dayjs(startTime, dateFormat),
+							dayjs(endTime, dateFormat),
 						]}
 						format={dateFormat}
 						disabled

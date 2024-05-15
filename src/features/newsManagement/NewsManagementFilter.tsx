@@ -12,10 +12,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -137,7 +134,7 @@ const NewsManagementFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -147,7 +144,7 @@ const NewsManagementFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

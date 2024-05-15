@@ -104,7 +104,7 @@ const BannerModal = ({
 				showStatus,
 				actionMode,
 				dateRange: [moment(startTime), moment(endTime)],
-				bonusCode,
+				bonusCode: bonusCode ?? [],
 				urlRouter: Number(UrlRouterEnum[urlRouter]),
 				gameId,
 				tpId,

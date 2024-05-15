@@ -34,14 +34,14 @@ const VideoManagementFilter = ({
 	const { t } = useTranslation()
 
 	const currencyIdsSelector = () => {
-		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
+		const onChangeCurrency = (newCurrencyIds: ('all' | number)[]) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
 					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 				})
 			} else {
 				form.setFieldsValue({
-					currencyIds: newCurrencyIds,
+					currencyIds: newCurrencyIds as number[],
 				})
 			}
 			form.resetFields(['langIds'])
@@ -68,14 +68,14 @@ const VideoManagementFilter = ({
 	}
 
 	const languageSelector = () => {
-		const onChangeLanguage = (newLangIds: Array<number | string>) => {
+		const onChangeLanguage = (newLangIds: ('all' | number)[]) => {
 			if (newLangIds.includes('all')) {
 				form.setFieldsValue({
 					langIds: LangTypeList.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					langIds: newLangIds,
+					langIds: newLangIds as number[],
 				})
 			}
 		}
