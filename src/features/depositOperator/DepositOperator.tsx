@@ -1,9 +1,9 @@
 import moment from 'moment'
 import download from 'downloadjs'
-import { Key, useEffect, useState } from 'react'
+import React, { Key, useEffect, useState } from 'react'
 import { filter, includes, isEmpty, isNumber, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Form, message, TablePaginationConfig } from 'antd'
+import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { DepositTypeEnum } from 'type'
@@ -439,7 +439,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={pageTitle} />
+			<PageHeader title={pageTitle} />
 			<DepositOperatorFilter
 				isAllSite={formIsAllSite}
 				form={form}

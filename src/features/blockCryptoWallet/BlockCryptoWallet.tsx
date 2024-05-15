@@ -295,7 +295,7 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				userName,
 				currencyId: currencyId?.map((id: string) => Number(id)),
 				cryptoType: cryptoType?.map((id: string) => Number(id)),
-				network: network?.map((id: string) => Number(id)),
+				network,
 			})
 
 			handleSearch({
@@ -306,9 +306,7 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				cryptoType: cryptoInfoData?.cryptoCurrency.map(
 					({ currencyId }) => currencyId
 				),
-				network: cryptoInfoData?.cryptoNetwork.map(
-					({ networkType }) => networkType
-				),
+				network: cryptoInfoData?.cryptoNetwork.map(({ network }) => network),
 				status: blockStatusEnumList[0]?.value,
 			})
 		}

@@ -68,14 +68,14 @@ const BettingMonitorSettingFilter = ({
 	}
 
 	const tpIdsSelector = () => {
-		const onChangeTpIds = (newTpIds: ('all' | number)[]) => {
+		const onChangeTpIds = (newTpIds: Array<number | string>) => {
 			if (newTpIds.includes('all')) {
 				form.setFieldsValue({
 					tpIds: tpList?.map(item => item.id),
 				})
 			} else {
 				form.setFieldsValue({
-					tpIds: newTpIds as number[],
+					tpIds: newTpIds,
 				})
 			}
 		}
@@ -114,14 +114,14 @@ const BettingMonitorSettingFilter = ({
 	}
 
 	const tpGameTypesSelector = () => {
-		const onChangeGameTypeId = (newTpGameTypes: ('all' | number)[]) => {
+		const onChangeGameTypeId = (newTpGameTypes: Array<number | string>) => {
 			if (newTpGameTypes.includes('all')) {
 				form.setFieldsValue({
 					tpGameTypes: tpGameList?.map(item => item.type),
 				})
 			} else {
 				form.setFieldsValue({
-					tpGameTypes: newTpGameTypes as number[],
+					tpGameTypes: newTpGameTypes,
 				})
 			}
 		}

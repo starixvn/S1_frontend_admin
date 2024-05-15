@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import { Col, Collapse, DatePicker, Form, FormInstance, Input, Row } from 'antd'
 import { IForm } from './type'
 
@@ -35,7 +38,7 @@ const GameStatisticalReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES.Today}
+											initialValue={MOMENT_DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -45,7 +48,7 @@ const GameStatisticalReportFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

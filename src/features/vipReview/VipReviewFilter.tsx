@@ -10,6 +10,7 @@ import {
 	Select,
 } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
+import moment from 'moment'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { IFilterForm } from 'features/vipReview/type'
@@ -18,7 +19,6 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { VipTypeEnum, vipTypeList } from 'features/vipReview/constants'
 import { useTranslation } from 'react-i18next'
-import dayjs from 'dayjs'
 
 interface IVipReviewFilterProps {
 	form: FormInstance<IFilterForm>
@@ -61,7 +61,7 @@ const VipReviewFilter = ({
 }: IVipReviewFilterProps) => {
 	const { t } = useTranslation()
 
-	const disabledDate = (current: dayjs.Dayjs) => {
+	const disabledDate = (current: moment.Moment) => {
 		if (!selectDate) {
 			return false
 		}
@@ -84,14 +84,14 @@ const VipReviewFilter = ({
 	}
 
 	const currencySelector = () => {
-		const onChangeCurrency = (newCurrencyIds: ('all' | number)[]) => {
+		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
 					currencyIds: currencyListBySite?.map(item => item.currencyId),
 				})
 			} else {
 				form.setFieldsValue({
-					currencyIds: newCurrencyIds as number[],
+					currencyIds: newCurrencyIds,
 				})
 			}
 		}
@@ -156,14 +156,14 @@ const VipReviewFilter = ({
 	}
 
 	const statusSelector = () => {
-		const onChangeStatus = (newStatus: ('all' | number)[]) => {
+		const onChangeStatus = (newStatus: Array<number | string>) => {
 			if (newStatus.includes('all')) {
 				form.setFieldsValue({
 					status: vipStatusList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					status: newStatus as number[],
+					status: newStatus,
 				})
 			}
 		}

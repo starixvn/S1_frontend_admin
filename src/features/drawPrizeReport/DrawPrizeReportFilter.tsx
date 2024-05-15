@@ -11,7 +11,10 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
@@ -141,7 +144,7 @@ const DrawPrizeReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES.Today}
+											initialValue={MOMENT_DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -151,7 +154,7 @@ const DrawPrizeReportFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

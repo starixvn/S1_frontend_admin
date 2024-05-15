@@ -14,7 +14,10 @@ import { IGetGameTypeListData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 
 interface ITurnoverFilterProps {
@@ -123,7 +126,7 @@ const TurnoverFilter = ({
 								<Form.Item
 									noStyle
 									name='dateRange'
-									initialValue={DATE_RANGES['Last 7 Day']}
+									initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
 									rules={[
 										{
 											required: true,
@@ -134,7 +137,7 @@ const TurnoverFilter = ({
 									<RangePicker
 										style={{ width: '100%' }}
 										showTime
-										ranges={RANGE_PICKER_RANGES([
+										ranges={MOMENT_RANGE_PICKER_RANGES([
 											'Today',
 											'Yesterday',
 											'Last Week',

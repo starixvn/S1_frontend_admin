@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -14,7 +14,10 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
@@ -154,7 +157,7 @@ const AdjustmentPointReportFilter: FC<IAdjustmentPointReportFilterProps> = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={DATE_RANGES.Today}
+												initialValue={MOMENT_DATE_RANGES.Today}
 												rules={[
 													{
 														required: true,
@@ -164,7 +167,7 @@ const AdjustmentPointReportFilter: FC<IAdjustmentPointReportFilterProps> = ({
 											>
 												<RangePicker
 													style={{ width: '100%' }}
-													ranges={RANGE_PICKER_RANGES([
+													ranges={MOMENT_RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',
@@ -172,7 +175,7 @@ const AdjustmentPointReportFilter: FC<IAdjustmentPointReportFilterProps> = ({
 														'Last Month',
 													])}
 													format={time =>
-														dayjs(time)
+														moment(time)
 															.utcOffset(timeZoneUtcOffset)
 															.format(dateFormat)
 													}

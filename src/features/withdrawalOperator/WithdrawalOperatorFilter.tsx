@@ -12,7 +12,7 @@ import {
 	Select,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -87,14 +87,14 @@ const WithdrawalOperatorFilter = ({
 	const [queryParams] = useQueryParams()
 
 	const statusSelector = () => {
-		const onChangeStatus = (newStatus: ('all' | number)[]) => {
+		const onChangeStatus = (newStatus: Array<number | string>) => {
 			if (newStatus.includes('all')) {
 				form.setFieldsValue({
 					statuses: withdrawalStatusList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					statuses: newStatus as number[],
+					statuses: newStatus,
 				})
 			}
 		}
@@ -154,14 +154,14 @@ const WithdrawalOperatorFilter = ({
 	}
 
 	const withdrawalTypeSelector = () => {
-		const onChangeType = (newType: ('all' | number)[]) => {
+		const onChangeType = (newType: Array<number | string>) => {
 			if (newType.includes('all')) {
 				form.setFieldsValue({
 					withdrawalTypes: withdrawalTypeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					withdrawalTypes: newType as number[],
+					withdrawalTypes: newType,
 				})
 			}
 		}
@@ -183,14 +183,14 @@ const WithdrawalOperatorFilter = ({
 	}
 
 	const vipLevelSelector = () => {
-		const onChangeLevel = (newLevel: ('all' | number)[]) => {
+		const onChangeLevel = (newLevel: Array<number | string>) => {
 			if (newLevel.includes('all')) {
 				form.setFieldsValue({
 					levelStatuses: vipLevelList?.map(({ level }) => level),
 				})
 			} else {
 				form.setFieldsValue({
-					levelStatuses: newLevel as number[],
+					levelStatuses: newLevel,
 				})
 			}
 		}
@@ -216,14 +216,14 @@ const WithdrawalOperatorFilter = ({
 	}
 
 	const calCodeSelector = () => {
-		const onChangeCalCode = (newCode: ('all' | number)[]) => {
+		const onChangeCalCode = (newCode: Array<number | string>) => {
 			if (newCode.includes('all')) {
 				form.setFieldsValue({
 					selectCalCode: calCodeList?.map(({ bankId }) => bankId),
 				})
 			} else {
 				form.setFieldsValue({
-					selectCalCode: newCode as number[],
+					selectCalCode: newCode,
 				})
 			}
 		}
@@ -249,7 +249,7 @@ const WithdrawalOperatorFilter = ({
 	}
 
 	const bankCodeSelector = () => {
-		const onChangeBankCode = (newCode: ('all' | number)[]) => {
+		const onChangeBankCode = (newCode: Array<number | string>) => {
 			form.resetFields(['selectCalCode'])
 			if (newCode.includes('all')) {
 				form.setFieldsValue({
@@ -257,7 +257,7 @@ const WithdrawalOperatorFilter = ({
 				})
 			} else {
 				form.setFieldsValue({
-					selectBankCode: newCode as number[],
+					selectBankCode: newCode,
 				})
 			}
 		}
@@ -336,7 +336,7 @@ const WithdrawalOperatorFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',
