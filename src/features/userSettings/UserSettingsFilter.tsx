@@ -2,7 +2,17 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
-import { Button, Col, Collapse, Form, FormInstance, Input, Row } from 'antd'
+import {
+	Button,
+	Col,
+	Collapse,
+	Form,
+	FormInstance,
+	Input,
+	Row,
+	Select,
+} from 'antd'
+import { userSettingStatusList } from './constants'
 
 const { Panel } = Collapse
 
@@ -18,6 +28,7 @@ const UserSettingsFilter: FC<UserSettingsFilterProps> = ({
 	onSearch,
 }) => {
 	const { t } = useTranslation()
+	const { Option } = Select
 
 	return (
 		<Collapse defaultActiveKey={1}>
@@ -28,6 +39,17 @@ const UserSettingsFilter: FC<UserSettingsFilterProps> = ({
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_UserName')}>
 									<Input allowClear />
+								</Form.Item>
+							</Col>
+							<Col lg={6} md={12} xs={12}>
+								<Form.Item name='status' label={t('Label_Status')} initialValue>
+									<Select placeholder={t('Label_On')}>
+										{userSettingStatusList?.map(status => (
+											<Option key={status.displayName} value={status.value}>
+												{t(status.displayName)}
+											</Option>
+										))}
+									</Select>
 								</Form.Item>
 							</Col>
 						</Row>

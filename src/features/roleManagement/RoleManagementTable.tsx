@@ -17,6 +17,7 @@ import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { PermissionInterface } from 'type'
+import { CloseOutlined } from '@ant-design/icons'
 import { selectRoleManagementDataList } from './slice'
 
 interface RoleManagementTableInterface {
@@ -42,7 +43,7 @@ const RoleManagementTable = ({
 		iuserList,
 	}: {
 		roleName: string
-		iuserList: string[] | null
+		iuserList: { userName: string; status: number }[] | null
 	}) => {
 		Modal.info({
 			title: 'User Listing',
@@ -62,9 +63,12 @@ const RoleManagementTable = ({
 							itemLayout='horizontal'
 							bordered
 							dataSource={iuserList ?? []}
-							renderItem={user => (
-								<List.Item>
-									<Typography.Text>{user}</Typography.Text>
+							renderItem={({ userName, status }) => (
+								<List.Item style={{ display: 'flex', justifyContent: 'start' }}>
+									<Typography.Text type='danger'>
+										{status === 0 && <CloseOutlined />}
+									</Typography.Text>
+									<Typography.Text>{userName}</Typography.Text>
 								</List.Item>
 							)}
 						/>
