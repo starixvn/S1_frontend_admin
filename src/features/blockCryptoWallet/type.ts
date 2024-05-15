@@ -40,7 +40,7 @@ export interface IGetBlockCryptoWalletArgs {
 	endDate: string
 	currencyId: number[]
 	cryptoType: number[]
-	network: string[]
+	network: number[]
 }
 
 export interface ICryptoWalletGetByAddress {
@@ -91,7 +91,7 @@ export type IFilterForm = {
 	currencyId: number[]
 	status: number
 	cryptoType: number[]
-	network: string[]
+	network: number[]
 	address: string
 	userName: string
 }

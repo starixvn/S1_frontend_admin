@@ -30,14 +30,14 @@ const BigWinPopUpSettingForm = ({
 		isFetching: isGetCategoryFetching,
 	} = useGetCategoryQuery(null)
 
-	const onChangeCurrency = (newCategory: Array<string | number>) => {
+	const onChangeCurrency = (newCategory: ('all' | number)[]) => {
 		if (newCategory.includes('all')) {
 			form.setFieldsValue({
 				iTpCategoryList: categories?.map(({ categoryId }) => categoryId),
 			})
 		} else {
 			form.setFieldsValue({
-				iTpCategoryList: newCategory,
+				iTpCategoryList: newCategory as number[],
 			})
 		}
 	}

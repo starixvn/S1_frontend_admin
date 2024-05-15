@@ -19,7 +19,7 @@ import {
 	IGetSportTeamsData,
 } from 'features/hotEventManagement/type'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useLazyGetSportTeamsQuery } from 'features/hotEventManagement/api'
 import { MultipleSelect } from 'components/Select'
@@ -268,7 +268,7 @@ const EditForm: FC<IEditFormProps> = ({
 												}),
 											},
 										]}
-										initialValue={moment()}
+										initialValue={dayjs()}
 									>
 										<DatePicker showTime style={{ width: '100%' }} />
 									</Form.Item>
@@ -299,7 +299,7 @@ const EditForm: FC<IEditFormProps> = ({
 									style={{ width: '100%' }}
 									onChange={newDate =>
 										form.setFieldsValue({
-											endTime: moment(newDate).add(2, 'hours'),
+											endTime: dayjs(newDate).add(2, 'hours'),
 										})
 									}
 								/>

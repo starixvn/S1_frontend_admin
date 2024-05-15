@@ -10,10 +10,7 @@ import {
 	Select,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { FormInstance } from 'antd/es/form/Form'
 import { useTranslation } from 'react-i18next'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -70,7 +67,7 @@ const BlockEWalletFilter: FC<IBlockEWalletFilterProps> = ({
 						form={form}
 						onFinish={() => onSearch({})}
 						initialValues={{
-							dateRange: MOMENT_DATE_RANGES.Today,
+							dateRange: DATE_RANGES.Today,
 							currencyIds: initialCurrencyIds,
 							blockStatus: BANK_BLOCK_STATUS[0].value,
 							accountNum: '',
@@ -98,7 +95,7 @@ const BlockEWalletFilter: FC<IBlockEWalletFilterProps> = ({
 											<RangePicker
 												style={{ width: '100%' }}
 												showTime
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

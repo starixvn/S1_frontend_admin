@@ -1,9 +1,6 @@
 import { first } from 'lodash'
 import moment from 'moment'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
@@ -88,14 +85,14 @@ const MarketingFilter = ({
 
 	// * siteIds 異動時須清空 currencyIds
 	const siteIdsSelector = () => {
-		const onChangeSite = (newSiteIds: Array<number | string>) => {
+		const onChangeSite = (newSiteIds: ('all' | number)[]) => {
 			if (newSiteIds.includes('all')) {
 				form.setFieldsValue({
 					siteIds: userSiteList?.map(({ siteId }) => siteId),
 				})
 			} else {
 				form.setFieldsValue({
-					siteIds: newSiteIds,
+					siteIds: newSiteIds as number[],
 				})
 			}
 			form.setFieldValue('currencyIds', [])
@@ -130,7 +127,7 @@ const MarketingFilter = ({
 	}
 
 	const currencyIdsSelector = () => {
-		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
+		const onChangeCurrency = (newCurrencyIds: ('all' | number)[]) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
 					currencyIds: currencyIdsBySiteIds?.map(
@@ -139,7 +136,7 @@ const MarketingFilter = ({
 				})
 			} else {
 				form.setFieldsValue({
-					currencyIds: newCurrencyIds,
+					currencyIds: newCurrencyIds as number[],
 				})
 			}
 		}
@@ -255,7 +252,7 @@ const MarketingFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -265,7 +262,7 @@ const MarketingFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',
@@ -328,7 +325,7 @@ const MarketingFilter = ({
 									>
 										<RangePicker
 											style={{ width: '100%' }}
-											ranges={MOMENT_RANGE_PICKER_RANGES([
+											ranges={RANGE_PICKER_RANGES([
 												'Today',
 												'Yesterday',
 												'Last Week',

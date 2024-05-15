@@ -2,10 +2,7 @@ import moment from 'moment/moment'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { selectCurrencyListBySite } from 'common/enum'
@@ -65,7 +62,7 @@ const FailBetFilter = ({
 				})
 			} else {
 				form.setFieldsValue({
-					currencyIds: newCurrencyIds,
+					currencyIds: newCurrencyIds as number[],
 				})
 			}
 		}
@@ -90,14 +87,14 @@ const FailBetFilter = ({
 	}
 
 	const tpIdSelector = () => {
-		const onChangeTpId = (newTpIds: Array<number | string>) => {
+		const onChangeTpId = (newTpIds: ('all' | number)[]) => {
 			if (newTpIds.includes('all')) {
 				form.setFieldsValue({
 					tpIds: tpIdList?.map(({ id }) => id),
 				})
 			} else {
 				form.setFieldsValue({
-					tpIds: newTpIds,
+					tpIds: newTpIds as number[],
 				})
 			}
 		}
@@ -159,12 +156,12 @@ const FailBetFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 										>
 											<RangePicker
 												style={{ width: '100%' }}
 												disabledDate={disabledDate}
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

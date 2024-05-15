@@ -135,9 +135,9 @@ const TransferAccountManagement: FC<{
 
 			const blob = await exportBankTransferAccount({
 				siteId,
-				purposes: (purposes as (string | number)[]).includes('all')
+				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
-					: purposes,
+					: (purposes as number[]),
 				...values,
 			}).unwrap()
 
@@ -158,9 +158,9 @@ const TransferAccountManagement: FC<{
 		try {
 			await getBankTransferAccounts({
 				siteId,
-				purposes: (purposes as (string | number)[]).includes('all')
+				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
-					: purposes,
+					: (purposes as number[]),
 				...values,
 			}).unwrap()
 		} catch (error) {
