@@ -17,7 +17,10 @@ import {
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { SearchOutlined } from '@ant-design/icons'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 
 import { Currency, UserSite } from 'common/enum/type'
 import {
@@ -68,14 +71,14 @@ const DepositPaymentReportFilter = ({
 	const { t } = useTranslation()
 
 	const siteIdsSelector = () => {
-		const onSiteIdsChange = (newSiteIds: ('all' | number)[]) => {
+		const onSiteIdsChange = (newSiteIds: Array<number | string>) => {
 			if (newSiteIds.includes('all')) {
 				form.setFieldsValue({
 					siteIds: userSiteList?.map(({ siteId }) => siteId),
 				})
 			} else {
 				form.setFieldsValue({
-					siteIds: newSiteIds as number[],
+					siteIds: newSiteIds,
 				})
 			}
 			form.setFieldValue('currencyIds', [])
@@ -153,14 +156,14 @@ const DepositPaymentReportFilter = ({
 	}
 
 	const gateWaySelector = () => {
-		const handleChangeGateWay = (newGateWay: ('all' | number)[]) => {
+		const handleChangeGateWay = (newGateWay: Array<number | string>) => {
 			if (newGateWay.includes('all')) {
 				form.setFieldsValue({
 					payIds: gateWayList?.map(({ payId }) => payId),
 				})
 			} else {
 				form.setFieldsValue({
-					payIds: newGateWay as number[],
+					payIds: newGateWay,
 				})
 			}
 		}
@@ -203,14 +206,14 @@ const DepositPaymentReportFilter = ({
 	}
 
 	const payTypeSelector = () => {
-		const handleChangePayType = (newPayType: ('all' | number)[]) => {
+		const handleChangePayType = (newPayType: Array<number | string>) => {
 			if (newPayType.includes('all')) {
 				form.setFieldsValue({
 					types: getDepositTypeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					types: newPayType as number[],
+					types: newPayType,
 				})
 			}
 		}
@@ -272,7 +275,7 @@ const DepositPaymentReportFilter = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={DATE_RANGES.Today}
+												initialValue={MOMENT_DATE_RANGES.Today}
 												rules={[
 													{
 														required: true,
@@ -282,7 +285,7 @@ const DepositPaymentReportFilter = ({
 											>
 												<RangePicker
 													style={{ width: '100%' }}
-													ranges={RANGE_PICKER_RANGES([
+													ranges={MOMENT_RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',

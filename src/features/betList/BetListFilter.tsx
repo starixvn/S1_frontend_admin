@@ -15,7 +15,10 @@ import {
 	Select,
 } from 'antd'
 import type { RangePickerProps } from 'antd/es/date-picker'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import { LayoutContent } from 'app/pages/layout'
 import { SiteIds } from 'app/constants/siteIds'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -198,7 +201,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES.Today}
+											initialValue={MOMENT_DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -210,7 +213,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 												style={{ width: '100%' }}
 												showTime
 												disabledDate={disabledDate}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

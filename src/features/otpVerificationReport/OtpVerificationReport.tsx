@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Form, message, TablePaginationConfig } from 'antd'
+import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -105,7 +105,7 @@ const OtpVerificationReport = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	return (
 		<LayoutContent.Main>
-			<LayoutContent.Title title={pageTitle} />
+			<PageHeader title={pageTitle} />
 			<OtpVerificationReportFilter
 				enumLoading={isEnumLoading}
 				loading={isGetMemberListLoading}

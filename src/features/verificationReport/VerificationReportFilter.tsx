@@ -15,7 +15,10 @@ import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
 import { Currency, UserSite } from 'common/enum/type'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import { IFilterForm } from 'features/verificationReport/type'
 
 const { RangePicker } = DatePicker
@@ -55,14 +58,14 @@ const VerificationReportFilter = ({
 
 	// * siteIds 異動時須清空 currencyIds
 	const siteIdsSelector = () => {
-		const onChangeSite = (newSiteIds: ('all' | number)[]) => {
+		const onChangeSite = (newSiteIds: Array<number | string>) => {
 			if (newSiteIds.includes('all')) {
 				form.setFieldsValue({
 					siteIds: userSiteList?.map(({ siteId }) => siteId),
 				})
 			} else {
 				form.setFieldsValue({
-					siteIds: newSiteIds as number[],
+					siteIds: newSiteIds,
 				})
 			}
 			form.setFieldValue('currencyIds', [])
@@ -165,7 +168,7 @@ const VerificationReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={DATE_RANGES['Last 7 Day']}
+											initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
 											rules={[
 												{
 													required: true,
@@ -175,7 +178,7 @@ const VerificationReportFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												ranges={MOMENT_RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

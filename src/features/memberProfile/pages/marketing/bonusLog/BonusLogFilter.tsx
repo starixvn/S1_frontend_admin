@@ -9,7 +9,10 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import {
+	MOMENT_DATE_RANGES,
+	MOMENT_RANGE_PICKER_RANGES,
+} from 'app/constants/moment'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
 import { IGetPromotionCategoryData } from 'features/bonusManagement/type'
@@ -45,14 +48,14 @@ const BonusLogFilter = ({
 	const { t } = useTranslation()
 
 	const promoCategorySelector = () => {
-		const onChangeCategory = (newCategoryIds: ('all' | number)[]) => {
+		const onChangeCategory = (newCategoryIds: Array<number | string>) => {
 			if (newCategoryIds.includes('all')) {
 				form.setFieldsValue({
 					promoCategoryIds: categoryList?.map(item => item.id),
 				})
 			} else {
 				form.setFieldsValue({
-					promoCategoryIds: newCategoryIds as number[],
+					promoCategoryIds: newCategoryIds,
 				})
 			}
 		}
@@ -90,7 +93,7 @@ const BonusLogFilter = ({
 							<Form.Item
 								noStyle
 								name='dateRange'
-								initialValue={DATE_RANGES['Last 7 Day']}
+								initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
 								rules={[
 									{
 										required: true,
@@ -100,7 +103,7 @@ const BonusLogFilter = ({
 							>
 								<RangePicker
 									style={{ width: '100%' }}
-									ranges={RANGE_PICKER_RANGES([
+									ranges={MOMENT_RANGE_PICKER_RANGES([
 										'Today',
 										'Yesterday',
 										'Last Week',
