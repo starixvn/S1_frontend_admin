@@ -66,16 +66,6 @@ const AdminUserLogTable = ({
 				</div>
 			)
 		})
-		if (some(Object.keys(infoObject).map(key => isArray(infoObject[key]))))
-			return 'N/A'
-
-		return Object.keys(infoObject).map((key: string) => {
-			return (
-				<div key={key} style={{ width: 180 }}>
-					<DetailTitle>{key}:</DetailTitle> {infoObject[key]}
-				</div>
-			)
-		})
 	}
 
 	const columns = [

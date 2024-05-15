@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { head } from 'lodash'
 import { Table } from 'components'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
@@ -44,6 +45,7 @@ import {
 } from 'features/headerManagement/api'
 import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 
+dayjs.extend(isBetween)
 interface IProductStatusModalProps {
 	visible: boolean
 	onCancel: () => void
@@ -150,7 +152,7 @@ const ProductStatusModal = ({
 		iconType,
 	}: IHeaderSettingGroupByTpGameIdNoData) => {
 		editForm.setFieldsValue({
-			dateRange: [moment(iconStartTime), moment(iconEndTime)],
+			dateRange: [dayjs(iconStartTime), dayjs(iconEndTime)],
 			status: Boolean(status),
 			iconType,
 		})
@@ -263,7 +265,7 @@ const ProductStatusModal = ({
 			align: 'center' as 'center',
 			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
 				const { iconType, iconStartTime, iconEndTime } = record
-				const isActiveDateTime = moment().isBetween(iconStartTime, iconEndTime)
+				const isActiveDateTime = dayjs().isBetween(iconStartTime, iconEndTime)
 
 				const isActive = Boolean(iconType) && isActiveDateTime
 
@@ -340,7 +342,7 @@ const ProductStatusModal = ({
 					</Form.Item>
 				) : (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(iconStartTime)
+						{dayjs(iconStartTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -362,9 +364,7 @@ const ProductStatusModal = ({
 				const { iconEndTime } = record
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(iconEndTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						{dayjs(iconEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				)
 			},

@@ -689,7 +689,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
 		)
-		const days = moment(endTime).diff(moment(starTime), 'days')
+		const days = dayjs(endTime).diff(dayjs(starTime), 'days')
 		if (days > 90) {
 			message.error(t('Label_DateRangeExceedsThreeMonths'))
 			return
@@ -723,7 +723,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					blob = await downloadWinLossByDate(args).unwrap()
 					download(
 						blob,
-						`WinLostReportByDate_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						`WinLostReportByDate_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 					)
 				} catch (error) {
 					message.error(
@@ -737,7 +737,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					blob = await downloadWinLossByMonth(args).unwrap()
 					download(
 						blob,
-						`WinLostReportByMonth_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						`WinLostReportByMonth_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 					)
 				} catch (error) {
 					message.error(
