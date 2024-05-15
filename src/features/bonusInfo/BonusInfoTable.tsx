@@ -1,5 +1,5 @@
 import { cloneDeep, find } from 'lodash'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { IBonusInfoData } from 'features/bonusInfo/type'
 import { useTranslation } from 'react-i18next'
@@ -114,7 +114,7 @@ const BonusInfoTable = ({
 			sorter: true,
 			render: (startTime: string) =>
 				startTime
-					? moment(startTime).utcOffset(timeZoneUtcOffset).format(dateFormat)
+					? dayjs(startTime).utcOffset(timeZoneUtcOffset).format(dateFormat)
 					: '',
 		},
 		{
@@ -126,7 +126,7 @@ const BonusInfoTable = ({
 			sorter: true,
 			render: (endTime: string) =>
 				endTime
-					? moment(endTime).utcOffset(timeZoneUtcOffset).format(dateFormat)
+					? dayjs(endTime).utcOffset(timeZoneUtcOffset).format(dateFormat)
 					: '',
 		},
 		{
@@ -262,7 +262,7 @@ const BonusInfoTable = ({
 				render: (recordDate: string, record: IBonusInfoData) =>
 					recordDate ? (
 						<Typography.Link onClick={() => onClickBonusCode(record)}>
-							{moment(recordDate)
+							{dayjs(recordDate)
 								.utcOffset(timeZoneUtcOffset)
 								.format(
 									formGroupType === GroupByEnum.Date ? dateFormat : monthFormat

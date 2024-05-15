@@ -1,7 +1,6 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { PermissionInterface } from 'type'
-import moment from 'moment/moment'
 import { IdentityEnum } from 'features/memberAdministrationList/constants'
 
 export interface ICustIdInterface {
@@ -391,7 +390,7 @@ export interface ISettingForm {
 	fullName: string
 	email: string
 	phoneNo: string
-	birthDay: Moment
+	birthDay: Dayjs
 	reason: string
 	address: {
 		country: string
@@ -555,7 +554,7 @@ export interface IGetBonusLogArgs {
 }
 
 export type IBonusLogFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [Dayjs, Dayjs]
 	promoCategoryIds: number[]
 	refTransId: string
 }

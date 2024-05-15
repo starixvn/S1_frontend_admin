@@ -4,7 +4,7 @@ import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { IShieldTaggingReportData } from 'features/shieldTaggingReport/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -43,7 +43,7 @@ const ShieldTaggingReportTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

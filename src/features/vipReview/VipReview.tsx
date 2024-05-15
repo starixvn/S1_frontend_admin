@@ -1,5 +1,5 @@
 import { Form, message, TablePaginationConfig } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
@@ -117,7 +117,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		current?: number | undefined
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
-		queryDate?: [moment.Moment, moment.Moment] | moment.Moment
+		queryDate?: [dayjs.Dayjs, dayjs.Dayjs] | dayjs.Dayjs
 	}) => {
 		if (!siteId) return
 		const {
@@ -130,14 +130,14 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 		} = filterForm.getFieldsValue()
 		let calculateYearMonth = ''
 		if (formType === VipTypeEnum.Upgrade) {
-			calculateYearMonth = moment(date ?? queryDate)
+			calculateYearMonth = dayjs(date ?? queryDate)
 				.utcOffset(timeZoneUtcOffset)
 				.format('YYYYMM')
 		}
 		if (formType === VipTypeEnum.Downgrade) {
 			calculateYearMonth =
-				moment(dateRange[0]).utcOffset(timeZoneUtcOffset).format('YYYYMM') +
-				moment(dateRange[1]).utcOffset(timeZoneUtcOffset).format('YYYYMM')
+				dayjs(dateRange[0]).utcOffset(timeZoneUtcOffset).format('YYYYMM') +
+				dayjs(dateRange[1]).utcOffset(timeZoneUtcOffset).format('YYYYMM')
 		}
 		try {
 			const args = {
@@ -228,7 +228,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				const blob = await exportUpgradeList(upgradeArgs).unwrap()
 				download(
 					blob,
-					`ExportVipReviewUpgrade_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					`ExportVipReviewUpgrade_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 				)
 			}
 			if (Number(queryType) === VipTypeEnum.Downgrade) {
@@ -242,7 +242,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				const blob = await exportDowngradeList(downgradeArgs).unwrap()
 				download(
 					blob,
-					`ExportVipReviewDowngrade_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					`ExportVipReviewDowngrade_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 				)
 			}
 			message.success(t('System.Label_Success'))
@@ -307,7 +307,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 			if (isEmpty(withOutSiteIdParams(queryParams))) {
 				filterForm.setFieldsValue({
 					status: vipStatusList?.map(({ value }) => value),
-					date: moment().subtract(1, 'month').endOf('month'),
+					date: dayjs().subtract(1, 'month').endOf('month'),
 				})
 			} else {
 				const {
@@ -324,10 +324,10 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 				filterForm.setFieldsValue({
 					[Number(queryType) === VipTypeEnum.Upgrade ? 'date' : 'dateRange']:
 						Number(queryType) === VipTypeEnum.Upgrade
-							? moment(calculateYearMonth)
+							? dayjs(calculateYearMonth)
 							: [
-									moment(calculateYearMonth.slice(0, 6)),
-									moment(calculateYearMonth.slice(-6)),
+									dayjs(calculateYearMonth.slice(0, 6)),
+									dayjs(calculateYearMonth.slice(-6)),
 							  ],
 
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
@@ -341,10 +341,10 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 					currentTimeZoneUtcOffset: timeZoneUtcOffset,
 					queryDate:
 						Number(queryType) === VipTypeEnum.Upgrade
-							? moment(calculateYearMonth)
+							? dayjs(calculateYearMonth)
 							: [
-									moment(calculateYearMonth.slice(0, 6)),
-									moment(calculateYearMonth.slice(-6)),
+									dayjs(calculateYearMonth.slice(0, 6)),
+									dayjs(calculateYearMonth.slice(-6)),
 							  ],
 				})
 			}

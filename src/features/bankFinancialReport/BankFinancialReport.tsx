@@ -20,7 +20,7 @@ import {
 } from 'features/bankFinancialReport/type'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { TableConverter } from 'features/bankFinancialReport/utils'
 import { BankFinancialReportTable } from 'features/bankFinancialReport/BankFinancialReportTable'
@@ -153,7 +153,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`BankFinancialReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`BankFinancialReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -189,7 +189,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startTime), moment(endTime)],
+					dateRange: [dayjs(startTime), dayjs(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					channel: channel
 						? channel?.map((value: string) => Number(value))

@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetConfiscatedListArgs {
 	siteIds: number[]
@@ -53,7 +53,7 @@ export type IExportConfiscatedArgs = Omit<
 >
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	baseCurrencyId: number
 	userName: string

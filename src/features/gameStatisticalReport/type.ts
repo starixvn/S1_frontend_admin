@@ -1,8 +1,8 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 export interface IForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 }
 
 export interface IGameStatisticalReportData {

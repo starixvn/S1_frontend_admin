@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
@@ -140,7 +140,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportFailBetRecordReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportFailBetRecordReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -184,7 +184,7 @@ const FailBet = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				currencyIds: currencyIds
 					? currencyIds?.map((values: string) => Number(values))
 					: currencyListBySite?.map(({ currencyId }) => currencyId),

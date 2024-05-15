@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import {
 	Col,
@@ -106,7 +106,7 @@ const NewsManagementModal = ({
 			const imageUrl = JSONParser({ key: 'imageUrl', value: rawImageUrl })
 			const title = JSONParser({ key: 'title', value: rawTitle })
 			const content = JSONParser({ key: 'content', value: rawContent })
-			const postTime = moment(rawPostTime)
+			const postTime = dayjs(rawPostTime)
 			const status = Boolean(rawStatus === 1)
 
 			form.setFieldsValue({
@@ -182,7 +182,7 @@ const NewsManagementModal = ({
 										noStyle
 										label={t('Label_PostTime')}
 										name='postTime'
-										initialValue={moment()}
+										initialValue={dayjs()}
 									>
 										<DatePicker showTime style={{ width: '100%' }} />
 									</Form.Item>

@@ -28,7 +28,7 @@ import { GameExclusionTable } from 'features/gameExclusion/GameExclusionTable'
 import { isEmpty } from 'lodash'
 import { AffixButtons } from 'components/AffixButtons'
 import { useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 
 const GameExclusion = ({ pageTitle }: { pageTitle?: string }) => {
@@ -178,7 +178,7 @@ const GameExclusion = ({ pageTitle }: { pageTitle?: string }) => {
 
 				filterForm.setFieldsValue({
 					userName,
-					dateRange: [moment(startDate), moment(endDate)],
+					dateRange: [dayjs(startDate), dayjs(endDate)],
 				})
 
 				handleSearch({

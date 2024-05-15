@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { message, Space, Switch, Typography, TablePaginationConfig } from 'antd'
 import { Table } from 'components'
@@ -85,7 +85,7 @@ const NewsManagementTable = ({
 			render: (postTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{postTime
-						? moment(postTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(postTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -107,7 +107,7 @@ const NewsManagementTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

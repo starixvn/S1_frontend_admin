@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface ICryptoCurrency {
 	currencyId: number
@@ -40,7 +40,7 @@ export interface IGetBlockCryptoWalletArgs {
 	endDate: string
 	currencyId: number[]
 	cryptoType: number[]
-	network: string[]
+	network: number[]
 }
 
 export interface ICryptoWalletGetByAddress {
@@ -87,11 +87,11 @@ export interface IGetCryptoListByCustIdArgs {
 }
 
 export type IFilterForm = {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyId: number[]
 	status: number
 	cryptoType: number[]
-	network: string[]
+	network: number[]
 	address: string
 	userName: string
 }

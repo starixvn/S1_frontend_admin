@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IDepositPointSettingData {
 	currencyId: number
@@ -9,7 +9,7 @@ export interface IDepositPointSettingData {
 	promotionPointRate: number
 	promotionStartTime: string | null
 	promotionEndTime: string | null
-	promotionDateRange: [Moment, Moment]
+	promotionDateRange: [Dayjs, Dayjs]
 	lastUpdater: string
 	lastUpdateTime: string
 }

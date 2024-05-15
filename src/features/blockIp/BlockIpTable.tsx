@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
@@ -82,7 +82,7 @@ const BlockIpTable: FC<IBlockIpTableProps> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime)
+					? dayjs(createTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format('YYYY-MM-DD  HH:mm:ss')
 					: '',

@@ -1,5 +1,5 @@
 import download from 'downloadjs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import VipRebateReportTable from 'features/vipRebateReport/VipRebateReportTable'
@@ -46,7 +46,7 @@ interface IBonusReportProps {
 
 export interface IFilterForm {
 	siteIds: number[]
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	userName: string
 	categoryIds: number[]
 	currencyIds: number[]
@@ -193,7 +193,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 			const blob = await exportForVip(args).unwrap()
 			download(
 				blob,
-				`ExportVipRebateReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportVipRebateReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -255,7 +255,7 @@ const VipRebateReport = ({ pageTitle }: IBonusReportProps) => {
 					Number(currencyId)
 				),
 				baseCurrencyId: Number(baseCurrencyId),
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				userName,
 				payoutStatuses: payoutStatuses?.map((status: string) => Number(status)),
 			})

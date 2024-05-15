@@ -12,7 +12,7 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { IGetHotEventListData } from 'features/hotEventManagement/type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
@@ -148,7 +148,7 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 			render: (battleTime: string) =>
 				battleTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(battleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(battleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -185,7 +185,7 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 			render: (startTime: string) =>
 				startTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -200,7 +200,7 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 			render: (endTime: string) =>
 				endTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -226,7 +226,7 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(lastUpdateTime)
+						{dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

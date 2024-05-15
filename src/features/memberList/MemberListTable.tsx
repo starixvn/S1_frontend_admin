@@ -5,7 +5,7 @@ import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { PAGINATION, PaginationInterface } from 'common/hooks'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
@@ -131,7 +131,7 @@ const MemberListTable: FC<IMemberListTableProps> = ({
 			align: 'center' as 'center',
 			render: (lastRedemptionTime: string) =>
 				lastRedemptionTime
-					? moment(lastRedemptionTime)
+					? dayjs(lastRedemptionTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',
@@ -144,7 +144,7 @@ const MemberListTable: FC<IMemberListTableProps> = ({
 			align: 'center' as 'center',
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime
-					? moment(lastUpdateTime)
+					? dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

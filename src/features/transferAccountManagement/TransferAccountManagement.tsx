@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { FC, useEffect } from 'react'
 import { Form, message } from 'antd'
@@ -135,15 +135,15 @@ const TransferAccountManagement: FC<{
 
 			const blob = await exportBankTransferAccount({
 				siteId,
-				purposes: (purposes as (string | number)[]).includes('all')
+				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
-					: purposes,
+					: (purposes as number[]),
 				...values,
 			}).unwrap()
 
 			download(
 				blob,
-				`BankTransferAccounts_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`BankTransferAccounts_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -158,9 +158,9 @@ const TransferAccountManagement: FC<{
 		try {
 			await getBankTransferAccounts({
 				siteId,
-				purposes: (purposes as (string | number)[]).includes('all')
+				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
-					: purposes,
+					: (purposes as number[]),
 				...values,
 			}).unwrap()
 		} catch (error) {

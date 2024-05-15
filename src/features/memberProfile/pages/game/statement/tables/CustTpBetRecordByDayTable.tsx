@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { IGetCustTpBetRecordByDayData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
@@ -38,7 +38,7 @@ const CustTpBetRecordByDayTable = ({
 				settledDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{/* settledDate 經過討論不需要額外做 timezone 的處理 */}
-						{moment(settledDate).format(dateFormat)}
+						{dayjs(settledDate).format(dateFormat)}
 					</Typography.Text>
 				) : (
 					''

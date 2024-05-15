@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import type { ColumnsType } from 'antd/es/table'
@@ -76,7 +76,7 @@ const NruBonusDetailTable = ({
 			render: (regTime: string) =>
 				regTime ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Text>
 				) : (
 					'-'

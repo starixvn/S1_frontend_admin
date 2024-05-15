@@ -35,7 +35,7 @@ import { IGetTpBetRecordDetailData } from 'features/memberProfile/type'
 import { TpBetRecordDetailModal } from 'features/memberProfile/pages/game/statement/tables/TpBetRecordDetailModal'
 import { AffixButtons } from 'components/AffixButtons'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useGetCategoryQuery } from 'common/service/allDataApi'
 
 const Statement = () => {
@@ -338,7 +338,7 @@ const Statement = () => {
 					}).unwrap()
 					download(
 						blob,
-						`ExportCustTPBetRecord_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						`ExportCustTPBetRecord_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 					)
 				} catch (error) {
 					message.error(
@@ -366,7 +366,7 @@ const Statement = () => {
 					}).unwrap()
 					download(
 						blob,
-						`ExportCustTPBetRecordByDay_${moment().format(
+						`ExportCustTPBetRecordByDay_${dayjs().format(
 							'YYYYMMDDHHmmss'
 						)}.xlsx`
 					)
@@ -398,7 +398,7 @@ const Statement = () => {
 					}).unwrap()
 					download(
 						blob,
-						`ExportCustTPBetRecordByCategory_${moment().format(
+						`ExportCustTPBetRecordByCategory_${dayjs().format(
 							'YYYYMMDDHHmmss'
 						)}.xlsx`
 					)
@@ -427,7 +427,7 @@ const Statement = () => {
 					}).unwrap()
 					download(
 						blob,
-						`ExportCustTPBetRecordByGameType_${moment().format(
+						`ExportCustTPBetRecordByGameType_${dayjs().format(
 							'YYYYMMDDHHmmss'
 						)}.xlsx`
 					)

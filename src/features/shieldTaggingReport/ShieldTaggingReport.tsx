@@ -29,7 +29,7 @@ import {
 	IShieldTaggingReportResponse,
 } from 'features/shieldTaggingReport/type'
 import download from 'downloadjs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import ShieldTaggingAssociateAccountModal from 'features/shieldTaggingReport/ShieldTaggingAssociateAccountModal'
 
@@ -161,7 +161,7 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportShieldTaggingReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportShieldTaggingReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -222,7 +222,7 @@ const ShieldTaggingReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				platform: platform
 					? platform?.map((value: string) => Number(value))
 					: shieldPlatformList?.map(({ value }) => value),

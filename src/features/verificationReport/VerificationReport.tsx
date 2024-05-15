@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import VerificationReportFilter from 'features/verificationReport/VerificationReportFilter'
@@ -140,7 +140,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportVerificationRewardReport(args).unwrap()
 			download(
 				blob,
-				`ExportVerificationReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportVerificationReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -164,7 +164,7 @@ const VerificationReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				siteIds: siteIds.map((querySite: string) => Number(querySite)),
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				memberId: userName,

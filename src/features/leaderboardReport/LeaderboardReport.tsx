@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { Form, message } from 'antd'
 import { useAppSelector } from 'app/store'
@@ -72,9 +72,9 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 		} = form.getFieldsValue()
 		// 如果是選到當月 則 startDate 是這月ㄧ號0時0分0秒 到 現在確切時間的 endDate
 		// 如果不是則 startDate 是這月ㄧ號0時0分0秒 到 這月底23:23:59的 endDate
-		const [startDate, endDate] = moment(monthRange).isSame(moment(), 'month')
+		const [startDate, endDate] = dayjs(monthRange).isSame(dayjs(), 'month')
 			? dateRangeToUtcFormatter(
-					[monthRange.startOf('month').toDate(), moment()],
+					[monthRange.startOf('month').toDate(), dayjs()],
 					currentTimeZoneUtcOffset
 			  )
 			: dateRangeToUtcFormatter(
@@ -123,7 +123,7 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`LeaderboardReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`LeaderboardReport${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -149,9 +149,9 @@ const LeaderboardReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			form.setFieldsValue({
 				siteId: Number(siteId),
-				monthRange: moment(startDate).isSame(moment(), 'month')
-					? moment()
-					: moment(startDate),
+				monthRange: dayjs(startDate).isSame(dayjs(), 'month')
+					? dayjs()
+					: dayjs(startDate),
 				currencyId: Number(currencyId),
 				categoryId: Number(categoryId),
 			})

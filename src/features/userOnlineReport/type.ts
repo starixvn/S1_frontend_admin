@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetUserOnlineReportListArgs {
@@ -24,7 +24,7 @@ export interface IExportUserOnlineReportArgs
 	extends IGetUserOnlineReportListArgs {}
 
 export interface IFilterForm {
-	date: moment.Moment
+	date: dayjs.Dayjs
 	timeZone: number
 }
 

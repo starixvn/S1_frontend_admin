@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FC, useEffect } from 'react'
 import { isEmpty } from 'lodash'
 import { selectUserSite } from 'common/enum'
@@ -145,7 +145,7 @@ const BlockIp: FC<{
 			onTimeZoneChange(Number(tz))
 
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				ip,
 			})
 

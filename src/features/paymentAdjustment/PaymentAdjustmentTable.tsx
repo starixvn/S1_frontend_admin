@@ -18,7 +18,7 @@ import {
 } from 'antd'
 import React from 'react'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -232,7 +232,7 @@ const PaymentAdjustmentTable = ({
 				<div style={{ width: '180px' }}>
 					{createTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

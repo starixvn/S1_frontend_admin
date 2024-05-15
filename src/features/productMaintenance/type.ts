@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetTpGameTypeArgs {
@@ -70,7 +70,7 @@ export type ITpGameTypeResponse = IAxiosResponse<ITpGameTypeData[]>
 export type ITpMaintenanceResponse = IAxiosResponse<ITpMaintenanceData[]>
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	tpId: number
 	tpGameTypeId: number
 	tpCategoryId: number
@@ -78,11 +78,11 @@ export interface IFilterForm {
 }
 
 export interface IEditForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 }
 
 export interface IAddForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	tpId: number
 	tpGameType: string[]
 }

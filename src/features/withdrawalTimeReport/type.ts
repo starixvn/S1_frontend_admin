@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import moment from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetWithdrawalTimeReportListArgs {
 	withdrawalId: string | null
@@ -63,7 +63,7 @@ export interface IExportWithdrawalTimeReportArgs {
 }
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	statuses: number[]
 	memberId: string

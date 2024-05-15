@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 // DashBoard
 export interface IGetPerformanceHighlightArgs {
@@ -75,10 +75,10 @@ export type IPerformanceHighlightResponse =
 
 export interface IFilterForm {
 	siteIds: number[]
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	isCompared: boolean
 	periodTime: number
-	compareDateRange: [Moment, Moment]
+	compareDateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	baseCurrencyId: number
 }

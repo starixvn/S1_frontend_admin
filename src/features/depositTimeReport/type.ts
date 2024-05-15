@@ -1,8 +1,8 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	currencyIds: number[]
 	statuses: number[]
 	memberId: string

@@ -5,7 +5,7 @@ import { TablePaginationConfig, Typography } from 'antd'
 import { IGetReferralHistoryData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { isPositiveNum } from 'common/utils'
 
@@ -45,7 +45,7 @@ const ReferralHistoryTable = ({
 			render: (registerDate: string) =>
 				registerDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(registerDate)
+						{dayjs(registerDate)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -141,7 +141,7 @@ const ReferralHistoryTable = ({
 			render: (rewardTime: string) =>
 				rewardTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(rewardTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(rewardTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

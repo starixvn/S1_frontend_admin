@@ -15,7 +15,7 @@ import { head } from 'lodash'
 import { PAGINATION, usePagination } from 'common/hooks'
 import { WithdrawalFilter } from 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalFilter'
 import WithdrawalTable from 'features/memberProfile/pages/finance/withdrawalInfo/WithdrawalTable'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits } from 'common/utils/format'
 
 const WithdrawalInfo = () => {
@@ -25,7 +25,7 @@ const WithdrawalInfo = () => {
 	const [isShowTotalApprove, setIsShowTotalApprove] = useState(false)
 	const [filterForm] = Form.useForm<{
 		status: number
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	}>()
 
 	const [

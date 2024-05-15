@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Space, Typography, Popconfirm, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
@@ -121,7 +121,7 @@ const BetLimitTable = ({
 				<div>
 					{createTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -148,7 +148,7 @@ const BetLimitTable = ({
 				<div>
 					{updateTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(updateTime)
+							{dayjs(updateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

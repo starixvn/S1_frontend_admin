@@ -1,7 +1,7 @@
 import { Table, Typography } from 'antd'
 import { timeFormat } from 'common/utils/format'
 import { IGetDeviceData } from 'features/memberProfile/type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 interface IDeviceListTableProps {
 	loading: boolean
@@ -66,7 +66,7 @@ const DeviceListTable = ({
 			align: 'center' as 'center',
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime
-					? moment(lastUpdateTime)
+					? dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

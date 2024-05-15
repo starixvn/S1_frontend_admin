@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency, UserSite } from 'common/enum/type'
@@ -60,7 +59,7 @@ const LeaderboardReportFilter = ({
 	const handleCategory = (newCategory: number) => {
 		if (newCategory !== LeaderBoardCategoryEnum.SelectAll) {
 			form.setFieldsValue({
-				monthRange: moment(),
+				monthRange: dayjs(),
 			})
 		}
 	}
@@ -135,7 +134,7 @@ const LeaderboardReportFilter = ({
 						onFinish={() => onSearch({})}
 						initialValues={{
 							// 現在時間
-							monthRange: moment(),
+							monthRange: dayjs(),
 							siteId: head(userSiteList)?.siteId,
 							currencyId: head(currencyListBySite)?.currencyId,
 							categoryId: 0,

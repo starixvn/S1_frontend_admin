@@ -14,7 +14,7 @@ import {
 } from 'antd'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { CopyOutlined, InfoCircleOutlined } from '@ant-design/icons'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import {
 	AccountTypeEnum,
 	WITHDRAWAL_STATUS_TAGS_COLOR,
@@ -261,7 +261,7 @@ const WithdrawalRequestInfo = ({
 			<Item label={t('Label_CreateTime')}>
 				{createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -323,7 +323,7 @@ const WithdrawalRequestInfo = ({
 			<Item label={`${t('Label_UpdateTime')} (+08:00)`}>
 				{updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(updateTime).utcOffset(8).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(8).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -332,7 +332,7 @@ const WithdrawalRequestInfo = ({
 			<Item label={`${t('Label_FlowEndTime')} (+08:00)`}>
 				{flowEndTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(flowEndTime).utcOffset(8).format(timeFormat)}
+						{dayjs(flowEndTime).utcOffset(8).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

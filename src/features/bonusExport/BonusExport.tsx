@@ -37,7 +37,7 @@ import {
 import { BonusExportFilter } from 'features/bonusExport/BonusExportFilter'
 import { BonusExportTable } from 'features/bonusExport/BonusExportTable'
 import { isArray, isEmpty } from 'lodash'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import download from 'downloadjs'
 
@@ -47,7 +47,7 @@ const BonusExport: FC<{
 	const { t } = useTranslation()
 	const [form] = Form.useForm<{
 		siteIds: []
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 		currencyIds: number[]
 		baseCurrencyId: number
 		eventTypeId: number
@@ -199,7 +199,7 @@ const BonusExport: FC<{
 
 			download(
 				blob,
-				`ExportBonusReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportBonusReport${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -228,7 +228,7 @@ const BonusExport: FC<{
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				userName,
 				baseCurrencyId: Number(baseCurrencyId),

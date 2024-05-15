@@ -5,7 +5,7 @@ import download from 'downloadjs'
 import { useAuth } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { message } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { getTimezoneInfo } from 'common/utils'
@@ -56,7 +56,7 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportCupEventTeamReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportCupEventTeamReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -70,7 +70,7 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 			const blob = await exportCupEventPredictScore(null).unwrap()
 			download(
 				blob,
-				`ExportCupEventPredictScore${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportCupEventPredictScore${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(

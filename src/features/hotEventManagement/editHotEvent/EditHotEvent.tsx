@@ -20,7 +20,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { AffixButtons } from 'components/AffixButtons'
 import { useAuth } from 'common/hooks'
 import { utcFormatter } from 'common/utils'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 
@@ -35,9 +35,9 @@ const EditHotEvent = () => {
 		gameId: number
 		sportLeaguesTitleId: number
 		matchId: number
-		battleTime: moment.Moment
-		startTime: moment.Moment
-		endTime: moment.Moment
+		battleTime: dayjs.Dayjs
+		startTime: dayjs.Dayjs
+		endTime: dayjs.Dayjs
 		homeSportLeaguesId: number
 		awaySportLeaguesId: number
 		homeTeamNameId: number
@@ -89,9 +89,9 @@ const EditHotEvent = () => {
 			} = hotEventDetail
 
 			form.setFieldsValue({
-				startTime: moment(startTime),
-				endTime: moment(endTime),
-				battleTime: moment(battleTime),
+				startTime: dayjs(startTime),
+				endTime: dayjs(endTime),
+				battleTime: dayjs(battleTime),
 				sportLeaguesTitleId,
 				matchId,
 				homeSportLeaguesId,

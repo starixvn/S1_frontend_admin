@@ -10,7 +10,7 @@ import {
 	Spin,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	IGetReasonListData,
 	IGetTransferTypeListData,
@@ -42,7 +42,7 @@ const EditTransferInfoHeadForm = ({
 							<Form.Item
 								name='transDate'
 								label={t('Label_TransDate')}
-								initialValue={moment()}
+								initialValue={dayjs()}
 								rules={[
 									{
 										required: true,

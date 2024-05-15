@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useEffect, useState } from 'react'
 import { isArray, isEmpty, reject } from 'lodash'
@@ -234,7 +234,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`PaymentAdjustmentReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`PaymentAdjustmentReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -262,7 +262,7 @@ const PaymentAdjustment = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				adjustTypes: adjustTypes?.map((type: string) => Number(type)),
 				currencyIds: currencyIds?.map((id: string) => Number(id)),
 				userName,

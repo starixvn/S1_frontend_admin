@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetBonusInfoArgs {
 	siteId?: number
@@ -79,7 +79,7 @@ export interface IBonusDetailListData {
 }
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	siteIds: number[]
 	bonusCode: string
 	bonusTypes: number[]
@@ -94,7 +94,7 @@ export interface IFilterForm {
 }
 
 export interface IBonusDetailForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	recordSiteId: number
 	bonusCode: string
 	bonusSelector: string

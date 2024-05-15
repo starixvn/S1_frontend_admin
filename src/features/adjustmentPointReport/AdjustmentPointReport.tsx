@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { isArray, isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
@@ -140,7 +140,7 @@ const AdjustmentPointReport: FC<{
 			}).unwrap()
 			download(
 				blob,
-				`ExportAdjustmentPointReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportAdjustmentPointReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -185,7 +185,7 @@ const AdjustmentPointReport: FC<{
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				userName,
 				sabaId,
 				transId,

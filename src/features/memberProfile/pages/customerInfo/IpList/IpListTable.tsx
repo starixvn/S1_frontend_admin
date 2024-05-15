@@ -2,7 +2,7 @@ import { IGetIpLogData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { Popconfirm, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PermissionInterface } from 'type'
 
@@ -63,7 +63,7 @@ const IpListTable = ({
 			render: (loginTime: string) =>
 				loginTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

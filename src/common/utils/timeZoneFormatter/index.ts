@@ -1,7 +1,11 @@
-import moment from 'moment'
-import mt from 'moment-timezone'
+import dayjs from 'dayjs'
+import utcPlugin from 'dayjs/plugin/utc'
+import timezonePlugin from 'dayjs/plugin/timezone'
 import ct from 'countries-and-timezones'
 import { find, isString } from 'lodash'
+
+dayjs.extend(utcPlugin)
+dayjs.extend(timezonePlugin)
 
 // * ct.getAllTimezones() 會拿到所有國家的時區資訊
 const allTimezones = ct.getAllTimezones()
@@ -12,7 +16,7 @@ export const getTimezoneInfo = (utcOffset: number) =>
 		utcOffset: utcOffset * 60,
 	}) ?? ({} as ct.Timezone)
 
-export const timeZoneLocalOffset = moment.parseZone(moment()).utcOffset() / 60
+export const timeZoneLocalOffset = dayjs().utcOffset() / 60
 
 // * 轉成指定時區的格式
 export const utcFormatter = ({
@@ -20,7 +24,7 @@ export const utcFormatter = ({
 	utcOffset,
 	utcOffsetStr,
 }: {
-	date: moment.Moment | Date | string
+	date: dayjs.Dayjs | Date | string
 	utcOffset?: number
 	utcOffsetStr?: string
 }) => {
@@ -37,16 +41,16 @@ export const utcFormatter = ({
 	// * 將被扣掉的時差加回來，以符合後端格式需求
 	// * ex: utcFormatter('2022-07-20T00:00:00+08:00', 7)
 	// * 2022-07-20T00:00:00+08:00 => 2022-07-20T00:00:00+07:00 時間不動只改後面的時區
-	const formatDate = moment(date)
+	const formatDate = dayjs(date)
 		.utcOffset(0, true)
 		.subtract(timezone.utcOffset / 60, 'hour')
 	// return sample : 2022-09-14T00:00:00+00:00
-	return mt.tz(formatDate, timezone.name).format('YYYY-MM-DDTHH:mm:ssZ')
+	return dayjs.tz(formatDate, timezone.name).format('YYYY-MM-DDTHH:mm:ssZ')
 }
 
 // * 用於處理 RangePicker 元件的時間格式
 export const dateRangeToUtcFormatter = (
-	dateRange?: [moment.Moment | Date, moment.Moment | Date],
+	dateRange?: [dayjs.Dayjs | Date, dayjs.Dayjs | Date],
 	utc?: number | string
 ) => {
 	if (!dateRange) return ['', '']

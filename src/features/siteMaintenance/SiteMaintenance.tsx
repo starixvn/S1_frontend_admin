@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { Form, message } from 'antd'
@@ -56,7 +56,7 @@ const SiteMaintenance: FC<{
 			const { maintain, dateTimeStart, dateTimeEnd } = maintenanceData
 			form.setFieldsValue({
 				maintain,
-				dateRange: [moment(dateTimeStart), moment(dateTimeEnd)],
+				dateRange: [dayjs(dateTimeStart), dayjs(dateTimeEnd)],
 			})
 		}
 	}, [isGetMaintenanceLoading])

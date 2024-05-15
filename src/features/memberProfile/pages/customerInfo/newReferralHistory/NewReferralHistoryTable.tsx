@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
@@ -55,7 +55,7 @@ const NewReferralHistoryTable = ({
 			render: (regTime: string) =>
 				regTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

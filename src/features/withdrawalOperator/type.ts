@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import { Dayjs } from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { ICurrencyAmountRecordData } from 'features/paymentAdjustment/type'
 import { UploadFile } from 'antd/es/upload/interface'
@@ -113,7 +113,7 @@ export interface IWithdrawalCommentData {
 
 export type IFilterForm = {
 	isAllSite: boolean
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [Dayjs, Dayjs]
 	userName: string
 	currencyIds: number[]
 	statuses: number[]
