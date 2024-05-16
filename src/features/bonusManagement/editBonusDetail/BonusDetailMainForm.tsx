@@ -653,6 +653,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 															})
 														}
 													}}
+													disabled={!canEdit}
 												>
 													{t('Label_SameDeviceIDRestrictCount')}
 												</Checkbox>
@@ -684,6 +685,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 															})
 														}
 													}}
+													disabled={!canEdit}
 												>
 													{t('Label_SameRealNameRestrictCount')}
 												</Checkbox>
@@ -717,6 +719,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 															})
 														}
 													}}
+													disabled={!canEdit}
 												>
 													{t('Label_SameIPRestrictCount')}
 												</Checkbox>
