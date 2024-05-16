@@ -125,6 +125,10 @@ const MemberAdministrationModal = ({
 										key: t('Label_FullName'),
 									}),
 								},
+								{
+									pattern: /^[^：:*，。；]+$/,
+									message: t('Label_FullNameLimit'),
+								},
 							]}
 						>
 							<Input allowClear style={{ width: '100%' }} />
