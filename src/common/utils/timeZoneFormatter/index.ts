@@ -1,24 +1,20 @@
 import dayjs from 'dayjs'
-import utcPlugin from 'dayjs/plugin/utc'
-import timezonePlugin from 'dayjs/plugin/timezone'
-import ct from 'countries-and-timezones'
-import { find, isString } from 'lodash'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 
-dayjs.extend(utcPlugin)
-dayjs.extend(timezonePlugin)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
-// * ct.getAllTimezones() 會拿到所有國家的時區資訊
-const allTimezones = ct.getAllTimezones()
-
-// * 透過 utcOffset 拿到該國家的時區資訊
-export const getTimezoneInfo = (utcOffset: number) =>
-	find(allTimezones, {
-		utcOffset: utcOffset * 60,
-	}) ?? ({} as ct.Timezone)
+// * 轉成時區字串
+// * 例: getUtcOffsetStr(8) => '+08:00'
+export const getUtcOffsetStr = (utcOffset: number) =>
+	dayjs().utcOffset(utcOffset).format('Z')
 
 export const timeZoneLocalOffset = dayjs().utcOffset() / 60
 
-// * 轉成指定時區的格式
+// * 轉成指定時區的格式，時間不動只改後面的時區
+// * 例: utcFormatter({ date: '2024-05-16T12:34:56+08:00', utcOffset: 7 })
+// * => '2024-05-16T12:34:56+07:00'
 export const utcFormatter = ({
 	date,
 	utcOffset,
@@ -27,42 +23,19 @@ export const utcFormatter = ({
 	date: dayjs.Dayjs | Date | string
 	utcOffset?: number
 	utcOffsetStr?: string
-}) => {
-	let timezone: ct.Timezone
-
-	if (utcOffsetStr) {
-		timezone = find(allTimezones, { utcOffsetStr }) as ct.Timezone
-	} else {
-		timezone = find(allTimezones, {
-			utcOffset: Number(utcOffset) * 60,
-		}) as ct.Timezone
-	}
-
-	// * 將被扣掉的時差加回來，以符合後端格式需求
-	// * ex: utcFormatter('2022-07-20T00:00:00+08:00', 7)
-	// * 2022-07-20T00:00:00+08:00 => 2022-07-20T00:00:00+07:00 時間不動只改後面的時區
-	const formatDate = dayjs(date)
-		.utcOffset(0, true)
-		.subtract(timezone.utcOffset / 60, 'hour')
-	// return sample : 2022-09-14T00:00:00+00:00
-	return dayjs.tz(formatDate, timezone.name).format('YYYY-MM-DDTHH:mm:ssZ')
-}
+}) =>
+	dayjs(date)
+		.utcOffset(utcOffset || Number(utcOffsetStr) || 0, true) // avoid NaN
+		.format('YYYY-MM-DDTHH:mm:ssZ')
 
 // * 用於處理 RangePicker 元件的時間格式
 export const dateRangeToUtcFormatter = (
-	dateRange?: [dayjs.Dayjs | Date, dayjs.Dayjs | Date],
-	utc?: number | string
-) => {
-	if (!dateRange) return ['', '']
-
-	return [
+	dateRange?: (dayjs.Dayjs | Date)[],
+	utcOffset?: number | string
+) =>
+	dateRange?.map(date =>
 		utcFormatter({
-			date: dateRange[0],
-			[isString(utc) ? 'utcOffsetStr' : 'utcOffset']: utc,
-		}),
-		utcFormatter({
-			date: dateRange[1],
-			[isString(utc) ? 'utcOffsetStr' : 'utcOffset']: utc,
-		}),
-	]
-}
+			date,
+			[typeof utcOffset === 'string' ? 'utcOffsetStr' : 'utcOffset']: utcOffset,
+		})
+	) ?? ['', '']

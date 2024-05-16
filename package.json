@@ -61,7 +61,6 @@
 		"@vitejs/plugin-react": "^4.2.1",
 		"antd": "^5.17.0",
 		"array-move": "^4.0.0",
-		"countries-and-timezones": "^3.3.0",
 		"customize-cra": "^1.0.0",
 		"downloadjs": "^1.4.7",
 		"eslint": "8.56",

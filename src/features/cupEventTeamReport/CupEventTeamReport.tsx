@@ -8,7 +8,7 @@ import { selectUserSite } from 'common/enum'
 import dayjs from 'dayjs'
 import { message } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import { getTimezoneInfo } from 'common/utils'
+import { getUtcOffsetStr } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { CupEventTeamReportTable } from 'features/cupEventTeamReport/CupEventTeamReportTable'
 import {
@@ -47,12 +47,10 @@ const CupEventTeamReport: FC<{ pageTitle?: string }> = ({ pageTitle }) => {
 
 	const handleExport = async (teamId: number) => {
 		try {
-			const { utcOffsetStr } = getTimezoneInfo(timeZoneUtcOffset)
-
 			const blob = await exportCupEventTeamReport({
 				siteId,
 				teamId,
-				timezone: utcOffsetStr,
+				timezone: getUtcOffsetStr(timeZoneUtcOffset),
 			}).unwrap()
 			download(
 				blob,
