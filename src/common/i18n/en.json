@@ -1182,6 +1182,7 @@
 	"Label_TpCategory": "Tp Category",
 	"Label_LiveStreamingGameType": "LiveStreamingGameType",
 	"Label_UserNameLimit": "Username 6-18 alphanumeric (A-Z,a-z,0-9) characters only.",
+	"Label_FullNameLimit": "The special symbols like :：*，。； are forbidden in Full Name input.",
 	"Label_Month": "Month",
 	"Label_VintageClub": "VINTAGE CLUB",
 	"Label_SliverClub": "SILVER CLUB",
