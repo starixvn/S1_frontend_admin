@@ -15,6 +15,7 @@ import {
 import { userSettingStatusList } from './constants'
 
 const { Panel } = Collapse
+const { Option } = Select
 
 interface UserSettingsFilterProps {
 	form: FormInstance<any>
@@ -28,13 +29,17 @@ const UserSettingsFilter: FC<UserSettingsFilterProps> = ({
 	onSearch,
 }) => {
 	const { t } = useTranslation()
-	const { Option } = Select
 
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key={1}>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
-					<Form layout='vertical' form={form} onFinish={onSearch}>
+					<Form
+						layout='vertical'
+						form={form}
+						onFinish={onSearch}
+						initialValues={{ status: true }}
+					>
 						<Row align='middle' gutter={8}>
 							<Col lg={6} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_UserName')}>
@@ -42,8 +47,8 @@ const UserSettingsFilter: FC<UserSettingsFilterProps> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='status' label={t('Label_Status')} initialValue>
-									<Select placeholder={t('Label_On')}>
+								<Form.Item name='status' label={t('Label_Status')}>
+									<Select>
 										{userSettingStatusList?.map(status => (
 											<Option key={status.displayName} value={status.value}>
 												{t(status.displayName)}

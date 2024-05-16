@@ -64,7 +64,13 @@ const RoleManagementTable = ({
 							bordered
 							dataSource={iuserList ?? []}
 							renderItem={({ userName, status }) => (
-								<List.Item style={{ display: 'flex', justifyContent: 'start' }}>
+								<List.Item
+									style={{
+										display: 'flex',
+										justifyContent: 'start',
+										marginLeft: status !== 0 ? '14px' : 0,
+									}}
+								>
 									<Typography.Text type='danger'>
 										{status === 0 && <CloseOutlined />}
 									</Typography.Text>
