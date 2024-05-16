@@ -30,21 +30,22 @@ const AdminUserLogTable = ({
 }: IAdminUserLogTableProps) => {
 	const { t } = useTranslation()
 
-	const filteredDirtyData = adminUserLogList.filter(
-		item =>
+	const filteredDirtyData = adminUserLogList.filter(item => {
+		return (
 			!some(
-				Object.keys(item.beforeDetailInfoObject!).map(key =>
+				Object.keys(item.beforeDetailInfoObject || {}).map(key => {
 					// @ts-ignore
-					isArray(item.beforeDetailInfoObject![key])
-				)
-			) ||
+					return isArray(item.beforeDetailInfoObject![key])
+				})
+			) &&
 			!some(
-				Object.keys(item.afterDetailInfoObject!).map(key =>
+				Object.keys(item.afterDetailInfoObject || {}).map(key => {
 					// @ts-ignore
-					isArray(item.afterDetailInfoObject![key])
-				)
+					return isArray(item.afterDetailInfoObject![key])
+				})
 			)
-	)
+		)
+	})
 
 	const renderDetailContent = ({
 		infoObject,
