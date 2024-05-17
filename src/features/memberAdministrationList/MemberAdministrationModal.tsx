@@ -126,7 +126,7 @@ const MemberAdministrationModal = ({
 									}),
 								},
 								{
-									pattern: /^[^：:*，。；]+$/,
+									pattern: /^[^：:＊*，,。．；;]+$/,
 									message: t('Label_FullNameLimit'),
 								},
 							]}
