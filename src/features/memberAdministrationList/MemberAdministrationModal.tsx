@@ -14,6 +14,11 @@ import {
 } from 'app/constants/areaCode'
 import { InputNumber } from 'components'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
+import {
+	FULLNAME_REGEX,
+	PASSWORD_REGEX,
+	USERNAME_REGEX,
+} from 'app/constants/regex'
 
 interface IMemberAdministrationModalProps {
 	loading: boolean
@@ -81,7 +86,7 @@ const MemberAdministrationModal = ({
 									}),
 								},
 								{
-									pattern: /^(?=.*[a-zA-Z])(?=.*\d).{6,18}$/,
+									pattern: USERNAME_REGEX,
 									message: t('Label_UserNameLimit'),
 								},
 							]}
@@ -101,7 +106,7 @@ const MemberAdministrationModal = ({
 									}),
 								},
 								{
-									pattern: /^(?=.*[a-zA-Z])(?=.*\d).{6,15}$/,
+									pattern: PASSWORD_REGEX,
 									message: t('Label_PasswordLengthLimit'),
 								},
 							]}
@@ -126,7 +131,8 @@ const MemberAdministrationModal = ({
 									}),
 								},
 								{
-									pattern: /^[^：:＊*，,。．；;]+$/,
+									// pattern: /^[^：:＊*，,。．；;]+$/,
+									pattern: FULLNAME_REGEX,
 									message: t('Label_FullNameLimit'),
 								},
 							]}
