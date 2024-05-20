@@ -52,7 +52,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 		useContext(EditBonusContext)
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const active = Form.useWatch(['specific', isoCode, 'active'], form)
-
+	// 因 antd@>=4.24 表單元件的 disabled 屬性優於上層的表單，在此另加入權限判斷
+	const isActiveAndEditable = Boolean(active && editPermission?.canUse)
 	// amount type , percentage 或 amount
 	const bonusType = Form.useWatch(['specific', isoCode, 'bonusType'], form)
 	const minLoss = Form.useWatch(['specific', isoCode, 'minLoss'], form)
@@ -124,7 +125,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 				<MultipleSelect
 					onChange={onChangeProducts}
 					placeholder={t('Label_Select')}
-					disabled={!active}
+					disabled={!isActiveAndEditable}
 					style={{ width: '100%' }}
 				>
 					{productList?.length > 1 && (
@@ -166,7 +167,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			<MultipleSelect
 				onChange={onChangeProducts}
 				placeholder={t('Label_Select')}
-				disabled={!active}
+				disabled={!isActiveAndEditable}
 				style={{ width: '100%' }}
 			>
 				{allProductList?.length > 1 && (
@@ -328,7 +329,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										name={['specific', isoCode, 'vN_AffCodes']}
 										label={t('Label_AffiliateCode')}
 									>
-										<Input disabled={!active} />
+										<Input disabled={!isActiveAndEditable} />
 									</Form.Item>
 								</Col>
 								<Col span={8}>
@@ -352,7 +353,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -382,7 +383,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 												style={{ width: '100%' }}
 												type='number'
 												controls={false}
-												disabled={!active}
+												disabled={!isActiveAndEditable}
 											/>
 										</Form.Item>
 									</Col>
@@ -394,7 +395,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											name={['specific', isoCode, 'bonusType']}
 											label={t('Label_AmountType')}
 										>
-											<Select disabled={!active}>
+											<Select disabled={!isActiveAndEditable}>
 												{amountTypeList?.map(type => (
 													<Option key={type.value} value={type.value}>
 														{t(type.displayName)}
@@ -426,7 +427,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 														type='number'
 														controls={false}
 														style={{ width: '100%' }}
-														disabled={!active}
+														disabled={!isActiveAndEditable}
 													/>
 												</Form.Item>
 											</Col>
@@ -451,7 +452,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 														type='number'
 														controls={false}
 														style={{ width: '100%' }}
-														disabled={!active}
+														disabled={!isActiveAndEditable}
 													/>
 												</Form.Item>
 											</Col>
@@ -479,7 +480,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 													type='number'
 													controls={false}
 													style={{ width: '100%' }}
-													disabled={!active}
+													disabled={!isActiveAndEditable}
 												/>
 											</Form.Item>
 										</Col>
@@ -517,7 +518,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -545,7 +546,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -570,7 +571,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -592,7 +593,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -609,7 +610,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										name={['specific', isoCode, 'vN_AffCodes']}
 										label={t('Label_AffiliateCode')}
 									>
-										<Input disabled={!active} />
+										<Input disabled={!isActiveAndEditable} />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -620,7 +621,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										label={t('Label_AmountType')}
 									>
 										<Select
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 											onChange={() => {
 												// 重置 tierAmountList
 												form?.setFieldsValue({
@@ -647,7 +648,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 												type='primary'
 												icon={<EditOutlined />}
 												onClick={onSetGroupBonusClick}
-												disabled={!active}
+												disabled={!isActiveAndEditable}
 											>
 												{t('Label_SetPercentageGroup')}
 											</Button>
@@ -661,7 +662,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 												type='primary'
 												icon={<EditOutlined />}
 												onClick={onSetGroupBonusClick}
-												disabled={!active}
+												disabled={!isActiveAndEditable}
 											>
 												{t('Label_SetAmountGroup')}
 											</Button>
@@ -688,7 +689,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -710,7 +711,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -743,7 +744,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -768,7 +769,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -793,7 +794,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -840,7 +841,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -875,7 +876,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -903,7 +904,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -920,7 +921,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										name={['specific', isoCode, 'vN_AffCodes']}
 										label={t('Label_AffiliateCode')}
 									>
-										<Input disabled={!active} />
+										<Input disabled={!isActiveAndEditable} />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -946,7 +947,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -968,7 +969,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -993,7 +994,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											},
 										]}
 									>
-										<Input disabled={!active} />
+										<Input disabled={!isActiveAndEditable} />
 									</Form.Item>
 								</Col>
 							</Row>
@@ -1008,7 +1009,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											type='number'
 											controls={false}
 											style={{ width: '100%' }}
-											disabled={!active}
+											disabled={!isActiveAndEditable}
 										/>
 									</Form.Item>
 								</Col>
@@ -1079,7 +1080,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										type='primary'
 										icon={<EditOutlined />}
 										onClick={onSetGroupBonusClick}
-										disabled={!active}
+										disabled={!isActiveAndEditable}
 									>
 										{t('Label_SetAmountGroup')}
 									</Button>
