@@ -27,6 +27,7 @@ import {
 } from 'features/bonusManagement/constants'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
 import { SearchOutlined } from '@ant-design/icons'
+import { filterOptionByChildren } from 'common/utils'
 
 interface IBonusManagementFilterProps {
 	loading: boolean
@@ -74,6 +75,7 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 				<MultipleSelect
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
+					filterOption={filterOptionByChildren}
 				>
 					{(currencyListBySite?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
@@ -109,6 +111,7 @@ const BonusManagementFilter: FC<IBonusManagementFilterProps> = ({
 				<MultipleSelect
 					onChange={onChangePromotionType}
 					placeholder={t('Label_Select')}
+					filterOption={filterOptionByChildren}
 				>
 					{(promotionList?.length as number) > 1 && (
 						<Option value='all'>{t('Label_SelectAll')}</Option>
