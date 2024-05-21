@@ -43,6 +43,7 @@ export type IWinLossBasicData = {
 	withDrawCount?: number
 	totalWithDrawAmount?: number
 	totalBonus?: number
+	netCash?: number
 	key?: number
 }
 

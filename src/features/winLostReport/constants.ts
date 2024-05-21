@@ -71,4 +71,5 @@ export const i18nKeyInfo: { [i18nKey: string]: string } = {
 	WithDrawCount: 'Label_WithdrawalCount',
 	TotalWithDrawAmount: 'Label_TotalWithdrawalAmount',
 	TotalBonus: 'Label_TotalBonus',
+	NetCash: 'Label_NetCash',
 }
