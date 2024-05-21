@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react'
 import { Button, Col, Form, Input, Row, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, EyeOutlined } from '@ant-design/icons'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { PromotionActionEnum } from 'features/bonusManagement/constants'
 import EditBannerImageUploader from './EditBannerImageUploader'
@@ -33,12 +33,13 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 	// * 當未勾選代表該 bonus 未顯示，bannerUrl、title description 改為非必填
 	const isDisplayDate = Form.useWatch('isDisplayDate', form)
 
+	const canEdit = !!editPermission?.canUse
+
 	return (
 		<Spin spinning={loading}>
 			<Form
 				form={form}
 				layout='vertical'
-				disabled={!editPermission?.canUse}
 				initialValues={{
 					details: {
 						[tabsKey]: {
@@ -83,7 +84,11 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							]}
 						>
 							{form && (
-								<EditBannerImageUploader form={form} tabsKey={tabsKey} />
+								<EditBannerImageUploader
+									disabled={!canEdit}
+									form={form}
+									tabsKey={tabsKey}
+								/>
 							)}
 						</Form.Item>
 					</Col>
@@ -100,7 +105,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 								},
 							]}
 						>
-							<Input allowClear />
+							<Input disabled={!canEdit} allowClear />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
@@ -116,7 +121,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 								},
 							]}
 						>
-							<Input allowClear />
+							<Input disabled={!canEdit} allowClear />
 						</Form.Item>
 					</Col>
 				</Row>
@@ -126,7 +131,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 						<Col>
 							<Button
 								loading={loading}
-								icon={<EditOutlined />}
+								icon={canEdit ? <EditOutlined /> : <EyeOutlined />}
 								type='primary'
 								onClick={() => {
 									onEditDetailClick()
@@ -136,7 +141,11 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 									}
 								}}
 							>
-								{t('Label_EditFrontendDetail')}
+								{t(
+									canEdit
+										? 'Label_EditFrontendDetail'
+										: 'Label_ViewFrontendDetail'
+								)}
 							</Button>
 						</Col>
 					</Row>

@@ -11,11 +11,13 @@ import { useUploadBonusImageMutation } from '../api'
 interface EditBannerImageUploaderArgs {
 	form: FormInstance
 	tabsKey: string
+	disabled?: boolean
 }
 
 const EditBannerImageUploader = ({
 	form,
 	tabsKey,
+	disabled,
 }: EditBannerImageUploaderArgs) => {
 	const [fileList, setFileList] = useState<UploadFile[]>([])
 	const [uploadBonusImage, { isLoading }] = useUploadBonusImageMutation()
@@ -70,7 +72,7 @@ const EditBannerImageUploader = ({
 					onRemove={() => true}
 					showUploadList={false}
 				>
-					<Button icon={<UploadOutlined />}>
+					<Button disabled={disabled} icon={<UploadOutlined />}>
 						{t('Label_Upload', { key: t('Label_File') })}
 					</Button>
 				</Upload>

@@ -14,7 +14,7 @@ const EditDetailModal: FC<IEditDetailModalProps> = ({
 	onFinish,
 	infoTabsKey,
 }) => {
-	const { form } = useContext(EditBonusContext)
+	const { form, editPermission } = useContext(EditBonusContext)
 	const [defaultState, setDefaultState] = useState('')
 	const onHtmlStateChange = (newHtml: string) => {
 		form?.setFieldsValue({
@@ -45,6 +45,7 @@ const EditDetailModal: FC<IEditDetailModalProps> = ({
 							defaultHtmlState={defaultState}
 							onHtmlStateChange={onHtmlStateChange}
 							darkMode
+							disabled={!editPermission?.canUse}
 						/>
 					</Form.Item>
 				</Row>
