@@ -14,7 +14,7 @@ export const userSettingsApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getUserAdminListByUserName: builder.query<
 			IAxiosResponse<UserAdminState[]>,
-			{ userName: string; siteId?: number }
+			{ userName: string; siteId?: number; status: boolean }
 		>({
 			query: data => ({
 				url: `Permission/GetAdminUserList`,

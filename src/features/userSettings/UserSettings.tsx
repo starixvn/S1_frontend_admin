@@ -57,11 +57,10 @@ const UserSettings: FC<{
 		useSetAdminUserPasswordMutation()
 
 	const handleSearch = async () => {
-		const { userName = '' } = form.getFieldsValue()
+		const { userName = '', status } = form.getFieldsValue()
 
 		try {
-			await getUserAdminListByUserName({ userName, siteId }).unwrap()
-
+			await getUserAdminListByUserName({ userName, siteId, status }).unwrap()
 			setQueryParams({
 				userName,
 			})
