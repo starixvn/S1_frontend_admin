@@ -392,11 +392,7 @@ const SlotGameCategory: FC<{
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) {
-				filterForm.setFieldsValue({
-					tpId: 0,
-				})
-			} else {
+			if (!isEmpty(queryParams)) {
 				const {
 					tpId = 0,
 					name = '',
