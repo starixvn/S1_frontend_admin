@@ -186,6 +186,7 @@ export interface IGetRegisterMemberArgs {
 	areaCode: string
 	phoneNo: string
 	affCode: string
+	realName: string
 }
 
 export interface IAddForm {
@@ -197,4 +198,5 @@ export interface IAddForm {
 	areaCode: string
 	phoneNo: string
 	affCode: string
+	realName: string
 }
