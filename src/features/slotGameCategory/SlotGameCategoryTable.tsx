@@ -261,18 +261,19 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 								</Select>
 							</Form.Item>
 						</Col>
-						<Col style={{ marginBottom: '12px', marginLeft: '6px' }}>
+						<Col
+							style={{
+								top: '50%',
+								transform: 'translateY(-50%)',
+								marginLeft: '30px',
+							}}
+						>
 							{current * pageSize > total ? total : current * pageSize} /{' '}
-							{total}
+							{total} Row
 						</Col>
 					</Row>
 				</Spin>
 			</Form>
-			{/* <Row align='middle'>
-				<Col span={4}>
-					{current * pageSize > total ? total : current * pageSize} / {total}
-				</Col>
-			</Row> */}
 
 			<Table
 				columns={mergedColumn}
