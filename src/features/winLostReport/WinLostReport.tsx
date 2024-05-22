@@ -796,6 +796,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
 				setIsSort={setIsSort}
+				exportExcelPermission={exportExcelPermission}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
 				onDownload={handleDownload}

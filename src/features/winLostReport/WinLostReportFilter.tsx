@@ -30,6 +30,7 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { RangePickerProps } from 'antd/es/date-picker'
 import { reject } from 'lodash'
+import { PermissionInterface } from 'type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { IGetCategoryData } from 'features/betList/type'
@@ -50,6 +51,7 @@ interface IWinLostReportFilterProps {
 	currencyIdsBySiteIds: Currency[]
 	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
+	exportExcelPermission?: PermissionInterface
 	selectDate: any
 	setSelectDate: (date: any) => void
 	setIsSort: (value: boolean) => void
@@ -77,6 +79,7 @@ const WinLostReportFilter = ({
 	currencyIdsBySiteIds,
 	userSiteList,
 	timeZoneUtcOffset,
+	exportExcelPermission,
 	selectDate,
 	setSelectDate,
 	setIsSort,
@@ -537,6 +540,7 @@ const WinLostReportFilter = ({
 										icon={<DownloadOutlined />}
 										type='primary'
 										onClick={onDownload}
+										disabled={!exportExcelPermission?.canUse}
 									>
 										{t('Label_DownloadStatus')}
 									</Button>
