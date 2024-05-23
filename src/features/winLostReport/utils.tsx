@@ -10,21 +10,23 @@ import { i18nKeyInfo, OrderEnum } from 'features/winLostReport/constants'
 
 // S2C
 export const winLossReportConverter = (
-	winLossReport: IWinLossTableData[] | any[]
+	winLossReport: IWinLossTableData[] | any[],
+	haveDetail: boolean
 ): IWinLossTableData[] => {
 	if (!winLossReport || winLossReport.length === 0) {
 		return []
 	}
 	const cloneWinLossReport = cloneDeep(winLossReport)
-	cloneWinLossReport.forEach(item => {
-		const { displayKey, children } = item
+
+	cloneWinLossReport.forEach((item, key) => {
+		const { displayKey, sabaId, children } = item
 		Object.assign(item, {
-			key: uuidV4(),
+			key: !haveDetail ? uuidV4() : `${key}${displayKey}${sabaId}`,
 		})
 		if (displayKey === 'total') {
 			delete item.children
 		} else {
-			children?.forEach((childItem: any) => {
+			children?.forEach((childItem: any, childKey: number) => {
 				const { data, displayKey: childDisplayKey } = childItem
 				const cloneItem = cloneDeep(item)
 				const cloneChildItem = cloneDeep(data)
@@ -39,10 +41,19 @@ export const winLossReportConverter = (
 				) {
 					delete item.children
 				} else {
-					Object.assign(childItem, {
-						...data,
-						key: uuidV4(),
-					})
+					Object.assign(
+						childItem,
+						!haveDetail
+							? {
+									...data,
+									key: uuidV4(),
+							  }
+							: {
+									...data,
+									key: `${key}${childKey}${data.userName}`,
+									children: [],
+							  }
+					)
 					delete childItem.data
 				}
 			})
