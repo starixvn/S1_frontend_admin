@@ -12,6 +12,9 @@ interface IWinLostReportTableProps {
 	loading: boolean
 	pagination: PaginationInterface
 	tableList: object[]
+	expandList: Array<string | number>
+	setExpandList: React.Dispatch<React.SetStateAction<any>>
+	onExpand: (expanded: boolean, record: object) => void
 	onTableChange: (
 		newPagination: TablePaginationConfig,
 		_: any,
@@ -23,6 +26,9 @@ const WinLostReportTable = ({
 	loading,
 	pagination,
 	tableList,
+	expandList,
+	setExpandList,
+	onExpand,
 	onTableChange,
 }: IWinLostReportTableProps) => {
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
@@ -48,6 +54,14 @@ const WinLostReportTable = ({
 						/>
 					</Space>
 				)}
+				expandable={{
+					onExpand: (expanded, record) => onExpand(expanded, record),
+					defaultExpandedRowKeys: [],
+					expandedRowKeys: expandList,
+					onExpandedRowsChange: expandedKeys => {
+						setExpandList(expandedKeys)
+					},
+				}}
 			/>
 		</LayoutContent.Card>
 	)
