@@ -18,6 +18,7 @@ import {
 	useLazyGetWinLossByDateQuery,
 	useLazyGetWinLossByMonthQuery,
 	useLazyGetWinLossByPlayerQuery,
+	useLazyGetWinLossByPlayerDetailQuery,
 	useLazyGetWinLossByTpCategoryTypeQuery,
 	useLazyGetWinLossByTpGameTypeQuery,
 } from 'features/winLostReport/api'
@@ -44,7 +45,7 @@ import {
 	selectUserSiteList,
 } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import { isArray, isEmpty, reject } from 'lodash'
+import { cloneDeep, isArray, isEmpty, reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
@@ -65,6 +66,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const userSiteList = useAppSelector(selectUserSiteList)
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [tableList, setTableList] = useState<IWinLossTableData[]>([])
+	const [expandList, setExpandList] = useState<Array<string | number>>([])
 	const [selectDate, setSelectDate] = useState(null)
 	const [isSort, setIsSort] = useState(false)
 
@@ -101,6 +103,11 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			data: { rowCount: byPlayerPaginationTotal = 0 } = {},
 		},
 	] = useLazyGetWinLossByPlayerQuery()
+
+	const [
+		getWinLossByPlayerDetail,
+		{ isFetching: isGetWinLossByPlayerDetailFetching },
+	] = useLazyGetWinLossByPlayerDetailQuery()
 
 	const [getWinLossByCurrency, { isFetching: isGetWinLossByCurrencyFetching }] =
 		useLazyGetWinLossByCurrencyQuery()
@@ -338,8 +345,12 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 		try {
 			const res = await searchSelector(groupBy)
-			const list = winLossReportConverter(res ?? [])
+			const list = winLossReportConverter(
+				res ?? [],
+				GroupByEnum.Player === groupBy
+			)
 			setTableList(list)
+			setExpandList([])
 			setQueryParams({
 				...args,
 				timeZone: currentTimeZoneUtcOffset,
@@ -577,6 +588,79 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		exportSelector()
 	}
 
+	const expandDetailHandler = async (expanded: boolean, record: any) => {
+		if (record.children.length === 0) {
+			const {
+				siteIds: querySiteIds,
+				starTime,
+				endTime,
+				tpCategorys = [],
+				tpGameTypes = [],
+				currencyIds = [],
+				orderBy,
+				orderByProperty,
+				orderByDirection,
+				dateType,
+				displayGroupBreakdownInOriginalCurrency,
+				includeFreeSpins,
+				includeTest,
+				noDraw,
+				memberTypes = [],
+				baseCurrencyId,
+				groupBy,
+			} = queryParams
+			try {
+				const args = {
+					siteIds: querySiteIds?.map((value: string) => Number(value)) ?? [],
+					starTime,
+					endTime,
+					tpCategorys: tpCategorys.map((tpCategory: string) =>
+						Number(tpCategory)
+					),
+					tpGameTypes: tpGameTypes.map((tpGameType: string) =>
+						Number(tpGameType)
+					),
+					currencyIds: currencyIds.map((currency: string) => Number(currency)),
+					userName: record?.userName ?? '',
+					orderBy: Boolean(orderBy),
+					orderByProperty: orderByProperty ?? '',
+					orderByDirection: Number(orderByDirection ?? 0),
+					dateType: Number(dateType),
+					displayGroupBreakdownInOriginalCurrency: Boolean(
+						displayGroupBreakdownInOriginalCurrency
+					),
+					includeFreeSpins: Boolean(includeFreeSpins),
+					includeTest: Boolean(includeTest),
+					noDraw: Boolean(noDraw),
+					baseCurrencyId: Number(baseCurrencyId),
+					memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
+					custId: record.custId,
+				}
+
+				const { data: { data: detailList = [] } = {} } =
+					await getWinLossByPlayerDetail(args)
+				const list = winLossReportConverter(
+					detailList,
+					GroupByEnum.Player === Number(groupBy)
+				)
+
+				const cloneTableList = cloneDeep(tableList)
+				cloneTableList?.forEach(({ children }: any) => {
+					children?.forEach(({ key, children: subChildren }: any) => {
+						if (key === record.key) {
+							subChildren.push(...list)
+						}
+					})
+				})
+				setTableList(cloneTableList)
+			} catch (error) {
+				message.error(
+					(error as Error)?.message || t('System.Label_NotExpectedServerError')
+				)
+			}
+		}
+	}
+
 	const filterLoading =
 		isMemberTypeEnumsLoading || isGetTpGameListLoading || isGetCategoryFetching
 
@@ -679,6 +763,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWinLossByTpGameTypeFetching ||
 		isGetWinLossByTpCategoryTypeFetching ||
 		isGetWinLossByPlayerFetching ||
+		isGetWinLossByPlayerDetailFetching ||
 		isGetWinLossByCurrencyFetching ||
 		isGetWinLossByBrandFetching ||
 		isGetWinLossByAffiliateFetching ||
@@ -709,6 +794,9 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					loading={loading}
 					pagination={pagination}
 					tableList={tableList}
+					expandList={expandList}
+					setExpandList={setExpandList}
+					onExpand={expandDetailHandler}
 					onTableChange={handleTableChange}
 				/>
 			)}
