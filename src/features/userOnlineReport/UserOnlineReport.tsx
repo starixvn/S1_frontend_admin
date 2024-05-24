@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Form, message } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
@@ -47,7 +47,7 @@ const UserOnlineReport = ({ pageTitle }: { pageTitle?: string }) => {
 		currentTimeZone?: number
 	}) => {
 		const { date } = filterForm.getFieldsValue()
-		const formatDate = moment(date).format('YYYY-MM-DD')
+		const formatDate = dayjs(date).format('YYYY-MM-DD')
 
 		if (!siteId) return
 		try {
@@ -81,7 +81,7 @@ const UserOnlineReport = ({ pageTitle }: { pageTitle?: string }) => {
 				timeZone,
 			}
 			const blob = await exportUserOnlineReport(args).unwrap()
-			download(blob, `UserOnlineReport_${moment().format('YYYYMMDD')}.xlsx`)
+			download(blob, `UserOnlineReport_${dayjs().format('YYYYMMDD')}.xlsx`)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -95,7 +95,7 @@ const UserOnlineReport = ({ pageTitle }: { pageTitle?: string }) => {
 				const { selectDate, timeZone } = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					date: moment(selectDate),
+					date: dayjs(selectDate),
 				})
 				handleSearch({ currentTimeZone: Number(timeZone) })
 			}

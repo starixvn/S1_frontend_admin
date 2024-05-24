@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
@@ -134,7 +134,7 @@ const CupEventMemberReport: FC<{
 			}).unwrap()
 			download(
 				blob,
-				`ExportCupEventMemberReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportCupEventMemberReport${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -161,7 +161,7 @@ const CupEventMemberReport: FC<{
 			onTimeZoneChange(Number(timeZone))
 
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				userName,
 				currencyId: Number(currencyId),
 				ticketType: Number(ticketType),

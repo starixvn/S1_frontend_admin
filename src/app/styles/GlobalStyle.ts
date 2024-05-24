@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import 'antd/dist/antd.css'
+import 'antd/dist/reset.css'
 
 const GlobalStyle = createGlobalStyle`
   
@@ -64,6 +64,22 @@ const GlobalStyle = createGlobalStyle`
     }
   .ant-table-column-sorters{
     word-break: break-word;
+  }
+
+  // 日期輸入框旁的時區選單的左側圓角改為方角
+  .ant-picker + * .ant-select-selector {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  // antd@5 的預設為 word-break: break-word 會導致現行表格內的文字被擠壓
+  .ant-typography {
+    word-break: normal;
+  }
+
+  // 使用等距數字 (同 antd@4 樣式) 
+  body {
+    font-feature-settings: 'tnum';
   }
 `
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, message } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
@@ -71,7 +71,7 @@ const BigWinPopUpReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`exportBigWinReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`exportBigWinReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -84,7 +84,7 @@ const BigWinPopUpReport = ({ pageTitle }: { pageTitle?: string }) => {
 		const init = async () => {
 			const { startDate, endDate, currencyId } = queryParams
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyId:
 					currencyId?.map((strCurrencyId: string) => Number(strCurrencyId)) ??
 					[],

@@ -7,7 +7,7 @@ import {
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { timeFormat } from 'common/utils/format'
@@ -166,7 +166,7 @@ const ExternalDomainTable = ({
 				render: (lastUpdateTime: string) => (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5x' }}>
 						{lastUpdateTime
-							? moment(lastUpdateTime)
+							? dayjs(lastUpdateTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)
 							: '-'}

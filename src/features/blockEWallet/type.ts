@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetBlockEWalletAccArgs {
 	accountNum: string
@@ -43,7 +43,7 @@ export interface IBlockEWalletData {
 export type IBlockEWalletResponse = IAxiosResponse<IBlockEWalletData[]>
 
 export interface IBlockEWalletForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	blockStatus: number
 	accountNum: string

@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetAnnouncementListArgs {
@@ -78,13 +78,13 @@ export type IAnnouncementByIdResponse = IAxiosResponse<IAnnouncementByIdData>
 
 export interface IFilterForm {
 	siteId: number
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	status: string
 }
 
 export interface IEditForm {
 	id: number | 'Add'
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	siteId: number
 	subject: any
 	content: any

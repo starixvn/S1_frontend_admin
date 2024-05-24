@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Space, Table, TablePaginationConfig, Tag, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -215,7 +215,7 @@ const BonusReportTable = ({
 			align: 'center' as 'center',
 			render: (expiryTime: string) =>
 				expiryTime
-					? moment(expiryTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(expiryTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -225,7 +225,7 @@ const BonusReportTable = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

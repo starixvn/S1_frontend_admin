@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
 import {
@@ -189,7 +189,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 
 			download(
 				blob,
-				`ExportBonusReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportBonusReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -255,7 +255,7 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 				userName,
 				transId,
 				bonusCode,
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				atPages: atPages?.map((values: string) => Number(values)) ?? [],
 			})
 			handleSearch({

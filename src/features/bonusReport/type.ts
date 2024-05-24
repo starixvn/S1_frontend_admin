@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetBonusReportDataListArgs {
 	siteIds?: number[]
@@ -94,6 +94,6 @@ export interface IFilterForm {
 	userName: string
 	transId: string
 	bonusCode: string
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	atPages: number[]
 }

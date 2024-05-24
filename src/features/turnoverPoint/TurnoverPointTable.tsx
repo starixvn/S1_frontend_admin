@@ -9,7 +9,7 @@ import { trimEnd, concat } from 'lodash'
 import { ColumnsType } from 'antd/lib/table'
 import { EditFilled } from '@ant-design/icons'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useQueryParams } from 'common/hooks'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
@@ -122,7 +122,7 @@ const TurnoverPointTable: FC<TurnoverPointTableInterface> = ({
 						item => item.tpCategoryId === categoryItem.categoryId
 					)
 					const currentPoint = () => {
-						const getTime = (time: string) => moment(time).format('YYYY/MM/DD')
+						const getTime = (time: string) => dayjs(time).format('YYYY/MM/DD')
 						if (currentCategory) {
 							const {
 								promotionStatus,

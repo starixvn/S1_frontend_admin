@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { find, isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { selectUserSiteList } from 'common/enum'
@@ -262,7 +262,7 @@ const Announcement = ({ pageTitle }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				siteId: Number(siteId),
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				status,
 			})
 

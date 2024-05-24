@@ -1,6 +1,6 @@
 import { rootApi } from 'common/service/rootApi/api'
 import { assign } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	IDepositPointSettingResponse,
 	ISetDepositPointSettingArgs,
@@ -21,8 +21,8 @@ export const depositPointApi = rootApi.injectEndpoints({
 				const newData = returnResponse.data.map(item => ({
 					...item,
 					promotionDateRange: [
-						moment(item.promotionStartTime),
-						moment(item.promotionEndTime),
+						dayjs(item.promotionStartTime),
+						dayjs(item.promotionEndTime),
 					],
 				}))
 

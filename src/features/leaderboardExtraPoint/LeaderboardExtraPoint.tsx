@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -153,7 +153,7 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportLeaderboardExtraPoint(args).unwrap()
 			download(
 				blob,
-				`LeaderboardExtraPoint_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`LeaderboardExtraPoint_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -226,7 +226,7 @@ const LeaderboardExtraPoint = ({ pageTitle }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				categoryIds: categoryIds.map((category: string) => Number(category)),
 			})

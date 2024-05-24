@@ -1,5 +1,10 @@
 import { utcFormatter } from 'common/utils'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
 
 /**
  * 根據 `settledDate` 的 `起始時間`與 `結束時間` 比對 指定的 `dateRange` 來取得正確時間
@@ -14,20 +19,20 @@ const getInRangeDate = ({
 	timeZoneUtcOffset: number
 }) => {
 	const targetStartDate = utcFormatter({
-		date: moment(targetDate).startOf('day'),
+		date: dayjs(targetDate).startOf('day'),
 		utcOffset: timeZoneUtcOffset,
 	})
 
 	const targetEndDate = utcFormatter({
-		date: moment(targetDate).endOf('day'),
+		date: dayjs(targetDate).endOf('day'),
 		utcOffset: timeZoneUtcOffset,
 	})
 
-	const startDate = moment(targetStartDate).isSameOrAfter(dateRange[0])
+	const startDate = dayjs(targetStartDate).isSameOrAfter(dateRange[0])
 		? targetStartDate
 		: dateRange[0]
 
-	const endDate = moment(targetEndDate).isSameOrBefore(dateRange[1])
+	const endDate = dayjs(targetEndDate).isSameOrBefore(dateRange[1])
 		? targetEndDate
 		: dateRange[1]
 

@@ -15,7 +15,7 @@ import DepositTable from 'features/memberProfile/pages/finance/depositInfo/Depos
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { head } from 'lodash'
 import { PAGINATION, usePagination } from 'common/hooks'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits } from 'common/utils/format'
 
 const DepositInfo = () => {
@@ -25,7 +25,7 @@ const DepositInfo = () => {
 	const [isShowTotalApprove, setIsShowTotalApprove] = useState(false)
 	const [filterForm] = Form.useForm<{
 		status: number
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	}>()
 
 	const [

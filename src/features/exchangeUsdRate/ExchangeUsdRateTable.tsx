@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Form, FormInstance, Space, Typography } from 'antd'
 import { PermissionInterface } from 'type'
 import { EditableCellRows, Table } from 'components'
@@ -130,7 +130,7 @@ const ExchangeUsdRateTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty, isNumber } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -262,7 +262,7 @@ const ProductMaintenance = ({ pageTitle }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				tpId: Number(tpId),
 				tpGameTypeId: Number(tpGameTypeId),
 				tpCategoryId: Number(tpCategoryId),

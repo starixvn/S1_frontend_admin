@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Form, List, message, Modal, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find, isEmpty } from 'lodash'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTranslation } from 'react-i18next'
@@ -313,7 +313,7 @@ const BlockEWallet: FC<{
 					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				eWalletIds:
 					eWalletIds?.map((eWalletId: string) => Number(eWalletId)) ?? [],
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 			})
 
 			handleSearch({

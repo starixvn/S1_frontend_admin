@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
 import { Table } from 'components'
@@ -72,7 +72,7 @@ const BonusAmountClaimedDetailTable = ({
 			render: (registeredDate: string) =>
 				registeredDate ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(registeredDate).utcOffset(timezone).format(timeFormat)}
+						{dayjs(registeredDate).utcOffset(timezone).format(timeFormat)}
 					</Text>
 				) : (
 					'-'

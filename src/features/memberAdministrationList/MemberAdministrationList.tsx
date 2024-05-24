@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { dateRangeToUtcFormatter } from 'common/utils'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -242,7 +242,7 @@ const MemberAdministrationList = ({
 
 		try {
 			const blob = await exportMember(args).unwrap()
-			download(blob, `MemberProfile_${moment().format('YYYYMMDDHHmmss')}.xlsx`)
+			download(blob, `MemberProfile_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -327,7 +327,7 @@ const MemberAdministrationList = ({
 			}
 
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: isArray(currencyIds)
 					? currencyIds.map(currencyId => Number(currencyId))
 					: [],

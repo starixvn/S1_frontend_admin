@@ -1,7 +1,7 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetBankListData } from 'features/memberProfile/type'
@@ -178,7 +178,7 @@ const BankListTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -193,7 +193,7 @@ const BankListTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

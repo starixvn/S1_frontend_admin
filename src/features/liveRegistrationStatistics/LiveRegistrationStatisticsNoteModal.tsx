@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FC, useEffect, useState } from 'react'
 import {
 	Button,
@@ -189,7 +189,7 @@ const LiveRegistrationStatisticsNoteModal: FC<{
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneLocalOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneLocalOffset).format(timeFormat)
 					: '',
 		},
 	]

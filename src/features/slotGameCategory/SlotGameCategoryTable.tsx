@@ -13,7 +13,7 @@ import {
 	Spin,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import {
 	ITableColumnsInfo,
@@ -214,7 +214,7 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

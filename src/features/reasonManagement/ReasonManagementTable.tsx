@@ -11,7 +11,7 @@ import { PaginationInterface } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { IGetReasonListData } from 'features/reasonManagement/type'
 import { PermissionInterface } from 'type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { LayoutContent } from 'app/pages/layout'
 
@@ -107,7 +107,7 @@ const ReasonManagementTable = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

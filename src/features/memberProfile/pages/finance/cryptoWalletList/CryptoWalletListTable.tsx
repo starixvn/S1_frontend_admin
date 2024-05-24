@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Space, Typography, Popconfirm, TablePaginationConfig } from 'antd'
@@ -147,7 +147,7 @@ const CryptoWalletListTable = ({
 			render: (createTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -161,7 +161,7 @@ const CryptoWalletListTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

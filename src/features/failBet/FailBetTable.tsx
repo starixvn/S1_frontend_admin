@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import { isJSON } from 'common/utils'
 import { timeFormat } from 'common/utils/format'
@@ -49,7 +49,7 @@ const FailBetTable = ({
 			align: 'center' as 'center',
 			render: (transTime: string) =>
 				transTime
-					? moment(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

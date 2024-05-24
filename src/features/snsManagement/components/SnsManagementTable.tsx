@@ -11,7 +11,7 @@ import {
 import { FormInstance, Space, Switch, Typography, Form } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { ISNSData } from 'features/snsManagement/type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { ColumnsType } from 'antd/es/table'
 import { SortEnd } from 'react-sortable-hoc'
@@ -278,7 +278,7 @@ const SnsManagementTable: FC<ISnsManagementTableProps> = ({
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{moment(lastUpdateTime)
+						{dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

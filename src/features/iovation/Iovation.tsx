@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useEffect } from 'react'
 import { isEmpty } from 'lodash'
@@ -131,7 +131,7 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportIovationReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportIovationReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -180,7 +180,7 @@ const Iovation = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				currencyId: Number(currencyId),
 				deviceType: Number(deviceType),
 				userName,

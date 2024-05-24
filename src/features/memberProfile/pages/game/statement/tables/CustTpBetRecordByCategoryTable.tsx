@@ -7,7 +7,7 @@ import {
 	Table as AntdTable,
 	TablePaginationConfig,
 } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { dateFormat, numFormatToDigits } from 'common/utils/format'
 import { isPositiveNum, sumTotalObject } from 'common/utils'
 
@@ -38,7 +38,7 @@ const CustTpBetRecordByCategoryTable = ({
 				settledDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{/* settledDate 經過討論不需要額外做 timezone 的處理 */}
-						{moment(settledDate).format(dateFormat)}
+						{dayjs(settledDate).format(dateFormat)}
 					</Typography.Text>
 				) : (
 					''

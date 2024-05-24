@@ -29,7 +29,7 @@ import { IFilterForm } from 'features/withdrawalOperator/type'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { WithdrawalOperatorTable } from 'features/withdrawalOperator/WithdrawalOperatorTable'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { WithdrawalOperatorOverviewTable } from 'features/withdrawalOperator/WithdrawalOperatorOverviewTable'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 import { DateTypeEnum } from 'features/withdrawalOperator/constants'
@@ -49,7 +49,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const formCurrencyIds = Form.useWatch('currencyIds', filterForm)
 
 	const isMoreThanThreeDays =
-		moment(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
+		dayjs(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
 
 	const [
 		getWithdrawalList,
@@ -236,7 +236,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`WithdrawalOperatorReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`WithdrawalOperatorReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -294,7 +294,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				isAllSite,
 				withdrawalId,
 				agent,
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				startAmount: startAmount || null,
 				endAmount: endAmount || null,
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),

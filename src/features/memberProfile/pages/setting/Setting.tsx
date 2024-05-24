@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { useAuth, useModal } from 'common/hooks'
 import { useParams } from 'react-router-dom'
@@ -363,9 +363,9 @@ const Setting = () => {
 					case SettingEditTypeEnum.Birthday: {
 						const payload = {
 							custId,
-							birthYear: moment(birthDay).get('year'),
-							birthMonth: moment(birthDay).get('month') + 1,
-							birthDate: moment(birthDay).get('date'),
+							birthYear: dayjs(birthDay).get('year'),
+							birthMonth: dayjs(birthDay).get('month') + 1,
+							birthDate: dayjs(birthDay).get('date'),
 						}
 						await editBirthday(payload).unwrap()
 						break
@@ -544,13 +544,13 @@ const Setting = () => {
 			const isBirthday =
 				Number(birthYear) && Number(birthMonth) && Number(birthDate)
 			const birthDay = isBirthday
-				? moment()
+				? dayjs()
 						.set('year', Number(birthYear))
 						// * gets or sets the month accepts numbers from 0 to 11
 						// * birthMonth return numbers from 1 to 12,
 						.set('month', Number(birthMonth) - 1)
 						.set('date', Number(birthDate))
-				: moment()
+				: dayjs()
 
 			const [
 				line2 = '',

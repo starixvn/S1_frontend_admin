@@ -71,7 +71,7 @@ import {
 } from 'common/service/baseDataApi'
 import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRequest/components/AssociateBankModal'
 import { useSendReasonMessageHook } from 'features/withdrawalOperator/withdrawalRequest/hooks/useSendReasonMessageHook'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { AdjustmentLimitLogModal } from 'features/withdrawalOperator/withdrawalRequest/components/AdjustmentLimitLogModal'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { useGetWithdrawalAdjustmentReasonListQuery } from 'features/withdrawalAdjustment/api'
@@ -282,11 +282,11 @@ const WithdrawalRequest = () => {
 	} = useGetAdjustmentLimitLogQuery(
 		{
 			startDate: utcFormatter({
-				date: moment().subtract(7, 'day').startOf('day'),
+				date: dayjs().subtract(7, 'day').startOf('day'),
 				utcOffset: timeZoneUtcOffset,
 			}),
 			endDate: utcFormatter({
-				date: moment().endOf('day'),
+				date: dayjs().endOf('day'),
 				utcOffset: timeZoneUtcOffset,
 			}),
 			custId: Number(custId),

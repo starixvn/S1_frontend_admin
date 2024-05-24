@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { find } from 'lodash'
 import { IGetRedemptionLogData } from '../../type'
@@ -28,7 +28,7 @@ const RedemptionLogTable: FC<IRedemptionLogTable> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

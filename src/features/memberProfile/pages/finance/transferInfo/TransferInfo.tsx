@@ -11,14 +11,14 @@ import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { PAGINATION, usePagination } from 'common/hooks'
 import { TransferFilter } from 'features/memberProfile/pages/finance/transferInfo/TransferFilter'
 import TransferTable from 'features/memberProfile/pages/finance/transferInfo/TransferTable'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const TransferInfo = () => {
 	const { t } = useTranslation()
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [filterForm] = Form.useForm<{
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	}>()
 
 	const [

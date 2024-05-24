@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetLeaderboardReportArgs {
 	siteIds: number[]
@@ -32,7 +32,7 @@ export interface ILeaderBoardCategoryEnumData {
 }
 
 export interface IFilterForm {
-	monthRange: Moment
+	monthRange: Dayjs
 	siteId: number
 	currencyId: number
 	categoryId: number

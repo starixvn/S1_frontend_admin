@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment'
+import dayjs, { Dayjs } from 'dayjs'
 import { FC, useEffect } from 'react'
 import { Form, message, Modal, Space, Typography } from 'antd'
 import { isNaN } from 'lodash'
@@ -67,7 +67,7 @@ const TransferAccountManagementModal: FC<
 			const response = await setBankTransferAccount({
 				id: Number(editId),
 				initialTime: utcFormatter({
-					date: initialTime as Moment,
+					date: initialTime as Dayjs,
 					utcOffset: timeZoneUtcOffset,
 				}),
 				siteId: recordSiteId || siteId,
@@ -86,7 +86,7 @@ const TransferAccountManagementModal: FC<
 		const { reason, payId, initialTime, ...rest } = bankTransferAccount
 		form.setFieldsValue({
 			...rest,
-			initialTime: moment(initialTime),
+			initialTime: dayjs(initialTime),
 			reason: reason === 0 ? undefined : reason,
 			payId: payId === 0 ? undefined : payId,
 		})

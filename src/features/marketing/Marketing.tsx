@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { Form, message, Tabs } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
@@ -71,7 +71,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 		)
 		// 小於一天內不顯示 Statistic 的 CR RR
 		setIsInOneDay(false)
-		if (moment(endDate).diff(moment(startDate), 'days') === 0) {
+		if (dayjs(endDate).diff(dayjs(startDate), 'days') === 0) {
 			setIsInOneDay(true)
 		}
 		const [comparedStartDate, comparedEndDate] = dateRangeToUtcFormatter(
@@ -123,7 +123,7 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`Business Performance Highlight_${moment().format(
+				`Business Performance Highlight_${dayjs().format(
 					'YYYYMMDDHHmmss'
 				)}.xlsx`
 			)
@@ -155,10 +155,10 @@ const Marketing = ({ pageTitle }: { pageTitle?: string }) => {
 			filterForm.setFieldsValue({
 				siteIds: siteIds.map((querySiteId: string) => Number(querySiteId)),
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				isCompared: Boolean(isCompared),
 				periodTime: Number(periodTime),
-				compareDateRange: [moment(comparedStartDate), moment(comparedEndDate)],
+				compareDateRange: [dayjs(comparedStartDate), dayjs(comparedEndDate)],
 				baseCurrencyId: Number(baseCurrencyId),
 			})
 

@@ -2,7 +2,7 @@ import { IWithdrawalCommentData } from 'features/withdrawalOperator/type'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { Form, Input, Typography } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { isEmpty } from 'lodash'
 
@@ -35,7 +35,7 @@ const WithdrawalRequestComment = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

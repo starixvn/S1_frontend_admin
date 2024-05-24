@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetFailRecordListArgs {
 	siteIds: number[]
@@ -34,7 +34,7 @@ export interface IFailRecordReportData {
 export interface IFilterForm {
 	currencyIds: number[]
 	tpIds: number[]
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	userName: string
 	transId: string
 }

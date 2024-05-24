@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table, TablePaginationConfig } from 'antd'
@@ -46,7 +46,7 @@ const ReferralCustReportTable: FC<IReferralCustReportTable> = ({
 			align: 'center' as 'center',
 			render: (registerDate: string) =>
 				registerDate
-					? moment(registerDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(registerDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -90,7 +90,7 @@ const ReferralCustReportTable: FC<IReferralCustReportTable> = ({
 			align: 'center' as 'center',
 			render: (rewardTime: string) =>
 				rewardTime
-					? moment(rewardTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(rewardTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

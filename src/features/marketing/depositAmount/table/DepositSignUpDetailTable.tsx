@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import type { ColumnsType } from 'antd/es/table'
 import { SorterResult } from 'antd/es/table/interface'
@@ -64,7 +64,7 @@ const DepositSignUpDetailTable = ({
 			render: (registeredDate: string) =>
 				registeredDate ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(registeredDate).utcOffset(timezone).format(timeFormat)}
+						{dayjs(registeredDate).utcOffset(timezone).format(timeFormat)}
 					</Text>
 				) : (
 					'-'

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	Button,
 	Descriptions,
@@ -123,7 +123,7 @@ const SettingVipLevelModal = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]
@@ -163,7 +163,7 @@ const SettingVipLevelModal = ({
 						</Select>
 					</Descriptions.Item>
 					<Descriptions.Item label={t('Label_AuQualifiedTime')}>
-						{moment(qualifiedTime)
+						{dayjs(qualifiedTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Descriptions.Item>

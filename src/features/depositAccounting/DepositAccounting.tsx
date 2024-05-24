@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { isArray, isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { Form, message, TablePaginationConfig } from 'antd'
 import download from 'downloadjs'
@@ -167,7 +167,7 @@ const DepositAccounting: FC<{
 
 			download(
 				blob,
-				`ExportDepositAccounts_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportDepositAccounts_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -224,7 +224,7 @@ const DepositAccounting: FC<{
 			}
 
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: isArray(currencyIds)
 					? currencyIds.map((currencyId: string) => Number(currencyId))
 					: currencyListBySite?.map(item => item.currencyId),

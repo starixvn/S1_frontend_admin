@@ -6,7 +6,7 @@ import {
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { IGetVideoData, ITableForm } from 'features/videoManagement/type'
 import { PermissionInterface } from 'type'
@@ -146,7 +146,7 @@ const VideoManagementTable = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneLocalOffset)
 								.format(timeFormat)
 						: ''}

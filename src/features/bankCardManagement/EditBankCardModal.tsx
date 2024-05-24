@@ -111,7 +111,7 @@ const EditBankCardModal: FC<IEditBankCardModal> = ({
 				const formData = new FormData()
 				formData.append('File', file.originFileObj as RcFile)
 				await handleUploadQrCode(formData)
-				file.status = 'success'
+				file.status = 'done'
 				setFileList([file])
 			} catch (error) {
 				// 清空 list

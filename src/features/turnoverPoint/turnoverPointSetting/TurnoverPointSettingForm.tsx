@@ -10,12 +10,9 @@ import {
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { get } from 'lodash'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { IGetTurnoverPointSettingData } from '../type'
 
 interface TurnoverPointSettingFormInterface {
@@ -83,7 +80,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 						<Form.Item
 							noStyle
 							name={[tpCategoryName, 'promotionStatus']}
-							initialValue={MOMENT_DATE_RANGES.Today}
+							initialValue={DATE_RANGES.Today}
 						>
 							<Switch
 								onClick={checked =>
@@ -105,7 +102,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 						>
 							<RangePicker
 								disabled={!status}
-								ranges={MOMENT_RANGE_PICKER_RANGES([
+								ranges={RANGE_PICKER_RANGES([
 									'Today',
 									'Yesterday',
 									'Last Week',
@@ -173,7 +170,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 						pointRate,
 						promotionStatus,
 						promotionDateRange: promotionStatus
-							? [moment(promotionStartTime), moment(promotionEndTime)]
+							? [dayjs(promotionStartTime), dayjs(promotionEndTime)]
 							: [null, null],
 					},
 				})
