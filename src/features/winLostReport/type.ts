@@ -42,6 +42,7 @@ export type IWinLossBasicData = {
 	totalDepositAmount?: number
 	withDrawCount?: number
 	totalWithDrawAmount?: number
+	netCash?: number
 	totalBonus?: number
 	key?: number
 }
