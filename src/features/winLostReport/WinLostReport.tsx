@@ -4,6 +4,8 @@ import moment from 'moment/moment'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
+	useDownloadWinLossByDateMutation,
+	useDownloadWinLossByMonthMutation,
 	useExportWinLossByAffiliateMutation,
 	useExportWinLossByBrandMutation,
 	useExportWinLossByCurrencyMutation,
@@ -161,6 +163,12 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 	} = useGetEnumTypeQuery({
 		enumName: 'MemberTypeEnum',
 	})
+
+	const [downloadWinLossByDate, { isLoading: isDownloadWinLossByDate }] =
+		useDownloadWinLossByDateMutation()
+
+	const [downloadWinLossByMonth, { isLoading: isDownloadWinLossByMonth }] =
+		useDownloadWinLossByMonthMutation()
 
 	const getPaginationTotal = () => {
 		const { groupBy } = filterForm.getFieldsValue()
@@ -661,6 +669,90 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
+	const handleDownload = async () => {
+		const {
+			siteIds,
+			dateType,
+			dateRange,
+			currencyIds,
+			baseCurrencyId,
+			tpGameTypes,
+			userName,
+			includeFreeSpins,
+			noDraw,
+			displayGroupBreakdownInOriginalCurrency,
+			groupBy,
+			memberTypes,
+			includeTest,
+			tpCategorys = [],
+		} = filterForm.getFieldsValue()
+
+		const [starTime, endTime] = dateRangeToUtcFormatter(
+			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
+			timeZoneUtcOffset
+		)
+		const days = moment(endTime).diff(moment(starTime), 'days')
+		if (days > 90) {
+			message.error(t('Label_DateRangeExceedsThreeMonths'))
+			return
+		}
+
+		const args = {
+			siteIds,
+			starTime,
+			endTime,
+			tpCategorys: tpCategorys ?? [],
+			tpGameTypes: tpGameTypes ?? [],
+			currencyIds,
+			userName: userName ?? '',
+			orderBy: false,
+			orderByProperty: '',
+			orderByDirection: OrderEnum.ascend,
+			dateType,
+			displayGroupBreakdownInOriginalCurrency: Boolean(
+				displayGroupBreakdownInOriginalCurrency
+			),
+			includeFreeSpins: Boolean(includeFreeSpins),
+			includeTest: Boolean(includeTest),
+			noDraw: Boolean(noDraw),
+			baseCurrencyId,
+			memberTypes,
+		}
+		let blob
+		switch (Number(groupBy)) {
+			case GroupByEnum.Date:
+				try {
+					blob = await downloadWinLossByDate(args).unwrap()
+					download(
+						blob,
+						`WinLostReportByDate_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			case GroupByEnum.Month:
+				try {
+					blob = await downloadWinLossByMonth(args).unwrap()
+					download(
+						blob,
+						`WinLostReportByMonth_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+					)
+				} catch (error) {
+					message.error(
+						(error as Error)?.message ||
+							t('System.Label_NotExpectedServerError')
+					)
+				}
+				break
+			default:
+				break
+		}
+	}
+
 	const filterLoading =
 		isMemberTypeEnumsLoading || isGetTpGameListLoading || isGetCategoryFetching
 
@@ -755,6 +847,8 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 		isExportWinLossByBrandLoading ||
 		isExportWinLossByAffiliateLoading
 
+	const downloading = isDownloadWinLossByDate || isDownloadWinLossByMonth
+
 	const loading =
 		isGetTpGameListLoading ||
 		isGetCategoryFetching ||
@@ -776,6 +870,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			<WinLostReportFilter
 				form={filterForm}
 				loading={loading}
+				downloading={downloading}
 				tpGameList={tpGameList}
 				categories={categories}
 				memberTypeEnums={memberTypeEnums}
@@ -786,8 +881,10 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				selectDate={selectDate}
 				setSelectDate={setSelectDate}
 				setIsSort={setIsSort}
+				exportExcelPermission={exportExcelPermission}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
+				onDownload={handleDownload}
 			/>
 			{!isEmpty(queryParams) && tableList.length > 0 && (
 				<WinLostReportTable

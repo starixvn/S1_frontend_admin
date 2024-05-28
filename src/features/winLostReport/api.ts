@@ -48,6 +48,14 @@ export const winLostReportApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+		downloadWinLossByDate: builder.mutation<Blob, IGetWinLossByDateExportArgs>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByDateDownload',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 		getWinLossByMonth: builder.query<
 			IWinLossByMonthResponse,
 			IGetWinLossByMonthArgs
@@ -56,6 +64,14 @@ export const winLostReportApi = rootApi.injectEndpoints({
 				url: 'MpaWinLossReport/GetWinLossByMonth',
 				method: 'POST',
 				data,
+			}),
+		}),
+		downloadWinLossByMonth: builder.mutation<Blob, IGetWinLossByMonthArgs>({
+			query: data => ({
+				url: 'MpaWinLossReport/GetWinLossByMonthDownload',
+				method: 'POST',
+				data,
+				responseType: 'blob',
 			}),
 		}),
 		exportWinLossByMonth: builder.mutation<Blob, IGetWinLossByMonthExportArgs>({
@@ -219,4 +235,6 @@ export const {
 	useExportWinLossByCurrencyMutation,
 	useExportWinLossByBrandMutation,
 	useExportWinLossByAffiliateMutation,
+	useDownloadWinLossByDateMutation,
+	useDownloadWinLossByMonthMutation,
 } = winLostReportApi

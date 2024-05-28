@@ -11,7 +11,7 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, DownloadOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import {
 	MOMENT_DATE_RANGES,
@@ -30,9 +30,11 @@ import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { RangePickerProps } from 'antd/es/date-picker'
 import { reject } from 'lodash'
+import { PermissionInterface } from 'type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { IGetCategoryData } from 'features/betList/type'
+import { multiEqual } from '../../common/utils'
 
 const { RangePicker } = DatePicker
 const { Panel } = Collapse
@@ -41,6 +43,7 @@ const { Option } = Select
 interface IWinLostReportFilterProps {
 	form: FormInstance
 	loading: boolean
+	downloading: boolean
 	tpGameList: IGetTpGameTypeData[]
 	categories: IGetCategoryData[]
 	memberTypeEnums: IMemberTypeData[]
@@ -48,6 +51,7 @@ interface IWinLostReportFilterProps {
 	currencyIdsBySiteIds: Currency[]
 	userSiteList: UserSite[]
 	timeZoneUtcOffset: number
+	exportExcelPermission?: PermissionInterface
 	selectDate: any
 	setSelectDate: (date: any) => void
 	setIsSort: (value: boolean) => void
@@ -61,11 +65,13 @@ interface IWinLostReportFilterProps {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => void
+	onDownload: () => void
 }
 
 const WinLostReportFilter = ({
 	form,
 	loading,
+	downloading,
 	tpGameList,
 	categories,
 	memberTypeEnums,
@@ -73,13 +79,16 @@ const WinLostReportFilter = ({
 	currencyIdsBySiteIds,
 	userSiteList,
 	timeZoneUtcOffset,
+	exportExcelPermission,
 	selectDate,
 	setSelectDate,
 	setIsSort,
 	onTimeZoneChange,
 	onSearch,
+	onDownload,
 }: IWinLostReportFilterProps) => {
 	const { t } = useTranslation()
+	const selectedGroup = Form.useWatch('groupBy', form)
 
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
 		if (!selectDate) {
@@ -515,7 +524,29 @@ const WinLostReportFilter = ({
 							</Col>
 						</Row>
 
-						<Row justify='end' align='middle' style={{ marginTop: '20px' }}>
+						<Row
+							justify='end'
+							align='middle'
+							gutter={16}
+							style={{ marginTop: '20px' }}
+						>
+							{multiEqual(selectedGroup, [
+								GroupByEnum.Date,
+								GroupByEnum.Month,
+							]) && (
+								<Col>
+									<Button
+										loading={downloading}
+										icon={<DownloadOutlined />}
+										type='primary'
+										onClick={onDownload}
+										disabled={!exportExcelPermission?.canUse}
+									>
+										{t('Label_DownloadStatus')}
+									</Button>
+								</Col>
+							)}
+
 							<Col>
 								<Button
 									loading={loading}
