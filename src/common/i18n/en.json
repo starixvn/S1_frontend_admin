@@ -1273,5 +1273,7 @@
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_DepositDate" : "Deposit Date",
 	"Label_TotalReferee" : "Total Referee",
-	"Label_CorrectScoreExport": "Correct score Export"
+	"Label_CorrectScoreExport": "Correct score Export",
+	"Label_HeaderMenu_Product_Description_1": "This function is to change the product in all currencies at one time.",
+	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency."
 }
