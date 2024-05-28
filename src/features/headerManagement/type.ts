@@ -83,8 +83,8 @@ export enum IHeaderSettingEnum {
 }
 
 export enum IHeaderSettingRlsToPrdArgsEnum {
-	True,
 	False,
+	True,
 }
 
 export enum IHeaderSettingRlsToPrdEnum {
