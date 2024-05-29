@@ -462,6 +462,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 					localBankingStatus: false,
 					mobilePayStatus: false,
 					onlineBankingStatus: false,
+					quickTransferStatus: false,
 				}}
 			>
 				<Table
