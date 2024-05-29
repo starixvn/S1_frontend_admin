@@ -317,6 +317,17 @@ const Dashboard = () => {
 										{numFormatToDigits(walletBalanceInfo?.withdrawlSum || 0)}
 									</Text>
 								</Descriptions.Item>
+								<Descriptions.Item label={t('Label_NetCash')}>
+									<Text
+										type={
+											isPositiveNum(walletBalanceInfo?.netCash || 0)
+												? undefined
+												: 'danger'
+										}
+									>
+										{numFormatToDigits(walletBalanceInfo?.netCash || 0)}
+									</Text>
+								</Descriptions.Item>
 								<Descriptions.Item label={t('Label_PaymentFee')}>
 									<Text
 										type={

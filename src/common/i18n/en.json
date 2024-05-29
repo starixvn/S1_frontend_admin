@@ -617,6 +617,7 @@
 	"Label_RemainingTurnover": "Remaining Turnover",
 	"Label_DepositSummary": "Deposit Summary",
 	"Label_WithdrawalSummary": "Withdrawal Summary",
+	"Label_NetCash": "Net Cash",
 	"Label_PaymentFee": "Payment Fee",
 	"Label_TotalAdjustment": "Total Adjustment",
 	"MemberProfile": {
