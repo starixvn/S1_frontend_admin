@@ -1051,16 +1051,16 @@ const WinLostReport = lazy(
 		)
 )
 
+const BonusInfo = lazy(
+	() =>
+		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
+)
+
 const BatchMemberInfoReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'BatchMemberInfoReport' */ 'features/batchMemberInfoReport/BatchMemberInfoReport'
 		)
-)
-
-const BonusInfo = lazy(
-	() =>
-		import(/* webpackChunkName: 'BonusInfo' */ 'features/bonusInfo/BonusInfo')
 )
 
 const BlockCryptoWallet = lazy(
@@ -1151,6 +1151,13 @@ const LeaderboardManagement = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'LeaderboardManagement' */ 'features/leaderboardManagement/LeaderboardManagement'
+		)
+)
+
+const HeaderManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HeaderManagement' */ 'features/headerManagement/HeaderManagement'
 		)
 )
 
@@ -2766,14 +2773,6 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bonusInfoReport.root}`,
-				element: (
-					<AuthRequire functionId={paths.report.sub.bonusInfoReport.functionId}>
-						<BonusInfo />
-					</AuthRequire>
-				),
-			},
-			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.leaderboardReport.root}`,
 				element: (
 					<AuthRequire
@@ -2936,6 +2935,16 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.bigWinPopUpReport.functionId}
 					>
 						<BigWinPopUpReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.headerManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.headerManagement.functionId}
+					>
+						<HeaderManagement />
 					</AuthRequire>
 				),
 			},
