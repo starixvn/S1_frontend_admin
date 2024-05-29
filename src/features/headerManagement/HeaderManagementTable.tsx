@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { filter } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
@@ -97,7 +97,7 @@ const HeaderManagementTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<div style={{ whiteSpace: 'nowrap' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</div>
 				) : (
 					''

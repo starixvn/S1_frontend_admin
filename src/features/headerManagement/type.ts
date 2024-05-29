@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import dayjs from 'dayjs'
 
 export interface IGetHeaderSettingArgs {
 	siteId?: number
@@ -98,7 +98,7 @@ export interface IFilterForm {
 }
 
 export interface IEditProductStatusForm {
-	dateRange: [Moment, Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	status: boolean
 	iconType: number
 }
