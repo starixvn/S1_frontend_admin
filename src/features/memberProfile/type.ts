@@ -294,6 +294,7 @@ export interface IWalletBalanceInfoData {
 	eligibleWithdrawal: number
 	depositSum: number
 	withdrawlSum: number
+	netCash: number
 	paymentFee: number
 	totalAdjustment: number
 }
