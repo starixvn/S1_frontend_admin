@@ -6,7 +6,7 @@ import { TablePaginationConfig, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { IVipLevelsData } from 'common/service/allDataApi'
 import { find, isEmpty } from 'lodash'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 
 interface IVipLevelLogTableProps {
@@ -72,7 +72,7 @@ const VipLevelLogTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

@@ -3,7 +3,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { Form, message } from 'antd'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { assign, cloneDeep, isEmpty } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { useAuth, useQueryParams } from 'common/hooks'
@@ -72,7 +72,7 @@ const GameStatisticalReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportGameStatisticalReportReport_${moment().format('YYYYMMDD')}.xlsx`
+				`ExportGameStatisticalReportReport_${dayjs().format('YYYYMMDD')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -100,7 +100,7 @@ const GameStatisticalReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(queryStart), moment(queryEndDate)],
+				dateRange: [dayjs(queryStart), dayjs(queryEndDate)],
 			})
 			setActiveKey(currencyId)
 		}

@@ -4,7 +4,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { find } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { adjustmentTypeList, TP_LOG_STATUSES } from './constants'
 import { ITpLogData } from './type'
@@ -116,7 +116,7 @@ const ThirdPartyAdjustmentTable: FC<IThirdPartyAdjustmentTableProps> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

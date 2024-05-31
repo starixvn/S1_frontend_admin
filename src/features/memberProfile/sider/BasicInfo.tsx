@@ -20,7 +20,7 @@ import { FaLine, FaMobileAlt } from 'react-icons/fa'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import {
 	ActStatusEnum,
 	identityList,
@@ -153,7 +153,7 @@ const BasicInfo = ({
 				<Col>
 					{emailVerified ? (
 						<Popover
-							content={moment(emailVerifyTime)
+							content={dayjs(emailVerifyTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format('YYYY-MM-DD  HH:mm:ss')}
 							title={t('Label_EmailVerifiedTime')}
@@ -172,7 +172,7 @@ const BasicInfo = ({
 				<Col>
 					{phoneVerified ? (
 						<Popover
-							content={moment(phoneVerifyTime)
+							content={dayjs(phoneVerifyTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format('YYYY-MM-DD  HH:mm:ss')}
 							title={t('Label_PhoneVerifiedTime')}
@@ -274,7 +274,7 @@ const BasicInfo = ({
 						'Label_RegisteredDate'
 					)} : ${
 						registeredTime
-							? `\n${moment(registeredTime)
+							? `\n${dayjs(registeredTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD  HH:mm:ss')}`
 							: ''
@@ -285,7 +285,7 @@ const BasicInfo = ({
 						'Label_LineBindingTime'
 					)} : ${
 						lineBindingTime
-							? `\n${moment(lineBindingTime)
+							? `\n${dayjs(lineBindingTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD  HH:mm:ss')}`
 							: 'N/A'
@@ -296,7 +296,7 @@ const BasicInfo = ({
 						'Label_FirstDepositTime'
 					)} : ${
 						firstDepositTime
-							? `\n${moment(firstDepositTime)
+							? `\n${dayjs(firstDepositTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'
@@ -307,7 +307,7 @@ const BasicInfo = ({
 						'Label_LastLogInTime'
 					)} : ${
 						lastLoginTime
-							? `\n${moment(lastLoginTime)
+							? `\n${dayjs(lastLoginTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'
@@ -318,7 +318,7 @@ const BasicInfo = ({
 						'Label_LastActiveTime'
 					)} : ${
 						lastActiveTime
-							? `\n${moment(lastActiveTime)
+							? `\n${dayjs(lastActiveTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format('YYYY-MM-DD HH:mm:ss')}`
 							: 'N/A'

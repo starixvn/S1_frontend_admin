@@ -1,7 +1,7 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetEWalletInfoData } from 'features/memberProfile/type'
@@ -68,7 +68,7 @@ const EWalletInfoTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

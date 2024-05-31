@@ -3,7 +3,7 @@ import { IGetLoginLogData } from 'features/memberProfile/type'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
 import { TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 
 interface ILoginLogTableProps {
@@ -32,7 +32,7 @@ const LoginLogTable = ({
 			render: (loginTime: string) =>
 				loginTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

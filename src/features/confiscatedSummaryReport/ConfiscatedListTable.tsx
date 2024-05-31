@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import { Table as AntdTable, TablePaginationConfig, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +36,7 @@ const ConfiscatedListTable = ({
 			align: 'center' as 'center',
 			render: (suspendDate: string) =>
 				suspendDate
-					? moment(suspendDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(suspendDate).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -67,7 +67,7 @@ const ConfiscatedListTable = ({
 			align: 'center' as 'center',
 			render: (registrationDate: string) =>
 				registrationDate
-					? moment(registrationDate)
+					? dayjs(registrationDate)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

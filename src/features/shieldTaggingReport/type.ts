@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export interface IGetShieldTaggingReportArgs {
 	siteId: number
@@ -51,7 +51,7 @@ export interface IShieldTaggingAssociateAccountData {
 }
 
 export interface IFilterForm {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	current?: number | undefined
 	platform: number[]
 	triggeredPoints: number[]

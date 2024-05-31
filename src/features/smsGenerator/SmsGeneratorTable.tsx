@@ -9,7 +9,7 @@ import { PaginationInterface } from 'common/hooks'
 import { LayoutContent } from 'app/pages/layout'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import React from 'react'
 
@@ -131,7 +131,7 @@ const SmsGeneratorTable = ({
 			render: (createTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -153,7 +153,7 @@ const SmsGeneratorTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

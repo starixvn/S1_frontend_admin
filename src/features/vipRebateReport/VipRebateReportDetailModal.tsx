@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { ModalState } from 'common/hooks'
 import { Descriptions, Modal, Space, Spin, Typography } from 'antd'
 import {
@@ -144,7 +144,7 @@ const VipRebateReportDetailModal = ({
 					{`${userName} - ${categoryName}`}
 				</Title>
 				<div style={{ marginBottom: '-10px' }}>
-					{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</div>
 				<Descriptions
 					layout='vertical'

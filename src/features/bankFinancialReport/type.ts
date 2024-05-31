@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 
 export interface IGetBankFinancialReportArgs {
 	siteId?: number
@@ -45,7 +45,7 @@ export interface IGetFinancialAccountData {
 }
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	currencyIds: number[]
 	channel: Array<number | string>
 	agents: string[]

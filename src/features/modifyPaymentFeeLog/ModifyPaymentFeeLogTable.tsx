@@ -1,5 +1,5 @@
 import { TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { PaginationInterface } from 'common/hooks'
@@ -81,7 +81,7 @@ const ModifyPaymentFeeLogTable = ({
 			render: (startTime: string) =>
 				startTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -96,7 +96,7 @@ const ModifyPaymentFeeLogTable = ({
 			render: (endTime: string) =>
 				endTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -111,7 +111,7 @@ const ModifyPaymentFeeLogTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

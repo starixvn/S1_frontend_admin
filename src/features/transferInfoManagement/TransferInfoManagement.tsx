@@ -30,7 +30,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { IGetAgentListResponse } from 'features/bankCardManagement/type'
 import { useGetAgentListQuery } from 'features/bankCardManagement/api'
 import { useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { isEmpty } from 'lodash'
 import { TransferInfoManagementTable } from 'features/transferInfoManagement/TransferInfoManagementTable'
@@ -54,7 +54,7 @@ const TransferInfoManagement = ({
 		useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<{
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 		fromCurrencyId: number
 		toCurrencyId: number
 		transferTypes: number[]
@@ -230,7 +230,7 @@ const TransferInfoManagement = ({
 			}).unwrap()
 			download(
 				blob,
-				`ExportTransferInfoList_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportTransferInfoList_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -281,7 +281,7 @@ const TransferInfoManagement = ({
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				transferTypes: transferTypes.map((type: string) => Number(type)),
 				fromCurrencyId: fromCurrencyId ? Number(fromCurrencyId) : undefined,
 				toCurrencyId: toCurrencyId ? Number(toCurrencyId) : undefined,

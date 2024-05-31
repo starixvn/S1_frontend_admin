@@ -24,7 +24,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useEffect, useState } from 'react'
 import { TableConverter } from 'features/depositPaymentReport/utils'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useGetEnumTypeQuery, IEnumTypeResponse } from 'common/service/enumApi'
 
@@ -143,7 +143,7 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportDepositReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportDepositReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -185,7 +185,7 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startTime), moment(endTime)],
+					dateRange: [dayjs(startTime), dayjs(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					baseCurrencyId: Number(baseCurrencyId),
 					payIds: payIds ? payIds.map((value: string) => Number(value)) : [],

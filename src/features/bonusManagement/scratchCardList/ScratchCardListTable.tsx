@@ -6,7 +6,7 @@ import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 interface IScratchCardListTableProps {
 	loading: boolean
@@ -57,7 +57,7 @@ const ScratchCardListTable: FC<IScratchCardListTableProps> = ({
 			render: (createTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{createTime
-						? moment(createTime)
+						? dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format('YYYY-MM-DD  HH:mm:ss')
 						: '-'}
@@ -73,7 +73,7 @@ const ScratchCardListTable: FC<IScratchCardListTableProps> = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{updateTime
-						? moment(updateTime)
+						? dayjs(updateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format('YYYY-MM-DD  HH:mm:ss')
 						: '-'}

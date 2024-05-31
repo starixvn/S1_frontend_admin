@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetBigWinReportArgs {
 	startDate: string
@@ -21,6 +21,6 @@ export interface IBigWinReportData {
 export interface IExportBigWinReportArgs extends IGetBigWinReportArgs {}
 
 export type IFilterForm = {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyId: number[]
 }

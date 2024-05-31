@@ -1,8 +1,8 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyId: number
 	userName: string
 }

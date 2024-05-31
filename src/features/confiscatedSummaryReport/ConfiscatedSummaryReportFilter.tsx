@@ -2,10 +2,7 @@ import { head } from 'lodash'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { selectCurrencyListBySite } from 'common/enum'
 import { MultipleSelect } from 'components/Select'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -54,14 +51,14 @@ const ConfiscatedSummaryReportFilter = ({
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const currencySelector = () => {
-		const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
+		const onChangeCurrency = (newCurrencyIds: ('all' | number)[]) => {
 			if (newCurrencyIds.includes('all')) {
 				form.setFieldsValue({
 					currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 				})
 			} else {
 				form.setFieldsValue({
-					currencyIds: newCurrencyIds,
+					currencyIds: newCurrencyIds as number[],
 				})
 			}
 		}
@@ -111,11 +108,11 @@ const ConfiscatedSummaryReportFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Last 7 Day',
 													'This Month',

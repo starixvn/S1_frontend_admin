@@ -1,5 +1,5 @@
 import { LayoutContent } from 'app/pages/layout'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import {
 	Col,
@@ -159,7 +159,7 @@ const Dashboard = () => {
 		const { financialType } = financialLogsForm.getFieldsValue()
 		// * 只抓 3 天的資料顯示
 		const [startDate, endDate] = dateRangeToUtcFormatter(
-			[moment().subtract(2, 'days').startOf('day'), moment().endOf('day')],
+			[dayjs().subtract(2, 'days').startOf('day'), dayjs().endOf('day')],
 			0
 		)
 

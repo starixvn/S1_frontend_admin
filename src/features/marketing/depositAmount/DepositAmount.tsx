@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
 import { find, isEmpty, omit } from 'lodash'
@@ -204,9 +204,7 @@ const DepositAmount = () => {
 			).unwrap()
 			download(
 				blob,
-				`MarketingReport_DepositAmount_${moment().format(
-					'YYYYMMDDHHmmss'
-				)}.xlsx`
+				`MarketingReport_DepositAmount_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(

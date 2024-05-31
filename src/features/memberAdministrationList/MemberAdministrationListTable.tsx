@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { useTranslation } from 'react-i18next'
@@ -198,7 +198,7 @@ const MemberAdministrationListTable = ({
 			render: (regTime: string) =>
 				regTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -213,7 +213,7 @@ const MemberAdministrationListTable = ({
 			render: (lastActiveTime: string) =>
 				lastActiveTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(lastActiveTime)
+						{dayjs(lastActiveTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -230,7 +230,7 @@ const MemberAdministrationListTable = ({
 			render: (lastTagUpdateTime: string) =>
 				lastTagUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(lastTagUpdateTime)
+						{dayjs(lastTagUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -247,7 +247,7 @@ const MemberAdministrationListTable = ({
 			render: (lastStatusUpdateTime: string) =>
 				lastStatusUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(lastStatusUpdateTime)
+						{dayjs(lastStatusUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

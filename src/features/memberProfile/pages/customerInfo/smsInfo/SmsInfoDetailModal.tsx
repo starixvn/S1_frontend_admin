@@ -1,7 +1,7 @@
 import { IGetSMSInfoData } from 'features/memberProfile/type'
 import { Descriptions, Modal, Tag, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 
@@ -34,7 +34,7 @@ const SmsInfoDetailModal = ({
 				<Item label={t('Label_CreateTime')} span={2}>
 					{createTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

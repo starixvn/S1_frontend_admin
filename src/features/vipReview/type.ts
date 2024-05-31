@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export interface IGetUpgradeListArgs {
@@ -102,7 +102,7 @@ export type IChangeVipLevelResponse = IVipLevelData[]
 
 export interface IFilterForm {
 	date: any
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	status: number[]
 	userName: string
 	currencyIds: number[]

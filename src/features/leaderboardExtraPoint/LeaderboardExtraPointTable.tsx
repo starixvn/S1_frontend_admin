@@ -1,5 +1,5 @@
 import { Table } from 'components'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import paths from 'app/constants/paths'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { LayoutContent } from 'app/pages/layout'
@@ -61,7 +61,7 @@ const LeaderboardExtraPointTable = ({
 			// active Date 沒有分秒區別 只顯示年月日
 			render: (activeDate: string) =>
 				activeDate
-					? moment(activeDate).utcOffset(timeZoneUtcOffset).format('YYYY-MM-DD')
+					? dayjs(activeDate).utcOffset(timeZoneUtcOffset).format('YYYY-MM-DD')
 					: '',
 		},
 		{
@@ -89,7 +89,7 @@ const LeaderboardExtraPointTable = ({
 			width: '15%',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -100,7 +100,7 @@ const LeaderboardExtraPointTable = ({
 			width: '15%',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
 import {
@@ -14,10 +14,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { Currency } from 'common/enum/type'
@@ -158,7 +155,7 @@ const TurnoverPointReportFilter: FC<ITurnoverPointReportFilterProps> = ({
 											<Form.Item
 												noStyle
 												name='dateRange'
-												initialValue={MOMENT_DATE_RANGES.Today}
+												initialValue={DATE_RANGES.Today}
 												rules={[
 													{
 														required: true,
@@ -168,7 +165,7 @@ const TurnoverPointReportFilter: FC<ITurnoverPointReportFilterProps> = ({
 											>
 												<RangePicker
 													style={{ width: '100%' }}
-													ranges={MOMENT_RANGE_PICKER_RANGES([
+													ranges={RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',
@@ -176,7 +173,7 @@ const TurnoverPointReportFilter: FC<ITurnoverPointReportFilterProps> = ({
 														'Last Month',
 													])}
 													format={time =>
-														moment(time)
+														dayjs(time)
 															.utcOffset(timeZoneUtcOffset)
 															.format(dateFormat)
 													}

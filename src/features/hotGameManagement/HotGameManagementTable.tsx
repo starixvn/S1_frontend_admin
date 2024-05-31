@@ -9,7 +9,7 @@ import {
 	Table,
 } from 'components'
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { PermissionInterface } from 'type'
@@ -135,7 +135,7 @@ const HotGameManagementTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<div style={{ whiteSpace: 'nowrap' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</div>
 				) : (
 					''

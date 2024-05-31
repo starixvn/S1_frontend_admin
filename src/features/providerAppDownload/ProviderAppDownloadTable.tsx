@@ -16,7 +16,7 @@ import {
 import { EditableCellRows, Table } from 'components'
 import { PermissionInterface } from 'type'
 import { Dispatch, SetStateAction } from 'react'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 
@@ -188,7 +188,7 @@ const ProviderAppDownloadTable = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}

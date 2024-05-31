@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Typography, Tag, Button } from 'antd'
@@ -54,7 +54,7 @@ const BatchMemberInfoReportTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

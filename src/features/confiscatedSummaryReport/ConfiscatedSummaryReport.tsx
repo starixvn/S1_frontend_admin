@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import download from 'downloadjs'
@@ -139,7 +139,7 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`ExportConfiscatedSummaryReport_${moment().format(
+				`ExportConfiscatedSummaryReport_${dayjs().format(
 					'YYYYMMDDHHmmss'
 				)}.xlsx`
 			)
@@ -173,7 +173,7 @@ const ConfiscatedSummaryReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds
 					? currencyIds?.map((values: string) => Number(values))
 					: currencyListBySite?.map(({ currencyId }) => currencyId),

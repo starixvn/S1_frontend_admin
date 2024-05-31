@@ -12,7 +12,7 @@ import {
 } from 'common/hooks'
 import { SmsGeneratorFilter } from 'features/smsGenerator/SmsGeneratorFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
-import moment, { Moment } from 'moment/moment'
+import dayjs, { Dayjs } from 'dayjs'
 
 import {
 	useDeleteMessageMutation,
@@ -48,7 +48,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 	} = useAuth()
 
 	const [filterForm] = Form.useForm<{
-		dateRange: [Moment, Moment]
+		dateRange: [Dayjs, Dayjs]
 	}>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const editModal = useModal()
@@ -127,7 +127,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 			const blob = await exportMessageResult({ batchId }).unwrap()
 			download(
 				blob,
-				`SendMessageResult_ID_${batchId}_${moment().format(
+				`SendMessageResult_ID_${batchId}_${dayjs().format(
 					'YYYYMMDDHHmmss'
 				)}.xlsx`
 			)
@@ -248,7 +248,7 @@ const SmsGenerator = ({ pageTitle }: { pageTitle?: string }) => {
 			const { startDate, endDate, pageNumber, pageSize, timeZone } = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 			})
 
 			handleSearch({

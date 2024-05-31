@@ -1,4 +1,4 @@
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 import { IGameCasinoByIdData } from 'common/service/baseDataApi/type'
 
 export interface IGetGameExclusionListArgs {
@@ -68,7 +68,7 @@ export interface IUpdateGameExclusionStatusArgs {
 
 export interface IFilterForm {
 	userName: string
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 }
 
 export type IDeleteGameExclusionData = Omit<

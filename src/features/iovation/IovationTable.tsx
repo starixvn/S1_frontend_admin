@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
@@ -36,7 +36,7 @@ const IovationTable = ({
 			width: '20%',
 			render: (lastUsedTime: string) =>
 				lastUsedTime
-					? moment(lastUsedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(lastUsedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

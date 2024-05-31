@@ -8,7 +8,7 @@ import {
 	SettingCustPromotionWitheListEnum,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { isNull } from 'lodash'
@@ -79,7 +79,7 @@ const SettingMarketingCard = ({
 							</Typography.Text>
 							<Typography.Text>
 								{phoneRewardTime
-									? moment(phoneRewardTime)
+									? dayjs(phoneRewardTime)
 											.utcOffset(timeZoneUtcOffset)
 											.format(timeFormat)
 									: ''}
@@ -111,7 +111,7 @@ const SettingMarketingCard = ({
 							</Typography.Text>
 							<Typography.Text>
 								{emailRewardTime
-									? moment(emailRewardTime)
+									? dayjs(emailRewardTime)
 											.utcOffset(timeZoneUtcOffset)
 											.format(timeFormat)
 									: ''}

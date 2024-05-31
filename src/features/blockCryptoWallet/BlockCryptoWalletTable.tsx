@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Space, Typography, Popconfirm, TablePaginationConfig } from 'antd'
@@ -220,7 +220,7 @@ const BlockCryptoWalletTable = ({
 				) : (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{createTime
-							? moment(createTime)
+							? dayjs(createTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)
 							: ''}
@@ -235,14 +235,14 @@ const BlockCryptoWalletTable = ({
 			align: 'center' as 'center',
 			render: (data: { updateTime: string; blockUpdateTime: string }) => {
 				const { updateTime, blockUpdateTime } = data
-				const actionUpdateTime = moment(blockUpdateTime).isAfter(updateTime)
+				const actionUpdateTime = dayjs(blockUpdateTime).isAfter(updateTime)
 					? blockUpdateTime
 					: updateTime
 
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						{updateTime
-							? moment(actionUpdateTime)
+							? dayjs(actionUpdateTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)
 							: ''}

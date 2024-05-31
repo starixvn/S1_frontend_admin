@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { IGetVipRebateDetailData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Modal, Spin, Typography } from 'antd'
@@ -123,7 +123,7 @@ const VipRebateDetailModal = ({
 			open={visible}
 			onCancel={onCancel}
 			footer={false}
-			title={moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+			title={dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 		>
 			<Spin spinning={loading}>
 				<Table columns={columns} dataSource={modalData} pagination={false} />

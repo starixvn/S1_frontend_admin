@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	Button,
 	DatePicker,
@@ -301,7 +301,7 @@ const DepositRequestDepositInfo = ({
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_CreateTime')}>
 					{createTime &&
-						moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_DepositType')}>
 					{depositTypeName || '-'}
@@ -424,11 +424,11 @@ const DepositRequestDepositInfo = ({
 				)}
 				<Descriptions.Item label={t('Label_FlowEndTime')}>
 					{flowEndTime &&
-						moment(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						dayjs(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_UpdateTime')}>
 					{updateTime &&
-						moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_StatementTime')}>
 					{isLocalBank && isApproved ? (
@@ -441,9 +441,7 @@ const DepositRequestDepositInfo = ({
 						</Form.Item>
 					) : (
 						statementTime &&
-						moment(statementTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)
+						dayjs(statementTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					)}
 				</Descriptions.Item>
 			</Descriptions>

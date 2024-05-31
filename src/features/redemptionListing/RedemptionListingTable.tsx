@@ -4,7 +4,7 @@ import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { ColumnsType } from 'antd/es/table'
 import { createSearchParams, useNavigate } from 'react-router-dom'
@@ -81,10 +81,10 @@ const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 			width: 120,
 			align: 'center' as 'center',
 			sorter: (rowA, rowB) =>
-				moment(rowA.createTime).unix() - moment(rowB.createTime).unix(),
+				dayjs(rowA.createTime).unix() - dayjs(rowB.createTime).unix(),
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -94,10 +94,10 @@ const RedemptionListingTable: FC<IRedemptionListingTableProps> = ({
 			width: 120,
 			align: 'center' as 'center',
 			sorter: (rowA, rowB) =>
-				moment(rowA.updateTime).unix() - moment(rowB.updateTime).unix(),
+				dayjs(rowA.updateTime).unix() - dayjs(rowB.updateTime).unix(),
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

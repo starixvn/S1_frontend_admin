@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetAdminUserLogArgs {
 	pageNumber: number
@@ -32,6 +32,6 @@ export interface IAdminUserLogData {
 }
 
 export type IFilterForm = {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	status: number[]
 }

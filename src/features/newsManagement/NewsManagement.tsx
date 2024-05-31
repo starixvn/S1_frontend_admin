@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find, isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -181,7 +181,7 @@ const NewsManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				siteId: siteId ? Number(siteId) : undefined,
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				status: status ? status?.map((value: string) => Number(value)) : [],
 			})
 

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { IGetCustTpBetRecordByGameTypeData } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Table as AntdTable, TablePaginationConfig, Typography } from 'antd'
@@ -119,7 +119,7 @@ const CustTpBetRecordByGameTypeTable = ({
 			render: (transTime: string) =>
 				transTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -134,9 +134,7 @@ const CustTpBetRecordByGameTypeTable = ({
 			render: (settledTime: string) =>
 				settledTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(settledTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						{dayjs(settledTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
