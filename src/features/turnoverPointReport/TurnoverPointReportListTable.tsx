@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { trimEnd } from 'lodash'
 import { numberFormatter } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { TablePaginationConfig } from 'antd'
 import { Table } from 'components'
@@ -90,7 +90,7 @@ const TurnoverPointReportListTable: FC<ITurnoverPointReportTableProps> = ({
 			width: 140,
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime)
+				dayjs(createTime)
 					.utcOffset(timeZoneUtcOffset)
 					.format('YYYY-MM-DD  HH:mm:ss'),
 		},

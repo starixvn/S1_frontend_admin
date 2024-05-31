@@ -24,7 +24,7 @@ import {
 	IGetTransferAccountListData,
 } from 'features/transferInfoManagement/type'
 import { PlusOutlined } from '@ant-design/icons'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { find } from 'lodash'
@@ -635,7 +635,7 @@ const EditTransferInfoBody = ({
 							<Row style={{ marginTop: '20px' }} gutter={16}>
 								<Space>
 									<Typography.Text>
-										{`${t('Label_CreateTime')} : ${moment(createTime)
+										{`${t('Label_CreateTime')} : ${dayjs(createTime)
 											.utcOffset(timeZoneUtcOffset)
 											.format(timeFormat)}`}
 									</Typography.Text>
@@ -647,7 +647,7 @@ const EditTransferInfoBody = ({
 							<Row gutter={16}>
 								<Space>
 									<Typography.Text>
-										{`${t('Label_UpdateTime')} : ${moment(updateTime)
+										{`${t('Label_UpdateTime')} : ${dayjs(updateTime)
 											.utcOffset(timeZoneUtcOffset)
 											.format(timeFormat)}`}
 									</Typography.Text>

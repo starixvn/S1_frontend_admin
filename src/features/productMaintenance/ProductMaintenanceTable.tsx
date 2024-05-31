@@ -1,11 +1,8 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction } from 'react'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { PermissionInterface } from 'type'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
@@ -56,7 +53,7 @@ const ProductMaintenanceTable = ({
 
 	const onEdit = ({ beginDate, endDate, sn }: ITpMaintenanceData) => {
 		form.setFieldsValue({
-			dateRange: [moment(beginDate), moment(endDate)],
+			dateRange: [dayjs(beginDate), dayjs(endDate)],
 		})
 		setEditingKey(sn)
 	}
@@ -144,7 +141,7 @@ const ProductMaintenanceTable = ({
 					<Form.Item
 						noStyle
 						name='dateRange'
-						initialValue={MOMENT_DATE_RANGES.Today}
+						initialValue={DATE_RANGES.Today}
 						rules={[
 							{
 								required: true,
@@ -154,7 +151,7 @@ const ProductMaintenanceTable = ({
 					>
 						<RangePicker
 							style={{ width: '100%' }}
-							ranges={MOMENT_RANGE_PICKER_RANGES([
+							ranges={RANGE_PICKER_RANGES([
 								'Today',
 								'Yesterday',
 								'Last Week',
@@ -166,7 +163,7 @@ const ProductMaintenanceTable = ({
 					</Form.Item>
 				) : (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(beginDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(beginDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				)
 			},
@@ -185,7 +182,7 @@ const ProductMaintenanceTable = ({
 			render: ({ endDate }: ITpMaintenanceData) =>
 				endDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(endDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(endDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -199,7 +196,7 @@ const ProductMaintenanceTable = ({
 			render: ({ updateTime }: ITpMaintenanceData) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

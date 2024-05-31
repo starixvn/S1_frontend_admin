@@ -9,7 +9,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useLazyGetWithdrawalLimitLogQuery } from 'features/memberProfile/api'
 import { IEnumTypeResponse, useGetEnumTypeQuery } from 'common/service/enumApi'
 import { PAGINATION, usePagination } from 'common/hooks'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import WithdrawalLimitTable from 'features/memberProfile/pages/finance/withdrawalLimitLog/WithdrawalLimitTable'
 import { WithdrawalLimitFilter } from 'features/memberProfile/pages/finance/withdrawalLimitLog/WithdrawalLimitFilter'
 
@@ -18,7 +18,7 @@ const WithdrawalLimitLog = () => {
 	const { custId } = useParams()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [filterForm] = Form.useForm<{
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	}>()
 
 	const [

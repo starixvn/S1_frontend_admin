@@ -1,11 +1,11 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IForm {
 	currencyIds: number[]
 	channels: number[]
 	status: number[]
-	purposes: number[]
+	purposes: ('all' | number)[]
 	sysIds: number[]
 	accountNo: string
 	agent: string
@@ -24,7 +24,7 @@ export interface IAddEditForm {
 	accountCode: string | null
 	displayName: string | null
 	initialAmount: number
-	initialTime: Moment | string
+	initialTime: Dayjs | string
 	maxBalanceAlertAmount: number
 	reason: number
 	remark: string | null

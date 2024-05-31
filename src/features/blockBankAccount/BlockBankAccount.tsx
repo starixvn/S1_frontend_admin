@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FC, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
@@ -288,7 +288,7 @@ const BlockBankAccount: FC<{
 					accountNum,
 					currencyIds:
 						currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
-					dateRange: [moment(startDate), moment(endDate)],
+					dateRange: [dayjs(startDate), dayjs(endDate)],
 				})
 
 				handleSearch({

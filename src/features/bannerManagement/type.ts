@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetBannerListArgs {
 	siteId: number
@@ -224,7 +224,7 @@ export interface IAddForm {
 	categoryId: number | string
 	actionMode: number | string
 	showStatus: number | string
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	bonusCode: null
 	tpId: number | string
 	gameId: number | string

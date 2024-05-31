@@ -8,7 +8,7 @@ import {
 	IGetPromotionReportData,
 } from 'features/memberProfile/type'
 import { find, isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import {
 	PromotionReportFullFillTypeEnum,
@@ -239,7 +239,7 @@ const PromotionReportTable = ({
 			render: (claimDate: string) =>
 				claimDate ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(claimDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(claimDate).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -260,7 +260,7 @@ const PromotionReportTable = ({
 				return displayName && color ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 						<Tag color={color}>{t(displayName) ?? 'N/A'}</Tag>-
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

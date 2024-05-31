@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetWithdrawalReportArgs {
 	currencyIds: number[]
@@ -25,7 +25,7 @@ export interface IGetWithdrawalReportData {
 }
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [Dayjs, Dayjs]
 	siteIds: number[]
 	currencyIds: number[]
 	baseCurrencyId: number

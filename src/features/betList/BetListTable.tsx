@@ -9,7 +9,7 @@ import {
 	numFormatToDigits,
 	timeFormat,
 } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find, isNumber, isObject, isString } from 'lodash'
 import { isJSON } from 'common/utils'
 import { ColumnsType } from 'antd/es/table'
@@ -144,9 +144,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 				<div style={{ width: '180px' }}>
 					{transTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(transTime)
-								.utcOffset(timeZoneUtcOffset)
-								.format(timeFormat)}
+							{dayjs(transTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 						</Typography.Text>
 					) : (
 						''
@@ -164,7 +162,7 @@ const BetListTable: FC<IBetListTableProps> = ({
 				<div style={{ width: '180px' }}>
 					{settledTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(settledTime)
+							{dayjs(settledTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

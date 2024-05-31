@@ -1,7 +1,7 @@
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import { TablePaginationConfig, Typography, Tag } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { IGetDepositInfoData } from 'features/memberProfile/type'
@@ -39,7 +39,7 @@ const DepositTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -162,9 +162,7 @@ const DepositTable = ({
 			render: (flowEndTime: string) =>
 				flowEndTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(flowEndTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						{dayjs(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -179,7 +177,7 @@ const DepositTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

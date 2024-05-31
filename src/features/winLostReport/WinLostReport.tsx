@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Form, message, TablePaginationConfig } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { LayoutContent } from 'app/pages/layout'
 import {
@@ -221,7 +221,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			currentTimeZoneUtcOffset
 		)
-		const days = moment(endTime).diff(moment(starTime), 'days')
+		const days = dayjs(endTime).diff(dayjs(starTime), 'days')
 		if (days > 90) {
 			message.error(t('Label_DateRangeExceedsThreeMonths'))
 			return
@@ -471,7 +471,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByDate(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByDate_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+							`WinLostReportByDate_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 						)
 					} catch (error) {
 						message.error(
@@ -485,7 +485,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByMonth(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByMonth_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+							`WinLostReportByMonth_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 						)
 					} catch (error) {
 						message.error(
@@ -499,7 +499,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByTpGameType(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByTpGameType_${moment().format(
+							`WinLostReportByTpGameType_${dayjs().format(
 								'YYYYMMDDHHmmss'
 							)}.xlsx`
 						)
@@ -515,7 +515,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByTpCategoryType(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByTpCategoryType_${moment().format(
+							`WinLostReportByTpCategoryType_${dayjs().format(
 								'YYYYMMDDHHmmss'
 							)}.xlsx`
 						)
@@ -531,9 +531,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByCurrency(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByCurrency_${moment().format(
-								'YYYYMMDDHHmmss'
-							)}.xlsx`
+							`WinLostReportByCurrency_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 						)
 					} catch (error) {
 						message.error(
@@ -547,7 +545,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByPlayer(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByPlayer_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+							`WinLostReportByPlayer_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 						)
 					} catch (error) {
 						message.error(
@@ -561,7 +559,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						blob = await exportWinLossByBrand(args).unwrap()
 						download(
 							blob,
-							`WinLostReportByBrand_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+							`WinLostReportByBrand_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 						)
 					} catch (error) {
 						message.error(
@@ -578,7 +576,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						}).unwrap()
 						download(
 							blob,
-							`WinLostReportByAffiliate_${moment().format(
+							`WinLostReportByAffiliate_${dayjs().format(
 								'YYYYMMDDHHmmss'
 							)}.xlsx`
 						)
@@ -691,7 +689,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			[dateRange[0].startOf('day'), dateRange[1].endOf('day')],
 			timeZoneUtcOffset
 		)
-		const days = moment(endTime).diff(moment(starTime), 'days')
+		const days = dayjs(endTime).diff(dayjs(starTime), 'days')
 		if (days > 90) {
 			message.error(t('Label_DateRangeExceedsThreeMonths'))
 			return
@@ -725,7 +723,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					blob = await downloadWinLossByDate(args).unwrap()
 					download(
 						blob,
-						`WinLostReportByDate_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						`WinLostReportByDate_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 					)
 				} catch (error) {
 					message.error(
@@ -739,7 +737,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					blob = await downloadWinLossByMonth(args).unwrap()
 					download(
 						blob,
-						`WinLostReportByMonth_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+						`WinLostReportByMonth_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 					)
 				} catch (error) {
 					message.error(
@@ -796,7 +794,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				filterForm.setFieldsValue({
 					siteIds: siteIds ? siteIds.map((value: string) => Number(value)) : [],
 					dateType: Number(dateType),
-					dateRange: [moment(starTime), moment(endTime)],
+					dateRange: [dayjs(starTime), dayjs(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					baseCurrencyId: Number(baseCurrencyId),
 					tpCategorys: tpCategorys.map((categoryId: string) =>

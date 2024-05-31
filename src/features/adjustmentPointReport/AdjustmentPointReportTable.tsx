@@ -4,7 +4,7 @@ import { Table } from 'components'
 import { TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { ColumnsType } from 'antd/es/table'
 import { find } from 'lodash'
@@ -93,7 +93,7 @@ const AdjustmentPointReportTable: FC<IAdjustmentPointReportTableProps> = ({
 			align: 'center' as 'center',
 			render: (createTime: string) =>
 				createTime
-					? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{

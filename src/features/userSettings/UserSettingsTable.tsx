@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -143,7 +143,7 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			align: 'center' as 'center',
 			render: (loginTime: string) =>
 				loginTime
-					? moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -154,7 +154,7 @@ const UserSettingsTable: FC<UserSettingsTableProps> = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

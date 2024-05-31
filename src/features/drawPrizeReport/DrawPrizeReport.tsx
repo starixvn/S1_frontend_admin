@@ -28,7 +28,7 @@ import {
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import download from 'downloadjs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import { DrawPrizeReportTable } from 'features/drawPrizeReport/DrawPrizeReportTable'
 import { DrawPrizeOverviewTable } from 'features/drawPrizeReport/DrawPrizeOverviewTable'
@@ -160,7 +160,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`Draw_Prize_Report_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`Draw_Prize_Report_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -229,7 +229,7 @@ const DrawPrizeReport = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startDate), moment(endDate)],
+					dateRange: [dayjs(startDate), dayjs(endDate)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					eventNames,
 				})

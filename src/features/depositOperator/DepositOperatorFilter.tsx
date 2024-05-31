@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	Button,
 	Checkbox,
@@ -14,7 +14,7 @@ import {
 	Select,
 	Spin,
 } from 'antd'
-import { MOMENT_RANGE_PICKER_RANGES } from 'app/constants/moment'
+import { RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
@@ -43,8 +43,8 @@ const { Option } = Select
 
 // * 這頁的初始時間區間為 D-2 ~ 今日
 const initialDateRange = [
-	moment().subtract(2, 'd').startOf('day'),
-	moment().endOf('day'),
+	dayjs().subtract(2, 'd').startOf('day'),
+	dayjs().endOf('day'),
 ]
 
 interface IDepositOperatorFilterProps {
@@ -165,14 +165,14 @@ const DepositOperatorFilter = ({
 	}
 
 	const bankCodeSelector = () => {
-		const onChangeBankCode = (newBankCode: string[]) => {
+		const onChangeBankCode = (newBankCode: ('all' | number)[]) => {
 			if (newBankCode.includes('all')) {
 				form.setFieldsValue({
 					selectBankCode: bankCodeList?.map(({ sysId }) => sysId),
 				})
 			} else {
 				form.setFieldsValue({
-					selectBankCode: newBankCode,
+					selectBankCode: newBankCode as number[],
 				})
 			}
 		}
@@ -199,14 +199,14 @@ const DepositOperatorFilter = ({
 	}
 
 	const vipLevelSelector = () => {
-		const onVipLevelChange = (newVipLevels: Array<number | string>) => {
+		const onVipLevelChange = (newVipLevels: ('all' | number)[]) => {
 			if (newVipLevels.includes('all')) {
 				form.setFieldsValue({
 					levelStatuses: vipLevelEnum?.map(({ level }) => level),
 				})
 			} else {
 				form.setFieldsValue({
-					levelStatuses: newVipLevels,
+					levelStatuses: newVipLevels as number[],
 				})
 			}
 		}
@@ -327,7 +327,7 @@ const DepositOperatorFilter = ({
 												<RangePicker
 													clearIcon={false}
 													style={{ width: '100%' }}
-													ranges={MOMENT_RANGE_PICKER_RANGES([
+													ranges={RANGE_PICKER_RANGES([
 														'Today',
 														'Yesterday',
 														'Last Week',

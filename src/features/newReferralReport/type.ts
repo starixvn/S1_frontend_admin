@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment/moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetListArgs {
 	siteIds: number[]
@@ -52,6 +52,6 @@ export type IDetailByCustIdResponse = IAxiosResponse<IDetailByCustIdData[]>
 
 export interface IFilterForm {
 	currencyIds: number[]
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	userName: string | null
 }

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { filter, find, includes } from 'lodash'
 import { Select, TablePaginationConfig, Typography } from 'antd'
 import { ModalState, PAGINATION, useQueryParams } from 'common/hooks'
@@ -173,9 +173,7 @@ const TransferAccountManagementTable: FC<
 			render: (initialTime: string) =>
 				initialTime ? (
 					<div style={{ width: '120px' }}>
-						{moment(initialTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						{dayjs(initialTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</div>
 				) : (
 					''
@@ -189,7 +187,7 @@ const TransferAccountManagementTable: FC<
 			render: (createTime: string) =>
 				createTime ? (
 					<div style={{ width: '120px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</div>
 				) : (
 					''
@@ -204,7 +202,7 @@ const TransferAccountManagementTable: FC<
 			render: (updateTime: string) =>
 				updateTime ? (
 					<div style={{ width: '120px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</div>
 				) : (
 					''

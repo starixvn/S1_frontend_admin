@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import {
 	DateTypeEnum,
 	IdentityEnum,
@@ -149,7 +149,7 @@ export interface IExportMemberArgs {
 }
 
 export interface IForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	statuses: number[]
 	identity: IdentityEnum

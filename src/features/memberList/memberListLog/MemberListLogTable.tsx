@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { TablePaginationConfig } from 'antd'
 import { PaginationInterface } from 'common/hooks'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { IGetMemberRewardPointLogData } from '../type'
 
@@ -33,7 +33,7 @@ const MemberListLogTable: FC<IMemberListLogTableProps> = ({
 			align: 'center' as 'center',
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime
-					? moment(lastUpdateTime)
+					? dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

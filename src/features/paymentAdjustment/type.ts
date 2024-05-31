@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 
 export interface IExportPaymentAdjustmentReportArgs {
@@ -81,7 +81,7 @@ export interface IGetReasonListData {
 export type IFilterForm = {
 	currencyIds: number[]
 	adjustTypes: number[]
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	userName: string
 	sabaId: string
 	transId: string

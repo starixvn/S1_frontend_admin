@@ -15,7 +15,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { RcFile, UploadFile } from 'antd/es/upload/interface'
 import { MemberListFilter } from './MemberListFilter'
@@ -223,7 +223,7 @@ const MemberList: FC<{
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				userName,
 				currencyIds: currencyIds.map((value: string) => Number(value)),
 				vipLevels: vipLevels.map((value: string) => Number(value)),

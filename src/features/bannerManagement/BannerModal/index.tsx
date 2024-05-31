@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FormInstance, message, Modal } from 'antd'
 import { Currency } from 'common/enum/type'
 import { IEnumTypeData } from 'common/service/enumApi'
@@ -103,8 +103,8 @@ const BannerModal = ({
 				categoryId,
 				showStatus,
 				actionMode,
-				dateRange: [moment(startTime), moment(endTime)],
-				bonusCode,
+				dateRange: [dayjs(startTime), dayjs(endTime)],
+				bonusCode: bonusCode ?? [],
 				urlRouter: Number(UrlRouterEnum[urlRouter]),
 				gameId,
 				tpId,

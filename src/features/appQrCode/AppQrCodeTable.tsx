@@ -9,7 +9,7 @@ import {
 	IGetAppTypeEnumData,
 	IGetProtocolTypeEnumData,
 } from 'features/appQrCode/type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PermissionInterface } from 'type'
 import { timeFormat } from 'common/utils/format'
 
@@ -152,7 +152,7 @@ const AppQrCodeTable = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}

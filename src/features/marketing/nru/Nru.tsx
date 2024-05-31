@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find, isEmpty, omit } from 'lodash'
 import { useEffect, useRef } from 'react'
 import download from 'downloadjs'
@@ -213,7 +213,7 @@ const Nru = () => {
 			).unwrap()
 			download(
 				blob,
-				`MarketingReport_NewlyRegisterUsers_${moment().format('YYYYMMDD')}.xlsx`
+				`MarketingReport_NewlyRegisterUsers_${dayjs().format('YYYYMMDD')}.xlsx`
 			)
 		} catch (error) {
 			message.error(

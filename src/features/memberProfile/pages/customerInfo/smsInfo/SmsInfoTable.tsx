@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
 import { Popconfirm, Space, TablePaginationConfig, Tag, Typography } from 'antd'
 import { IGetSMSInfoData } from 'features/memberProfile/type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { CheckCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { PermissionInterface } from 'type'
@@ -114,7 +114,7 @@ const SmsInfoTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

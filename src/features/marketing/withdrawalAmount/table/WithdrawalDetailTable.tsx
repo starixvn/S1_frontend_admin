@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import { useTranslation } from 'react-i18next'
 import type { ColumnsType } from 'antd/es/table'
@@ -64,7 +64,7 @@ const WithdrawalDetailTable = ({
 			render: (registeredDate: string) =>
 				registeredDate ? (
 					<Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(registeredDate).utcOffset(timeZone).format(timeFormat)}
+						{dayjs(registeredDate).utcOffset(timeZone).format(timeFormat)}
 					</Text>
 				) : (
 					'-'

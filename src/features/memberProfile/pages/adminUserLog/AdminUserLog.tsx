@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -86,7 +86,7 @@ const AdminUserLog = () => {
 
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 			})
 
 			handleSearch({

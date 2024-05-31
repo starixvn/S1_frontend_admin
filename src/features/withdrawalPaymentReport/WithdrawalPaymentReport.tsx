@@ -25,7 +25,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useEffect, useState } from 'react'
 import { TableConverter } from 'features/withdrawalPaymentReport/utils'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 
 const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
@@ -151,7 +151,7 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`ExportWithdrawalReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportWithdrawalReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -193,7 +193,7 @@ const WithdrawalPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startTime), moment(endTime)],
+					dateRange: [dayjs(startTime), dayjs(endTime)],
 					currencyIds: currencyIds.map((currency: string) => Number(currency)),
 					baseCurrencyId: Number(baseCurrencyId),
 					payIds: payIds ? payIds.map((value: string) => Number(value)) : [],

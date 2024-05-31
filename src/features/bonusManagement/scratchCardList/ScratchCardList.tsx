@@ -13,7 +13,7 @@ import {
 import { IGetScratchCardListResponse } from 'features/bonusManagement/type'
 import { PAGINATION, useAuth, useModal, usePagination } from 'common/hooks'
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { ScratchCardListTable } from 'features/bonusManagement/scratchCardList/ScratchCardListTable'
 import { CreateScratchCardModal } from 'features/bonusManagement/scratchCardList/CreateScratchCardModal'
 
@@ -94,7 +94,7 @@ const ScratchCardList = () => {
 
 			download(
 				blob,
-				`ExportScratchCard${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportScratchCard${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(

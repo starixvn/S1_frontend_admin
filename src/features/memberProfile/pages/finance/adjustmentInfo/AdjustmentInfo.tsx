@@ -11,7 +11,7 @@ import { PAGINATION, usePagination } from 'common/hooks'
 import { useLazyGetAdjustmentInfoQuery } from 'features/memberProfile/api'
 import AdjustmentTable from 'features/memberProfile/pages/finance/adjustmentInfo/AdjustmentTable'
 import { AdjustmentFilter } from 'features/memberProfile/pages/finance/adjustmentInfo/AdjustmentFilter'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const AdjustmentInfo = () => {
 	const { t } = useTranslation()
@@ -19,7 +19,7 @@ const AdjustmentInfo = () => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [filterForm] = Form.useForm<{
 		type: number
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	}>()
 
 	const [

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { FC, useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
@@ -132,7 +132,7 @@ const ReferralReport: FC<{
 			}).unwrap()
 			download(
 				blob,
-				`ExportReferralReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportReferralReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -186,7 +186,7 @@ const ReferralReport: FC<{
 			onTimeZoneChange(Number(timeZone))
 
 			form.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				userName,
 				currencyId,
 			})

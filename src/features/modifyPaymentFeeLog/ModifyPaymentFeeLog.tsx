@@ -1,6 +1,6 @@
 import { Form, message, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	useLazyGetModifyPaymentChargeFeeListQuery,
 	useSubmitPaySettingMutation,
@@ -144,7 +144,7 @@ const ModifyPaymentFeeLog = ({ pageTitle }: { pageTitle?: string }) => {
 					queryParams
 				onTimeZoneChange(Number(timezone))
 				filterForm.setFieldsValue({
-					dateRange: [moment(startTime), moment(endTime)],
+					dateRange: [dayjs(startTime), dayjs(endTime)],
 				})
 				handleSearch({
 					current: Number(pageNumber),

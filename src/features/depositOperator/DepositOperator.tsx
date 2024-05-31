@@ -1,9 +1,9 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
-import React, { Key, useEffect, useState } from 'react'
+import { Key, useEffect, useState } from 'react'
 import { filter, includes, isEmpty, isNumber, map, reduce } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Form, message, PageHeader, TablePaginationConfig } from 'antd'
+import { Form, message, TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { DepositTypeEnum } from 'type'
@@ -118,7 +118,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		)
 
 	const isMoreThanThreeDays =
-		moment(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
+		dayjs(queryParams.endDate).diff(queryParams.startDate, 's') > 259199
 
 	const [
 		getDepositOperatorList,
@@ -201,10 +201,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				agent,
 				dateType: Number(dateType),
 			}).unwrap()
-			download(
-				blob,
-				`DepositOperator_${moment().format('YYYYMMDDHHmmss')}.xlsx`
-			)
+			download(blob, `DepositOperator_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -357,7 +354,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
 				isAllSite,
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds?.map((value: string) => Number(value)) ?? [],
 				statuses: statuses?.map((value: string) => Number(value)) ?? [],
 				selectPayIds: selectPayId?.map((value: string) => Number(value)) ?? [],
@@ -439,7 +436,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	return (
 		<LayoutContent.Main>
-			<PageHeader title={pageTitle} />
+			<LayoutContent.Title title={pageTitle} />
 			<DepositOperatorFilter
 				isAllSite={formIsAllSite}
 				form={form}

@@ -4,7 +4,7 @@ import { Table } from 'components'
 import { TablePaginationConfig } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { timeFormat } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { IGetMemberReportData } from './type'
 
@@ -63,7 +63,7 @@ const CupEventMemberReportTable: FC<ICupEventMemberReportProps> = ({
 			align: 'center' as 'center',
 			render: (selectTime: string) =>
 				selectTime
-					? moment(selectTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(selectTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

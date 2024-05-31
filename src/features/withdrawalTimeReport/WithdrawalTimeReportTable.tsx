@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import {
 	Tag,
@@ -41,7 +41,7 @@ const WithdrawalTimeReportTable = ({
 			dataIndex: 'createTime',
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+				dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_Message'),
@@ -119,7 +119,7 @@ const WithdrawalTimeReportTable = ({
 					withdrawalMessageList.length > 1
 						? withdrawalMessageList
 								.slice()
-								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+								.sort((a, b) => dayjs(a.createTime).diff(dayjs(b.createTime)))
 						: withdrawalMessageList
 
 				return (
@@ -163,7 +163,7 @@ const WithdrawalTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{createTime ? (
 						<Typography.Text>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -182,7 +182,7 @@ const WithdrawalTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{updateTime ? (
 						<Typography.Text>
-							{moment(updateTime)
+							{dayjs(updateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -201,7 +201,7 @@ const WithdrawalTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{flowEndTime ? (
 						<Typography.Text>
-							{moment(flowEndTime)
+							{dayjs(flowEndTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

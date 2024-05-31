@@ -14,7 +14,7 @@ import {
 	IGetPromotionTypeData,
 } from 'features/bonusManagement/type'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import {
 	devicesList,
 	StatusEnum,
@@ -266,7 +266,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (activeFrom: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{activeFrom
-						? moment(activeFrom).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
+						? dayjs(activeFrom).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
 						: 'N/A'}
 				</Typography.Text>
 			),
@@ -280,7 +280,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (activeTo: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{activeTo
-						? moment(activeTo).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
+						? dayjs(activeTo).utcOffset(0).format('YYYY-MM-DD  HH:mm:ss')
 						: 'N/A'}
 				</Typography.Text>
 			),
@@ -306,7 +306,7 @@ const BonusManagementTable: FC<IBonusManagementTableProps> = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format('YYYY-MM-DD  HH:mm:ss')
 						: '-'}

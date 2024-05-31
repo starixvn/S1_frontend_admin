@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { UploadFile } from 'antd/es/upload/interface'
 
 export interface IGetBankInfoListArgs {
@@ -55,7 +55,7 @@ export interface IDepositForm {
 	bankName: string
 	accountName: string
 	amount: string
-	dateTime: moment.Moment
+	dateTime: dayjs.Dayjs
 	referenceNo: string
 	memo: string
 	receipt: UploadFile[]

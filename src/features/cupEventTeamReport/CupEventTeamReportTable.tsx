@@ -4,7 +4,7 @@ import { Table } from 'components'
 import { Button, Popconfirm, Typography, Row, Col } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PermissionInterface } from 'type'
 import { IGetCupEventReportData } from './type'
 import { SiteIds } from '../../app/constants/siteIds'
@@ -104,7 +104,7 @@ const CupEventTeamReportTable: FC<ICupEventTeamReportProps> = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 

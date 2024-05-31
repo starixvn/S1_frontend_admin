@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isArray, some } from 'lodash'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -117,7 +117,7 @@ const AdminUserLogTable = ({
 			render: (createTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

@@ -8,7 +8,7 @@ import paths from 'app/constants/paths'
 import { PaginationInterface } from 'common/hooks'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import { IVerificationRewardReportData } from 'features/verificationReport/type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useAppSelector } from 'app/store'
 import { selectUserSiteList } from 'common/enum'
 
@@ -114,7 +114,7 @@ const VerificationReportTable = ({
 			render: (phoneRewardTime: string) =>
 				!isEmpty(phoneRewardTime) ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(phoneRewardTime)
+						{dayjs(phoneRewardTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -152,7 +152,7 @@ const VerificationReportTable = ({
 			render: (emailRewardTime: string) =>
 				!isEmpty(emailRewardTime) ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(emailRewardTime)
+						{dayjs(emailRewardTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -181,7 +181,7 @@ const VerificationReportTable = ({
 			render: (verificationReawardTime: string) =>
 				!isEmpty(verificationReawardTime) ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(verificationReawardTime)
+						{dayjs(verificationReawardTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

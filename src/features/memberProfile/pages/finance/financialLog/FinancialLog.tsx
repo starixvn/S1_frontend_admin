@@ -15,7 +15,7 @@ import FinancialTable from 'features/memberProfile/pages/finance/financialLog/Fi
 import { FinancialFilter } from 'features/memberProfile/pages/finance/financialLog/FinancialFilter'
 import { AffixButtons } from 'components/AffixButtons'
 import download from 'downloadjs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 
 const FinancialLog = () => {
@@ -24,7 +24,7 @@ const FinancialLog = () => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [filterForm] = Form.useForm<{
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 		type: number[]
 		refTransId: string
 	}>()
@@ -123,7 +123,7 @@ const FinancialLog = () => {
 			const blob = await exportFinancialLog(args).unwrap()
 			download(
 				blob,
-				`ExportFinancialLog_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportFinancialLog_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
