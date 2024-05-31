@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Modal, Spin, TablePaginationConfig } from 'antd'
 import { IGetDrawPrizeReportLogData } from 'features/drawPrizeReport/type'
 import { useEffect, useState } from 'react'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { Table } from 'components'
@@ -46,7 +46,7 @@ const DrawPrizeDetailModal = ({
 			align: 'center' as 'center',
 			render: (drawTime: string) =>
 				drawTime
-					? moment(drawTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(drawTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

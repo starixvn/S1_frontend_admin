@@ -32,7 +32,7 @@ import { head, isEmpty, trim } from 'lodash'
 import { BannerInfoEditTab } from 'features/bonusManagement/editBonusDetail/BannerInfoEditTab'
 import { EditDetailModal } from 'features/bonusManagement/editBonusDetail/EditDetailModal'
 import { Currency } from 'common/enum/type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	displayConditionRequestConverter,
 	displayConditionResponseConverter,
@@ -380,8 +380,8 @@ const UpdateBonus: FC<{
 			if (displayFrom && displayTo) {
 				form.setFieldsValue({
 					displayDate: [
-						moment(displayFrom).utcOffset(0),
-						moment(displayTo).utcOffset(0),
+						dayjs(displayFrom).utcOffset(0),
+						dayjs(displayTo).utcOffset(0),
 					],
 				})
 			} else {
@@ -397,8 +397,8 @@ const UpdateBonus: FC<{
 				bonusType: promotionType,
 				description,
 				activeDate: [
-					moment(periodFrom).utcOffset(0),
-					moment(periodTo).utcOffset(0),
+					dayjs(periodFrom).utcOffset(0),
+					dayjs(periodTo).utcOffset(0),
 				],
 				promotionAction,
 				isSpecial,

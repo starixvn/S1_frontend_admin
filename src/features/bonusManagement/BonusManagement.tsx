@@ -24,7 +24,7 @@ import {
 	usePagination,
 	useQueryParams,
 } from 'common/hooks'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { useTranslation } from 'react-i18next'
 import { isEmpty, trim } from 'lodash'
@@ -47,7 +47,7 @@ const BonusManagement: FC<{
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [filterForm] = Form.useForm<{
-		dateRange: [moment.Moment, moment.Moment]
+		dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 		currencyIds: number[]
 		promotionTypes: number[]
 		bonusCode: string
@@ -222,7 +222,7 @@ const BonusManagement: FC<{
 				device = 0,
 			} = queryParams
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				bonusCode,
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				promotionTypes: promotionTypes.map((promotion: string) =>

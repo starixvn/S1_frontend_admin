@@ -12,10 +12,7 @@ import {
 } from 'antd'
 import { reject } from 'lodash'
 import { LayoutContent } from 'app/pages/layout'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
 import { Currency } from 'common/enum/type'
@@ -188,7 +185,7 @@ const PaymentAdjustmentFilter = ({
 										<Form.Item
 											noStyle
 											name='dateRange'
-											initialValue={MOMENT_DATE_RANGES.Today}
+											initialValue={DATE_RANGES.Today}
 											rules={[
 												{
 													required: true,
@@ -199,7 +196,7 @@ const PaymentAdjustmentFilter = ({
 											<RangePicker
 												style={{ width: '100%' }}
 												showTime
-												ranges={MOMENT_RANGE_PICKER_RANGES([
+												ranges={RANGE_PICKER_RANGES([
 													'Today',
 													'Yesterday',
 													'Last Week',

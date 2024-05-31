@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { TablePaginationConfig, Typography } from 'antd'
 import { find } from 'lodash'
 import { Table } from 'components'
@@ -93,7 +93,7 @@ const OtpVerificationReportTable = ({
 			render: (createTime: string | null) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 					{createTime &&
-						moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Typography.Text>
 			),
 		},
@@ -105,7 +105,7 @@ const OtpVerificationReportTable = ({
 			render: (updateTime: string | null) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 					{updateTime &&
-						moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Typography.Text>
 			),
 		},
@@ -117,9 +117,7 @@ const OtpVerificationReportTable = ({
 			render: (verifiedTime: string | null) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 					{verifiedTime &&
-						moment(verifiedTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						dayjs(verifiedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 				</Typography.Text>
 			),
 		},

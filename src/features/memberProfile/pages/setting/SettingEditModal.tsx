@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { DatePicker, Form, Input, Modal } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
 import { ModalState } from 'common/hooks'
@@ -51,7 +51,7 @@ const SettingEditModal = ({
 					fullName: '',
 					email: '',
 					phoneNo: '',
-					birthDay: moment(),
+					birthDay: dayjs(),
 					reason: '',
 					address: {},
 				}}

@@ -8,7 +8,7 @@ import MemberProfileSiderContent from 'features/memberProfile/sider/MemberProfil
 const { Sider } = Layout
 
 const StyleSider = styled(Sider)`
-	background: transparent;
+	background: transparent !important;
 	margin: 8px;
 `
 

@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetNewsListArgs {
 	siteIds: number[]
@@ -46,14 +46,14 @@ export interface ISetNewsStatusArgs {
 
 export type IFilterForm = {
 	siteId: number
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	status: number[]
 }
 
 export interface IEditForm {
 	siteId: number
 	newsId: number | 'Add'
-	postTime: Moment
+	postTime: Dayjs
 	sort: number
 	status: boolean
 	imageUrl: any

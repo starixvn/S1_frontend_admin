@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 
 export interface IExportDrawPrizeReportArgs {
 	siteId?: number
@@ -62,7 +62,7 @@ export interface IGetDrawPrizeReportLogData {
 }
 
 export interface IFilterForm {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	currencyIds: number[]
 	eventNames: string[]
 }

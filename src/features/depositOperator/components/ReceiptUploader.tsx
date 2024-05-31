@@ -10,7 +10,7 @@ import {
 	Spin,
 	Upload,
 } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { PlusOutlined } from '@ant-design/icons'
 import React, { useRef, useState } from 'react'
 import { getBase64, normFileForFormImageItem } from 'common/utils/image'
@@ -153,7 +153,7 @@ const ReceiptUploader = ({
 					label={t('Label_CreateTime')}
 				>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Descriptions.Item>
 			</Descriptions>

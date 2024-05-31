@@ -4,7 +4,7 @@ import { Table } from 'components'
 import { find } from 'lodash'
 import { deviceStatusList } from 'features/memberProfile/constants'
 import { Typography } from 'antd'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { isPositiveNum } from 'common/utils'
 
@@ -95,7 +95,7 @@ const DeviceListTable = ({
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(lastUpdateTime)
+						{dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

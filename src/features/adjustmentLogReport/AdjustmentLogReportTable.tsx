@@ -1,5 +1,5 @@
 import { isArray, isBoolean, isNumber, isString } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Table, TablePaginationConfig, Tag } from 'antd'
 import styled from 'styled-components'
 import { LayoutContent } from 'app/pages/layout'
@@ -128,7 +128,7 @@ const AdjustmentLogReportTable = ({
 			width: 140,
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime)
+				dayjs(createTime)
 					.utcOffset(timeZoneUtcOffset)
 					.format('YYYY-MM-DD  HH:mm:ss'),
 		},

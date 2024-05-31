@@ -26,7 +26,7 @@ import {
 	useSetBankTransferMutation,
 } from 'features/transferInfoManagement/api'
 import { useEffect } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { EditTransferInfoBody } from 'features/transferInfoManagement/editTransferInfo/EditTransferInfoBody'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
@@ -94,7 +94,7 @@ const EditTransferInfo = () => {
 			const { transDate, ...restValue } = transferData
 
 			form.setFieldsValue({
-				transDate: moment(transDate),
+				transDate: dayjs(transDate),
 				...restValue,
 			})
 		} catch (error) {

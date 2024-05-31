@@ -8,7 +8,7 @@ import {
 	Input,
 	Row,
 } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
 import TimeZoneSelect from 'components/TimeZoneSelect'
@@ -43,7 +43,7 @@ const UserOnlineReportFilter = ({
 						layout='vertical'
 						size='middle'
 						initialValues={{
-							date: moment().startOf('day'),
+							date: dayjs().startOf('day'),
 						}}
 						onFinish={() => onSearch({})}
 					>

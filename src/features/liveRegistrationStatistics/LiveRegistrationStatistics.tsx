@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import moment, { Moment } from 'moment'
+import dayjs, { Dayjs } from 'dayjs'
 import download from 'downloadjs'
 import { isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -56,7 +56,7 @@ const LiveRegistrationStatistics: FC<{
 		currencyId: number
 		depositStatus: number
 		status: number
-		dateRange: [Moment, Moment]
+		dateRange: [Dayjs, Dayjs]
 		affiliatesCode: string
 		agentCodeType: number
 		callOutStatus: number
@@ -192,7 +192,7 @@ const LiveRegistrationStatistics: FC<{
 			}).unwrap()
 			download(
 				blob,
-				`LiveRegistrationStatistics_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`LiveRegistrationStatistics_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -299,7 +299,7 @@ const LiveRegistrationStatistics: FC<{
 			dormantUser,
 			dateType: Number(dateType),
 			userName,
-			dateRange: [moment(startDate), moment(endDate)],
+			dateRange: [dayjs(startDate), dayjs(endDate)],
 		})
 
 		setPagination(prev => ({ ...prev, current: pageNumber, pageSize }))

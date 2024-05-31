@@ -1,4 +1,4 @@
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { Table } from 'components'
 import { isString } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -154,7 +154,7 @@ const AnnouncementTable = ({
 			render: (startTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{startTime
-						? moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Text>
 			),
@@ -168,7 +168,7 @@ const AnnouncementTable = ({
 			render: (endTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{endTime
-						? moment(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Text>
 			),
@@ -190,7 +190,7 @@ const AnnouncementTable = ({
 			render: (createTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Text>
 			),
@@ -212,7 +212,7 @@ const AnnouncementTable = ({
 			render: (lastUpdateTime: string) => (
 				<Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}

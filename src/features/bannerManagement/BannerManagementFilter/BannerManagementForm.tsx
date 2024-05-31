@@ -31,14 +31,14 @@ const BannerManagementForm = ({
 	const { t } = useTranslation()
 
 	const bannerTypeSelector = () => {
-		const onChangeBannerType = (newBannerTypes: Array<number | string>) => {
+		const onChangeBannerType = (newBannerTypes: ('all' | number)[]) => {
 			if (newBannerTypes.includes('all')) {
 				form.setFieldsValue({
 					bannerTypes: bannerTypeList.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					bannerTypes: newBannerTypes,
+					bannerTypes: newBannerTypes as number[],
 				})
 			}
 		}
@@ -61,14 +61,14 @@ const BannerManagementForm = ({
 	}
 
 	const bannerStatusSelector = () => {
-		const onChangeBannerStatus = (newBannerTypes: Array<number | string>) => {
+		const onChangeBannerStatus = (newBannerTypes: ('all' | number)[]) => {
 			if (newBannerTypes.includes('all')) {
 				form.setFieldsValue({
 					statuses: BANNER_STATUS_OPTIONS.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					statuses: newBannerTypes,
+					statuses: newBannerTypes as number[],
 				})
 			}
 		}

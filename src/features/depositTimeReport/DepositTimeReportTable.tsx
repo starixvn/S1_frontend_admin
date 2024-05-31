@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	Tag,
 	Badge,
@@ -41,7 +41,7 @@ const DepositTimeReportTable = ({
 			dataIndex: 'createTime',
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+				dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_Message'),
@@ -119,7 +119,7 @@ const DepositTimeReportTable = ({
 					depositMessageList.length > 1
 						? depositMessageList
 								.slice()
-								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+								.sort((a, b) => dayjs(a.createTime).diff(dayjs(b.createTime)))
 						: depositMessageList
 
 				return (
@@ -157,7 +157,7 @@ const DepositTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{createTime ? (
 						<Typography.Text>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -176,7 +176,7 @@ const DepositTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{updateTime ? (
 						<Typography.Text>
-							{moment(updateTime)
+							{dayjs(updateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -195,7 +195,7 @@ const DepositTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{approvedTime ? (
 						<Typography.Text>
-							{moment(approvedTime)
+							{dayjs(approvedTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -214,7 +214,7 @@ const DepositTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{statementTime ? (
 						<Typography.Text>
-							{moment(statementTime)
+							{dayjs(statementTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>
@@ -233,7 +233,7 @@ const DepositTimeReportTable = ({
 				<div style={{ width: '180px' }}>
 					{toApprovedTime ? (
 						<Typography.Text>
-							{moment(toApprovedTime)
+							{dayjs(toApprovedTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

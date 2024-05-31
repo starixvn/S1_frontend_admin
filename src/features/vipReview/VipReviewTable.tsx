@@ -1,5 +1,5 @@
 import { Popconfirm, Space, TablePaginationConfig, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -165,7 +165,7 @@ const VipReviewTable = ({
 			render: (calculateTime: number | string) =>
 				calculateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(calculateTime)
+						{dayjs(calculateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -182,7 +182,7 @@ const VipReviewTable = ({
 			render: (settleTime: any) =>
 				settleTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(settleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(settleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -197,7 +197,7 @@ const VipReviewTable = ({
 			render: (qualifiedTime: any) =>
 				qualifiedTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(qualifiedTime)
+						{dayjs(qualifiedTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -329,7 +329,7 @@ const VipReviewTable = ({
 			render: (calculateTime: number | string) =>
 				calculateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(calculateTime)
+						{dayjs(calculateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>
@@ -346,7 +346,7 @@ const VipReviewTable = ({
 			render: (settleTime: any) =>
 				settleTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(settleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(settleTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -361,7 +361,7 @@ const VipReviewTable = ({
 			render: (qualifiedTime: any) =>
 				qualifiedTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(qualifiedTime)
+						{dayjs(qualifiedTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

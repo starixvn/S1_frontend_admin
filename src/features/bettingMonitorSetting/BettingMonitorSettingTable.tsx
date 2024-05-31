@@ -8,7 +8,7 @@ import {
 	FormInstance,
 	TablePaginationConfig,
 } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PaginationInterface } from 'common/hooks'
 import { PermissionInterface } from 'type'
 import { IEditForm, IGetListData } from 'features/bettingMonitorSetting/type'
@@ -210,7 +210,7 @@ const BettingMonitorTable = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}

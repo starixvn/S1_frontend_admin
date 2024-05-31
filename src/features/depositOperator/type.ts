@@ -1,5 +1,5 @@
 import { Key } from 'react'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 export enum DepositStatusEnum {
@@ -168,7 +168,7 @@ export interface IDepositOperatorData {
 }
 
 export interface IForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	statuses: number[]
 	selectPayIds: number[]
@@ -212,7 +212,7 @@ export interface IDepositRequestFrom {
 	amount: number
 	bankId: number
 	comment: string
-	statementTime: Moment
+	statementTime: Dayjs
 }
 
 export interface IDepositCommentData {

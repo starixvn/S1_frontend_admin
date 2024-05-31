@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { isArray, isEmpty, isNumber, reject } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { AffixButtons } from 'components/AffixButtons'
 import { useTranslation } from 'react-i18next'
@@ -296,7 +296,7 @@ const BetList: FC<{
 
 			const blob = await exportBetListFile(args).unwrap()
 
-			download(blob, `BetListReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`)
+			download(blob, `BetListReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -334,7 +334,7 @@ const BetList: FC<{
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				userName,
 				tags,

@@ -12,7 +12,7 @@ import {
 } from 'antd'
 import { ILeaderboardPointCalculationData } from 'features/leaderboardManagement/type'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { EditableCellRows } from 'components'
 
@@ -151,7 +151,7 @@ const CalculationForm = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

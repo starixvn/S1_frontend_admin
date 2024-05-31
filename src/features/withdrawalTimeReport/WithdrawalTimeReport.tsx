@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -142,7 +142,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`WithdrawalTimeReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`WithdrawalTimeReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -166,7 +166,7 @@ const WithdrawalTimeReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds?.map((id: string) => Number(id)),
 				statuses: statuses?.map((status: string) => Number(status)),
 				withdrawalId,

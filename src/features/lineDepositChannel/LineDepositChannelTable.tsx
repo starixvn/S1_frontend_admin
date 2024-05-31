@@ -14,7 +14,7 @@ import { EditableCellRows, Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { PaginationInterface } from 'common/hooks'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 
 interface ILineDepositChannelTableProps {
@@ -151,7 +151,7 @@ const LineDepositChannelTable: FC<ILineDepositChannelTableProps> = ({
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(lastUpdateTime)
+						{dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)}
 					</Typography.Text>

@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetIovationReportArgs {
 	currencyId: number
@@ -37,7 +37,7 @@ export interface IIovationAssociateAccountData {
 }
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyId: number
 	deviceType: number
 	userName: string | null

@@ -1,5 +1,5 @@
 import download from 'downloadjs'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'app/store'
@@ -265,7 +265,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				orderByDirection: Number(orderByDirection),
 			}).unwrap()
 
-			download(blob, `BonusInfoReport${moment().format('YYYYMMDDHHmmss')}.xlsx`)
+			download(blob, `BonusInfoReport${dayjs().format('YYYYMMDDHHmmss')}.xlsx`)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -280,7 +280,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			bonusCode,
 			recordSiteId,
 			bonusSelector: JSON.stringify({ bonusCode, siteId: recordSiteId }),
-			recordDate: moment(recordDate).format(dateFormat),
+			recordDate: dayjs(recordDate).format(dateFormat),
 		})
 		if (formGroupType === GroupByEnum.Date) {
 			// 篩出特定時間的 bonusCode(日為單位) => 排序
@@ -289,8 +289,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					bonusInfo
 						.filter(
 							({ recordDate: dataRecordDate }) =>
-								moment(dataRecordDate).format(dateFormat) ===
-								moment(recordDate).format(dateFormat)
+								dayjs(dataRecordDate).format(dateFormat) ===
+								dayjs(recordDate).format(dateFormat)
 						)
 						.map(
 							({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
@@ -308,7 +308,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				lodashOrderBy(
 					uniq(
 						bonusInfo.map(({ recordDate: dataRecordDate }) =>
-							moment(dataRecordDate).format(dateFormat)
+							dayjs(dataRecordDate).format(dateFormat)
 						)
 					)
 				)
@@ -320,8 +320,8 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					bonusInfo
 						.filter(
 							({ recordDate: dataRecordDate }) =>
-								moment(dataRecordDate).format(monthFormat) ===
-								moment(recordDate).format(monthFormat)
+								dayjs(dataRecordDate).format(monthFormat) ===
+								dayjs(recordDate).format(monthFormat)
 						)
 						.map(
 							({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
@@ -338,41 +338,41 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			const { startDate, endDate } = queryParams
 			// 不再5月份且不在7月份表示 表示recordDate在中間月份 選取結果 => 6月1號 ～ 6月30號
 			if (
-				moment(startDate).format(monthFormat) !==
-					moment(recordDate).format(monthFormat) &&
-				moment(endDate).format(monthFormat) !==
-					moment(recordDate).format(monthFormat)
+				dayjs(startDate).format(monthFormat) !==
+					dayjs(recordDate).format(monthFormat) &&
+				dayjs(endDate).format(monthFormat) !==
+					dayjs(recordDate).format(monthFormat)
 			) {
 				bonusDetailForm.setFieldsValue({
 					dateRange: [
-						moment(recordDate).startOf('month'),
-						moment(recordDate).endOf('month'),
+						dayjs(recordDate).startOf('month'),
+						dayjs(recordDate).endOf('month'),
 					],
 				})
 				// 在5月份但不在7月份 表示recordDate在最前月份 選取結果 => 5月28號 ～ 5月31號
 			} else if (
-				moment(startDate).format(monthFormat) ===
-					moment(recordDate).format(monthFormat) &&
-				moment(endDate).format(monthFormat) !==
-					moment(recordDate).format(monthFormat)
+				dayjs(startDate).format(monthFormat) ===
+					dayjs(recordDate).format(monthFormat) &&
+				dayjs(endDate).format(monthFormat) !==
+					dayjs(recordDate).format(monthFormat)
 			) {
 				bonusDetailForm.setFieldsValue({
-					dateRange: [moment(startDate), moment(recordDate).endOf('month')],
+					dateRange: [dayjs(startDate), dayjs(recordDate).endOf('month')],
 				})
 				// 在7月份但不在5月份 表示recordDate在最後月份 選取結果 => 7月1號 ～ 7月3號
 			} else if (
-				moment(startDate).format(monthFormat) !==
-					moment(recordDate).format(monthFormat) &&
-				moment(endDate).format(monthFormat) ===
-					moment(recordDate).format(monthFormat)
+				dayjs(startDate).format(monthFormat) !==
+					dayjs(recordDate).format(monthFormat) &&
+				dayjs(endDate).format(monthFormat) ===
+					dayjs(recordDate).format(monthFormat)
 			) {
 				bonusDetailForm.setFieldsValue({
-					dateRange: [moment(recordDate).startOf('month'), moment(endDate)],
+					dateRange: [dayjs(recordDate).startOf('month'), dayjs(endDate)],
 				})
 				// 其他則是落在選取日期在同月的情況 例：5月3號 ～ 5月27號 顯示結果 => 5月3號 ～ 5月27號
 			} else {
 				bonusDetailForm.setFieldsValue({
-					dateRange: [moment(startDate), moment(endDate)],
+					dateRange: [dayjs(startDate), dayjs(endDate)],
 				})
 			}
 		} else {
@@ -396,7 +396,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			bonusInfo
 				.filter(
 					({ recordDate: dataRecordDate }) =>
-						moment(dataRecordDate).format(dateFormat) === date
+						dayjs(dataRecordDate).format(dateFormat) === date
 				)
 				.map(({ bonusCode: dataBonusCode, siteId: dataSiteId, siteName }) => {
 					return { bonusCode: dataBonusCode, siteId: dataSiteId, siteName }
@@ -453,7 +453,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				siteId: recordSiteId,
 				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(
+							date: dayjs(
 								formGroupType === GroupByEnum.Date
 									? recordDate
 									: startTimeByMonth
@@ -463,7 +463,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					: startDate,
 				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(
+							date: dayjs(
 								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
 							).endOf('day'),
 							utcOffset: timeZoneUtcOffset,
@@ -550,7 +550,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 				bonusCode,
 				startDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(
+							date: dayjs(
 								formGroupType === GroupByEnum.Date
 									? recordDate
 									: startTimeByMonth
@@ -560,7 +560,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					: startDate,
 				endDate: [GroupByEnum.Date, GroupByEnum.Month].includes(formGroupType)
 					? utcFormatter({
-							date: moment(
+							date: dayjs(
 								formGroupType === GroupByEnum.Date ? recordDate : endTimeByMonth
 							).endOf('day'),
 							utcOffset: timeZoneUtcOffset,
@@ -576,7 +576,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			download(
 				blob,
-				`BonusDetailReport${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`BonusDetailReport${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -630,7 +630,7 @@ const BonusInfo = ({ pageTitle }: { pageTitle?: string }) => {
 					groupByType: Number(groupByType),
 					orderByDirection: Number(orderByDirection),
 					baseCurrencyId: Number(baseCurrencyId),
-					dateRange: [moment(startDate), moment(endDate)],
+					dateRange: [dayjs(startDate), dayjs(endDate)],
 					bonusTypes: bonusTypes.map((value: string) => Number(value)),
 					bonusStatus: bonusStatus.map((value: string) => Number(value)),
 					claimStatuses: claimStatuses.map((value: string) => Number(value)),

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
 import { PAGINATION } from 'common/hooks'
@@ -188,7 +188,7 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			render: ({ createTime, custId }: IBlockEWalletAccData) =>
 				isUnused(custId)
 					? '-'
-					: moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+					: dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_UpdateTime'),
@@ -198,11 +198,11 @@ const BlockEWalletTable: FC<IBlockEWalletTableProps> = ({
 			render: (record: IBlockEWalletAccData) => {
 				const { blockUpdateTime, updateTime } = record
 				// * 拿 `blockUpdateTime` 跟 `updateTime` 後者的時間
-				const time = moment(blockUpdateTime).isAfter(updateTime)
+				const time = dayjs(blockUpdateTime).isAfter(updateTime)
 					? blockUpdateTime
 					: updateTime
 				return updateTime
-					? moment(time).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(time).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: ''
 			},
 		},

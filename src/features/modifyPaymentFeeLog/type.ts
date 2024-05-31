@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IGetModifyPaymentChargeFeeListArgs {
 	startTime: string
@@ -35,7 +35,7 @@ export interface ISubmitPaySettingArgs {
 }
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 }
 
 export interface IModalForm {
@@ -43,5 +43,5 @@ export interface IModalForm {
 	channelId: number
 	chargeFeePercentage: number
 	chargeFeePreCount: number
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 }

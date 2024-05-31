@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import paths from 'app/constants/paths'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -76,7 +76,7 @@ const DepositOperatorTable = ({
 			dataIndex: 'createTime',
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+				dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_Message'),
@@ -129,7 +129,7 @@ const DepositOperatorTable = ({
 					depositMessageList.length > 1
 						? depositMessageList
 								.slice()
-								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+								.sort((a, b) => dayjs(a.createTime).diff(dayjs(b.createTime)))
 						: depositMessageList
 
 				return (
@@ -409,7 +409,7 @@ const DepositOperatorTable = ({
 			render: (createTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{createTime
-						? moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -423,9 +423,7 @@ const DepositOperatorTable = ({
 			render: (flowEndTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{flowEndTime
-						? moment(flowEndTime)
-								.utcOffset(timeZoneUtcOffset)
-								.format(timeFormat)
+						? dayjs(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -439,7 +437,7 @@ const DepositOperatorTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),
@@ -453,7 +451,7 @@ const DepositOperatorTable = ({
 			render: (statementTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
 					{statementTime
-						? moment(statementTime)
+						? dayjs(statementTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}

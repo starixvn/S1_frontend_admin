@@ -9,10 +9,7 @@ import {
 	Select,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { SearchOutlined } from '@ant-design/icons'
 import { IsPayoutEnum, isPayoutList } from 'features/memberProfile/constants'
@@ -89,7 +86,7 @@ const VipRebateFilter = ({
 							<Form.Item
 								noStyle
 								name='dateRange'
-								initialValue={MOMENT_DATE_RANGES['Last 7 Day']}
+								initialValue={DATE_RANGES['Last 7 Day']}
 								rules={[
 									{
 										required: true,
@@ -99,7 +96,7 @@ const VipRebateFilter = ({
 							>
 								<RangePicker
 									style={{ width: '100%' }}
-									ranges={MOMENT_RANGE_PICKER_RANGES([
+									ranges={RANGE_PICKER_RANGES([
 										'Today',
 										'Yesterday',
 										'Last Week',

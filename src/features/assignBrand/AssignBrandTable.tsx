@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { TablePaginationConfig, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
@@ -69,7 +69,7 @@ const AssignBrandTable: FC<AssignBrandTableProps> = ({
 			align: 'center' as 'center',
 			render: (loginTime: string) =>
 				loginTime
-					? moment(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(loginTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -80,7 +80,7 @@ const AssignBrandTable: FC<AssignBrandTableProps> = ({
 			align: 'center' as 'center',
 			render: (updateTime: string) =>
 				updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'components'
 import { TablePaginationConfig, Typography } from 'antd'
@@ -117,7 +117,7 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			align: 'center' as 'center',
 			render: (approvedTime: string) =>
 				approvedTime
-					? moment(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -135,7 +135,7 @@ const DepositAccountingTable: FC<IDepositAccountingTableProps> = ({
 			align: 'center' as 'center',
 			render: (approvedTime: string) =>
 				approvedTime
-					? moment(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(approvedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 	]

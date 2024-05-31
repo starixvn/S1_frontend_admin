@@ -3,7 +3,7 @@
 import { FC } from 'react'
 import { Space, Switch, Tag, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { numberFormatter, timeFormat } from 'common/utils/format'
 import {
@@ -164,7 +164,7 @@ const GiftListingTable: FC<IGiftListingTableProps> = ({
 			editable: false,
 			render: (lastUpdateTime: string) =>
 				lastUpdateTime
-					? moment(lastUpdateTime)
+					? dayjs(lastUpdateTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

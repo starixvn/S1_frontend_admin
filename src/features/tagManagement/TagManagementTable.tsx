@@ -15,7 +15,7 @@ import {
 	Popconfirm,
 } from 'antd'
 import { IEditForm, IGetTagListData } from 'features/tagManagement/type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { timeFormat } from 'common/utils/format'
 import { ColorResult } from 'react-color'
 import { PermissionInterface } from 'type'
@@ -155,7 +155,7 @@ const TagManagementTable = ({
 			render: (updateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{updateTime
-						? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+						? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 						: ''}
 				</Typography.Text>
 			),

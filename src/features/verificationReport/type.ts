@@ -1,5 +1,5 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IVerificationRewardReportArgs {
 	siteIds: number[]
@@ -48,7 +48,7 @@ export interface IFilterForm {
 	memberId: string
 	sabaId: string
 	currencyIds: number[]
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	pageNumber: number
 	pageSize: number
 }

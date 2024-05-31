@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect } from 'react'
+import { FC, useContext, useEffect } from 'react'
 import { head } from 'lodash'
 import {
 	Button,
@@ -24,11 +24,8 @@ import { Link } from 'react-router-dom'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
-import {
-	MOMENT_DATE_RANGES,
-	MOMENT_RANGE_PICKER_RANGES,
-} from 'app/constants/moment'
-import moment, { Moment } from 'moment/moment'
+import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import dayjs, { Dayjs } from 'dayjs'
 import {
 	BonusTypeEnum,
 	devicesDetailList,
@@ -82,7 +79,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	const currentBonusType = Form.useWatch('bonusType', form)
 	const sameByActive = Form.useWatch('sameByActive', form)
 	// * displayDate => 後端有情境會回傳 [null,null]
-	const displayDate: [Moment | null, Moment | null] = Form.useWatch(
+	const displayDate: [Dayjs | null, Dayjs | null] = Form.useWatch(
 		'displayDate',
 		form
 	)
@@ -415,8 +412,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										noStyle
 										name='displayDate'
 										initialValue={[
-											moment().startOf('day'),
-											moment().startOf('day'),
+											dayjs().startOf('day'),
+											dayjs().startOf('day'),
 										]}
 										rules={[
 											{
@@ -428,7 +425,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										<RangePicker
 											disabled={!(isDisplayDate && canEdit)}
 											style={{ width: '100%' }}
-											ranges={MOMENT_RANGE_PICKER_RANGES([
+											ranges={RANGE_PICKER_RANGES([
 												'Today',
 												'Yesterday',
 												'Last Week',
@@ -438,8 +435,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 											showTime
 											onChange={newDateRange =>
 												form?.setFieldsValue({
-													startDate: moment(newDateRange?.[0]),
-													endDate: moment(newDateRange?.[1]),
+													startDate: dayjs(newDateRange?.[0]),
+													endDate: dayjs(newDateRange?.[1]),
 												})
 											}
 										/>
@@ -492,7 +489,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									<Form.Item
 										noStyle
 										name='activeDate'
-										initialValue={MOMENT_DATE_RANGES.Today}
+										initialValue={DATE_RANGES.Today}
 										rules={[
 											{
 												required: true,
@@ -503,7 +500,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										<RangePicker
 											disabled={sameByActive || !canEdit}
 											style={{ width: '100%' }}
-											ranges={MOMENT_RANGE_PICKER_RANGES([
+											ranges={RANGE_PICKER_RANGES([
 												'Today',
 												'Yesterday',
 												'Last Week',
@@ -513,8 +510,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 											showTime
 											onChange={newDateRange =>
 												form?.setFieldsValue({
-													startDate: moment(newDateRange?.[0]),
-													endDate: moment(newDateRange?.[1]),
+													startDate: dayjs(newDateRange?.[0]),
+													endDate: dayjs(newDateRange?.[1]),
 												})
 											}
 										/>

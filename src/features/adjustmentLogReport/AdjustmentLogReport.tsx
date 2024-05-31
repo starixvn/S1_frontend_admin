@@ -1,5 +1,5 @@
 import { isArray, isEmpty } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FC, useEffect } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { Form, message, TablePaginationConfig } from 'antd'
@@ -181,7 +181,7 @@ const AdjustmentLogReport: FC<{
 					: [],
 				transId,
 				userName,
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 			})
 
 			handleSearch({

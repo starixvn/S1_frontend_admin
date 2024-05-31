@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import React, { FC } from 'react'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -204,7 +204,7 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 				return isUnused(custId)
 					? '-'
 					: createTime &&
-							moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+							dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 			},
 		},
 		{
@@ -216,12 +216,12 @@ const BlockBankAccountTable: FC<IBlockBankAccountTableProps> = ({
 			render: (releaseUpdateTime: string | null, record = {}) => {
 				const { blockUpdateTime } = record as IBlockBankAccState
 
-				const updateTime = moment(blockUpdateTime).isAfter(releaseUpdateTime)
+				const updateTime = dayjs(blockUpdateTime).isAfter(releaseUpdateTime)
 					? blockUpdateTime
 					: releaseUpdateTime
 
 				return updateTime
-					? moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: ''
 			},
 		},

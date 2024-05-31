@@ -17,7 +17,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
 import { IFinancialLogData } from 'features/memberProfile/type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import {
 	numberFormatter,
 	numFormatToDigits,
@@ -70,7 +70,7 @@ const FinancialLogsTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -105,14 +105,14 @@ const FinancialLogsTable = ({
 	]
 
 	const typeSelector = () => {
-		const onChangeType = (newType: Array<number | string>) => {
+		const onChangeType = (newType: ('all' | number)[]) => {
 			if (newType.includes('all')) {
 				form.setFieldsValue({
 					financialType: typeList?.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					financialType: newType,
+					financialType: newType as number[],
 				})
 			}
 		}

@@ -1,5 +1,5 @@
 import { Button, Popconfirm, Typography } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { LayoutContent } from 'app/pages/layout'
 import { Table } from 'components'
 import { IPendingBonusData } from 'features/pendingBonus/type'
@@ -118,7 +118,7 @@ const PendingBonusTable = ({
 			render: (expiryTime: string) =>
 				expiryTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{moment(expiryTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(expiryTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'
@@ -132,7 +132,7 @@ const PendingBonusTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					'-'

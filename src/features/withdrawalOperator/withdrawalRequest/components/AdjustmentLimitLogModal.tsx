@@ -6,7 +6,7 @@ import { numberFormatter } from 'common/utils/format'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { find } from 'lodash'
 import { IGetReasonListData } from 'features/withdrawalAdjustment/type'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 
 interface IAdjustmentLimitLogModalProps {
 	loading: boolean
@@ -80,7 +80,7 @@ const AdjustmentLimitLogModal = ({
 			width: 140,
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime)
+				dayjs(createTime)
 					.utcOffset(timeZoneUtcOffset)
 					.format('YYYY-MM-DD  HH:mm:ss'),
 		},

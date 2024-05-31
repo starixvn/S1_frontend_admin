@@ -25,7 +25,7 @@ import { IGetTurnoverPointReportResponse } from 'features/turnoverPointReport/ty
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { TurnoverPointReportOverviewTable } from 'features/turnoverPointReport/TurnoverPointReportOverviewTable'
 import download from 'downloadjs'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useGetVipLevelEnumBySiteIdQuery } from 'common/service/baseDataApi'
 
 const TurnoverPointReport: FC<{
@@ -162,7 +162,7 @@ const TurnoverPointReport: FC<{
 			const blob = await exportTurnoverPointReport(args).unwrap()
 			download(
 				blob,
-				`ExportTurnoverPointReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`ExportTurnoverPointReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -193,7 +193,7 @@ const TurnoverPointReport: FC<{
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
-				dateRange: [moment(startTime), moment(endTime)],
+				dateRange: [dayjs(startTime), dayjs(endTime)],
 				userName,
 				sabaId,
 				currencyIds: isArray(currencyIds)

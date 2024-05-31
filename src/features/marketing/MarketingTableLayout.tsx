@@ -1,5 +1,5 @@
 import { find } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { ReactNode } from 'react'
 import { Collapse, Card } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -51,7 +51,7 @@ const SummaryTable = ({
 
 	return (
 		<Card
-			title={`${title}, ${moment(startDate).format('YYYY-MM-DD')}-${moment(
+			title={`${title}, ${dayjs(startDate).format('YYYY-MM-DD')}-${dayjs(
 				endDate
 			).format('YYYY-MM-DD')}, ${t('Label_ViewIn')} ${
 				!baseCurrencyId ? '' : baseCurrency

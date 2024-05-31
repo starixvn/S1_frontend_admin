@@ -19,7 +19,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { isJSON } from 'common/utils'
 import { numberFormatter, timeFormat } from 'common/utils/format'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import {
 	AccountTypeEnum,
 	WITHDRAWAL_STATUS_TAGS_COLOR,
@@ -55,7 +55,7 @@ const WithdrawalOperatorTable = ({
 			dataIndex: 'createTime',
 			align: 'center' as 'center',
 			render: (createTime: string) =>
-				moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
+				dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat),
 		},
 		{
 			title: t('Label_Message'),
@@ -111,7 +111,7 @@ const WithdrawalOperatorTable = ({
 					withdrawalMessageList.length > 1
 						? withdrawalMessageList
 								.slice()
-								.sort((a, b) => moment(a.createTime).diff(moment(b.createTime)))
+								.sort((a, b) => dayjs(a.createTime).diff(dayjs(b.createTime)))
 						: withdrawalMessageList
 
 				return (
@@ -308,7 +308,7 @@ const WithdrawalOperatorTable = ({
 			render: (createTime: string) =>
 				createTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(createTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -323,7 +323,7 @@ const WithdrawalOperatorTable = ({
 			render: (updateTime: string) =>
 				updateTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -338,9 +338,7 @@ const WithdrawalOperatorTable = ({
 			render: (flowEndTime: string) =>
 				flowEndTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-						{moment(flowEndTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
+						{dayjs(flowEndTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''

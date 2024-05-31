@@ -8,7 +8,7 @@ import { PaginationInterface } from 'common/hooks'
 import { IGetBonusListData } from 'features/bonusExport/type'
 import { useTranslation } from 'react-i18next'
 import { timeFormat } from 'common/utils/format'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 
 interface IBonusExportTableProps {
@@ -141,7 +141,7 @@ const BonusExportTable: FC<IBonusExportTableProps> = ({
 				<div style={{ width: '150px', display: 'contents' }}>
 					{createTime ? (
 						<Typography.Text style={{ whiteSpace: 'nowrap' }}>
-							{moment(createTime)
+							{dayjs(createTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)}
 						</Typography.Text>

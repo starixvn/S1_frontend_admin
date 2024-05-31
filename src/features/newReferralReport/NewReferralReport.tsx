@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import moment from 'moment/moment'
+import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from 'app/store'
@@ -120,7 +120,7 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 
 			download(
 				blob,
-				`DepositReferralReport_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+				`DepositReferralReport_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`
 			)
 		} catch (error) {
 			message.error(
@@ -142,7 +142,7 @@ const NewReferralReport = ({ pageTitle }: { pageTitle?: string }) => {
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				currencyIds: currencyIds.map((currency: string) => Number(currency)),
 				userName,
 			})

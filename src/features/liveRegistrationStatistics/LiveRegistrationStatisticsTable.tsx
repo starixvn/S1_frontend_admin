@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { find, isArray } from 'lodash'
 import { timeFormat } from 'common/utils/format'
 import { Button, Select, Space, TablePaginationConfig, Typography } from 'antd'
@@ -133,7 +133,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			sorter: true,
 			render: (regTime: string) =>
 				regTime
-					? moment(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
+					? dayjs(regTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
 		},
 		{
@@ -145,7 +145,7 @@ const LiveRegistrationStatisticsTable: FC<{
 			sorter: true,
 			render: (lastActiveTime: string) =>
 				lastActiveTime
-					? moment(lastActiveTime)
+					? dayjs(lastActiveTime)
 							.utcOffset(timeZoneUtcOffset)
 							.format(timeFormat)
 					: '',

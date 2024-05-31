@@ -10,7 +10,7 @@ import {
 	IGetTransferTypeListData,
 } from 'features/transferInfoManagement/type'
 import { PermissionInterface } from 'type'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {
 	numberFormatter,
 	numFormatToDigits,
@@ -119,7 +119,7 @@ const TransferInfoManagementTable = ({
 					render: (transDate: string) =>
 						transDate ? (
 							<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-								{moment(transDate)
+								{dayjs(transDate)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)}
 							</Typography.Text>
@@ -419,7 +419,7 @@ const TransferInfoManagementTable = ({
 					render: (createTime: string) =>
 						createTime ? (
 							<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-								{moment(createTime)
+								{dayjs(createTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)}
 							</Typography.Text>
@@ -449,7 +449,7 @@ const TransferInfoManagementTable = ({
 					render: (updateTime: string) =>
 						updateTime ? (
 							<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-								{moment(updateTime)
+								{dayjs(updateTime)
 									.utcOffset(timeZoneUtcOffset)
 									.format(timeFormat)}
 							</Typography.Text>

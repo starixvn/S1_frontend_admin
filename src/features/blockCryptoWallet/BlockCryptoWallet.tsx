@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useEffect } from 'react'
 import { find, isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -289,13 +289,13 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
-				dateRange: [moment(startDate), moment(endDate)],
+				dateRange: [dayjs(startDate), dayjs(endDate)],
 				status: Number(status),
 				address,
 				userName,
 				currencyId: currencyId?.map((id: string) => Number(id)),
 				cryptoType: cryptoType?.map((id: string) => Number(id)),
-				network,
+				network: network?.map((id: string) => Number(id)),
 			})
 
 			handleSearch({
@@ -306,7 +306,9 @@ const BlockCryptoWallet = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				cryptoType: cryptoInfoData?.cryptoCurrency.map(
 					({ currencyId }) => currencyId
 				),
-				network: cryptoInfoData?.cryptoNetwork.map(({ network }) => network),
+				network: cryptoInfoData?.cryptoNetwork.map(
+					({ networkType }) => networkType
+				),
 				status: blockStatusEnumList[0]?.value,
 			})
 		}

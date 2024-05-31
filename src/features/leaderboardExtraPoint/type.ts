@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 import { UploadFile } from 'antd/es/upload/interface'
 
 export interface IGetLeaderboardExtraPointArgs {
@@ -38,7 +38,7 @@ export interface IExtraPointData {
 export type IExtraPointResponse = IExtraPointData[]
 
 export interface IFilterForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	categoryIds: number[]
 }

@@ -39,14 +39,14 @@ const ExternalDomainFilter = ({
 }: IExternalDomainFilterProps) => {
 	const { t } = useTranslation()
 
-	const onChangeCurrency = (newCurrencyIds: Array<number | string>) => {
+	const onChangeCurrency = (newCurrencyIds: ('all' | number)[]) => {
 		if (newCurrencyIds.includes('all')) {
 			form.setFieldsValue({
 				currencyIds: currencyListBySite?.map(({ currencyId }) => currencyId),
 			})
 		} else {
 			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
+				currencyIds: newCurrencyIds as number[],
 			})
 		}
 	}

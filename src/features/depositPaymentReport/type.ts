@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export interface IGetDepositReportArgs {
 	currencyIds: number[]
@@ -25,7 +25,7 @@ export interface IGetDepositReportData {
 }
 
 export type IFilterForm = {
-	dateRange: [moment.Moment, moment.Moment]
+	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	siteIds: number[]
 	currencyIds: number[]
 	baseCurrencyId: number

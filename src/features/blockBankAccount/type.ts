@@ -1,7 +1,7 @@
-import { Moment } from 'moment'
+import { Dayjs } from 'dayjs'
 
 export interface IForm {
-	dateRange: [Moment, Moment]
+	dateRange: [Dayjs, Dayjs]
 	currencyIds: number[]
 	blockStatus: number
 	userName: string

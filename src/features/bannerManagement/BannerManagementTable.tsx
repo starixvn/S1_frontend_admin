@@ -7,7 +7,7 @@ import {
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { PermissionInterface } from 'type'
 import { IGetBannerListData } from 'features/bannerManagement/type'
 import { PaginationInterface } from 'common/hooks'
@@ -154,7 +154,7 @@ const BannerManagementTable = ({
 			render: (startTime: string) =>
 				startTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(startTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -169,7 +169,7 @@ const BannerManagementTable = ({
 			render: (endTime: string) =>
 				endTime ? (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
-						{moment(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+						{dayjs(endTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
 					</Typography.Text>
 				) : (
 					''
@@ -204,7 +204,7 @@ const BannerManagementTable = ({
 			render: (lastUpdateTime: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
 					{lastUpdateTime
-						? moment(lastUpdateTime)
+						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
 								.format(timeFormat)
 						: ''}
