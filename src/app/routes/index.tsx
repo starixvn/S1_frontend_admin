@@ -1154,6 +1154,13 @@ const LeaderboardManagement = lazy(
 		)
 )
 
+const HeaderManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HeaderManagement' */ 'features/headerManagement/HeaderManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2853,6 +2860,16 @@ const routes: RouteObject[] = [
 						functionId={paths.cms.sub.leaderboardManagement.functionId}
 					>
 						<LeaderboardManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.headerManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.headerManagement.functionId}
+					>
+						<HeaderManagement />
 					</AuthRequire>
 				),
 			},
