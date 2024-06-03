@@ -1,12 +1,12 @@
 import { Layout } from 'antd'
-import { SITE_LOGO_IMAGE } from 'app/constants/images'
-import { useAppSelector } from 'app/store'
-import { selectUserSite } from 'common/enum'
-import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'usehooks-ts'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { useAuth } from 'common/hooks'
 import { LayoutMenu } from './LayoutMenu'
+// import { SITE_LOGO_IMAGE } from 'app/constants/images'
+// import { useAppSelector } from 'app/store'
+// import { selectUserSite } from 'common/enum'
+// import { Link } from 'react-router-dom'
+// import { LazyLoadImage } from 'react-lazy-load-image-component'
+// import { useAuth } from 'common/hooks'
 
 const { Header, Sider } = Layout
 
@@ -20,9 +20,9 @@ const LayoutSideBar = ({
 	onCloseCollapsed: () => void
 }) => {
 	const mediaMdMatches = useMediaQuery('(min-width: 768px)')
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { allSiteMode } = useAuth()
-	const logoImage = siteId && SITE_LOGO_IMAGE[siteId]
+	// const { siteId } = useAppSelector(selectUserSite) ?? {}
+	// const { allSiteMode } = useAuth()
+	// const logoImage = siteId && SITE_LOGO_IMAGE[siteId]
 
 	return (
 		<Sider
@@ -44,7 +44,8 @@ const LayoutSideBar = ({
 				className='header'
 				style={{ display: 'flex', justifyContent: 'center' }}
 			>
-				{!allSiteMode && !collapsed && !!logoImage && (
+				{/* 單號：ws-8622，移除左上方ＬＯＧＯ */}
+				{/* {!allSiteMode && !collapsed && !!logoImage && (
 					<Link to='/'>
 						<LazyLoadImage
 							alt='site-logo'
@@ -54,7 +55,7 @@ const LayoutSideBar = ({
 							style={logoImage.style}
 						/>
 					</Link>
-				)}
+				)} */}
 			</Header>
 
 			<LayoutMenu collapsed={collapsed} onCloseCollapsed={onCloseCollapsed} />
