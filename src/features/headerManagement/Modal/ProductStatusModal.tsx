@@ -171,7 +171,7 @@ const ProductStatusModal = ({
 			render: (record: IHeaderSettingGroupByTpGameIdNoData) => {
 				const { status, tpGameIdNo } = record
 				// * 這裡跟 status 共用參數，但狀態是 rls:1,prd: 3 (status 是開：1, 關:0)
-				const rlsToPrdStatus = status === IHeaderSettingRlsToPrdEnum.Production
+				const rlsToPrdStatus = status === IHeaderSettingRlsToPrdEnum.Release
 				return (
 					<Popconfirm
 						disabled={
