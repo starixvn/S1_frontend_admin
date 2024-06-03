@@ -1012,4 +1012,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.cms.sub.leaderboardManagement.root,
 	},
+	{
+		icon: null,
+		functionId: paths.productManagement.sub.headerManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.productManagement.sub.headerManagement.root,
+	},
 ]
