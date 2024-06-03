@@ -57,7 +57,7 @@ const LayoutHeaderUserSite = () => {
 			</Dropdown>
 		</Col>
 	) : (
-		<Col flex='400px'>
+		<Col flex='600px'>
 			<Row justify='end' gutter={8}>
 				{newSiteList.map(({ siteId, siteName }) => (
 					<Col flex='96px' key={siteName}>
@@ -65,7 +65,9 @@ const LayoutHeaderUserSite = () => {
 							<Button
 								block
 								key={siteName}
-								type={siteName === userSite?.siteName ? 'primary' : 'text'}
+								type={
+									siteName === updateSiteName(userSite) ? 'primary' : 'text'
+								}
 							>
 								{siteName ?? 'site'}
 							</Button>
