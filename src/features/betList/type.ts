@@ -118,3 +118,8 @@ export enum OrderByTypeEnum {
 	ascend, // 升序
 	descend,
 }
+
+export interface IGetGameListData {
+	name: string
+}
+export type IGetGameListResponse = IAxiosResponse<IGetGameListData[]>

@@ -13,7 +13,11 @@ import {
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectCurrencyListBySite,
+	selectUserSite,
+	selectUserSiteList,
+} from 'common/enum'
 import download from 'downloadjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import type { SorterResult } from 'antd/es/table/interface'
@@ -26,6 +30,7 @@ import {
 	IGetBetListData,
 	IGetBetListResponse,
 	IGetCategoryResponse,
+	IGetGameListResponse,
 	IGetProductsResponse,
 	IGetProvidersResponse,
 	IGetTagsResponse,
@@ -35,6 +40,7 @@ import {
 import {
 	useExportBetListFileMutation,
 	useGetCategoryQuery,
+	useGetGameListQuery,
 	useGetProductsQuery,
 	useGetProvidersQuery,
 	useGetTagsQuery,
@@ -49,7 +55,7 @@ const BetList: FC<{
 	const { t } = useTranslation()
 	const [form] = Form.useForm()
 	const { siteId = 0 } = useAppSelector(selectUserSite) ?? {}
-
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
@@ -101,6 +107,11 @@ const BetList: FC<{
 
 	const [exportBetListFile, { isLoading: isExportBetListLoading }] =
 		useExportBetListFileMutation()
+
+	const {
+		data: { data: gameList } = {} as IGetGameListResponse,
+		isFetching: isGetGameListFetching,
+	} = useGetGameListQuery(null)
 
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: BetListDataTotal,
@@ -154,12 +165,12 @@ const BetList: FC<{
 			winLostAmount = 0,
 			transId = '',
 			memberTypes,
+			siteIds,
 		} = form.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
-
 		let { currencyIds } = form.getFieldsValue()
 		if (currencyIds.length === 0) {
 			currencyIds = currencyListBySite?.map(item => item.currencyId)
@@ -173,7 +184,8 @@ const BetList: FC<{
 
 		try {
 			const args: IGetBetListArgs = {
-				siteIds: [siteId],
+				// siteIds: [siteId],
+				siteIds,
 				currencyIds,
 				tags,
 				vipLevel,
@@ -372,7 +384,8 @@ const BetList: FC<{
 		isGetVipLevelsFetching ||
 		isGetBetListFetching ||
 		isGetTagListFetching ||
-		isMemberTypeEnumsLoading
+		isMemberTypeEnumsLoading ||
+		isGetGameListFetching
 
 	const filterLoading = isGetBetListFetching || isMemberTypeEnumsLoading
 
@@ -406,6 +419,8 @@ const BetList: FC<{
 				siteId={siteId}
 				vipLevels={vipLevels}
 				memberTypeEnums={memberTypeEnums}
+				userSiteList={userSiteList}
+				gameList={gameList}
 			/>
 			{!isEmpty(queryParams) && (
 				<BetListTable
