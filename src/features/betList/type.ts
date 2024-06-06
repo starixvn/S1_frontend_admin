@@ -123,3 +123,18 @@ export interface IGetGameListData {
 	name: string
 }
 export type IGetGameListResponse = IAxiosResponse<IGetGameListData[]>
+
+export enum BetListCategoryEnum {
+	Sports = 'Sports',
+	Casino = 'Casino',
+	LiveCasino = 'LiveCasino',
+	Fishing = 'Fishing',
+	CockFighting = 'CockFighting',
+	Lottery = 'Lottery',
+	VirtualSports = 'VirtualSports',
+	P2P = 'P2P',
+	Crypto = 'Crypto',
+	Games = 'Games',
+	ESports = 'ESports',
+	FourDigit = 'FourDigit',
+}
