@@ -184,7 +184,6 @@ const BetList: FC<{
 
 		try {
 			const args: IGetBetListArgs = {
-				// siteIds: [siteId],
 				siteIds,
 				currencyIds,
 				tags,

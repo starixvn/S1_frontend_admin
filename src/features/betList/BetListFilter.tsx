@@ -24,6 +24,7 @@ import { Currency, UserSite } from 'common/enum/type'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import {
+	BetListCategoryEnum,
 	IGetCategoryData,
 	IGetGameListData,
 	IGetProductsData,
@@ -88,7 +89,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	const isHidePartOfFilter = siteId === SiteIds.IvorySport
 
 	const handleCategoryChange = (e: string | undefined) => {
-		if (e !== 'Sports') form.setFieldValue('game', '')
+		if (e !== BetListCategoryEnum.Sports) form.setFieldValue('game', '')
 		setSelectedCategory(e)
 	}
 	const sportGamesSelect = () => (
@@ -391,7 +392,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								{selectedCategory === 'Sports' ? (
+								{selectedCategory === BetListCategoryEnum.Sports ? (
 									sportGamesSelect()
 								) : (
 									<Form.Item
