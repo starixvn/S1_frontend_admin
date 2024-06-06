@@ -3,6 +3,7 @@ import {
 	IGetBetListArgs,
 	IGetBetListResponse,
 	IGetCategoryResponse,
+	IGetGameListResponse,
 	IGetProductsResponse,
 	IGetProvidersResponse,
 	IGetTagsResponse,
@@ -64,6 +65,13 @@ export const betListApi = rootApi.injectEndpoints({
 				responseType: 'blob',
 			}),
 		}),
+		getGameList: builder.query<IGetGameListResponse, null>({
+			query: data => ({
+				url: 'BetListReport/GetGameList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 export const {
@@ -74,4 +82,5 @@ export const {
 	useGetProductsQuery,
 	useGetProvidersQuery,
 	useExportBetListFileMutation,
+	useGetGameListQuery,
 } = betListApi

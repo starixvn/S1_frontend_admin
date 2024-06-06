@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import dayjs from 'dayjs'
 import { reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -20,11 +20,12 @@ import { LayoutContent } from 'app/pages/layout'
 import { SiteIds } from 'app/constants/siteIds'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import {
 	IGetCategoryData,
+	IGetGameListData,
 	IGetProductsData,
 	IGetProvidersData,
 	IGetTagsData,
@@ -54,8 +55,9 @@ interface BetListFilterInterface {
 	tagList: IGetTagsData[]
 	memberTypeEnums: IMemberTypeData[]
 	siteId?: number
+	userSiteList: UserSite[]
+	gameList: IGetGameListData[]
 }
-
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -75,11 +77,31 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	vipLevels,
 	tagList,
 	memberTypeEnums,
+	userSiteList,
+	gameList,
 }) => {
 	const { t } = useTranslation()
-
+	const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+		''
+	)
 	// * IvorySport 為測試網站，不開放部分過濾條件，但保持默認參數，因此只隱藏元件
 	const isHidePartOfFilter = siteId === SiteIds.IvorySport
+
+	const handleCategoryChange = (e: string | undefined) => {
+		if (e !== 'Sports') form.setFieldValue('game', '')
+		setSelectedCategory(e)
+	}
+	const sportGamesSelect = () => (
+		<Form.Item name='game' label={t('Label_Game')} hidden={isHidePartOfFilter}>
+			<Select placeholder={t('Label_Select')} allowClear>
+				{gameList?.map(({ name }) => (
+					<Option key={name} value={name}>
+						{name}
+					</Option>
+				))}
+			</Select>
+		</Form.Item>
+	)
 
 	const vipLevelSelect = () => (
 		<Form.Item
@@ -167,6 +189,48 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	const disabledDate: RangePickerProps['disabledDate'] = current => {
 		return (
 			current > dayjs().endOf('day') || current < dayjs().subtract(14, 'day')
+		)
+	}
+
+	// * siteIds 多選
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: ('all' | number)[]) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(value => value.siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds as number[],
+				})
+			}
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
 		)
 	}
 
@@ -314,6 +378,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
+										onChange={e => {
+											handleCategoryChange(e)
+										}}
 									>
 										{categories?.map(item => (
 											<Option key={item.categoryName} value={item.categoryName}>
@@ -324,13 +391,17 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='game'
-									label={t('Label_Game')}
-									hidden={isHidePartOfFilter}
-								>
-									<Input allowClear />
-								</Form.Item>
+								{selectedCategory === 'Sports' ? (
+									sportGamesSelect()
+								) : (
+									<Form.Item
+										name='game'
+										label={t('Label_Game')}
+										hidden={isHidePartOfFilter}
+									>
+										<Input allowClear />
+									</Form.Item>
+								)}
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item
@@ -413,6 +484,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								{memberTypeSelector()}
+							</Col>
+							<Col lg={4} md={12} xs={12}>
+								{siteIdsSelector()}
 							</Col>
 						</Row>
 						<br />
