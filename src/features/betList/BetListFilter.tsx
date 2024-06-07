@@ -251,6 +251,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								'value',
 								UserTypeEnum.LiveStreaming,
 							]).map(({ value }) => Number(value)),
+							siteIds: userSiteList?.map(value => value.siteId), // 預設全選
 						}}
 					>
 						<Row align='middle' gutter={16}>
