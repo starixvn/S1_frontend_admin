@@ -797,6 +797,7 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.report.sub.betList.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.betList.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
