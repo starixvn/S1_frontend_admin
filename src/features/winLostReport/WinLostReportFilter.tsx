@@ -362,6 +362,14 @@ const WinLostReportFilter = ({
 									</Input.Group>
 								</Form.Item>
 							</Col>
+							<Col flex={1} />
+							<Col lg={6} md={8} xs={12}>
+								<Form.Item name='version' valuePropName='checked' noStyle>
+									<Checkbox>
+										{t('Label_UseOptimizedApi')} ({t('Label_Experimental')})
+									</Checkbox>
+								</Form.Item>
+							</Col>
 						</Row>
 						<Row align='middle' gutter={16}>
 							<Col lg={6} md={12} xs={12}>

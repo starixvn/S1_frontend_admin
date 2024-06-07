@@ -215,6 +215,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			includeTest,
 			tpCategorys = [],
 			affiliate,
+			version,
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -248,6 +249,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			noDraw: Boolean(noDraw),
 			baseCurrencyId,
 			memberTypes,
+			version: Number(version ?? 0),
 		}
 
 		const searchSelector = async (groupNum: number) => {
@@ -437,6 +439,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				baseCurrencyId,
 				memberTypes = [],
 				affiliate,
+				version,
 			} = queryParams
 
 			const args = {
@@ -463,6 +466,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				noDraw: Boolean(noDraw),
 				baseCurrencyId: Number(baseCurrencyId),
 				memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
+				version: Number(version ?? 0),
 			}
 			let blob
 			switch (Number(groupBy)) {
@@ -614,6 +618,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 				memberTypes = [],
 				baseCurrencyId,
 				groupBy,
+				version,
 			} = queryParams
 			try {
 				const args = {
@@ -641,6 +646,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					baseCurrencyId: Number(baseCurrencyId),
 					memberTypes: memberTypes?.map((value: string) => Number(value)) ?? [],
 					custId: record.custId,
+					version: Number(version ?? 0),
 				}
 
 				const { data: { data: detailList = [] } = {} } =
@@ -683,6 +689,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			memberTypes,
 			includeTest,
 			tpCategorys = [],
+			version,
 		} = filterForm.getFieldsValue()
 
 		const [starTime, endTime] = dateRangeToUtcFormatter(
@@ -715,6 +722,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 			noDraw: Boolean(noDraw),
 			baseCurrencyId,
 			memberTypes,
+			version: Number(version ?? 0),
 		}
 		let blob
 		switch (Number(groupBy)) {
@@ -769,6 +777,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					currencyIds: currencyListByAllSite?.map(
 						({ currencyId }) => currencyId
 					),
+					version: false,
 				})
 			} else {
 				const {
@@ -789,6 +798,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 					groupBy,
 					memberTypes,
 					affiliate,
+					version,
 				} = queryParams
 				onTimeZoneChange(Number(timeZone))
 				filterForm.setFieldsValue({
@@ -815,6 +825,7 @@ const WinLostReport = ({ pageTitle }: { pageTitle?: string }) => {
 						? memberTypes.map((value: string) => Number(value))
 						: [],
 					affiliate,
+					version,
 				})
 
 				handleSearch({ currentTimeZoneUtcOffset: Number(timeZone) })
