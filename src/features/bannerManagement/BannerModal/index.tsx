@@ -207,7 +207,7 @@ const BannerModal = ({
 									? formFilterTpId
 									: formTpId ?? null,
 							urlRouter: formUrlRouter,
-							bonusCode: formBonusCode,
+							bonusCode: !isEmpty(formBonusCode) ? formBonusCode : null,
 							categoryId: formCategoryId,
 							gameId: formGameId,
 						},
@@ -238,7 +238,7 @@ const BannerModal = ({
 									? formFilterTpId
 									: formTpId ?? null,
 							urlRouter: formUrlRouter,
-							bonusCode: formBonusCode,
+							bonusCode: !isEmpty(formBonusCode) ? formBonusCode : null,
 							categoryId: formCategoryId,
 							gameId: formGameId,
 						},
