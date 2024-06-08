@@ -104,7 +104,7 @@ const BannerModal = ({
 				showStatus,
 				actionMode,
 				dateRange: [dayjs(startTime), dayjs(endTime)],
-				bonusCode: bonusCode ?? [],
+				bonusCode: bonusCode ?? null,
 				urlRouter: Number(UrlRouterEnum[urlRouter]),
 				gameId,
 				tpId,
@@ -207,7 +207,7 @@ const BannerModal = ({
 									? formFilterTpId
 									: formTpId ?? null,
 							urlRouter: formUrlRouter,
-							bonusCode: !isEmpty(formBonusCode) ? formBonusCode : null,
+							bonusCode: formBonusCode,
 							categoryId: formCategoryId,
 							gameId: formGameId,
 						},
@@ -238,7 +238,7 @@ const BannerModal = ({
 									? formFilterTpId
 									: formTpId ?? null,
 							urlRouter: formUrlRouter,
-							bonusCode: !isEmpty(formBonusCode) ? formBonusCode : null,
+							bonusCode: formBonusCode,
 							categoryId: formCategoryId,
 							gameId: formGameId,
 						},
