@@ -47,7 +47,7 @@ export interface IGetBannerData {
 	bannerType: number
 	actionMode: number
 	showStatus: number
-	bonusCode: null
+	bonusCode: string
 	tpId: number
 	gameId: string
 	urlRouter: number
@@ -80,7 +80,7 @@ export interface ISetBannerArgs {
 		startTime?: string
 		tpId?: number
 		urlRouter?: number
-		bonusCode?: null
+		bonusCode?: string
 		categoryId?: number
 		gameId?: string
 	}
@@ -100,7 +100,7 @@ export interface ISetBannerArgs {
 		startTime: string
 		tpId: number
 		urlRouter: number
-		bonusCode: null
+		bonusCode: string
 		categoryId: number
 		gameId: string
 	}
@@ -225,7 +225,7 @@ export interface IAddForm {
 	actionMode: number | string
 	showStatus: number | string
 	dateRange: [Dayjs, Dayjs]
-	bonusCode: null
+	bonusCode: string
 	tpId: number | string
 	gameId: number | string
 	urlRouter: number
