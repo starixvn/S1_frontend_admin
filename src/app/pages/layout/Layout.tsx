@@ -10,6 +10,7 @@ import {
 import { isEmpty } from 'lodash'
 import { useState, FC, useEffect, Suspense } from 'react'
 import { RequestStatusType } from 'type'
+import { useTranslation } from 'react-i18next'
 import { useMenuCollapsed, useUserSiteEffect } from './hooks'
 import { LayoutSideBar } from './LayoutSideBar'
 import { LayoutHeader } from './LayoutHeader'
@@ -24,6 +25,7 @@ const BaseLayout: FC = () => {
 	const [requestStatus, setRequestStatus] = useState<RequestStatusType>('idle')
 	const { data: { data: siteId } = {} } = useCheckBrandQuery()
 	const { collapsed, onToggleCollapsed, onCloseCollapsed } = useMenuCollapsed()
+	const { i18n } = useTranslation()
 
 	//  選擇品牌
 	useUserSiteEffect()
@@ -43,6 +45,11 @@ const BaseLayout: FC = () => {
 		init()
 	}, [siteId])
 
+	useEffect(() => {
+		if (siteId)
+			auth.onFetchUserMenuList({ lang: i18n?.language ?? 'en', siteId })
+	}, [i18n.language, siteId])
+
 	const loading =
 		isEmpty(userSite) || enumStatus === 'pending' || requestStatus === 'pending'
 
@@ -55,22 +62,23 @@ const BaseLayout: FC = () => {
 			/>
 
 			<Layout>
-				<LayoutHeader
-					collapsed={collapsed}
-					onToggleCollapsed={onToggleCollapsed}
-				/>
-
-				<Suspense
-					fallback={
-						<LayoutSuspense>
-							<Spin />
-						</LayoutSuspense>
-					}
-				>
-					<Spin spinning={loading}>
-						<LayoutContent />
-					</Spin>
-				</Suspense>
+				<div style={{ background: '#f5f5f5' }}>
+					<LayoutHeader
+						collapsed={collapsed}
+						onToggleCollapsed={onToggleCollapsed}
+					/>
+					<Suspense
+						fallback={
+							<LayoutSuspense>
+								<Spin />
+							</LayoutSuspense>
+						}
+					>
+						<Spin spinning={loading}>
+							<LayoutContent />
+						</Spin>
+					</Suspense>
+				</div>
 			</Layout>
 		</Layout>
 	)

@@ -1,6 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import { AuthProvider } from 'common/auth'
 import { I18nextProvider } from 'react-i18next'
+import { ThemeProvider } from 'common/context/ThemeContext'
 import styled from 'styled-components'
 import i18n from 'common/i18n/config'
 import GlobalStyle from './styles/GlobalStyle'
@@ -19,7 +20,9 @@ function App() {
 
 			<AuthProvider>
 				<I18nextProvider i18n={i18n}>
-					<Wrapper>{element}</Wrapper>
+					<ThemeProvider>
+						<Wrapper>{element}</Wrapper>
+					</ThemeProvider>
 				</I18nextProvider>
 			</AuthProvider>
 		</>

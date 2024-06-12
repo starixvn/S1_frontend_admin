@@ -47,7 +47,7 @@ const DashboardFilter: FC<{
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
-							<Form.Item name='baseCurrencyId' label={t('BaseCurrency')}>
+							<Form.Item name='baseCurrencyId' label={t('Label_BaseCurrency')}>
 								<Select placeholder='select'>
 									{currencyListBySite?.map(item => (
 										<Option key={item.currencyId} value={item.currencyId}>

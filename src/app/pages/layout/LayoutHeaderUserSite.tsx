@@ -79,14 +79,10 @@ const LayoutHeaderUserSite = () => {
 	)
 
 	const allSiteButton = (
-		<Col flex='400px'>
-			<Row justify='end' gutter={8}>
-				<Col flex='96px'>
-					<Button block type='primary'>
-						All
-					</Button>
-				</Col>
-			</Row>
+		<Col flex='96px'>
+			<Button block type='primary'>
+				All
+			</Button>
 		</Col>
 	)
 

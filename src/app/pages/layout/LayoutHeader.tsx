@@ -18,6 +18,8 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 
 import { LayoutHeaderUserSite } from './LayoutHeaderUserSite'
+import LayoutHeaderLanguageSelect from './LayoutHeaderLanguageSelect'
+import LayoutHeaderThemeToggle from './LayoutHeaderThemeToggle'
 
 const { Header } = Layout
 
@@ -94,9 +96,13 @@ const LayoutHeader = ({ collapsed, onToggleCollapsed }: LayoutHeaderProps) => {
 					</Col>
 
 					<Col flex='auto' />
-
+					<Col flex='48px'>
+						<LayoutHeaderThemeToggle />
+					</Col>
 					{isNewPathMode && <LayoutHeaderUserSite />}
-
+					<Col>
+						<LayoutHeaderLanguageSelect />
+					</Col>
 					<Col flex='140px'>
 						<Dropdown
 							trigger={['click']}

@@ -38,11 +38,16 @@ const LayoutSideBar = ({
 				height: '100vh',
 				position: 'static',
 				pointerEvents: loading ? 'none' : 'auto', // * 如果還在 loading 狀態不開放選擇 menu
+				scrollbarColor: '#FFFFFF88 transparent',
 			}}
 		>
 			<Header
 				className='header'
-				style={{ display: 'flex', justifyContent: 'center' }}
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					background: 'none',
+				}}
 			>
 				{/* 單號：ws-8622，移除左上方ＬＯＧＯ */}
 				{/* {!allSiteMode && !collapsed && !!logoImage && (
