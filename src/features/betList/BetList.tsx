@@ -15,7 +15,6 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import {
 	selectAllSiteEnableCurrencyList,
-	selectCurrencyListBySite,
 	selectUserSite,
 	selectUserSiteList,
 } from 'common/enum'
@@ -60,7 +59,7 @@ const BetList: FC<{
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 
 	const {

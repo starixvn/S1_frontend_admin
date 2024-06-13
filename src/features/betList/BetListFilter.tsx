@@ -122,7 +122,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	}
 
 	const handleCategoryChange = (e: string | undefined) => {
-		if (e !== BetListCategoryEnum.Sports) form.setFieldValue('game', '')
+		form.setFieldValue('game', [])
 		setSelectedCategory(e)
 	}
 
@@ -134,8 +134,15 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 					game: gameList?.map(({ name }) => name),
 				})
 			} else {
+				// 如果使用者在Game多選欄裡輸入不是gameList裡面的選項，會自動被清除
+				const gameListGames = gameList.map(item => {
+					return item.name
+				})
+				const filterGames = newGames.filter(item => {
+					return gameListGames.includes(item)
+				})
 				form.setFieldsValue({
-					game: newGames,
+					game: filterGames,
 				})
 			}
 		}
@@ -438,7 +445,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								{selectedCategory === BetListCategoryEnum.Sports ||
-								category === 'Sports' ? (
+								category === BetListCategoryEnum.Sports ? (
 									sportGamesSelect()
 								) : (
 									<Form.Item
