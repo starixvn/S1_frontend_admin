@@ -93,7 +93,6 @@ const BetList: FC<{
 	} = useGetEnumTypeQuery({
 		enumName: 'MemberTypeEnum',
 	})
-
 	const [
 		getBetList,
 		{
@@ -179,7 +178,6 @@ const BetList: FC<{
 
 		try {
 			const args: IGetBetListArgs = {
-				siteIds,
 				currencyIds,
 				tags,
 				vipLevel,
@@ -205,7 +203,9 @@ const BetList: FC<{
 				orderByProperty,
 				orderByDirection,
 				memberTypes,
+				siteIds,
 			}
+
 			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -337,6 +337,7 @@ const BetList: FC<{
 				winLostAmount,
 				timeZone,
 				memberTypes,
+				siteIds,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -361,6 +362,7 @@ const BetList: FC<{
 				memberTypes: isArray(memberTypes)
 					? memberTypes.map((value: string) => Number(value))
 					: [],
+				siteIds: siteIds.map((site: string) => Number(site)),
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -370,7 +372,6 @@ const BetList: FC<{
 		}
 		init()
 	}, [])
-
 	const loading =
 		isGetProvidersFetching ||
 		isGetProductsFetching ||
