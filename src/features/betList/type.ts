@@ -14,7 +14,7 @@ export interface IGetBetListArgs {
 	refNo: string
 	gameType: number
 	category: string
-	game: string
+	game: string[]
 	title: string
 	matchID: string
 	betType: string

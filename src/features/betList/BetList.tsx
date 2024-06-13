@@ -14,7 +14,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import {
-	selectCurrencyListBySite,
+	selectAllSiteEnableCurrencyList,
 	selectUserSite,
 	selectUserSiteList,
 } from 'common/enum'
@@ -60,7 +60,7 @@ const BetList: FC<{
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 
 	const {
 		data: { data: providersList } = {} as IGetProvidersResponse,
@@ -93,7 +93,6 @@ const BetList: FC<{
 	} = useGetEnumTypeQuery({
 		enumName: 'MemberTypeEnum',
 	})
-
 	const [
 		getBetList,
 		{
@@ -118,9 +117,10 @@ const BetList: FC<{
 	})
 
 	const onChangeCurrency = (newCurrencyIds: number[]) => {
+		// 0 代表select all全選
 		if (newCurrencyIds.includes(0)) {
 			form.setFieldsValue({
-				currencyIds: currencyListBySite?.map(item => item.currencyId),
+				currencyIds: currencyListByAllSite?.map(({ currencyId }) => currencyId),
 			})
 		} else {
 			form.setFieldsValue({
@@ -148,6 +148,7 @@ const BetList: FC<{
 		if (!siteId) return
 		const {
 			tags = [],
+			currencyIds,
 			dateRange,
 			vipLevel = 0,
 			tpId = 0,
@@ -156,7 +157,7 @@ const BetList: FC<{
 			refNo = '',
 			gameType = 0,
 			category: rawCategory = '',
-			game = '',
+			game = [],
 			title = '',
 			matchID = '',
 			betType = '',
@@ -171,20 +172,12 @@ const BetList: FC<{
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
-		let { currencyIds } = form.getFieldsValue()
-		if (currencyIds.length === 0) {
-			currencyIds = currencyListBySite?.map(item => item.currencyId)
-			form.setFieldsValue({
-				currencyIds,
-			})
-		}
 
 		// api 接受參數 category 字串中不可有空白字元
 		const category = rawCategory.replace(/ /g, '')
 
 		try {
 			const args: IGetBetListArgs = {
-				siteIds,
 				currencyIds,
 				tags,
 				vipLevel,
@@ -210,7 +203,9 @@ const BetList: FC<{
 				orderByProperty,
 				orderByDirection,
 				memberTypes,
+				siteIds,
 			}
+
 			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -342,6 +337,7 @@ const BetList: FC<{
 				winLostAmount,
 				timeZone,
 				memberTypes,
+				siteIds,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -366,6 +362,7 @@ const BetList: FC<{
 				memberTypes: isArray(memberTypes)
 					? memberTypes.map((value: string) => Number(value))
 					: [],
+				siteIds: siteIds.map((site: string) => Number(site)),
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -375,7 +372,6 @@ const BetList: FC<{
 		}
 		init()
 	}, [])
-
 	const loading =
 		isGetProvidersFetching ||
 		isGetProductsFetching ||
@@ -410,7 +406,7 @@ const BetList: FC<{
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 				onChangeCurrency={onChangeCurrency}
-				currencyList={currencyListBySite}
+				currencyList={currencyListByAllSite}
 				providers={providersList}
 				products={products}
 				categories={categories}
