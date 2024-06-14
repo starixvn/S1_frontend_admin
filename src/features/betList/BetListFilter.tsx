@@ -47,8 +47,8 @@ interface BetListFilterInterface {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
-	onChangeCurrency: (newCurrencyIds: number[]) => void
 	currencyList: Currency[]
+	currencyIdsBySiteIds: Currency[]
 	providers: IGetProvidersData[]
 	products: IGetProductsData[]
 	categories: IGetCategoryData[]
@@ -69,8 +69,8 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
-	onChangeCurrency,
 	currencyList,
+	currencyIdsBySiteIds,
 	providers,
 	products,
 	categories,
@@ -90,6 +90,20 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	const { category } = form.getFieldsValue()
 
 	const currencySelector = () => {
+		const onChangeCurrency = (newCurrencyIds: number[]) => {
+			// 0 代表select all全選
+			if (newCurrencyIds.includes(0)) {
+				form.setFieldsValue({
+					currencyIds: currencyIdsBySiteIds?.map(
+						({ currencyId }) => currencyId
+					),
+				})
+			} else {
+				form.setFieldsValue({
+					currencyIds: newCurrencyIds,
+				})
+			}
+		}
 		return (
 			<Form.Item
 				name='currencyIds'
@@ -107,11 +121,11 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 					onChange={onChangeCurrency}
 					placeholder={t('Label_Select')}
 				>
-					{(currencyList?.length as number) > 1 && (
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
 						<Option value={0}>{t('Label_SelectAll')}</Option>
 					)}
 
-					{currencyList?.map(item => (
+					{currencyIdsBySiteIds?.map(item => (
 						<Option key={item.currencyId} value={item.currencyId}>
 							{item.isoCode}
 						</Option>
@@ -272,6 +286,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 					siteIds: newSiteIds as number[],
 				})
 			}
+			form.setFieldValue('currencyIds', [])
 		}
 
 		return (
