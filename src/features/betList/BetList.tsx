@@ -15,6 +15,7 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
 import {
 	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
 	selectUserSite,
 	selectUserSiteList,
 } from 'common/enum'
@@ -60,8 +61,11 @@ const BetList: FC<{
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 
+	const watchSiteIds = Form.useWatch('siteIds', form)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
 	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
-
 	const {
 		data: { data: providersList } = {} as IGetProvidersResponse,
 		isFetching: isGetProvidersFetching,
@@ -115,19 +119,6 @@ const BetList: FC<{
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: BetListDataTotal,
 	})
-
-	const onChangeCurrency = (newCurrencyIds: number[]) => {
-		// 0 代表select all全選
-		if (newCurrencyIds.includes(0)) {
-			form.setFieldsValue({
-				currencyIds: currencyListByAllSite?.map(({ currencyId }) => currencyId),
-			})
-		} else {
-			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
-			})
-		}
-	}
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -405,8 +396,8 @@ const BetList: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
-				onChangeCurrency={onChangeCurrency}
 				currencyList={currencyListByAllSite}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				providers={providersList}
 				products={products}
 				categories={categories}
