@@ -21,6 +21,8 @@ import {
 	ProfileOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
@@ -45,8 +47,6 @@ import { ITagData } from 'features/memberAdministrationList/type'
 import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
 import { UploadProps } from 'antd/es/upload/interface'
 import { xlsxMimeType } from 'features/balanceAdjustment/balanceAdjustment/BalanceAdjustmentForm'
-import { useAppSelector } from '../../../app/store'
-import { selectCurrencyListBySite } from '../../../common/enum'
 
 interface IBonusDetailMainForm {
 	loading: boolean
