@@ -238,6 +238,8 @@ export type IGetCashBackGameListResponse = IAxiosResponse<
 >
 
 export interface IGetPromotionCategoryArgs {
+	// bonusManagement 需要加這個，因為 cashback 的 response 不會有 ALl
+	promotionType?: number
 	walletType: number
 }
 
