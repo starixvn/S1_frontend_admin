@@ -62,6 +62,7 @@ const UpdateBonus: FC<{
 	const navigate = useNavigate()
 	// 供 getCategory 使用的參數
 	const currentWalletType = Form.useWatch('walletType', form)
+	const currentBonusType = Form.useWatch('bonusType', form)
 	// Title 文字顯示
 	const bonusMethod =
 		bonusCode === UpdateMethodsEnum.create ? t('Label_CreateBonus') : bonusCode
@@ -95,7 +96,10 @@ const UpdateBonus: FC<{
 	const {
 		data: { data: categoryListData = [] } = {} as IGetPromotionCategoryResponse,
 		isFetching: isGetCategoryListLoading,
-	} = useGetPromotionCategoryQuery({ walletType: currentWalletType })
+	} = useGetPromotionCategoryQuery(
+		{ walletType: currentWalletType, promotionType: currentBonusType },
+		{ skip: !currentBonusType }
+	)
 
 	const {
 		data: { data: langCodes = [] } = {},
