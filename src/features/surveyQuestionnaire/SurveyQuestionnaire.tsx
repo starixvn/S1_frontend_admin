@@ -107,7 +107,7 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	const handleExport = async () => {
 		try {
-			const { userName, currencyId, startDate, endDate } = queryParams
+			const { userName = '', currencyId = 0, startDate, endDate } = queryParams
 
 			const blob = await exportQuestionnaireReport({
 				siteId,
@@ -149,9 +149,8 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	}
 
 	const handleUpdateFeedback = async () => {
+		const { id, feedback } = await editForm.validateFields()
 		try {
-			await editForm.validateFields()
-			const { id, feedback } = editForm.getFieldsValue(true)
 			const response = await setQuestionnaireReport({ id, feedback }).unwrap()
 			message.success(response?.message || t('System.Label_Success'))
 			editModal.onCancel()
@@ -164,10 +163,20 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 	useEffect(() => {
 		if (!isEmpty(queryParams)) {
-			const { startDate, endDate, pageNumber, pageSize, timeZone } = queryParams
+			const {
+				startDate,
+				endDate,
+				pageNumber,
+				pageSize,
+				timeZone,
+				currencyId = 0,
+				userName = '',
+			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			filterForm.setFieldsValue({
 				dateRange: [dayjs(startDate), dayjs(endDate)],
+				currencyId,
+				userName,
 			})
 
 			handleSearch({

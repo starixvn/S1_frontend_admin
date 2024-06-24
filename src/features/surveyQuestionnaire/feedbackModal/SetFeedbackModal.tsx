@@ -28,10 +28,7 @@ const SetFeedbackModal = ({
 			onOk={() => onFinish()}
 			width='65vw'
 			confirmLoading={loading}
-			// 這裡之所以又要 afterClose 又要destroyOnClose 原因在於這個 modal 內有很多 tinyEditor 的 tab , 關閉時直接 destroy掉整個元件避免一些無法預期的錯誤
-			// 且為了正確觸發 form 的初始化，故每次關閉便移除整個元件
 			afterClose={() => form.resetFields()}
-			destroyOnClose
 			footer={[
 				<Button key='back' onClick={onCancel}>
 					{t('Label_Cancel')}
@@ -87,10 +84,9 @@ const SetFeedbackModal = ({
 						</Form.Item>
 					</Col>
 				</Row>
+				{/* 訊息編輯 Tab */}
+				<FeedbackForm />
 			</Form>
-
-			{/* 訊息編輯 Tab */}
-			<FeedbackForm form={form} />
 		</Modal>
 	)
 }

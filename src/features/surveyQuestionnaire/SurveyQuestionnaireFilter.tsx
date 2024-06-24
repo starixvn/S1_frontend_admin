@@ -67,7 +67,7 @@ const SurveyQuestionnaireFilter = ({
 							onFinish={() => onSearch({})}
 						>
 							<Row align='middle' gutter={16}>
-								<Col lg={9} md={24} xs={24}>
+								<Col lg={9} md={12} xs={12}>
 									<Form.Item label={t('Label_DateRange')}>
 										<Space.Compact style={{ width: '100%', display: 'flex' }}>
 											<Form.Item
@@ -102,9 +102,7 @@ const SurveyQuestionnaireFilter = ({
 										</Space.Compact>
 									</Form.Item>
 								</Col>
-							</Row>
-							<Row align='middle' gutter={16}>
-								<Col lg={4} md={12} xs={12}>
+								<Col lg={4} md={6} xs={6}>
 									<Form.Item name='currencyId' label={t('Label_Currency')}>
 										<Select placeholder={t('Label_Select')}>
 											<Option value={0}>{t('Label_SelectAll')}</Option>
@@ -116,13 +114,12 @@ const SurveyQuestionnaireFilter = ({
 										</Select>
 									</Form.Item>
 								</Col>
-								<Col lg={4} md={12} xs={12}>
+								<Col lg={4} md={6} xs={6}>
 									<Form.Item name='userName' label={t('Label_MemberId')}>
 										<Input allowClear />
 									</Form.Item>
 								</Col>
 							</Row>
-							<br />
 							<Row justify='end' align='middle'>
 								<Col>
 									<Button

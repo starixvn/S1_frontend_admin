@@ -40,7 +40,7 @@ export interface ISetQuestionnaireReportArgs {
 
 export interface IExportQuestionnaireReportArgs {
 	siteId: number | undefined
-	currencyId?: number
+	currencyId: number
 	userName: string
 	startDate: string
 	endDate: string
