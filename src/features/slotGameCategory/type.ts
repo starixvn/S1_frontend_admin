@@ -27,8 +27,8 @@ export interface IGetSlotGamesListData {
 	tpId: number
 	id: number
 	gameId: string
-	eName: string
-	cName: string
+	enName: string
+	csName: string
 	operator: string
 	currencyStatusList: ICurrencyStatusData[]
 }
@@ -103,6 +103,27 @@ export interface ISetNewSlotGameArgs {
 
 export interface ISlotGameForm extends Omit<ISetNewSlotGameArgs, 'fun'> {
 	fun: boolean
+	// 編輯模式才用得到，用來存放原始資料
+	rawSlotData?: TSlotGameDetail
+}
+
+export interface IGetSlotGameByIdArgs {
+	id: number
+}
+
+export type TSlotGameDetail = Omit<
+	ISetNewSlotGameArgs,
+	'currencyIds' | 'categoryIds'
+>
+
+export interface IEditSlotGameArgs extends IGetSlotGameByIdArgs {
+	before: TSlotGameDetail
+	after: TSlotGameDetail
+}
+
+export enum SlotGameMethodEnum {
+	Create = 'add',
+	Edit = 'edit',
 }
 
 export interface IGetSlotGameListExportArgs {
