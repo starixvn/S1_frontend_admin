@@ -45,6 +45,10 @@ const paths = {
 						root: 'customerSupport/operatorService/smsGenerator',
 						functionId: 25,
 					},
+					surveyQuestionnaire: {
+						root: 'customerSupport/operatorService/surveyQuestionnaire',
+						functionId: 154,
+					},
 				},
 			},
 		},

@@ -65,7 +65,7 @@ const usePermissionForm = (form: FormInstance) => {
 
 		const originPermissionIds = settings
 			.map(({ permissionId, enable, canUse }) =>
-				!enable ?? canUse ? permissionId : null
+				!enable || canUse ? permissionId : null
 			)
 			.filter(Boolean) as number[]
 

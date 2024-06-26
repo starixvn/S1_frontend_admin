@@ -363,6 +363,13 @@ const OtpVerificationReport = lazy(
 		)
 )
 
+const SurveyQuestionnaire = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SurveyQuestionnaire' */ 'features/surveyQuestionnaire/SurveyQuestionnaire'
+		)
+)
+
 const WithdrawalLimitation = lazy(
 	() =>
 		import(
@@ -1772,6 +1779,19 @@ const routes: RouteObject[] = [
 						}
 					>
 						<OtpVerificationReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.customerSupport.sub.operatorService.sub.surveyQuestionnaire.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.customerSupport.sub.operatorService.sub.surveyQuestionnaire
+								.functionId
+						}
+					>
+						<SurveyQuestionnaire />
 					</AuthRequire>
 				),
 			},
