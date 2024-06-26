@@ -116,7 +116,7 @@ const SettingTagsModal = ({
 		}
 	}, [visible])
 
-	// * 過濾掉以加入的 tags
+	/** 過濾掉已加入的 tags */
 	const filterTags = filter(allTags, tag => !some(tagList, { id: tag.id }))
 
 	return (
@@ -141,7 +141,24 @@ const SettingTagsModal = ({
 				<Row align='middle' gutter={16}>
 					<Col lg={18} md={18} xs={18}>
 						<Form.Item name='tagId' label={t('Label_Tags')}>
-							<Select style={{ width: '100%' }} placeholder={t('Label_Select')}>
+							<Select
+								style={{ width: '100%' }}
+								placeholder={t('Label_Select')}
+								/** 欄位是否可以搜尋 */
+								showSearch
+								/**
+								 * 自定義搜尋過濾邏輯
+								 * @param input 使用者輸入的搜尋字串
+								 * @param option 下拉選單中的一個選項 */
+								filterOption={(input, option) => {
+									const isIncludes: boolean = (
+										option!.children as unknown as string
+									)
+										.toLowerCase()
+										.includes(input.toLowerCase())
+									return isIncludes
+								}}
+							>
 								{filterTags?.map(tag => (
 									<Option key={tag.id} value={tag.id}>
 										{tag.tagName}
