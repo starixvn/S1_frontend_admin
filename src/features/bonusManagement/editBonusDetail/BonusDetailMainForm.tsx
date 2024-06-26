@@ -21,6 +21,8 @@ import {
 	ProfileOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from 'app/store'
+import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
@@ -71,8 +73,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	onClickMemberList,
 }) => {
 	const { t } = useTranslation()
-	const { form, categoryList, editPermission, currentActiveCurrency } =
-		useContext(EditBonusContext)
+	const { form, categoryList, editPermission } = useContext(EditBonusContext)
+	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
 	const canEdit = !!editPermission?.canUse
 
@@ -782,13 +784,15 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									<Select
 										disabled={!canEdit}
 										onChange={() =>
-											// 切換category 後重置
-											form?.setFieldsValue({
-												specific: {
-													[currentActiveCurrency.isoCode]: {
-														products: [],
+											// 切換category 後重置，需迴圈處理所有 currency，否則並非所有 currency 的資料都會被移除
+											currencyListBySite.forEach(({ isoCode }) => {
+												form?.setFieldsValue({
+													specific: {
+														[isoCode]: {
+															products: [],
+														},
 													},
-												},
+												})
 											})
 										}
 									>
