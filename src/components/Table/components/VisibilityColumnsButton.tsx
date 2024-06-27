@@ -53,7 +53,9 @@ const VisibilityColumnsButton = ({
 
 	const handleClick: MenuProps['onClick'] = ({ key }) => {
 		if (key === 'all') {
-			handleInit()
+			const allColumnTitles = baseColumns.map(column => column?.title)
+			setVisibilityColumns(allColumnTitles)
+			onTableVisibilityColumnsChange(allColumnTitles)
 			return
 		}
 
