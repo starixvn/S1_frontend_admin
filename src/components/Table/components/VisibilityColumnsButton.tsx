@@ -38,7 +38,7 @@ const VisibilityColumnsButton = ({
 	onTableVisibilityColumnsChange: (keys: any[]) => void
 	// 用於判斷是否需要記住前值
 	memoried?: boolean
-	initialColumns: typeof baseColumns
+	initialColumns?: typeof baseColumns
 }) => {
 	const ref = useRef(null)
 	const { t } = useTranslation()
