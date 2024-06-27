@@ -68,6 +68,7 @@ import {
 	useGetCryptoWalletListQuery,
 	useGetEwalletListQuery,
 	useGetOnlinePayListQuery,
+	useGetPaymentListQuery,
 } from 'common/service/baseDataApi'
 import { AssociateBankUserModal } from 'features/withdrawalOperator/withdrawalRequest/components/AssociateBankModal'
 import { useSendReasonMessageHook } from 'features/withdrawalOperator/withdrawalRequest/hooks/useSendReasonMessageHook'
@@ -192,6 +193,14 @@ const WithdrawalRequest = () => {
 			amount,
 		},
 		{ skip: !custId }
+	)
+
+	const { data: { data: paymentList = [] } = {} } = useGetPaymentListQuery(
+		{
+			payId: null,
+			currencyId,
+		},
+		{ skip: !currencyId }
 	)
 
 	const { data: { data: cryptoPayList = [] } = {} } = useGetCryptoPayListQuery(
@@ -507,6 +516,27 @@ const WithdrawalRequest = () => {
 						)
 					}
 					break
+				case WithdrawalTypeEnum.Settlement:
+					try {
+						// Settlement 的 channelId 固定為 0
+						const channelId = 0
+
+						await setWithdrawalStatus({
+							comment,
+							transId,
+							withdrawalInfo,
+							action,
+							selId: rawSelId,
+							withdrawalType,
+							channelId,
+						}).unwrap()
+					} catch (error) {
+						message.error(
+							(error as Error)?.message ||
+								t('System.Label_NotExpectedServerError')
+						)
+					}
+					break
 				case WithdrawalTypeEnum.EWalletPayment:
 					try {
 						const channelId = find(
@@ -800,6 +830,7 @@ const WithdrawalRequest = () => {
 									withdrawalDetailData={withdrawalDetailData}
 									localBankList={localBankList}
 									eWalletList={eWalletList}
+									paymentList={paymentList}
 									cryptoPayList={cryptoPayList}
 									cryptoWalletList={cryptoWalletList}
 									onlinePayList={onlinePayList}
@@ -815,6 +846,7 @@ const WithdrawalRequest = () => {
 								multiEqual(currentWithdrawalType, [
 									WithdrawalTypeEnum.LocalBank,
 									WithdrawalTypeEnum.CryptoWallet,
+									WithdrawalTypeEnum.Settlement,
 								]) && (
 									<ReceiptUploader
 										loading={updateReceiptLoading}
