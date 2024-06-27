@@ -151,9 +151,7 @@ const SettingTagsModal = ({
 								 * @param input 使用者輸入的搜尋字串
 								 * @param option 下拉選單中的一個選項 */
 								filterOption={(input, option) => {
-									const isIncludes: boolean = (
-										option!.children as unknown as string
-									)
+									const isIncludes: boolean = String(option?.children)
 										.toLowerCase()
 										.includes(input.toLowerCase())
 									return isIncludes
