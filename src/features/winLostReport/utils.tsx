@@ -63,82 +63,80 @@ export const winLossReportConverter = (
 }
 
 export const tableColumnConverter = (tableList: object[]) => {
+	if (!tableList.length) return []
 	const { t } = useTranslation()
-	let tableColumns: object[] = []
-	if (tableList.length > 0) {
-		const excludeList = ['displayKey', 'children', 'key']
-		const noTwoDecimalPlaceFields = [
-			'betCount',
-			'uniquePlayers',
-			'depositCount',
-			'withDrawCount',
-		]
-		const columns = Object.keys(tableList[0]).filter(
-			value => !excludeList.includes(value)
-		)
-		const baseColumn = {
-			title: t('Label_Group'),
-			key: 'group',
-			dataIndex: 'displayKey',
-			sorter: true,
-			align: 'left' as AlignType,
-			width: 150,
-			fixed: true,
-			render: (displayKey: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap' }} ellipsis>
-					{displayKey ?? '-'}
-				</Typography.Text>
-			),
-		}
-		tableColumns = columns.map(dataIndex => {
-			if (dataIndex === 'margin') {
-				return {
-					title: t(i18nKeyInfo[upperFirst(dataIndex)]),
-					key: dataIndex,
-					dataIndex,
-					align: 'right' as AlignType,
-					sorter: true,
-					width: 80,
-					render: (data: number | string) => {
-						if (Number(data)) {
-							return (
-								<Typography.Text
-									style={{ whiteSpace: 'nowrap' }}
-									type={isPositiveNum(data) ? undefined : 'danger'}
-								>
-									{numFormatToDigits(Number(data) * 100 || 0, 2, 2)}%
-								</Typography.Text>
-							)
-						}
-						return <Typography.Text>{data ?? '-'}</Typography.Text>
-					},
-				}
-			}
+	const excludeList = ['displayKey', 'children', 'key']
+	const noTwoDecimalPlaceFields = [
+		'betCount',
+		'uniquePlayers',
+		'depositCount',
+		'withDrawCount',
+	]
+	const columns = Object.keys(tableList[0]).filter(
+		value => !excludeList.includes(value)
+	)
+	const baseColumn = {
+		title: t('Label_Group'),
+		key: 'group',
+		dataIndex: 'displayKey',
+		sorter: true,
+		align: 'left' as AlignType,
+		width: 150,
+		fixed: true,
+		render: (displayKey: number | string) => (
+			<Typography.Text style={{ whiteSpace: 'nowrap' }} ellipsis>
+				{displayKey ?? '-'}
+			</Typography.Text>
+		),
+	}
+	const tableColumns = columns.map(dataIndex => {
+		if (dataIndex === 'margin') {
 			return {
-				title: t(i18nKeyInfo[upperFirst(dataIndex)]) || upperFirst(dataIndex),
+				title: t(i18nKeyInfo[upperFirst(dataIndex)]),
 				key: dataIndex,
 				dataIndex,
 				align: 'right' as AlignType,
 				sorter: true,
 				width: 80,
-				render: (data: number | string) =>
-					Number(data) ? (
-						<Typography.Text
-							ellipsis={{ tooltip: true }}
-							style={{ whiteSpace: 'nowrap' }}
-							type={isPositiveNum(data) ? undefined : 'danger'}
-						>
-							{noTwoDecimalPlaceFields.includes(dataIndex)
-								? numFormatToDigits(Number(data) || 0)
-								: numFormatToDigits(Number(data) || 0, 2, 2)}
-						</Typography.Text>
-					) : (
-						<Typography.Text>{data ?? '-'}</Typography.Text>
-					),
+				render: (data: number | string) => {
+					if (Number(data)) {
+						return (
+							<Typography.Text
+								style={{ whiteSpace: 'nowrap' }}
+								type={isPositiveNum(data) ? undefined : 'danger'}
+							>
+								{numFormatToDigits(Number(data) * 100 || 0, 2, 2)}%
+							</Typography.Text>
+						)
+					}
+					return <Typography.Text>{data ?? '-'}</Typography.Text>
+				},
 			}
-		})
-		tableColumns.splice(0, 0, baseColumn)
-	}
+		}
+		return {
+			title: t(i18nKeyInfo[upperFirst(dataIndex)]) || upperFirst(dataIndex),
+			key: dataIndex,
+			dataIndex,
+			align: 'right' as AlignType,
+			sorter: true,
+			width: 80,
+			render: (data: number | string) =>
+				Number(data) ? (
+					<Typography.Text
+						ellipsis={{ tooltip: true }}
+						style={{ whiteSpace: 'nowrap' }}
+						type={isPositiveNum(data) ? undefined : 'danger'}
+					>
+						{noTwoDecimalPlaceFields.includes(dataIndex)
+							? numFormatToDigits(Number(data) || 0)
+							: numFormatToDigits(Number(data) || 0, 2, 2)}
+					</Typography.Text>
+				) : (
+					<Typography.Text>{data ?? '-'}</Typography.Text>
+				),
+		}
+	})
+	tableColumns.splice(0, 0, baseColumn)
 	return tableColumns
 }
 

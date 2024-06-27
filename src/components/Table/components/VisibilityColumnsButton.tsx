@@ -32,11 +32,13 @@ const VisibilityColumnsButton = ({
 	baseColumns,
 	onTableVisibilityColumnsChange,
 	memoried,
+	initialColumns = baseColumns,
 }: {
 	baseColumns: any[]
 	onTableVisibilityColumnsChange: (keys: any[]) => void
 	// 用於判斷是否需要記住前值
 	memoried?: boolean
+	initialColumns: typeof baseColumns
 }) => {
 	const ref = useRef(null)
 	const { t } = useTranslation()
@@ -76,9 +78,9 @@ const VisibilityColumnsButton = ({
 	}
 
 	const handleInit = () => {
-		const initialColumns = baseColumns.map(column => column?.title)
-		setVisibilityColumns(initialColumns)
-		onTableVisibilityColumnsChange(initialColumns)
+		const initialColumnTitles = initialColumns.map(column => column?.title)
+		setVisibilityColumns(initialColumnTitles)
+		onTableVisibilityColumnsChange(initialColumnTitles)
 	}
 
 	useEffect(() => {
