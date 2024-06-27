@@ -30,12 +30,14 @@ import {
 	ICryptoPayData,
 	ICryptoWalletData,
 	IOnlinePayData,
+	IPaymentData,
 } from 'common/service/baseDataApi/type'
 
 interface IWithdrawalInfoDescriptionsProps {
 	form: FormInstance<IWithdrawalRequestForm>
 	timeZoneUtcOffset: number
 	withdrawalDetailData?: IGetWithdrawalData
+	paymentList: IPaymentData[]
 	localBankList: IBankInfoOffState[]
 	eWalletList: IOnlinePayData[]
 	cryptoPayList: ICryptoPayData[]
@@ -57,6 +59,7 @@ const WithdrawalRequestInfo = ({
 	cryptoPayList,
 	eWalletList,
 	onlinePayList,
+	paymentList,
 	localBankList,
 	onPayInfoClicked,
 }: IWithdrawalInfoDescriptionsProps) => {
@@ -109,6 +112,7 @@ const WithdrawalRequestInfo = ({
 	// 檢查是否有 list 可以使用
 	const hasLocalBank = localBankList?.length > 0
 	const hasOnlinePayment = onlinePayList?.length > 0
+	const hasSettlement = paymentList.length > 0
 	const hasCryptoPay = cryptoPayList?.length > 0
 	const hasCryptoWallet = cryptoWalletList?.length > 0
 	const hasEWallet = eWalletList?.length > 0
@@ -179,6 +183,16 @@ const WithdrawalRequestInfo = ({
 					</Option>
 				)
 			}
+			if (hasSettlement) {
+				result.push(
+					<Option
+						value={WithdrawalTypeEnum.Settlement}
+						key={WithdrawalTypeEnum.Settlement}
+					>
+						{t(WITHDRAWAL_TYPE_NAMES[WithdrawalTypeEnum.Settlement])}
+					</Option>
+				)
+			}
 		}
 		return result
 	}
@@ -202,6 +216,15 @@ const WithdrawalRequestInfo = ({
 					</Option>
 				))
 			}
+		}
+
+		if (type === WithdrawalTypeEnum.Settlement) {
+			// settlement
+			return paymentList.map(({ payId, payName }) => (
+				<Option value={payId} key={payId}>
+					{payName}
+				</Option>
+			))
 		}
 		// cryptoPay
 		return cryptoPayList?.map(({ payId, payName }) => (
@@ -349,6 +372,7 @@ const WithdrawalRequestInfo = ({
 						WithdrawalTypeEnum.CryptoPay,
 						WithdrawalTypeEnum.OnlinePayment,
 						WithdrawalTypeEnum.EWalletPayment,
+						WithdrawalTypeEnum.Settlement,
 					]) && (
 						<Item label={t('Label_Pay')}>
 							<Row justify='space-between' align='middle'>
@@ -376,6 +400,14 @@ const WithdrawalRequestInfo = ({
 										) {
 											const record = find(
 												eWalletList,
+												item => item.payId === responsePayId
+											)
+											if (record !== undefined) {
+												onPayInfoClicked(record)
+											}
+										} else if (responseType === WithdrawalTypeEnum.Settlement) {
+											const record = find(
+												paymentList,
 												item => item.payId === responsePayId
 											)
 											if (record !== undefined) {
@@ -414,6 +446,10 @@ const WithdrawalRequestInfo = ({
 										form.setFieldsValue({
 											selId: head(eWalletList)?.payId,
 										})
+									} else {
+										form.setFieldsValue({
+											selId: head(paymentList)?.payId,
+										})
 									}
 								}}
 							>
@@ -432,6 +468,7 @@ const WithdrawalRequestInfo = ({
 						WithdrawalTypeEnum.CryptoPay,
 						WithdrawalTypeEnum.OnlinePayment,
 						WithdrawalTypeEnum.EWalletPayment,
+						WithdrawalTypeEnum.Settlement,
 					]) && (
 						<Item label={t('Label_Select') + t('Label_Pay')}>
 							<Row justify='space-between' align='middle'>
@@ -444,6 +481,7 @@ const WithdrawalRequestInfo = ({
 										{getPaymentOptions()}
 									</Select>
 								</Form.Item>
+								{/* 用來顯示帳戶細節資訊 */}
 								<Typography.Link
 									onClick={() => {
 										if (type === WithdrawalTypeEnum.OnlinePayment) {
@@ -468,6 +506,14 @@ const WithdrawalRequestInfo = ({
 										} else if (type === WithdrawalTypeEnum.CryptoPay) {
 											const record = find(
 												cryptoPayList,
+												item => item.payId === currentSelId
+											)
+											if (record !== undefined) {
+												onPayInfoClicked(record)
+											}
+										} else if (type === WithdrawalTypeEnum.Settlement) {
+											const record = find(
+												paymentList,
 												item => item.payId === currentSelId
 											)
 											if (record !== undefined) {
