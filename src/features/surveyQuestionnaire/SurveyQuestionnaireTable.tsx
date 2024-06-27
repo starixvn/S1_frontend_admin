@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Space, TablePaginationConfig, Typography } from 'antd'
+import { Space, TablePaginationConfig, Typography, Modal, Input } from 'antd'
 import dayjs from 'dayjs'
 import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
@@ -26,6 +26,15 @@ const SurveyQuestionnaireTable = ({
 }: ISurveyQuestionnaireTableProps) => {
 	const { t } = useTranslation()
 
+	const handleContentModal = (content: string) => {
+		Modal.info({
+			title: t('Label_Content'),
+			closable: true,
+			content: <Input.TextArea rows={18} value={content} disabled />,
+			width: '540px',
+		})
+	}
+
 	const columns = [
 		{
 			title: t('Label_Id'),
@@ -38,7 +47,7 @@ const SurveyQuestionnaireTable = ({
 			title: t('Label_Currency'),
 			dataIndex: 'currency',
 			key: 'currency',
-			width: 90,
+			width: 80,
 			align: 'center' as 'center',
 		},
 		{
@@ -52,6 +61,7 @@ const SurveyQuestionnaireTable = ({
 			title: t('Label_Contact'),
 			dataIndex: 'contactInfo',
 			key: 'contactInfo',
+			width: 150,
 			align: 'center' as 'center',
 		},
 		{
@@ -59,12 +69,23 @@ const SurveyQuestionnaireTable = ({
 			dataIndex: 'content',
 			key: 'content',
 			align: 'center' as 'center',
+			render: (content: string) =>
+				content.length > 20 ? (
+					<Typography.Text>
+						{content.substring(0, 20)}...
+						<Typography.Link onClick={() => handleContentModal(content)}>
+							more
+						</Typography.Link>
+					</Typography.Text>
+				) : (
+					<Typography.Text>{content || '-'}</Typography.Text>
+				),
 		},
 		{
 			title: t('Label_CreateTime'),
 			dataIndex: 'createTime',
 			key: 'createTime',
-			width: 180,
+			width: 150,
 			align: 'center' as 'center',
 			render: (createTime: string | null) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
@@ -91,6 +112,7 @@ const SurveyQuestionnaireTable = ({
 		{
 			title: t('Label_Feedback'),
 			dataIndex: 'feedback',
+			width: 150,
 			key: 'feedback',
 			align: 'center' as 'center',
 		},
@@ -110,10 +132,10 @@ const SurveyQuestionnaireTable = ({
 			title: t('Label_LastUpdateTime'),
 			key: 'lastUpdateTime',
 			dataIndex: 'lastUpdateTime',
-			width: 180,
+			width: 150,
 			align: 'center' as 'center',
 			render: (lastUpdateTime: string) => (
-				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+				<Typography.Text style={{ whiteSpace: 'nowrap' }}>
 					{lastUpdateTime
 						? dayjs(lastUpdateTime)
 								.utcOffset(timeZoneUtcOffset)
