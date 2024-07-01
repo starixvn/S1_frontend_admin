@@ -54,6 +54,7 @@ export enum WithdrawalTypeEnum {
 	EWalletPayment,
 	CryptoPay = 4,
 	CryptoWallet = 5,
+	Settlement = 6,
 }
 
 export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
@@ -63,6 +64,7 @@ export const WITHDRAWAL_TYPE_NAMES: { [type: number]: string } = {
 	[WithdrawalTypeEnum.LocalBank]: 'Label_LocalBanking',
 	[WithdrawalTypeEnum.CryptoPay]: 'Label_CryptoPay',
 	[WithdrawalTypeEnum.CryptoWallet]: 'Label_CryptoWallet',
+	[WithdrawalTypeEnum.Settlement]: 'Label_Settlement',
 }
 
 export enum PurposeEnum {

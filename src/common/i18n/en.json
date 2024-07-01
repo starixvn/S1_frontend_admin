@@ -501,6 +501,7 @@
 	"Label_QuickTransfer": "Quick Transfer",
 	"Label_CryptoPay": "Crypto Pay",
 	"Label_CryptoWallet": "Crypto Wallet",
+	"Label_Settlement" : "Settlement",
 	"Label_LoadCard": "Load Card",
 	"Label_QRPay": "QR Pay",
 	"Label_BankAutoChannel": "Bank Auto Channel",
