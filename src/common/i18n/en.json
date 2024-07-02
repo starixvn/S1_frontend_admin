@@ -501,7 +501,7 @@
 	"Label_QuickTransfer": "Quick Transfer",
 	"Label_CryptoPay": "Crypto Pay",
 	"Label_CryptoWallet": "Crypto Wallet",
-	"Label_Settlement" : "Settlement",
+	"Label_Settlement": "Settlement",
 	"Label_LoadCard": "Load Card",
 	"Label_QRPay": "QR Pay",
 	"Label_BankAutoChannel": "Bank Auto Channel",
@@ -1273,9 +1273,10 @@
 	"Label_PhoneNo_Rule": "The phone number must contain only digits.",
 	"Label_LeavingSlotFunctionConfirm": "Please ensure all necessary information has been added before leaving, as it cannot be edited afterwards!",
 	"Label_CorrectScoreExport": "Correct score Export",
-	"Label_DepositDate" : "Deposit Date",
-	"Label_TotalReferee" : "Total Referee",
+	"Label_DepositDate": "Deposit Date",
+	"Label_TotalReferee": "Total Referee",
 	"Label_Icon_Active": "Icon Active",
 	"Label_HeaderMenu_Product_Description_1": "This function is to change the product in all currencies at one time.",
-	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency."
+	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency.",
+	"Label_EventItemCounts": "Event Item Counts"
 }
