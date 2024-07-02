@@ -1,5 +1,11 @@
 import { head, isEmpty } from 'lodash'
-import { useEffect, useState } from 'react'
+import {
+	useEffect,
+	useRef,
+	useState,
+	forwardRef,
+	useImperativeHandle,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -12,11 +18,12 @@ import {
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
 } from 'features/headerManagement/api'
-import { Form, message } from 'antd'
+import { Button, Form, message, Tour } from 'antd'
 import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
+import ChildComponent from './TestChild'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -26,6 +33,12 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
+	const buttonRef = useRef<HTMLDivElement>(null)
+	const ref1 = useRef<HTMLDivElement>(null)
+	const ref2 = useRef<HTMLDivElement>(null)
+	const ref3 = useRef<HTMLDivElement>(null)
+
+	const childref = useRef<HTMLDivElement>(null)
 
 	const productStatusModal = useModal()
 
@@ -108,9 +121,57 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	const steps = [
+		{
+			target: () => buttonRef.current,
+			title: t('Guide.BackToTop.Title'),
+			description: t('Guide.BackToTop.Description'),
+		},
+		{
+			target: () => childref.current,
+			title: t('Guide.BackToTop.Title'),
+			description: t('Guide.BackToTop.Description'),
+		},
+	]
+
+	const [open, setOpen] = useState<boolean>(false)
+
+	const handleTourChange = (current: number) => {
+		if (current === 1) {
+			showModal()
+		}
+	}
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
+
+	const showModal = () => {
+		setIsModalOpen(true)
+	}
+
+	const handleOk = () => {
+		setIsModalOpen(false)
+	}
+
+	const handleCancel = () => {
+		setIsModalOpen(false)
+	}
+
+	useEffect(() => {
+		// 访问DOM节点
+		console.log(childref.current) // 输出：<div>...</div>
+	})
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
+
+			<Button type='primary' onClick={() => setOpen(true)}>
+				Begin Tour
+			</Button>
+
+			<div ref={ref1}>123</div>
+			<div ref={ref2}>123</div>
+			<div ref={ref3}>123</div>
 
 			<HeaderManagementFilter
 				loading={isGetHeaderManagementFetching}
@@ -139,6 +200,21 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 			/>
 
+			<ChildComponent
+				ref={childref}
+				isModalOpen={isModalOpen}
+				showModal={showModal}
+				handleOk={handleOk}
+				handleCancel={handleCancel}
+			/>
+
+			<Tour
+				open={open}
+				onClose={() => setOpen(false)}
+				steps={steps}
+				onChange={handleTourChange}
+			/>
+
 			<AffixButtons>
 				<AffixButtons.BackToTop />
 				{isSortMode ? (
@@ -155,6 +231,19 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					/>
 				)}
 			</AffixButtons>
+			<div
+				ref={buttonRef}
+				style={{
+					position: 'fixed',
+					backgroundColor: 'aqua',
+					right: '10px',
+					bottom: '20px',
+					height: '55px',
+					width: '55px',
+				}}
+			>
+				{' '}
+			</div>
 		</LayoutContent.Main>
 	)
 }
