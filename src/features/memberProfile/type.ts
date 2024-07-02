@@ -284,7 +284,7 @@ export interface IBonusWalletDetailData {
 		custRewardType: ICustRewardTypeData[]
 		custRewardTotalSum: number
 	} | null
-	eggTickets: number
+	eventItemCounts: number
 }
 
 export interface IWalletBalanceInfoData {
