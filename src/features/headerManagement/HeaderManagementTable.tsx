@@ -122,7 +122,7 @@ const HeaderManagementTable = ({
 	}
 
 	return (
-		<LayoutContent.Card>
+		<LayoutContent.Card data-tour='result-table'>
 			<Table
 				loading={loading}
 				dataSource={headerManagementWithStatusList}
