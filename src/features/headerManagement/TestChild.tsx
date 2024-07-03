@@ -1,6 +1,5 @@
-// ChildComponent.tsx
+import React, { forwardRef, useRef, useImperativeHandle } from 'react'
 import { Button, Modal, Typography } from 'antd'
-import React, { forwardRef, Ref } from 'react'
 
 interface Props {
 	isModalOpen: boolean
@@ -9,36 +8,46 @@ interface Props {
 	handleCancel: () => void
 }
 
-// 定義 Props 接口
-interface Props {
-	isModalOpen: boolean
-	showModal: () => void
-	handleOk: () => void
-	handleCancel: () => void
+export interface ChildComponentHandles {
+	textRef: React.RefObject<HTMLSpanElement>
+	p1Ref: React.RefObject<HTMLParagraphElement>
+	p2Ref: React.RefObject<HTMLParagraphElement>
+	p3Ref: React.RefObject<HTMLParagraphElement>
 }
 
-// 指定 ref 是 HTMLDivElement 的 ref 並且使用 Props 接口
-const ChildComponent = forwardRef<HTMLDivElement, Props>(
-	({ isModalOpen, showModal, handleOk, handleCancel }, ref) => {
-		return (
-			<>
+const ChildComponent = forwardRef((props: Props, ref) => {
+	const { isModalOpen, showModal, handleOk, handleCancel } = props
+	const textRef = useRef<HTMLSpanElement>(null)
+	const p1Ref = useRef<HTMLParagraphElement>(null)
+	const p2Ref = useRef<HTMLParagraphElement>(null)
+	const p3Ref = useRef<HTMLParagraphElement>(null)
+
+	// 使用 useImperativeHandle 來暴露這些 refs
+	useImperativeHandle(ref, () => ({
+		textRef,
+		p1Ref,
+		p2Ref,
+		p3Ref,
+	}))
+
+	return (
+		<div style={{ background: 'red', height: '100' }}>
+			<Modal
+				title='Basic Modal'
+				open={isModalOpen}
+				onOk={handleOk}
+				onCancel={handleCancel}
+			>
+				<Typography.Text ref={textRef}>Some contents...</Typography.Text>
+				<p ref={p1Ref}>Paragraph 1 contents...</p>
+				<p ref={p2Ref}>Paragraph 2 contents...</p>
+				<p ref={p3Ref}>Paragraph 3 contents...</p>
 				<Button type='primary' onClick={showModal}>
 					Open Modal
 				</Button>
-				<Modal
-					title='Basic Modal'
-					open={isModalOpen}
-					onOk={handleOk}
-					onCancel={handleCancel}
-				>
-					<Typography.Text ref={ref}>S213123123ome contents...</Typography.Text>
-					<p>Some contents...</p>
-					<p>Some contents...</p>
-					<p>Some contents...</p>
-				</Modal>
-			</>
-		)
-	}
-)
+			</Modal>
+		</div>
+	)
+})
 
 export default ChildComponent

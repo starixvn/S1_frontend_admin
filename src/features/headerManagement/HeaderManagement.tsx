@@ -34,11 +34,11 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
 	const buttonRef = useRef<HTMLDivElement>(null)
-	const ref1 = useRef<HTMLDivElement>(null)
-	const ref2 = useRef<HTMLDivElement>(null)
-	const ref3 = useRef<HTMLDivElement>(null)
 
-	const childref = useRef<HTMLDivElement>(null)
+	const childRef = useRef<any>()
+	const filterRef = useRef<any>()
+	const tableRef = useRef<any>()
+	const statusModalRef = useRef<any>()
 
 	const productStatusModal = useModal()
 
@@ -123,25 +123,57 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const steps = [
 		{
-			target: () => buttonRef.current,
-			title: t('Guide.BackToTop.Title'),
-			description: t('Guide.BackToTop.Description'),
+			target: () => document.getElementById('css'),
+			title: 'Step 1: Filter',
+
+			description: 'Filter',
 		},
 		{
-			target: () => childref.current,
-			title: t('Guide.BackToTop.Title'),
-			description: t('Guide.BackToTop.Description'),
+			target: () => filterRef.current && filterRef.current.step1(),
+			title: 'Step 1: Filter',
+
+			description: 'Filter',
+		},
+		{
+			target: () => filterRef.current && filterRef.current.step2(),
+			title: 'Step 2: Currency',
+			description: 'Choose the Curreny',
+		},
+		{
+			target: () => filterRef.current && filterRef.current.step3(),
+			title: 'Step 3: Lobby Category',
+			description: 'Choose the Lobby Category',
+		},
+		{
+			target: () => filterRef.current && filterRef.current.step4(),
+			title: 'Step 4: Search',
+			description: 'Search the for the results.',
+		},
+		{
+			target: () => tableRef.current && tableRef.current.step1(),
+			title: 'Step 4: Third Paragraph',
+			description: 'This is a description for the third paragraph.',
+		},
+		{
+			target: () => buttonRef.current,
+			title: 'Sorting',
+			cover: <img alt='tour.png' src='https://i.imgur.com/h14Bsd3.gif' />,
+			description: 'You can sort the list by dragging the icon.',
+		},
+		{
+			target: () => filterRef.current && filterRef.current.step5(),
+			title: 'Step 4: Search',
+			description: 'Search the for the results.',
+		},
+		{
+			target: () => statusModalRef.current && statusModalRef.current.step1(),
+			title: 'Step 4: Search',
+
+			description: 'Search the for the results.',
 		},
 	]
 
 	const [open, setOpen] = useState<boolean>(false)
-
-	const handleTourChange = (current: number) => {
-		if (current === 1) {
-			showModal()
-		}
-	}
-
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const showModal = () => {
@@ -156,24 +188,25 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		setIsModalOpen(false)
 	}
 
-	useEffect(() => {
-		// 访问DOM节点
-		console.log(childref.current) // 输出：<div>...</div>
-	})
+	const handleonChange = (currentStep: number) => {
+		if (currentStep === 4) {
+			handleSearch()
+		}
+		if (currentStep === 7) {
+			productStatusModal.onOpen()
+		}
+	}
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
-			<Button type='primary' onClick={() => setOpen(true)}>
+			<Button type='primary' id='lala' onClick={() => setOpen(true)}>
 				Begin Tour
 			</Button>
 
-			<div ref={ref1}>123</div>
-			<div ref={ref2}>123</div>
-			<div ref={ref3}>123</div>
-
 			<HeaderManagementFilter
+				ref={filterRef}
 				loading={isGetHeaderManagementFetching}
 				isSortMode={isSortMode}
 				form={filterForm}
@@ -185,6 +218,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 			{!isEmpty(queryParams) && (
 				<HeaderManagementTable
+					ref={tableRef}
 					loading={tableLoading}
 					isSortMode={isSortMode}
 					headerManagementList={headerManagementList}
@@ -194,6 +228,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)}
 
 			<ProductStatusModal
+				ref={statusModalRef}
 				visible={productStatusModal.visible}
 				onCancel={productStatusModal.onCancel}
 				lobbyCategoryList={lobbyCategoryList}
@@ -201,7 +236,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			/>
 
 			<ChildComponent
-				ref={childref}
+				ref={childRef}
 				isModalOpen={isModalOpen}
 				showModal={showModal}
 				handleOk={handleOk}
@@ -210,9 +245,12 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 			<Tour
 				open={open}
-				onClose={() => setOpen(false)}
+				onClose={() => {
+					setOpen(false)
+					productStatusModal.onCancel()
+				}}
 				steps={steps}
-				onChange={handleTourChange}
+				onChange={handleonChange}
 			/>
 
 			<AffixButtons>
@@ -244,6 +282,20 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			>
 				{' '}
 			</div>
+
+			{/* <div
+				style={{
+					position: 'fixed',
+					backgroundColor: 'aqua',
+					top: '32%',
+					left: '50%',
+					transform: 'translate(-50%, -50%)',
+					height: '1vh',
+					width: '60vw',
+				}}
+			>
+				{' '}
+			</div> */}
 		</LayoutContent.Main>
 	)
 }

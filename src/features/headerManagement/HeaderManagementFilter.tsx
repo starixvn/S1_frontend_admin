@@ -1,3 +1,4 @@
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { head } from 'lodash'
 import { PermissionInterface } from 'type'
 import { useTranslation } from 'react-i18next'
@@ -22,97 +23,130 @@ interface IHeaderManagementFilterProps {
 const { Panel } = Collapse
 const { Option } = Select
 
-const HeaderManagementFilter = ({
-	loading,
-	isSortMode,
-	form,
-	editPermission,
-	lobbyCategoryList,
-	onSearch,
-	onSetProductStatus,
-}: IHeaderManagementFilterProps) => {
-	const { t } = useTranslation()
+const HeaderManagementFilter = forwardRef(
+	(
+		{
+			loading,
+			isSortMode,
+			form,
+			editPermission,
+			lobbyCategoryList,
+			onSearch,
+			onSetProductStatus,
+		}: IHeaderManagementFilterProps,
+		ref
+	) => {
+		const { t } = useTranslation()
 
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
+		const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
-	return (
-		<Collapse defaultActiveKey={1}>
-			<Panel header='' key='1'>
-				<LayoutContent.Card style={{ marginTop: 0 }}>
-					<Form
-						layout='vertical'
-						size='middle'
-						form={form}
-						onFinish={() => onSearch()}
-						initialValues={{
-							currencyId: head(currencyListBySite)?.currencyId,
-						}}
-					>
-						<Row align='middle' gutter={16}>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyId' label={t('Label_Currency')}>
-									<Select placeholder='select'>
-										{currencyListBySite?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='lobbyCategoryId'
-									label={t('Label_LobbyCategory')}
-								>
-									<Select placeholder='select'>
-										{lobbyCategoryList.map(({ id, name }) => (
-											<Option key={Number(id)} value={Number(id)}>
-												{name}
-											</Option>
-										))}
-									</Select>
-								</Form.Item>
-							</Col>
-						</Row>
-						<br />
+		const ref1 = useRef(null)
+		const ref2 = useRef(null)
+		const ref3 = useRef(null)
+		const ref4 = useRef(null)
+		const ref5 = useRef(null)
+		const divRef = useRef(null)
 
-						<Row justify='end' align='middle' gutter={16}>
-							<Col>
-								<Typography.Text style={{ fontSize: 12 }}>
-									{t('Label_HeaderMenu_Product_Description_2')}
-								</Typography.Text>
-							</Col>
+		useImperativeHandle(ref, () => ({
+			step1: () => ref1.current,
+			step2: () => ref2.current, // 公開 ref3
+			step3: () => ref3.current, // 公開 ref3
+			step4: () => ref4.current,
+			step5: () => ref5.current, // 公開 ref3
+			step6: () => divRef.current,
+		}))
 
-							<Col>
-								<Button
-									loading={loading}
-									icon={<SearchOutlined />}
-									htmlType='submit'
-									type='primary'
-									disabled={isSortMode}
-								>
-									{t('Label_Search')}
-								</Button>
-							</Col>
+		useEffect(() => {
+			console.log('ref2', ref2.current) // 查看這是指向哪裡
+			console.log('ref1', ref1.current) //
+			console.log('ref5', ref1.current) //
+		}, [])
 
-							{editPermission?.canUse && (
+		return (
+			<Collapse defaultActiveKey={1}>
+				<Panel header='' key='1' ref={ref1}>
+					<LayoutContent.Card style={{ marginTop: 0 }}>
+						<Form
+							layout='vertical'
+							size='middle'
+							form={form}
+							onFinish={() => onSearch()}
+							initialValues={{
+								currencyId: head(currencyListBySite)?.currencyId,
+							}}
+						>
+							<Row align='middle' gutter={16}>
+								<Col lg={6} md={12} xs={12} ref={ref2}>
+									<Form.Item
+										name='currencyId'
+										label={t('Label_Currency')}
+										id='css'
+									>
+										<Select placeholder='select'>
+											{currencyListBySite?.map(item => (
+												<Option key={item.currencyId} value={item.currencyId}>
+													{item.isoCode}
+												</Option>
+											))}
+										</Select>
+									</Form.Item>
+								</Col>
+								<Col lg={6} md={12} xs={12} ref={ref3}>
+									<Form.Item
+										name='lobbyCategoryId'
+										label={t('Label_LobbyCategory')}
+									>
+										<Select placeholder='select'>
+											{lobbyCategoryList.map(({ id, name }) => (
+												<Option key={Number(id)} value={Number(id)}>
+													{name}
+												</Option>
+											))}
+										</Select>
+									</Form.Item>
+								</Col>
+							</Row>
+							<br />
+
+							<Row justify='end' align='middle' gutter={16}>
+								{/* <Col>
+									<Typography.Text style={{ fontSize: 12 }}>
+										{t('Label_HeaderMenu_Product_Description_2')}
+									</Typography.Text>
+								</Col> */}
 								<Col>
 									<Button
+										ref={ref4}
+										loading={loading}
+										icon={<SearchOutlined />}
+										htmlType='submit'
 										type='primary'
-										onClick={onSetProductStatus}
 										disabled={isSortMode}
 									>
-										{t('Label_ProductStatus')}
+										{t('Label_Search')}
 									</Button>
 								</Col>
-							)}
-						</Row>
-					</Form>
-				</LayoutContent.Card>
-			</Panel>
-		</Collapse>
-	)
-}
+
+								{editPermission?.canUse && (
+									<Col>
+										<Button
+											id='css'
+											ref={ref5}
+											type='primary'
+											onClick={onSetProductStatus}
+											disabled={isSortMode}
+										>
+											{t('Label_ProductStatus')}
+										</Button>
+									</Col>
+								)}
+							</Row>
+						</Form>
+					</LayoutContent.Card>
+				</Panel>
+			</Collapse>
+		)
+	}
+)
 
 export default HeaderManagementFilter
