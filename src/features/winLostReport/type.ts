@@ -18,6 +18,7 @@ export interface IWinLossBasicExportArgs {
 	noDraw: boolean
 	includeTest: boolean
 	memberTypes: UserTypeEnum[]
+	version: number
 }
 
 export interface IWinLossBasicArgs extends IWinLossBasicExportArgs {
