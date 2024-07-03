@@ -124,6 +124,7 @@ export const tableColumnConverter = (tableList: object[]) => {
 				render: (data: number | string) =>
 					Number(data) ? (
 						<Typography.Text
+							ellipsis={{ tooltip: true }}
 							style={{ whiteSpace: 'nowrap' }}
 							type={isPositiveNum(data) ? undefined : 'danger'}
 						>
