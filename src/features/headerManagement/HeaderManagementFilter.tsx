@@ -7,7 +7,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { selectCurrencyListBySite } from 'common/enum'
 import { FormInstance } from 'antd/es/form/Form'
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, Col, Collapse, Form, Row, Select, Typography } from 'antd'
+import { Button, Col, Collapse, Form, Row, Select } from 'antd'
 import { IFilterForm, ILobbyCategoryData } from 'features/headerManagement/type'
 
 interface IHeaderManagementFilterProps {
@@ -40,26 +40,26 @@ const HeaderManagementFilter = forwardRef(
 
 		const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
-		const ref1 = useRef(null)
-		const ref2 = useRef(null)
-		const ref3 = useRef(null)
-		const ref4 = useRef(null)
-		const ref5 = useRef(null)
-		const divRef = useRef(null)
+		const ref1 = useRef<HTMLDivElement>(null)
+		const ref2 = useRef<HTMLDivElement>(null)
+		const ref3 = useRef<HTMLDivElement>(null)
+		const ref4 = useRef<HTMLButtonElement>(null)
+		const ref5 = useRef<HTMLButtonElement>(null)
 
 		useImperativeHandle(ref, () => ({
-			step1: () => ref1.current,
-			step2: () => ref2.current, // 公開 ref3
-			step3: () => ref3.current, // 公開 ref3
-			step4: () => ref4.current,
-			step5: () => ref5.current, // 公開 ref3
-			step6: () => divRef.current,
+			ref1: ref1.current,
+			ref2: ref2.current,
+			ref3: ref3.current,
+			ref4: ref4.current,
+			ref5: ref5.current,
 		}))
 
 		useEffect(() => {
-			console.log('ref2', ref2.current) // 查看這是指向哪裡
-			console.log('ref1', ref1.current) //
-			console.log('ref5', ref1.current) //
+			console.log('ref1', ref1.current) // 查看這是指向哪裡
+			console.log('ref2', ref2.current) //
+			console.log('ref3', ref3.current) //
+			console.log('ref4', ref4.current) //
+			console.log('ref5', ref5.current) //
 		}, [])
 
 		return (

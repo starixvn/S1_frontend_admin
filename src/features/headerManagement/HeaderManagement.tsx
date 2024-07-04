@@ -1,11 +1,5 @@
 import { head, isEmpty } from 'lodash'
-import {
-	useEffect,
-	useRef,
-	useState,
-	forwardRef,
-	useImperativeHandle,
-} from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -18,12 +12,11 @@ import {
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
 } from 'features/headerManagement/api'
-import { Button, Form, message, Tour } from 'antd'
-import { IFilterForm } from 'features/headerManagement/type'
+import { Button, Form, message, Tour, TourProps } from 'antd'
+import { IFilterForm, IChildRefs } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
-import ChildComponent from './TestChild'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -33,14 +26,14 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
-	const buttonRef = useRef<HTMLDivElement>(null)
-
-	const childRef = useRef<any>()
-	const filterRef = useRef<any>()
-	const tableRef = useRef<any>()
-	const statusModalRef = useRef<any>()
 
 	const productStatusModal = useModal()
+
+	// refs for Tour Component, use forwardsRef and useImparativeHandle to expose the refs
+	const buttonRef = useRef<HTMLDivElement>(null)
+	const filterRef = useRef<IChildRefs>(null)
+	const tableRef = useRef<IChildRefs>(null)
+	const statusModalRef = useRef<IChildRefs>(null)
 
 	const [
 		getHeaderManagementList,
@@ -121,72 +114,57 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
-	const steps = [
+	const steps: TourProps['steps'] = [
 		{
-			target: () => document.getElementById('css'),
-			title: 'Step 1: Filter',
-
-			description: 'Filter',
+			target: () => filterRef.current?.ref1 as HTMLElement,
+			title: 'Filter Section',
+			description: 'Filter for searching results.',
 		},
 		{
-			target: () => filterRef.current && filterRef.current.step1(),
-			title: 'Step 1: Filter',
-
-			description: 'Filter',
+			target: () => filterRef.current?.ref2 as HTMLElement,
+			title: 'Currency',
+			description: 'Select curreny.',
 		},
 		{
-			target: () => filterRef.current && filterRef.current.step2(),
-			title: 'Step 2: Currency',
-			description: 'Choose the Curreny',
+			target: () => filterRef.current?.ref3 as HTMLElement,
+			title: 'Lobby Category',
+			description: 'Select lobby category.',
 		},
 		{
-			target: () => filterRef.current && filterRef.current.step3(),
-			title: 'Step 3: Lobby Category',
-			description: 'Choose the Lobby Category',
+			target: () => filterRef.current?.ref4 as HTMLElement,
+			title: 'Search',
+			description: 'Click button to search.',
 		},
 		{
-			target: () => filterRef.current && filterRef.current.step4(),
-			title: 'Step 4: Search',
-			description: 'Search the for the results.',
+			target: () => tableRef.current?.ref1 as HTMLElement,
+			title: 'Filter Results Table',
+			description: 'Results will be displayed here.',
 		},
 		{
-			target: () => tableRef.current && tableRef.current.step1(),
-			title: 'Step 4: Third Paragraph',
-			description: 'This is a description for the third paragraph.',
-		},
-		{
-			target: () => buttonRef.current,
+			target: () => buttonRef.current as HTMLElement,
 			title: 'Sorting',
-			cover: <img alt='tour.png' src='https://i.imgur.com/h14Bsd3.gif' />,
-			description: 'You can sort the list by dragging the icon.',
+			cover: (
+				<img
+					alt='tour.png'
+					src='https://i.imgur.com/h14Bsd3.gif'
+					referrerPolicy='no-referrer'
+				/>
+			),
+			description: 'Sort the list by dragging the icon.',
 		},
 		{
-			target: () => filterRef.current && filterRef.current.step5(),
-			title: 'Step 4: Search',
-			description: 'Search the for the results.',
+			target: () => filterRef.current?.ref5 as HTMLElement,
+			title: 'Product Status',
+			description: 'Clicks the button the show product status modal.',
 		},
 		{
-			target: () => statusModalRef.current && statusModalRef.current.step1(),
-			title: 'Step 4: Search',
-
-			description: 'Search the for the results.',
+			target: () => statusModalRef.current?.ref1 as HTMLElement,
+			title: 'Step 7',
+			description: 'Check the product status.',
 		},
 	]
 
 	const [open, setOpen] = useState<boolean>(false)
-	const [isModalOpen, setIsModalOpen] = useState(false)
-
-	const showModal = () => {
-		setIsModalOpen(true)
-	}
-
-	const handleOk = () => {
-		setIsModalOpen(false)
-	}
-
-	const handleCancel = () => {
-		setIsModalOpen(false)
-	}
 
 	const handleonChange = (currentStep: number) => {
 		if (currentStep === 4) {
@@ -201,7 +179,11 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
-			<Button type='primary' id='lala' onClick={() => setOpen(true)}>
+			<Button
+				type='primary'
+				style={{ marginBottom: '20px', background: 'teal' }}
+				onClick={() => setOpen(true)}
+			>
 				Begin Tour
 			</Button>
 
@@ -235,14 +217,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 			/>
 
-			<ChildComponent
-				ref={childRef}
-				isModalOpen={isModalOpen}
-				showModal={showModal}
-				handleOk={handleOk}
-				handleCancel={handleCancel}
-			/>
-
 			<Tour
 				open={open}
 				onClose={() => {
@@ -269,11 +243,12 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					/>
 				)}
 			</AffixButtons>
+
+			{/* div for the floating button at right bottom corner */}
 			<div
 				ref={buttonRef}
 				style={{
 					position: 'fixed',
-					backgroundColor: 'aqua',
 					right: '10px',
 					bottom: '20px',
 					height: '55px',
@@ -282,20 +257,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			>
 				{' '}
 			</div>
-
-			{/* <div
-				style={{
-					position: 'fixed',
-					backgroundColor: 'aqua',
-					top: '32%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-					height: '1vh',
-					width: '60vw',
-				}}
-			>
-				{' '}
-			</div> */}
 		</LayoutContent.Main>
 	)
 }

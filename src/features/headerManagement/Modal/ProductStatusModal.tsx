@@ -78,20 +78,10 @@ const ProductStatusModal = forwardRef(
 		const { siteId } = useAppSelector(selectUserSite) ?? {}
 		const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 
-		const ref1 = useRef(null)
-		const ref2 = useRef(null)
-		const ref3 = useRef(null)
-		const ref4 = useRef(null)
-		const ref5 = useRef(null)
-		const divRef = useRef(null)
+		const ref1 = useRef<HTMLDivElement>(null)
 
 		useImperativeHandle(ref, () => ({
-			step1: () => ref1.current,
-			step2: () => ref2.current,
-			step3: () => ref3.current,
-			step4: () => ref4.current,
-			step5: () => ref5.current,
-			step6: () => divRef.current,
+			ref1: ref1.current,
 		}))
 
 		const {
@@ -434,13 +424,13 @@ const ProductStatusModal = forwardRef(
 					</Col>
 				</Row>
 
-				<Row align='middle' gutter={16}>
+				{/* <Row align='middle' gutter={16}>
 					<Col lg={24}>
 						<Typography.Text style={{ fontSize: 12 }}>
 							{t('Label_HeaderMenu_Product_Description_1')}
 						</Typography.Text>
 					</Col>
-				</Row>
+				</Row> */}
 
 				<Form form={editForm} component={false}>
 					<Table

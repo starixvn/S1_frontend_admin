@@ -43,20 +43,18 @@ const HeaderManagementTable = forwardRef(
 			status: IHeaderSettingEnum.True,
 		})
 
-		const ref1 = useRef(null)
-		const ref2 = useRef(null)
-		const ref3 = useRef(null)
-		const ref4 = useRef(null)
-		const ref5 = useRef(null)
-		const divRef = useRef(null)
+		const ref1 = useRef<HTMLDivElement>(null)
+		const ref2 = useRef<HTMLDivElement>(null)
+		const ref3 = useRef<HTMLDivElement>(null)
+		const ref4 = useRef<HTMLButtonElement>(null)
+		const ref5 = useRef<HTMLButtonElement>(null)
 
 		useImperativeHandle(ref, () => ({
-			step1: () => ref1.current,
-			step2: () => ref2.current,
-			step3: () => ref3.current,
-			step4: () => ref4.current,
-			step5: () => ref5.current,
-			step6: () => divRef.current,
+			ref1: ref1.current,
+			ref2: ref2.current,
+			ref3: ref3.current,
+			ref4: ref4.current,
+			ref5: ref5.current,
 		}))
 
 		const columns = [
@@ -145,8 +143,7 @@ const HeaderManagementTable = forwardRef(
 		}
 
 		return (
-			<LayoutContent.Card ref={ref1} id='aaa'>
-				<div id='aaa'>123123</div>
+			<LayoutContent.Card ref={ref1}>
 				<Table
 					loading={loading}
 					dataSource={headerManagementWithStatusList}

@@ -102,3 +102,12 @@ export interface IEditProductStatusForm {
 	status: boolean
 	iconType: number
 }
+
+// 先預期要曝露出來給Tour的ref有1至5個
+export interface IChildRefs {
+	ref1?: HTMLDivElement
+	ref2?: HTMLDivElement
+	ref3?: HTMLDivElement
+	ref4?: HTMLDivElement
+	ref5?: HTMLDivElement
+}
