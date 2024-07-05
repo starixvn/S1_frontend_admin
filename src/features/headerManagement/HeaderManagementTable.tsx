@@ -16,7 +16,6 @@ import {
 	IHeaderSettingData,
 	IHeaderSettingEnum,
 } from 'features/headerManagement/type'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
 
 interface IHeaderManagementTableProps {
 	loading: boolean
@@ -26,149 +25,128 @@ interface IHeaderManagementTableProps {
 	handleSetSort: (id: number, sort: number) => void
 }
 
-const HeaderManagementTable = forwardRef(
-	(
+const HeaderManagementTable = ({
+	loading,
+	isSortMode,
+	headerManagementList,
+	timeZoneUtcOffset,
+	handleSetSort,
+}: IHeaderManagementTableProps) => {
+	const { t } = useTranslation()
+
+	const headerManagementWithStatusList = filter(headerManagementList, {
+		status: IHeaderSettingEnum.True,
+	})
+
+	const columns = [
+		isSortMode && {
+			title: t('Label_Sort'),
+			dataIndex: 'sortIcon',
+			width: 30,
+			align: 'center' as 'center',
+			render: () => <DragHandle />,
+		},
 		{
-			loading,
-			isSortMode,
-			headerManagementList,
-			timeZoneUtcOffset,
-			handleSetSort,
-		}: IHeaderManagementTableProps,
-		ref
-	) => {
-		const { t } = useTranslation()
+			title: t('Label_Sort'),
+			key: 'sort',
+			width: 120,
+			align: 'center' as 'center',
+			// * 這裡因會有從 product status 關掉的情況，所以用 index 顯示
+			render: (_: any, __: any, idx: number) => idx + 1,
+		},
+		{
+			title: t('Label_Currency'),
+			key: 'currency',
+			dataIndex: 'currency',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_LobbyCategory'),
+			key: 'lobbyCategory',
+			dataIndex: 'lobbyCategory',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_TpID'),
+			key: 'tpId',
+			dataIndex: 'tpId',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_ProductName'),
+			key: 'productName',
+			dataIndex: 'productName',
+			width: 120,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Memo'),
+			key: 'memo',
+			dataIndex: 'memo',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_UpdateTime'),
+			dataIndex: 'updateTime',
+			width: 120,
+			align: 'center' as 'center',
+			render: (updateTime: string) =>
+				updateTime ? (
+					<div style={{ whiteSpace: 'nowrap' }}>
+						{dayjs(updateTime).utcOffset(timeZoneUtcOffset).format(timeFormat)}
+					</div>
+				) : (
+					''
+				),
+		},
+		{
+			title: t('Label_Updater'),
+			key: 'updater',
+			dataIndex: 'updater',
+			width: 60,
+			align: 'center' as 'center',
+		},
+	].filter(Boolean) as ColumnsType<any>
 
-		const headerManagementWithStatusList = filter(headerManagementList, {
-			status: IHeaderSettingEnum.True,
-		})
-
-		const ref1 = useRef<HTMLDivElement>(null)
-		const ref2 = useRef<HTMLDivElement>(null)
-		const ref3 = useRef<HTMLDivElement>(null)
-		const ref4 = useRef<HTMLButtonElement>(null)
-		const ref5 = useRef<HTMLButtonElement>(null)
-
-		useImperativeHandle(ref, () => ({
-			ref1: ref1.current,
-			ref2: ref2.current,
-			ref3: ref3.current,
-			ref4: ref4.current,
-			ref5: ref5.current,
-		}))
-
-		const columns = [
-			isSortMode && {
-				title: t('Label_Sort'),
-				dataIndex: 'sortIcon',
-				width: 30,
-				align: 'center' as 'center',
-				render: () => <DragHandle />,
-			},
-			{
-				title: t('Label_Sort'),
-				key: 'sort',
-				width: 120,
-				align: 'center' as 'center',
-				// * 這裡因會有從 product status 關掉的情況，所以用 index 顯示
-				render: (_: any, __: any, idx: number) => idx + 1,
-			},
-			{
-				title: t('Label_Currency'),
-				key: 'currency',
-				dataIndex: 'currency',
-				width: 120,
-				align: 'center' as 'center',
-			},
-			{
-				title: t('Label_LobbyCategory'),
-				key: 'lobbyCategory',
-				dataIndex: 'lobbyCategory',
-				width: 120,
-				align: 'center' as 'center',
-			},
-			{
-				title: t('Label_TpID'),
-				key: 'tpId',
-				dataIndex: 'tpId',
-				width: 120,
-				align: 'center' as 'center',
-			},
-			{
-				title: t('Label_ProductName'),
-				key: 'productName',
-				dataIndex: 'productName',
-				width: 120,
-				align: 'center' as 'center',
-			},
-			{
-				title: t('Label_Memo'),
-				key: 'memo',
-				dataIndex: 'memo',
-				width: 100,
-				align: 'center' as 'center',
-			},
-			{
-				title: t('Label_UpdateTime'),
-				dataIndex: 'updateTime',
-				width: 120,
-				align: 'center' as 'center',
-				render: (updateTime: string) =>
-					updateTime ? (
-						<div style={{ whiteSpace: 'nowrap' }}>
-							{dayjs(updateTime)
-								.utcOffset(timeZoneUtcOffset)
-								.format(timeFormat)}
-						</div>
-					) : (
-						''
-					),
-			},
-			{
-				title: t('Label_Updater'),
-				key: 'updater',
-				dataIndex: 'updater',
-				width: 60,
-				align: 'center' as 'center',
-			},
-		].filter(Boolean) as ColumnsType<any>
-
-		const onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-			// 有效 sorting
-			if (oldIndex !== newIndex) {
-				const { id } = headerManagementWithStatusList[oldIndex]
-				const { sort } = headerManagementWithStatusList[newIndex]
-				handleSetSort(id, sort)
-			}
+	const onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
+		// 有效 sorting
+		if (oldIndex !== newIndex) {
+			const { id } = headerManagementWithStatusList[oldIndex]
+			const { sort } = headerManagementWithStatusList[newIndex]
+			handleSetSort(id, sort)
 		}
-
-		return (
-			<LayoutContent.Card ref={ref1}>
-				<Table
-					loading={loading}
-					dataSource={headerManagementWithStatusList}
-					columns={columns}
-					pagination={false}
-					components={{
-						body: {
-							wrapper: (wrapper: any) => (
-								<DraggableContainer {...wrapper} onSortEnd={onSortEnd} />
-							),
-							row: (row: any) => (
-								<DraggableBodyRow
-									{...row}
-									dataSource={headerManagementWithStatusList}
-									rowKey='id'
-								/>
-							),
-						},
-					}}
-					scroll={{ y: 800 }}
-					rowKey='id'
-				/>
-			</LayoutContent.Card>
-		)
 	}
-)
+
+	return (
+		<LayoutContent.Card data-hm-tour='result-table'>
+			<Table
+				loading={loading}
+				dataSource={headerManagementWithStatusList}
+				columns={columns}
+				pagination={false}
+				components={{
+					body: {
+						wrapper: (wrapper: any) => (
+							<DraggableContainer {...wrapper} onSortEnd={onSortEnd} />
+						),
+						row: (row: any) => (
+							<DraggableBodyRow
+								{...row}
+								dataSource={headerManagementWithStatusList}
+								rowKey='id'
+							/>
+						),
+					},
+				}}
+				scroll={{ y: 800 }}
+				rowKey='id'
+			/>
+		</LayoutContent.Card>
+	)
+}
 
 export default HeaderManagementTable

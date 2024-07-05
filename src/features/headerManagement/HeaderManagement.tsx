@@ -1,5 +1,5 @@
 import { head, isEmpty } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
@@ -12,11 +12,14 @@ import {
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
 } from 'features/headerManagement/api'
-import { Button, Form, message, Tour, TourProps } from 'antd'
-import { IFilterForm, IChildRefs } from 'features/headerManagement/type'
+import { Form, message, Tour } from 'antd'
+import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
+import TourBeginButton from './Tour/TourBeginButton'
+import FloatButtonLocator from './Tour/FloatButtonLocator'
+import tourSteps from './Tour/tourConfig'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -26,14 +29,9 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
+	const [open, setOpen] = useState<boolean>(false)
 
 	const productStatusModal = useModal()
-
-	// refs for Tour Component, use forwardsRef and useImparativeHandle to expose the refs
-	const buttonRef = useRef<HTMLDivElement>(null)
-	const filterRef = useRef<IChildRefs>(null)
-	const tableRef = useRef<IChildRefs>(null)
-	const statusModalRef = useRef<IChildRefs>(null)
 
 	const [
 		getHeaderManagementList,
@@ -114,58 +112,19 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
-	const steps: TourProps['steps'] = [
-		{
-			target: () => filterRef.current?.ref1 as HTMLElement,
-			title: 'Filter Section',
-			description: 'Filter for searching results.',
-		},
-		{
-			target: () => filterRef.current?.ref2 as HTMLElement,
-			title: 'Currency',
-			description: 'Select curreny.',
-		},
-		{
-			target: () => filterRef.current?.ref3 as HTMLElement,
-			title: 'Lobby Category',
-			description: 'Select lobby category.',
-		},
-		{
-			target: () => filterRef.current?.ref4 as HTMLElement,
-			title: 'Search',
-			description: 'Click button to search.',
-		},
-		{
-			target: () => tableRef.current?.ref1 as HTMLElement,
-			title: 'Filter Results Table',
-			description: 'Results will be displayed here.',
-		},
-		{
-			target: () => buttonRef.current as HTMLElement,
-			title: 'Sorting',
-			cover: (
-				<img
-					alt='tour.png'
-					src='https://i.imgur.com/h14Bsd3.gif'
-					referrerPolicy='no-referrer'
-				/>
-			),
-			description: 'Sort the list by dragging the icon.',
-		},
-		{
-			target: () => filterRef.current?.ref5 as HTMLElement,
-			title: 'Product Status',
-			description: 'Clicks the button the show product status modal.',
-		},
-		{
-			target: () => statusModalRef.current?.ref1 as HTMLElement,
-			title: 'Step 7',
-			description: 'Check the product status.',
-		},
-	]
+	// 使用data屬性 格式data-feature-tour 如header management 縮寫為 hm
+	const getTourTarget = (selector: string): HTMLElement =>
+		document.querySelector(`[data-hm-tour="${selector}"]`) as HTMLElement
 
-	const [open, setOpen] = useState<boolean>(false)
+	// 使用StepConfig 統一管理 搭配mapping產生 antd要的Tour Steps
+	const steps = tourSteps.map(step => ({
+		target: () => getTourTarget(step.selector),
+		title: t(step.title),
+		description: t(step.description),
+		cover: step.cover && <img src={step.cover} alt={step.title} />,
+	}))
 
+	// 特定步驟邏輯
 	const handleonChange = (currentStep: number) => {
 		if (currentStep === 4) {
 			handleSearch()
@@ -179,16 +138,22 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
-			<Button
-				type='primary'
-				style={{ marginBottom: '20px', background: 'teal' }}
-				onClick={() => setOpen(true)}
-			>
-				Begin Tour
-			</Button>
+			{/* tour begin button */}
+			<TourBeginButton handleClick={() => setOpen(true)} />
+			{/* div for the floating button at right bottom corner */}
+			<FloatButtonLocator />
+			{/* tour component */}
+			<Tour
+				open={open}
+				onClose={() => {
+					setOpen(false)
+					productStatusModal.onCancel()
+				}}
+				steps={steps}
+				onChange={handleonChange}
+			/>
 
 			<HeaderManagementFilter
-				ref={filterRef}
 				loading={isGetHeaderManagementFetching}
 				isSortMode={isSortMode}
 				form={filterForm}
@@ -200,7 +165,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 			{!isEmpty(queryParams) && (
 				<HeaderManagementTable
-					ref={tableRef}
 					loading={tableLoading}
 					isSortMode={isSortMode}
 					headerManagementList={headerManagementList}
@@ -210,24 +174,13 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)}
 
 			<ProductStatusModal
-				ref={statusModalRef}
 				visible={productStatusModal.visible}
 				onCancel={productStatusModal.onCancel}
 				lobbyCategoryList={lobbyCategoryList}
 				editPermission={editPermission}
 			/>
 
-			<Tour
-				open={open}
-				onClose={() => {
-					setOpen(false)
-					productStatusModal.onCancel()
-				}}
-				steps={steps}
-				onChange={handleonChange}
-			/>
-
-			<AffixButtons>
+			<AffixButtons data-hm-tour='floating-button'>
 				<AffixButtons.BackToTop />
 				{isSortMode ? (
 					<AffixButtons.Close onClick={() => setIsSortMode(false)} />
@@ -243,20 +196,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					/>
 				)}
 			</AffixButtons>
-
-			{/* div for the floating button at right bottom corner */}
-			<div
-				ref={buttonRef}
-				style={{
-					position: 'fixed',
-					right: '10px',
-					bottom: '20px',
-					height: '55px',
-					width: '55px',
-				}}
-			>
-				{' '}
-			</div>
 		</LayoutContent.Main>
 	)
 }
