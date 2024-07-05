@@ -9,9 +9,7 @@ const FloatButtonLocator = () => {
 				height: '55px',
 				width: '55px',
 			}}
-		>
-			{' '}
-		</div>
+		/>
 	)
 }
 
