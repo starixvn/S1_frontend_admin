@@ -12,11 +12,14 @@ import {
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
 } from 'features/headerManagement/api'
-import { Form, message } from 'antd'
+import { Form, message, Tour } from 'antd'
 import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
+import TourBeginButton from './Tour/TourBeginButton'
+import FloatButtonLocator from './Tour/FloatButtonLocator'
+import tourSteps from './Tour/tourConfig'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -26,6 +29,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
+	const [open, setOpen] = useState<boolean>(false)
 
 	const productStatusModal = useModal()
 
@@ -108,9 +112,46 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	// 使用data屬性 格式data-feature-tour 如header management 縮寫為 hm
+	const getTourTarget = (selector: string): HTMLElement =>
+		document.querySelector(`[data-hm-tour="${selector}"]`) as HTMLElement
+
+	// 使用StepConfig 統一管理 搭配mapping產生 antd要的Tour Steps
+	const steps = tourSteps.map(step => ({
+		target: () => getTourTarget(step.selector),
+		title: t(step.title),
+		description: t(step.description),
+		cover: step.cover && <img src={step.cover} alt={step.title} />,
+	}))
+
+	// 特定步驟邏輯
+	const handleonChange = (currentStep: number) => {
+		if (currentStep === 4) {
+			handleSearch()
+		}
+		if (currentStep === 7) {
+			productStatusModal.onOpen()
+		}
+	}
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
+
+			{/* tour begin button */}
+			<TourBeginButton handleClick={() => setOpen(true)} />
+			{/* div for the floating button at right bottom corner */}
+			<FloatButtonLocator />
+			{/* tour component */}
+			<Tour
+				open={open}
+				onClose={() => {
+					setOpen(false)
+					productStatusModal.onCancel()
+				}}
+				steps={steps}
+				onChange={handleonChange}
+			/>
 
 			<HeaderManagementFilter
 				loading={isGetHeaderManagementFetching}
@@ -139,7 +180,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 			/>
 
-			<AffixButtons>
+			<AffixButtons data-hm-tour='floating-button'>
 				<AffixButtons.BackToTop />
 				{isSortMode ? (
 					<AffixButtons.Close onClick={() => setIsSortMode(false)} />
