@@ -17,9 +17,13 @@ import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
-import TourBeginButton from './Tour/TourBeginButton'
-import FloatButtonLocator from './Tour/FloatButtonLocator'
-import tourSteps from './Tour/tourConfig'
+import FloatButtonLocator from './Tour/components/FloatButtonLocator'
+import TourBeginButton from './Tour/components/TourBeginButton'
+import useGenerateTourSteps from './Tour/hooks/useTourSteps'
+import {
+	HeaderManagementStepEnum,
+	headerManagementTour,
+} from './Tour/tour-configs/headerManagementTour'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -32,6 +36,8 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [open, setOpen] = useState<boolean>(false)
 
 	const productStatusModal = useModal()
+	// tourSteps
+	const steps = useGenerateTourSteps(headerManagementTour)
 
 	const [
 		getHeaderManagementList,
@@ -112,24 +118,12 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
-	// 使用data屬性 格式data-feature-tour 如header management 縮寫為 hm
-	const getTourTarget = (selector: string): HTMLElement =>
-		document.querySelector(`[data-hm-tour="${selector}"]`) as HTMLElement
-
-	// 使用StepConfig 統一管理 搭配mapping產生 antd要的Tour Steps
-	const steps = tourSteps.map(step => ({
-		target: () => getTourTarget(step.selector),
-		title: t(step.title),
-		description: t(step.description),
-		cover: step.cover && <img src={step.cover} alt={step.title} />,
-	}))
-
 	// 特定步驟邏輯
 	const handleonChange = (currentStep: number) => {
-		if (currentStep === 4) {
+		if (currentStep === HeaderManagementStepEnum.AboutHandleSearch) {
 			handleSearch()
 		}
-		if (currentStep === 7) {
+		if (currentStep === HeaderManagementStepEnum.AboutHandleProductStatus) {
 			productStatusModal.onOpen()
 		}
 	}
@@ -137,7 +131,6 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
-
 			{/* tour begin button */}
 			<TourBeginButton handleClick={() => setOpen(true)} />
 			{/* div for the floating button at right bottom corner */}

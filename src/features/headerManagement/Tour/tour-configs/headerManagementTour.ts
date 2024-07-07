@@ -1,4 +1,4 @@
-const tourSteps = [
+export const headerManagementTour = [
 	{
 		selector: 'filter-panel',
 		title: 'Label_HeaderManagement_Tour_FilterSection_Title',
@@ -55,4 +55,8 @@ const tourSteps = [
 	},
 ]
 
-export default tourSteps
+// step for handling the certain logic of this tour
+export enum HeaderManagementStepEnum {
+	AboutHandleSearch = 4,
+	AboutHandleProductStatus = 7,
+}
