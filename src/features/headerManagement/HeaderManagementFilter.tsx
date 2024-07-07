@@ -37,7 +37,7 @@ const HeaderManagementFilter = ({
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='' key='1' data-hm-tour='filter-panel'>
+			<Panel header='' key='1' data-tour='filter-panel'>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
 						layout='vertical'
@@ -49,7 +49,7 @@ const HeaderManagementFilter = ({
 						}}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={6} md={12} xs={12} data-hm-tour='filter-currency'>
+							<Col lg={6} md={12} xs={12} data-tour='filter-currency'>
 								<Form.Item
 									name='currencyId'
 									label={t('Label_Currency')}
@@ -64,7 +64,7 @@ const HeaderManagementFilter = ({
 									</Select>
 								</Form.Item>
 							</Col>
-							<Col lg={6} md={12} xs={12} data-hm-tour='filter-category'>
+							<Col lg={6} md={12} xs={12} data-tour='filter-category'>
 								<Form.Item
 									name='lobbyCategoryId'
 									label={t('Label_LobbyCategory')}
@@ -84,7 +84,7 @@ const HeaderManagementFilter = ({
 						<Row justify='end' align='middle' gutter={16}>
 							<Col>
 								<Button
-									data-hm-tour='search-button'
+									data-tour='search-button'
 									loading={loading}
 									icon={<SearchOutlined />}
 									htmlType='submit'
@@ -99,7 +99,7 @@ const HeaderManagementFilter = ({
 								<Col>
 									<Button
 										id='css'
-										data-hm-tour='status-button'
+										data-tour='status-button'
 										type='primary'
 										onClick={onSetProductStatus}
 										disabled={isSortMode}
