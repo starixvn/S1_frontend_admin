@@ -1,7 +1,7 @@
 const FloatButtonLocator = () => {
 	return (
 		<div
-			data-hm-tour='floating-button'
+			data-tour='floating-button'
 			style={{
 				position: 'fixed',
 				right: '10px',

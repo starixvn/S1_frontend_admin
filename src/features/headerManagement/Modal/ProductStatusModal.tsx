@@ -384,7 +384,7 @@ const ProductStatusModal = ({
 			footer={false}
 		>
 			<Row align='middle' gutter={16}>
-				<Col lg={4} md={12} xs={12} data-hm-tour='status-modal'>
+				<Col lg={4} md={12} xs={12} data-tour='status-modal'>
 					<Form
 						layout='vertical'
 						size='middle'
@@ -408,7 +408,7 @@ const ProductStatusModal = ({
 
 			<Form form={editForm} component={false}>
 				<Table
-					data-hm-tour='status-table'
+					data-tour='status-table'
 					loading={
 						headerSettingGroupByTpGameIdNoListFetching ||
 						isUpdateHeaderSettingByTpGameIdLoading ||

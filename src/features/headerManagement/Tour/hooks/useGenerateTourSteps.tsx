@@ -11,9 +11,9 @@ interface IStepConfig {
 const useGenerateTourSteps = (tourSteps: IStepConfig[]): TourProps['steps'] => {
 	const { t } = useTranslation()
 
-	// 使用data屬性 格式data-feature-tour 如header management 縮寫為 hm
+	// 使用data屬性 格式data-tour="selector" 來取得對應的DOM
 	const getTourTarget = (selector: string) =>
-		document.querySelector(`[data-hm-tour="${selector}"]`) as HTMLElement
+		document.querySelector(`[data-tour="${selector}"]`) as HTMLElement
 
 	// 使用StepConfig 統一管理 搭配mapping產生 antd要的Tour Steps
 

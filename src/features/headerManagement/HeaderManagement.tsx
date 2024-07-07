@@ -19,11 +19,11 @@ import HeaderManagementTable from 'features/headerManagement/HeaderManagementTab
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
 import FloatButtonLocator from './Tour/components/FloatButtonLocator'
 import TourBeginButton from './Tour/components/TourBeginButton'
-import useGenerateTourSteps from './Tour/hooks/useTourSteps'
+import useGenerateTourSteps from './Tour/hooks/useGenerateTourSteps'
 import {
 	HeaderManagementStepEnum,
 	headerManagementTour,
-} from './Tour/tour-configs/headerManagementTour'
+} from './Tour/step-configs/headerManagementTour'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
