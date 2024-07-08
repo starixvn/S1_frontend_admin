@@ -33,4 +33,5 @@ export interface INewUserOnlineReportData {
 	desktop?: number
 	h5?: number
 	app?: number
+	line?: number
 }

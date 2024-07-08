@@ -50,6 +50,13 @@ const UserOnlineReportTable = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_Line'),
+			key: 'LINE',
+			dataIndex: 'line',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_Total'),
 			key: 'Total',
 			width: 100,
