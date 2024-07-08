@@ -61,8 +61,13 @@ const UserOnlineReportTable = ({
 			key: 'Total',
 			width: 100,
 			align: 'center' as 'center',
-			render: ({ desktop = 0, h5 = 0, app = 0 }: INewUserOnlineReportData) => {
-				return desktop + h5 + app
+			render: ({
+				desktop = 0,
+				h5 = 0,
+				app = 0,
+				line = 0,
+			}: INewUserOnlineReportData) => {
+				return desktop + h5 + app + line
 			},
 		},
 	]
