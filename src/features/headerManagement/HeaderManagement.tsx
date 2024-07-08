@@ -173,7 +173,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 			/>
 
-			<AffixButtons data-hm-tour='floating-button'>
+			<AffixButtons>
 				<AffixButtons.BackToTop />
 				{isSortMode ? (
 					<AffixButtons.Close onClick={() => setIsSortMode(false)} />
