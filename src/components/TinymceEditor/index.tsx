@@ -1,7 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { assign } from 'lodash'
-import { apiKey } from './constants'
 
 interface ITinymceEditorProps {
 	defaultHtmlState?: string
@@ -45,6 +44,7 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 			powerpaste_html_import: 'prompt',
 			// 允許禁用 TinyMCE 的默認 webkit 樣式粘貼過濾器
 			paste_remove_styles_if_webkit: false,
+			branding: false,
 		},
 		darkMode && {
 			content_style: 'body { background-color :rgba(129,129,129,0.6)}',
@@ -60,9 +60,10 @@ const TinymceEditor: FC<ITinymceEditorProps> = ({
 
 	return (
 		<Editor
-			// eslint-disable-next-line no-return-assign
-			onInit={(evt, editor) => (editorRef.current = editor)}
-			apiKey={apiKey}
+			tinymceScriptSrc='/tinymce/tinymce.min.js'
+			onInit={(evt, editor) => {
+				editorRef.current = editor
+			}}
 			onChange={(evt, editor) => {
 				onHtmlStateChange(editor.getContent())
 			}}

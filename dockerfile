@@ -3,6 +3,7 @@ FROM node:18-alpine AS build-step
 WORKDIR /build
 COPY package.json ./
 COPY package-lock.json ./
+COPY postinstall.js ./
 RUN npm ci --prefer-offline --no-audit --progress=false
 
 COPY . .
