@@ -50,12 +50,24 @@ const UserOnlineReportTable = ({
 			align: 'center' as 'center',
 		},
 		{
+			title: t('Label_Line'),
+			key: 'LINE',
+			dataIndex: 'line',
+			width: 100,
+			align: 'center' as 'center',
+		},
+		{
 			title: t('Label_Total'),
 			key: 'Total',
 			width: 100,
 			align: 'center' as 'center',
-			render: ({ desktop = 0, h5 = 0, app = 0 }: INewUserOnlineReportData) => {
-				return desktop + h5 + app
+			render: ({
+				desktop = 0,
+				h5 = 0,
+				app = 0,
+				line = 0,
+			}: INewUserOnlineReportData) => {
+				return desktop + h5 + app + line
 			},
 		},
 	]

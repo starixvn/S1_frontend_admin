@@ -501,7 +501,7 @@
 	"Label_QuickTransfer": "Quick Transfer",
 	"Label_CryptoPay": "Crypto Pay",
 	"Label_CryptoWallet": "Crypto Wallet",
-	"Label_Settlement" : "Settlement",
+	"Label_Settlement": "Settlement",
 	"Label_LoadCard": "Load Card",
 	"Label_QRPay": "QR Pay",
 	"Label_BankAutoChannel": "Bank Auto Channel",
@@ -1279,5 +1279,6 @@
 	"Label_HeaderMenu_Product_Description_1": "This function is to change the product in all currencies at one time.",
 	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency.",
 	"Label_Experimental": "Experimental",
-	"Label_UseOptimizedApi": "Use Optimized API"
+	"Label_UseOptimizedApi": "Use Optimized API",
+	"Label_Line": "LINE"
 }
