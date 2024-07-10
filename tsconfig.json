@@ -18,6 +18,6 @@
 		"jsx": "react-jsx",
 		"baseUrl": "src"
 	},
-	"include": ["src" , "vite.config.ts"],
+	"include": ["src", "vite.config.ts", "postinstall.js"],
 	"exclude": ["node_modules"]
 }
