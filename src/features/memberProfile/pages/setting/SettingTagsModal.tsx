@@ -116,7 +116,7 @@ const SettingTagsModal = ({
 		}
 	}, [visible])
 
-	// * 過濾掉以加入的 tags
+	/** 過濾掉已加入的 tags */
 	const filterTags = filter(allTags, tag => !some(tagList, { id: tag.id }))
 
 	return (
