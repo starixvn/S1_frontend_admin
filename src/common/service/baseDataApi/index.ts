@@ -34,6 +34,7 @@ interface IGetPaymentListArgs {
 	 * @argument null - 全部
 	 */
 	payId: number | null
+	currencyId?: number
 }
 
 export const baseDataApi = rootApi.injectEndpoints({
@@ -160,6 +161,7 @@ export const {
 	useGetVipLevelEnumBySiteIdQuery,
 	useGetCalCodeListQuery,
 	useLazyGetPaymentListQuery,
+	useGetPaymentListQuery,
 	useGetGameIdByTpIdAndCategoryIdQuery,
 	useGetCryptoPayListQuery,
 	useGetCryptoWalletListQuery,
