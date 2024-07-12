@@ -56,6 +56,18 @@ export type IDepositTableData = {
 	quickTransferMax: number | null
 	quickTransferMin: number | null
 	quickTransferStatus: number | null
+	cryptoPayMax: number | null
+	cryptoPayMin: number | null
+	cryptoPayStatus: number | null
+	loadCardMax: number | null
+	loadCardMin: number | null
+	loadCardStatus: number | null
+	cryptoWalletMax: number | null
+	cryptoWalletMin: number | null
+	cryptoWalletStatus: number | null
+	chatTransferMax: number | null
+	chatTransferMin: number | null
+	chatTransferStatus: number | null
 }
 
 // form 在 input 就不允許有 null , switch 可能有 number , boolean , null

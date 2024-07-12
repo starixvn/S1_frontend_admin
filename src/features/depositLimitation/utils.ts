@@ -27,6 +27,10 @@ export const depositLimitationResponseConverter = (
 			DepositTypeEnum.OnlineBanking as number,
 			DepositTypeEnum.MobilePay as number,
 			DepositTypeEnum.QuickTransfer as number,
+			DepositTypeEnum.CryptoPay as number,
+			DepositTypeEnum.LoadCard as number,
+			DepositTypeEnum.CryptoWallet as number,
+			DepositTypeEnum.ChatTransfer as number,
 		])
 	)
 
@@ -45,6 +49,18 @@ export const depositLimitationResponseConverter = (
 		quickTransferMax: null,
 		quickTransferMin: null,
 		quickTransferStatus: null,
+		cryptoPayMax: null,
+		cryptoPayMin: null,
+		cryptoPayStatus: null,
+		loadCardMax: null,
+		loadCardMin: null,
+		loadCardStatus: null,
+		cryptoWalletMax: null,
+		cryptoWalletMin: null,
+		cryptoWalletStatus: null,
+		chatTransferMax: null,
+		chatTransferMin: null,
+		chatTransferStatus: null,
 	}
 
 	filteredData?.forEach(data => {
@@ -78,6 +94,34 @@ export const depositLimitationResponseConverter = (
 					quickTransferMax: depositMax,
 					quickTransferMin: depositMin,
 					quickTransferStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.CryptoPay:
+				obj = {
+					cryptoPayMax: depositMax,
+					cryptoPayMin: depositMin,
+					cryptoPayStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.LoadCard:
+				obj = {
+					loadCardMax: depositMax,
+					loadCardMin: depositMin,
+					loadCardStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.CryptoWallet:
+				obj = {
+					cryptoWalletMax: depositMax,
+					cryptoWalletMin: depositMin,
+					cryptoWalletStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.ChatTransfer:
+				obj = {
+					chatTransferMax: depositMax,
+					chatTransferMin: depositMin,
+					chatTransferStatus: depositStatus,
 				}
 				break
 			default:
