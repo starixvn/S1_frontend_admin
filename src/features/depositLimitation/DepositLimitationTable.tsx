@@ -613,7 +613,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'quickTransferStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -777,7 +777,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'cryptoPayStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -787,7 +787,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 							<Space align='center'>
 								{editable ? (
 									<Form.Item
-										name='quickTransferStatus'
+										name='cryptoPayStatus'
 										style={{ margin: 0 }}
 										valuePropName='checked'
 									>
@@ -828,16 +828,16 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Min'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMin',
+					key: 'cryptoPayMin',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
-						const { quickTransferMin } = record
+						const { cryptoPayMin } = record
 						const editable = isEditing(record)
-						const isRequired = isNumber(quickTransferMin)
+						const isRequired = isNumber(cryptoPayMin)
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMin'
+									name='cryptoPayMin'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -847,12 +847,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMax'))
+													!isNumber(getFieldValue('cryptoPayMax'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMax'))
+													isNumber(getFieldValue('cryptoPayMax'))
 												)
 													return Promise.resolve()
 
@@ -874,8 +874,8 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 								</Form.Item>
 							)
 						}
-						return isNumber(quickTransferMin)
-							? numberFormatter.format(quickTransferMin)
+						return isNumber(cryptoPayMin)
+							? numberFormatter.format(cryptoPayMin)
 							: 'N/A'
 					},
 				},
@@ -883,16 +883,16 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Max'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMax',
+					key: 'cryptoPayMax',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
-						const { quickTransferMax } = record
+						const { cryptoPayMax } = record
 						const editable = isEditing(record)
-						const isRequired = isNumber(quickTransferMax)
+						const isRequired = isNumber(cryptoPayMax)
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMax'
+									name='cryptoPayMax'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -902,12 +902,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMin'))
+													!isNumber(getFieldValue('cryptoPayMin'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMin'))
+													isNumber(getFieldValue('cryptoPayMin'))
 												)
 													return Promise.resolve()
 
@@ -929,8 +929,8 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 								</Form.Item>
 							)
 						}
-						return isNumber(quickTransferMax)
-							? numberFormatter.format(quickTransferMax)
+						return isNumber(cryptoPayMax)
+							? numberFormatter.format(cryptoPayMax)
 							: 'N/A'
 					},
 				},
@@ -941,7 +941,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'loadCardStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -951,7 +951,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 							<Space align='center'>
 								{editable ? (
 									<Form.Item
-										name='quickTransferStatus'
+										name='loadCardStatus'
 										style={{ margin: 0 }}
 										valuePropName='checked'
 									>
@@ -970,7 +970,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											onUpdateStatus({
 												record,
 												status: !loadCardStatus,
-												depositType: DepositTypeEnum.CryptoPay,
+												depositType: DepositTypeEnum.LoadCard,
 											})
 										}
 									>
@@ -992,7 +992,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Min'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMin',
+					key: 'loadCardMin',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { loadCardMin } = record
@@ -1001,7 +1001,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMin'
+									name='loadCardMin'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1011,12 +1011,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMax'))
+													!isNumber(getFieldValue('loadCardMax'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMax'))
+													isNumber(getFieldValue('loadCardMax'))
 												)
 													return Promise.resolve()
 
@@ -1047,7 +1047,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Max'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMax',
+					key: 'loadCardMax',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { loadCardMax } = record
@@ -1056,7 +1056,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMax'
+									name='loadCardMax'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1066,12 +1066,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMin'))
+													!isNumber(getFieldValue('loadCardMin'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMin'))
+													isNumber(getFieldValue('loadCardMin'))
 												)
 													return Promise.resolve()
 
@@ -1105,7 +1105,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'cryptoWalletStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -1115,7 +1115,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 							<Space align='center'>
 								{editable ? (
 									<Form.Item
-										name='quickTransferStatus'
+										name='cryptoWalletStatus'
 										style={{ margin: 0 }}
 										valuePropName='checked'
 									>
@@ -1134,7 +1134,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											onUpdateStatus({
 												record,
 												status: !cryptoWalletStatus,
-												depositType: DepositTypeEnum.CryptoPay,
+												depositType: DepositTypeEnum.CryptoWallet,
 											})
 										}
 									>
@@ -1156,7 +1156,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Min'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMin',
+					key: 'cryptoWalletMin',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { cryptoWalletMin } = record
@@ -1165,7 +1165,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMin'
+									name='cryptoWalletMin'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1175,12 +1175,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMax'))
+													!isNumber(getFieldValue('cryptoWalletMax'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMax'))
+													isNumber(getFieldValue('cryptoWalletMax'))
 												)
 													return Promise.resolve()
 
@@ -1211,7 +1211,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Max'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMax',
+					key: 'cryptoWalletMax',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { cryptoWalletMax } = record
@@ -1220,7 +1220,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMax'
+									name='cryptoWalletMax'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1230,12 +1230,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMin'))
+													!isNumber(getFieldValue('cryptoWalletMin'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMin'))
+													isNumber(getFieldValue('cryptoWalletMin'))
 												)
 													return Promise.resolve()
 
@@ -1269,7 +1269,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'chatTransferStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -1279,7 +1279,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 							<Space align='center'>
 								{editable ? (
 									<Form.Item
-										name='quickTransferStatus'
+										name='chatTransferStatus'
 										style={{ margin: 0 }}
 										valuePropName='checked'
 									>
@@ -1298,7 +1298,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 											onUpdateStatus({
 												record,
 												status: !chatTransferStatus,
-												depositType: DepositTypeEnum.CryptoPay,
+												depositType: DepositTypeEnum.ChatTransfer,
 											})
 										}
 									>
@@ -1320,7 +1320,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Min'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMin',
+					key: 'chatTransferMin',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { chatTransferMin } = record
@@ -1329,7 +1329,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMin'
+									name='chatTransferMin'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1339,12 +1339,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMax'))
+													!isNumber(getFieldValue('chatTransferMax'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMax'))
+													isNumber(getFieldValue('chatTransferMax'))
 												)
 													return Promise.resolve()
 
@@ -1375,7 +1375,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Max'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'quickTransferMax',
+					key: 'chatTransferMax',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { chatTransferMax } = record
@@ -1384,7 +1384,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						if (editable) {
 							return (
 								<Form.Item
-									name='quickTransferMax'
+									name='chatTransferMax'
 									style={{ margin: 0 }}
 									rules={[
 										({ getFieldValue }) => ({
@@ -1394,12 +1394,12 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 												}
 												if (
 													!isRequired &&
-													!isNumber(getFieldValue('quickTransferMin'))
+													!isNumber(getFieldValue('chatTransferMin'))
 												)
 													return Promise.resolve()
 												if (
 													isNumber(value) &&
-													isNumber(getFieldValue('quickTransferMin'))
+													isNumber(getFieldValue('chatTransferMin'))
 												)
 													return Promise.resolve()
 

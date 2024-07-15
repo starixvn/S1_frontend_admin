@@ -85,6 +85,18 @@ export type IDepositTableFormData = {
 	quickTransferMax: number
 	quickTransferMin: number
 	quickTransferStatus: number | boolean | null
+	cryptoPayMax: number
+	cryptoPayMin: number
+	cryptoPayStatus: number | null
+	loadCardMax: number
+	loadCardMin: number
+	loadCardStatus: number | null
+	cryptoWalletMax: number
+	cryptoWalletMin: number
+	cryptoWalletStatus: number | null
+	chatTransferMax: number
+	chatTransferMin: number
+	chatTransferStatus: number | null
 }
 
 export enum ErrorCodeEnum {
