@@ -29,6 +29,7 @@ export const depositLimitationResponseConverter = (
 			DepositTypeEnum.QuickTransfer as number,
 			DepositTypeEnum.CryptoPay as number,
 			DepositTypeEnum.LoadCard as number,
+			DepositTypeEnum.BankAutoChannel as number,
 			DepositTypeEnum.CryptoWallet as number,
 			DepositTypeEnum.ChatTransfer as number,
 		])
@@ -55,6 +56,9 @@ export const depositLimitationResponseConverter = (
 		loadCardMax: null,
 		loadCardMin: null,
 		loadCardStatus: null,
+		bankAutoChannelMax: null,
+		bankAutoChannelMin: null,
+		bankAutoChannelStatus: null,
 		cryptoWalletMax: null,
 		cryptoWalletMin: null,
 		cryptoWalletStatus: null,
@@ -108,6 +112,13 @@ export const depositLimitationResponseConverter = (
 					loadCardMax: depositMax,
 					loadCardMin: depositMin,
 					loadCardStatus: depositStatus,
+				}
+				break
+			case DepositTypeEnum.BankAutoChannel:
+				obj = {
+					bankAutoChannelMax: depositMax,
+					bankAutoChannelMin: depositMin,
+					bankAutoChannelStatus: depositStatus,
 				}
 				break
 			case DepositTypeEnum.CryptoWallet:
@@ -189,6 +200,13 @@ export class DepositLimitationC2S {
 			depositStatus: 0,
 		},
 		{
+			depositType: DepositTypeEnum.BankAutoChannel as number,
+			vipLevel: 0,
+			depositMin: 0,
+			depositMax: 0,
+			depositStatus: 0,
+		},
+		{
 			depositType: DepositTypeEnum.CryptoWallet as number,
 			vipLevel: 0,
 			depositMin: 0,
@@ -230,12 +248,15 @@ export class DepositLimitationC2S {
 			quickTransferStatus: quickTransferStatusBefore,
 			quickTransferMax: quickTransferMaxBefore,
 			quickTransferMin: quickTransferMinBefore,
-			cryptoPayMax: cryptoPayMaxsBefore,
+			cryptoPayMax: cryptoPayMaxBefore,
 			cryptoPayMin: cryptoPayMinBefore,
 			cryptoPayStatus: cryptoPayStatusBefore,
 			loadCardMax: loadCardMaxBefore,
 			loadCardMin: loadCardMinBefore,
 			loadCardStatus: loadCardStatusBefore,
+			bankAutoChannelMax: bankAutoChannelMaxBefore,
+			bankAutoChannelMin: bankAutoChannelMinBefore,
+			bankAutoChannelStatus: bankAutoChannelStatusBefore,
 			cryptoWalletMax: cryptoWalletMaxBefore,
 			cryptoWalletMin: cryptoWalletMinBefore,
 			cryptoWalletStatus: cryptoWalletStatusBefore,
@@ -264,6 +285,9 @@ export class DepositLimitationC2S {
 			loadCardMax,
 			loadCardMin,
 			loadCardStatus,
+			bankAutoChannelMax,
+			bankAutoChannelMin,
+			bankAutoChannelStatus,
 			cryptoWalletMax,
 			cryptoWalletMin,
 			cryptoWalletStatus,
@@ -298,13 +322,18 @@ export class DepositLimitationC2S {
 						break
 					case DepositTypeEnum.CryptoPay:
 						example.depositStatus = Number(cryptoPayStatusBefore)
-						example.depositMax = cryptoPayMaxsBefore
+						example.depositMax = cryptoPayMaxBefore
 						example.depositMin = cryptoPayMinBefore
 						break
 					case DepositTypeEnum.LoadCard:
 						example.depositStatus = Number(loadCardStatusBefore)
 						example.depositMax = loadCardMaxBefore
 						example.depositMin = loadCardMinBefore
+						break
+					case DepositTypeEnum.BankAutoChannel:
+						example.depositStatus = Number(bankAutoChannelStatusBefore)
+						example.depositMax = bankAutoChannelMaxBefore
+						example.depositMin = bankAutoChannelMinBefore
 						break
 					case DepositTypeEnum.CryptoWallet:
 						example.depositStatus = Number(cryptoWalletStatusBefore)
@@ -366,6 +395,11 @@ export class DepositLimitationC2S {
 					example.depositMax = loadCardMax
 					example.depositMin = loadCardMin
 					break
+				case DepositTypeEnum.BankAutoChannel:
+					example.depositStatus = Number(bankAutoChannelStatus)
+					example.depositMax = bankAutoChannelMax
+					example.depositMin = bankAutoChannelMin
+					break
 				case DepositTypeEnum.CryptoWallet:
 					example.depositStatus = Number(cryptoWalletStatus)
 					example.depositMax = cryptoWalletMax
@@ -422,6 +456,9 @@ export class DepositLimitationC2S {
 			loadCardMax,
 			loadCardMin,
 			loadCardStatus,
+			bankAutoChannelMax,
+			bankAutoChannelMin,
+			bankAutoChannelStatus,
 			cryptoWalletMax,
 			cryptoWalletMin,
 			cryptoWalletStatus,
@@ -462,6 +499,11 @@ export class DepositLimitationC2S {
 					example.depositStatus = Number(loadCardStatus)
 					example.depositMax = loadCardMax
 					example.depositMin = loadCardMin
+					break
+				case DepositTypeEnum.BankAutoChannel:
+					example.depositStatus = Number(bankAutoChannelStatus)
+					example.depositMax = bankAutoChannelMax
+					example.depositMin = bankAutoChannelMin
 					break
 				case DepositTypeEnum.CryptoWallet:
 					example.depositStatus = Number(cryptoWalletStatus)
@@ -517,6 +559,8 @@ export class DepositLimitationC2S {
 			cryptoPayMin,
 			loadCardMax,
 			loadCardMin,
+			bankAutoChannelMax,
+			bankAutoChannelMin,
 			cryptoWalletMax,
 			cryptoWalletMin,
 			chatTransferMax,
@@ -565,6 +609,13 @@ export class DepositLimitationC2S {
 				result.depositStatus = Number(status)
 				result.depositMax = loadCardMax
 				result.depositMin = loadCardMin
+				break
+			case DepositTypeEnum.BankAutoChannel:
+				result.depositType = DepositTypeEnum.BankAutoChannel as number
+				result.vipLevel = vipLevel
+				result.depositStatus = Number(status)
+				result.depositMax = bankAutoChannelMax
+				result.depositMin = bankAutoChannelMin
 				break
 			case DepositTypeEnum.CryptoWallet:
 				result.depositType = DepositTypeEnum.CryptoWallet as number

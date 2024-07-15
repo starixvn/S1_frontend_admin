@@ -62,6 +62,9 @@ export type IDepositTableData = {
 	loadCardMax: number | null
 	loadCardMin: number | null
 	loadCardStatus: number | null
+	bankAutoChannelMax: number | null
+	bankAutoChannelMin: number | null
+	bankAutoChannelStatus: number | null
 	cryptoWalletMax: number | null
 	cryptoWalletMin: number | null
 	cryptoWalletStatus: number | null
@@ -91,6 +94,9 @@ export type IDepositTableFormData = {
 	loadCardMax: number
 	loadCardMin: number
 	loadCardStatus: number | null
+	bankAutoChannelMax: number
+	bankAutoChannelMin: number
+	bankAutoChannelStatus: number | null
 	cryptoWalletMax: number
 	cryptoWalletMin: number
 	cryptoWalletStatus: number | null

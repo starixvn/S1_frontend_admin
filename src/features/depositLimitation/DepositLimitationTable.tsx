@@ -1101,6 +1101,170 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			],
 		},
 		{
+			title: t('Label_Auto_Deposit'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'bankAutoChannelStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelStatus, bankAutoChannelMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='bankAutoChannelStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(bankAutoChannelMax) ||
+											isNull(bankAutoChannelStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !bankAutoChannelStatus,
+												depositType: DepositTypeEnum.BankAutoChannel,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(bankAutoChannelStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(bankAutoChannelMax) ||
+												isNull(bankAutoChannelStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(bankAutoChannelMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='bankAutoChannelMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('bankAutoChannelMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('bankAutoChannelMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(bankAutoChannelMin)
+							? numberFormatter.format(bankAutoChannelMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(bankAutoChannelMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='bankAutoChannelMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('bankAutoChannelMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('bankAutoChannelMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(bankAutoChannelMax)
+							? numberFormatter.format(bankAutoChannelMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
 			title: t('Label_CryptoWallet'),
 			children: [
 				{
