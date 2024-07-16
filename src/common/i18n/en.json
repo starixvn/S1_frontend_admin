@@ -1280,5 +1280,6 @@
 	"Label_HeaderMenu_Product_Description_2": "For this function, you can use the icon in the lower right corner to set the product sorting for each currency.",
 	"Label_Experimental": "Experimental",
 	"Label_UseOptimizedApi": "Use Optimized API",
-	"Label_Line": "LINE"
+	"Label_Line": "LINE",
+	"Label_EventItemCounts": "Event Item Counts"
 }
