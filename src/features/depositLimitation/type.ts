@@ -56,6 +56,21 @@ export type IDepositTableData = {
 	quickTransferMax: number | null
 	quickTransferMin: number | null
 	quickTransferStatus: number | null
+	cryptoPayMax: number | null
+	cryptoPayMin: number | null
+	cryptoPayStatus: number | null
+	loadCardMax: number | null
+	loadCardMin: number | null
+	loadCardStatus: number | null
+	bankAutoChannelMax: number | null
+	bankAutoChannelMin: number | null
+	bankAutoChannelStatus: number | null
+	cryptoWalletMax: number | null
+	cryptoWalletMin: number | null
+	cryptoWalletStatus: number | null
+	chatTransferMax: number | null
+	chatTransferMin: number | null
+	chatTransferStatus: number | null
 }
 
 // form 在 input 就不允許有 null , switch 可能有 number , boolean , null
@@ -73,6 +88,21 @@ export type IDepositTableFormData = {
 	quickTransferMax: number
 	quickTransferMin: number
 	quickTransferStatus: number | boolean | null
+	cryptoPayMax: number
+	cryptoPayMin: number
+	cryptoPayStatus: number | null
+	loadCardMax: number
+	loadCardMin: number
+	loadCardStatus: number | null
+	bankAutoChannelMax: number
+	bankAutoChannelMin: number
+	bankAutoChannelStatus: number | null
+	cryptoWalletMax: number
+	cryptoWalletMin: number
+	cryptoWalletStatus: number | null
+	chatTransferMax: number
+	chatTransferMin: number
+	chatTransferStatus: number | null
 }
 
 export enum ErrorCodeEnum {

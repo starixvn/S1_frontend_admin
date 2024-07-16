@@ -1303,5 +1303,7 @@
 	"Label_HeaderManagement_Tour_StatusTable_Title": "Status Table",
 	"Label_HeaderManagement_Tour_StatusTable_Description": "Check and edit the product status.",
 	"Label_Begin_Tour": "Begin Tour",
-	"Label_Line": "LINE"
+	"Label_Line": "LINE",
+	"Label_ChatTransfer": "Chat Transfer",
+	"Label_Auto_Deposit": "Auto Deposit"
 }

@@ -613,7 +613,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 			children: [
 				{
 					title: t('Label_Status'),
-					key: 'qu',
+					key: 'quickTransferStatus',
 					width: 80,
 					align: 'center' as 'center',
 					render: (record: IDepositTableData) => {
@@ -767,6 +767,826 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 						}
 						return isNumber(quickTransferMax)
 							? numberFormatter.format(quickTransferMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_CryptoPay'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'cryptoPayStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { cryptoPayStatus, cryptoPayMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='cryptoPayStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(cryptoPayMax) ||
+											isNull(cryptoPayStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !cryptoPayStatus,
+												depositType: DepositTypeEnum.CryptoPay,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(cryptoPayStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(cryptoPayMax) ||
+												isNull(cryptoPayStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'cryptoPayMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { cryptoPayMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(cryptoPayMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='cryptoPayMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('cryptoPayMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('cryptoPayMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(cryptoPayMin)
+							? numberFormatter.format(cryptoPayMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'cryptoPayMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { cryptoPayMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(cryptoPayMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='cryptoPayMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('cryptoPayMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('cryptoPayMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(cryptoPayMax)
+							? numberFormatter.format(cryptoPayMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_LoadCard'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'loadCardStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { loadCardStatus, loadCardMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='loadCardStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(loadCardMax) ||
+											isNull(loadCardStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !loadCardStatus,
+												depositType: DepositTypeEnum.LoadCard,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(loadCardStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(loadCardMax) ||
+												isNull(loadCardStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'loadCardMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { loadCardMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(loadCardMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='loadCardMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('loadCardMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('loadCardMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(loadCardMin)
+							? numberFormatter.format(loadCardMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'loadCardMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { loadCardMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(loadCardMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='loadCardMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('loadCardMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('loadCardMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(loadCardMax)
+							? numberFormatter.format(loadCardMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_Auto_Deposit'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'bankAutoChannelStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelStatus, bankAutoChannelMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='bankAutoChannelStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(bankAutoChannelMax) ||
+											isNull(bankAutoChannelStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !bankAutoChannelStatus,
+												depositType: DepositTypeEnum.BankAutoChannel,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(bankAutoChannelStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(bankAutoChannelMax) ||
+												isNull(bankAutoChannelStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(bankAutoChannelMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='bankAutoChannelMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('bankAutoChannelMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('bankAutoChannelMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(bankAutoChannelMin)
+							? numberFormatter.format(bankAutoChannelMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { bankAutoChannelMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(bankAutoChannelMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='bankAutoChannelMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('bankAutoChannelMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('bankAutoChannelMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(bankAutoChannelMax)
+							? numberFormatter.format(bankAutoChannelMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_CryptoWallet'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'cryptoWalletStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { cryptoWalletStatus, cryptoWalletMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='cryptoWalletStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(cryptoWalletMax) ||
+											isNull(cryptoWalletStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !cryptoWalletStatus,
+												depositType: DepositTypeEnum.CryptoWallet,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(cryptoWalletStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(cryptoWalletMax) ||
+												isNull(cryptoWalletStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'cryptoWalletMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { cryptoWalletMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(cryptoWalletMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='cryptoWalletMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('cryptoWalletMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('cryptoWalletMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(cryptoWalletMin)
+							? numberFormatter.format(cryptoWalletMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'cryptoWalletMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { cryptoWalletMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(cryptoWalletMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='cryptoWalletMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('cryptoWalletMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('cryptoWalletMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(cryptoWalletMax)
+							? numberFormatter.format(cryptoWalletMax)
+							: 'N/A'
+					},
+				},
+			],
+		},
+		{
+			title: t('Label_ChatTransfer'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'chatTransferStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { chatTransferStatus, chatTransferMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='chatTransferStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(chatTransferMax) ||
+											isNull(chatTransferStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !chatTransferStatus,
+												depositType: DepositTypeEnum.ChatTransfer,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(chatTransferStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(chatTransferMax) ||
+												isNull(chatTransferStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'chatTransferMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { chatTransferMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(chatTransferMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='chatTransferMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('chatTransferMax'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('chatTransferMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(chatTransferMin)
+							? numberFormatter.format(chatTransferMin)
+							: 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'chatTransferMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { chatTransferMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(chatTransferMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='chatTransferMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (
+													!isRequired &&
+													!isNumber(getFieldValue('chatTransferMin'))
+												)
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('chatTransferMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(chatTransferMax)
+							? numberFormatter.format(chatTransferMax)
 							: 'N/A'
 					},
 				},
