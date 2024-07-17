@@ -71,6 +71,9 @@ export type IDepositTableData = {
 	chatTransferMax: number | null
 	chatTransferMin: number | null
 	chatTransferStatus: number | null
+	qrPayMax: number | null
+	qrPayMin: number | null
+	qrPayStatus: number | null
 }
 
 // form 在 input 就不允許有 null , switch 可能有 number , boolean , null
@@ -103,6 +106,9 @@ export type IDepositTableFormData = {
 	chatTransferMax: number
 	chatTransferMin: number
 	chatTransferStatus: number | null
+	qrPayMax: number
+	qrPayMin: number
+	qrPayStatus: number | null
 }
 
 export enum ErrorCodeEnum {
