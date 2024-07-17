@@ -1305,5 +1305,6 @@
 	"Label_Begin_Tour": "Begin Tour",
 	"Label_Line": "LINE",
 	"Label_ChatTransfer": "Chat Transfer",
-	"Label_Auto_Deposit": "Auto Deposit"
+	"Label_Auto_Deposit": "Auto Deposit",
+	"Label_Qr_Pay": "QR Pay"
 }

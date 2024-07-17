@@ -1592,6 +1592,160 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 				},
 			],
 		},
+		{
+			title: t('Label_Qr_Pay'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'qrPayStatus',
+					width: 80,
+					align: 'center' as 'center',
+					render: (record: IDepositTableData) => {
+						const { qrPayStatus, qrPayMax } = record
+						const editable = isEditing(record)
+						return (
+							<Space align='center'>
+								{editable ? (
+									<Form.Item
+										name='qrPayStatus'
+										style={{ margin: 0 }}
+										valuePropName='checked'
+									>
+										<Switch disabled={!editable} />
+									</Form.Item>
+								) : (
+									<Popconfirm
+										// 沒有設定過 Max 或 Min 的不給改 status
+										disabled={
+											!editPermission?.canUse ||
+											isNull(qrPayMax) ||
+											isNull(qrPayStatus)
+										}
+										title={t('Label_AreYouSure')}
+										onConfirm={() =>
+											onUpdateStatus({
+												record,
+												status: !qrPayStatus,
+												depositType: DepositTypeEnum.QRPay,
+											})
+										}
+									>
+										<Switch
+											checked={Boolean(qrPayStatus)}
+											disabled={
+												!editPermission?.canUse ||
+												isNull(qrPayMax) ||
+												isNull(qrPayStatus)
+											}
+										/>
+									</Popconfirm>
+								)}
+							</Space>
+						)
+					},
+				},
+				{
+					title: t('Label_Min'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'qrPayMin',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { qrPayMin } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(qrPayMin)
+						if (editable) {
+							return (
+								<Form.Item
+									name='qrPayMin'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (!isRequired && !isNumber(getFieldValue('qrPayMax')))
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('qrPayMax'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(qrPayMin) ? numberFormatter.format(qrPayMin) : 'N/A'
+					},
+				},
+				{
+					title: t('Label_Max'),
+					width: 100,
+					align: 'center' as 'center',
+					key: 'chatTransferMax',
+					innerWidth: 200,
+					render: (record: IDepositTableData) => {
+						const { qrPayMax } = record
+						const editable = isEditing(record)
+						const isRequired = isNumber(qrPayMax)
+						if (editable) {
+							return (
+								<Form.Item
+									name='qrPayMax'
+									style={{ margin: 0 }}
+									rules={[
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (isRequired && isNumber(value)) {
+													return Promise.resolve()
+												}
+												if (!isRequired && !isNumber(getFieldValue('qrPayMin')))
+													return Promise.resolve()
+												if (
+													isNumber(value) &&
+													isNumber(getFieldValue('qrPayMin'))
+												)
+													return Promise.resolve()
+
+												return Promise.reject(new Error(''))
+											},
+										}),
+										{
+											type: 'number',
+											min: 0,
+											message: '',
+										},
+									]}
+								>
+									<InputNumber
+										style={{ width: '100%' }}
+										controls={false}
+										type='number'
+									/>
+								</Form.Item>
+							)
+						}
+						return isNumber(qrPayMax) ? numberFormatter.format(qrPayMax) : 'N/A'
+					},
+				},
+			],
+		},
 	]
 
 	return (
