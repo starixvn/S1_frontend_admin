@@ -405,10 +405,10 @@ const SlotGameCategory = lazy(
 		)
 )
 
-const AddSlotGame = lazy(
+const EditSlotGame = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'AddSlotGame' */ 'features/slotGameCategory/addSlotGame/AddSlotGame'
+			/* webpackChunkName: 'AddSlotGame' */ 'features/slotGameCategory/editSlotGame/EditSlotGame'
 		)
 )
 
@@ -1846,7 +1846,17 @@ const routes: RouteObject[] = [
 					<AuthRequire
 						functionId={paths.productManagement.sub.slotGameCategory.functionId}
 					>
-						<AddSlotGame />
+						<EditSlotGame />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/edit/:id`,
+				element: (
+					<AuthRequire
+						functionId={paths.productManagement.sub.slotGameCategory.functionId}
+					>
+						<EditSlotGame />
 					</AuthRequire>
 				),
 			},

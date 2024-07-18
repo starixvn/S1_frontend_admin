@@ -1,3 +1,5 @@
+import moment from 'moment'
+import download from 'downloadjs'
 import { FC, useEffect, useState, useContext } from 'react'
 import { LayoutContent } from 'app/pages/layout'
 import { SlotGameCategoryFilter } from 'features/slotGameCategory/SlotGameCategoryFilter'
@@ -6,6 +8,7 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import paths from 'app/constants/paths'
 import { useNavigate } from 'react-router-dom'
 import {
+	useExportSlotGameListMutation,
 	useGetSlotGamesTpListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useLazyGetSlotGameListQuery,
@@ -17,6 +20,7 @@ import {
 import {
 	IGetTpListResponse,
 	ITableColumnsInfo,
+	SlotGameMethodEnum,
 } from 'features/slotGameCategory/type'
 import {
 	PAGINATION,
@@ -30,7 +34,7 @@ import { slotGameResponseConverter } from 'features/slotGameCategory/utils'
 import { SlotGameCategoryTable } from 'features/slotGameCategory/SlotGameCategoryTable'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
-import { assign, cloneDeep, findIndex, head, isEmpty } from 'lodash'
+import { assign, cloneDeep, findIndex, isEmpty } from 'lodash'
 import { AuthContext } from 'common/auth'
 import { CurrencyEnum } from 'type'
 import { AffixButtons } from 'components/AffixButtons'
@@ -54,16 +58,15 @@ const SlotGameCategory: FC<{
 	// 當前 response 需要新增的 Table Columns 資訊
 	const [columnInfos, setColumnsInfo] = useState<ITableColumnsInfo[]>([])
 	const { timeZoneUtcOffset } = useTimeZone()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
+	const { actionPermissions: { editPermission, exportExcelPermission } = {} } =
+		useAuth()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const [queryParams, setQueryParams] = useQueryParams()
-
 	// pagination
 	const [slotGameTotal, setSlotGameTotal] = useState(0)
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: slotGameTotal,
 	})
-
 	const [categoryForm] = Form.useForm<{ categoryId: number }>()
 	const currentCategoryId = Form.useWatch('categoryId', categoryForm)
 
@@ -103,6 +106,9 @@ const SlotGameCategory: FC<{
 		setSlotGameEnvironment,
 		{ isLoading: isSetSlotGameEnvironmentLoading },
 	] = useSetSlotGameEnvironmentMutation()
+
+	const [exportSlotGameList, { isLoading: isExportSlotGameListLoading }] =
+		useExportSlotGameListMutation()
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -355,6 +361,30 @@ const SlotGameCategory: FC<{
 		}
 	}
 
+	// 匯出slot game list EXCEL
+	const handleExport = async () => {
+		if (!siteId) return
+		const { tpId = 0, status = 0, name = '', gameId = '' } = queryParams
+
+		try {
+			const blob = await exportSlotGameList({
+				siteId,
+				tpId: Number(tpId),
+				status: Number(status),
+				name,
+				gameId,
+			}).unwrap()
+			download(
+				blob,
+				`ExportSlotGameList_${moment().format('YYYYMMDDHHmmss')}.xlsx`
+			)
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
 	useEffect(() => {
 		if (currentCategoryId !== undefined) {
 			handleSearch({})
@@ -363,13 +393,9 @@ const SlotGameCategory: FC<{
 
 	useEffect(() => {
 		const init = () => {
-			if (isEmpty(queryParams)) {
-				filterForm.setFieldsValue({
-					tpId: head(tpList)?.tpId,
-				})
-			} else {
+			if (!isEmpty(queryParams)) {
 				const {
-					tpId,
+					tpId = 0,
 					name = '',
 					gameId = '',
 					status = 0,
@@ -406,7 +432,8 @@ const SlotGameCategory: FC<{
 		isGetSlotGameCategoryListLoading ||
 		isSetSlotGameCategoryLoading ||
 		isSetSlotGameAllCurrencyLoading ||
-		isSetSlotGameEnvironmentLoading
+		isSetSlotGameEnvironmentLoading ||
+		isExportSlotGameListLoading
 
 	return (
 		<LayoutContent.Main>
@@ -438,9 +465,14 @@ const SlotGameCategory: FC<{
 					disabled={!editPermission?.canUse}
 					onClick={() => {
 						navigate(
-							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/add`
+							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/${SlotGameMethodEnum.Create}`
 						)
 					}}
+				/>
+				<AffixButtons.FileExport
+					loading={isExportSlotGameListLoading}
+					disabled={!exportExcelPermission?.canUse || isEmpty(queryParams)}
+					onClick={handleExport}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>

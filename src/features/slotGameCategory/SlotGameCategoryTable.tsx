@@ -18,9 +18,12 @@ import { timeFormat } from 'common/utils/format'
 import {
 	ITableColumnsInfo,
 	IGetSlotCategoryListResponse,
+	SlotGameMethodEnum,
 } from 'features/slotGameCategory/type'
 import { PermissionInterface } from 'type'
 import { PaginationInterface } from 'common/hooks'
+import paths from 'app/constants/paths'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { useGetSlotCategoryListQuery } from 'features/slotGameCategory/api'
 import { SlotCategoryEnum } from 'features/slotGameCategory/constants'
 
@@ -82,7 +85,6 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
-
 	const {
 		data: { data: slotCategoryList = [] } = {} as IGetSlotCategoryListResponse,
 		isLoading: isGetSlotCategoryListLoading,
@@ -126,6 +128,34 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	}
 	const defaultColumns = [
 		{
+			title: t('Label_Action'),
+			key: 'edit',
+			dataIndex: 'id',
+			width: '20',
+			align: 'center' as 'center',
+			render: (id: number) => {
+				return (
+					<Typography.Link
+						disabled={!editPermission?.canUse}
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/${SlotGameMethodEnum.Edit}/${id}`}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
+				)
+			},
+		},
+		{
+			title: t('Label_Vender'),
+			key: 'tpName',
+			dataIndex: 'tpName',
+			align: 'center' as 'center',
+			render: (tpName: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+					{tpName ?? '-'}
+				</Typography.Text>
+			),
+		},
+		{
 			title: t('Label_GameId'),
 			key: 'gameId',
 			dataIndex: 'gameId',
@@ -138,8 +168,8 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 		},
 		{
 			title: t('Label_Ename'),
-			key: 'eName',
-			dataIndex: 'eName',
+			key: 'enName',
+			dataIndex: 'enName',
 			align: 'center' as 'center',
 			render: (eName: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
@@ -149,8 +179,8 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 		},
 		{
 			title: t('Label_Cname'),
-			key: 'cName',
-			dataIndex: 'cName',
+			key: 'csName',
+			dataIndex: 'csName',
 			align: 'center' as 'center',
 			render: (cName: string) => (
 				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
@@ -221,12 +251,18 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 				),
 		},
 	].filter(column => {
-		// 只有 allCategory 狀態要顯示 PRD 欄位，選 category狀態則不用
+		// 只有 allCategory 狀態要顯示 PRD 與 edit 欄位，選 category狀態則不用
 		if (isAllCategory) return true
-		return column.key !== 'goToPrd' && column.key !== 'activeInactiveAll'
+		return (
+			column.key !== 'goToPrd' &&
+			column.key !== 'activeInactiveAll' &&
+			column.key !== 'edit'
+		)
 	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
+
+	const { current, pageSize, total } = pagination
 	return (
 		<LayoutContent.Card>
 			<Form
@@ -248,6 +284,16 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									))}
 								</Select>
 							</Form.Item>
+						</Col>
+						<Col
+							style={{
+								top: '50%',
+								transform: 'translateY(-50%)',
+								marginLeft: '30px',
+							}}
+						>
+							{current * pageSize > total ? total : current * pageSize} /{' '}
+							{total} Row
 						</Col>
 					</Row>
 				</Spin>

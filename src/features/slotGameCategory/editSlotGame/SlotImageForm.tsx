@@ -1,7 +1,8 @@
 import { Card, Col, Row, Typography } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
-import { SlotImageUploader } from 'features/slotGameCategory/addSlotGame/SlotImageUploader'
+
+import { SlotImageUploader } from './SlotImageUploader'
 
 interface ISlotImageFormProps {
 	onUploadImage: ({

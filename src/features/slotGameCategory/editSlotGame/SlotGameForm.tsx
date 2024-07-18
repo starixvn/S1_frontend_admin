@@ -1,4 +1,10 @@
 import { useTranslation } from 'react-i18next'
+import { head } from 'lodash'
+import React from 'react'
+import { MultipleSelect } from 'components/Select'
+import { Currency } from 'common/enum/type'
+import { CheckOutlined } from '@ant-design/icons'
+import { PermissionInterface } from 'type'
 import {
 	Button,
 	Checkbox,
@@ -13,21 +19,16 @@ import {
 	Typography,
 } from 'antd'
 import { LayoutContent } from 'app/pages/layout'
-import { PermissionInterface } from 'type'
 import {
 	IGetTpListData,
 	ISlotCategoryListData,
 } from 'features/slotGameCategory/type'
 import { InputNumber } from 'components'
 import { DeviceEnum, deviceList } from 'features/slotGameCategory/constants'
-import { head } from 'lodash'
-import React from 'react'
-import { MultipleSelect } from 'components/Select'
-import { Currency } from 'common/enum/type'
-import { CheckOutlined } from '@ant-design/icons'
 
 interface ISlotGameFormProps {
 	loading: boolean
+	isEditMode: boolean
 	form: FormInstance
 	updated: boolean
 	tpList: IGetTpListData[]
@@ -43,6 +44,7 @@ const SlotGameForm = ({
 	form,
 	tpList,
 	loading,
+	isEditMode,
 	updated,
 	editPermission,
 	slotCategoryList,
@@ -159,6 +161,7 @@ const SlotGameForm = ({
 							>
 								<Select
 									placeholder={t('Label_Select')}
+									disabled={isEditMode}
 									showSearch
 									filterOption={(input, option) => {
 										const isIncludes: boolean = (
@@ -191,7 +194,7 @@ const SlotGameForm = ({
 									},
 								]}
 							>
-								<Input />
+								<Input disabled={isEditMode} />
 							</Form.Item>
 						</Col>
 						<Col lg={6} md={12} xs={12}>
@@ -270,8 +273,13 @@ const SlotGameForm = ({
 								<Input />
 							</Form.Item>
 						</Col>
-						{currencyIdsSelector()}
-						{categorySelector()}
+						{/* 新增模式才可以做 category 與 currencyId 的選擇 */}
+						{!isEditMode && (
+							<>
+								{currencyIdsSelector()}
+								{categorySelector()}
+							</>
+						)}
 					</Row>
 				</Form>
 				{!updated && (
