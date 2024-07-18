@@ -11,6 +11,7 @@ import {
 	ISlotGameAllCurrencyArgs,
 	ISetSlogGameEnvironmentArgs,
 	ISetNewSlotGameArgs,
+	IGetSlotGameListExportArgs,
 } from 'features/slotGameCategory/type'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { baseUrl } from '../../common/service/Api'
@@ -111,6 +112,14 @@ export const slotGameCategoryApi = createApi({
 				},
 			}),
 		}),
+		exportSlotGameList: builder.mutation<Blob, IGetSlotGameListExportArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/ExportSlotGameList',
+				method: 'POST',
+				data,
+				responseType: 'blob',
+			}),
+		}),
 	}),
 })
 
@@ -125,4 +134,5 @@ export const {
 	useSetSlotGameEnvironmentMutation,
 	useSetNewSlotGameMutation,
 	useUpdateSlotGameImageMutation,
+	useExportSlotGameListMutation,
 } = slotGameCategoryApi

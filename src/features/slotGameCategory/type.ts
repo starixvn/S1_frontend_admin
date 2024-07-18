@@ -104,3 +104,11 @@ export interface ISetNewSlotGameArgs {
 export interface ISlotGameForm extends Omit<ISetNewSlotGameArgs, 'fun'> {
 	fun: boolean
 }
+
+export interface IGetSlotGameListExportArgs {
+	siteId: number
+	tpId: number
+	status: number
+	name: string
+	gameId: string
+}
