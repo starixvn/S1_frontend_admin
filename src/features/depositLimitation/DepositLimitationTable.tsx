@@ -1698,7 +1698,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					title: t('Label_Max'),
 					width: 100,
 					align: 'center' as 'center',
-					key: 'chatTransferMax',
+					key: 'qrPayMax',
 					innerWidth: 200,
 					render: (record: IDepositTableData) => {
 						const { qrPayMax } = record

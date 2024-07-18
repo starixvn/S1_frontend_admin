@@ -32,7 +32,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 			children: [
 				{
 					title: t('Label_PointLevel'),
-					width: 80,
+					width: 100,
 					align: 'center' as 'center',
 					render: () => (
 						<Form.Item
@@ -66,7 +66,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				{
 					title: t('Label_Status'),
 					key: 'onlineBankingStatus',
-					width: 80,
+					width: 100,
 					align: 'center' as 'center',
 					render: () => (
 						<Form.Item
@@ -80,7 +80,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Min'),
-					width: 100,
+					width: 80,
 					align: 'center' as 'center',
 					key: 'onlineBankingMin',
 					innerWidth: 200,
@@ -108,18 +108,14 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 									},
 								]}
 							>
-								<InputNumber
-									style={{ width: '100%' }}
-									controls={false}
-									type='number'
-								/>
+								<InputNumber controls={false} type='number' />
 							</Form.Item>
 						)
 					},
 				},
 				{
 					title: t('Label_Max'),
-					width: 100,
+					width: 140,
 					align: 'center' as 'center',
 					key: 'onlineBankingMax',
 					innerWidth: 200,
@@ -161,7 +157,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				{
 					title: t('Label_Status'),
 					key: 'mobilePayStatus',
-					width: 80,
+					width: 100,
 					align: 'center' as 'center',
 					render: () => (
 						<Form.Item
@@ -175,7 +171,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Min'),
-					width: 100,
+					width: 80,
 					align: 'center' as 'center',
 					key: 'mobilePayMin',
 					innerWidth: 200,
@@ -211,7 +207,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Max'),
-					width: 100,
+					width: 140,
 					align: 'center' as 'center',
 					key: 'mobilePayMax',
 					innerWidth: 200,
@@ -253,7 +249,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				{
 					title: t('Label_Status'),
 					key: 'localBankingStatus',
-					width: 80,
+					width: 100,
 					align: 'center' as 'center',
 					render: () => (
 						<Form.Item
@@ -267,7 +263,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Min'),
-					width: 100,
+					width: 80,
 					align: 'center' as 'center',
 					key: 'localBankingMin',
 					innerWidth: 200,
@@ -303,7 +299,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Max'),
-					width: 100,
+					width: 140,
 					align: 'center' as 'center',
 					key: 'localBankingMax',
 					innerWidth: 200,
@@ -345,7 +341,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				{
 					title: t('Label_Status'),
 					key: 'quickTransferStatus',
-					width: 80,
+					width: 100,
 					align: 'center' as 'center',
 					render: () => (
 						<Form.Item
@@ -359,7 +355,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Min'),
-					width: 100,
+					width: 80,
 					align: 'center' as 'center',
 					key: 'quickTransferMin',
 					innerWidth: 200,
@@ -395,7 +391,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 				},
 				{
 					title: t('Label_Max'),
-					width: 100,
+					width: 140,
 					align: 'center' as 'center',
 					key: 'quickTransferMax',
 					innerWidth: 200,
@@ -409,6 +405,558 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 										if (!isNumber(getFieldValue('quickTransferMin')))
 											return Promise.resolve()
 										if (value && isNumber(getFieldValue('quickTransferMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_CryptoPay'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'cryptoPayStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='cryptoPayStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'cryptoPayMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='cryptoPayMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('cryptoPayMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('cryptoPayMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'cryptoPayMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='cryptoPayMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('cryptoPayMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('cryptoPayMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_LoadCard'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'loadCardStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='loadCardStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'loadCardMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='loadCardMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('loadCardMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('loadCardMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'loadCardMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='loadCardMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('loadCardMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('loadCardMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_Auto_Deposit'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'bankAutoChannelStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='bankAutoChannelStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='bankAutoChannelMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('bankAutoChannelMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('bankAutoChannelMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'bankAutoChannelMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='bankAutoChannelMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('bankAutoChannelMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('bankAutoChannelMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_CryptoWallet'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'cryptoWalletStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='cryptoWalletStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'cryptoWalletMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='cryptoWalletMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('cryptoWalletMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('cryptoWalletMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'cryptoWalletMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='cryptoWalletMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('cryptoWalletMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('cryptoWalletMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_ChatTransfer'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'chatTransferStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='chatTransferStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'chatTransferMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='chatTransferMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('chatTransferMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('chatTransferMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'chatTransferMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='chatTransferMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('chatTransferMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('chatTransferMin')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+			],
+		},
+		{
+			title: t('Label_Qr_Pay'),
+			children: [
+				{
+					title: t('Label_Status'),
+					key: 'qrPayStatus',
+					width: 100,
+					align: 'center' as 'center',
+					render: () => (
+						<Form.Item
+							name='qrPayStatus'
+							style={{ margin: 0 }}
+							valuePropName='checked'
+						>
+							<Switch />
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Min'),
+					width: 80,
+					align: 'center' as 'center',
+					key: 'qrPayMin',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='qrPayMin'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('qrPayMax')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('qrPayMax')))
+											return Promise.resolve()
+
+										return Promise.reject(new Error(''))
+									},
+								}),
+								{
+									type: 'number',
+									min: 0,
+									message: '',
+								},
+							]}
+						>
+							<InputNumber
+								style={{ width: '100%' }}
+								controls={false}
+								type='number'
+							/>
+						</Form.Item>
+					),
+				},
+				{
+					title: t('Label_Max'),
+					width: 140,
+					align: 'center' as 'center',
+					key: 'qrPayMax',
+					innerWidth: 200,
+					render: () => (
+						<Form.Item
+							name='qrPayMax'
+							style={{ margin: 0 }}
+							rules={[
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!isNumber(getFieldValue('qrPayMin')))
+											return Promise.resolve()
+										if (value && isNumber(getFieldValue('qrPayMin')))
 											return Promise.resolve()
 
 										return Promise.reject(new Error(''))
@@ -457,12 +1005,18 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 			<Form
 				form={form}
 				component={false}
-				// 其他都是 required值 , 所以只有這三個給預設
+				// 其他都是 required值
 				initialValues={{
 					localBankingStatus: false,
 					mobilePayStatus: false,
 					onlineBankingStatus: false,
 					quickTransferStatus: false,
+					cryptoPayStatus: false,
+					loadCardStatus: false,
+					bankAutoChannelStatus: false,
+					cryptoWalletStatus: false,
+					chatTransferStatus: false,
+					qrPayStatus: false,
 				}}
 			>
 				<Table
@@ -471,6 +1025,7 @@ const CreateDepositLimitModal: FC<ICreateDepositLimitProps> = ({
 					size='middle'
 					columns={columns}
 					dataSource={initData}
+					scroll={{ x: 'max-content' }}
 				/>
 			</Form>
 		</Modal>
