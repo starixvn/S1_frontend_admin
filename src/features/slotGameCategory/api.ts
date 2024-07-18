@@ -11,6 +11,9 @@ import {
 	ISlotGameAllCurrencyArgs,
 	ISetSlogGameEnvironmentArgs,
 	ISetNewSlotGameArgs,
+	IGetSlotGameByIdArgs,
+	TSlotGameDetail,
+	IEditSlotGameArgs,
 	IGetSlotGameListExportArgs,
 } from 'features/slotGameCategory/type'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
@@ -47,6 +50,16 @@ export const slotGameCategoryApi = createApi({
 		setSlotGame: builder.mutation<void, ISetSlotGameArgs>({
 			query: data => ({
 				url: 'SlotGamesManagement/SetSlotGame',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getSlotGameById: builder.query<
+			IAxiosResponse<IGetSlotGameByIdArgs & TSlotGameDetail>,
+			IGetSlotGameByIdArgs
+		>({
+			query: data => ({
+				url: 'SlotGamesManagement/GetById',
 				method: 'POST',
 				data,
 			}),
@@ -91,6 +104,7 @@ export const slotGameCategoryApi = createApi({
 				}),
 			}
 		),
+		// 新增 slot game 用
 		setNewSlotGame: builder.mutation<void, ISetNewSlotGameArgs>({
 			query: data => ({
 				url: 'SlotGamesManagement/SetNewSlotGame',
@@ -98,6 +112,15 @@ export const slotGameCategoryApi = createApi({
 				data,
 			}),
 		}),
+		// 編輯已經新增過的 slot game
+		editSlotGame: builder.mutation<void, IEditSlotGameArgs>({
+			query: data => ({
+				url: 'SlotGamesManagement/Set',
+				method: 'POST',
+				data,
+			}),
+		}),
+		// 不管新增編輯都是用這隻傳圖
 		updateSlotGameImage: builder.mutation<
 			IAxiosResponse<{ returnImagePath: string }>,
 			FormData
@@ -125,6 +148,7 @@ export const slotGameCategoryApi = createApi({
 
 export const {
 	useGetSlotGamesTpListQuery,
+	useLazyGetSlotGameByIdQuery,
 	useLazyGetSlotGameListQuery,
 	useLazyGetSlotGameCategoryListQuery,
 	useSetSlotGameMutation,
@@ -133,6 +157,7 @@ export const {
 	useSetSlotGameAllCurrencyMutation,
 	useSetSlotGameEnvironmentMutation,
 	useSetNewSlotGameMutation,
+	useEditSlotGameMutation,
 	useUpdateSlotGameImageMutation,
 	useExportSlotGameListMutation,
 } = slotGameCategoryApi

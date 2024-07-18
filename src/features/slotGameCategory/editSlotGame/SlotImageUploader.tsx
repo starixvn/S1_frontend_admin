@@ -1,10 +1,9 @@
+import { isEmpty } from 'lodash'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Image, Spin, Upload } from 'antd'
 import { UploadProps } from 'antd/es/upload/interface'
 import { UploadOutlined } from '@ant-design/icons'
-import { useState } from 'react'
-
-import { isEmpty } from 'lodash'
 
 interface ISlotImageUploader {
 	isLoading: boolean

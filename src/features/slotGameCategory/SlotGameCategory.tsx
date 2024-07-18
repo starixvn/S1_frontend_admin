@@ -20,6 +20,7 @@ import {
 import {
 	IGetTpListResponse,
 	ITableColumnsInfo,
+	SlotGameMethodEnum,
 } from 'features/slotGameCategory/type'
 import {
 	PAGINATION,
@@ -464,7 +465,7 @@ const SlotGameCategory: FC<{
 					disabled={!editPermission?.canUse}
 					onClick={() => {
 						navigate(
-							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/add`
+							`/${NEW_SITE_PREFIX_URL}/${paths.productManagement.sub.slotGameCategory.root}/${SlotGameMethodEnum.Create}`
 						)
 					}}
 				/>
