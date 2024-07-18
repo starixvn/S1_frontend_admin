@@ -17,13 +17,13 @@ import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
-import FloatButtonLocator from './Tour/components/FloatButtonLocator'
-import TourBeginButton from './Tour/components/TourBeginButton'
-import useGenerateTourSteps from './Tour/hooks/useGenerateTourSteps'
+import TourBeginButton from 'components/Tour/components/TourBeginButton'
+import useGenerateTourSteps from 'components/Tour/hooks/useGenerateTourSteps'
 import {
-	HeaderManagementStepEnum,
 	headerManagementTour,
-} from './Tour/step-configs/headerManagementTour'
+	HeaderManagementStepEnum,
+} from 'components/Tour/step-configs/headerManagementTour'
+import FloatButtonLocator from './Tour/FloatButtonLocator'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -173,7 +173,7 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				editPermission={editPermission}
 			/>
 
-			<AffixButtons data-hm-tour='floating-button'>
+			<AffixButtons>
 				<AffixButtons.BackToTop />
 				{isSortMode ? (
 					<AffixButtons.Close onClick={() => setIsSortMode(false)} />
