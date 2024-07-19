@@ -1757,6 +1757,7 @@ const DepositLimitationTable: FC<IDepositLimitationProps> = ({
 					size='middle'
 					columns={columns}
 					dataSource={tableDataSource}
+					scroll={{ x: 'max-content' }}
 				/>
 			</Form>
 		</LayoutContent.Card>
