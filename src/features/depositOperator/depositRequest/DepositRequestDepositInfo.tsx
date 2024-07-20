@@ -274,7 +274,8 @@ const DepositRequestDepositInfo = ({
 									<Button
 										disabled={
 											!setAmountPermission?.canUse ||
-											thirdPartyDepositType ||
+											// 2024.07.20 LoadCard遇到actualDeposit金額不對，因此調整開放修改，並調整manual approved api帶入amount
+											// thirdPartyDepositType ||
 											isApproved ||
 											isRejected
 										}
