@@ -196,7 +196,14 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 
 		try {
 			if (status === DepositStatusEnum.ManualApproved) {
-				await setDepositManualApproval({ transId }).unwrap()
+				const { data: currentDepositInfo } = await getDepositInfoByTransId({
+					transId,
+				}).unwrap()
+				const { actualDeposit } = currentDepositInfo
+				await setDepositManualApproval({
+					transId,
+					amount: actualDeposit,
+				}).unwrap()
 			} else {
 				const { comment, bankId, statementTime } = form.getFieldsValue()
 				const { data: currentDepositInfo } = await getDepositInfoByTransId({
