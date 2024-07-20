@@ -123,7 +123,7 @@ export const depositOperatorApi = rootApi.injectEndpoints({
 
 		setDepositManualApproval: builder.mutation<
 			IAxiosResponse<null>,
-			{ transId: string }
+			{ transId: string; amount: number }
 		>({
 			query: data => ({
 				url: 'Deposit/DepositManualApproval',
