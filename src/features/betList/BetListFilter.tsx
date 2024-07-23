@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import dayjs from 'dayjs'
 import { reject } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -20,11 +20,13 @@ import { LayoutContent } from 'app/pages/layout'
 import { SiteIds } from 'app/constants/siteIds'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { MultipleSelect } from 'components/Select'
-import { Currency } from 'common/enum/type'
+import { Currency, UserSite } from 'common/enum/type'
 import { IMemberTypeData } from 'features/memberAdministrationList/type'
 import { UserTypeEnum } from 'features/memberAdministrationList/constants'
 import {
+	BetListCategoryEnum,
 	IGetCategoryData,
+	IGetGameListData,
 	IGetProductsData,
 	IGetProvidersData,
 	IGetTagsData,
@@ -45,8 +47,8 @@ interface BetListFilterInterface {
 		currentTimeZoneUtcOffset?: number
 	}) => void
 	onTimeZoneChange: (newUtcOffset: number) => void
-	onChangeCurrency: (newCurrencyIds: number[]) => void
 	currencyList: Currency[]
+	currencyIdsBySiteIds: Currency[]
 	providers: IGetProvidersData[]
 	products: IGetProductsData[]
 	categories: IGetCategoryData[]
@@ -54,8 +56,9 @@ interface BetListFilterInterface {
 	tagList: IGetTagsData[]
 	memberTypeEnums: IMemberTypeData[]
 	siteId?: number
+	userSiteList: UserSite[]
+	gameList: IGetGameListData[]
 }
-
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -66,8 +69,8 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	timeZoneUtcOffset,
 	onSearch,
 	onTimeZoneChange,
-	onChangeCurrency,
 	currencyList,
+	currencyIdsBySiteIds,
 	providers,
 	products,
 	categories,
@@ -75,11 +78,112 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 	vipLevels,
 	tagList,
 	memberTypeEnums,
+	userSiteList,
+	gameList,
 }) => {
 	const { t } = useTranslation()
-
+	const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+		''
+	)
 	// * IvorySport 為測試網站，不開放部分過濾條件，但保持默認參數，因此只隱藏元件
 	const isHidePartOfFilter = siteId === SiteIds.IvorySport
+	const { category } = form.getFieldsValue()
+
+	const currencySelector = () => {
+		const onChangeCurrency = (newCurrencyIds: number[]) => {
+			// 0 代表select all全選
+			if (newCurrencyIds.includes(0)) {
+				form.setFieldsValue({
+					currencyIds: currencyIdsBySiteIds?.map(
+						({ currencyId }) => currencyId
+					),
+				})
+			} else {
+				form.setFieldsValue({
+					currencyIds: newCurrencyIds,
+				})
+			}
+		}
+		return (
+			<Form.Item
+				name='currencyIds'
+				label={t('Label_Currency')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Currency'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect
+					onChange={onChangeCurrency}
+					placeholder={t('Label_Select')}
+				>
+					{(currencyIdsBySiteIds?.length as number) > 1 && (
+						<Option value={0}>{t('Label_SelectAll')}</Option>
+					)}
+
+					{currencyIdsBySiteIds?.map(item => (
+						<Option key={item.currencyId} value={item.currencyId}>
+							{item.isoCode}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
+
+	const handleCategoryChange = (e: string | undefined) => {
+		form.setFieldValue('game', [])
+		setSelectedCategory(e)
+	}
+
+	// 當category選擇了"Sports"時，Game的選項變為下拉式多選
+	const sportGamesSelect = () => {
+		const onChangeGames = (newGames: string[]) => {
+			if (newGames.includes('all')) {
+				form.setFieldsValue({
+					game: gameList?.map(({ name }) => name),
+				})
+			} else {
+				// 如果使用者在Game多選欄裡輸入不是gameList裡面的選項，會自動被清除
+				const gameListGames = gameList.map(item => {
+					return item.name
+				})
+				const filterGames = newGames.filter(item => {
+					return gameListGames.includes(item)
+				})
+				form.setFieldsValue({
+					game: filterGames,
+				})
+			}
+		}
+		return (
+			<Form.Item
+				name='game'
+				label={t('Label_Game')}
+				hidden={isHidePartOfFilter}
+			>
+				<MultipleSelect
+					onChange={onChangeGames}
+					placeholder={t('Label_Select')}
+					allowClear
+				>
+					{(gameList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{gameList?.map(({ name }) => (
+						<Option key={name} value={name}>
+							{name}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
 
 	const vipLevelSelect = () => (
 		<Form.Item
@@ -170,6 +274,48 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 		)
 	}
 
+	// * siteIds 多選
+	const siteIdsSelector = () => {
+		const onChangeSite = (newSiteIds: ('all' | number)[]) => {
+			if (newSiteIds.includes('all')) {
+				form.setFieldsValue({
+					siteIds: userSiteList?.map(value => value.siteId),
+				})
+			} else {
+				form.setFieldsValue({
+					siteIds: newSiteIds as number[],
+				})
+			}
+			form.setFieldValue('currencyIds', [])
+		}
+
+		return (
+			<Form.Item
+				name='siteIds'
+				label={t('Label_Site')}
+				rules={[
+					{
+						required: true,
+						message: t('Label_Required', {
+							key: t('Label_Site'),
+						}),
+					},
+				]}
+			>
+				<MultipleSelect onChange={onChangeSite} placeholder={t('Label_Select')}>
+					{(userSiteList?.length as number) > 1 && (
+						<Option value='all'>{t('Label_SelectAll')}</Option>
+					)}
+
+					{userSiteList?.map(item => (
+						<Option key={item.siteId} value={item.siteId}>
+							{item.siteName}
+						</Option>
+					))}
+				</MultipleSelect>
+			</Form.Item>
+		)
+	}
 	return (
 		<Collapse defaultActiveKey={1}>
 			<Panel header='' key='1'>
@@ -186,6 +332,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								'value',
 								UserTypeEnum.LiveStreaming,
 							]).map(({ value }) => Number(value)),
+							siteIds: userSiteList?.map(value => value.siteId), // 預設全選
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -228,22 +375,7 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item name='currencyIds' label={t('Label_Currency')}>
-									<MultipleSelect
-										onChange={onChangeCurrency}
-										placeholder={t('Label_Select')}
-									>
-										{(currencyList?.length as number) > 1 && (
-											<Option value={0}>{t('Label_SelectAll')}</Option>
-										)}
-
-										{currencyList?.map(item => (
-											<Option key={item.currencyId} value={item.currencyId}>
-												{item.isoCode}
-											</Option>
-										))}
-									</MultipleSelect>
-								</Form.Item>
+								{currencySelector()}
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item name='userName' label={t('Label_MemberId')}>
@@ -314,6 +446,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
+										onChange={e => {
+											handleCategoryChange(e)
+										}}
 									>
 										{categories?.map(item => (
 											<Option key={item.categoryName} value={item.categoryName}>
@@ -324,13 +459,18 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 								</Form.Item>
 							</Col>
 							<Col lg={4} md={12} xs={12}>
-								<Form.Item
-									name='game'
-									label={t('Label_Game')}
-									hidden={isHidePartOfFilter}
-								>
-									<Input allowClear />
-								</Form.Item>
+								{selectedCategory === BetListCategoryEnum.Sports ||
+								category === BetListCategoryEnum.Sports ? (
+									sportGamesSelect()
+								) : (
+									<Form.Item
+										name='game'
+										label={t('Label_Game')}
+										hidden={isHidePartOfFilter}
+									>
+										<Input allowClear />
+									</Form.Item>
+								)}
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								<Form.Item
@@ -413,6 +553,9 @@ const BetListFilter: FC<BetListFilterInterface> = ({
 							</Col>
 							<Col lg={4} md={12} xs={12}>
 								{memberTypeSelector()}
+							</Col>
+							<Col lg={4} md={12} xs={12}>
+								{siteIdsSelector()}
 							</Col>
 						</Row>
 						<br />

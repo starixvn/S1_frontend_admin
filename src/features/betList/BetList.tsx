@@ -13,7 +13,12 @@ import {
 import { Form, message, TablePaginationConfig } from 'antd'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
-import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
+import {
+	selectAllSiteEnableCurrencyList,
+	selectCurrencyIdsBySiteIds,
+	selectUserSite,
+	selectUserSiteList,
+} from 'common/enum'
 import download from 'downloadjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import type { SorterResult } from 'antd/es/table/interface'
@@ -26,6 +31,7 @@ import {
 	IGetBetListData,
 	IGetBetListResponse,
 	IGetCategoryResponse,
+	IGetGameListResponse,
 	IGetProductsResponse,
 	IGetProvidersResponse,
 	IGetTagsResponse,
@@ -35,6 +41,7 @@ import {
 import {
 	useExportBetListFileMutation,
 	useGetCategoryQuery,
+	useGetGameListQuery,
 	useGetProductsQuery,
 	useGetProvidersQuery,
 	useGetTagsQuery,
@@ -49,13 +56,16 @@ const BetList: FC<{
 	const { t } = useTranslation()
 	const [form] = Form.useForm()
 	const { siteId = 0 } = useAppSelector(selectUserSite) ?? {}
-
+	const userSiteList = useAppSelector(selectUserSiteList)
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-
+	const watchSiteIds = Form.useWatch('siteIds', form)
+	const currencyIdsBySiteIds = useAppSelector(state =>
+		selectCurrencyIdsBySiteIds(state, watchSiteIds || [])
+	)
+	const currencyListByAllSite = useAppSelector(selectAllSiteEnableCurrencyList)
 	const {
 		data: { data: providersList } = {} as IGetProvidersResponse,
 		isFetching: isGetProvidersFetching,
@@ -87,7 +97,6 @@ const BetList: FC<{
 	} = useGetEnumTypeQuery({
 		enumName: 'MemberTypeEnum',
 	})
-
 	const [
 		getBetList,
 		{
@@ -102,21 +111,14 @@ const BetList: FC<{
 	const [exportBetListFile, { isLoading: isExportBetListLoading }] =
 		useExportBetListFileMutation()
 
+	const {
+		data: { data: gameList } = {} as IGetGameListResponse,
+		isFetching: isGetGameListFetching,
+	} = useGetGameListQuery(null)
+
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: BetListDataTotal,
 	})
-
-	const onChangeCurrency = (newCurrencyIds: number[]) => {
-		if (newCurrencyIds.includes(0)) {
-			form.setFieldsValue({
-				currencyIds: currencyListBySite?.map(item => item.currencyId),
-			})
-		} else {
-			form.setFieldsValue({
-				currencyIds: newCurrencyIds,
-			})
-		}
-	}
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -137,6 +139,7 @@ const BetList: FC<{
 		if (!siteId) return
 		const {
 			tags = [],
+			currencyIds,
 			dateRange,
 			vipLevel = 0,
 			tpId = 0,
@@ -145,7 +148,7 @@ const BetList: FC<{
 			refNo = '',
 			gameType = 0,
 			category: rawCategory = '',
-			game = '',
+			game = [],
 			title = '',
 			matchID = '',
 			betType = '',
@@ -154,26 +157,18 @@ const BetList: FC<{
 			winLostAmount = 0,
 			transId = '',
 			memberTypes,
+			siteIds,
 		} = form.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
 			dateRange,
 			currentTimeZoneUtcOffset
 		)
 
-		let { currencyIds } = form.getFieldsValue()
-		if (currencyIds.length === 0) {
-			currencyIds = currencyListBySite?.map(item => item.currencyId)
-			form.setFieldsValue({
-				currencyIds,
-			})
-		}
-
 		// api 接受參數 category 字串中不可有空白字元
 		const category = rawCategory.replace(/ /g, '')
 
 		try {
 			const args: IGetBetListArgs = {
-				siteIds: [siteId],
 				currencyIds,
 				tags,
 				vipLevel,
@@ -199,7 +194,9 @@ const BetList: FC<{
 				orderByProperty,
 				orderByDirection,
 				memberTypes,
+				siteIds,
 			}
+
 			await getBetList(args).unwrap()
 			setQueryParams({ timeZone: currentTimeZoneUtcOffset, ...args })
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -331,6 +328,7 @@ const BetList: FC<{
 				winLostAmount,
 				timeZone,
 				memberTypes,
+				siteIds,
 			} = queryParams
 			onTimeZoneChange(Number(timeZone))
 			form.setFieldsValue({
@@ -355,6 +353,7 @@ const BetList: FC<{
 				memberTypes: isArray(memberTypes)
 					? memberTypes.map((value: string) => Number(value))
 					: [],
+				siteIds: siteIds.map((site: string) => Number(site)),
 			})
 			handleSearch({
 				current: Number(pageNumber),
@@ -364,7 +363,6 @@ const BetList: FC<{
 		}
 		init()
 	}, [])
-
 	const loading =
 		isGetProvidersFetching ||
 		isGetProductsFetching ||
@@ -372,7 +370,8 @@ const BetList: FC<{
 		isGetVipLevelsFetching ||
 		isGetBetListFetching ||
 		isGetTagListFetching ||
-		isMemberTypeEnumsLoading
+		isMemberTypeEnumsLoading ||
+		isGetGameListFetching
 
 	const filterLoading = isGetBetListFetching || isMemberTypeEnumsLoading
 
@@ -397,8 +396,8 @@ const BetList: FC<{
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
-				onChangeCurrency={onChangeCurrency}
-				currencyList={currencyListBySite}
+				currencyList={currencyListByAllSite}
+				currencyIdsBySiteIds={currencyIdsBySiteIds}
 				providers={providersList}
 				products={products}
 				categories={categories}
@@ -406,6 +405,8 @@ const BetList: FC<{
 				siteId={siteId}
 				vipLevels={vipLevels}
 				memberTypeEnums={memberTypeEnums}
+				userSiteList={userSiteList}
+				gameList={gameList}
 			/>
 			{!isEmpty(queryParams) && (
 				<BetListTable
