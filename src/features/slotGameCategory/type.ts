@@ -125,3 +125,11 @@ export enum SlotGameMethodEnum {
 	Create = 'add',
 	Edit = 'edit',
 }
+
+export interface IGetSlotGameListExportArgs {
+	siteId: number
+	tpId: number
+	status: number
+	name: string
+	gameId: string
+}

@@ -85,7 +85,6 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	categoryForm,
 }) => {
 	const { t } = useTranslation()
-
 	const {
 		data: { data: slotCategoryList = [] } = {} as IGetSlotCategoryListResponse,
 		isLoading: isGetSlotCategoryListLoading,
@@ -144,6 +143,17 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 					</Typography.Link>
 				)
 			},
+		},
+		{
+			title: t('Label_Vender'),
+			key: 'tpName',
+			dataIndex: 'tpName',
+			align: 'center' as 'center',
+			render: (tpName: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+					{tpName ?? '-'}
+				</Typography.Text>
+			),
 		},
 		{
 			title: t('Label_GameId'),
@@ -251,6 +261,8 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 	})
 
 	const mergedColumn = columnsRenderer(defaultColumns, columnInfos)
+
+	const { current, pageSize, total } = pagination
 	return (
 		<LayoutContent.Card>
 			<Form
@@ -272,6 +284,16 @@ const SlotGameCategoryTable: FC<ISlotGameCategoryTableProps> = ({
 									))}
 								</Select>
 							</Form.Item>
+						</Col>
+						<Col
+							style={{
+								top: '50%',
+								transform: 'translateY(-50%)',
+								marginLeft: '30px',
+							}}
+						>
+							{current * pageSize > total ? total : current * pageSize} /{' '}
+							{total} Row
 						</Col>
 					</Row>
 				</Spin>

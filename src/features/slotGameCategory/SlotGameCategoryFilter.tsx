@@ -55,6 +55,7 @@ const SlotGameCategoryFilter: FC<ISlotGameCategoryFilterProps> = ({
 							status: SlotGameStatusEnum.ALL,
 							name: '',
 							gameId: '',
+							tpId: 0,
 						}}
 					>
 						<Row align='middle' gutter={16}>
@@ -84,6 +85,8 @@ const SlotGameCategoryFilter: FC<ISlotGameCategoryFilterProps> = ({
 											return isIncludes
 										}}
 									>
+										<Option value={0}>{t('Label_SelectAll')}</Option>
+
 										{tpList?.map(tp => (
 											<Option key={tp.tpId} value={tp.tpId}>
 												{tp.tpName}
