@@ -6,7 +6,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { selectCurrencyListBySite } from 'common/enum'
 import { FormInstance } from 'antd/es/form/Form'
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, Col, Collapse, Form, Row, Select, Typography } from 'antd'
+import { Button, Col, Collapse, Form, Row, Select } from 'antd'
 import { IFilterForm, ILobbyCategoryData } from 'features/headerManagement/type'
 
 interface IHeaderManagementFilterProps {
@@ -37,7 +37,7 @@ const HeaderManagementFilter = ({
 
 	return (
 		<Collapse defaultActiveKey={1}>
-			<Panel header='' key='1'>
+			<Panel header='' key='1' data-tour='filter-panel'>
 				<LayoutContent.Card style={{ marginTop: 0 }}>
 					<Form
 						layout='vertical'
@@ -49,8 +49,12 @@ const HeaderManagementFilter = ({
 						}}
 					>
 						<Row align='middle' gutter={16}>
-							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='currencyId' label={t('Label_Currency')}>
+							<Col lg={6} md={12} xs={12} data-tour='filter-currency'>
+								<Form.Item
+									name='currencyId'
+									label={t('Label_Currency')}
+									id='css'
+								>
 									<Select placeholder='select'>
 										{currencyListBySite?.map(item => (
 											<Option key={item.currencyId} value={item.currencyId}>
@@ -60,7 +64,7 @@ const HeaderManagementFilter = ({
 									</Select>
 								</Form.Item>
 							</Col>
-							<Col lg={6} md={12} xs={12}>
+							<Col lg={6} md={12} xs={12} data-tour='filter-category'>
 								<Form.Item
 									name='lobbyCategoryId'
 									label={t('Label_LobbyCategory')}
@@ -79,13 +83,8 @@ const HeaderManagementFilter = ({
 
 						<Row justify='end' align='middle' gutter={16}>
 							<Col>
-								<Typography.Text style={{ fontSize: 12 }}>
-									{t('Label_HeaderMenu_Product_Description_2')}
-								</Typography.Text>
-							</Col>
-
-							<Col>
 								<Button
+									data-tour='search-button'
 									loading={loading}
 									icon={<SearchOutlined />}
 									htmlType='submit'
@@ -99,6 +98,8 @@ const HeaderManagementFilter = ({
 							{editPermission?.canUse && (
 								<Col>
 									<Button
+										id='css'
+										data-tour='status-button'
 										type='primary'
 										onClick={onSetProductStatus}
 										disabled={isSortMode}

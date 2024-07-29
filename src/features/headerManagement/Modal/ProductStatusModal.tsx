@@ -384,7 +384,7 @@ const ProductStatusModal = ({
 			footer={false}
 		>
 			<Row align='middle' gutter={16}>
-				<Col lg={4} md={12} xs={12}>
+				<Col lg={4} md={12} xs={12} data-tour='status-modal'>
 					<Form
 						layout='vertical'
 						size='middle'
@@ -406,16 +406,9 @@ const ProductStatusModal = ({
 				</Col>
 			</Row>
 
-			<Row align='middle' gutter={16}>
-				<Col lg={24}>
-					<Typography.Text style={{ fontSize: 12 }}>
-						{t('Label_HeaderMenu_Product_Description_1')}
-					</Typography.Text>
-				</Col>
-			</Row>
-
 			<Form form={editForm} component={false}>
 				<Table
+					data-tour='status-table'
 					loading={
 						headerSettingGroupByTpGameIdNoListFetching ||
 						isUpdateHeaderSettingByTpGameIdLoading ||

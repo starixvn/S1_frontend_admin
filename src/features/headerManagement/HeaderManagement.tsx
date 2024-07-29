@@ -12,11 +12,18 @@ import {
 	useGetLobbyCategoryQuery,
 	useUpdateHeaderManagementSortMutation,
 } from 'features/headerManagement/api'
-import { Form, message } from 'antd'
+import { Form, message, Tour } from 'antd'
 import { IFilterForm } from 'features/headerManagement/type'
 import HeaderManagementFilter from 'features/headerManagement/HeaderManagementFilter'
 import HeaderManagementTable from 'features/headerManagement/HeaderManagementTable'
 import ProductStatusModal from 'features/headerManagement/Modal/ProductStatusModal'
+import TourBeginButton from 'components/Tour/components/TourBeginButton'
+import useGenerateTourSteps from 'components/Tour/hooks/useGenerateTourSteps'
+import {
+	headerManagementTour,
+	HeaderManagementStepEnum,
+} from 'components/Tour/step-configs/headerManagementTour'
+import FloatButtonLocator from './Tour/FloatButtonLocator'
 
 const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -26,8 +33,11 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset } = useTimeZone()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [isSortMode, setIsSortMode] = useState(false)
+	const [open, setOpen] = useState<boolean>(false)
 
 	const productStatusModal = useModal()
+	// tourSteps
+	const steps = useGenerateTourSteps(headerManagementTour)
 
 	const [
 		getHeaderManagementList,
@@ -108,9 +118,33 @@ const HeaderManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}, [filterLoading])
 
+	// 特定步驟邏輯
+	const handleonChange = (currentStep: number) => {
+		if (currentStep === HeaderManagementStepEnum.AboutHandleSearch) {
+			handleSearch()
+		}
+		if (currentStep === HeaderManagementStepEnum.AboutHandleProductStatus) {
+			productStatusModal.onOpen()
+		}
+	}
+
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
+			{/* tour begin button */}
+			<TourBeginButton handleClick={() => setOpen(true)} />
+			{/* div for the floating button at right bottom corner */}
+			<FloatButtonLocator />
+			{/* tour component */}
+			<Tour
+				open={open}
+				onClose={() => {
+					setOpen(false)
+					productStatusModal.onCancel()
+				}}
+				steps={steps}
+				onChange={handleonChange}
+			/>
 
 			<HeaderManagementFilter
 				loading={isGetHeaderManagementFetching}
