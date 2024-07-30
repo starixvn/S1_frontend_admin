@@ -2,20 +2,20 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
 /** GetEventRestrictionList api 參數 */
 export interface IGetEventRestrictionListArgs {
-	SiteId: number | undefined
-	CurrencyId: number
-	UserName: string | null
+	siteId: number | undefined
+	currencyId: number
+	userName: string | null
 }
 
 /** SetEventRestriction api 參數 */
 export interface ISetEventRestrictionArgs {
-	Reason: string | null
-	UserName: string | null
+	reason: string | null
+	userName: string | null
 }
 
 /** DelEventRestriction api 參數 */
 export interface IDelEventRestrictionArgs {
-	UserName: string | null
+	userName: string | null
 }
 
 /** GetEventRestrictionList api 回傳資料 */
@@ -41,10 +41,10 @@ export type IDelEventRestrictionResponse = IAxiosResponse<null>
 
 export interface IFilterForm {
 	currencyId: number
-	username: null | string
+	userName: null | string
 }
 
 export interface IAddForm {
-	UserName: string | null
-	Reason: string | null
+	userName: string | null
+	reason: string | null
 }

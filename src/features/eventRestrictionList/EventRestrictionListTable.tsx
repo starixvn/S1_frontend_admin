@@ -92,10 +92,8 @@ const ExternalDomainTable = ({
 							// 確認編輯權限
 							disabled={!editPermission?.canUse}
 							onClick={() => {
-								const args: IDelEventRestrictionArgs = {
-									UserName: record.userName,
-								}
-								handleDelete(args)
+								const { userName } = record
+								handleDelete({ userName })
 							}}
 						>
 							{t('Label_Delete')}

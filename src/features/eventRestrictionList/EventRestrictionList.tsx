@@ -30,22 +30,17 @@ const EventRestrictionList = ({ pageTitle }: { pageTitle?: string }) => {
 	/** 編輯權限 */
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 
-	/** i18n */
 	const { t } = useTranslation()
 
-	/** 當前渠道 */
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	/** 彈窗 */
-	const addExternalDomainModal = useModal()
+	const addEventRestrictionModal = useModal()
 
-	/** query 參數 */
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	/** 篩選表單 */
 	const [filterForm] = Form.useForm<IFilterForm>()
 
-	/** 添加表單 */
 	const [addForm] = Form.useForm<IAddForm>()
 
 	/**  ======= API ======= */
@@ -125,21 +120,21 @@ const EventRestrictionList = ({ pageTitle }: { pageTitle?: string }) => {
 	/** 初始化 */
 	useEffect(() => {
 		const init = async () => {
-			const { CurrencyId, SiteId, UserName } = queryParams
+			const { currencyId, siteId: querySiteId, userName } = queryParams
 
-			// UserName 參數如果是 null (代表沒有打任何字) 存 query 上會導致 query 抓不到 UserName 的值
+			// UserName 參數如果是 null (代表沒有打任何字) 存 query 上會導致 query 抓不到 userName 的值
 			// 如果抓不到就重新賦值為 null，如果有值就用 query 原本的值
-			const newUserName = UserName ?? null
+			const newUserName = userName ?? null
 
 			filterForm.setFieldsValue({
-				username: newUserName,
-				currencyId: Number(CurrencyId),
+				userName: newUserName,
+				currencyId: Number(currencyId),
 			})
 
 			handleSearch({
-				CurrencyId: Number(CurrencyId),
-				SiteId: Number(SiteId),
-				UserName: newUserName,
+				currencyId: Number(currencyId),
+				siteId: Number(querySiteId),
+				userName: newUserName,
 			})
 		}
 		if (!isEmpty(queryParams)) init()
@@ -166,14 +161,14 @@ const EventRestrictionList = ({ pageTitle }: { pageTitle?: string }) => {
 				<AffixButtons.Create
 					disabled={!editPermission?.canUse}
 					loading={loading}
-					onClick={addExternalDomainModal.onOpen}
+					onClick={addEventRestrictionModal.onOpen}
 				/>
 			</AffixButtons>
 			<AddEventRestrictionModal
 				form={addForm}
 				loading={loading}
-				visible={addExternalDomainModal.visible}
-				onCancel={addExternalDomainModal.onCancel}
+				visible={addEventRestrictionModal.visible}
+				onCancel={addEventRestrictionModal.onCancel}
 				handleCreateEventRestriction={handleCreateEventRestriction}
 			/>
 		</LayoutContent.Main>

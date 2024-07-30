@@ -6,7 +6,7 @@ import {
 	ISetEventRestrictionArgs,
 } from 'features/eventRestrictionList/type'
 
-interface IAddExternalDomainModalProps {
+interface IAddEventRestrictionModalProps {
 	form: FormInstance<IAddForm>
 	loading: boolean
 	visible: boolean
@@ -29,17 +29,15 @@ const AddEventRestrictionModal = ({
 	visible,
 	onCancel,
 	handleCreateEventRestriction,
-}: IAddExternalDomainModalProps) => {
+}: IAddEventRestrictionModalProps) => {
 	/**  ======= hook ======= */
 
-	/** i18n */
 	const { t } = useTranslation()
 
 	/**  ======= useState ======= */
 
 	/** 確認表單有沒有效 */
 	const [isFormValid, setIsFormValid] = useState(false)
-
 	return (
 		<Modal
 			confirmLoading={loading}
@@ -48,17 +46,17 @@ const AddEventRestrictionModal = ({
 			onCancel={onCancel}
 			forceRender
 			afterClose={() => {
-				form.resetFields(['UserName', 'Reason'])
+				form.resetFields(['userName', 'reason'])
 			}}
 			footer={[
 				<Button
 					key='submit'
 					type='primary'
 					onClick={() => {
-						const { UserName, Reason } = form.getFieldsValue()
+						const { userName, reason } = form.getFieldsValue()
 						const args = {
-							UserName,
-							Reason,
+							userName,
+							reason,
 						}
 						handleCreateEventRestriction(args)
 						onCancel()
@@ -76,13 +74,13 @@ const AddEventRestrictionModal = ({
 				form={form}
 				layout='vertical'
 				initialValues={{
-					UserName: '',
-					Reson: '',
+					userName: '',
+					reason: '',
 				}}
 				// 確認表單都有填寫
 				onFieldsChange={() => {
-					const { UserName, Reason } = form.getFieldsValue()
-					if (UserName && Reason) {
+					const { userName, reason } = form.getFieldsValue()
+					if (userName && reason) {
 						setIsFormValid(true)
 					} else {
 						setIsFormValid(false)
@@ -92,7 +90,7 @@ const AddEventRestrictionModal = ({
 				<Row align='middle' justify='center' gutter={16}>
 					<Col span={24}>
 						<Form.Item
-							name='UserName'
+							name='userName'
 							label={t('Label_UserName')}
 							rules={[{ required: true, message: 'UserName is required' }]}
 						>
@@ -103,7 +101,7 @@ const AddEventRestrictionModal = ({
 				<Row align='middle' justify='center' gutter={16}>
 					<Col span={24}>
 						<Form.Item
-							name='Reason'
+							name='reason'
 							label={t('Label_Reason')}
 							rules={[{ required: true, message: 'Reason is required' }]}
 						>

@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
-
 import {
 	IFilterForm,
 	IGetEventRestrictionListArgs,
@@ -52,7 +51,6 @@ const EventRestrictionListFilter = ({
 	/** 根據 cookie siteId 過濾出來的幣別 */
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 
-	/** 當前渠道 */
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	/**  ======= 對內函數 ======= */
@@ -63,7 +61,7 @@ const EventRestrictionListFilter = ({
 	const onChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
 		// UserName 參數如果是空字串 (代表沒有打任何字) 就設成 null
 		const value = event.target.value === '' ? null : event.target.value
-		form.setFieldsValue({ username: value })
+		form.setFieldsValue({ userName: value })
 	}
 
 	/**
@@ -83,11 +81,11 @@ const EventRestrictionListFilter = ({
 							size='middle'
 							form={form}
 							onFinish={() => {
-								const { currencyId, username } = form.getFieldsValue()
+								const { currencyId, userName } = form.getFieldsValue()
 								const args = {
-									SiteId: siteId,
-									CurrencyId: currencyId,
-									UserName: username,
+									siteId,
+									currencyId,
+									userName,
 								}
 								handleSearch(args)
 							}}
@@ -97,7 +95,7 @@ const EventRestrictionListFilter = ({
 						>
 							<Row align='middle' gutter={16}>
 								<Col lg={6} md={12} xs={12}>
-									<Form.Item name='username' label={t('Label_UserName')}>
+									<Form.Item name='userName' label={t('Label_UserName')}>
 										<Input allowClear onChange={onChangeUsername} />
 									</Form.Item>
 								</Col>
