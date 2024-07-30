@@ -1126,6 +1126,7 @@
 	"Label_Processing": "Processing",
 	"Label_AdminUserLog": "Admin User Log",
 	"Label_TaggingRestrict": "Tagging Restrict",
+	"Label_TaggingTime": "Tagging Time",
 	"Label_SameDeviceIDRestrictCount": "Same Device ID restrict count",
 	"Label_SameRealNameRestrictCount": "Same RealName restrict count",
 	"Label_SameIPRestrictCount": "Same IP restrict count",
