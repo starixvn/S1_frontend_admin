@@ -630,6 +630,8 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
 						BonusTypeEnum.DeviceBonus as number,
+						BonusTypeEnum.ReDeposit as number,
+						BonusTypeEnum.CashBack as number,
 					]) && (
 						<>
 							<Row gutter={16} align='middle'>

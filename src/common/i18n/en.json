@@ -1284,6 +1284,8 @@
 	"Label_Feedback": "Feedback",
 	"Label_EditFeedback": "Edit Feedback",
 	"Label_EventItemCounts": "Event Item Counts",
+	"Label_HeaderMenu_Product_Description_1": "This function is for changing the product in all currencies simultaneously.",
+	"Label_HeaderMenu_Product_Description_2": "Use the icon in the lower right corner to set the product sorting for each currency.",
 	"Label_HeaderManagement_Tour_FilterSection_Title": "Filter Section",
 	"Label_HeaderManagement_Tour_FilterSection_Description": "Filter for searching results.",
 	"Label_HeaderManagement_Tour_Currency_Title": "Currency",
