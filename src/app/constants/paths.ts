@@ -784,6 +784,20 @@ const paths = {
 			},
 		},
 	},
+	event: {
+		root: 'event',
+		sub: {
+			lotteryEvent: {
+				root: 'event/lotteryEvent',
+				sub: {
+					eventRestrictionList: {
+						root: 'event/lotteryEvent/eventRestrictionList',
+						functionId: 159,
+					},
+				},
+			},
+		},
+	},
 }
 
 export default paths
