@@ -77,6 +77,7 @@ const DepositLimitation: FC<{
 
 	const handleTableRowSaved = async (record: IDepositTableData) => {
 		const formData = await editForm.validateFields()
+
 		const { create: createValue, ...rest } = DepositLimitationC2S.update({
 			formData,
 			record,
