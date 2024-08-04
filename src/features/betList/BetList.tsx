@@ -239,6 +239,7 @@ const BetList: FC<{
 	}
 
 	const handleExport = async () => {
+		const { siteIds } = form.getFieldsValue()
 		if (!siteId) return
 		const {
 			currencyIds,
@@ -266,7 +267,7 @@ const BetList: FC<{
 		} = queryParams
 		try {
 			const args: IGetBetListArgs = {
-				siteIds: [siteId],
+				siteIds,
 				currencyIds,
 				tags,
 				vipLevel,
