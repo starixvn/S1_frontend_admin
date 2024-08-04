@@ -250,7 +250,7 @@ const BetList: FC<{
 			refNo = '',
 			gameType = 0,
 			category = '',
-			game = '',
+			game = [],
 			title = '',
 			matchID = '',
 			betType = '',
