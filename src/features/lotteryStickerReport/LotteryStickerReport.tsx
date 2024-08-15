@@ -16,6 +16,7 @@ import {
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { LotteryStickerReportFilter } from 'features/lotteryStickerReport/LotteryStickerReportFilter'
 import { LotteryStickerReportTable } from 'features/lotteryStickerReport/LotteryStickerReportTable'
+import { LotteryStickerOverviewTable } from 'features/lotteryStickerReport/LotteryStickerOverviewTable'
 import {
 	useLazyGetStickerReportQuery,
 	useExportStickerReportExportMutation,
@@ -53,8 +54,6 @@ const LotteryStickerReport: FC<{
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm<IFilterForm>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
-	// 頁碼
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: memberReportTotal,
 	})
@@ -204,9 +203,15 @@ const LotteryStickerReport: FC<{
 				<LotteryStickerReportTable
 					loading={isGetMemberReportLoading}
 					stickerReportData={stickerReportData}
-					stickerReportCurrencyTotal={stickerReportCurrencyTotal}
 					pagination={pagination}
 					onTableChange={handleTableChange}
+				/>
+			)}
+
+			{stickerReportCurrencyTotal.length > 0 && (
+				<LotteryStickerOverviewTable
+					loading={isGetMemberReportLoading}
+					stickerReportCurrencyTotal={stickerReportCurrencyTotal}
 				/>
 			)}
 

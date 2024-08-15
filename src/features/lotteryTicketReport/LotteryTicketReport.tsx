@@ -26,7 +26,7 @@ const LotteryTicketReport: FC<{
 			data: {
 				data: custLotteryTicketsData = [],
 			} = {} as TCustLotteryTicketResponse,
-			isLoading: isLotteryTicketReportLoading,
+			isFetching: isLotteryTicketReportLoading,
 		},
 	] = useLazyGetCustLotteryTicketQuery()
 

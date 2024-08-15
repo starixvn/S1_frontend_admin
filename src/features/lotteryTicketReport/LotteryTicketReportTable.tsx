@@ -31,13 +31,9 @@ const LotteryTicketReportTable: FC<ILotteryTicketReportTableProps> = ({
 		{
 			title: t('Label_Period'),
 			key: 'period',
-			dataIndex: ['roundStartDate', 'roundEndDate'],
 			width: 170,
 			align: 'center' as 'center',
-			render: (
-				_: any,
-				{ periodStartTime, periodEndTime }: ICustLotteryTicketData
-			) => {
+			render: ({ periodStartTime, periodEndTime }: ICustLotteryTicketData) => {
 				const hasTime = periodStartTime && periodEndTime
 				const startDate = dayjs(periodStartTime)
 					.utcOffset(timeZoneUtcOffset)
@@ -74,10 +70,9 @@ const LotteryTicketReportTable: FC<ILotteryTicketReportTableProps> = ({
 		{
 			title: t('Label_ReceivedTime'),
 			key: 'sticker',
-			dataIndex: 'stickerName',
 			width: 100,
 			align: 'center' as 'center',
-			render: (_: any, { receivedTime }: ICustLotteryTicketData) => {
+			render: ({ receivedTime }: ICustLotteryTicketData) => {
 				return receivedTime
 					? dayjs(receivedTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '-'
