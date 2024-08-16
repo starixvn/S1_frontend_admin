@@ -10,11 +10,7 @@ import {
 } from 'common/service/allDataApi'
 import { useAppSelector } from 'app/store'
 import { useTranslation } from 'react-i18next'
-import {
-	selectCurrencyIdsBySiteIds,
-	selectUserSite,
-	selectUserSiteList,
-} from 'common/enum'
+import { selectCurrencyIdsBySiteIds, selectUserSiteList } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { AffixButtons } from 'components/AffixButtons'
 import {
@@ -45,7 +41,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const userSiteList = useAppSelector(selectUserSiteList)
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [filterForm] = Form.useForm<IFilterForm>()
 
 	const watchSiteIds = Form.useWatch('siteIds', filterForm)
@@ -97,7 +92,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => {
-		if (!siteId) return
 		const { dateRange, transId, bonusCode, userName, ...args } =
 			await filterForm.validateFields()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -145,8 +139,6 @@ const BonusReport = ({ pageTitle }: IBonusReportProps) => {
 	}
 
 	const handleExport = async () => {
-		if (!siteId) return
-
 		const {
 			currencyIds = [],
 			siteIds = [],

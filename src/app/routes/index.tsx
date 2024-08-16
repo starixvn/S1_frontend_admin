@@ -1008,6 +1008,13 @@ const Iovation = lazy(
 	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
 )
 
+const FpsDeviceReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'FpsDeviceReport' */ 'features/fpsDeviceReport/FpsDeviceReport'
+		)
+)
+
 const GameExclusion = lazy(
 	() =>
 		import(
@@ -2684,6 +2691,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
 						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.fpsDeviceReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.fpsDeviceReport.functionId}>
+						<FpsDeviceReport />
 					</AuthRequire>
 				),
 			},

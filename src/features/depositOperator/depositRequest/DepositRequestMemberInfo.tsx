@@ -4,7 +4,6 @@ import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/depositOperator/depositRequest/hooks/useMemberInfo'
 import {
 	ActStatusEnum,
-	DEVICE_ALLOW_STATUS_DISPLAY_KEYS,
 	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
@@ -43,11 +42,13 @@ const DepositRequestMemberInfo = ({
 		emailVerified,
 		mailWalletAmount,
 		eligibleWithdrawal,
-		newestDeviceScore: { risk = '', score = null } = {},
+		// 2024.08.21 Member Info 顯示 Iovation Status 改成顯示 Fps Risk Level，先註解
+		// newestDeviceScore: { risk = '', score = null } = {},
+		newestFpsDevice: { riskLevel = '' } = {},
 		tagList = [],
 	} = memberInfo ?? {}
 
-	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
+	// const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 
 	return (
 		<Spin spinning={loading}>
@@ -102,10 +103,10 @@ const DepositRequestMemberInfo = ({
 					{numberFormatter.format(eligibleWithdrawal || 0)}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_DeviceScore')}>
-					{risk && score ? `${risk}(${score})` : '-'}
+					-{/* {risk && score ? `${risk}(${score})` : '-'} */}
 				</Descriptions.Item>
-				<Descriptions.Item label={t('Label_IovationStatus')}>
-					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
+				<Descriptions.Item label={t('Label_RiskLevel')}>
+					{riskLevel || '-'}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Tag')}>
 					{tagList.length > 0
