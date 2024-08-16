@@ -495,6 +495,14 @@ const paths = {
 				root: 'report/bigWinPopUpReport',
 				functionId: 153,
 			},
+			lotteryTicketReport: {
+				root: 'report/lotteryTicketReport',
+				functionId: 160,
+			},
+			lotteryStickerReport: {
+				root: 'report/lotteryStickerReport',
+				functionId: 161,
+			},
 		},
 	},
 	member: {

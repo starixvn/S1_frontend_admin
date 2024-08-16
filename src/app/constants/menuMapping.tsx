@@ -1114,4 +1114,18 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.event.sub.lotteryEvent.sub.eventRestrictionList.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.lotteryTicketReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.lotteryTicketReport.root,
+		allSiteMode: true,
+	},
+	{
+		icon: null,
+		functionId: paths.report.sub.lotteryStickerReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.lotteryStickerReport.root,
+		allSiteMode: true,
+	},
 ]

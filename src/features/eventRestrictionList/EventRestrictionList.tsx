@@ -9,7 +9,8 @@ import { AffixButtons } from 'components/AffixButtons'
 import EventRestrictionListFilter from 'features/eventRestrictionList/EventRestrictionListFilter'
 import EventRestrictionListTable from 'features/eventRestrictionList/EventRestrictionListTable'
 import AddEventRestrictionModal from 'features/eventRestrictionList/AddEventRestrictionModal'
-import {
+
+import type {
 	IFilterForm,
 	IAddForm,
 	IDelEventRestrictionArgs,

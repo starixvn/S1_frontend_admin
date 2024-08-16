@@ -1,5 +1,5 @@
 import { rootApi } from 'common/service/rootApi/api'
-import {
+import type {
 	IGetEventRestrictionListArgs,
 	ISetEventRestrictionArgs,
 	IDelEventRestrictionArgs,
