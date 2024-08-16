@@ -327,6 +327,15 @@ export interface IGetDeviceData {
 	deviceType: string
 }
 
+export interface IGetFpsDeviceData {
+	deviceId: string
+	riskLevel: string
+	frequency: number
+	associateCount: number
+	lastUpdateTime: string
+	deviceType: string
+}
+
 export interface IGetFinancialLogArgs {
 	pageNumber: number
 	pageSize: number

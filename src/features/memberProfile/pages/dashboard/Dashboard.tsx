@@ -26,6 +26,8 @@ import {
 	useGetWinLossInfoQuery,
 	useLazyGetIpUserQuery,
 	useLazyGetDeviceUserListQuery,
+	useGetFpsDeviceListQuery,
+	useLazyGetFpsDeviceUserListQuery,
 } from 'features/memberProfile/api'
 import { numFormatToDigits } from 'common/utils/format'
 import { useTimeZone } from 'components/TimeZoneSelect'
@@ -47,6 +49,7 @@ import TodayInfoDescriptions from './TodayInfoDescriptions'
 import TpWalletDescriptions from './TpWalletDescriptions'
 import BonusWalletDescriptions from './BonusWalletDescriptions'
 import WinLossInfoDescriptions from './WinLossInfoDescriptions'
+import FpsDeviceListTable from './FpsDeviceListTable'
 
 const { Text } = Typography
 
@@ -61,6 +64,8 @@ const Dashboard = () => {
 	const ipUserListModal = useModal()
 	// deviceList 關聯彈窗
 	const deviceUserModal = useModal()
+	// fpsDeviceList 關聯彈窗
+	const fpsDeviceUserModal = useModal()
 
 	const { data: typeList = [], isLoading: isGetTypeListLoading } =
 		useGetEnumTypeQuery(
@@ -119,6 +124,11 @@ const Dashboard = () => {
 		isFetching: isGetDeviceListFetching,
 	} = useGetDeviceListQuery({ custId })
 
+	const {
+		data: { data: fpsDeviceList } = {},
+		isFetching: isGetFpsDeviceListFetching,
+	} = useGetFpsDeviceListQuery({ custId })
+
 	// 取得 IP 關聯 User
 	const [
 		getIpUser,
@@ -136,6 +146,15 @@ const Dashboard = () => {
 			isFetching: isGetDeviceUserLoading,
 		},
 	] = useLazyGetDeviceUserListQuery()
+
+	// 取得 Fps Device 關聯 User
+	const [
+		getFpsDeviceUserList,
+		{
+			data: { data: fpsDeviceUserList = [] } = {},
+			isFetching: isGetFpsDeviceUserLoading,
+		},
+	] = useLazyGetFpsDeviceUserListQuery()
 
 	const [
 		getFinancialLogs,
@@ -206,6 +225,19 @@ const Dashboard = () => {
 		if (!custId) return
 		try {
 			await getDeviceUserList({ custId, deviceId }).unwrap()
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	// 顯示 Fps Device 關聯帳號彈窗
+	const handleFpsAccountClick = async (deviceId: string) => {
+		fpsDeviceUserModal.onOpen()
+		if (!custId) return
+		try {
+			await getFpsDeviceUserList({ custId, deviceId }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -431,6 +463,15 @@ const Dashboard = () => {
 							onAccountClick={handleAccountClick}
 						/>
 					</Col>
+
+					<Col lg={12} md={12} xs={12}>
+						<FpsDeviceListTable
+							loading={isGetFpsDeviceListFetching}
+							fpsDeviceList={fpsDeviceList ?? []}
+							timeZoneUtcOffset={timeZoneUtcOffset}
+							onAccountClick={handleFpsAccountClick}
+						/>
+					</Col>
 				</Row>
 			</LayoutContent.Card>
 			{/* IP User */}
@@ -446,6 +487,13 @@ const Dashboard = () => {
 				userList={deviceUserList}
 				visible={deviceUserModal.visible}
 				onCancel={deviceUserModal.onCancel}
+			/>
+			{/* FPS Device User */}
+			<UserListModal
+				loading={isGetFpsDeviceUserLoading}
+				userList={fpsDeviceUserList}
+				visible={fpsDeviceUserModal.visible}
+				onCancel={fpsDeviceUserModal.onCancel}
 			/>
 
 			<br />

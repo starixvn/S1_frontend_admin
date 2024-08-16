@@ -112,6 +112,7 @@ import {
 	ICustTpGameTypeSettingResponse,
 	IGetNewReferralHistoryArgs,
 	IGetNewReferralHistoryResponse,
+	IGetFpsDeviceData,
 } from 'features/memberProfile/type'
 
 export const memberProfileApi = createApi({
@@ -332,6 +333,16 @@ export const memberProfileApi = createApi({
 		>({
 			query: data => ({
 				url: 'Member/GetDeviceList',
+				method: 'POST',
+				data,
+			}),
+		}),
+		getFpsDeviceList: builder.query<
+			IAxiosResponse<IGetFpsDeviceData[]>,
+			ICustIdInterface
+		>({
+			query: data => ({
+				url: 'Member/GetFPSDeviceList',
 				method: 'POST',
 				data,
 			}),
@@ -817,6 +828,16 @@ export const memberProfileApi = createApi({
 				data,
 			}),
 		}),
+		getFpsDeviceUserList: builder.query<
+			IGetIpUserListResponse,
+			IGetDeviceUserListArgs
+		>({
+			query: data => ({
+				url: 'Block/GetFPSDeviceUserList',
+				method: 'POST',
+				data,
+			}),
+		}),
 		getDepositInfo: builder.query<IGetDepositInfoResponse, IGetDepositInfoArgs>(
 			{
 				query: data => ({
@@ -1183,6 +1204,7 @@ export const {
 	useLazyGetFinancialLogsQuery,
 	useGetIpCountListQuery,
 	useGetDeviceListQuery,
+	useGetFpsDeviceListQuery,
 	useEditFullNameMutation,
 	useEditEmailNameMutation,
 	useEditPhoneNoMutation,
@@ -1228,6 +1250,7 @@ export const {
 	useLazyGetRewardPointLogQuery,
 	useLazyGetPromotionReportQuery,
 	useLazyGetDeviceUserListQuery,
+	useLazyGetFpsDeviceUserListQuery,
 	useCancelPromotionMutation,
 	useGetThirdPartyAccountQuery,
 	useLazyGetGameTypeListQuery,

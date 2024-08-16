@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import { TimeRangePickerProps } from 'antd'
 
 dayjs.extend(utc)
 
@@ -46,4 +47,19 @@ export const RANGE_PICKER_RANGES = (timeFrames: TimeFrame[]) => {
 	})
 
 	return ranges
+}
+
+export const RANGE_PICKER_PRESETS = (timeFrames: TimeFrame[]) => {
+	const rangePresets: TimeRangePickerProps['presets'] = []
+
+	Object.entries(DATE_RANGES).forEach(([key, range]) => {
+		if (timeFrames.some(timeFrame => timeFrame === key)) {
+			rangePresets.push({
+				label: key,
+				value: range,
+			})
+		}
+	})
+
+	return rangePresets
 }

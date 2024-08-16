@@ -923,6 +923,13 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
+		functionId: paths.member.sub.fpsDeviceReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.member.sub.fpsDeviceReport.root,
+		allSiteMode: true,
+	},
+	{
+		icon: null,
 		functionId: paths.customerSupport.sub.batchMemberInfoReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.customerSupport.sub.batchMemberInfoReport.root,
