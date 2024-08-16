@@ -6,7 +6,7 @@ import {
 	ISettingRiskPermissions,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
-	LockAccountTypeEnum,
+	AccountStatusEnum,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -54,8 +54,11 @@ const SettingRiskCard = ({
 	const lockAccountButton = () => {
 		return (
 			<>
-				{(status === LockAccountTypeEnum.Suspend ||
-					status === LockAccountTypeEnum.Locked) && (
+				{(status === AccountStatusEnum.Suspend ||
+					status === AccountStatusEnum.Locked ||
+					status === AccountStatusEnum.OneWeek ||
+					status === AccountStatusEnum.OneMonth ||
+					status === AccountStatusEnum.ThreeMonths) && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
@@ -68,7 +71,7 @@ const SettingRiskCard = ({
 					</p>
 				)}
 
-				{status === LockAccountTypeEnum.Running && (
+				{status === AccountStatusEnum.Running && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
