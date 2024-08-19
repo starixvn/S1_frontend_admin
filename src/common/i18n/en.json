@@ -1318,5 +1318,6 @@
 	"Label_Qr_Pay": "QR Pay",
 	"Label_One_Week": "1 Week",
 	"Label_One_Month": "1 Month",
-	"Label_Freeze": "Freeze"
+	"Label_Freeze": "Freeze",
+	"Label_Has_Receipt": "Has Receipt"
 }

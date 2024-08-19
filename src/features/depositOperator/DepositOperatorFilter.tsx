@@ -386,6 +386,18 @@ const DepositOperatorFilter = ({
 											))}
 										</MultipleSelect>
 									</Form.Item>
+									<Form.Item
+										initialValue={false}
+										name='hasReceipt'
+										valuePropName='checked'
+										style={{
+											position: 'absolute',
+											right: '0',
+											top: '-5px',
+										}}
+									>
+										<Checkbox>{t('Label_Has_Receipt')}</Checkbox>
+									</Form.Item>
 								</Col>
 
 								<Col lg={6} md={12} xs={12}>
