@@ -1304,5 +1304,6 @@
 	"Label_HeaderManagement_Tour_StatusModal_Description": "Select the category to see products status.",
 	"Label_HeaderManagement_Tour_StatusTable_Title": "Status Table",
 	"Label_HeaderManagement_Tour_StatusTable_Description": "Check and edit the product status.",
-	"Label_Begin_Tour": "Begin Tour"
+	"Label_Begin_Tour": "Begin Tour",
+	"Label_Has_Receipt": "Has Receipt"
 }
