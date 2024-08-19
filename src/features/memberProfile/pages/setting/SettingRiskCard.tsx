@@ -1,6 +1,7 @@
 import { Card, Col, Popconfirm, Row, Switch, Typography } from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { multiEqual } from 'common/utils'
 import {
 	IGetBasicInfoData,
 	ISettingRiskPermissions,
@@ -54,11 +55,13 @@ const SettingRiskCard = ({
 	const lockAccountButton = () => {
 		return (
 			<>
-				{(status === AccountStatusEnum.Suspend ||
-					status === AccountStatusEnum.Locked ||
-					status === AccountStatusEnum.OneWeek ||
-					status === AccountStatusEnum.OneMonth ||
-					status === AccountStatusEnum.ThreeMonths) && (
+				{multiEqual(status, [
+					AccountStatusEnum.Suspend,
+					AccountStatusEnum.Locked,
+					AccountStatusEnum.OneWeek,
+					AccountStatusEnum.OneMonth,
+					AccountStatusEnum.ThreeMonths,
+				]) && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
