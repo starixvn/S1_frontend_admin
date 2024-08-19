@@ -1,4 +1,5 @@
 import {
+	AccountStatusEnum,
 	AllDepositStatusEnum,
 	AllWithdrawalStatusEnum,
 } from 'features/memberProfile/type'
@@ -9,30 +10,34 @@ export enum ActStatusEnum {
 	Active,
 }
 
-export enum StatusEnum {
-	// 帳號狀態
-	Running = 1,
-	Suspend,
-	Closed,
-	Lock,
-}
-
 export const statusList: Array<{ value: number; displayName: string }> = [
 	{
-		value: StatusEnum.Running,
+		value: AccountStatusEnum.Running,
 		displayName: 'Label_Running',
 	},
 	{
-		value: StatusEnum.Suspend,
+		value: AccountStatusEnum.Suspend,
 		displayName: 'Label_Suspend',
 	},
 	{
-		value: StatusEnum.Closed,
+		value: AccountStatusEnum.Closed,
 		displayName: 'Label_Closed',
 	},
 	{
-		value: StatusEnum.Lock,
+		value: AccountStatusEnum.Locked,
 		displayName: 'Label_Lock',
+	},
+	{
+		value: AccountStatusEnum.OneWeek,
+		displayName: 'Label_Freeze',
+	},
+	{
+		value: AccountStatusEnum.OneMonth,
+		displayName: 'Label_Freeze',
+	},
+	{
+		value: AccountStatusEnum.ThreeMonths,
+		displayName: 'Label_Freeze',
 	},
 ]
 
@@ -299,3 +304,10 @@ export enum CustTpGameTypeSettingEnum {
 	IsShow = 11,
 	IsPlay = 21,
 }
+
+export const suspendTypeList: Array<{ value: number; displayName: string }> = [
+	{ value: AccountStatusEnum.OneWeek, displayName: 'Label_One_Week' },
+	{ value: AccountStatusEnum.OneMonth, displayName: 'Label_One_Month' },
+	{ value: AccountStatusEnum.ThreeMonths, displayName: 'Label_3Months' },
+	{ value: AccountStatusEnum.Suspend, displayName: 'Label_Suspend' },
+]

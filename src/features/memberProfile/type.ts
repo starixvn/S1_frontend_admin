@@ -59,7 +59,7 @@ export interface IGetBasicInfoData {
 	actStatus: number
 	isLineBinding: boolean
 	custLineProfile: ICustLineProfile
-	status: LockAccountTypeEnum
+	status: AccountStatusEnum
 	enableRebate: number
 	depositPointLevel: number
 	currency: string
@@ -365,11 +365,14 @@ export enum SettingEditTypeEnum {
 	KickOutUser = 'KickOutUser',
 }
 
-export enum LockAccountTypeEnum {
+export enum AccountStatusEnum {
 	Running = 1,
 	Suspend,
 	Closed,
 	Locked,
+	OneWeek = 97,
+	OneMonth,
+	ThreeMonths,
 }
 
 export enum SettingSwitchTypeEnum {
@@ -392,6 +395,7 @@ export interface ISettingForm {
 	email: string
 	phoneNo: string
 	birthDay: Dayjs
+	status: number
 	reason: string
 	address: {
 		country: string
