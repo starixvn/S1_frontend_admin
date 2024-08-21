@@ -528,13 +528,17 @@ const paths = {
 				root: 'member/shieldTaggingReport',
 				functionId: 137,
 			},
-			vipReview: {
-				root: 'member/vipReview',
-				functionId: 50,
-			},
 			iovation: {
 				root: 'member/iovation',
 				functionId: 138,
+			},
+			fpsDeviceReport: {
+				root: 'member/fpsDeviceReport',
+				functionId: 162,
+			},
+			vipReview: {
+				root: 'member/vipReview',
+				functionId: 50,
 			},
 		},
 	},

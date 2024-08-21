@@ -939,33 +939,16 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
+		functionId: paths.member.sub.fpsDeviceReport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
-	},
-	{
-		icon: null,
-		functionId: paths.risk.sub.blockCryptoWallet.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.risk.sub.blockCryptoWallet.root,
+		newAdminPath: paths.member.sub.fpsDeviceReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
 		functionId: paths.customerSupport.sub.batchMemberInfoReport.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.customerSupport.sub.batchMemberInfoReport.root,
-	},
-	{
-		icon: null,
-		functionId: paths.customerSupport.sub.batchMemberInfoReport.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.customerSupport.sub.batchMemberInfoReport.root,
-	},
-	{
-		icon: null,
-		functionId: paths.risk.sub.blockCryptoWallet.functionId,
-		pathMode: 'NewAdmin',
-		newAdminPath: paths.risk.sub.blockCryptoWallet.root,
 	},
 	{
 		icon: null,

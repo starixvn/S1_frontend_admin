@@ -792,8 +792,10 @@
 	"Label_Info": "Info",
 	"Label_Marketing": "Marketing",
 	"Label_Risk": "Risk",
+	"Label_RiskLevel": "Risk Level",
 	"Label_DeviceID": "Device ID",
 	"Label_Frequency": "Frequency",
+	"Label_AssociateDevices": "Associate Devices",
 	"Label_AssociateAccount": "Associate account",
 	"Label_PromotionCategory": "Promotion Category",
 	"Label_RefTransId": "Ref TransID",
@@ -1317,5 +1319,8 @@
 	"Label_One_Week": "1 Week",
 	"Label_One_Month": "1 Month",
 	"Label_Freeze": "Freeze",
-	"Label_Has_Receipt": "Has Receipt"
+	"Label_Has_Receipt": "Has Receipt",
+	"Label_Browser": "Browser",
+	"Label_IpAddress": "IP Address",
+	"Label_RobotTracking": "Robot Tracking"
 }

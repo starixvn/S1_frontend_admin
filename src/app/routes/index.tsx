@@ -935,10 +935,6 @@ const WithdrawalPaymentReport = lazy(
 		)
 )
 
-const Iovation = lazy(
-	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
-)
-
 const SmsGenerator = lazy(
 	() =>
 		import(
@@ -989,38 +985,9 @@ const ProductMaintenance = lazy(
 		)
 )
 
-const BetLimit = lazy(
-	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
-)
-
-const VideoManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
-		)
-)
-
-const NewsManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
-		)
-)
-
-const FailBet = lazy(
-	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
-)
-
 const VipReview = lazy(
 	() =>
 		import(/* webpackChunkName: 'VipReview' */ 'features/vipReview/VipReview')
-)
-
-const Announcement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
-		)
 )
 
 const ModifyPaymentFeeLog = lazy(
@@ -1030,10 +997,21 @@ const ModifyPaymentFeeLog = lazy(
 		)
 )
 
-const PendingBonus = lazy(
+const VideoManagement = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'PendingBonus' */ 'features/pendingBonus/PendingBonus'
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
+const FpsDeviceReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'FpsDeviceReport' */ 'features/fpsDeviceReport/FpsDeviceReport'
 		)
 )
 
@@ -1048,6 +1026,35 @@ const EditGameExclusion = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
+		)
+)
+
+const BetLimit = lazy(
+	() => import(/* webpackChunkName: 'BetLimit' */ 'features/betLimit/BetLimit')
+)
+
+const NewsManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'NewsManagement' */ 'features/newsManagement/NewsManagement'
+		)
+)
+
+const FailBet = lazy(
+	() => import(/* webpackChunkName: 'FailBet' */ 'features/failBet/FailBet')
+)
+
+const PendingBonus = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PendingBonus' */ 'features/pendingBonus/PendingBonus'
+		)
+)
+
+const Announcement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'Announcement' */ 'features/announcement/Announcement'
 		)
 )
 
@@ -1077,16 +1084,17 @@ const BlockCryptoWallet = lazy(
 		)
 )
 
-const LeaderboardExtraPoint = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'LeaderboardExtraPoint' */ 'features/leaderboardExtraPoint/LeaderboardExtraPoint'
-		)
-)
 const LeaderboardReport = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'LeaderboardReport' */ 'features/leaderboardReport/LeaderboardReport'
+		)
+)
+
+const LeaderboardExtraPoint = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'LeaderboardExtraPoint' */ 'features/leaderboardExtraPoint/LeaderboardExtraPoint'
 		)
 )
 
@@ -2704,6 +2712,14 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
 						<Iovation />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.fpsDeviceReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.fpsDeviceReport.functionId}>
+						<FpsDeviceReport />
 					</AuthRequire>
 				),
 			},
