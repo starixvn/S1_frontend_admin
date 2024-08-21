@@ -495,6 +495,14 @@ const paths = {
 				root: 'report/bigWinPopUpReport',
 				functionId: 153,
 			},
+			lotteryTicketReport: {
+				root: 'report/lotteryTicketReport',
+				functionId: 160,
+			},
+			lotteryStickerReport: {
+				root: 'report/lotteryStickerReport',
+				functionId: 161,
+			},
 		},
 	},
 	member: {
@@ -781,6 +789,20 @@ const paths = {
 			leaderboardManagement: {
 				root: 'cms/leaderboardManagement',
 				functionId: 151,
+			},
+		},
+	},
+	event: {
+		root: 'event',
+		sub: {
+			lotteryEvent: {
+				root: 'event/lotteryEvent',
+				sub: {
+					eventManagement: {
+						root: 'event/lotteryEvent/eventManagement',
+						functionId: 158,
+					},
+				},
 			},
 		},
 	},

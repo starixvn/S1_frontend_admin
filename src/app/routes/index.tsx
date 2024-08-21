@@ -1168,6 +1168,13 @@ const HeaderManagement = lazy(
 		)
 )
 
+const EventManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EventManagement' */ 'features/eventManagement/EventManagement'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2900,6 +2907,18 @@ const routes: RouteObject[] = [
 						functionId={paths.productManagement.sub.headerManagement.functionId}
 					>
 						<HeaderManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.event.sub.lotteryEvent.sub.eventManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.event.sub.lotteryEvent.sub.eventManagement.functionId
+						}
+					>
+						<EventManagement />
 					</AuthRequire>
 				),
 			},

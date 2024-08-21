@@ -10,6 +10,7 @@ import {
 	ShoppingCartOutlined,
 	TransactionOutlined,
 	UserSwitchOutlined,
+	CalendarOutlined,
 } from '@ant-design/icons'
 import { NEW_SITE_PREFIX_URL, OLD_SITE_PREFIX_URL } from 'app/config'
 import { CSSProperties } from 'react'
@@ -24,18 +25,23 @@ interface ModuleIconInterface {
 	[moduleId: number]: JSX.Element
 }
 
+/**
+ * 側邊欄 icon 設置，使用 antd 的 icons
+ * @key moduleId ( 由 GetUserMenu api 取得 ) 需要設置 icon 的 module
+ * @value antd 的 icons */
 export const MODULE_ICON_MAPPING: ModuleIconInterface = {
-	2: <UserSwitchOutlined style={iconStyle} />,
-	3: <BankOutlined style={iconStyle} />,
-	4: <ShopOutlined style={iconStyle} />,
-	5: <EditOutlined style={iconStyle} />,
-	6: <ExclamationCircleOutlined style={iconStyle} />,
-	7: <BarChartOutlined style={iconStyle} />,
+	2: <UserSwitchOutlined style={iconStyle} />, // Customer Support
+	3: <BankOutlined style={iconStyle} />, // Finance
+	4: <ShopOutlined style={iconStyle} />, // Marketing
+	5: <EditOutlined style={iconStyle} />, // CMS
+	6: <ExclamationCircleOutlined style={iconStyle} />, // Member
+	7: <BarChartOutlined style={iconStyle} />, // Report
 	8: <TransactionOutlined style={iconStyle} />,
-	9: <RiUserSettingsLine style={iconStyle} />,
-	19: <ControlOutlined style={iconStyle} />,
-	102: <ShoppingCartOutlined style={iconStyle} />,
-	128: <SettingOutlined style={iconStyle} />,
+	9: <RiUserSettingsLine style={iconStyle} />, // Administration
+	19: <ControlOutlined style={iconStyle} />, // Product Management
+	102: <ShoppingCartOutlined style={iconStyle} />, // Reward Program
+	128: <SettingOutlined style={iconStyle} />, // System Setting
+	156: <CalendarOutlined style={iconStyle} />, // Event
 }
 
 /**
@@ -1028,5 +1034,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId: paths.productManagement.sub.headerManagement.functionId,
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.productManagement.sub.headerManagement.root,
+	},
+	{
+		icon: null,
+		functionId: paths.event.sub.lotteryEvent.sub.eventManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.event.sub.lotteryEvent.sub.eventManagement.root,
 	},
 ]
