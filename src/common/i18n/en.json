@@ -705,6 +705,7 @@
 	"Label_LastStatusUpdateTime": "Last Status Update Time",
 	"Label_IsTest": "Is Test",
 	"Label_FullName": "Full Name",
+	"Label_VerifyEmail": "Verify Email",
 	"Label_LoginIp": "Login IP",
 	"Label_Location": "Location",
 	"Label_FromUrl": "From Url",

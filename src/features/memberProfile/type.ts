@@ -390,7 +390,11 @@ export enum SettingCustPromotionWitheListEnum {
 export interface ISettingForm {
 	fullName: string
 	email: string
+	maskEmail?: string
+	verifyemail?: string
 	phoneNo: string
+	maskPhoneNo?: string
+	verifyPhoneNo?: string
 	birthDay: Dayjs
 	reason: string
 	address: {

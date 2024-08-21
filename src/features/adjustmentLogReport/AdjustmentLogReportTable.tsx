@@ -2,8 +2,9 @@ import { isArray, isBoolean, isNumber, isString } from 'lodash'
 import dayjs from 'dayjs'
 import { Table, TablePaginationConfig, Tag } from 'antd'
 import styled from 'styled-components'
+import { maskEmail, maskPhoneNumber } from 'common/utils/maskUtils'
 import { LayoutContent } from 'app/pages/layout'
-import { PaginationInterface } from 'common/hooks'
+import { PaginationInterface, useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { ILogReportData } from './type'
 
@@ -11,38 +12,6 @@ const StaticTitle = styled.span`
 	color: rgba(0, 0, 0, 0.45);
 	font-size: 14px;
 `
-
-const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
-	if (isString(item[key]) || isNumber(item[key])) return item[key]
-
-	if (isBoolean(item[key])) {
-		return item[key].toString()
-	}
-
-	if (isArray(item[key]))
-		return (item[key] as any[]).map(detailItem =>
-			Object.keys(detailItem).map(detailItemKey => (
-				<div key={detailItemKey}>
-					{detailItemKey}: {renderDetailItem(detailItem, detailItemKey)}
-				</div>
-			))
-		)
-	return 'null'
-}
-
-const renderDetailContent = (value: any): any => {
-	if (!value) return 'N/A'
-
-	const result = isArray(value) ? [...value] : [value]
-
-	return result.map(item =>
-		Object.keys(item).map((key: string) => (
-			<div key={key} style={{ width: 180 }}>
-				<StaticTitle>{key}:</StaticTitle> {renderDetailItem(item, key)}
-			</div>
-		))
-	)
-}
 
 interface IAdjustmentLogReportTableProp {
 	loading: boolean
@@ -59,7 +28,55 @@ const AdjustmentLogReportTable = ({
 	onTableChange,
 	adjustmentLogReportList,
 }: IAdjustmentLogReportTableProp) => {
+	// ====== hook ======
 	const { t } = useTranslation()
+	const { actionPermissions: { readDetailPermission } = {} } = useAuth()
+
+	// ====== 函數 ======
+
+	const renderDetailItem = (item: { [key: string]: any }, key: any): any => {
+		/** 沒有閱讀權限，隱藏 'Email' 欄位 */
+		const needMaskEmail = !readDetailPermission?.canUse && key === 'Email'
+
+		/** 沒有閱讀權限，隱藏 'PhoneNo' 欄位 */
+		const needMaskPhoneNo = !readDetailPermission?.canUse && key === 'PhoneNo'
+
+		if (isString(item[key]) || isNumber(item[key])) {
+			if (needMaskEmail) return maskEmail(item[key] as string)
+			if (needMaskPhoneNo) return maskPhoneNumber(item[key] as string)
+			return item[key]
+		}
+
+		if (isBoolean(item[key])) {
+			return item[key].toString()
+		}
+
+		if (isArray(item[key]))
+			return (item[key] as any[]).map(detailItem =>
+				Object.keys(detailItem).map(detailItemKey => (
+					<div key={detailItemKey}>
+						{detailItemKey}: {renderDetailItem(detailItem, detailItemKey)}
+					</div>
+				))
+			)
+		return 'null'
+	}
+
+	const renderDetailContent = (value: any): any => {
+		if (!value) return 'N/A'
+
+		const result = isArray(value) ? [...value] : [value]
+
+		return result.map(item =>
+			Object.keys(item).map((key: string) => (
+				<div key={key} style={{ width: 180 }}>
+					<StaticTitle>{key}:</StaticTitle> {renderDetailItem(item, key)}
+				</div>
+			))
+		)
+	}
+
+	// ====== columns ======
 
 	const columns = [
 		{

@@ -355,6 +355,7 @@ export const memberProfileApi = createApi({
 			{
 				custId: number
 				email: string
+				verifyemail?: string
 			}
 		>({
 			query: data => ({

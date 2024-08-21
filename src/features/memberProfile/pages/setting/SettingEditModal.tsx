@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
+import { maskPhoneNumber, maskEmail } from 'common/utils'
 import { DatePicker, Form, Input, Modal } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
+import { PermissionInterface } from 'type'
 import { ModalState } from 'common/hooks'
 import { ISettingForm, SettingEditTypeEnum } from 'features/memberProfile/type'
 import { includes } from 'lodash'
@@ -11,6 +14,7 @@ interface ISettingEditModalProps {
 	isEditModalOpen: boolean
 	editType: SettingEditTypeEnum | undefined
 	editModal: ModalState
+	readDetailPermission?: PermissionInterface
 	form: FormInstance<ISettingForm>
 	onEditModalSubmit: () => void
 }
@@ -21,6 +25,7 @@ const SettingEditModal = ({
 	editType,
 	editModal: { onCancel },
 	form,
+	readDetailPermission,
 	onEditModalSubmit,
 }: ISettingEditModalProps) => {
 	const { t } = useTranslation()
@@ -31,6 +36,27 @@ const SettingEditModal = ({
 		!includes(value, ' ')
 			? Promise.resolve()
 			: Promise.reject(new Error(t('Label_NoSpacesAllowed')))
+
+	/** 是否有閱讀權限 */
+	const canReadDetail = readDetailPermission?.canUse
+
+	/**
+	 *  如果當前的權限可以閱讀，則將 verifyemail / verifyPhoneNo 存空字串進 form，
+	 *  並當使用者編輯 email 跟 phone 時，使用未打碼的 email 跟 phone ;
+	 *
+	 *  如果當前的權限不可以閱讀，則將 maskEmail / maskPhoneNo 打碼存進 form，
+	 *  並當使用者編輯 email 跟 phone 時，使用打碼的 email 跟 phone 。 */
+	useEffect(() => {
+		// if (canReadDetail) return
+		console.log(canReadDetail)
+
+		const { email, phoneNo } = form.getFieldsValue(true)
+
+		form.setFieldsValue({
+			maskEmail: maskEmail(email),
+			maskPhoneNo: maskPhoneNumber(phoneNo),
+		})
+	}, [canReadDetail])
 
 	return (
 		<Modal
@@ -73,41 +99,84 @@ const SettingEditModal = ({
 					</Form.Item>
 				)}
 				{editType === SettingEditTypeEnum.Email && (
-					<Form.Item
-						name='email'
-						label={t('Label_Email')}
-						rules={[
-							{
-								required: true,
-								message: t('Label_Required', {
-									key: t('Label_Email'),
-								}),
-							},
-							{ type: 'email', message: ' ' },
-						]}
-					>
-						<Input />
-					</Form.Item>
+					<>
+						<Form.Item
+							name={false ? 'email' : 'maskEmail'}
+							label={t('Label_Email')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_Email'),
+									}),
+								},
+								{ type: 'email', message: ' ' },
+							]}
+						>
+							<Input disabled/>
+						</Form.Item>
+
+						{true && (
+							<Form.Item
+								name='verifyemail'
+								label={t('Label_VerifyEmail')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_VerifyEmail'),
+										}),
+									},
+									{ type: 'email', message: ' ' },
+								]}
+							>
+								<Input />
+							</Form.Item>
+						)}
+					</>
 				)}
 				{editType === SettingEditTypeEnum.PhoneNo && (
-					<Form.Item
-						name='phoneNo'
-						label={t('Label_PhoneNumber')}
-						rules={[
-							{
-								required: true,
-								message: t('Label_Required', {
-									key: t('Label_PhoneNumber'),
-								}),
-							},
-							{
-								pattern: /^\d+$/,
-								message: t('Label_PhoneNo_Rule'),
-							},
-						]}
-					>
-						<Input type='tel' style={{ width: '100%' }} pattern='[0-9]' />
-					</Form.Item>
+					<>
+						<Form.Item
+							name={false ? 'phoneNo' : 'maskPhoneNo'}
+							label={t('Label_PhoneNumber')}
+							rules={[
+								{
+									required: true,
+									message: t('Label_Required', {
+										key: t('Label_PhoneNumber'),
+									}),
+								},
+								{
+									pattern: /^\d+$/,
+									message: t('Label_PhoneNo_Rule'),
+								},
+							]}
+						>
+							<Input type='tel' style={{ width: '100%' }} pattern='[0-9]' />
+						</Form.Item>
+
+						{true && (
+							<Form.Item
+								name={false ? 'phoneNo' : 'maskPhoneNo'}
+								label={t('Label_PhoneNumber')}
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_PhoneNumber'),
+										}),
+									},
+									{
+										pattern: /^\d+$/,
+										message: t('Label_PhoneNo_Rule'),
+									},
+								]}
+							>
+								<Input type='tel' style={{ width: '100%' }} pattern='[0-9]' />
+							</Form.Item>
+						)}
+					</>
 				)}
 				{editType === SettingEditTypeEnum.Birthday && (
 					<Form.Item

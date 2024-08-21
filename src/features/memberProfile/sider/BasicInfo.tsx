@@ -21,13 +21,15 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import dayjs from 'dayjs'
+import { maskPhoneNumber, maskEmail } from 'common/utils/maskUtils'
+import { useAuth } from 'common/hooks'
 import {
 	ActStatusEnum,
 	identityList,
 	statusList,
 } from 'features/memberProfile/constants'
 import { find } from 'lodash'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PermissionInterface } from 'type'
 
 const { Title, Text } = Typography
@@ -66,7 +68,7 @@ const BasicInfo = ({
 }: IBasicInfoProps) => {
 	const { t } = useTranslation()
 	const { timeZoneUtcOffset } = useTimeZone()
-
+	const { actionPermissions: { readDetailPermission } = {} } = useAuth()
 	const {
 		userName,
 		accountName,
@@ -102,6 +104,32 @@ const BasicInfo = ({
 
 	const { userId: lineUserId, createTime: lineBindingTime } =
 		custLineProfile ?? {}
+
+	// ====== useState ======
+
+	// 如閱讀權限不足，則隱藏電話
+	const [maskedPhoneNumber, setMaskedPhoneNumber] = useState<string | null>(
+		null
+	)
+	// 如閱讀權限不足，則隱藏電子信箱
+	const [maskedEmail, setMaskedEmail] = useState<string | null>(null)
+
+	// ====== useEffect ======
+
+	// 如閱讀權限不足，則隱藏電話與電子信箱
+	useEffect(() => {
+		if (!email || !mobileNumber) return
+
+		if (!readDetailPermission?.canUse) {
+			setMaskedPhoneNumber(maskPhoneNumber(mobileNumber))
+			setMaskedEmail(maskEmail(email))
+		} else {
+			setMaskedPhoneNumber(mobileNumber)
+			setMaskedEmail(email)
+		}
+	}, [email, mobileNumber])
+
+	// ====== 函數 ======
 
 	// 辨識 status 狀態
 	const getStatusName = () => {
@@ -332,12 +360,12 @@ const BasicInfo = ({
 				<Row>
 					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_PhoneNo'
-					)} :\n${mobileNumber}`}</StyledText>
+					)} :\n${maskedPhoneNumber ?? 'N/A'}`}</StyledText>
 				</Row>
 				<Row>
 					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(
 						'Label_Email'
-					)} :\n${email}`}</StyledText>
+					)} :\n${maskedEmail ?? 'N/A'}`}</StyledText>
 				</Row>
 				<Row>
 					<StyledText style={{ whiteSpace: 'pre-wrap' }}>{`${t(

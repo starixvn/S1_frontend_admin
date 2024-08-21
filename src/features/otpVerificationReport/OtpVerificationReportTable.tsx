@@ -5,8 +5,9 @@ import { find } from 'lodash'
 import { Table } from 'components'
 import { LayoutContent } from 'app/pages/layout'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
+import { maskPhoneNumber } from 'common/utils/maskUtils'
 import paths from 'app/constants/paths'
-import { PaginationInterface } from 'common/hooks'
+import { PaginationInterface, useAuth } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { useTranslation } from 'react-i18next'
 import { OTP_STATUS_OPTIONS } from './constants'
@@ -27,7 +28,17 @@ const OtpVerificationReportTable = ({
 	timeZoneUtcOffset,
 	onTableChange,
 }: IOtpVerificationReportTableProps) => {
+	// ====== hook ======
+
 	const { t } = useTranslation()
+	const { actionPermissions: { readDetailPermission } = {} } = useAuth()
+
+	// ====== 常數 ======
+
+	/** 沒有閱讀權限，需要隱藏 'PhoneNo' 欄位 */
+	const needMaskPhoneNumber = !readDetailPermission?.canUse
+
+	// ====== columns ======
 
 	const columns = [
 		{
@@ -60,6 +71,9 @@ const OtpVerificationReportTable = ({
 			dataIndex: 'phoneNo',
 			key: 'phoneNo',
 			align: 'center' as 'center',
+			render: (phoneNo: string) => {
+				return needMaskPhoneNumber ? maskPhoneNumber(phoneNo) : phoneNo
+			},
 		},
 		{
 			title: t('Label_Content'),
