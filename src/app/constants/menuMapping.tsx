@@ -131,10 +131,20 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		functionId:
 			paths.customerSupport.sub.operatorService.sub.otpVerificationReport
 				.functionId,
-		name: 'Live Registration Statistics',
+		name: 'Otp Verification Report',
 		pathMode: 'NewAdmin',
 		newAdminPath:
 			paths.customerSupport.sub.operatorService.sub.otpVerificationReport.root,
+	},
+	{
+		icon: null,
+		functionId:
+			paths.customerSupport.sub.operatorService.sub.surveyQuestionnaire
+				.functionId,
+		name: 'Survey Questionnaire',
+		pathMode: 'NewAdmin',
+		newAdminPath:
+			paths.customerSupport.sub.operatorService.sub.surveyQuestionnaire.root,
 	},
 	{
 		icon: null,
