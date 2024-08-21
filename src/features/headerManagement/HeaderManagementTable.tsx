@@ -127,7 +127,8 @@ const HeaderManagementTable = ({
 				loading={loading}
 				dataSource={headerManagementWithStatusList}
 				columns={columns}
-				pagination={false}
+				// 這裡是用 component 裡的 table，先調整 pageSize 已解決無法 sorting 的問題
+				pagination={{ pageSize: 200 }}
 				components={{
 					body: {
 						wrapper: (wrapper: any) => (
