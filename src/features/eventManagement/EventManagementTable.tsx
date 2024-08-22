@@ -21,6 +21,7 @@ interface IEventManagementTableProps {
 		startDate: string
 		endDate: string
 	}) => void
+	setIsAddModal: (isAddModal: boolean) => void
 	onOpenEventSettingModal: () => void
 }
 
@@ -29,6 +30,7 @@ const EventManagementTable = ({
 	lotteryEventSettingList,
 	timeZoneUtcOffset,
 	form,
+	setIsAddModal,
 	onOpenTicketHistoryModal,
 	onOpenEventSettingModal,
 }: IEventManagementTableProps) => {
@@ -115,6 +117,12 @@ const EventManagementTable = ({
 				endDate,
 				drawDate,
 			}: ILotteryEventSettingData) => {
+				/** 活動已結束 */
+				const lotteryOver =
+					status === LotteryStatusEnum.Done ||
+					status === LotteryStatusEnum.Payout
+
+				const actionLabel = lotteryOver ? t('Label_Detail') : t('Label_Edit')
 				return (
 					<Typography.Link
 						onClick={() => {
@@ -128,10 +136,11 @@ const EventManagementTable = ({
 								endDateISOStr: endDate,
 								drawDateISOStr: drawDate,
 							})
+							setIsAddModal(false)
 							onOpenEventSettingModal()
 						}}
 					>
-						{t('Label_Edit')}
+						{actionLabel}
 					</Typography.Link>
 				)
 			},

@@ -96,7 +96,7 @@ const TicketHistoryModal = ({
 
 	return (
 		<Modal
-			width='60%'
+			width='40%'
 			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>

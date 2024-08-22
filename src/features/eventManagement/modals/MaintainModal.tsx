@@ -15,16 +15,17 @@ import {
 	Button,
 } from 'antd'
 import { RangePickerProps } from 'antd/es/date-picker'
-import { PermissionInterface } from 'type'
 import { dateFormat } from '../../../common/utils/format'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from '../../../app/constants/ranges'
+import {
+	DATE_RANGES,
+	RANGE_PICKER_PRESETS,
+} from '../../../app/constants/ranges'
 
 const { RangePicker } = DatePicker
 
 interface IGlobalStatusModalProps {
 	visible: boolean
 	form: FormInstance
-	editPermission?: PermissionInterface
 	onCancel: () => void
 	onSetMaintain: () => void
 }
@@ -32,7 +33,6 @@ interface IGlobalStatusModalProps {
 const MaintainModal = ({
 	visible,
 	form,
-	editPermission,
 	onCancel,
 	onSetMaintain,
 }: IGlobalStatusModalProps) => {
@@ -47,11 +47,9 @@ const MaintainModal = ({
 		current: dayjs.Dayjs
 	) => current && current.isBefore(dayjs().startOf('day'))
 
-	/**  ======= 常數 ======= */
-
 	return (
 		<Modal
-			width='60%'
+			width='40%'
 			open={visible}
 			title={
 				<div style={{ textAlign: 'center' }}>{t('Label_Maintenance')}</div>
@@ -101,7 +99,7 @@ const MaintainModal = ({
 									>
 										<RangePicker
 											style={{ width: '100%' }}
-											ranges={RANGE_PICKER_RANGES(['Today'])}
+											presets={RANGE_PICKER_PRESETS(['Today'])}
 											format={dateFormat}
 											disabledDate={disabledDate}
 										/>
@@ -126,11 +124,7 @@ const MaintainModal = ({
 								marginTop: 10,
 							}}
 						>
-							<Button
-								htmlType='submit'
-								disabled={!editPermission?.canUse}
-								type='primary'
-							>
+							<Button htmlType='submit' type='primary'>
 								{t('Label_Save')}
 							</Button>
 						</Col>

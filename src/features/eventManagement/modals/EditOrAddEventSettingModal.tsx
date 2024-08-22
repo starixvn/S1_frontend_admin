@@ -18,39 +18,50 @@ import dayjs from 'dayjs'
 import { PermissionInterface } from 'type'
 import { useEffect } from 'react'
 import { dateFormat } from '../../../common/utils/format'
-import type { IEditForm } from '../type'
-import { RANGE_PICKER_RANGES } from '../../../app/constants/ranges'
+import type { IEditOrAddForm } from '../type'
+import {
+	RANGE_PICKER_PRESETS,
+	DATE_RANGES,
+} from '../../../app/constants/ranges'
 import { LotteryStatusEnum } from '../contants'
 
 const { RangePicker } = DatePicker
 const { Title } = Typography
 
-interface IEditEventSettingModalProps {
+interface IEditOrAddEventSettingModalProps {
 	visible: boolean
-	form: FormInstance<IEditForm>
-	editPermission?: PermissionInterface
+	form: FormInstance<IEditOrAddForm>
 	loading: boolean
+	isAddModal: boolean
+	editPermission?: PermissionInterface
+	onAdd: () => void
 	onCancel: () => void
 	onRowSaved: () => void
 }
 
-const EditEventSettingModal = ({
+const EditOrAddEventSettingModal = ({
 	visible,
 	form,
-	editPermission,
 	loading,
+	isAddModal,
+	editPermission,
+	onAdd,
 	onCancel,
 	onRowSaved,
-}: IEditEventSettingModalProps) => {
+}: IEditOrAddEventSettingModalProps) => {
 	/**  ======= hooks ======= */
 
 	const { t } = useTranslation()
 
 	/**  ======= useEffect ======= */
 
-	// 隨著使用者點擊不同筆資料的編輯，初始化時設定此資料的編輯彈窗日期選擇器的範圍（跟表單顯示的日期範圍一樣）
 	useEffect(() => {
-		if (visible) {
+		if (!visible) return
+
+		const todayRange = DATE_RANGES.Today as [dayjs.Dayjs, dayjs.Dayjs]
+
+		// 如果是編輯彈窗，隨著使用者點擊不同筆資料的編輯，初始化時設定此資料的編輯彈窗日期選擇器的範圍（跟表單顯示的日期範圍一樣）
+		if (!isAddModal) {
 			const { status, startDateISOStr, endDateISOStr, drawDateISOStr } =
 				form.getFieldsValue(true)
 
@@ -63,22 +74,37 @@ const EditEventSettingModal = ({
 				dateRange: [dayjs(startDateISOStr), dayjs(endDateISOStr)],
 				drawDate: dayjs(drawDateISOStr),
 			})
+			return
 		}
+
+		// 如果是新增彈窗，就將當天的日期提供給 Report 日期選擇器使用，Draw 日期選擇器要再加一天（不能跟開獎日同天）
+		form.setFieldsValue({
+			dateRange: todayRange,
+			drawDate: todayRange[1].add(1, 'day'),
+		})
 	}, [visible, form])
 
 	/**  ======= 常數 ======= */
 
-	/** 是否暫停此次活動 */
+	/** 權限不足 */
+	const noPermission = !editPermission?.canUse
+
+	/** 活動是否進行中 */
+	const isRunning = form.getFieldValue('status') === LotteryStatusEnum.Running
+
+	/** 活動結束 */
+	const isCompleted =
+		form.getFieldValue('status') === LotteryStatusEnum.Done ||
+		form.getFieldValue('status') === LotteryStatusEnum.Payout
+
+	/** 是否暫停活動 */
 	const isSuspended = Form.useWatch('isSuspend', form)
 
-	const status = form.getFieldValue('status')
+	/** 活動暫停或活動結束，則禁用 DrawDate 日期選擇器 */
+	const shouldDisableDrawDate = Boolean(isSuspended) || isCompleted
 
-	/** 只要活動不是 Running 狀態，就禁用除了 suspend checkbox & form submit btn 以外的選項 */
-	const disabled = status !== LotteryStatusEnum.Running
-
-	/** 活動已結束，禁用 suspend checkbox & form submit btn */
-	const lotteryOver =
-		status === LotteryStatusEnum.Done || status === LotteryStatusEnum.Payout
+	/** 編輯模式下，如果權限不足或活動未進行，則禁用此表單 */
+	const shouldDisableForm = (!isAddModal && !isRunning) || noPermission
 
 	/**  ======= 函數 ======= */
 
@@ -105,9 +131,13 @@ const EditEventSettingModal = ({
 
 	return (
 		<Modal
-			width='60%'
+			width='40%'
 			open={visible}
-			title={<div style={{ textAlign: 'center' }}>{t('Label_Edit')}</div>}
+			title={
+				<div style={{ textAlign: 'center' }}>
+					{t(`${isAddModal ? 'Label_Add' : 'Label_Edit'}`)}
+				</div>
+			}
 			onCancel={onCancel}
 			destroyOnClose
 			footer={false}
@@ -135,7 +165,13 @@ const EditEventSettingModal = ({
 							consolation: mapToInputValue(consolation),
 							small: mapToInputValue(small),
 						})
-						onRowSaved()
+
+						if (isAddModal) {
+							onAdd()
+						} else {
+							onRowSaved()
+						}
+
 						onCancel()
 					}}
 				>
@@ -144,22 +180,13 @@ const EditEventSettingModal = ({
 						<Col lg={14} md={12} xs={12}>
 							<Form.Item label={t('Label_ReportDate')}>
 								<Input.Group compact style={{ width: '100%', display: 'flex' }}>
-									<Form.Item
-										noStyle
-										name='dateRange'
-										rules={[
-											{
-												required: true,
-												message: t('Label_DateRangeRequire'),
-											},
-										]}
-									>
+									<Form.Item noStyle name='dateRange'>
 										<RangePicker
 											style={{ width: '100%' }}
-											ranges={RANGE_PICKER_RANGES(['Today'])}
+											presets={RANGE_PICKER_PRESETS(['Today'])}
 											format={dateFormat}
 											disabledDate={disabledDate}
-											disabled={disabled}
+											disabled={shouldDisableForm}
 										/>
 									</Form.Item>
 								</Input.Group>
@@ -175,7 +202,7 @@ const EditEventSettingModal = ({
 									<Space size='middle'>
 										<Typography.Text>{t('Label_DrawPrize')}</Typography.Text>
 										<Form.Item name='isSuspend' valuePropName='checked' noStyle>
-											<Checkbox disabled={lotteryOver}>
+											<Checkbox disabled={isCompleted || noPermission}>
 												{t('Label_Suspended')}
 											</Checkbox>
 										</Form.Item>
@@ -187,10 +214,6 @@ const EditEventSettingModal = ({
 										noStyle
 										name='drawDate'
 										rules={[
-											{
-												required: Boolean(!isSuspended),
-												message: t('Label_DateRangeRequire'),
-											},
 											{
 												// 開獎日期要在活動結束之後
 												validator: (_, value) => {
@@ -212,7 +235,8 @@ const EditEventSettingModal = ({
 										<DatePicker
 											style={{ width: '100%' }}
 											format={dateFormat}
-											disabled={Boolean(isSuspended) || disabled}
+											// 編輯模式下，使用者勾選停止活動或是非進行中活動，就禁用開獎日期選擇
+											disabled={shouldDisableDrawDate || noPermission}
 											disabledDate={disabledDrawPrizeDate}
 										/>
 									</Form.Item>
@@ -244,21 +268,27 @@ const EditEventSettingModal = ({
 								valuePropName='checked'
 								initialValue={false}
 							>
-								<Checkbox disabled={disabled}>{t('Label_First')}</Checkbox>
+								<Checkbox disabled={shouldDisableForm}>
+									{t('Label_First')}
+								</Checkbox>
 							</Form.Item>
 							<Form.Item
 								name='secondPrize'
 								valuePropName='checked'
 								initialValue={false}
 							>
-								<Checkbox disabled={disabled}>{t('Label_Second')}</Checkbox>
+								<Checkbox disabled={shouldDisableForm}>
+									{t('Label_Second')}
+								</Checkbox>
 							</Form.Item>
 							<Form.Item
 								name='thirdPrize'
 								valuePropName='checked'
 								initialValue={false}
 							>
-								<Checkbox disabled={disabled}>{t('Label_Third')}</Checkbox>
+								<Checkbox disabled={shouldDisableForm}>
+									{t('Label_Third')}
+								</Checkbox>
 							</Form.Item>
 						</Col>
 					</Row>
@@ -267,7 +297,7 @@ const EditEventSettingModal = ({
 					<Row align='middle' justify='center' gutter={16}>
 						<Col lg={14} md={12} xs={12}>
 							<Form.Item name='consolation' label={t('Label_Consolation')}>
-								<InputNumber disabled={disabled} />
+								<InputNumber disabled={shouldDisableForm} />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -276,7 +306,7 @@ const EditEventSettingModal = ({
 					<Row align='middle' justify='center' gutter={16}>
 						<Col lg={14} md={12} xs={12}>
 							<Form.Item name='small' label={t('Label_Small')}>
-								<InputNumber disabled={disabled} />
+								<InputNumber disabled={shouldDisableForm} />
 							</Form.Item>
 						</Col>
 					</Row>
@@ -291,7 +321,7 @@ const EditEventSettingModal = ({
 						>
 							<Button
 								loading={loading}
-								disabled={!editPermission?.canUse || lotteryOver}
+								disabled={isCompleted || noPermission}
 								htmlType='submit'
 								type='primary'
 							>
@@ -305,4 +335,4 @@ const EditEventSettingModal = ({
 	)
 }
 
-export { EditEventSettingModal }
+export { EditOrAddEventSettingModal }

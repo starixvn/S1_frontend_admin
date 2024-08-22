@@ -108,7 +108,7 @@ export type TMaintainForm = {
 	isMaintain: boolean
 }
 
-export interface IEditForm {
+export interface IEditOrAddForm {
 	status: number
 	isSuspend: boolean | number
 	dateRange: [Dayjs, Dayjs]
@@ -127,10 +127,6 @@ export interface IEditForm {
 	thirdPrize: number
 	consolation: number
 	small: number
-}
-
-export interface IAddForm extends IAddLotteryEventSettingArgs {
-	dateRange: [Dayjs, Dayjs]
 }
 
 export interface IEditRaffleTicketAndStickerForm {

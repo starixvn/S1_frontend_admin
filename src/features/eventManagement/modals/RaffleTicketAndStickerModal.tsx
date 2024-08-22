@@ -247,6 +247,7 @@ const RaffleTicketAndStickerModal = ({
 					dataSource={raffleTicketStickerSettingList || []}
 					pagination={false}
 					bordered
+					scroll={{ x: 'max-content' }}
 				/>
 			</Form>
 		</Modal>
