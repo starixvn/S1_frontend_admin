@@ -9,15 +9,17 @@ import {
 	FormInstance,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { PermissionInterface } from 'type'
 import { SearchOutlined } from '@ant-design/icons'
 import { LayoutContent } from 'app/pages/layout'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import { dateFormat } from 'common/utils/format'
 import { IFilterForm } from 'features/newsManagement/type'
 
 interface IEventManagementFilterProps {
 	form: FormInstance<IFilterForm>
 	loading: boolean
+	editPermission?: PermissionInterface
 	onSearch: ({
 		current,
 		pageSize,
@@ -38,6 +40,7 @@ const { RangePicker } = DatePicker
 const EventManagementFilter = ({
 	form,
 	loading,
+	editPermission,
 	onSearch,
 	onSetRaffleTicketAndSticker,
 	onOpenMaintain,
@@ -76,7 +79,7 @@ const EventManagementFilter = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												ranges={RANGE_PICKER_RANGES([
+												presets={RANGE_PICKER_PRESETS([
 													'Today',
 													'Yesterday',
 													'Last Week',
@@ -110,7 +113,11 @@ const EventManagementFilter = ({
 							</Col>
 
 							<Col>
-								<Button type='primary' onClick={onOpenMaintain}>
+								<Button
+									type='primary'
+									disabled={!editPermission?.canUse}
+									onClick={onOpenMaintain}
+								>
 									{t('Label_Maintenance')}
 								</Button>
 							</Col>

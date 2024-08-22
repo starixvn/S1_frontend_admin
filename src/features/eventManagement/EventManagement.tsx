@@ -12,7 +12,6 @@ import { selectUserSite } from 'common/enum'
 import { dateRangeToUtcFormatter } from 'common/utils'
 import { EventManagementFilter } from './EventManagementFilter'
 import { EventManagementTable } from './EventManagementTable'
-import { AddEventSettingModal } from './modals/AddEventSettingModal'
 import { RaffleTicketAndStickerModal } from './modals/RaffleTicketAndStickerModal'
 import { TicketHistoryModal } from './modals/TicketHistoryModal'
 import { MaintainModal } from './modals/MaintainModal'
@@ -24,13 +23,12 @@ import {
 } from './api'
 import type {
 	TFilterForm,
-	IEditForm,
+	IEditOrAddForm,
 	TMaintainForm,
 	ISetLotteryEventSettingArgs,
 	IAddLotteryEventSettingArgs,
-	IAddForm,
 } from './type'
-import { EditEventSettingModal } from './modals/EditEventSettingModal'
+import { EditOrAddEventSettingModal } from './modals/EditOrAddEventSettingModal'
 
 const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	/**  ======= hooks ======= */
@@ -41,14 +39,12 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 
-	const [editForm] = Form.useForm<IEditForm>()
+	const [editOrAddForm] = Form.useForm<IEditOrAddForm>()
 	const [filterForm] = Form.useForm<TFilterForm>()
 	const [maintainForm] = Form.useForm<TMaintainForm>()
-	const [addForm] = Form.useForm<IAddForm>()
 
 	const raffleTicketAndStickerModal = useModal()
-	const editEventSettingModal = useModal()
-	const addEventSettingModal = useModal()
+	const editOrAddEventSettingModal = useModal()
 	const ticketHistoryModal = useModal()
 	const maintainModal = useModal()
 
@@ -70,13 +66,14 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const [setLotteryMaintain, { isLoading: isSetLotteryMaintainLoading }] =
 		useSetLotteryMaintainMutation()
 
-	const [addLotteryEvent, { isLoading: isAddLotteryEventLoading }] =
+	const [addLotteryEvent, { isLoading: isAddLotteryEventSettingLoading }] =
 		useAddLotteryEventMutation()
 
 	const loading =
 		isGetLotteryEventSettingFetching ||
 		isSetLotteryEventSettingLoading ||
-		isSetLotteryMaintainLoading
+		isSetLotteryMaintainLoading ||
+		isAddLotteryEventSettingLoading
 
 	/**  ======= state ======= */
 
@@ -90,6 +87,8 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		startDate: '',
 		endDate: '',
 	})
+
+	const [isAddModal, setIsAddModal] = useState<boolean>(false)
 
 	/**  ======= 函數 ======= */
 
@@ -156,7 +155,7 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				thirdPrize,
 				consolation,
 				small,
-			} = await editForm.getFieldsValue(true)
+			} = await editOrAddForm.getFieldsValue(true)
 
 			// 將 M2 格式格式化成後端格式 YYYY-MM-DD
 			const [startDate, endDate] = dateRangeToUtcFormatter(dateRange)
@@ -198,7 +197,7 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				thirdPrize,
 				consolation,
 				small,
-			} = await addForm.getFieldsValue(true)
+			} = await editOrAddForm.getFieldsValue(true)
 
 			// 將 M2 格式格式化成後端格式 YYYY-MM-DD
 			const [startDate, endDate] = dateRangeToUtcFormatter(dateRange)
@@ -271,6 +270,7 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				form={filterForm}
 				loading={loading}
 				onSearch={handleSearch}
+				editPermission={editPermission}
 				onSetRaffleTicketAndSticker={raffleTicketAndStickerModal.onOpen}
 				onOpenMaintain={maintainModal.onOpen}
 			/>
@@ -279,9 +279,10 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					lotteryEventSettingList={lotteryEventSettingList}
 					loading={loading}
 					timeZoneUtcOffset={timeZoneUtcOffset}
-					form={editForm}
+					form={editOrAddForm}
+					setIsAddModal={setIsAddModal}
 					onOpenTicketHistoryModal={handlOpenTicketHistoryModal}
-					onOpenEventSettingModal={editEventSettingModal.onOpen}
+					onOpenEventSettingModal={editOrAddEventSettingModal.onOpen}
 				/>
 			)}
 			<RaffleTicketAndStickerModal
@@ -294,27 +295,23 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				onCancel={ticketHistoryModal.onCancel}
 				ticketHistoryParams={ticketHistoryModalParams}
 			/>
-			<EditEventSettingModal
-				visible={editEventSettingModal.visible}
-				onCancel={editEventSettingModal.onCancel}
-				loading={isSetLotteryEventSettingLoading}
-				form={editForm}
-				onRowSaved={handleRowSaved}
+			<EditOrAddEventSettingModal
+				visible={editOrAddEventSettingModal.visible}
+				onCancel={editOrAddEventSettingModal.onCancel}
 				editPermission={editPermission}
-			/>
-			<AddEventSettingModal
-				visible={addEventSettingModal.visible}
-				onCancel={addEventSettingModal.onCancel}
-				loading={isAddLotteryEventLoading}
-				form={addForm}
+				loading={
+					isSetLotteryEventSettingLoading || isAddLotteryEventSettingLoading
+				}
+				form={editOrAddForm}
+				isAddModal={isAddModal}
 				onAdd={handleAdd}
-				editPermission={editPermission}
+				onRowSaved={handleRowSaved}
 			/>
+
 			<MaintainModal
 				visible={maintainModal.visible}
 				onCancel={maintainModal.onCancel}
 				form={maintainForm}
-				editPermission={editPermission}
 				onSetMaintain={handleSetMaintain}
 			/>
 			<AffixButtons>
@@ -322,7 +319,10 @@ const EventManagement = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				<AffixButtons.Create
 					disabled={!editPermission?.canUse}
 					loading={loading}
-					onClick={addEventSettingModal.onOpen}
+					onClick={() => {
+						setIsAddModal(true)
+						editOrAddEventSettingModal.onOpen()
+					}}
 				/>
 			</AffixButtons>
 		</LayoutContent.Main>
