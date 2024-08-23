@@ -1111,4 +1111,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		newAdminPath: paths.report.sub.lotteryStickerReport.root,
 		allSiteMode: true,
 	},
+	{
+		icon: null,
+		functionId: paths.event.sub.lotteryEvent.sub.eventManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.event.sub.lotteryEvent.sub.eventManagement.root,
+	},
 ]

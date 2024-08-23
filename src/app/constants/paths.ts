@@ -806,6 +806,10 @@ const paths = {
 						root: 'event/lotteryEvent/eventRestrictionList',
 						functionId: 159,
 					},
+					eventManagement: {
+						root: 'event/lotteryEvent/eventManagement',
+						functionId: 158,
+					},
 				},
 			},
 		},

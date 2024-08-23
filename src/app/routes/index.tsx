@@ -1195,6 +1195,12 @@ const LotteryStickerReport = lazy(
 			/* webpackChunkName: 'LotteryStickerReport' */ 'features/lotteryStickerReport/LotteryStickerReport'
 		)
 )
+const EventManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'EventManagement' */ 'features/eventManagement/EventManagement'
+		)
+)
 
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
@@ -3114,6 +3120,18 @@ const routes: RouteObject[] = [
 						functionId={paths.report.sub.lotteryStickerReport.functionId}
 					>
 						<LotteryStickerReport />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.event.sub.lotteryEvent.sub.eventManagement.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.event.sub.lotteryEvent.sub.eventManagement.functionId
+						}
+					>
+						<EventManagement />
 					</AuthRequire>
 				),
 			},
