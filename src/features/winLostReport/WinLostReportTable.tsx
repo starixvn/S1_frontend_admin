@@ -7,6 +7,7 @@ import {
 	useVisibilityColumnsButtonHook,
 	VisibilityColumnsButton,
 } from 'components'
+import { filter } from 'lodash'
 
 interface IWinLostReportTableProps {
 	loading: boolean
@@ -34,12 +35,16 @@ const WinLostReportTable = ({
 	const { onChangeVisibilityColumns, onGetVisibilityColumns } =
 		useVisibilityColumnsButtonHook()
 
+	const columns = tableColumnConverter(tableList)
+	const hiddenKeys = new Set(['baPlayerWinLoss', 'commission', 'baCommission'])
+	const initialColumns = filter(columns, ({ key }) => !hiddenKeys.has(key))
+
 	return (
 		<LayoutContent.Card>
 			<Table
 				loading={loading}
 				scroll={{ y: 800, x: undefined }}
-				columns={onGetVisibilityColumns(tableColumnConverter(tableList))}
+				columns={onGetVisibilityColumns(columns)}
 				dataSource={tableList}
 				size='small'
 				pagination={pagination as TablePaginationConfig}
@@ -49,8 +54,9 @@ const WinLostReportTable = ({
 				title={() => (
 					<Space align='end' direction='vertical' style={{ width: '100%' }}>
 						<VisibilityColumnsButton
-							baseColumns={tableColumnConverter(tableList)}
+							baseColumns={columns}
 							onTableVisibilityColumnsChange={onChangeVisibilityColumns}
+							initialColumns={initialColumns}
 						/>
 					</Space>
 				)}
