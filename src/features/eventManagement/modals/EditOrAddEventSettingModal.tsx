@@ -68,7 +68,7 @@ const EditOrAddEventSettingModal = ({
 			/** 當前活動如果是暫停，Suspended checkbox 預設勾選 ; 反之亦然 */
 			const isSuspend = status === LotteryStatusEnum.Suspended
 
-			// 將 ISO 字串轉為 dayjs 物件，存進 form 內，供日期選擇器使用
+			// 將 ISO 字串轉為 dayjs 物件，存進 form 內，供日期選擇器使用09
 			form.setFieldsValue({
 				isSuspend,
 				dateRange: [dayjs(startDateISOStr), dayjs(endDateISOStr)],
@@ -79,6 +79,7 @@ const EditOrAddEventSettingModal = ({
 
 		// 如果是新增彈窗，就將當天的日期提供給 Report 日期選擇器使用，Draw 日期選擇器要再加一天（不能跟開獎日同天）
 		form.setFieldsValue({
+			isSuspend: false,
 			dateRange: todayRange,
 			drawDate: todayRange[1].add(1, 'day'),
 		})
