@@ -202,11 +202,17 @@ const EditOrAddEventSettingModal = ({
 								label={
 									<Space size='middle'>
 										<Typography.Text>{t('Label_DrawPrize')}</Typography.Text>
-										<Form.Item name='isSuspend' valuePropName='checked' noStyle>
-											<Checkbox disabled={isCompleted || noPermission}>
-												{t('Label_Suspended')}
-											</Checkbox>
-										</Form.Item>
+										{!isAddModal && (
+											<Form.Item
+												name='isSuspend'
+												valuePropName='checked'
+												noStyle
+											>
+												<Checkbox disabled={isCompleted || noPermission}>
+													{t('Label_Suspended')}
+												</Checkbox>
+											</Form.Item>
+										)}
 									</Space>
 								}
 							>
