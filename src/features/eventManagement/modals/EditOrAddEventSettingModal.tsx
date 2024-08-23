@@ -94,9 +94,10 @@ const EditOrAddEventSettingModal = ({
 	const isRunning = form.getFieldValue('status') === LotteryStatusEnum.Running
 
 	/** 活動結束 */
-	const isCompleted =
-		form.getFieldValue('status') === LotteryStatusEnum.Done ||
-		form.getFieldValue('status') === LotteryStatusEnum.Payout
+	const isCompleted = isAddModal
+		? false
+		: form.getFieldValue('status') === LotteryStatusEnum.Done ||
+		  form.getFieldValue('status') === LotteryStatusEnum.Payout
 
 	/** 是否暫停活動 */
 	const isSuspended = Form.useWatch('isSuspend', form)
