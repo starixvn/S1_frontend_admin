@@ -456,20 +456,20 @@ const Dashboard = () => {
 					</Col>
 
 					<Col lg={12} md={12} xs={12}>
-						<DeviceListTable
-							loading={isGetDeviceListFetching}
-							deviceList={deviceList ?? []}
-							timeZoneUtcOffset={timeZoneUtcOffset}
-							onAccountClick={handleAccountClick}
-						/>
-					</Col>
-
-					<Col lg={12} md={12} xs={12}>
 						<FpsDeviceListTable
 							loading={isGetFpsDeviceListFetching}
 							fpsDeviceList={fpsDeviceList ?? []}
 							timeZoneUtcOffset={timeZoneUtcOffset}
 							onAccountClick={handleFpsAccountClick}
+						/>
+					</Col>
+
+					<Col lg={12} md={12} xs={12}>
+						<DeviceListTable
+							loading={isGetDeviceListFetching}
+							deviceList={deviceList ?? []}
+							timeZoneUtcOffset={timeZoneUtcOffset}
+							onAccountClick={handleAccountClick}
 						/>
 					</Col>
 				</Row>
