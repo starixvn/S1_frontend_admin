@@ -87,11 +87,12 @@ const BettingMonitorSetting = ({ pageTitle }: IBettingMonitorSettingProps) => {
 		paginationTotal: bettingMonitorListTotal,
 	})
 
-	const filteredTpGameTypeOptions =
-		tpGameList.filter(({ tpId }) => filterFormTpIds?.includes(tpId)) ?? []
+	const filteredTpGameTypeOptions = tpGameList.filter(({ tpId }) =>
+		filterFormTpIds?.includes(tpId)
+	)
 
 	const addedTpGameTypeOptions = tpGameList.filter(
-		({ tpId }) => addFormTpId === tpId ?? []
+		({ tpId }) => addFormTpId === tpId
 	)
 
 	const handleAddBetting = async (
