@@ -4,6 +4,9 @@ export enum StatueEnum {
 	Suspend,
 	Closed,
 	Lock,
+	OneWeek = 97,
+	OneMonth,
+	ThreeMonths,
 }
 
 export const STATUS_ENUM_OPTIONS: { value: number; displayKey: string }[] = [
