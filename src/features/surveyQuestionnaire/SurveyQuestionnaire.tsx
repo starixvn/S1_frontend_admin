@@ -38,7 +38,8 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const [queryParams, setQueryParams] = useQueryParams()
-	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
+	const { actionPermissions: { exportExcelPermission, editPermission } = {} } =
+		useAuth()
 	const [editForm] = Form.useForm<IEditForm>()
 	const editModal = useModal()
 
@@ -210,6 +211,7 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 					timeZoneUtcOffset={timeZoneUtcOffset}
 					onTableChange={handleTableChange}
 					onEdit={handleSetFeedbackClick}
+					editPermission={editPermission}
 				/>
 			)}
 
@@ -217,6 +219,7 @@ const SurveyQuestionnaire = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				open={editModal.visible}
 				form={editForm}
 				loading={isSetQuestionnaireReportLoading}
+				editPermission={editPermission}
 				onCancel={editModal.onCancel}
 				onFinish={handleUpdateFeedback}
 			/>

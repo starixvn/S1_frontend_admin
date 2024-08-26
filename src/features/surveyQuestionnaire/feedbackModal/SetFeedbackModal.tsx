@@ -1,5 +1,6 @@
 import { Button, Col, Form, FormInstance, Input, Modal, Row, Space } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { PermissionInterface } from 'type'
 import { IEditForm } from '../type'
 import { FeedbackForm } from './FeedbackForm'
 
@@ -7,6 +8,7 @@ interface ISetFeedbackModalProps {
 	open: boolean
 	form: FormInstance<IEditForm>
 	loading: boolean
+	editPermission?: PermissionInterface
 	onCancel: () => void
 	onFinish: () => void
 }
@@ -15,6 +17,7 @@ const SetFeedbackModal = ({
 	open,
 	form,
 	loading,
+	editPermission,
 	onCancel,
 	onFinish,
 }: ISetFeedbackModalProps) => {
@@ -29,19 +32,23 @@ const SetFeedbackModal = ({
 			width='65vw'
 			confirmLoading={loading}
 			afterClose={() => form.resetFields()}
-			footer={[
-				<Button key='back' onClick={onCancel}>
-					{t('Label_Cancel')}
-				</Button>,
-				<Button
-					key='submit'
-					type='primary'
-					loading={loading}
-					onClick={() => onFinish()}
-				>
-					{t('Label_Submit')}
-				</Button>,
-			]}
+			footer={
+				editPermission?.canUse
+					? [
+							<Button key='back' onClick={onCancel}>
+								{t('Label_Cancel')}
+							</Button>,
+							<Button
+								key='submit'
+								type='primary'
+								loading={loading}
+								onClick={() => onFinish()}
+							>
+								{t('Label_Submit')}
+							</Button>,
+					  ]
+					: false
+			}
 		>
 			<Form form={form} layout='vertical'>
 				<Row gutter={16} align='middle'>
@@ -85,7 +92,7 @@ const SetFeedbackModal = ({
 					</Col>
 				</Row>
 				{/* 訊息編輯 Tab */}
-				<FeedbackForm />
+				<FeedbackForm editPermission={editPermission} />
 			</Form>
 		</Modal>
 	)
