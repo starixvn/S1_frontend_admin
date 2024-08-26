@@ -7,10 +7,12 @@ import { find, map } from 'lodash'
 import { numFormatToDigits, timeFormat } from 'common/utils/format'
 import { Table, TablePaginationConfig, Tag, Typography } from 'antd'
 import { PaginationInterface } from 'common/hooks'
+import { multiEqual } from 'common/utils'
 import { LayoutContent } from 'app/pages/layout'
 import { IMemberData, ITagData } from './type'
 import {
 	IDENTITY_ENUM_OPTIONS,
+	StatueEnum,
 	STATUS_ENUM_OPTIONS,
 	USER_TYPE_ENUM_OPTIONS,
 } from './constants'
@@ -181,10 +183,20 @@ const MemberAdministrationListTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (status: number) => {
-				const { displayKey } =
+				let { displayKey } =
 					find(STATUS_ENUM_OPTIONS, {
 						value: status,
 					}) ?? {}
+				// STATUS_ENUM_OPTIONS 中不存在 StatueEnum.OneWeek、StatueEnum.OneMonth、StatueEnum.ThreeMonths 的選項
+				if (
+					multiEqual(status, [
+						StatueEnum.OneWeek,
+						StatueEnum.OneMonth,
+						StatueEnum.ThreeMonths,
+					])
+				) {
+					displayKey = 'Label_Freeze'
+				}
 
 				return displayKey ? <Tag color='blue'>{t(displayKey)}</Tag> : null
 			},
