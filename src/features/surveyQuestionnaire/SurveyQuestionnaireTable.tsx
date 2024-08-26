@@ -6,6 +6,7 @@ import { LayoutContent } from 'app/pages/layout'
 import { PaginationInterface } from 'common/hooks'
 import { timeFormat } from 'common/utils/format'
 import { IQuestionnaireReportData } from 'features/surveyQuestionnaire/type'
+import { PermissionInterface } from 'type'
 
 interface ISurveyQuestionnaireTableProps {
 	questionnaire: IQuestionnaireReportData[]
@@ -14,6 +15,7 @@ interface ISurveyQuestionnaireTableProps {
 	timeZoneUtcOffset: number
 	onTableChange: (newPagination: TablePaginationConfig) => void
 	onEdit: (record: IQuestionnaireReportData) => void
+	editPermission?: PermissionInterface
 }
 
 const SurveyQuestionnaireTable = ({
@@ -23,6 +25,7 @@ const SurveyQuestionnaireTable = ({
 	timeZoneUtcOffset,
 	onTableChange,
 	onEdit,
+	editPermission,
 }: ISurveyQuestionnaireTableProps) => {
 	const { t } = useTranslation()
 
@@ -103,7 +106,7 @@ const SurveyQuestionnaireTable = ({
 				return (
 					<Space size='middle'>
 						<Typography.Link onClick={() => onEdit(record)}>
-							{t('Label_Edit')}
+							{editPermission?.canUse ? t('Label_Edit') : t('Label_Detail')}
 						</Typography.Link>
 					</Space>
 				)
