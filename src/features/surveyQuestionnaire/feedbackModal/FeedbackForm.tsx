@@ -1,7 +1,12 @@
 import { Col, Form, Input, Row } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { PermissionInterface } from 'type'
 
-const FeedbackForm = () => {
+interface IFeedbackFormProps {
+	editPermission?: PermissionInterface
+}
+
+const FeedbackForm = ({ editPermission }: IFeedbackFormProps) => {
 	const { t } = useTranslation()
 
 	return (
@@ -24,7 +29,7 @@ const FeedbackForm = () => {
 						},
 					]}
 				>
-					<Input maxLength={100} />
+					<Input maxLength={100} disabled={!editPermission?.canUse} />
 				</Form.Item>
 			</Col>
 		</Row>
