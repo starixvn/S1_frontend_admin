@@ -12,7 +12,7 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import { LayoutContent } from 'app/pages/layout'
 import { Currency } from 'common/enum/type'
 import { MultipleSelect } from 'components/Select'
@@ -317,7 +317,7 @@ const MemberAdministrationListFilter = ({
 												disabled={dateType === DateTypeEnum.All}
 												style={{ width: '100%' }}
 												showTime
-												ranges={RANGE_PICKER_RANGES([
+												presets={RANGE_PICKER_PRESETS([
 													'Today',
 													'Yesterday',
 													'Last Week',
