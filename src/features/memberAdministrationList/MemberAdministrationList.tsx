@@ -28,7 +28,7 @@ import {
 import MemberAdministrationListFilter from './MemberAdministrationListFilter'
 import MemberAdministrationListTable from './MemberAdministrationListTable'
 import MemberAdministrationModal from './MemberAdministrationModal'
-import { IdentityEnum, DateTypeEnum } from './constants'
+import { IdentityEnum, DateTypeEnum, StatueEnum } from './constants'
 import { IForm, IAddForm, IMemberResponse, IExportMemberArgs } from './type'
 
 const MemberAdministrationList = ({
@@ -109,9 +109,16 @@ const MemberAdministrationList = ({
 			cryptoAddress,
 			...values
 		} = await form.validateFields()
+
 		const [startDate, endDate] = dateRangeToUtcFormatter(
 			dateRange,
 			currentTimeZoneUtcOffset
+		)
+
+		const newStatuses = statuses.flatMap(item =>
+			item === StatueEnum.Freeze
+				? [StatueEnum.OneWeek, StatueEnum.OneMonth, StatueEnum.ThreeMonths]
+				: item
 		)
 
 		try {
@@ -119,7 +126,7 @@ const MemberAdministrationList = ({
 				siteId,
 				currencyId: currencyIds,
 				tags: tags.length !== 0 ? tags : null,
-				status: statuses,
+				status: newStatuses,
 				vipLevel,
 				userName: userName ? trim(userName) : '',
 				tpUserName: tpUserName ? trim(tpUserName) : '',

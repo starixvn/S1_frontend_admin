@@ -183,21 +183,16 @@ const MemberAdministrationListTable = ({
 			width: 120,
 			align: 'center' as 'center',
 			render: (status: number) => {
-				let { displayKey } =
+				const { displayKey } =
 					find(STATUS_ENUM_OPTIONS, {
-						value: status,
+						value: multiEqual(status, [
+							StatueEnum.OneWeek,
+							StatueEnum.OneMonth,
+							StatueEnum.ThreeMonths,
+						])
+							? StatueEnum.Freeze
+							: status,
 					}) ?? {}
-				// STATUS_ENUM_OPTIONS 中不存在 StatueEnum.OneWeek、StatueEnum.OneMonth、StatueEnum.ThreeMonths 的選項
-				if (
-					multiEqual(status, [
-						StatueEnum.OneWeek,
-						StatueEnum.OneMonth,
-						StatueEnum.ThreeMonths,
-					])
-				) {
-					displayKey = 'Label_Freeze'
-				}
-
 				return displayKey ? <Tag color='blue'>{t(displayKey)}</Tag> : null
 			},
 		},
