@@ -80,6 +80,7 @@ export interface IFilterProductStatusModalForm {
 export enum IHeaderSettingEnum {
 	False,
 	True,
+	InReleaseNotinPRD,
 }
 
 export enum IHeaderSettingRlsToPrdArgsEnum {
