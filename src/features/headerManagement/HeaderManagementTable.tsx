@@ -35,7 +35,7 @@ const HeaderManagementTable = ({
 	const { t } = useTranslation()
 
 	const headerManagementWithStatusList = filter(headerManagementList, {
-		status: IHeaderSettingEnum.True,
+		status: IHeaderSettingEnum.True || IHeaderSettingEnum.InReleaseNotinPRD,
 	})
 
 	const columns = [
