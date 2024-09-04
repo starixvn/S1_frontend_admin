@@ -1,12 +1,13 @@
 import { Card, Col, Popconfirm, Row, Switch, Typography } from 'antd'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
+import { multiEqual } from 'common/utils'
 import {
 	IGetBasicInfoData,
 	ISettingRiskPermissions,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
-	LockAccountTypeEnum,
+	AccountStatusEnum,
 } from 'features/memberProfile/type'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -54,8 +55,13 @@ const SettingRiskCard = ({
 	const lockAccountButton = () => {
 		return (
 			<>
-				{(status === LockAccountTypeEnum.Suspend ||
-					status === LockAccountTypeEnum.Locked) && (
+				{multiEqual(status, [
+					AccountStatusEnum.Suspend,
+					AccountStatusEnum.Locked,
+					AccountStatusEnum.OneWeek,
+					AccountStatusEnum.OneMonth,
+					AccountStatusEnum.ThreeMonths,
+				]) && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}
@@ -68,7 +74,7 @@ const SettingRiskCard = ({
 					</p>
 				)}
 
-				{status === LockAccountTypeEnum.Running && (
+				{status === AccountStatusEnum.Running && (
 					<p>
 						<Typography.Link
 							disabled={!lockAccountPermission?.canUse}

@@ -4,6 +4,10 @@ export enum StatueEnum {
 	Suspend,
 	Closed,
 	Lock,
+	Freeze = 96,
+	OneWeek,
+	OneMonth,
+	ThreeMonths,
 }
 
 export const STATUS_ENUM_OPTIONS: { value: number; displayKey: string }[] = [
@@ -22,6 +26,10 @@ export const STATUS_ENUM_OPTIONS: { value: number; displayKey: string }[] = [
 	{
 		value: StatueEnum.Closed,
 		displayKey: 'Label_Close',
+	},
+	{
+		value: StatueEnum.Freeze,
+		displayKey: 'Label_Freeze',
 	},
 ]
 

@@ -48,7 +48,7 @@ import {
 	ISettingInfoPermissions,
 	ISettingMarketingPermissions,
 	ISettingRiskPermissions,
-	LockAccountTypeEnum,
+	AccountStatusEnum,
 	PayoutVerificationRewardOTPTypeEnum,
 	SettingCustPromotionWitheListEnum,
 	SettingEditTypeEnum,
@@ -320,7 +320,7 @@ const Setting = () => {
 	}
 
 	const handleEditModalSubmit = async () => {
-		const { fullName, email, phoneNo, birthDay, address, reason } =
+		const { fullName, email, phoneNo, birthDay, address, reason, status } =
 			form.getFieldsValue()
 
 		if (editType === SettingEditTypeEnum.FullName) {
@@ -387,7 +387,7 @@ const Setting = () => {
 					case SettingEditTypeEnum.LockAccount: {
 						await lockAccount({
 							custId,
-							status: LockAccountTypeEnum.Suspend,
+							status,
 							reason,
 						}).unwrap()
 						break
@@ -395,7 +395,7 @@ const Setting = () => {
 					case SettingEditTypeEnum.UnLockAccount: {
 						await lockAccount({
 							custId,
-							status: LockAccountTypeEnum.Running,
+							status: AccountStatusEnum.Running,
 							reason,
 						}).unwrap()
 						break
