@@ -1,10 +1,15 @@
 import dayjs from 'dayjs'
-import { DatePicker, Form, Input, Modal } from 'antd'
+import { DatePicker, Form, Input, Modal, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
 import { ModalState } from 'common/hooks'
-import { ISettingForm, SettingEditTypeEnum } from 'features/memberProfile/type'
+import {
+	ISettingForm,
+	AccountStatusEnum,
+	SettingEditTypeEnum,
+} from 'features/memberProfile/type'
 import { includes } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { suspendTypeList } from 'features/memberProfile/constants'
 
 interface ISettingEditModalProps {
 	isEditModalLoading: boolean
@@ -14,6 +19,8 @@ interface ISettingEditModalProps {
 	form: FormInstance<ISettingForm>
 	onEditModalSubmit: () => void
 }
+
+const { Option } = Select
 
 const SettingEditModal = ({
 	isEditModalLoading,
@@ -52,6 +59,7 @@ const SettingEditModal = ({
 					email: '',
 					phoneNo: '',
 					birthDay: dayjs(),
+					status: AccountStatusEnum.Suspend,
 					reason: '',
 					address: {},
 				}}
@@ -222,6 +230,28 @@ const SettingEditModal = ({
 							<Input />
 						</Form.Item>
 					</>
+				)}
+				{editType === SettingEditTypeEnum.LockAccount && (
+					<Form.Item
+						name='status'
+						label={t('Label_Action')}
+						rules={[
+							{
+								required: true,
+								message: t('Label_Required', {
+									key: t('Label_Suspend'),
+								}),
+							},
+						]}
+					>
+						<Select placeholder={t('Label_Suspend')}>
+							{suspendTypeList.map(({ value, displayName }) => (
+								<Option key={value} value={value}>
+									{t(displayName)}
+								</Option>
+							))}
+						</Select>
+					</Form.Item>
 				)}
 				{(editType === SettingEditTypeEnum.LockAccount ||
 					editType === SettingEditTypeEnum.UnLockAccount ||
