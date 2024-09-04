@@ -34,9 +34,12 @@ const HeaderManagementTable = ({
 }: IHeaderManagementTableProps) => {
 	const { t } = useTranslation()
 
-	const headerManagementWithStatusList = filter(headerManagementList, {
-		status: IHeaderSettingEnum.True || IHeaderSettingEnum.InReleaseNotinPRD,
-	})
+	const headerManagementWithStatusList = filter(
+		headerManagementList,
+		item =>
+			item.status === IHeaderSettingEnum.True ||
+			item.status === IHeaderSettingEnum.InReleaseNotinPRD
+	)
 
 	const columns = [
 		isSortMode && {
