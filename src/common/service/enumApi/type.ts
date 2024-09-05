@@ -54,6 +54,7 @@ export type EnumNameType =
 	| 'VipStatus'
 	| 'LangType'
 	| 'IovationDeviceType'
+	| 'FpsDeviceType'
 	| 'NewsStatusEnum'
 	| 'LangType'
 	| 'PromotionStatusEnum'
@@ -121,6 +122,7 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  VipStatus - 取得Vip狀態列表
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  IovationDeviceType - 取得 Iovation 裝置列表
+	 * @argument {string}  FpsDeviceType - 取得 FPS 裝置列表
 	 * @argument {string}  NewsStatusEnum - 取得 News Status 列表
 	 * @argument {string}  LangType - 取得 LangType 列表
 	 * @argument {string}  PromotionStatusEnum - 取得 BonusInfo 的 status 列表

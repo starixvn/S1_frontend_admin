@@ -4,13 +4,12 @@ import paths from 'app/constants/paths'
 import { useTranslation } from 'react-i18next'
 import {
 	ActStatusEnum,
-	DEVICE_ALLOW_STATUS_DISPLAY_KEYS,
 	VIP_LEVELS_COLOR,
 } from 'features/depositOperator/constants'
 import { numberFormatter } from 'common/utils/format'
 import { IMemberInfo } from 'features/withdrawalOperator/withdrawalRequest/hooks/useMemberInfo'
 import { BONUS_STATUS } from 'features/withdrawalOperator/constants'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { VipLevelEnum } from 'features/depositOperator/type'
 import {
 	IAdjustmentLogLimitData,
@@ -87,12 +86,14 @@ const WithdrawalRequestMemberInfo = ({
 		actStatus,
 		mailWalletAmount,
 		eligibleWithdrawal,
-		newestDeviceScore: {
-			risk = '',
-			score = null,
-			associateCount = 0,
-			deviceId = '',
-		} = {},
+		// 2024.08.21 Member Info 顯示 Iovation Status 改成顯示 Fps Risk Level，先註解
+		// newestDeviceScore: {
+		// 	risk = '',
+		// 	score = null,
+		// 	associateCount = 0,
+		// 	deviceId = '',
+		// } = {},
+		newestFpsDevice: { riskLevel = '', associateCount = 0, deviceId = '' } = {},
 		newestPromotions: {
 			bonusInfoStatus = 0,
 			description = '',
@@ -115,7 +116,7 @@ const WithdrawalRequestMemberInfo = ({
 		accountName,
 	} = memberInfo ?? {}
 
-	const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
+	// const deviceAllowStatusDisplayKey = DEVICE_ALLOW_STATUS_DISPLAY_KEYS[risk]
 	const vipLevelColor = VIP_LEVELS_COLOR[vipLevel as VipLevelEnum]
 
 	const isWinLossExceedAlert = checkWinLossExceedAlert(
@@ -265,7 +266,7 @@ const WithdrawalRequestMemberInfo = ({
 				</Item>
 
 				<Item label={t('Label_DeviceScore')}>
-					{risk && score ? `${risk}(${score})` : '-'}
+					-{/* {risk && score ? `${risk}(${score})` : '-'} */}
 				</Item>
 				<Item
 					label={t('Label_TotalWinLoss')}
@@ -306,9 +307,7 @@ const WithdrawalRequestMemberInfo = ({
 						{associateCount}
 					</Typography.Link>
 				</Item>
-				<Item label={t('Label_IovationStatus')}>
-					{deviceAllowStatusDisplayKey ? t(deviceAllowStatusDisplayKey) : '-'}
-				</Item>
+				<Item label={t('Label_RiskLevel')}>{riskLevel || '-'}</Item>
 				<Item label={t('Label_IpUserCount')}>
 					<Typography.Link
 						onClick={() => onIpCountClick(loginIp)}

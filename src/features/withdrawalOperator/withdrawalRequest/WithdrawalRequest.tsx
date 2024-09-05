@@ -52,7 +52,7 @@ import { UploadFile } from 'antd/es/upload/interface'
 import { IGetIpUserListResponse } from 'features/memberProfile/type'
 import {
 	useGetCheckDuplicateNameQuery,
-	useLazyGetDeviceUserListQuery,
+	useLazyGetFpsDeviceUserListQuery,
 	useLazyGetIpUserQuery,
 } from 'features/memberProfile/api'
 import { UserListModal } from 'features/memberProfile/pages/customerInfo/components/UserListModal'
@@ -247,14 +247,24 @@ const WithdrawalRequest = () => {
 		},
 	] = useLazyGetIpUserQuery()
 
+	// 2024.08.21 Member Info 顯示 Iovation Status 改成顯示 Fps Risk Level，先註解
 	// 取得 Device 關聯 User
+	// const [
+	// 	getDeviceUserList,
+	// 	{
+	// 		data: { data: deviceUserList = [] } = {},
+	// 		isFetching: isGetDeviceUserLoading,
+	// 	},
+	// ] = useLazyGetDeviceUserListQuery()
+
+	// 取得 FPS Device 關聯 User
 	const [
-		getDeviceUserList,
+		getFpsDeviceUserList,
 		{
-			data: { data: deviceUserList = [] } = {},
-			isFetching: isGetDeviceUserLoading,
+			data: { data: fpsDeviceUserList = [] } = {},
+			isFetching: isGetFpsDeviceUserLoading,
 		},
-	] = useLazyGetDeviceUserListQuery()
+	] = useLazyGetFpsDeviceUserListQuery()
 
 	const {
 		data: { data: checkDuplicateNameList = [] } = {},
@@ -743,7 +753,7 @@ const WithdrawalRequest = () => {
 		deviceUserModal.onOpen()
 		if (!custId) return
 		try {
-			await getDeviceUserList({ custId, deviceId }).unwrap()
+			await getFpsDeviceUserList({ custId, deviceId }).unwrap()
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -950,8 +960,8 @@ const WithdrawalRequest = () => {
 					/>
 					{/* Device User */}
 					<UserListModal
-						loading={isGetDeviceUserLoading}
-						userList={deviceUserList}
+						loading={isGetFpsDeviceUserLoading}
+						userList={fpsDeviceUserList}
 						visible={deviceUserModal.visible}
 						onCancel={deviceUserModal.onCancel}
 					/>

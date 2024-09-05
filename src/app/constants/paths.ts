@@ -524,6 +524,10 @@ const paths = {
 				root: 'member/iovation',
 				functionId: 138,
 			},
+			fpsDeviceReport: {
+				root: 'member/fpsDeviceReport',
+				functionId: 162,
+			},
 			vipReview: {
 				root: 'member/vipReview',
 				functionId: 50,

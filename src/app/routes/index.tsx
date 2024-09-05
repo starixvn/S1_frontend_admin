@@ -997,6 +997,24 @@ const ModifyPaymentFeeLog = lazy(
 		)
 )
 
+const VideoManagement = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
+		)
+)
+
+const Iovation = lazy(
+	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
+)
+
+const FpsDeviceReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'FpsDeviceReport' */ 'features/fpsDeviceReport/FpsDeviceReport'
+		)
+)
+
 const GameExclusion = lazy(
 	() =>
 		import(
@@ -1009,17 +1027,6 @@ const EditGameExclusion = lazy(
 		import(
 			/* webpackChunkName: 'EditGameExclusion' */ 'features/gameExclusion/editGameExclusion/EditGameExclusion'
 		)
-)
-
-const VideoManagement = lazy(
-	() =>
-		import(
-			/* webpackChunkName: 'VideoManagement' */ 'features/videoManagement/VideoManagement'
-		)
-)
-
-const Iovation = lazy(
-	() => import(/* webpackChunkName: 'Iovation' */ 'features/iovation/Iovation')
 )
 
 const BetLimit = lazy(
@@ -2688,6 +2695,14 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.fpsDeviceReport.root}`,
+				element: (
+					<AuthRequire functionId={paths.member.sub.fpsDeviceReport.functionId}>
+						<FpsDeviceReport />
+					</AuthRequire>
+				),
+			},
+			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.gameExclusion.root}`,
 				element: (
 					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
@@ -2700,43 +2715,6 @@ const routes: RouteObject[] = [
 				element: (
 					<AuthRequire functionId={paths.member.sub.gameExclusion.functionId}>
 						<EditGameExclusion />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.videoManagement.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.content.sub.videoManagement.functionId}
-					>
-						<VideoManagement />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.bonus.sub.pendingBonus.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.marketing.sub.bonus.sub.pendingBonus.functionId}
-					>
-						<PendingBonus />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
-				element: (
-					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
-						<FailBet />
-					</AuthRequire>
-				),
-			},
-
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.member.sub.iovation.root}`,
-				element: (
-					<AuthRequire functionId={paths.member.sub.iovation.functionId}>
-						<Iovation />
 					</AuthRequire>
 				),
 			},
@@ -2757,10 +2735,10 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.content.sub.newsManage.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.csd.sub.tpFailRecordReport.root}`,
 				element: (
-					<AuthRequire functionId={paths.content.sub.newsManage.functionId}>
-						<NewsManagement />
+					<AuthRequire functionId={paths.csd.sub.tpFailRecordReport.functionId}>
+						<FailBet />
 					</AuthRequire>
 				),
 			},
@@ -2873,16 +2851,6 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.rebateExcludeGame.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.marketing.sub.rebateExcludeGame.functionId}
-					>
-						<RebateExcludeGame />
-					</AuthRequire>
-				),
-			},
-			{
 				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.vipUpgradeSetting.root}`,
 				element: (
 					<AuthRequire
@@ -2947,24 +2915,6 @@ const routes: RouteObject[] = [
 						functionId={paths.cms.sub.leaderboardManagement.functionId}
 					>
 						<LeaderboardManagement />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.cms.sub.bigWinPopUpSetting.root}`,
-				element: (
-					<AuthRequire functionId={paths.cms.sub.bigWinPopUpSetting.functionId}>
-						<BigWinPopUpSetting />
-					</AuthRequire>
-				),
-			},
-			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.bigWinPopUpReport.root}`,
-				element: (
-					<AuthRequire
-						functionId={paths.report.sub.bigWinPopUpReport.functionId}
-					>
-						<BigWinPopUpReport />
 					</AuthRequire>
 				),
 			},

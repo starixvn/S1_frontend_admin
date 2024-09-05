@@ -933,9 +933,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.finance.sub.setting.sub.modifyPaymentFeeLog.functionId,
+		functionId: paths.member.sub.fpsDeviceReport.functionId,
 		pathMode: 'NewAdmin',
-		newAdminPath: paths.finance.sub.setting.sub.modifyPaymentFeeLog.root,
+		newAdminPath: paths.member.sub.fpsDeviceReport.root,
+		allSiteMode: true,
 	},
 	{
 		icon: null,
