@@ -105,8 +105,11 @@ const EditOrAddEventSettingModal = ({
 	/** 活動暫停或活動結束，則禁用 DrawDate 日期選擇器 */
 	const shouldDisableDrawDate = Boolean(isSuspended) || isCompleted
 
-	/** 編輯模式下，如果權限不足或活動未進行，則禁用此表單 */
+	/** 當前是編輯彈窗，如果權限不足或活動未進行，則禁用此表單的此選項 */
 	const shouldDisableForm = (!isAddModal && !isRunning) || noPermission
+
+	/** 當前是編輯彈窗，如果權限不足或活動已結束，則禁用 Period 日期選擇器 */
+	const shouldDisablePeriodDate = (!isAddModal && isCompleted) || noPermission
 
 	/**  ======= 函數 ======= */
 
@@ -188,7 +191,7 @@ const EditOrAddEventSettingModal = ({
 											presets={RANGE_PICKER_PRESETS(['Today'])}
 											format={dateFormat}
 											disabledDate={disabledDate}
-											disabled={shouldDisableForm}
+											disabled={shouldDisablePeriodDate}
 										/>
 									</Form.Item>
 								</Input.Group>
