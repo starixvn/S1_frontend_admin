@@ -34,14 +34,17 @@ const IpCountsTable = ({
 	]
 
 	return (
-		<Table
-			size='small'
-			bordered
-			loading={loading}
-			dataSource={ipCountList}
-			columns={columns}
-			pagination={{ hideOnSinglePage: true }}
-		/>
+		<>
+			<Table
+				size='small'
+				bordered
+				loading={loading}
+				dataSource={ipCountList}
+				columns={columns}
+				pagination={{ hideOnSinglePage: true }}
+			/>
+			<br />
+		</>
 	)
 }
 
