@@ -15,12 +15,14 @@ import React from 'react'
 
 interface IDepositRequestMemberInfoProps {
 	loading: boolean
+	isGetFpsDeviceListFetching: boolean
 	memberInfo: IMemberInfo | undefined
 	depositInfo: IDepositOperatorData
 }
 
 const DepositRequestMemberInfo = ({
 	loading,
+	isGetFpsDeviceListFetching,
 	memberInfo,
 	depositInfo: { depositCnt },
 }: IDepositRequestMemberInfoProps) => {
@@ -106,7 +108,9 @@ const DepositRequestMemberInfo = ({
 					-{/* {risk && score ? `${risk}(${score})` : '-'} */}
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_RiskLevel')}>
-					{riskLevel || '-'}
+					<Spin spinning={isGetFpsDeviceListFetching} size='small'>
+						{riskLevel || '-'}
+					</Spin>
 				</Descriptions.Item>
 				<Descriptions.Item label={t('Label_Tag')}>
 					{tagList.length > 0
