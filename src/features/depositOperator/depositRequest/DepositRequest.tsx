@@ -96,9 +96,10 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			}
 		)
 
-	const { memberInfo, isMemberInfoLoading } = useMemberInfo({
-		custId: depositInfo?.custId,
-	})
+	const { memberInfo, isMemberInfoLoading, isGetFpsDeviceListFetching } =
+		useMemberInfo({
+			custId: depositInfo?.custId,
+		})
 
 	const {
 		data: depositReceiptByTransIdList = [],
@@ -467,6 +468,7 @@ const DepositRequest = ({ pageTitle = '' }: { pageTitle?: string }) => {
 						<Col xxl={12} xl={12} lg={12} md={24} xs={24}>
 							<DepositRequestMemberInfo
 								loading={isMemberInfoLoading}
+								isGetFpsDeviceListFetching={isGetFpsDeviceListFetching}
 								memberInfo={memberInfo}
 								depositInfo={depositInfo}
 							/>

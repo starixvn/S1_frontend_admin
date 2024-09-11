@@ -64,13 +64,14 @@ const useMemberInfo = ({ custId }: { custId: number }) => {
 		newestFpsDevice,
 	} as IMemberInfo
 
-	const loading =
-		isGetMemberInfoLoading ||
-		isGetWalletBalanceInfoFetching ||
-		// isGetDeviceListFetching ||
-		isGetFpsDeviceListFetching
+	// 因為 fps api 回應較慢，因此分離 fps loading 狀態出來獨立處理
+	const loading = isGetMemberInfoLoading || isGetWalletBalanceInfoFetching // || isGetDeviceListFetching
 
-	return { memberInfo: data, isMemberInfoLoading: loading }
+	return {
+		memberInfo: data,
+		isMemberInfoLoading: loading,
+		isGetFpsDeviceListFetching,
+	}
 }
 
 export default useMemberInfo
