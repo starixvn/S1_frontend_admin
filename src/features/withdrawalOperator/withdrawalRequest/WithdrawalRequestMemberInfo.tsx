@@ -22,6 +22,7 @@ import { ICheckDuplicateNameData } from 'features/memberProfile/type'
 
 interface IWithdrawalRequestMemberInfoProps {
 	loading: boolean
+	isGetFpsDeviceListFetching: boolean
 	memberInfo?: IMemberInfo
 	withdrawalDetailData?: IGetWithdrawalData
 	checkDuplicateNameList: ICheckDuplicateNameData[]
@@ -61,6 +62,7 @@ const checkWinLossExceedAlert = (
 
 const WithdrawalRequestMemberInfo = ({
 	loading,
+	isGetFpsDeviceListFetching,
 	memberInfo,
 	withdrawalDetailData,
 	checkDuplicateNameList,
@@ -307,7 +309,11 @@ const WithdrawalRequestMemberInfo = ({
 						{associateCount}
 					</Typography.Link>
 				</Item>
-				<Item label={t('Label_RiskLevel')}>{riskLevel || '-'}</Item>
+				<Item label={t('Label_RiskLevel')}>
+					<Spin spinning={isGetFpsDeviceListFetching} size='small'>
+						{riskLevel || '-'}
+					</Spin>
+				</Item>
 				<Item label={t('Label_IpUserCount')}>
 					<Typography.Link
 						onClick={() => onIpCountClick(loginIp)}

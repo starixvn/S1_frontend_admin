@@ -153,9 +153,10 @@ const WithdrawalRequest = () => {
 		refetch: refetchComment,
 	} = useGetWithdrawalCommentQuery({ transId })
 
-	const { memberInfo, isMemberInfoLoading } = useMemberInfo({
-		custId,
-	})
+	const { memberInfo, isMemberInfoLoading, isGetFpsDeviceListFetching } =
+		useMemberInfo({
+			custId,
+		})
 
 	const { accountName } = memberInfo ?? {}
 
@@ -881,6 +882,7 @@ const WithdrawalRequest = () => {
 									memberInfo={memberInfo}
 									withdrawalDetailData={withdrawalDetailData}
 									loading={isMemberInfoLoading}
+									isGetFpsDeviceListFetching={isGetFpsDeviceListFetching}
 									checkDuplicateNameList={checkDuplicateNameList}
 									associateBankUserList={associateBankUserList}
 									adjustmentLimitList={adjustmentLimitList}
