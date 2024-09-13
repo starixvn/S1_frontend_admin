@@ -113,8 +113,8 @@ const RaffleTicketAndStickerModal = ({
 		},
 		{
 			title: t('Label_Currency'),
-			key: 'currencyId',
-			dataIndex: 'currencyId',
+			key: 'isoCode',
+			dataIndex: 'isoCode',
 			width: 120,
 			align: 'center' as 'center',
 			render: (currencyId: number) => {

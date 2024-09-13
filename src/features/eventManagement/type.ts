@@ -15,7 +15,7 @@ export interface ILotteryEventSettingData {
 	endDate: string
 	drawDate: string
 	status: number
-	excludeSetting: string
+	excludeSettingList: Array<string>
 	updator: string
 	createTime: string
 	updateTime: string

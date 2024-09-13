@@ -116,6 +116,13 @@ const EventManagementTable = ({
 				startDate,
 				endDate,
 				drawDate,
+				excludeSettingList: [
+					firstPrize,
+					secondPrize,
+					thirdPrize,
+					consolation,
+					small,
+				],
 			}: ILotteryEventSettingData) => {
 				/** 活動已結束 */
 				const lotteryOver =
@@ -126,12 +133,18 @@ const EventManagementTable = ({
 				return (
 					<Typography.Link
 						onClick={() => {
-							// 將後端的資料存進 EditForm，在開啟 EventSettingModal 時，可以直接使用
+							// 將後端的資料存進 editOrAddForm，在開啟 EditOrAddEventSettingModal 時，可以直接使用
 							form.setFieldsValue({
 								sq,
 								status,
 
-								// 後端的資料是 ISO Str 不是 Dayjs 格式，在 EventSettingModal 再轉格式
+								firstPrize: Number(firstPrize),
+								secondPrize: Number(secondPrize),
+								thirdPrize: Number(thirdPrize),
+								consolation: Number(consolation),
+								small: Number(small),
+
+								// 後端的資料是 ISO Str 不是 Dayjs 格式，在 EditOrAddEventSettingModal 再轉格式為 Dayjs 使用
 								startDateISOStr: startDate,
 								endDateISOStr: endDate,
 								drawDateISOStr: drawDate,
