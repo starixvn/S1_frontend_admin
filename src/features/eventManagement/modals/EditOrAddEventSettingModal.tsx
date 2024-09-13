@@ -62,15 +62,29 @@ const EditOrAddEventSettingModal = ({
 
 		// 如果是編輯彈窗，隨著使用者點擊不同筆資料的編輯，初始化時設定此資料的編輯彈窗日期選擇器的範圍（跟表單顯示的日期範圍一樣）
 		if (!isAddModal) {
-			const { status, startDateISOStr, endDateISOStr, drawDateISOStr } =
-				form.getFieldsValue(true)
+			const {
+				status,
+				firstPrize,
+				secondPrize,
+				thirdPrize,
+				consolation,
+				small,
+				startDateISOStr,
+				endDateISOStr,
+				drawDateISOStr,
+			} = form.getFieldsValue(true)
 
 			/** 當前活動如果是暫停，Suspended checkbox 預設勾選 ; 反之亦然 */
 			const isSuspend = status === LotteryStatusEnum.Suspended
 
-			// 將 ISO 字串轉為 dayjs 物件，存進 form 內，供日期選擇器使用09
 			form.setFieldsValue({
 				isSuspend,
+				firstPrize,
+				secondPrize,
+				thirdPrize,
+				consolation,
+				small,
+				// 將 ISO 字串轉為 dayjs 物件，存進 form 內，供日期選擇器使用
 				dateRange: [dayjs(startDateISOStr), dayjs(endDateISOStr)],
 				drawDate: dayjs(drawDateISOStr),
 			})
