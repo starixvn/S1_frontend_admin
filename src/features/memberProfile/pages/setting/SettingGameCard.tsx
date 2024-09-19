@@ -6,8 +6,11 @@ import { find } from 'lodash'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import { Link } from 'react-router-dom'
 import paths from 'app/constants/paths'
-import { useAuth, useModal } from 'common/hooks'
-import { useActionPermissionsByFunctionId } from 'common/auth'
+import {
+	useAuth,
+	useModal,
+	useActionPermissionsByFunctionId,
+} from 'common/hooks'
 import LiveStreamingGameModal from 'features/memberProfile/pages/setting/AddSettingGameCard/LiveStreamingGameModal'
 import { useSetCustTpGameTypeSettingMutation } from 'features/memberProfile/api'
 import { CustTpGameTypeSettingEnum } from 'features/memberProfile/constants'
