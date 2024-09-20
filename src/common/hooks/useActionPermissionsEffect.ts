@@ -20,7 +20,7 @@ const useActionPermissionsEffect = ({
 		)
 
 		setActionPermissions(newActionPermissions)
-	}, [menuFunctionData])
+	}, [menuFunctionData?.functionId])
 }
 
 export { useActionPermissionsEffect }
