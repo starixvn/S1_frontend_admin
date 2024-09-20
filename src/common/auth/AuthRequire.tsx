@@ -1,35 +1,21 @@
-import { find } from 'lodash'
+import { find, isEmpty } from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useActionPermissionsEffect, useAuth } from 'common/hooks'
 import paths from 'app/constants/paths'
 import { cloneElement, useEffect } from 'react'
-import { getActionPermissions } from 'common/utils'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 
-interface RequireAuthProps {
+interface IAuthRequireProps {
 	functionId?: number
 	children: JSX.Element
 }
 
-// * 找尋指定 functionId 功能頁權限
-export const useActionPermissionsByFunctionId = ({
-	functionId,
-}: {
-	functionId: number | undefined
-}) => {
-	const { userMenuFunctionData } = useAuth()
-	const menuFunctionData = find(userMenuFunctionData, { functionId })
-	const actionPermissions = getActionPermissions(
-		menuFunctionData?.permission ?? []
-	)
-	return { actionPermissions }
-}
-
-const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
+const AuthRequire = ({ functionId, children }: IAuthRequireProps) => {
 	const location = useLocation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { auth, onCheckSignIn, userMenuFunctionData } = useAuth()
+	const { actionPermissions, auth, onCheckSignIn, userMenuFunctionData } =
+		useAuth()
 	const menuFunctionData = find(userMenuFunctionData, { functionId })
 
 	useEffect(() => {
@@ -37,10 +23,6 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 	}, [location.pathname])
 
 	useActionPermissionsEffect({ functionId })
-
-	const hasPermission = find(menuFunctionData?.permission, {
-		name: 'View',
-	})?.canUse
 
 	if (auth.isLogin === false)
 		return (
@@ -51,7 +33,19 @@ const AuthRequire = ({ functionId, children }: RequireAuthProps) => {
 			/>
 		)
 
-	if (hasPermission !== undefined && hasPermission === false) {
+	// viewPermission 用來判斷在找到 menuFunctionData 時候的 view 權限
+	const viewPermission = actionPermissions?.viewPermission?.canUse
+
+	// 找不到 menuFunctionData 沒有 view 權限
+	const notFoundPermission = !isEmpty(userMenuFunctionData) && !menuFunctionData
+
+	// 找到 actionPermissions 的時候再判斷 viewPermission
+	const notViewAllowed = !isEmpty(actionPermissions) && !viewPermission
+
+	if (
+		location.pathname !== paths.layout.root &&
+		(notFoundPermission || notViewAllowed)
+	) {
 		return <Navigate to='/403' state={{ from: location }} replace />
 	}
 
