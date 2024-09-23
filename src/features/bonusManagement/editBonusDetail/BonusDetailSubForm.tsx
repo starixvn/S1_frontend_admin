@@ -602,7 +602,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					)}
 
 					{(currentBonusType === BonusTypeEnum.ReDeposit ||
-						BonusTypeEnum.FirstDeposit) && (
+						currentBonusType === BonusTypeEnum.FirstDeposit) && (
 						// TierRedepositBonus
 						<>
 							<Row gutter={16}>
