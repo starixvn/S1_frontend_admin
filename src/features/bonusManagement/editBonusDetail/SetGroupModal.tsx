@@ -91,6 +91,10 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										label={index === 0 ? t('Label_RedepositAmount') : null}
 										rules={[
 											{
+												required: true,
+												message: t('Label_RequiredText'),
+											},
+											{
 												type: 'number',
 												min: 0,
 												message: t('Label_GreaterThanZero'),
