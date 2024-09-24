@@ -1314,5 +1314,6 @@
 	"Label_Freeze": "Freeze",
 	"Label_Browser": "Browser",
 	"Label_IpAddress": "IP Address",
-	"Label_RobotTracking": "Robot Tracking"
+	"Label_RobotTracking": "Robot Tracking",
+	"Label_Has_Receipt": "Has Receipt"
 }
