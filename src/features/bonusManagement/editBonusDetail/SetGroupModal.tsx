@@ -66,6 +66,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 			})
 		}
 	}, [visible])
+
 	return (
 		<Modal
 			open={visible}
@@ -88,8 +89,16 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 									<Form.Item
 										{...restField}
 										name={[name, 'requiredAmount']}
-										label={index === 0 ? t('Label_RedepositAmount') : null}
+										label={
+											formData?.bonusType === BonusTypeEnum.FirstDeposit
+												? t('Label_FirstDepositAmount')
+												: t('Label_RedepositAmount')
+										}
 										rules={[
+											{
+												required: true,
+												message: t('Label_RequiredText'),
+											},
 											{
 												type: 'number',
 												min: 0,
