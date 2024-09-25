@@ -190,6 +190,7 @@
 	"Label_TurnOver": "Turnover",
 	"Label_TurnOverProduct": "Turnover Product",
 	"Label_PointRate": "Point Rate",
+	"Label_Rate_USD": "Rate (USD)",
 	"Label_PromotionDate": "Promotion Date",
 	"Label_PromotionPointRate": "Promotion Point Rate",
 	"Label_GetPointMessage": "Get {{point}} point",
