@@ -318,7 +318,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					</Row>
 
 					{multiEqual(currentBonusType as number, [
-						BonusTypeEnum.FirstDeposit as number,
+						// BonusTypeEnum.FirstDeposit as number,
 						BonusTypeEnum.FreeBet as number,
 						BonusTypeEnum.DeviceBonus as number,
 					]) && (
@@ -601,7 +601,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 						</>
 					)}
 
-					{currentBonusType === BonusTypeEnum.ReDeposit && (
+					{(currentBonusType === BonusTypeEnum.ReDeposit ||
+						currentBonusType === BonusTypeEnum.FirstDeposit) && (
 						// TierRedepositBonus
 						<>
 							<Row gutter={16}>
