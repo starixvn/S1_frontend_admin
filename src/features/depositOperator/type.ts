@@ -63,6 +63,7 @@ export interface IGetDepositOperatorListArgs {
 	levelStatuses: number[]
 	agent: string
 	dateType: number
+	hasReceipt: boolean
 }
 
 export interface ICurrencyAmountRecord {
@@ -183,6 +184,7 @@ export interface IForm {
 	selectCalCode: number[]
 	isAllSite: boolean
 	dateType: number
+	hasReceipt: boolean
 }
 
 export interface IBatchRejectedDepositTransIdsArgs {
