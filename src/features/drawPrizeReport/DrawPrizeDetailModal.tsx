@@ -3,7 +3,7 @@ import { Modal, Spin, TablePaginationConfig } from 'antd'
 import { IGetDrawPrizeReportLogData } from 'features/drawPrizeReport/type'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import { timeFormat } from 'common/utils/format'
+import { timeFormat, numFormatToDigits } from 'common/utils/format'
 import { PaginationInterface } from 'common/hooks'
 import { Table } from 'components'
 
@@ -48,6 +48,28 @@ const DrawPrizeDetailModal = ({
 				drawTime
 					? dayjs(drawTime).utcOffset(timeZoneUtcOffset).format(timeFormat)
 					: '',
+		},
+		{
+			title: t('Label_Amount'),
+			key: 'userName',
+			dataIndex: 'userName',
+			width: '40%',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_BaseCurrency'),
+			key: 'isoCode',
+			dataIndex: 'isoCode',
+			width: '40%',
+			align: 'center' as 'center',
+		},
+		{
+			title: t('Label_Rate_USD'),
+			key: 'usdRate',
+			dataIndex: 'usdRate',
+			width: '40%',
+			align: 'center' as 'center',
+			render: (usdRate: number) => numFormatToDigits(usdRate),
 		},
 	]
 
