@@ -14,7 +14,7 @@ export interface IGetStickerReportArgs {
 
 export interface IStickerReportData {
 	siteId: number
-	roundId: number
+	roundId: number | null
 	custId: number
 	userName?: string
 	sabaId: string

@@ -156,7 +156,7 @@ const LotteryStickerReportFilter: FC<ILotteryStickerReportFilterProps> = ({
 						initialValues={{
 							selected: 0,
 							userName: '',
-							roundId: 1,
+							roundId: null,
 							siteIds: userSiteList?.map(({ siteId }) => siteId),
 							currencyIds: currencyIdsBySiteIds?.map(
 								({ currencyId }) => currencyId
@@ -166,7 +166,7 @@ const LotteryStickerReportFilter: FC<ILotteryStickerReportFilterProps> = ({
 						{/* 日期/渠道/幣別 --- 選擇器 */}
 						<Row align='middle' gutter={16}>
 							<Col lg={8} md={24} xs={24}>
-								<Form.Item label={t('Label_DateRange')}>
+								<Form.Item label={t('Label_PurchaseTime')}>
 									<Input.Group
 										compact
 										style={{ width: '100%', display: 'flex' }}
@@ -220,18 +220,7 @@ const LotteryStickerReportFilter: FC<ILotteryStickerReportFilterProps> = ({
 							</Col>
 
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item
-									name='roundId'
-									label={t('Label_Round')}
-									rules={[
-										{
-											required: true,
-											message: t('Label_Required', {
-												key: t('Label_Round'),
-											}),
-										},
-									]}
-								>
+								<Form.Item name='roundId' label={t('Label_Round')}>
 									<Input allowClear />
 								</Form.Item>
 							</Col>
