@@ -12,10 +12,10 @@ import {
 	Button,
 	Select,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import { LayoutContent } from 'app/pages/layout'
-import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAppSelector } from 'app/store'
+import { dateFormat } from 'common/utils/format'
 import { MultipleSelect } from 'components/Select'
 import { selectCurrencyListBySite, selectUserSiteList } from 'common/enum'
 
@@ -26,7 +26,7 @@ const { Option } = Select
 interface ILotteryStickerReportFilterProps {
 	form: FormInstance
 	loading: boolean
-	timeZoneUtcOffset?: number
+
 	onSearch: ({
 		current,
 		pageSize,
@@ -36,15 +36,12 @@ interface ILotteryStickerReportFilterProps {
 		pageSize?: number | undefined
 		currentTimeZoneUtcOffset?: number
 	}) => void
-	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
 const LotteryStickerReportFilter: FC<ILotteryStickerReportFilterProps> = ({
 	form,
 	loading,
-	timeZoneUtcOffset,
 	onSearch,
-	onTimeZoneChange,
 }) => {
 	/**  ======= hooks ======= */
 
@@ -184,22 +181,16 @@ const LotteryStickerReportFilter: FC<ILotteryStickerReportFilterProps> = ({
 										>
 											<RangePicker
 												style={{ width: '100%' }}
-												showTime
-												ranges={RANGE_PICKER_RANGES([
+												presets={RANGE_PICKER_PRESETS([
 													'Today',
 													'Yesterday',
 													'Last Week',
 													'This Month',
 													'Last Month',
 												])}
+												format={dateFormat}
 											/>
 										</Form.Item>
-										<div>
-											<TimeZoneSelect
-												value={timeZoneUtcOffset}
-												onChange={onTimeZoneChange}
-											/>
-										</div>
 									</Input.Group>
 								</Form.Item>
 							</Col>

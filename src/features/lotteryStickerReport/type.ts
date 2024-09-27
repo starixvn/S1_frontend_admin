@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 export interface IGetStickerReportArgs {
 	siteIds: number[]
 	currencyIds: number[]
-	roundId: number
+	roundId: number | null
 	startDate: string
 	endDate: string
 	userName: string | null

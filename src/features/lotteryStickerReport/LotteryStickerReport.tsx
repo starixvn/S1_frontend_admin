@@ -53,20 +53,12 @@ const LotteryStickerReport: FC<{
 	const { actionPermissions: { exportExcelPermission } = {} } = useAuth()
 	const [queryParams, setQueryParams] = useQueryParams()
 	const [form] = Form.useForm<IFilterForm>()
-	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
+	const { timeZoneUtcOffset } = useTimeZone()
 	const [pagination, setPagination] = usePagination({
 		paginationTotal: memberReportTotal,
 	})
 
 	/**  ======= 函數 ======= */
-
-	/**
-	 * 將時間轉換後端格式
-	 * @param {string} date 需要轉換格式的時間
-	 * @return 'YYYY-MM-DD'
-	 * @example "2024-08-23T16:00:00.000Z" => "2024-08-23" */
-	const formatDate = (date: string): string =>
-		dayjs.utc(date).format('YYYY-MM-DD')
 
 	const handleSearch = async ({
 		current = PAGINATION.defaultCurrent,
@@ -87,8 +79,8 @@ const LotteryStickerReport: FC<{
 				siteIds,
 				currencyIds,
 				roundId,
-				startDate: formatDate(startDate),
-				endDate: formatDate(endDate),
+				startDate: startDate.split('T')[0],
+				endDate: endDate.split('T')[0],
 				userName: userName || null,
 				pageSize,
 				pageNumber: current,
@@ -142,8 +134,8 @@ const LotteryStickerReport: FC<{
 				currencyIds,
 				roundId,
 				userName: userName || null,
-				startDate: formatDate(startDate),
-				endDate: formatDate(endDate),
+				startDate: startDate.split('T')[0],
+				endDate: endDate.split('T')[0],
 			}).unwrap()
 
 			download(
@@ -176,7 +168,7 @@ const LotteryStickerReport: FC<{
 				currencyIds: currencyIds.map((id: string) => Number(id)),
 				siteIds: siteIds.map((id: string) => Number(id)),
 				dateRange: [dayjs(startDate), dayjs(endDate)],
-				roundId: Number(roundId),
+				roundId: roundId ? Number(roundId) : null,
 				userName,
 			})
 
@@ -196,8 +188,6 @@ const LotteryStickerReport: FC<{
 				form={form}
 				loading={isGetMemberReportLoading}
 				onSearch={handleSearch}
-				onTimeZoneChange={onTimeZoneChange}
-				timeZoneUtcOffset={timeZoneUtcOffset}
 			/>
 			{!isEmpty(queryParams) && (
 				<LotteryStickerReportTable
