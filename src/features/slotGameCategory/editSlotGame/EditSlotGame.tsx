@@ -177,8 +177,8 @@ const EditSlotGame = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	useEffect(() => {
-		// 初始化 tpId 下拉首選項，異步資料無法使用 form.initialValues 寫入
-		if (!isGetTpListLoading) {
+		// 初始化 tpId 下拉首選項，異步資料無法使用 form.initialValues 寫入，editMode 打 api 會塞 tpId 所以不處理
+		if (!isGetTpListLoading && !isEditMode) {
 			slotGameForm.setFieldsValue({
 				tpId: head(tpList)?.tpId,
 			})
