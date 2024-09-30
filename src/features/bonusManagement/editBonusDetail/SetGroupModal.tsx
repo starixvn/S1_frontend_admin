@@ -16,7 +16,8 @@ interface ISetGroupModalProps {
 
 const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const { t } = useTranslation()
-	const { form, currentActiveCurrency } = useContext(EditBonusContext)
+	const { form, currentActiveCurrency, editPermission } =
+		useContext(EditBonusContext)
 	const formData = form?.getFieldsValue()
 	const { isoCode } = currentActiveCurrency
 	const type = form?.getFieldValue(['specific', isoCode, 'bonusType'])
@@ -26,6 +27,9 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 	const [modalForm] = Form.useForm()
 	// 用來監聽數量
 	const amountList = Form.useWatch('tierAmountList', modalForm)
+
+	/** 是否有編輯權限 */
+	const canEdit = !!editPermission?.canUse
 
 	const handleFinished = async () => {
 		try {
@@ -72,6 +76,8 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 			open={visible}
 			onCancel={onFinish}
 			onOk={handleFinished}
+			// 當沒有編輯權限時，禁用 Save 按鈕
+			okButtonProps={{ disabled: !canEdit }}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
 			width='60vw'
@@ -129,6 +135,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										<InputNumber
 											type='number'
 											controls={false}
+											disabled={!canEdit}
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
@@ -162,6 +169,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 												<InputNumber
 													type='number'
 													controls={false}
+													disabled={!canEdit}
 													style={{ width: '100%' }}
 												/>
 											</Form.Item>
@@ -185,6 +193,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 													type='number'
 													controls={false}
 													placeholder={t('Label_Bonus')}
+													disabled={!canEdit}
 													style={{ width: '100%' }}
 												/>
 											</Form.Item>
@@ -213,6 +222,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 														type='number'
 														controls={false}
 														style={{ width: '100%' }}
+														disabled={!canEdit}
 														placeholder={t('Label_Percentage')}
 													/>
 												</Form.Item>
@@ -235,6 +245,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 													<InputNumber
 														type='number'
 														controls={false}
+														disabled={!canEdit}
 														style={{ width: '100%' }}
 														placeholder={t('Label_MaxBonus')}
 													/>
@@ -263,6 +274,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 													type='number'
 													controls={false}
 													placeholder={t('Label_Bonus')}
+													disabled={!canEdit}
 													style={{ width: '100%' }}
 												/>
 											</Form.Item>
@@ -296,6 +308,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										<InputNumber
 											type='number'
 											controls={false}
+											disabled={!canEdit}
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
@@ -327,13 +340,17 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										<InputNumber
 											type='number'
 											controls={false}
+											disabled={!canEdit}
 											style={{ width: '100%' }}
 										/>
 									</Form.Item>
-									<Form.Item label={index === 0 ? ' ' : null}>
-										{/* 為了讓第一筆 的刪除符號可以在正確位置 , 所以在 label 動了手腳  */}
-										<MinusCircleOutlined onClick={() => remove(name)} />
-									</Form.Item>
+									{/* 沒有編輯權限隱藏刪除符號 */}
+									{canEdit && (
+										<Form.Item label={index === 0 ? ' ' : null}>
+											{/* 為了讓第一筆 的刪除符號可以在正確位置 , 所以在 label 動了手腳  */}
+											<MinusCircleOutlined onClick={() => remove(name)} />
+										</Form.Item>
+									)}
 								</Space>
 							))}
 							{((amountList?.length as number) < 10 || !amountList) && (
@@ -342,6 +359,7 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										type='dashed'
 										onClick={() => add()}
 										block
+										disabled={!canEdit}
 										icon={<PlusOutlined />}
 									>
 										{t('Label_AddBonusSetting')}
