@@ -672,9 +672,15 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										<Form.Item label=' '>
 											<Button
 												type='primary'
-												icon={<EditOutlined />}
+												icon={
+													!isActiveAndEditable ? (
+														<EyeOutlined />
+													) : (
+														<EditOutlined />
+													)
+												}
 												onClick={onSetGroupBonusClick}
-												disabled={!isActiveAndEditable}
+												disabled={loading}
 											>
 												{t('Label_SetAmountGroup')}
 											</Button>
