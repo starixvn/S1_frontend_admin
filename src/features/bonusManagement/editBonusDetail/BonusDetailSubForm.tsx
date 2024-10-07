@@ -679,6 +679,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 														<EditOutlined />
 													)
 												}
+												loading={loading}
 												onClick={onSetGroupBonusClick}
 												disabled={loading}
 											>
