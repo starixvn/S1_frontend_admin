@@ -225,6 +225,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			startAmount,
 			endAmount,
 			depositId,
+			hasReceipt,
 			...rest
 		} = form.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -250,6 +251,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				endAmount: endAmount || -1,
 				depositId: depositId || null,
 				dateType,
+				hasReceipt,
 				...rest,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -266,6 +268,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				dateType,
 				...rest,
 				timeZone: currentTimeZoneUtcOffset,
+				hasReceipt,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
 					? queryVisibilityColumns
 					: null,
@@ -348,6 +351,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				pageNumber,
 				pageSize,
 				startDate,
+				hasReceipt,
 				endDate,
 				dateType = DateTypeEnum.CreateTime,
 			} = queryParams ?? {}
@@ -362,6 +366,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				selectBankCode:
 					selectBankCode?.map((value: string) => Number(value)) ?? [],
 				userName,
+				hasReceipt,
 				depositId,
 				startAmount: Number(startAmount),
 				endAmount: Number(endAmount),
