@@ -12,6 +12,7 @@ import {
 	Typography,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { EditOutlined, EyeOutlined } from '@ant-design/icons'
 import {
 	AmountTypeEnum,
 	amountTypeList,
@@ -27,7 +28,6 @@ import {
 	IGetCashBackGameListResponse,
 	ITierAmountListData,
 } from 'features/bonusManagement/type'
-import { EditOutlined } from '@ant-design/icons'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import {
@@ -50,10 +50,13 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	const { isoCode, currencyId } = currency
 	const { form, editPermission, setCurrentTabActive, onSetGroupBonusClick } =
 		useContext(EditBonusContext)
+
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const active = Form.useWatch(['specific', isoCode, 'active'], form)
+
 	// 因 antd@>=4.24 表單元件的 disabled 屬性優於上層的表單，在此另加入權限判斷
 	const isActiveAndEditable = Boolean(active && editPermission?.canUse)
+
 	// amount type , percentage 或 amount
 	const bonusType = Form.useWatch(['specific', isoCode, 'bonusType'], form)
 	const minLoss = Form.useWatch(['specific', isoCode, 'minLoss'], form)
@@ -642,14 +645,22 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										</Select>
 									</Form.Item>
 								</Col>
+
 								{bonusType === AmountTypeEnum.Percentage && (
 									<Col span={8}>
 										<Form.Item label=' '>
 											<Button
 												type='primary'
-												icon={<EditOutlined />}
+												loading={loading}
+												icon={
+													!isActiveAndEditable ? (
+														<EyeOutlined />
+													) : (
+														<EditOutlined />
+													)
+												}
+												disabled={loading}
 												onClick={onSetGroupBonusClick}
-												disabled={!isActiveAndEditable}
 											>
 												{t('Label_SetPercentageGroup')}
 											</Button>
@@ -661,9 +672,16 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 										<Form.Item label=' '>
 											<Button
 												type='primary'
-												icon={<EditOutlined />}
+												icon={
+													!isActiveAndEditable ? (
+														<EyeOutlined />
+													) : (
+														<EditOutlined />
+													)
+												}
+												loading={loading}
 												onClick={onSetGroupBonusClick}
-												disabled={!isActiveAndEditable}
+												disabled={loading}
 											>
 												{t('Label_SetAmountGroup')}
 											</Button>
