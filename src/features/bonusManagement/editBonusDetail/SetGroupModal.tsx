@@ -96,9 +96,12 @@ const SetGroupModal: FC<ISetGroupModalProps> = ({ visible, onFinish }) => {
 										{...restField}
 										name={[name, 'requiredAmount']}
 										label={
-											formData?.bonusType === BonusTypeEnum.FirstDeposit
-												? t('Label_FirstDepositAmount')
-												: t('Label_RedepositAmount')
+											// eslint-disable-next-line no-nested-ternary
+											index === 0
+												? formData?.bonusType === BonusTypeEnum.FirstDeposit
+													? t('Label_FirstDepositAmount')
+													: t('Label_RedepositAmount')
+												: null
 										}
 										rules={[
 											{
