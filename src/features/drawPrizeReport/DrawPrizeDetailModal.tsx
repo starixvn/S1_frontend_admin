@@ -51,10 +51,11 @@ const DrawPrizeDetailModal = ({
 		},
 		{
 			title: t('Label_Amount'),
-			key: 'userName',
-			dataIndex: 'userName',
+			key: 'amount',
+			dataIndex: 'amount',
 			width: '40%',
 			align: 'center' as 'center',
+			render: (amount: number) => numFormatToDigits(amount),
 		},
 		{
 			title: t('Label_BaseCurrency'),
