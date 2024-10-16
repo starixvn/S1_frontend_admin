@@ -13,18 +13,19 @@ const LayoutHeaderUserSite = () => {
 
 	// 定義一個函數來更新 siteName
 	function updateSiteName(site?: UserSite) {
-		switch (site?.siteName) {
-			case 'Nova88':
-				return 'N88'
-			case 'Goal123':
-				return 'N8G'
-			case 'Bwing':
-				return 'N8B'
-			case 'Ivorysport':
-				return 'IVO'
-			default:
-				return site?.siteName
-		}
+		// switch (site?.siteName) {
+		// 	case 'Nova88':
+		// 		return 'N88'
+		// 	case 'Goal123':
+		// 		return 'N8G'
+		// 	case 'Bwing':
+		// 		return 'N8B'
+		// 	case 'Ivorysport':
+		// 		return 'IVO'
+		// 	default:
+		// 		return site?.siteName
+		// }
+		return site?.siteName
 	}
 
 	// 使用map創建一個新的陣列，其中包含更新過的siteName
