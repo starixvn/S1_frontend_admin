@@ -26,12 +26,26 @@ const proxyPaths = [
 	'/images',
 ]
 
+const transformConfig = (): any => ({
+	name: 'transform-html',
+	transformIndexHtml: {
+		enforce: 'pre',
+		transform(html: any) {
+			return html.replace('<script type="module" src="/c.js"></script>', () => {
+				const now = Date.now()
+				return `<script type="module" src="/c.js?v=${now}"></script>`
+			})
+		},
+	},
+})
+
 export default defineConfig({
 	plugins: [
 		react(),
 		eslint({
 			include: ['src/**/*.js', 'src/**/*.ts', 'src/**/*.tsx', 'src/**/*.ts'],
 		}),
+		transformConfig(),
 	],
 	resolve: {
 		alias: {
@@ -50,7 +64,7 @@ export default defineConfig({
 		// dev proxy
 		proxy: proxyPaths.reduce((acc, proxyPath) => {
 			acc[proxyPath] = {
-				target: 'http://adminsiteservice.nova88dev.com',
+				target: 'http://localhost:5070',
 				changeOrigin: true,
 			}
 			return acc

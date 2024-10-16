@@ -47,6 +47,7 @@ export const axiosBaseQuery =
 				params,
 				headers,
 				responseType,
+				withCredentials: true,
 			})
 
 			if (axiosData?.errorCode && axiosData?.errorCode !== 0) {

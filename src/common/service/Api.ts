@@ -1,11 +1,19 @@
 import axios from 'axios'
 import { UserDataState } from 'type'
 
-export const baseUrl = '/apiV2/'
+declare global {
+	interface Window {
+		envConfig: {
+			adminApiUrl: string
+		}
+	}
+}
+
+export const baseUrl = `${window.envConfig?.adminApiUrl ?? ''}/apiV2/`
 
 export const ApiV1 = axios.create({
 	withCredentials: true,
-	baseURL: '/api/',
+	baseURL: `${window.envConfig?.adminApiUrl ?? ''}/api/`,
 })
 
 export const ApiV2 = axios.create({
