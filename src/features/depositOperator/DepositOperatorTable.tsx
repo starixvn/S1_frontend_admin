@@ -300,6 +300,14 @@ const DepositOperatorTable = ({
 			),
 		},
 		{
+			title: t('Label_DepositCount'),
+			key: 'depositCount',
+			dataIndex: 'depositCnt',
+			width: 60,
+			align: 'center' as 'center',
+			render: (depositCnt: number) => numberFormatter.format(depositCnt),
+		},
+		{
 			title: t('Label_NetWork'),
 			key: 'netWork',
 			width: 60,
@@ -456,14 +464,6 @@ const DepositOperatorTable = ({
 						: ''}
 				</Typography.Text>
 			),
-		},
-		{
-			title: t('Label_DepositCount'),
-			key: 'depositCount',
-			dataIndex: 'depositCnt',
-			width: 60,
-			align: 'center' as 'center',
-			render: (depositCnt: number) => numberFormatter.format(depositCnt),
 		},
 	]
 

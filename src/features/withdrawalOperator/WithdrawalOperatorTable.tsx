@@ -223,16 +223,6 @@ const WithdrawalOperatorTable = ({
 		},
 
 		{
-			title: t('Label_WithdrawalCount'),
-			key: 'withdrawalCount',
-			dataIndex: 'withdrawlCnt',
-			width: 80,
-			align: 'center' as 'center',
-			render: (withdrawlCnt: number) =>
-				numberFormatter.format(withdrawlCnt) ?? '-',
-		},
-
-		{
 			title: t('Label_VipLevel'),
 			key: 'vipLevelName',
 			width: 100,
@@ -249,6 +239,17 @@ const WithdrawalOperatorTable = ({
 				)
 			},
 		},
+
+		{
+			title: t('Label_WithdrawalCount'),
+			key: 'withdrawalCount',
+			dataIndex: 'withdrawlCnt',
+			width: 80,
+			align: 'center' as 'center',
+			render: (withdrawlCnt: number) =>
+				numberFormatter.format(withdrawlCnt) ?? '-',
+		},
+
 		{
 			title: t('Label_NetWork'),
 			key: 'network',
