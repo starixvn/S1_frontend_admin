@@ -21,7 +21,10 @@ export const balanceAdjustmentApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getReasonList: builder.query<IGetReasonListResponse, IGetReasonListArgs>({
+		getBalanceAdjustmentReasonList: builder.query<
+			IGetReasonListResponse,
+			IGetReasonListArgs
+		>({
 			query: data => ({
 				url: 'BalanceAdjustment/GetReasonList',
 				method: 'POST',
@@ -87,7 +90,7 @@ export const balanceAdjustmentApi = rootApi.injectEndpoints({
 
 export const {
 	useGetAdjustmentTypeQuery,
-	useGetReasonListQuery,
+	useGetBalanceAdjustmentReasonListQuery: useGetReasonListQuery,
 	useSetBalanceAdjustmentMutation,
 	useLazyGetCustInfoWithBalanceQuery,
 	useGetAdjustmentLimitInfoQuery,
