@@ -1,5 +1,3 @@
-import React, { useState } from 'react'
-import dayjs from 'dayjs'
 import {
 	Button,
 	DatePicker,
@@ -13,25 +11,27 @@ import {
 	Spin,
 	Tag,
 } from 'antd'
-import { useTranslation } from 'react-i18next'
+import { jsonToObject, timeFormat } from 'common/utils/format'
+import dayjs from 'dayjs'
 import {
 	DepositStatusEnum,
 	IDepositOperatorData,
 } from 'features/depositOperator/type'
-import { jsonToObject, timeFormat } from 'common/utils/format'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { ICalCodeData } from 'common/service/baseDataApi/type'
-import { DEPOSIT_STATUS_TAGS_COLOR } from 'features/depositOperator/constants'
+import { green, red } from '@ant-design/colors'
 import {
-	CopyOutlined,
+	CheckOutlined,
 	CloseOutlined,
+	CopyOutlined,
 	FormOutlined,
 	InfoCircleOutlined,
-	CheckOutlined,
 } from '@ant-design/icons'
-import { red, green } from '@ant-design/colors'
-import { DepositTypeEnum, PermissionInterface } from 'type'
+import { ICalCodeData } from 'common/service/baseDataApi/type'
+import { DEPOSIT_STATUS_TAGS_COLOR } from 'features/depositOperator/constants'
 import { formatNumber } from 'features/depositOperator/utils'
+import { DepositTypeEnum, PermissionInterface } from 'type'
 
 const { Option } = Select
 
@@ -286,7 +286,7 @@ const DepositRequestDepositInfo = ({
 									<Button
 										type='link'
 										icon={<CopyOutlined style={{ fontSize: '1.5rem' }} />}
-										onClick={() => onCopy(String(amount))}
+										onClick={() => onCopy(String(actualDeposit))}
 									/>
 								</>
 							)}
