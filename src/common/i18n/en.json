@@ -286,6 +286,7 @@
 	"Label_RedeemPoint": "Redeem Point",
 	"Label_ActualCost": "Actual Cost",
 	"Label_Receipt": "Receipt",
+	"Label_CannotDeleteCustomerReceiptMessage": "Cannot Delete Customer Receipt",
 	"Label_ShippingInformation": "Shipping Information",
 	"Label_MemberName": "Member Name",
 	"Label_MemberPhone": "Member Phone",

@@ -1,31 +1,32 @@
-import { useTranslation } from 'react-i18next'
-import { UploadFile, UploadProps } from 'antd/es/upload/interface'
+import { PlusOutlined } from '@ant-design/icons'
 import {
 	Card,
 	Descriptions,
 	Form,
 	FormInstance,
 	Image,
+	message,
 	Modal,
 	Spin,
 	Upload,
 } from 'antd'
-import dayjs from 'dayjs'
-import { PlusOutlined } from '@ant-design/icons'
-import React, { useRef, useState } from 'react'
-import { getBase64, normFileForFormImageItem } from 'common/utils/image'
-import { findIndex } from 'lodash'
-import { useModal, usePasteEffect } from 'common/hooks'
 import { RcFile } from 'antd/es/upload'
+import { UploadFile, UploadProps } from 'antd/es/upload/interface'
+import { useModal, usePasteEffect } from 'common/hooks'
+import { IEnumTypeData } from 'common/service/enumApi'
 import { multiEqual } from 'common/utils'
-import { PermissionInterface } from 'type'
+import { timeFormat } from 'common/utils/format'
+import { getBase64, normFileForFormImageItem } from 'common/utils/image'
+import dayjs from 'dayjs'
 import {
 	DepositReceiptCreateFromEnum,
 	DepositStatusEnum,
 	IDepositReceiptByTransIdData,
 } from 'features/depositOperator/type'
-import { timeFormat } from 'common/utils/format'
-import { IEnumTypeData } from 'common/service/enumApi'
+import { findIndex } from 'lodash'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { PermissionInterface } from 'type'
 
 interface IReceiptUploaderProps {
 	loading: boolean
@@ -57,9 +58,11 @@ const ReceiptUploader = ({
 	const canEdit =
 		multiEqual(status, [DepositStatusEnum.Pending, DepositStatusEnum.OnHold]) &&
 		uploadReceiptPermission?.canUse
+
 	const componentRef = useRef(null)
 	const formFileList = Form.useWatch('fileList', form)
 	// previewState
+
 	const previewModal = useModal()
 	const [previewImage, setPreviewImage] = useState('')
 	const [previewAlt, setPreviewAlt] = useState('')
@@ -83,7 +86,7 @@ const ReceiptUploader = ({
 				({ receiptNo }) => receiptNo === Number(uid)
 			)?.receiptNo
 			const createFrom = name.split('&')[3]
-			if (
+			const canDelete =
 				(multiEqual(status, [
 					DepositStatusEnum.Approved,
 					DepositStatusEnum.Canceled,
@@ -97,8 +100,10 @@ const ReceiptUploader = ({
 					DepositStatusEnum.Rejected,
 				]) &&
 					Number(createFrom) === DepositReceiptCreateFromEnum.BackendUser)
-			) {
-				await onDeleteImage(Number(deleteNum))
+			if (canDelete) {
+				onDeleteImage(Number(deleteNum))
+			} else {
+				message.error(t('Label_CannotDeleteCustomerReceiptMessage'))
 			}
 			// 不做 刪除動畫 , 直接打 api , 透過 api refetch 更新 picList
 			return false
