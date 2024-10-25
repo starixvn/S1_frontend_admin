@@ -14,8 +14,13 @@ interface IAuthRequireProps {
 const AuthRequire = ({ functionId, children }: IAuthRequireProps) => {
 	const location = useLocation()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
-	const { actionPermissions, auth, onCheckSignIn, userMenuFunctionData } =
-		useAuth()
+	const {
+		actionPermissions,
+		auth,
+		onCheckSignIn,
+		userMenuFunctionData,
+		userData,
+	} = useAuth()
 	const menuFunctionData = find(userMenuFunctionData, { functionId })
 
 	useEffect(() => {
@@ -42,9 +47,12 @@ const AuthRequire = ({ functionId, children }: IAuthRequireProps) => {
 	// 找到 actionPermissions 的時候再判斷 viewPermission
 	const notViewAllowed = !isEmpty(actionPermissions) && !viewPermission
 
+	const isSuperAdmin = userData?.isSuper
+
 	if (
 		location.pathname !== paths.layout.root &&
-		(notFoundPermission || notViewAllowed)
+		(notFoundPermission || notViewAllowed) &&
+		!isSuperAdmin
 	) {
 		return <Navigate to='/403' state={{ from: location }} replace />
 	}
