@@ -270,7 +270,16 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									},
 								]}
 							>
-								<Input disabled={isEdit} />
+								<Input
+									disabled={isEdit}
+									onChange={e => {
+										// 10/26/24 修正 bonusCode 可能會有人用複製貼上的方式 導致payload有空白或tab的字符串題
+										const cleanValue = e.target.value
+											.replace(/[\t\s]/g, '')
+											.trim()
+										form?.setFieldsValue({ bonusCode: cleanValue })
+									}}
+								/>
 							</Form.Item>
 						</Col>
 						<Col lg={16} md={16} sm={12}>
