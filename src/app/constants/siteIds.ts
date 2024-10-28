@@ -6,4 +6,5 @@ export enum SiteIds {
 	Soon88,
 	IvorySport,
 	Leobet,
+	Tuk555,
 }

@@ -22,6 +22,8 @@ const LayoutHeaderUserSite = () => {
 				return 'N8B'
 			case 'Ivorysport':
 				return 'IVO'
+			case 'Tuk555':
+				return 'Tuk555'
 			default:
 				return site?.siteName
 		}
