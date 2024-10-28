@@ -19,7 +19,6 @@ import {
 	placeholderBase64Image,
 	normFileForFormImageItem,
 } from 'common/utils/image'
-import { cloudImgURL } from 'app/constants/images'
 
 interface IGiftListingImageUploaderProps {
 	form: FormInstance
@@ -71,9 +70,7 @@ const ImageUploader: FC<IGiftListingImageUploaderProps> = ({
 		},
 	}
 
-	const previewImage = imageFile?.preview
-		? imageFile.preview
-		: pictureUrl && `${cloudImgURL}${pictureUrl}`
+	const previewImage = imageFile?.preview ? imageFile.preview : pictureUrl
 
 	return (
 		<Row>
