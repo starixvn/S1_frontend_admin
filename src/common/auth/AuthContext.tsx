@@ -11,7 +11,7 @@ import {
 } from 'type'
 import { message } from 'antd'
 import paths from 'app/constants/paths'
-import { getMapMenu, MENU_MAPPING } from 'app/constants/menuMapping'
+import { MENU_MAPPING } from 'app/constants/menuMapping'
 
 export interface AuthContextType {
 	internalAuth: AuthState
@@ -140,13 +140,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		try {
 			const newAuth = await BoApi.onSignIn(userName, userPassword)
 
-			const { path: dashboardPath } = getMapMenu(1)
+			// 2024.10.29 因為修改 AuthRequire 判斷無權限時正確倒轉到403，因此修改登入後導轉進根目錄
+			// const { path: dashboardPath } = getMapMenu(1)
 
 			const from = (location as LocationState)?.state?.from
 
 			const path = from?.pathname
 				? `${from?.pathname}${from?.search}`
-				: dashboardPath
+				: paths.layout.root
 
 			setAuth(newAuth)
 			navigate(path, { replace: true })

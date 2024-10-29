@@ -5,7 +5,7 @@ import ReactCanvasNest from 'react-canvas-nest'
 import { useAuth } from 'common/hooks'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { getMapMenu } from 'app/constants/menuMapping'
+import paths from 'app/constants/paths'
 import imgLoginBg from 'assets/images/common/login-bg.png'
 import LoginForm from './LoginForm'
 
@@ -41,9 +41,9 @@ const Login = () => {
 	}, [])
 
 	if (auth.isLogin) {
-		const { path: dashboardPath } = getMapMenu(1)
-
-		return <Navigate to={`${dashboardPath}`} />
+		// 2024.10.29 因為修改 AuthRequire 判斷無權限時正確倒轉到403，因此修改判斷後導轉進根目錄
+		// const { path: dashboardPath } = getMapMenu(1)
+		return <Navigate to={paths.layout.root} />
 	}
 
 	const floatColor = '24,144,255'
