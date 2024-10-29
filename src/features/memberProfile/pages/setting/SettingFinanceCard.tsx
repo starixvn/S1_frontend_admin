@@ -6,7 +6,7 @@ import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { MethodTypeEnum } from 'features/balanceAdjustment/constants'
 import { ISettingFinancePermissions } from 'features/memberProfile/type'
-import { useActionPermissionsByFunctionId } from 'common/auth'
+import { useActionPermissionsByFunctionId } from 'common/hooks'
 
 interface ISettingFinanceCardProps {
 	financePermissions: ISettingFinancePermissions
