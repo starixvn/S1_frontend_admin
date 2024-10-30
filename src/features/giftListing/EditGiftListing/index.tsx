@@ -14,12 +14,16 @@ import {
 } from '../api'
 import { GiftTypeEnum, IEditGiftForm } from '../type'
 import GiftFormTabs from '../components/GiftFormTabs'
+import { useAppSelector } from '../../../app/store'
+import { selectUserSite } from '../../../common/enum'
 
 const EditGiftListing = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const { editGiftId, currencyId } = useParams()
+
+	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
 	const [form]: [FormInstance<IEditGiftForm>] = Form.useForm()
 
@@ -87,6 +91,7 @@ const EditGiftListing = () => {
 				status: Boolean(status),
 				giftId: Number(editGiftId),
 				stock: stock || undefined,
+				siteId,
 			}).unwrap()
 
 			message.success(t('System.Label_LoginSuccess'))
