@@ -66,7 +66,6 @@ import SettingGameCard from './SettingGameCard'
 
 const Setting = () => {
 	const { t } = useTranslation()
-
 	const {
 		actionPermissions: {
 			// * infoPermissions
@@ -77,7 +76,6 @@ const Setting = () => {
 			editBirthdayPermission,
 			editAddressPermission,
 			editTagPermission,
-			readDetailPermission,
 			// * riskPermissions
 			isKycPermission,
 			isRickPermission,
@@ -227,7 +225,7 @@ const Setting = () => {
 		try {
 			switch (newSwitchType) {
 				case SettingSwitchTypeEnum.IsKyc: {
-					await switchIsKyc({ custId, status: checked ? 23 : 0 }).unwrap()
+					await switchIsKyc({ custId, status: checked ? 1 : 0 }).unwrap()
 					break
 				}
 				case SettingSwitchTypeEnum.Risk: {
@@ -634,7 +632,6 @@ const Setting = () => {
 				editType={editType}
 				editModal={editModal}
 				form={form}
-				readDetailPermission={readDetailPermission}
 				onEditModalSubmit={handleEditModalSubmit}
 			/>
 
