@@ -6,7 +6,7 @@ export const maskPhoneNumber = (phoneNumber: string) => {
 }
 
 /** 隱藏電子信箱 (根據＠前面的長度生成相同數量的星號)
- *  @param {string} email 電話號碼
+ *  @param {string} email 郵件
  *  @example "123456@gmail.com" -> "******@gmail.com" */
 export const maskEmail = (email: string) => {
 	// 隱藏郵件地址的 @ 前部分，顯示相同數量的星號
