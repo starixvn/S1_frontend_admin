@@ -1,10 +1,11 @@
-import { find, isEmpty } from 'lodash'
+import { find, isEmpty, includes } from 'lodash'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useActionPermissionsEffect, useAuth } from 'common/hooks'
 import paths from 'app/constants/paths'
 import { cloneElement, useEffect } from 'react'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
+import { NEW_SITE_PREFIX_URL } from 'app/config'
 
 interface IAuthRequireProps {
 	functionId?: number
@@ -42,10 +43,16 @@ const AuthRequire = ({ functionId, children }: IAuthRequireProps) => {
 	// 找到 actionPermissions 的時候再判斷 viewPermission
 	const notViewAllowed = !isEmpty(actionPermissions) && !viewPermission
 
-	if (
-		location.pathname !== paths.layout.root &&
-		(notFoundPermission || notViewAllowed)
-	) {
+	// Assign Brand 是透過元件內部判斷 userData isSuper 來控管
+	const unrestrictedPaths: string[] = [
+		paths.layout.root,
+		`/${NEW_SITE_PREFIX_URL}/${paths.assignBrand.root}`,
+	]
+
+	// 路徑需要判斷 view 權限
+	const isRestrictedPath = !includes(unrestrictedPaths, location.pathname)
+
+	if (isRestrictedPath && (notFoundPermission || notViewAllowed)) {
 		return <Navigate to='/403' state={{ from: location }} replace />
 	}
 
