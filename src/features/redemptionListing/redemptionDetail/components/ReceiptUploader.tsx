@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { RcFile } from 'antd/es/upload'
 import { cloneDeep, findIndex } from 'lodash'
-import { cloudImgURL } from 'app/constants/images'
 import { getBase64 } from 'common/utils/image'
 import { useModal } from 'common/hooks'
 
@@ -87,7 +86,7 @@ const ReceiptUploader: FC<ReceiptUploaderInterface> = ({
 					uid: uuidV4(),
 					name: url?.split('/').pop() ?? 'receipt',
 					status: 'done',
-					url: `${cloudImgURL}${url}`,
+					url,
 				}
 				initFileList.push(file)
 			})
