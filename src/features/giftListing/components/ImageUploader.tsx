@@ -1,3 +1,4 @@
+import { head } from 'lodash'
 import { FC, useState } from 'react'
 import { ReloadOutlined, UploadOutlined } from '@ant-design/icons'
 import {
@@ -12,14 +13,12 @@ import {
 } from 'antd'
 import { UploadFile, RcFile } from 'antd/es/upload/interface'
 import type { UploadProps } from 'antd/es/upload/interface'
-import { head } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import {
 	getBase64,
 	placeholderBase64Image,
 	normFileForFormImageItem,
 } from 'common/utils/image'
-import { cloudImgURL } from 'app/constants/images'
 
 interface IGiftListingImageUploaderProps {
 	form: FormInstance
@@ -71,9 +70,7 @@ const ImageUploader: FC<IGiftListingImageUploaderProps> = ({
 		},
 	}
 
-	const previewImage = imageFile?.preview
-		? imageFile.preview
-		: pictureUrl && `${cloudImgURL}${pictureUrl}`
+	const previewImage = imageFile?.preview ? imageFile.preview : pictureUrl
 
 	return (
 		<Row>
