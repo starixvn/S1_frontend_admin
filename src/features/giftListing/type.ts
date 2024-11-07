@@ -143,6 +143,7 @@ export interface IGiftInfoData {
 export type IGiftInfoResponse = IAxiosResponse<IGiftInfoData[]>
 
 export interface IUpdateGiftArgs {
+	siteId?: number
 	giftId: number
 	status: number | boolean
 	categoryId: number
