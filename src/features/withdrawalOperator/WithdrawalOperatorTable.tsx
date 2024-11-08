@@ -367,7 +367,21 @@ const WithdrawalOperatorTable = ({
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 				dataSource={withdrawalList ?? []}
-				rowClassName={record => (record.onUser ? 'gray-background' : '')}
+				rowClassName={record => {
+					const updateTime = dayjs(record.updateTime)
+					const now = dayjs()
+					const isOlderThanTenMinutes = now.diff(updateTime, 'minute') > 10
+					// 超過 10 分鐘優先級最高
+					if (isOlderThanTenMinutes) {
+						return 'red-background'
+					}
+
+					if (record.onUser) {
+						return 'gray-background'
+					}
+
+					return ''
+				}}
 				columns={columns}
 				// eslint-disable-next-line react/no-unstable-nested-components
 				title={() => (
