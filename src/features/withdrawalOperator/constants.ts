@@ -81,3 +81,10 @@ export const DATE_TYPE_OPTIONS = [
 	{ displayKey: 'Label_CreateTime', value: DateTypeEnum.CreateTime },
 	{ displayKey: 'Label_FlowEndTime', value: DateTypeEnum.FlowEndTime },
 ]
+
+export const RED_COLUMNS_STATUS = [
+	WithdrawalStatusEnum.Pending,
+	WithdrawalStatusEnum.OnHold,
+	WithdrawalStatusEnum.Verify,
+	WithdrawalStatusEnum.Process,
+]
