@@ -55,6 +55,9 @@ const GlobalStyle = createGlobalStyle`
     .gray-background {
      background-color: #B8B8B8;
     }
+   .red-background {
+      background-color: #ffd8d8;
+    }
     .gray-background > .ant-table-cell-row-hover {
      background-color: transparent !important;
     }

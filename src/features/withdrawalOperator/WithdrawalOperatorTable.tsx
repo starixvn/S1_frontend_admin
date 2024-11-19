@@ -22,11 +22,13 @@ import { numberFormatter, timeFormat } from 'common/utils/format'
 import dayjs from 'dayjs'
 import {
 	AccountTypeEnum,
+	RED_COLUMNS_STATUS,
 	WITHDRAWAL_STATUS_TAGS_COLOR,
 	WithdrawalStatusEnum,
 } from 'features/withdrawalOperator/constants'
 import { Link } from 'react-router-dom'
 import { VIP_LEVELS_COLOR } from 'features/depositOperator/constants'
+import { includes } from 'lodash'
 
 interface IWithdrawalOperatorTableProps {
 	isAllSite: boolean
@@ -367,7 +369,26 @@ const WithdrawalOperatorTable = ({
 				pagination={pagination as TablePaginationConfig}
 				onChange={onTableChange}
 				dataSource={withdrawalList ?? []}
-				rowClassName={record => (record.onUser ? 'gray-background' : '')}
+				rowClassName={record => {
+					const updateTime = dayjs(record.updateTime)
+					const now = dayjs()
+					const isOlderThanTenMinutes = now.diff(updateTime, 'minute') > 10
+
+					// 超過 10 分鐘優先級最高
+					// 超過 10 分鐘且是指定的 status 翻紅
+					if (
+						isOlderThanTenMinutes &&
+						includes(RED_COLUMNS_STATUS, record.status)
+					) {
+						return 'red-background'
+					}
+
+					if (record.onUser) {
+						return 'gray-background'
+					}
+
+					return ''
+				}}
 				columns={columns}
 				// eslint-disable-next-line react/no-unstable-nested-components
 				title={() => (
