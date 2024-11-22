@@ -41,7 +41,10 @@ import {
 } from 'features/bonusManagement/constants'
 import { MultipleSelect } from 'components/Select'
 import { IVipLevelsData } from 'common/service/allDataApi'
-import { multiEqual } from 'features/bonusManagement/utils'
+import {
+	getFilteredPeriodTypes,
+	multiEqual,
+} from 'features/bonusManagement/utils'
 import { EditBonusContext } from 'features/bonusManagement/editBonusDetail/editBonusContext'
 import { ITagData } from 'features/memberAdministrationList/type'
 import { StyleUpload } from 'features/bankCardManagement/StyleUpload'
@@ -472,22 +475,14 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 											isEdit
 										}
 									>
-										{
-											// 使用三元式判斷: 當BonusType = CashBack 時只能選 Daily 或 Weekly
-											// 其餘 BonusType(上面有限定過，所以剩下ReDeposit和DeviceBonus)可選擇全部 PeriodType
-											(currentBonusType === BonusTypeEnum.CashBack
-												? periodTypeList?.filter(
-														type =>
-															type.value === PeriodTypeEnum.Daily ||
-															type.value === PeriodTypeEnum.Weekly
-												  )
-												: periodTypeList
-											)?.map(type => (
-												<Option key={type.value} value={type.value}>
-													{t(type.displayName)}
-												</Option>
-											))
-										}
+										{getFilteredPeriodTypes(
+											periodTypeList,
+											currentBonusType
+										)?.map(type => (
+											<Option key={type.value} value={type.value}>
+												{t(type.displayName)}
+											</Option>
+										))}
 									</Select>
 								</Form.Item>
 							</Col>
