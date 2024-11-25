@@ -9,6 +9,8 @@ import { Currency } from 'common/enum/type'
 import { assign, cloneDeep, find, includes, omit } from 'lodash'
 import {
 	BonusTypeEnum,
+	ListType,
+	PeriodTypeEnum,
 	StatusEnum,
 	WalletTypeEnum,
 } from 'features/bonusManagement/constants'
@@ -179,5 +181,26 @@ export const displayConditionRequestConverter = (
 	return {
 		isForVipLevel,
 		selectedVipLevel,
+	}
+}
+
+// Helper function to filter period types based on bonus type
+export function getFilteredPeriodTypes(
+	periodTypeList: ListType,
+	bonusType: BonusTypeEnum
+) {
+	switch (bonusType) {
+		case BonusTypeEnum.CashBack:
+			return periodTypeList.filter(period =>
+				[PeriodTypeEnum.Daily, PeriodTypeEnum.Weekly].includes(period.value)
+			)
+
+		case BonusTypeEnum.ReDeposit:
+			return periodTypeList // Show all period types
+
+		default:
+			return periodTypeList.filter(
+				period => period.value !== PeriodTypeEnum.EachTime
+			)
 	}
 }
