@@ -68,6 +68,7 @@ export enum PeriodTypeEnum {
 	Weekly,
 	Monthly,
 	Unlimited,
+	EachTime,
 }
 
 export const periodTypeList: ListType = [
@@ -75,6 +76,7 @@ export const periodTypeList: ListType = [
 	{ value: PeriodTypeEnum.Weekly, displayName: 'Label_Weekly' },
 	{ value: PeriodTypeEnum.Monthly, displayName: 'Label_Monthly' },
 	{ value: PeriodTypeEnum.Unlimited, displayName: 'Label_Unlimited' },
+	{ value: PeriodTypeEnum.EachTime, displayName: 'Label_EachTime' },
 ]
 
 export enum AmountTypeEnum {
