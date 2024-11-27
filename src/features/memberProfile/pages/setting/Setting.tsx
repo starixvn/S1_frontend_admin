@@ -22,6 +22,7 @@ import {
 	useEditEmailNameMutation,
 	useEditFullNameMutation,
 	useEditPhoneNoMutation,
+	useVerificationInfoMutation,
 	useGetBasicInfoQuery,
 	useGetCustPromotionWhiteListDataQuery,
 	useKickOutUserMutation,
@@ -53,6 +54,7 @@ import {
 	SettingCustPromotionWitheListEnum,
 	SettingEditTypeEnum,
 	SettingSwitchTypeEnum,
+	VerifyEnum,
 } from 'features/memberProfile/type'
 import copy from 'copy-to-clipboard'
 import SettingInfoCard from './SettingInfoCard'
@@ -66,8 +68,12 @@ import SettingGameCard from './SettingGameCard'
 
 const Setting = () => {
 	const { t } = useTranslation()
+
 	const {
 		actionPermissions: {
+			// 閱讀權限
+			readDetailPermission,
+
 			// * infoPermissions
 			editFullNamePermission,
 			editEMailPermission,
@@ -97,6 +103,13 @@ const Setting = () => {
 			exclusiveVipPermission,
 		} = {},
 	} = useAuth()
+
+	/** 紀錄 email 或 phone 的表單驗證狀態 */
+	const [verifyState, setVerifyState] = useState<number>(
+		readDetailPermission ? VerifyEnum.Verified : VerifyEnum.Verifying
+	)
+	/** email 或 phone 表單已驗證完畢 */
+	const verifyed = verifyState === VerifyEnum.Verified
 
 	const infoPermissions: ISettingInfoPermissions = {
 		editFullNamePermission,
@@ -164,6 +177,9 @@ const Setting = () => {
 
 	const [editPhoneNo, { isLoading: isEditPhoneNoLoading }] =
 		useEditPhoneNoMutation()
+
+	const [verificationInfo, { isLoading: isVerificationInfoLoading }] =
+		useVerificationInfoMutation()
 
 	const [editBirthday, { isLoading: isEditBirthdayLoading }] =
 		useEditBirthdayMutation()
@@ -320,8 +336,17 @@ const Setting = () => {
 	}
 
 	const handleEditModalSubmit = async () => {
-		const { fullName, email, phoneNo, birthDay, address, reason, status } =
-			form.getFieldsValue()
+		const {
+			fullName,
+			email,
+			verifyEmail,
+			phoneNo,
+			verifyPhoneNo,
+			birthDay,
+			address,
+			reason,
+			status,
+		} = form.getFieldsValue()
 
 		if (editType === SettingEditTypeEnum.FullName) {
 			// 加上條件陳述事需加上{}限制作用域
@@ -352,14 +377,68 @@ const Setting = () => {
 				message.success(t('System.Label_Success'))
 			}
 		} else {
+			const isEditEmailOrPhoneNo =
+				editType === SettingEditTypeEnum.Email ||
+				editType === SettingEditTypeEnum.PhoneNo
+
+			// 編輯郵件和手機時，必須單獨做一個 case，因為需要多做一個驗證步驟，故送完表單後不會直接關閉彈窗，與其他 case 不同
+			if (isEditEmailOrPhoneNo) {
+				enum VerificationInfoEnum {
+					Email = 1,
+					PhoneNo = 2,
+				}
+
+				const editConfig = {
+					[SettingEditTypeEnum.Email]: {
+						verificationType: VerificationInfoEnum.Email,
+						verificationInfo: verifyEmail,
+						edit: () => editEmail({ custId, email }),
+					},
+					[SettingEditTypeEnum.PhoneNo]: {
+						verificationType: VerificationInfoEnum.PhoneNo,
+						verificationInfo: verifyPhoneNo,
+						edit: () => editPhoneNo({ custId, phoneNo }),
+					},
+				}
+
+				/** 當前正在編輯的欄位 Config */
+				const currentEditConfig = editConfig[editType]
+
+				// 驗證電話或郵件
+				if (!verifyed) {
+					try {
+						await verificationInfo({
+							custId,
+							verificationType: currentEditConfig.verificationType,
+							verificationInfo: currentEditConfig.verificationInfo,
+						}).unwrap()
+						setVerifyState(VerifyEnum.Verified) // 驗證失敗，變更至編輯欄位讓使用者可以編輯電話或郵件
+					} catch (error) {
+						setVerifyState(VerifyEnum.Verifying)
+						Modal.error({
+							content: (error as { message?: string }).message,
+						})
+					}
+				}
+				// 編輯電話或郵件
+				else {
+					try {
+						await currentEditConfig.edit().unwrap()
+						setVerifyState(VerifyEnum.Verifying)
+						editModal.onCancel()
+						message.success(t('System.Label_Success'))
+					} catch (error) {
+						setVerifyState(VerifyEnum.Verified) // 編輯失敗，停留至當前的編輯欄位，讓使用者繼續編輯
+						Modal.error({
+							content: (error as { message?: string }).message,
+						})
+					}
+				}
+				return
+			}
+
 			try {
 				switch (editType) {
-					case SettingEditTypeEnum.Email:
-						await editEmail({ custId, email }).unwrap()
-						break
-					case SettingEditTypeEnum.PhoneNo:
-						await editPhoneNo({ custId, phoneNo }).unwrap()
-						break
 					case SettingEditTypeEnum.Birthday: {
 						const payload = {
 							custId,
@@ -527,6 +606,12 @@ const Setting = () => {
 	const isEditModalOpen = editModal.visible && Boolean(editType)
 
 	useEffect(() => {
+		// 當完成驗證手機或電子郵件時，確保表單中的 email 或 phone 欄位自動填入已驗證的資料。
+		// 若表單已成功驗證且存在驗證的 email 或 phoneNo 資料，
+		// 則不再更新表單內容 early return，以避免覆蓋已驗證的資料。
+		const { verifyEmail, verifyPhoneNo } = form.getFieldsValue()
+		if (verifyed && (verifyEmail || verifyPhoneNo)) return
+
 		if ((!isGetCustBasicInfoLoading || !isEditModalOpen) && custBasicInfo) {
 			const {
 				accountName,
@@ -576,7 +661,6 @@ const Setting = () => {
 	return (
 		<>
 			<LayoutContent.Title title='Setting' />
-
 			<LayoutContent.Card style={{ marginTop: -20 }}>
 				<Row gutter={16} justify='start'>
 					<SettingInfoCard
@@ -628,19 +712,20 @@ const Setting = () => {
 
 			<SettingEditModal
 				isEditModalLoading={isEditModalLoading}
+				isVerificationInfoLoading={isVerificationInfoLoading}
 				isEditModalOpen={isEditModalOpen}
 				editType={editType}
 				editModal={editModal}
+				setVerifyState={setVerifyState}
+				verifyed={verifyed}
 				form={form}
 				onEditModalSubmit={handleEditModalSubmit}
 			/>
-
 			<SettingTagsModal
 				custId={custId}
 				tagsModal={tagsModal}
 				tagList={tagList}
 			/>
-
 			<SettingVipLevelModal custId={custId} vipLevelModal={vipLevelModal} />
 		</>
 	)
