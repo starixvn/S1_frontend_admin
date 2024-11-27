@@ -1,22 +1,28 @@
 import dayjs from 'dayjs'
-import { DatePicker, Form, Input, Modal, Select } from 'antd'
+import { Button, DatePicker, Form, Input, Modal, Select } from 'antd'
 import { FormInstance } from 'antd/es/form/Form'
-import { ModalState } from 'common/hooks'
+import { ModalState, useAuth } from 'common/hooks'
 import {
 	ISettingForm,
 	AccountStatusEnum,
 	SettingEditTypeEnum,
+	VerifyEnum,
 } from 'features/memberProfile/type'
+
 import { includes } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { suspendTypeList } from 'features/memberProfile/constants'
+import { useEffect } from 'react'
 
 interface ISettingEditModalProps {
 	isEditModalLoading: boolean
+	isVerificationInfoLoading: boolean
 	isEditModalOpen: boolean
 	editType: SettingEditTypeEnum | undefined
 	editModal: ModalState
 	form: FormInstance<ISettingForm>
+	setVerifyState: (verifyEnum: number) => void
+	verifyed: boolean
 	onEditModalSubmit: () => void
 }
 
@@ -24,13 +30,17 @@ const { Option } = Select
 
 const SettingEditModal = ({
 	isEditModalLoading,
+	isVerificationInfoLoading,
 	isEditModalOpen,
 	editType,
 	editModal: { onCancel },
 	form,
+	setVerifyState,
+	verifyed,
 	onEditModalSubmit,
 }: ISettingEditModalProps) => {
 	const { t } = useTranslation()
+	const { actionPermissions: { readDetailPermission } = {} } = useAuth()
 
 	// * 限制使用者不可填寫空白格
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,16 +49,88 @@ const SettingEditModal = ({
 			? Promise.resolve()
 			: Promise.reject(new Error(t('Label_NoSpacesAllowed')))
 
+	const isPhoneOrEmailEdit =
+		editType === SettingEditTypeEnum.Email ||
+		editType === SettingEditTypeEnum.PhoneNo
+
+	const isEmailEdit = editType === SettingEditTypeEnum.Email
+
+	// 驗證電話或郵件完畢後，將驗證完畢的資料填入，正在編輯的欄位
+	useEffect(() => {
+		if (editType === SettingEditTypeEnum.Email) {
+			const verifyEmail = form.getFieldValue('verifyEmail')
+			form.setFieldsValue({
+				email: verifyEmail,
+			})
+		} else {
+			const verifyPhoneNo = form.getFieldValue('verifyPhoneNo')
+			form.setFieldsValue({
+				phoneNo: verifyPhoneNo,
+			})
+		}
+	}, [verifyed])
+
 	return (
 		<Modal
 			forceRender
 			open={isEditModalOpen}
-			onOk={async () => {
-				form.validateFields().then(() => {
-					onEditModalSubmit()
-				})
-			}}
-			onCancel={onCancel}
+			footer={
+				// 沒有閱讀權限且必須是電話或信箱修改才顯示驗證按鈕
+				!readDetailPermission && isPhoneOrEmailEdit
+					? [
+							<Button
+								key='cancel'
+								onClick={async () => {
+									onCancel()
+									setVerifyState(VerifyEnum.Verifying)
+								}}
+							>
+								{t('Label_Cancel')}
+							</Button>,
+							<Button
+								type='primary'
+								disabled={verifyed}
+								onClick={async () => {
+									await form.validateFields(['verifyEmail'])
+									form.validateFields().then(() => {
+										onEditModalSubmit()
+									})
+								}}
+							>
+								{t(isEmailEdit ? 'Label_verifyEmail' : 'Label_verifyPhoneNo')}
+							</Button>,
+							<Button
+								key='submit'
+								type='primary'
+								loading={isEditModalLoading}
+								disabled={!verifyed || isVerificationInfoLoading}
+								onClick={async () => {
+									form.validateFields(['email'])
+									onEditModalSubmit()
+								}}
+							>
+								{t('Label_OK')}
+							</Button>,
+					  ]
+					: [
+							<Button key='cancel' onClick={onCancel}>
+								{t('Label_Cancel')}
+							</Button>,
+							<Button
+								key='submit'
+								type='primary'
+								disabled={isEditModalLoading}
+								loading={isEditModalLoading}
+								onClick={() => {
+									form.validateFields().then(() => {
+										onEditModalSubmit()
+									})
+								}}
+							>
+								{t('Label_OK')}
+							</Button>,
+					  ]
+			}
 			confirmLoading={isEditModalLoading}
 			closable={false}
 		>
@@ -81,41 +163,97 @@ const SettingEditModal = ({
 					</Form.Item>
 				)}
 				{editType === SettingEditTypeEnum.Email && (
-					<Form.Item
-						name='email'
-						label={t('Label_Email')}
-						rules={[
-							{
-								required: true,
-								message: t('Label_Required', {
-									key: t('Label_Email'),
-								}),
-							},
-							{ type: 'email', message: ' ' },
-						]}
-					>
-						<Input />
-					</Form.Item>
+					<>
+						<Form.Item
+							name='email'
+							label={t('Label_Email')}
+							rules={
+								verifyed
+									? [
+											{
+												required: true,
+												message: t('Label_Required', {
+													key: t('Label_verifyEmail'),
+												}),
+											},
+											{ type: 'email', message: ' ' },
+									  ]
+									: undefined
+							}
+						>
+							<Input disabled={!verifyed} />
+						</Form.Item>
+						{!readDetailPermission && (
+							<Form.Item
+								label={t('Label_verifyEmail')}
+								name='verifyEmail'
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_verifyEmail'),
+										}),
+									},
+									{ type: 'email', message: ' ' },
+								]}
+								style={{ flex: 1 }}
+							>
+								<Input disabled={verifyed} />
+							</Form.Item>
+						)}
+					</>
 				)}
 				{editType === SettingEditTypeEnum.PhoneNo && (
-					<Form.Item
-						name='phoneNo'
-						label={t('Label_PhoneNumber')}
-						rules={[
-							{
-								required: true,
-								message: t('Label_Required', {
-									key: t('Label_PhoneNumber'),
-								}),
-							},
-							{
-								pattern: /^\d+$/,
-								message: t('Label_PhoneNo_Rule'),
-							},
-						]}
-					>
-						<Input type='tel' style={{ width: '100%' }} pattern='[0-9]' />
-					</Form.Item>
+					<>
+						<Form.Item
+							name='phoneNo'
+							label={t('Label_PhoneNumber')}
+							rules={
+								verifyed
+									? [
+											{
+												required: true,
+												message: t('Label_Required', {
+													key: t('Label_PhoneNumber'),
+												}),
+											},
+											{
+												pattern: /^\d+$/,
+												message: t('Label_PhoneNo_Rule'),
+											},
+									  ]
+									: undefined
+							}
+						>
+							<Input
+								disabled={!verifyed}
+								type='tel'
+								style={{ width: '100%' }}
+								pattern='[0-9]'
+							/>
+						</Form.Item>
+						{!readDetailPermission && (
+							<Form.Item
+								label={t('Label_verifyPhoneNo')}
+								name='verifyPhoneNo'
+								rules={[
+									{
+										required: true,
+										message: t('Label_Required', {
+											key: t('Label_PhoneNumber'),
+										}),
+									},
+									{
+										pattern: /^\d+$/,
+										message: t('Label_PhoneNo_Rule'),
+									},
+								]}
+								style={{ flex: 1 }}
+							>
+								<Input disabled={verifyed} />
+							</Form.Item>
+						)}
+					</>
 				)}
 				{editType === SettingEditTypeEnum.Birthday && (
 					<Form.Item

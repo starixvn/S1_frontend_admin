@@ -374,6 +374,11 @@ export enum SettingEditTypeEnum {
 	KickOutUser = 'KickOutUser',
 }
 
+export enum VerifyEnum {
+	Verifying,
+	Verified,
+}
+
 export enum AccountStatusEnum {
 	Running = 1,
 	Suspend,
@@ -402,6 +407,8 @@ export enum SettingCustPromotionWitheListEnum {
 export interface ISettingForm {
 	fullName: string
 	email: string
+	verifyEmail: string
+	verifyPhoneNo: string
 	phoneNo: string
 	birthDay: Dayjs
 	status: number

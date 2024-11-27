@@ -424,6 +424,21 @@ export const memberProfileApi = createApi({
 			}),
 			invalidatesTags: ['BasicInfoMutation'],
 		}),
+		verificationInfo: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				verificationType: number
+				custId: number
+				verificationInfo: string | undefined
+			}
+		>({
+			query: data => ({
+				url: 'Member/VerificationInfo',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['BasicInfoMutation'],
+		}),
 		switchIsKyc: builder.mutation<
 			IAxiosResponse<void>,
 			{
@@ -1210,6 +1225,7 @@ export const {
 	useEditPhoneNoMutation,
 	useEditBirthdayMutation,
 	useEditAddressMutation,
+	useVerificationInfoMutation,
 	useSwitchIsKycMutation,
 	useSwitchRiskMutation,
 	useSwitchPhoneVerifiedMutation,
