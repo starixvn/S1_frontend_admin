@@ -1036,4 +1036,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.productManagement.sub.headerManagement.root,
 	},
+	{
+		icon: null,
+		functionId: paths.report.sub.predictChallengeReport.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.report.sub.predictChallengeReport.root,
+	},
 ]

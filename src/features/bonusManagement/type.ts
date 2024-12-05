@@ -49,6 +49,8 @@ export type ISpecificData = {
 	cashBackSetting: ICashBackSettingData
 	tierAmountList: ITierAmountListData[]
 	turnoverTpGameTypeList?: number[]
+	depositCountAchieved: number
+	depositTermPeriodDays: number
 }
 
 export interface ISpecificDataFrontend extends ISpecificData {

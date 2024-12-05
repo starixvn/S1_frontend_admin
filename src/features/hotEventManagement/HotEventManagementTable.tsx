@@ -19,6 +19,7 @@ import paths from 'app/constants/paths'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from 'app/store'
 import { selectAllCurrencyList } from 'common/enum'
+import { isEmpty } from 'lodash'
 
 interface IHotEventManagementTableProps {
 	loading: boolean
@@ -127,6 +128,28 @@ const HotEventManagementTable: FC<IHotEventManagementTableProps> = ({
 				}
 				return '-'
 			},
+		},
+		{
+			title: t('Label_Prediction'),
+			dataIndex: `isPrediction`,
+			width: 100,
+			align: 'center' as 'center',
+			render: (isPrediction: boolean) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					{isPrediction ? t('Label_Yes') : t('Label_No')}
+				</Typography.Text>
+			),
+		},
+		{
+			title: t('Label_BonusCode'),
+			dataIndex: `bonusCode`,
+			width: 100,
+			align: 'center' as 'center',
+			render: (bonusCode: string) => (
+				<Typography.Text style={{ whiteSpace: 'nowrap', padding: '5px' }}>
+					{!isEmpty(bonusCode) ? bonusCode : 'N/A'}
+				</Typography.Text>
+			),
 		},
 		{
 			title: t('Label_SportLeaguesTitle'),

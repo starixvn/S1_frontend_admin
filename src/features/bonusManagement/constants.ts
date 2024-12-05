@@ -61,6 +61,7 @@ export enum BonusTypeEnum {
 	RetentionFreeBet,
 	DeviceBonus,
 	MissionBonus,
+	PredictionEvent,
 }
 
 export enum PeriodTypeEnum {
@@ -110,3 +111,8 @@ export const promotionActionList: ListType = [
 	{ value: PromotionActionEnum.Link, displayName: 'Label_Link' },
 	{ value: PromotionActionEnum.Detail, displayName: 'Label_Detail' },
 ]
+
+export const predictionEventDepositAmountType = {
+	Both: 0,
+	OneOfTheFollowing: 1,
+} as const

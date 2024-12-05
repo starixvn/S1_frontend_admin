@@ -96,7 +96,6 @@ const DepositPaymentReport = ({ pageTitle }: { pageTitle?: string }) => {
 			}).unwrap()
 			const { dataSource } =
 				TableConverter.depositReportReportConverter(depositPaymentReport)
-
 			setTableData(dataSource)
 			setQueryParams({
 				startTime,

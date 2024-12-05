@@ -44,6 +44,7 @@ const EditHotEvent = () => {
 		awayTeamNameId: number
 		isLiveStreaming: boolean
 		currency: number[]
+		isPrediction: boolean
 	}>()
 	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
@@ -86,6 +87,7 @@ const EditHotEvent = () => {
 				awayTeamNameId,
 				isLiveStreaming,
 				iCurrencyList,
+				isPrediction,
 			} = hotEventDetail
 
 			form.setFieldsValue({
@@ -99,6 +101,7 @@ const EditHotEvent = () => {
 				homeTeamNameId,
 				awayTeamNameId,
 				isLiveStreaming,
+				isPrediction,
 				currency: iCurrencyList,
 			})
 		} catch (error) {
@@ -121,6 +124,7 @@ const EditHotEvent = () => {
 			endTime: rawEndTime,
 			isLiveStreaming,
 			currency,
+			isPrediction,
 		} = await form.validateFields()
 		const battleTime = utcFormatter({
 			date: rawBattleTime,
@@ -148,6 +152,7 @@ const EditHotEvent = () => {
 				endTime,
 				currency: JSON.stringify(currency),
 				isLiveStreaming,
+				isPrediction,
 			}).unwrap()
 			message.success(t('System.Label_Success'))
 			navigate(-1)
@@ -164,6 +169,7 @@ const EditHotEvent = () => {
 			startTime: rawStartTime,
 			endTime: rawEndTime,
 			currency,
+			isPrediction,
 			...rest
 		} = await form.validateFields()
 		const battleTime = utcFormatter({
@@ -184,6 +190,7 @@ const EditHotEvent = () => {
 				battleTime,
 				startTime,
 				endTime,
+				isPrediction,
 				currency: JSON.stringify(currency),
 				...rest,
 			}).unwrap()
@@ -214,8 +221,8 @@ const EditHotEvent = () => {
 		<LayoutContent.Main>
 			<LayoutContent.Title
 				title={`${isEditing ? t('Label_Edit') : t('Label_Add')} - ${t(
-					'Label_HotEventInfo'
-				)}`}
+					'Label_HotEvent'
+				)} / ${t('Label_PredictionInfo')}`}
 			/>
 			<EditForm
 				loading={loading}

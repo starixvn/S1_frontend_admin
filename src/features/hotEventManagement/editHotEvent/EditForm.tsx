@@ -404,6 +404,11 @@ const EditForm: FC<IEditFormProps> = ({
 								</Checkbox>
 							</Form.Item>
 						</Col>
+						<Col lg={6} md={12} xs={12}>
+							<Form.Item name='isPrediction' valuePropName='checked' noStyle>
+								<Checkbox>{t('Label_PredictionChallenge')}</Checkbox>
+							</Form.Item>
+						</Col>
 					</Row>
 					<Row align='middle' gutter={16}>
 						<Col lg={6} md={12} xs={12}>

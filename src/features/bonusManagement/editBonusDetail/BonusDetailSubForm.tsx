@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import {
 	Button,
 	Checkbox,
@@ -10,6 +10,9 @@ import {
 	Select,
 	Spin,
 	Typography,
+	Divider,
+	Radio,
+	RadioChangeEvent,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { EditOutlined, EyeOutlined } from '@ant-design/icons'
@@ -17,6 +20,7 @@ import {
 	AmountTypeEnum,
 	amountTypeList,
 	BonusTypeEnum,
+	predictionEventDepositAmountType,
 } from 'features/bonusManagement/constants'
 import { multiEqual } from 'features/bonusManagement/utils'
 import { Currency } from 'common/enum/type'
@@ -47,6 +51,9 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	currency,
 }) => {
 	const { t } = useTranslation()
+	const [predictionEventType, setPredictionEventType] = useState<number>(
+		predictionEventDepositAmountType.Both
+	)
 	const { isoCode, currencyId } = currency
 	const { form, editPermission, setCurrentTabActive, onSetGroupBonusClick } =
 		useContext(EditBonusContext)
@@ -61,6 +68,17 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	const bonusType = Form.useWatch(['specific', isoCode, 'bonusType'], form)
 	const minLoss = Form.useWatch(['specific', isoCode, 'minLoss'], form)
 	const bonus = Form.useWatch(['specific', isoCode, 'bonus'], form)
+
+	// 目前只有 prediction type Both and One Of 的判斷
+	const requiredAmountForm = Form.useWatch(
+		['specific', isoCode, 'requiredAmount'],
+		form
+	)
+	const depositCountAchievedForm = Form.useWatch(
+		['specific', isoCode, 'depositCountAchieved'],
+		form
+	)
+
 	// Main Form 的 bonusType , 活動類型
 	const currentBonusType = Form.useWatch('bonusType', form)
 	const currentCategory = Form.useWatch('categoryId', form)
@@ -89,6 +107,18 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			categoryId: currentCategory,
 			siteIds: [siteId],
 			currencyId,
+		})
+	}
+
+	const handlePredictionEventType = (e: RadioChangeEvent) => {
+		setPredictionEventType(e.target.value)
+		form?.setFieldsValue({
+			specific: {
+				[isoCode]: {
+					requiredAmount: 0,
+					depositCountAchieved: 0,
+				},
+			},
 		})
 	}
 
@@ -302,6 +332,8 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 								minPayout: 0,
 								tierAmountList: [],
 								minLoss: 0,
+								depositCountAchieved: 0,
+								depositTermPeriodDays: 0,
 							},
 						},
 					}}
@@ -1106,6 +1138,170 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 								</Form.Item>
 							</Col>
 						</Row>
+					)}
+
+					{currentBonusType === BonusTypeEnum.PredictionEvent && (
+						<>
+							<Row gutter={16}>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name={['specific', isoCode, 'bonus']}
+										label={t('Label_BonusAmount')}
+										rules={[
+											{
+												required: active,
+												message: t('Label_Required', {
+													key: t('Label_BonusAmount'),
+												}),
+											},
+										]}
+									>
+										<Input disabled={!isActiveAndEditable} />
+									</Form.Item>
+								</Col>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name={['specific', isoCode, 'depositTermPeriodDays']}
+										label={t('Label_Term_Period_Within_Days', {
+											period: 'days',
+										})}
+										rules={[
+											{
+												required: active,
+												type: 'number',
+												min: 0,
+											},
+										]}
+									>
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+											disabled={!isActiveAndEditable}
+										/>
+									</Form.Item>
+								</Col>
+								<Col lg={8} md={12} xs={12}>
+									<Form.Item
+										name={['specific', isoCode, 'rollOver']}
+										label={t('Label_Rollover')}
+										rules={[
+											{
+												required: active,
+												type: 'number',
+												min: 0,
+											},
+										]}
+									>
+										<InputNumber
+											type='number'
+											controls={false}
+											style={{ width: '100%' }}
+											disabled={!isActiveAndEditable}
+										/>
+									</Form.Item>
+								</Col>
+							</Row>
+							<div style={{ border: '1.5px solid #f0f0f0', padding: '10px' }}>
+								<Divider orientation='left'>
+									<Radio.Group
+										onChange={handlePredictionEventType}
+										value={predictionEventType}
+									>
+										<Radio
+											value={predictionEventDepositAmountType.Both}
+											disabled={!isActiveAndEditable}
+										>
+											{t('Label_Both')}
+										</Radio>
+										<Radio
+											value={predictionEventDepositAmountType.OneOfTheFollowing}
+											disabled={!isActiveAndEditable}
+										>
+											{t('Label_One_Of_The_Following')}
+										</Radio>
+									</Radio.Group>
+								</Divider>
+								<Row gutter={16}>
+									<Col span={12}>
+										<Form.Item
+											// 這裡喔照後端送 api 的方式 deposit Amount = requireAmount，只是名稱不同
+											name={['specific', isoCode, 'requiredAmount']}
+											label={t('Label_Deposit_Amount')}
+											rules={[
+												{
+													required:
+														active &&
+														!(
+															predictionEventType ===
+																predictionEventDepositAmountType.OneOfTheFollowing &&
+															!!depositCountAchievedForm
+														),
+													message: t('Label_Required', {
+														key: t('Label_Deposit_Amount'),
+													}),
+												},
+												{
+													type: 'number',
+													min: 0,
+												},
+											]}
+											validateTrigger='onSubmit'
+										>
+											<InputNumber
+												type='number'
+												controls={false}
+												style={{ width: '100%' }}
+												disabled={
+													!isActiveAndEditable ||
+													(predictionEventType ===
+														predictionEventDepositAmountType.OneOfTheFollowing &&
+														!!depositCountAchievedForm)
+												}
+											/>
+										</Form.Item>
+									</Col>
+									<Col span={12}>
+										<Form.Item
+											name={['specific', isoCode, 'depositCountAchieved']}
+											label={t('Label_Deposit_Count_Achieved')}
+											rules={[
+												{
+													required:
+														active &&
+														!(
+															predictionEventType ===
+																predictionEventDepositAmountType.OneOfTheFollowing &&
+															!!requiredAmountForm
+														),
+													message: t('Label_Required', {
+														key: t('Label_Deposit_Count_Achieved'),
+													}),
+												},
+												{
+													type: 'number',
+													min: 0,
+												},
+											]}
+											// 使用 onChange 等方式會
+											validateTrigger='onSubmit'
+										>
+											<InputNumber
+												type='number'
+												controls={false}
+												style={{ width: '100%' }}
+												disabled={
+													!isActiveAndEditable ||
+													(predictionEventType ===
+														predictionEventDepositAmountType.OneOfTheFollowing &&
+														!!requiredAmountForm)
+												}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+							</div>
+						</>
 					)}
 				</Form>
 			)}

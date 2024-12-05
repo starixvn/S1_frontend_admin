@@ -21,6 +21,8 @@ export interface IGetHotEventListData {
 	lastUpdateTime: string
 	isLiveStreaming: boolean
 	iCurrencyList: number[]
+	isPrediction: boolean
+	bonusCode: string
 }
 
 export type IGetHotEventListResponse = IAxiosResponse<IGetHotEventListData[]>
@@ -42,6 +44,7 @@ export interface IGetHotEventDetailData {
 	awayTeamNameId: number
 	isLiveStreaming: boolean
 	iCurrencyList: number[]
+	isPrediction: boolean
 }
 
 export type IGetHotEventDetailResponse = IAxiosResponse<IGetHotEventDetailData>
@@ -61,6 +64,7 @@ export interface ICreateHotEventArgs {
 	awayTeamNameId: number
 	isLiveStreaming: boolean
 	currency: string
+	isPrediction: boolean
 }
 
 export interface ISetHotEventArgs {
@@ -76,6 +80,7 @@ export interface ISetHotEventArgs {
 	awayTeamNameId: number
 	currency: string
 	isLiveStreaming: boolean
+	isPrediction: boolean
 }
 
 export interface ISetHotEventStatusArgs {

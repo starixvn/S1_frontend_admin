@@ -495,6 +495,10 @@ const paths = {
 				root: 'report/bigWinPopUpReport',
 				functionId: 153,
 			},
+			predictChallengeReport: {
+				root: 'report/predictChallengeReport',
+				functionId: 163,
+			},
 		},
 	},
 	member: {

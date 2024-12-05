@@ -451,6 +451,8 @@ const UpdateBonus: FC<{
 					tierAmountList,
 					cashBackSetting,
 					turnoverTpGameTypeList,
+					depositCountAchieved,
+					depositTermPeriodDays,
 				} = specificData
 				// cashBack setting only cash back need this
 				const { lossAmount, cashBackTpInfos } = cashBackSetting
@@ -478,6 +480,8 @@ const UpdateBonus: FC<{
 								vN_AffCodes,
 								tierAmountList,
 								turnoverTpGameTypeList,
+								depositCountAchieved,
+								depositTermPeriodDays,
 							},
 						},
 					})

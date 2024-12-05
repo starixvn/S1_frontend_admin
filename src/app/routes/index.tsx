@@ -1175,6 +1175,13 @@ const HeaderManagement = lazy(
 		)
 )
 
+const PredictChallengeReport = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PredictChallengeReport' */ 'features/predictChallengeReport/predictChallengeReport'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2915,6 +2922,16 @@ const routes: RouteObject[] = [
 						functionId={paths.productManagement.sub.headerManagement.functionId}
 					>
 						<HeaderManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.report.sub.predictChallengeReport.root}`,
+				element: (
+					<AuthRequire
+						functionId={paths.report.sub.predictChallengeReport.functionId}
+					>
+						<PredictChallengeReport />
 					</AuthRequire>
 				),
 			},
