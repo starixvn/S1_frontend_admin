@@ -242,6 +242,10 @@ const paths = {
 						root: 'finance/setting/modifyPaymentFeeLog',
 						functionId: 139,
 					},
+					pointLevelManagement: {
+						root: 'finance/setting/pointLevelManagement',
+						functionId: 52,
+					},
 				},
 			},
 			depositWithdrawalSector: {
@@ -352,10 +356,6 @@ const paths = {
 			verificationRewardManagement: {
 				root: 'marketing/verificationRewardManagement',
 				functionId: 47,
-			},
-			pointLevelManagement: {
-				root: 'marketing/pointLevelManagement',
-				functionId: 52,
 			},
 			bonus: {
 				root: 'bonus',

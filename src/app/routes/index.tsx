@@ -2475,10 +2475,12 @@ const routes: RouteObject[] = [
 				),
 			},
 			{
-				path: `${NEW_SITE_PREFIX_URL}/${paths.marketing.sub.pointLevelManagement.root}`,
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.pointLevelManagement.root}`,
 				element: (
 					<AuthRequire
-						functionId={paths.marketing.sub.pointLevelManagement.functionId}
+						functionId={
+							paths.finance.sub.setting.sub.pointLevelManagement.functionId
+						}
 					>
 						<PointLevelManagement />
 					</AuthRequire>

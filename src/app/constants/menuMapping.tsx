@@ -391,11 +391,11 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 	},
 	{
 		icon: null,
-		functionId: paths.marketing.sub.pointLevelManagement.functionId,
+		functionId: paths.finance.sub.setting.sub.pointLevelManagement.functionId,
 		internalFunctionKey: allowedRoles.MarketingPointLevelManagement,
 		pathMode: 'NewAdmin',
 		internalPath: 'Marketing/pointLevelManagement',
-		newAdminPath: paths.marketing.sub.pointLevelManagement.root,
+		newAdminPath: paths.finance.sub.setting.sub.pointLevelManagement.root,
 	},
 	{
 		icon: null,
