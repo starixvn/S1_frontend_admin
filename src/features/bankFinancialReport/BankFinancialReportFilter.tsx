@@ -23,6 +23,7 @@ import {
 	IGetFinancialAccountData,
 } from 'features/bankFinancialReport/type'
 import { SearchOutlined } from '@ant-design/icons'
+import { ISelectListPaymentAgentData } from '../bankCardManagement/type'
 
 interface IBankFinancialReportProps {
 	form: FormInstance<IFilterForm>
@@ -31,7 +32,7 @@ interface IBankFinancialReportProps {
 	timeZoneUtcOffset: number
 	currencyListBySite: Currency[]
 	transferChannelList: IEnumTypeData[]
-	agentList: string[]
+	paymentAgentSelectList: ISelectListPaymentAgentData[]
 	financialAccountList: IGetFinancialAccountData[]
 	onSearch: ({
 		currentTimeZoneUtcOffset,
@@ -52,7 +53,7 @@ const BankFinancialReportFilter = ({
 	timeZoneUtcOffset,
 	currencyListBySite,
 	transferChannelList,
-	agentList,
+	paymentAgentSelectList,
 	financialAccountList,
 	onSearch,
 	onTimeZoneChange,
@@ -124,14 +125,14 @@ const BankFinancialReportFilter = ({
 	}
 
 	const agentSelector = () => {
-		const handleChangeAgent = (newAgents: Array<string>) => {
+		const handleChangeAgent = (newAgents: Array<number | string>) => {
 			if (newAgents.includes('all')) {
 				form.setFieldsValue({
-					agents: agentList.map(agent => agent),
+					agents: paymentAgentSelectList.map(({ value }) => value),
 				})
 			} else {
 				form.setFieldsValue({
-					agents: newAgents,
+					agents: newAgents as number[],
 				})
 			}
 		}
@@ -148,13 +149,13 @@ const BankFinancialReportFilter = ({
 						return isIncludes
 					}}
 				>
-					{(agentList.length as number) > 1 && (
+					{(paymentAgentSelectList.length as number) > 1 && (
 						<Option value='all'>{t('Label_SelectAll')}</Option>
 					)}
 
-					{agentList.map(agent => (
-						<Option key={agent} value={agent}>
-							{agent}
+					{paymentAgentSelectList.map(agent => (
+						<Option key={agent.value} value={agent.value}>
+							{agent.name}
 						</Option>
 					))}
 				</MultipleSelect>

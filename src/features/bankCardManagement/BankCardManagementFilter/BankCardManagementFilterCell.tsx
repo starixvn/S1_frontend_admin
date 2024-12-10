@@ -33,7 +33,7 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 		bankInfoList,
 		pointLevelList,
 		purposeList,
-		agentList,
+		paymentAgentSelectList,
 		vipLevelList,
 		supportChannelList,
 		statusEnumList,
@@ -336,7 +336,6 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 								accountNo: '',
 								sysIds: [],
 								purposes: [],
-								agent: '',
 								statuses: [],
 								vipLevels: [],
 								pointLevels: [],
@@ -356,13 +355,11 @@ const BankCardManagementFilterCell: FC<IBankCardManagementFilterProps> = ({
 									{purposeSelector()}
 								</Col>
 								<Col lg={6} md={12} xs={12}>
-									<Form.Item name='agent' label={t('Label_Agent')}>
-										<Select placeholder={t('Label_Select')}>
-											{/* 後端表示全選帶空字串  */}
-											<Option value=''>{t('Label_SelectAll')}</Option>
-											{agentList?.map(agent => (
-												<Option key={agent} value={agent}>
-													{agent}
+									<Form.Item name='agentId' label={t('Label_Agent')}>
+										<Select placeholder={t('Label_Select')} allowClear>
+											{paymentAgentSelectList?.map(({ value, name }) => (
+												<Option key={value} value={value}>
+													{name}
 												</Option>
 											))}
 										</Select>

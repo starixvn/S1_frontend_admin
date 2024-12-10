@@ -18,7 +18,7 @@ export interface IExportWithdrawalListArgs {
 	levelStatuses: number[]
 	selectBankCode: number[]
 	selectCalCode: number[]
-	agent: string
+	agentId: number
 	dateType: number
 }
 
@@ -84,7 +84,7 @@ export interface IGetWithdrawalData {
 	eWalletName: string
 	eWalletSysId: number
 	deviceScore: number
-	agent: string
+	agentId: number
 	usableActionButton: number[]
 	withdrawalAccountingModels: IWithdrawalAccounting[]
 	onUser: string
@@ -125,7 +125,7 @@ export type IFilterForm = {
 	withdrawalTypes: number[]
 	withdrawalMethod: number
 	withdrawalId: string
-	agent: string
+	agentId: number
 	dateType: number
 }
 

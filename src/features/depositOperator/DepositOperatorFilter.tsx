@@ -36,6 +36,7 @@ import {
 } from 'features/depositOperator/constants'
 import { useQueryParams } from 'common/hooks'
 import { isEmpty } from 'lodash'
+import { ISelectListPaymentAgentData } from '../bankCardManagement/type'
 
 const { Panel } = Collapse
 const { RangePicker } = DatePicker
@@ -60,6 +61,7 @@ interface IDepositOperatorFilterProps {
 	vipLevelEnum: IVipLevelEnumData[]
 	calCodeList: ICalCodeData[]
 	timeZoneUtcOffset?: number
+	paymentAgentSelectList: ISelectListPaymentAgentData[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -85,6 +87,7 @@ const DepositOperatorFilter = ({
 	vipLevelEnum,
 	calCodeList,
 	timeZoneUtcOffset,
+	paymentAgentSelectList,
 	onSearch,
 	onTimeZoneChange,
 }: IDepositOperatorFilterProps) => {
@@ -288,7 +291,6 @@ const DepositOperatorFilter = ({
 								startAmount: null,
 								endAmount: null,
 								levelStatuses: [],
-								agent: '',
 								depositId: '',
 								isAllSite: false,
 								dateType: DateTypeEnum.CreateTime,
@@ -496,8 +498,14 @@ const DepositOperatorFilter = ({
 								</Col>
 
 								<Col lg={6} md={12} xs={12}>
-									<Form.Item name='agent' label={t('Label_Agent')}>
-										<Input disabled={isAllSite} allowClear />
+									<Form.Item name='agentId' label={t('Label_Agent')}>
+										<Select placeholder={t('Label_Select')} allowClear>
+											{paymentAgentSelectList?.map(({ value, name }) => (
+												<Option key={value} value={value}>
+													{name}
+												</Option>
+											))}
+										</Select>
 									</Form.Item>
 								</Col>
 

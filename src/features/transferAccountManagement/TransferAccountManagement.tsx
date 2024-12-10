@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import download from 'downloadjs'
 import { FC, useEffect } from 'react'
 import { Form, message } from 'antd'
+import { isEmpty } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { selectCurrencyListBySite, selectUserSite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
@@ -19,18 +20,14 @@ import { useTimeZone } from 'components/TimeZoneSelect'
 import { useAuth, useModal, useQueryParams } from 'common/hooks'
 import {
 	useExportBankTransferAccountMutation,
-	useGetBankTransferAccountAgentListQuery,
 	useLazyGetBankTransferAccountsQuery,
 	useSetBankTransferAccountMutation,
 } from './api'
-import {
-	IBankTransferAccountAgentListResponse,
-	IBankTransferAccountData,
-	IForm,
-} from './type'
+import type { IBankTransferAccountData, IForm } from './type'
 import TransferAccountManagementFilter from './TransferAccountManagementFilter'
 import TransferAccountManagementTable from './TransferAccountManagementTable'
 import TransferAccountManagementModal from './TransferAccountManagementModal'
+import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
 
 const TransferAccountManagement: FC<{
 	pageTitle?: string
@@ -45,10 +42,9 @@ const TransferAccountManagement: FC<{
 	} = useAuth()
 	const [form] = Form.useForm<IForm>()
 	const navigate = useNavigate()
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [queryParams, setQueryParams] = useQueryParams()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-	const currencyIds = Form.useWatch('currencyIds', form)
+	const currencyIdsForm = Form.useWatch('currencyIds', form)
 	const { timeZoneUtcOffset } = useTimeZone()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 
@@ -71,7 +67,7 @@ const TransferAccountManagement: FC<{
 
 	const { bankInfoSys, isFetching: isGetBankInfoSysFetching } =
 		useGetBankInfoSysQuery(null, {
-			selectFromResult: selectBankInfoSysByCurrencyIds(currencyIds),
+			selectFromResult: selectBankInfoSysByCurrencyIds(currencyIdsForm),
 			refetchOnMountOrArgChange: true,
 		})
 
@@ -94,10 +90,9 @@ const TransferAccountManagement: FC<{
 	] = useExportBankTransferAccountMutation()
 
 	const {
-		data: {
-			data: agentList = [],
-		} = {} as IBankTransferAccountAgentListResponse,
-	} = useGetBankTransferAccountAgentListQuery({ siteId })
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
 
 	const handleChangeCurrency = (newCurrencyIds: number[]) => {
 		if (newCurrencyIds.includes(0)) {
@@ -118,10 +113,14 @@ const TransferAccountManagement: FC<{
 	}
 
 	const handleStatusChange = async (record: IBankTransferAccountData) => {
+		// BankTransferAccount/Set 的 payload 不需要 agent
+		const { agent, ...rest } = record
 		try {
-			const response = await setBankTransferAccount(record).unwrap()
+			const response = await setBankTransferAccount(rest).unwrap()
 
-			message.success(response.message ?? t('System.Label_Success'))
+			message.success(
+				isEmpty(response.message) ? t('System.Label_Success') : response.message
+			)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -131,14 +130,30 @@ const TransferAccountManagement: FC<{
 
 	const handleExportBankTransferAccount = async () => {
 		try {
-			const { purposes, ...values } = await form.validateFields()
+			const {
+				currencyIds,
+				sysIds,
+				channels,
+				status,
+				purposes = [],
+				accountNo,
+				agentId,
+			} = queryParams
 
 			const blob = await exportBankTransferAccount({
 				siteId,
+				currencyIds:
+					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
+				channels: channels
+					? channels.map((channel: string) => Number(channel))
+					: [],
+				sysIds: sysIds ? sysIds.map((sysId: string) => Number(sysId)) : [],
 				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
-					: (purposes as number[]),
-				...values,
+					: purposes.map((purpose: string) => Number(purpose)),
+				status: status ? status?.map((value: string) => Number(value)) : [],
+				accountNo,
+				agentId: agentId ? Number(agentId) : 0,
 			}).unwrap()
 
 			download(
@@ -153,7 +168,7 @@ const TransferAccountManagement: FC<{
 	}
 
 	const handleSearch = async () => {
-		const { purposes, ...values } = await form.validateFields()
+		const { purposes, agentId, ...values } = await form.validateFields()
 
 		try {
 			await getBankTransferAccounts({
@@ -161,8 +176,15 @@ const TransferAccountManagement: FC<{
 				purposes: (purposes as ('all' | number)[]).includes('all')
 					? []
 					: (purposes as number[]),
+				// 沒選帶0
+				agentId: agentId ?? 0,
 				...values,
 			}).unwrap()
+			setQueryParams({
+				purposes,
+				agentId: agentId ?? 0,
+				...values,
+			})
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -170,55 +192,76 @@ const TransferAccountManagement: FC<{
 		}
 	}
 
-	const enumLoading =
+	const filterLoading =
 		isGetTransferChannelEnumFetching ||
 		isGetTransferAccountStatusEnumFetching ||
 		isGetTransferAccountPurposeEnumFetching ||
-		isGetBankInfoSysFetching
+		isGetBankInfoSysFetching ||
+		isGetPaymentAgentSelectListLoading
 
-	const loading =
+	const tableLoading =
 		isGetBankTransferAccountsFetching || isSetBankTransferAccountLoading
 
 	useEffect(() => {
-		if (!enumLoading) {
-			form.setFieldsValue({
-				channels: transferChannelEnum.map(({ value }) => value),
-				status: transferAccountStatusEnum.map(({ value }) => value),
-				purposes: ['all'],
-			})
+		const init = () => {
+			if (isEmpty(queryParams)) {
+				form.setFieldsValue({
+					channels: transferChannelEnum.map(({ value }) => value),
+					status: transferAccountStatusEnum.map(({ value }) => value),
+					purposes: ['all'],
+				})
+			} else {
+				const {
+					currencyIds,
+					sysIds,
+					channels,
+					status,
+					purposes = [],
+					accountNo,
+					agentId,
+				} = queryParams
 
-			handleSearch()
-		}
-	}, [enumLoading])
+				form.setFieldsValue({
+					currencyIds: currencyIds.map((currency: string) => Number(currency)),
+					sysIds: sysIds ? sysIds.map((sysId: string) => Number(sysId)) : [],
+					status: status ? status?.map((value: string) => Number(value)) : [],
+					channels: channels
+						? channels.map((channel: string) => Number(channel))
+						: [],
+					purposes: (purposes as ('all' | number)[]).includes('all')
+						? ['all']
+						: purposes.map((purpose: string) => Number(purpose)),
+					accountNo,
+					agentId: agentId ? Number(agentId) : undefined,
+				})
 
-	useEffect(() => {
-		if (siteId && bankTransferAccounts.length > 0) {
-			const currentRecordSiteId = bankTransferAccounts[0].siteId
-			if (siteId !== currentRecordSiteId) {
 				handleSearch()
 			}
 		}
-	}, [siteId])
+		if (!filterLoading) {
+			init()
+		}
+	}, [filterLoading])
 
 	return (
 		<LayoutContent.Main>
 			<LayoutContent.Title title={pageTitle ?? ''} />
 
 			<TransferAccountManagementFilter
-				loading={enumLoading || loading}
+				loading={isGetBankTransferAccountsFetching}
 				form={form}
 				transferChannelEnum={transferChannelEnum}
 				transferAccountStatusEnum={transferAccountStatusEnum}
 				transferAccountPurposeEnum={transferAccountPurposeEnum}
 				bankInfoSys={bankInfoSys}
-				agentList={agentList}
+				paymentAgentSelectList={paymentAgentSelectList}
 				onChangeCurrency={handleChangeCurrency}
 				onChangeSysIds={handleChangeSysIds}
 				onSearch={handleSearch}
 			/>
 
 			<TransferAccountManagementTable
-				loading={loading}
+				loading={tableLoading}
 				viewPermission={viewPermission}
 				editPermission={editPermission}
 				timeZoneUtcOffset={timeZoneUtcOffset}

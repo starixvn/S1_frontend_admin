@@ -9,7 +9,7 @@ export interface IGetBankCardListArgs {
 	vipLevels: number[]
 	pointLevels: number[]
 	supportChannels: number[]
-	agent: string
+	agentId: number
 	accountNo: string
 	pageNumber: number
 	pageSize: number
@@ -133,6 +133,15 @@ export interface IFilterForm {
 	vipLevels: Array<number | string>
 	pointLevels: Array<number | string>
 	supportChannels: Array<number | string>
-	agent: string
+	agentId: number
 	accountNo: string
 }
+
+export interface ISelectListPaymentAgentData {
+	name: string
+	value: number
+}
+
+export type ISelectListPaymentAgentResponse = IAxiosResponse<
+	ISelectListPaymentAgentData[]
+>

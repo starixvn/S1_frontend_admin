@@ -1,20 +1,15 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { FC, useEffect } from 'react'
 import { Form, message, Modal, Space, Typography } from 'antd'
-import { isNaN } from 'lodash'
+import { isEmpty, isNaN } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { useAuth, useQueryParams } from 'common/hooks'
 import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { utcFormatter } from 'common/utils'
+import type { IAddEditForm, IBankTransferAccountData } from './type'
 import {
-	IAddEditForm,
-	IBankTransferAccountAgentListResponse,
-	IBankTransferAccountData,
-} from './type'
-import {
-	useGetBankTransferAccountAgentListQuery,
 	useLazyGetBankTransferAccountByIdQuery,
 	useSetBankTransferAccountMutation,
 } from './api'
@@ -53,12 +48,6 @@ const TransferAccountManagementModal: FC<
 		{ isLoading: isSetBankTransferAccountLoading },
 	] = useSetBankTransferAccountMutation()
 
-	const {
-		data: {
-			data: agentList = [],
-		} = {} as IBankTransferAccountAgentListResponse,
-	} = useGetBankTransferAccountAgentListQuery({ siteId })
-
 	const handleSubmit = async () => {
 		if (!editPermission?.canUse) return
 		const { initialTime, ...values } = await form.validateFields()
@@ -73,8 +62,9 @@ const TransferAccountManagementModal: FC<
 				siteId: recordSiteId || siteId,
 				...values,
 			}).unwrap()
-
-			message.success(response.message ?? t('System.Label_Success'))
+			message.success(
+				isEmpty(response.message) ? t('System.Label_Success') : response.message
+			)
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -103,7 +93,6 @@ const TransferAccountManagementModal: FC<
 				purposes: [],
 				accountNo: '',
 				initialTime: '',
-				agent: '',
 				accountCode: '',
 				displayName: '',
 				initialAmount: undefined,
@@ -112,8 +101,7 @@ const TransferAccountManagementModal: FC<
 				remark: '',
 				payId: undefined,
 				bankLoginUrl: '',
-				bankLoginAccount: '',
-				bankLoginPassword: '',
+				bankLoginInfo: [{ account: '', password: '' }],
 			})
 		}
 	}, [visible])
@@ -144,7 +132,6 @@ const TransferAccountManagementModal: FC<
 			<TransferAccountManagementForm
 				form={form}
 				loading={isSetBankTransferAccountLoading}
-				agentList={agentList}
 				timeZoneUtcOffset={timeZoneUtcOffset}
 				onTimeZoneChange={onTimeZoneChange}
 			/>

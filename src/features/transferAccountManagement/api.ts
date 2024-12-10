@@ -1,6 +1,5 @@
 import { rootApi } from 'common/service/rootApi/api'
-import {
-	IBankTransferAccountAgentListResponse,
+import type {
 	IBankTransferAccountByIdResponse,
 	IBankTransferAccountPayListResponse,
 	IBankTransferAccountResponse,
@@ -58,17 +57,6 @@ export const transferAccountManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		// * 取得 Agent 列表
-		getBankTransferAccountAgentList: builder.query<
-			IBankTransferAccountAgentListResponse,
-			{ siteId?: number }
-		>({
-			query: data => ({
-				url: 'BankTransferAccount/GetAgentList',
-				method: 'POST',
-				data,
-			}),
-		}),
 		// * 新增(Id=0)/更新轉帳帳戶資訊
 		setBankTransferAccount: builder.mutation<
 			ISetBankTransferAccountResponse,
@@ -101,7 +89,6 @@ export const {
 	useLazyGetBankTransferAccountByIdQuery,
 	useGetBankTransferAccountReasonsQuery,
 	useGetBankTransferAccountPayListQuery,
-	useGetBankTransferAccountAgentListQuery,
 	useSetBankTransferAccountMutation,
 	useExportBankTransferAccountMutation,
 } = transferAccountManagementApi

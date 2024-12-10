@@ -3,6 +3,7 @@ import { useAppSelector } from 'app/store'
 import { selectCurrencyListBySite } from 'common/enum'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import {
+	Button,
 	Col,
 	DatePicker,
 	Form,
@@ -11,6 +12,7 @@ import {
 	InputNumber,
 	Row,
 	Select,
+	Space,
 	Spin,
 } from 'antd'
 import { MultipleSelect } from 'components/Select'
@@ -20,9 +22,9 @@ import {
 	useGetBankInfoSysQuery,
 } from 'common/service/allDataApi'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
-import { IGetCryptoInfoResponse } from 'features/withdrawalSubmission/type'
+import type { IGetCryptoInfoResponse } from 'features/withdrawalSubmission/type'
 import { useGetCryptoInfoQuery } from 'features/withdrawalSubmission/api'
-import { IAddEditForm } from 'features/transferAccountManagement/type'
+import type { IAddEditForm } from 'features/transferAccountManagement/type'
 import {
 	useGetBankTransferAccountPayListQuery,
 	useGetBankTransferAccountReasonsQuery,
@@ -30,26 +32,29 @@ import {
 import { ChannelEnum } from 'features/transferAccountManagement/constants'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useAuth } from '../../common/hooks'
+import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
 
 const { Option } = Select
 
 interface ITransferAccountManagementFormProps {
 	form: FormInstance<IAddEditForm>
 	loading: boolean
-	agentList: string[]
 	timeZoneUtcOffset: number
 	onTimeZoneChange: (newUtcOffset: number) => void
 }
 
 const TransferAccountManagementForm: FC<
 	ITransferAccountManagementFormProps
-> = ({ form, loading, agentList, timeZoneUtcOffset, onTimeZoneChange }) => {
+> = ({ form, loading, timeZoneUtcOffset, onTimeZoneChange }) => {
 	const { t } = useTranslation()
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
 	const formCurrencyId = Form.useWatch('currencyId', form)
 	const formChannel = Form.useWatch('channel', form)
 	const formCryptoCurrency = Form.useWatch('cryptoCurrencyId', form)
 	const { actionPermissions: { editPermission } = {} } = useAuth()
+
+	const { data: { data: paymentAgentSelectList = [] } = {} } =
+		useGetPaymentAgentSelectListQuery(null)
 
 	const {
 		data: { data: transferAccountStatusEnum = [] } = {},
@@ -113,14 +118,13 @@ const TransferAccountManagementForm: FC<
 					remark: '',
 					payId: null,
 					bankLoginUrl: '',
-					bankLoginAccount: '',
-					bankLoginPassword: '',
 					transferPin: '',
 					loginPin: '',
 					mobilePin: '',
 					corporateID: '',
 					cryptoCurrencyId: null,
 					network: null,
+					bankLoginInfo: [{ account: '', password: '' }],
 				}}
 				disabled={!editPermission?.canUse}
 			>
@@ -268,30 +272,11 @@ const TransferAccountManagementForm: FC<
 						</Col>
 					) : (
 						<Col lg={8} md={12} xs={24}>
-							<Form.Item name='agent' label={t('Label_Agent')}>
-								<Select
-									showSearch
-									allowClear
-									style={{ width: '100%' }}
-									filterOption={(input, option) => {
-										const isIncludes: boolean = (
-											option!.children as unknown as string
-										)
-											.toLowerCase()
-											.includes(input.toLowerCase())
-
-										if (!isIncludes) {
-											form.setFieldsValue({
-												agent: input,
-											})
-										}
-
-										return isIncludes
-									}}
-								>
-									{agentList?.map(value => (
+							<Form.Item name='agentId' label={t('Label_Agent')}>
+								<Select placeholder={t('Label_Select')} allowClear>
+									{paymentAgentSelectList?.map(({ value, name }) => (
 										<Option key={value} value={value}>
-											{value}
+											{name}
 										</Option>
 									))}
 								</Select>
@@ -468,7 +453,7 @@ const TransferAccountManagementForm: FC<
 							label={t('Label_InitialTime')}
 							style={{ marginTop: 24 }}
 						>
-							<Input.Group compact style={{ width: '100%', display: 'flex' }}>
+							<Space.Compact style={{ width: '100%', display: 'flex' }}>
 								<Form.Item
 									name='initialTime'
 									rules={[
@@ -488,7 +473,7 @@ const TransferAccountManagementForm: FC<
 										onChange={onTimeZoneChange}
 									/>
 								</div>
-							</Input.Group>
+							</Space.Compact>
 						</Form.Item>
 					</Col>
 					<Col lg={8} md={12} xs={24}>
@@ -512,22 +497,65 @@ const TransferAccountManagementForm: FC<
 							<Input allowClear />
 						</Form.Item>
 					</Col>
-					<Col lg={8} md={12} xs={24}>
-						<Form.Item
-							name='bankLoginAccount'
-							label={t('Label_BankLoginAccount')}
-						>
-							<Input allowClear />
+
+					<Col lg={24} md={24} xs={24}>
+						<Form.Item label={t('Label_BankLoginInfo')}>
+							<Form.List name='bankLoginInfo'>
+								{(fields, { add, remove }) => (
+									<Space
+										direction='vertical'
+										size='middle'
+										style={{ width: '100%' }}
+									>
+										{fields.map(({ key, name, ...restField }, index) => {
+											const showRemove = fields.length > 1 && index !== 0
+											const showAdd =
+												fields.length >= 1 && index === fields.length - 1
+
+											return (
+												<Space
+													key={key}
+													direction='horizontal'
+													size='middle'
+													align='start'
+													style={{ width: '100%' }}
+												>
+													<Form.Item {...restField} name={[name, 'account']}>
+														<Input placeholder='Account' />
+													</Form.Item>
+
+													<Form.Item {...restField} name={[name, 'password']}>
+														<Input placeholder='Password' />
+													</Form.Item>
+
+													{showRemove && (
+														<Button
+															type='default'
+															danger
+															onClick={() => remove(name)}
+														>
+															Remove
+														</Button>
+													)}
+
+													{showAdd && (
+														<Button
+															type='default'
+															onClick={() => add()}
+															style={{ borderColor: 'green', color: 'green' }}
+														>
+															Add Login Info
+														</Button>
+													)}
+												</Space>
+											)
+										})}
+									</Space>
+								)}
+							</Form.List>
 						</Form.Item>
 					</Col>
-					<Col lg={8} md={12} xs={24}>
-						<Form.Item
-							name='bankLoginPassword'
-							label={t('Label_BankLoginPassword')}
-						>
-							<Input allowClear />
-						</Form.Item>
-					</Col>
+
 					<Col lg={8} md={12} xs={24}>
 						<Form.Item name='transferPin' label={t('Label_TransferPin')}>
 							<Input allowClear />

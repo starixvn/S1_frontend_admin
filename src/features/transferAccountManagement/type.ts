@@ -8,7 +8,7 @@ export interface IForm {
 	purposes: ('all' | number)[]
 	sysIds: number[]
 	accountNo: string
-	agent: string
+	agentId: number
 }
 
 export interface IAddEditForm {
@@ -18,7 +18,7 @@ export interface IAddEditForm {
 	status: number
 	purposes: number[]
 	accountNo: string | null
-	agent: string | null
+	agentId: number | null
 	accountName: string | null
 	// * accountCode 現在只 for INR IFSC.使用
 	accountCode: string | null
@@ -30,8 +30,10 @@ export interface IAddEditForm {
 	remark: string | null
 	payId: number
 	bankLoginUrl: string | null
-	bankLoginAccount: string | null
-	bankLoginPassword: string | null
+	bankLoginInfo?: Array<{
+		account: string
+		password: string
+	}>
 	transferPin: string | null
 	loginPin: string | null
 	mobilePin: string | null
@@ -45,7 +47,7 @@ export interface IBankTransferAccountsArgs {
 	siteId?: number
 	currencyIds: number[]
 	channels: number[]
-	agent: string
+	agentId: number
 	status: number[]
 	purposes: number[]
 	sysIds: number[]
@@ -64,6 +66,7 @@ export interface IBankTransferAccountData {
 	purposes: number[]
 	channel: number
 	agent: string | null
+	agentId: number
 	payId: number
 	payName: string | null
 	accountNo: string | null
@@ -130,7 +133,7 @@ export interface IExportBankTransferAccountArgs {
 	siteId?: number
 	currencyIds: number[]
 	channels: number[]
-	agent: string
+	agentId: number
 	status: number[]
 	purposes: number[]
 	sysIds: number[]

@@ -6,7 +6,7 @@ export interface IGetBankFinancialReportArgs {
 	startTime: string
 	endTime: string
 	channel: number[] | null
-	agents: string[] | null
+	agents: number[] | null
 	financialAccountIds: number[] | null
 }
 
@@ -48,7 +48,7 @@ export type IFilterForm = {
 	dateRange: [dayjs.Dayjs, dayjs.Dayjs]
 	currencyIds: number[]
 	channel: Array<number | string>
-	agents: string[]
+	agents: Array<number>
 	financialAccountIds: Array<number | string>
 }
 

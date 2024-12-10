@@ -6,7 +6,6 @@ import { Form, message, TablePaginationConfig } from 'antd'
 import { useTranslation } from 'react-i18next'
 import {
 	IFilterForm,
-	IGetAgentListResponse,
 	IGetBankCardListData,
 	IGetBankCardListResponse,
 	IGetBankInfoResponse,
@@ -14,11 +13,11 @@ import {
 	IModalForm,
 } from 'features/bankCardManagement/type'
 import {
-	useGetAgentListQuery,
 	useGetBankInfoQuery,
 	useGetPointLevelListQuery,
 	useLazyGetBankCardListQuery,
 	useSetBankCardMutation,
+	useGetPaymentAgentSelectListQuery,
 } from 'features/bankCardManagement/api'
 import {
 	ILocalPaySettingData,
@@ -72,9 +71,9 @@ const BankCardManagement: FC<{
 	} = useGetEnumTypeQuery({ enumName: 'BankCardManagementPurposeEnum' })
 
 	const {
-		data: { data: agentList = [] } = {} as IGetAgentListResponse,
-		isLoading: isGetAgentListLoading,
-	} = useGetAgentListQuery({ siteId })
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
 
 	const {
 		data: { data: vipLevelList = [] } = {} as IVipLevelsResponse,
@@ -141,6 +140,7 @@ const BankCardManagement: FC<{
 			vipLevels: rawVipLevels,
 			supportChannels: rawSupportChannels,
 			sysIds: rawSySIds,
+			agentId,
 			...args
 		} = filterForm.getFieldsValue()
 
@@ -175,6 +175,8 @@ const BankCardManagement: FC<{
 				sysIds,
 				pageNumber: current,
 				pageSize,
+				// 沒選帶 0
+				agentId: agentId ?? 0,
 				...args,
 			}).unwrap()
 
@@ -187,6 +189,7 @@ const BankCardManagement: FC<{
 				sysIds,
 				pageNumber: current,
 				pageSize,
+				agentId: agentId ?? 0,
 				...args,
 			})
 
@@ -325,14 +328,16 @@ const BankCardManagement: FC<{
 				vipLevels,
 				pointLevels,
 				supportChannels,
-				agent = '',
+				agentId,
 				accountNo = '',
 			} = queryParams
 			setCurrentCurrency(Number(currencyId))
 			// 若當初選 all 的話送的 args 會是空陣列 , 所以 queryParams 拿到的會是 undefined
 			filterForm.setFieldsValue({
 				accountNo,
-				agent,
+				agentId: agentId
+					? Number(agentId)
+					: head(paymentAgentSelectList)?.value,
 				purposes: purposes
 					? purposes.map((purpose: string) => Number(purpose))
 					: ['all'],
@@ -373,7 +378,7 @@ const BankCardManagement: FC<{
 
 	const isFilterLoading =
 		isGetPurposeListLoading ||
-		isGetAgentListLoading ||
+		isGetPaymentAgentSelectListLoading ||
 		isGetVipLevelSettingLoading ||
 		isGetStatusEnumLoading ||
 		isGetBankInfoLoading ||
@@ -389,7 +394,7 @@ const BankCardManagement: FC<{
 					isSearchLoading: isGetBankCardListLoading,
 					onSearch: handleSearch,
 					purposeList,
-					agentList,
+					paymentAgentSelectList,
 					vipLevelList,
 					statusEnumList,
 					pointLevelList,

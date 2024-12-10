@@ -33,6 +33,7 @@ import dayjs from 'dayjs'
 import { WithdrawalOperatorOverviewTable } from 'features/withdrawalOperator/WithdrawalOperatorOverviewTable'
 import { CalCodePurposeEnum } from 'common/service/baseDataApi/type'
 import { DateTypeEnum } from 'features/withdrawalOperator/constants'
+import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
 
 const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -109,6 +110,11 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		currency: 0, // 帶 0 取全部
 	})
 
+	const {
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
+
 	const filteredBankCodeListByCurrencyIds = filter(
 		bankCodeList,
 		({ currencyId }) => includes(formCurrencyIds, currencyId)
@@ -134,6 +140,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			startAmount,
 			endAmount,
 			withdrawalId,
+			agentId,
 			...restValue
 		} = filterForm.getFieldsValue()
 
@@ -156,6 +163,8 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageNumber: current,
 				pageSize,
 				dateType,
+				// 沒填需帶 0
+				agentId: agentId ?? 0,
 				...restValue,
 			}).unwrap()
 			setQueryParams({
@@ -169,6 +178,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				pageSize,
 				timeZone: currentTimeZoneUtcOffset,
 				dateType,
+				agentId: agentId ?? 0,
 				...restValue,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
 					? queryVisibilityColumns
@@ -206,7 +216,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			levelStatuses,
 			selectBankCode,
 			selectCalCode,
-			agent = '',
+			agentId = 0,
 			dateType,
 		} = queryParams
 
@@ -231,7 +241,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 					selectBankCode?.map((bankCode: string) => Number(bankCode)) ?? [],
 				selectCalCode:
 					selectCalCode?.map((calCode: string) => Number(calCode)) ?? [],
-				agent,
+				agentId: Number(agentId) || 0,
 				dateType: Number(dateType),
 			}).unwrap()
 			download(
@@ -251,7 +261,8 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetWithdrawalTypeLoading ||
 		isGetVipLevelListLoading ||
 		isGetCalCodeLoading ||
-		isGetBankCodeListLoading
+		isGetBankCodeListLoading ||
+		isGetPaymentAgentSelectListLoading
 
 	useEffect(() => {
 		const initSelector = () => {
@@ -276,7 +287,7 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				startAmount,
 				endAmount,
 				withdrawalId = '',
-				agent = '',
+				agentId,
 				pageNumber,
 				pageSize,
 				timeZone,
@@ -293,7 +304,8 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 			filterForm.setFieldsValue({
 				isAllSite,
 				withdrawalId,
-				agent,
+				// 最終送 0，但不顯示 0
+				agentId: Number(agentId) || undefined,
 				dateRange: [dayjs(startDate), dayjs(endDate)],
 				startAmount: startAmount || null,
 				endAmount: endAmount || null,
@@ -329,7 +341,8 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				withdrawalId: '',
 				startAmount: 0,
 				endAmount: 0,
-				agent: '',
+				// 最終會送 0
+				agentId: undefined,
 				selectCalCode: [],
 				selectBankCode: [],
 			})
@@ -350,9 +363,10 @@ const WithdrawalOperator = ({ pageTitle }: { pageTitle?: string }) => {
 				calCodeList={filterCalCodeListByBankCode}
 				currencyListBySite={currencyListBySite}
 				withdrawalTypeList={withdrawalTypeList}
+				paymentAgentSelectList={paymentAgentSelectList}
+				bankCodeList={filteredBankCodeListByCurrencyIds}
 				onTimeZoneChange={onTimeZoneChange}
 				onSearch={handleSearch}
-				bankCodeList={filteredBankCodeListByCurrencyIds}
 			/>
 			{!isEmpty(queryParams) && (
 				<WithdrawalOperatorTable

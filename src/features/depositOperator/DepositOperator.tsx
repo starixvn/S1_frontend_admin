@@ -44,6 +44,7 @@ import { AffixButtons } from 'components/AffixButtons'
 import DepositOperatorFilter from 'features/depositOperator/DepositOperatorFilter'
 import DepositOperatorTable from 'features/depositOperator/DepositOperatorTable'
 import DepositOperatorOverviewTable from './DepositOperatorOverviewTable'
+import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
 
 const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -92,6 +93,11 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		siteId,
 		currency: 0, // * All
 	})
+
+	const {
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
 
 	const {
 		data: { data: vipLevelEnum = [] } = {},
@@ -175,7 +181,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			startAmount = null,
 			endAmount = null,
 			levelStatuses = [],
-			agent = '',
+			agentId,
 			selectCalCode = [],
 			startDate,
 			endDate,
@@ -198,7 +204,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				statuses: map(statuses, value => Number(value)) ?? [],
 				currencyIds: map(currencyIds, value => Number(value)) ?? [],
 				levelStatuses: map(levelStatuses, value => Number(value)) ?? [],
-				agent,
+				agentId: Number(agentId) || 0,
 				dateType: Number(dateType),
 			}).unwrap()
 			download(blob, `DepositOperator_${dayjs().format('YYYYMMDDHHmmss')}.xlsx`)
@@ -226,6 +232,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 			endAmount,
 			depositId,
 			hasReceipt,
+			agentId,
 			...rest
 		} = form.getFieldsValue()
 		const [startDate, endDate] = dateRangeToUtcFormatter(
@@ -252,6 +259,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				depositId: depositId || null,
 				dateType,
 				hasReceipt,
+				// 沒選帶 0
+				agentId: agentId ?? 0,
 				...rest,
 			}).unwrap()
 			setPagination(prev => ({ ...prev, current, pageSize }))
@@ -269,6 +278,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				...rest,
 				timeZone: currentTimeZoneUtcOffset,
 				hasReceipt,
+				agentId: agentId ?? 0,
 				visibilityColumns: !isEmpty(queryVisibilityColumns)
 					? queryVisibilityColumns
 					: null,
@@ -312,7 +322,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 		isGetPayEnumListFetching ||
 		isGetbankCodeListLoading ||
 		isGetVipLevelEnumFetching ||
-		isGetCalCodeListFetching
+		isGetCalCodeListFetching ||
+		isGetPaymentAgentSelectListLoading
 
 	useEffect(() => {
 		const initSelector = () => {
@@ -346,7 +357,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				startAmount = null,
 				endAmount = null,
 				levelStatuses = [],
-				agent = '',
+				agentId,
 				selectCalCode = [],
 				pageNumber,
 				pageSize,
@@ -372,7 +383,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				endAmount: Number(endAmount),
 				levelStatuses:
 					levelStatuses?.map((value: string) => Number(value)) ?? [],
-				agent,
+				// 最終送 0，但不顯示 0
+				agentId: Number(agentId) || undefined,
 				selectCalCode:
 					selectCalCode?.map((value: string) => Number(value)) ?? [],
 				dateType: Number(dateType),
@@ -400,7 +412,8 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				startAmount: 0,
 				endAmount: 0,
 				levelStatuses: [],
-				agent: '',
+				// 最終會送 0
+				agentId: undefined,
 				selectCalCode: [],
 			})
 		}
@@ -455,6 +468,7 @@ const DepositOperator = ({ pageTitle = '' }: { pageTitle?: string }) => {
 				vipLevelEnum={vipLevelEnum}
 				calCodeList={calCodeList}
 				timeZoneUtcOffset={timeZoneUtcOffset}
+				paymentAgentSelectList={paymentAgentSelectList}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>

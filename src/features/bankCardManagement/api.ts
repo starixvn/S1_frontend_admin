@@ -11,6 +11,7 @@ import {
 	IGetPointLevelListResponse,
 	ISetBankCardArgs,
 	IGetQrCodeUrlResponse,
+	ISelectListPaymentAgentResponse,
 } from 'features/bankCardManagement/type'
 
 export const bankCardManagementApi = rootApi.injectEndpoints({
@@ -54,13 +55,6 @@ export const bankCardManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
-		getAgentList: builder.query<IGetAgentListResponse, IGetAgentListArgs>({
-			query: data => ({
-				url: 'BankTransferAccount/GetAgentList',
-				method: 'POST',
-				data,
-			}),
-		}),
 		// 獲得 qrCodeUrl
 		getQrCodeUrl: builder.mutation<IGetQrCodeUrlResponse, FormData>({
 			query: data => ({
@@ -76,6 +70,15 @@ export const bankCardManagementApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getPaymentAgentSelectList: builder.query<
+			ISelectListPaymentAgentResponse,
+			null
+		>({
+			query: () => ({
+				url: 'PaymentAgent/GetSelectList',
+				method: 'POST',
+			}),
+		}),
 	}),
 })
 
@@ -84,7 +87,7 @@ export const {
 	useSetBankCardMutation,
 	useGetPointLevelListQuery,
 	useGetBankInfoQuery,
-	useGetAgentListQuery,
 	useGetQrCodeUrlMutation,
 	useCheckQrCodeImgMutation,
+	useGetPaymentAgentSelectListQuery,
 } = bankCardManagementApi

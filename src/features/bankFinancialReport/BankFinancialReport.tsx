@@ -9,7 +9,7 @@ import {
 	useLazyGetBankFinancialReportQuery,
 } from 'features/bankFinancialReport/api'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
-import { useGetAgentListQuery } from 'features/bankCardManagement/api'
+import { useGetPaymentAgentSelectListQuery } from 'features/bankCardManagement/api'
 import { AffixButtons } from 'components/AffixButtons'
 import { BankFinancialReportFilter } from 'features/bankFinancialReport/BankFinancialReportFilter'
 import { Form, message } from 'antd'
@@ -52,9 +52,9 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 	} = useGetEnumTypeQuery({ enumName: 'TransferChannelEnum' })
 
 	const {
-		data: { data: agentList = [] } = {},
-		isLoading: isGetAgentListLoading,
-	} = useGetAgentListQuery({ siteId })
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
 
 	const [
 		getBankFinancialReport,
@@ -73,9 +73,9 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 	}) => {
 		const {
 			dateRange,
-			channel: rawChannel,
-			agents: rawAgents,
-			financialAccountIds: rawAccountIds,
+			channel: rawChannel = [],
+			agents: rawAgents = [],
+			financialAccountIds: rawAccountIds = [],
 			currencyIds,
 		} = filterForm.getFieldsValue()
 		const [startTime, endTime] = dateRangeToUtcFormatter(
@@ -88,7 +88,8 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 			rawChannel.length === transferChannelList.length
 				? null
 				: (rawChannel as number[])
-		const agents = rawAgents.length === agentList.length ? null : rawAgents
+		const agents =
+			rawAgents.length === paymentAgentSelectList.length ? null : rawAgents
 		const financialAccountIds =
 			rawAccountIds.length === financialAccountList.length
 				? null
@@ -145,7 +146,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyIds:
 					currencyIds?.map((currencyId: string) => Number(currencyId)) ?? [],
 				channel: channel?.map((value: string) => Number(value)) ?? null,
-				agents,
+				agents: agents?.map((agent: string) => Number(agent)) ?? null,
 				financialAccountIds:
 					financialAccountIds?.map((accountId: string) => Number(accountId)) ??
 					null,
@@ -165,14 +166,14 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 	const filterLoading =
 		isGetFinancialAccountListLoading ||
 		isGetTransferChannelLoading ||
-		isGetAgentListLoading
+		isGetPaymentAgentSelectListLoading
 
 	useEffect(() => {
 		const init = () => {
 			if (isEmpty(queryParams)) {
 				filterForm.setFieldsValue({
 					channel: transferChannelList.map(({ value }) => value),
-					agents: agentList.map(agent => agent),
+					agents: paymentAgentSelectList.map(({ value }) => value),
 					financialAccountIds: financialAccountList.map(
 						({ financialId }) => financialId
 					),
@@ -194,7 +195,9 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 					channel: channel
 						? channel?.map((value: string) => Number(value))
 						: transferChannelList.map(({ value }) => value),
-					agents: agents ?? agentList.map(agent => agent),
+					agents: agents
+						? agents?.map((type: string) => Number(type))
+						: paymentAgentSelectList.map(({ value }) => value),
 					financialAccountIds: financialAccountIds
 						? financialAccountIds?.map((id: string) => Number(id))
 						: financialAccountList.map(({ financialId }) => financialId),
@@ -222,7 +225,7 @@ const BankFinancialReport = ({ pageTitle }: { pageTitle?: string }) => {
 				currencyListBySite={currencyListBySite}
 				transferChannelList={transferChannelList}
 				financialAccountList={financialAccountList}
-				agentList={agentList}
+				paymentAgentSelectList={paymentAgentSelectList}
 				onSearch={handleSearch}
 				onTimeZoneChange={onTimeZoneChange}
 			/>

@@ -33,6 +33,7 @@ import {
 	DateTypeEnum,
 } from 'features/withdrawalOperator/constants'
 import React from 'react'
+import { ISelectListPaymentAgentData } from '../bankCardManagement/type'
 
 interface IWithdrawalOperatorFilterProps {
 	isAllSite: boolean
@@ -47,6 +48,7 @@ interface IWithdrawalOperatorFilterProps {
 	calCodeList: ICalCodeData[]
 	bankCodeList: IBankCodeData[]
 	onTimeZoneChange: (newUtcOffset: number) => void
+	paymentAgentSelectList: ISelectListPaymentAgentData[]
 	onSearch: ({
 		current,
 		pageSize,
@@ -80,6 +82,7 @@ const WithdrawalOperatorFilter = ({
 	calCodeList,
 	vipLevelList,
 	bankCodeList,
+	paymentAgentSelectList,
 	onSearch,
 	onTimeZoneChange,
 }: IWithdrawalOperatorFilterProps) => {
@@ -297,7 +300,6 @@ const WithdrawalOperatorFilter = ({
 							currencyIds: currencyListBySite?.map(
 								({ currencyId }) => currencyId
 							),
-							agent: '',
 							withdrawalId: '',
 							userName: '',
 							selectCalCode: [],
@@ -442,8 +444,14 @@ const WithdrawalOperatorFilter = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Input disabled={isAllSite} allowClear />
+								<Form.Item name='agentId' label={t('Label_Agent')}>
+									<Select placeholder={t('Label_Select')} allowClear>
+										{paymentAgentSelectList?.map(({ value, name }) => (
+											<Option key={value} value={value}>
+												{name}
+											</Option>
+										))}
+									</Select>
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>

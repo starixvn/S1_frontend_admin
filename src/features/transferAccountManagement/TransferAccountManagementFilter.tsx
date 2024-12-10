@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { IEnumTypeData } from 'common/service/enumApi/type'
+import type { IEnumTypeData } from 'common/service/enumApi/type'
 import {
 	Button,
 	Col,
@@ -17,7 +17,8 @@ import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import { onEnumApiMultipleSelectChange } from 'common/utils'
 import { SearchOutlined } from '@ant-design/icons'
-import { IBankInfoSysData } from 'common/service/allDataApi/type'
+import type { IBankInfoSysData } from 'common/service/allDataApi/type'
+import type { ISelectListPaymentAgentData } from '../bankCardManagement/type'
 
 const { Panel } = Collapse
 const { Option } = Select
@@ -29,7 +30,7 @@ interface TransferAccountManagementFilterProps {
 	transferAccountStatusEnum: IEnumTypeData[]
 	transferAccountPurposeEnum: IEnumTypeData[]
 	bankInfoSys: IBankInfoSysData[]
-	agentList: string[]
+	paymentAgentSelectList: ISelectListPaymentAgentData[]
 	onChangeCurrency: (newCurrencyIds: number[]) => void
 	onChangeSysIds: (newSysIds: number[]) => void
 	onSearch: () => void
@@ -44,7 +45,7 @@ const TransferAccountManagementFilter: FC<
 	transferAccountStatusEnum,
 	transferAccountPurposeEnum,
 	bankInfoSys,
-	agentList,
+	paymentAgentSelectList,
 	onChangeCurrency,
 	onChangeSysIds,
 	onSearch,
@@ -216,32 +217,11 @@ const TransferAccountManagementFilter: FC<
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='agent' label={t('Label_Agent')}>
-									<Select
-										showSearch
-										allowClear
-										style={{ width: '100%' }}
-										filterOption={(input, option) => {
-											const isIncludes: boolean = (
-												option!.children as unknown as string
-											)
-												.toLowerCase()
-												.includes(input.toLowerCase())
-
-											if (!isIncludes) {
-												form.setFieldsValue({
-													agent: input,
-												})
-											}
-
-											return isIncludes
-										}}
-									>
-										{/* 後端表示全選帶空字串  */}
-										<Option value=''>{t('Label_SelectAll')}</Option>
-										{agentList?.map(value => (
+								<Form.Item name='agentId' label={t('Label_Agent')}>
+									<Select placeholder={t('Label_Select')} allowClear>
+										{paymentAgentSelectList?.map(({ value, name }) => (
 											<Option key={value} value={value}>
-												{value}
+												{name}
 											</Option>
 										))}
 									</Select>

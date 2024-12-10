@@ -61,7 +61,7 @@ export interface IGetDepositOperatorListArgs {
 	statuses: number[]
 	currencyIds: number[]
 	levelStatuses: number[]
-	agent: string
+	agentId: number
 	dateType: number
 	hasReceipt: boolean
 }
@@ -179,7 +179,7 @@ export interface IForm {
 	startAmount: number
 	endAmount: number
 	levelStatuses: number[]
-	agent: string
+	agentId: number
 	depositId: string
 	selectCalCode: number[]
 	isAllSite: boolean
@@ -206,7 +206,7 @@ export interface IExportDepositArgs {
 	statuses: number[]
 	currencyIds: number[]
 	levelStatuses: number[]
-	agent: string
+	agentId: number
 	dateType: number
 }
 
