@@ -79,6 +79,13 @@ export const bankCardManagementApi = rootApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
+		getAgentList: builder.query<IGetAgentListResponse, IGetAgentListArgs>({
+			query: data => ({
+				url: 'BankTransferAccount/GetAgentList',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -90,4 +97,5 @@ export const {
 	useGetQrCodeUrlMutation,
 	useCheckQrCodeImgMutation,
 	useGetPaymentAgentSelectListQuery,
+	useGetAgentListQuery,
 } = bankCardManagementApi

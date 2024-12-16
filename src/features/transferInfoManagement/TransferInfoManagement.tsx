@@ -37,7 +37,8 @@ import { useNavigate } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { TransferInfoMethodEnum } from 'features/transferInfoManagement/constants'
-import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
+import { useGetAgentListQuery } from '../bankCardManagement/api'
+import type { IGetAgentListResponse } from '../bankCardManagement/type'
 
 const TransferInfoManagement = ({
 	pageTitle,
@@ -67,9 +68,9 @@ const TransferInfoManagement = ({
 	}>()
 
 	const {
-		data: { data: paymentAgentSelectList = [] } = {},
-		isLoading: isGetPaymentAgentSelectListLoading,
-	} = useGetPaymentAgentSelectListQuery(null)
+		data: { data: agentList = [] } = {} as IGetAgentListResponse,
+		isLoading: isGetAgentListLoading,
+	} = useGetAgentListQuery({ siteId })
 
 	const {
 		data: { data: transferTypeList = [] } = {} as IGetTransferTypeResponse,
@@ -305,7 +306,7 @@ const TransferInfoManagement = ({
 		isTransferTypeLoading ||
 		isGetReasonListLoading ||
 		isGetTransferChannelLoading ||
-		isGetPaymentAgentSelectListLoading ||
+		isGetAgentListLoading ||
 		isGetTransferAccountListLoading ||
 		isGetBankTransferListLoading ||
 		isDeleteTransferLoading
@@ -323,7 +324,7 @@ const TransferInfoManagement = ({
 				transferChannelList={transferChannelList}
 				transferTypeList={transferTypeList}
 				reasonList={reasonList}
-				paymentAgentSelectList={paymentAgentSelectList}
+				agentList={agentList}
 				accountList={accountList}
 			/>
 			{!isEmpty(queryParams) && (

@@ -10,7 +10,7 @@ import {
 	Row,
 	Select,
 } from 'antd'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import TimeZoneSelect from 'components/TimeZoneSelect'
 import { useTranslation } from 'react-i18next'
 import { SearchOutlined } from '@ant-design/icons'
@@ -22,7 +22,6 @@ import {
 } from 'features/transferInfoManagement/type'
 import { IEnumTypeData } from 'common/service/enumApi'
 import { MultipleSelect } from 'components/Select'
-import type { ISelectListPaymentAgentData } from '../bankCardManagement/type'
 
 interface ITransferInfoManagementFilterProps {
 	loading: boolean
@@ -42,7 +41,7 @@ interface ITransferInfoManagementFilterProps {
 	transferTypeList: IGetTransferTypeListData[]
 	reasonList: IGetReasonListData[]
 	transferChannelList: IEnumTypeData[]
-	paymentAgentSelectList: ISelectListPaymentAgentData[]
+	agentList: string[]
 	accountList: IGetTransferAccountListData[]
 }
 
@@ -60,7 +59,7 @@ const TransferInfoManagementFilter = ({
 	transferTypeList,
 	reasonList,
 	transferChannelList,
-	paymentAgentSelectList,
+	agentList,
 	accountList,
 }: ITransferInfoManagementFilterProps) => {
 	const { t } = useTranslation()
@@ -124,7 +123,7 @@ const TransferInfoManagementFilter = ({
 											<RangePicker
 												style={{ width: '100%' }}
 												showTime
-												ranges={RANGE_PICKER_RANGES([
+												presets={RANGE_PICKER_PRESETS([
 													'Today',
 													'Yesterday',
 													'Last Week',
@@ -196,22 +195,48 @@ const TransferInfoManagementFilter = ({
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='fromAgent' label={t('Label_Agent')}>
-									<Select placeholder={t('Label_Select')} allowClear>
-										{paymentAgentSelectList?.map(({ value, name }) => (
-											<Option key={value} value={value}>
-												{name}
+								<Form.Item
+									name='fromAgent'
+									label={`${t('Label_From')}  ${t('Label_Agent')}`}
+								>
+									<Select
+										placeholder={t('Label_Select') + t('Label_Agent')}
+										allowClear
+										showSearch
+										filterOption={(input, option) =>
+											(option!.children as unknown as string)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										optionFilterProp='children'
+									>
+										{agentList?.map(agent => (
+											<Option key={agent} value={agent}>
+												{agent}
 											</Option>
 										))}
 									</Select>
 								</Form.Item>
 							</Col>
 							<Col lg={6} md={12} xs={12}>
-								<Form.Item name='toAgent' label={t('Label_Agent')}>
-									<Select placeholder={t('Label_Select')} allowClear>
-										{paymentAgentSelectList?.map(({ value, name }) => (
-											<Option key={value} value={value}>
-												{name}
+								<Form.Item
+									name='toAgent'
+									label={`${t('Label_To')}  ${t('Label_Agent')}`}
+								>
+									<Select
+										placeholder={t('Label_Select') + t('Label_Agent')}
+										allowClear
+										showSearch
+										filterOption={(input, option) =>
+											(option!.children as unknown as string)
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										optionFilterProp='children'
+									>
+										{agentList?.map(agent => (
+											<Option key={agent} value={agent}>
+												{agent}
 											</Option>
 										))}
 									</Select>
