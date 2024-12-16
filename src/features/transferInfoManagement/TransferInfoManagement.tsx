@@ -27,8 +27,6 @@ import {
 import { TransferInfoManagementFilter } from 'features/transferInfoManagement/TransferInfoManagementFilter'
 import { Form, message, TablePaginationConfig } from 'antd'
 import { AffixButtons } from 'components/AffixButtons'
-import { IGetAgentListResponse } from 'features/bankCardManagement/type'
-import { useGetAgentListQuery } from 'features/bankCardManagement/api'
 import { useEffect } from 'react'
 import dayjs from 'dayjs'
 import { dateRangeToUtcFormatter } from 'common/utils'
@@ -39,6 +37,7 @@ import { useNavigate } from 'react-router-dom'
 import { NEW_SITE_PREFIX_URL } from 'app/config'
 import paths from 'app/constants/paths'
 import { TransferInfoMethodEnum } from 'features/transferInfoManagement/constants'
+import { useGetPaymentAgentSelectListQuery } from '../bankCardManagement/api'
 
 const TransferInfoManagement = ({
 	pageTitle,
@@ -68,6 +67,11 @@ const TransferInfoManagement = ({
 	}>()
 
 	const {
+		data: { data: paymentAgentSelectList = [] } = {},
+		isLoading: isGetPaymentAgentSelectListLoading,
+	} = useGetPaymentAgentSelectListQuery(null)
+
+	const {
 		data: { data: transferTypeList = [] } = {} as IGetTransferTypeResponse,
 		isLoading: isTransferTypeLoading,
 	} = useGetTransferTypeListQuery(null)
@@ -81,11 +85,6 @@ const TransferInfoManagement = ({
 		data: { data: transferChannelList = [] } = {} as IEnumTypeResponse,
 		isLoading: isGetTransferChannelLoading,
 	} = useGetEnumTypeQuery({ enumName: 'TransferChannelEnum' })
-
-	const {
-		data: { data: agentList = [] } = {} as IGetAgentListResponse,
-		isLoading: isGetAgentListLoading,
-	} = useGetAgentListQuery({ siteId })
 
 	const {
 		data: { data: accountList = [] } = {} as IGetTransferAccountListResponse,
@@ -306,7 +305,7 @@ const TransferInfoManagement = ({
 		isTransferTypeLoading ||
 		isGetReasonListLoading ||
 		isGetTransferChannelLoading ||
-		isGetAgentListLoading ||
+		isGetPaymentAgentSelectListLoading ||
 		isGetTransferAccountListLoading ||
 		isGetBankTransferListLoading ||
 		isDeleteTransferLoading
@@ -324,7 +323,7 @@ const TransferInfoManagement = ({
 				transferChannelList={transferChannelList}
 				transferTypeList={transferTypeList}
 				reasonList={reasonList}
-				agentList={agentList}
+				paymentAgentSelectList={paymentAgentSelectList}
 				accountList={accountList}
 			/>
 			{!isEmpty(queryParams) && (
