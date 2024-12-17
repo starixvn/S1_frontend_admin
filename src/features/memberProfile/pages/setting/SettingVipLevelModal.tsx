@@ -9,6 +9,7 @@ import {
 	Spin,
 	Switch,
 	Table,
+	Popconfirm,
 	TablePaginationConfig,
 	Typography,
 } from 'antd'
@@ -28,7 +29,7 @@ import { VIPLevelInfoByCustIdResponse } from 'features/memberProfile/type'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 const { Option } = Select
 
 interface ISettingVipLevelModalProps {
@@ -83,7 +84,16 @@ const SettingVipLevelModal = ({
 		}
 	}
 
-	const { manually, vipLevel: levelName, qualifiedTime } = vipLevelInfo ?? {}
+	const {
+		manually,
+		vipLevel: levelName,
+		qualifiedTime,
+		defaultLevel,
+	} = vipLevelInfo ?? {}
+
+	const selectedDefaultLevel = find(vipLevelSettingEnum, {
+		level: defaultLevel,
+	})
 
 	useEffect(() => {
 		if (visible) {
@@ -132,7 +142,7 @@ const SettingVipLevelModal = ({
 		<Modal
 			open={visible}
 			onCancel={onCancel}
-			width={600}
+			width={700}
 			title='VIP Level'
 			footer={[
 				<Button key='back' onClick={onCancel}>
@@ -142,12 +152,14 @@ const SettingVipLevelModal = ({
 		>
 			<Title level={5}>{t('Label_Level')}</Title>
 			<Spin spinning={isSetVipLevelLoading || isSetVipLevelManuallyLoading}>
-				<Descriptions layout='vertical' bordered>
+				<Descriptions layout='vertical' bordered column={4}>
 					<Descriptions.Item label={t('Label_Manually')}>
-						<Switch
-							checked={Boolean(manually)}
-							onChange={value => handleSetVipLevelManually(value)}
-						/>
+						<Popconfirm
+							title={t('Label_AreYouSure')}
+							onConfirm={() => handleSetVipLevelManually(!manually)}
+						>
+							<Switch checked={Boolean(manually)} />
+						</Popconfirm>
 					</Descriptions.Item>
 					<Descriptions.Item label={t('Label_Level')}>
 						<Select
@@ -162,6 +174,9 @@ const SettingVipLevelModal = ({
 							))}
 						</Select>
 					</Descriptions.Item>
+					<Descriptions.Item label={t('Label_DefaultLevel')}>
+						<Text>{selectedDefaultLevel?.levelName}</Text>
+					</Descriptions.Item>
 					<Descriptions.Item label={t('Label_AuQualifiedTime')}>
 						{dayjs(qualifiedTime)
 							.utcOffset(timeZoneUtcOffset)
@@ -169,6 +184,8 @@ const SettingVipLevelModal = ({
 					</Descriptions.Item>
 				</Descriptions>
 			</Spin>
+
+			<br />
 
 			<Title level={5}>{t('Label_City')}</Title>
 			<Table

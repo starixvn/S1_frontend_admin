@@ -437,6 +437,7 @@ export interface VIPLevelInfoByCustIdData {
 	vipLevel: string
 	manually: number
 	qualifiedTime: string
+	defaultLevel: number
 }
 
 export type VIPLevelInfoByCustIdResponse =
