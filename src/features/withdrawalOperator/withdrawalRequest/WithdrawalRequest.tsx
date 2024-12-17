@@ -27,7 +27,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IAdjustmentWithdrawalData,
 	IGetWithdrawalData,
-	IPayInfo,
+	IPayInfoWithBankLoginInfo,
 	IWithdrawalAccounting,
 	IWithdrawalRequestForm,
 } from 'features/withdrawalOperator/type'
@@ -107,7 +107,7 @@ const WithdrawalRequest = () => {
 
 	// 當前 form 選的 withdrawalType
 	const formWithdrawalType = Form.useWatch('withdrawalType', form)
-	const [payInfo, setPayInfo] = useState<IPayInfo>()
+	const [payInfo, setPayInfo] = useState<IPayInfoWithBankLoginInfo>()
 
 	const {
 		data: {

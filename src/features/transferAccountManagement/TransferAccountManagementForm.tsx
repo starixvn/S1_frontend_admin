@@ -14,7 +14,9 @@ import {
 	Select,
 	Space,
 	Spin,
+	Typography,
 } from 'antd'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { MultipleSelect } from 'components/Select'
 import { useTranslation } from 'react-i18next'
 import {
@@ -502,63 +504,48 @@ const TransferAccountManagementForm: FC<
 						<Form.Item label={t('Label_BankLoginInfo')}>
 							<Form.List name='bankLoginInfo'>
 								{(fields, { add, remove }) => (
-									<Space
-										direction='vertical'
-										size='middle'
-										style={{ width: '100%' }}
-									>
+									<>
 										{fields.map(({ key, name, ...restField }, index) => {
 											const showRemove = fields.length > 1 && index !== 0
-											const showAdd =
-												fields.length >= 1 && index === fields.length - 1
-
 											return (
 												<Space
 													key={key}
-													direction='horizontal'
-													size='middle'
-													align='start'
-													style={{ width: '100%' }}
+													style={{ display: 'flex', marginBottom: 6 }}
+													align='baseline'
 												>
 													<Form.Item {...restField} name={[name, 'account']}>
-														<Input placeholder='Account' />
+														<Input placeholder={t('Label_Account')} />
 													</Form.Item>
 
 													<Form.Item {...restField} name={[name, 'password']}>
-														<Input placeholder='Password' />
+														<Input placeholder={t('Label_Password')} />
 													</Form.Item>
 
 													{showRemove && (
-														<Button
-															type='default'
-															danger
+														<Typography.Link
+															type='danger'
 															onClick={() => remove(name)}
 														>
-															Remove
-														</Button>
-													)}
-
-													{showAdd && (
-														<Button
-															type='default'
-															onClick={() => add()}
-															style={{ borderColor: 'green', color: 'green' }}
-														>
-															Add Login Info
-														</Button>
+															<MinusCircleOutlined />
+														</Typography.Link>
 													)}
 												</Space>
 											)
 										})}
-									</Space>
+
+										<Form.Item>
+											<Button
+												type='dashed'
+												onClick={() => add()}
+												icon={<PlusOutlined />}
+												block
+											>
+												{t('Label_Add_Login_Info')}
+											</Button>
+										</Form.Item>
+									</>
 								)}
 							</Form.List>
-						</Form.Item>
-					</Col>
-
-					<Col lg={8} md={12} xs={24}>
-						<Form.Item name='transferPin' label={t('Label_TransferPin')}>
-							<Input allowClear />
 						</Form.Item>
 					</Col>
 					<Col lg={8} md={12} xs={24}>

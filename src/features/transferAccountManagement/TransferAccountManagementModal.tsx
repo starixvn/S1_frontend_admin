@@ -116,7 +116,7 @@ const TransferAccountManagementModal: FC<
 		<Modal
 			width={660}
 			open={visible}
-			title='Finance Account Info'
+			title={t('Label_Finance_Account_Info')}
 			okText={t('Label_Save')}
 			cancelText={t('Label_Cancel')}
 			confirmLoading={loading}

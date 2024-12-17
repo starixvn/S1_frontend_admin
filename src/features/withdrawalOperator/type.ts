@@ -167,6 +167,16 @@ export interface IPayInfo {
 	corporateID?: string
 }
 
+export interface IPayInfoWithBankLoginInfo {
+	accountNo: string
+	loginUrl: string
+	transferPin: string
+	loginPin: string
+	mobilePin?: string
+	corporateID?: string
+	bankLoginInfo: Array<{ account: string; password: string }>
+}
+
 export type IManualOperatorArgs = IGetByTransIdArgs
 
 export interface IUploadPictureArgs {

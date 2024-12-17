@@ -25,8 +25,7 @@ export interface IBankInfoOffState {
 	channel: number
 	corporateID: string
 	displayName: string
-	bankLoginAccount: string
-	bankLoginPassword: string
+	bankLoginInfo: { account: string; password: string }[]
 	bankLoginUrl: string
 	loginPin: string
 	mobilePin: string
@@ -124,8 +123,7 @@ export interface IOnlinePayData {
 	payName: string
 	channelId: number
 	loginUrl: string
-	loginAccount: string
-	loginPassword: string
+	bankLoginInfo: { account: string; password: string }[]
 	transferPin: string
 	loginPin: string
 }
