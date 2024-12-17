@@ -8,7 +8,7 @@ import { useAppSelector } from 'app/store'
 import { selectUserSite } from 'common/enum'
 import { useTimeZone } from 'components/TimeZoneSelect'
 import { utcFormatter } from 'common/utils'
-import type { IAddEditForm, IBankTransferAccountData } from './type'
+import type { IAddEditForm, IBankTransferAccountByIdData } from './type'
 import {
 	useLazyGetBankTransferAccountByIdQuery,
 	useSetBankTransferAccountMutation,
@@ -38,7 +38,9 @@ const TransferAccountManagementModal: FC<
 	const [
 		getBankTransferAccountById,
 		{
-			data: { data: bankTransferAccount = {} as IBankTransferAccountData } = {},
+			data: {
+				data: bankTransferAccountById = {} as IBankTransferAccountByIdData,
+			} = {},
 			isFetching: isGetBankTransferAccountByIdFetching,
 		},
 	] = useLazyGetBankTransferAccountByIdQuery()
@@ -73,12 +75,16 @@ const TransferAccountManagementModal: FC<
 	}
 
 	useEffect(() => {
-		const { reason, payId, initialTime, ...rest } = bankTransferAccount
+		const { reason, payId, initialTime, bankLoginInfo, ...rest } =
+			bankTransferAccountById
 		form.setFieldsValue({
 			...rest,
 			initialTime: dayjs(initialTime),
 			reason: reason === 0 ? undefined : reason,
 			payId: payId === 0 ? undefined : payId,
+			bankLoginInfo: isEmpty(bankLoginInfo)
+				? [{ account: '', password: '' }]
+				: bankLoginInfo,
 		})
 	}, [isGetBankTransferAccountByIdFetching])
 

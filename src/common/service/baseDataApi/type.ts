@@ -123,7 +123,8 @@ export interface IOnlinePayData {
 	payName: string
 	channelId: number
 	loginUrl: string
-	bankLoginInfo: { account: string; password: string }[]
+	loginAccount: string
+	loginPassword: string
 	transferPin: string
 	loginPin: string
 }

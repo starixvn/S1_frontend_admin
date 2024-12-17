@@ -27,6 +27,7 @@ import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 import {
 	IAdjustmentWithdrawalData,
 	IGetWithdrawalData,
+	IPayInfo,
 	IPayInfoWithBankLoginInfo,
 	IWithdrawalAccounting,
 	IWithdrawalRequestForm,
@@ -107,7 +108,7 @@ const WithdrawalRequest = () => {
 
 	// 當前 form 選的 withdrawalType
 	const formWithdrawalType = Form.useWatch('withdrawalType', form)
-	const [payInfo, setPayInfo] = useState<IPayInfoWithBankLoginInfo>()
+	const [payInfo, setPayInfo] = useState<IPayInfoWithBankLoginInfo | IPayInfo>()
 
 	const {
 		data: {
@@ -950,7 +951,8 @@ const WithdrawalRequest = () => {
 					<PayInfoModal
 						visible={payInfoModal.visible}
 						type={currentWithdrawalType}
-						payInfo={payInfo}
+						// 目前只有 LocalBank LocalBank 才會打開這 Modal，條件寫在 903 行
+						payInfo={payInfo as IPayInfoWithBankLoginInfo}
 						onCancel={payInfoModal.onCancel}
 					/>
 					{/* IP User */}

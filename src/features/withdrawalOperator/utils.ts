@@ -1,5 +1,8 @@
 import { WithdrawalTypeEnum } from 'features/withdrawalOperator/constants'
-import { IPayInfoWithBankLoginInfo } from 'features/withdrawalOperator/type'
+import {
+	IPayInfo,
+	IPayInfoWithBankLoginInfo,
+} from 'features/withdrawalOperator/type'
 import { assign } from 'lodash'
 import {
 	IBankInfoOffState,
@@ -10,21 +13,28 @@ import {
 export const hashPayInfo = (
 	type: WithdrawalTypeEnum,
 	record: IOnlinePayData | ICryptoPayData | IBankInfoOffState
-): IPayInfoWithBankLoginInfo => {
-	const result = {}
+) => {
+	const result: Partial<IPayInfo | IPayInfoWithBankLoginInfo> = {}
 	if (
 		type !== WithdrawalTypeEnum.LocalBank &&
 		type !== WithdrawalTypeEnum.CryptoWallet
 	) {
-		const { payName, loginUrl, loginPin, bankLoginInfo, transferPin } =
-			record as IOnlinePayData
+		const {
+			payName,
+			loginUrl,
+			loginPin,
+			loginAccount,
+			loginPassword,
+			transferPin,
+		} = record as IOnlinePayData
 		assign(result, {
 			accountNo: payName,
 			loginUrl,
 			loginPin,
-			bankLoginInfo,
+			loginAccount,
+			loginPassword,
 			transferPin,
-		} as IPayInfoWithBankLoginInfo)
+		} as IPayInfo)
 	} else {
 		const {
 			displayName,
@@ -45,5 +55,5 @@ export const hashPayInfo = (
 			corporateID,
 		} as IPayInfoWithBankLoginInfo)
 	}
-	return result as IPayInfoWithBankLoginInfo
+	return result as IPayInfo | IPayInfoWithBankLoginInfo
 }

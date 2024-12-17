@@ -15,8 +15,7 @@ const DepositRequestBankInfoDescriptions = ({
 	const {
 		displayName,
 		bankLoginUrl,
-		bankLoginAccount,
-		bankLoginPassword,
+		bankLoginInfo = [{ account: '', password: '' }],
 		transferPin,
 		loginPin,
 		mobilePin,
@@ -40,30 +39,38 @@ const DepositRequestBankInfoDescriptions = ({
 					<SelectOutlined />
 				</Typography.Link>
 			</Descriptions.Item>
-			<Descriptions.Item label={t('Label_Account')}>
-				<Row align='middle' justify='space-between'>
-					{bankLoginAccount || '-'}
-					<Button
-						disabled={!bankLoginAccount}
-						type='link'
-						style={{ padding: '0px' }}
-						icon={<CopyOutlined />}
-						onClick={() => onCopy(String(bankLoginAccount))}
-					/>
-				</Row>
-			</Descriptions.Item>
-			<Descriptions.Item label={t('Label_Password')}>
-				<Row align='middle' justify='space-between'>
-					{bankLoginPassword || '-'}
-					<Button
-						disabled={!bankLoginPassword}
-						type='link'
-						style={{ padding: '0px' }}
-						icon={<CopyOutlined />}
-						onClick={() => onCopy(String(bankLoginPassword))}
-					/>
-				</Row>
-			</Descriptions.Item>
+			{bankLoginInfo.map((info, index) => {
+				const { account, password } = info || {}
+				return (
+					// eslint-disable-next-line react/no-array-index-key
+					<React.Fragment key={index}>
+						<Descriptions.Item label={t('Label_Account')}>
+							<Row align='middle' justify='space-between'>
+								{account || '-'}
+								<Button
+									disabled={!account}
+									type='link'
+									style={{ padding: '0px' }}
+									icon={<CopyOutlined />}
+									onClick={() => onCopy(String(account))}
+								/>
+							</Row>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_Password')}>
+							<Row align='middle' justify='space-between'>
+								{password || '-'}
+								<Button
+									disabled={!password}
+									type='link'
+									style={{ padding: '0px' }}
+									icon={<CopyOutlined />}
+									onClick={() => onCopy(String(password))}
+								/>
+							</Row>
+						</Descriptions.Item>
+					</React.Fragment>
+				)
+			})}
 			<Descriptions.Item label={t('Label_TransferPin')}>
 				{transferPin || '-'}
 			</Descriptions.Item>

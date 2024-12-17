@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Descriptions, Modal, Row, Typography } from 'antd'
+import { Button, Descriptions, Modal, Row, Typography } from 'antd'
 import type { IPayInfoWithBankLoginInfo } from 'features/withdrawalOperator/type'
 import React from 'react'
 import { WithdrawalTypeEnum } from 'features/withdrawalOperator/constants'
@@ -30,7 +30,7 @@ const PayInfoModal = ({
 	const {
 		accountNo,
 		transferPin,
-		bankLoginInfo = [],
+		bankLoginInfo = [{ account: '', password: '' }],
 		loginPin,
 		loginUrl,
 		mobilePin,
@@ -62,27 +62,38 @@ const PayInfoModal = ({
 					</Typography.Link>
 				</Item>
 
-				{bankLoginInfo.map((info, index) => (
-					// eslint-disable-next-line react/no-array-index-key
-					<React.Fragment key={index}>
-						<Item label={`${t('Label_LoginAccount')} ${index + 1}`}>
-							<Row justify='space-between'>
-								{info.account || '-'}
-								<Typography.Link onClick={() => onCopy(String(info.account))}>
-									<CopyOutlined style={{ fontSize: '1rem' }} />
-								</Typography.Link>
-							</Row>
-						</Item>
-						<Item label={`${t('Label_LoginPassword')} ${index + 1}`}>
-							<Row justify='space-between'>
-								{info.password || '-'}
-								<Typography.Link onClick={() => onCopy(String(info.password))}>
-									<CopyOutlined style={{ fontSize: '1rem' }} />
-								</Typography.Link>
-							</Row>
-						</Item>
-					</React.Fragment>
-				))}
+				{bankLoginInfo.map((info, index) => {
+					const { account, password } = info || {}
+					return (
+						// eslint-disable-next-line react/no-array-index-key
+						<React.Fragment key={index}>
+							<Item label={`${t('Label_LoginAccount')} ${index + 1}`}>
+								<Row justify='space-between'>
+									{account || '-'}
+									<Button
+										disabled={!account}
+										type='link'
+										style={{ padding: '0px' }}
+										icon={<CopyOutlined />}
+										onClick={() => onCopy(String(account))}
+									/>
+								</Row>
+							</Item>
+							<Item label={`${t('Label_LoginPassword')} ${index + 1}`}>
+								<Row justify='space-between'>
+									{password || '-'}
+									<Button
+										disabled={!password}
+										type='link'
+										style={{ padding: '0px' }}
+										icon={<CopyOutlined />}
+										onClick={() => onCopy(String(password))}
+									/>
+								</Row>
+							</Item>
+						</React.Fragment>
+					)
+				})}
 
 				<Item label={t('Label_TransferPin')}>{transferPin || '-'}</Item>
 				<Item label={t('Label_LoginPin')}>{loginPin || '-'}</Item>

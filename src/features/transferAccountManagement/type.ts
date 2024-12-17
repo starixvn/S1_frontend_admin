@@ -141,35 +141,45 @@ export interface IExportBankTransferAccountArgs {
 }
 
 export interface IBankTransferAccountByIdData {
-	accountCode: string | null
-	accountName: string | null
-	accountNo: string | null
-	agent: string | null
-	bankCode: string | null
-	channel: number
-	createTime: string | null
-	creator: number
-	creatorName: string | null
-	currencyId: number
-	displayName: string | null
 	id: number
+	siteId: number
+	siteName: string
+	currencyId: number
+	isoCode: string
+	sysId: number
+	bankCode: string
+	jsonPurpose: string
+	purposes: number[]
+	channel: number
+	agent: string
+	agentId: number
+	payId: number
+	payName: any
+	accountNo: string
+	accountName: string
+	accountCode: string
+	displayName: string
+	frontendDisplayName: string
 	initialAmount: number
 	initialTime: string
-	isoCode: string | null
 	maxBalanceAlertAmount: number
-	payId: number
-	payName: string | null
-	purpose: string | null
-	purposes: number[]
 	reason: number
-	remark: null
-	siteId: number
-	siteName: string | null
+	remark: string
 	status: number
-	sysId: number
-	updateTime: string | null
+	createTime: string
+	creator: number
+	creatorName: string
+	updateTime: string
 	updator: number
-	updatorName: string | null
+	updatorName: string
+	bankLoginUrl: string
+	bankLoginInfo: { account: string; password: string }[]
+	transferPin: string
+	loginPin: string
+	mobilePin: string
+	corporateID: string
+	cryptoCurrencyId: number
+	network: string
 }
 
 export type IBankTransferAccountByIdResponse =
