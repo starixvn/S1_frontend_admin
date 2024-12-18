@@ -30,7 +30,10 @@ import type { VIPLevelInfoByCustIdResponse } from 'features/memberProfile/type'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { SiteIds } from '../../../../app/constants/siteIds'
-import { VIP_LEVEL_SETTING_LIST } from '../../sites/onetwobet/constants'
+import {
+	oneTwoBetVipDefaultLevelEnum,
+	VIP_LEVEL_SETTING_LIST,
+} from '../../sites/onetwobet/constants'
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -116,6 +119,20 @@ const SettingVipLevelModal = ({
 		qualifiedTime,
 		defaultLevel: defaultLevelNumber,
 	} = vipLevelInfo ?? {}
+
+	const filteredVipLevelSettingEnum = () => {
+		if (siteId === SiteIds.OneTwoBet) {
+			return vipLevelSettingEnum.filter(
+				vip =>
+					![
+						oneTwoBetVipDefaultLevelEnum.BlackTortoise,
+						oneTwoBetVipDefaultLevelEnum.Qilin,
+					].includes(vip.level) // Exclude levels 1 and 2
+			)
+		}
+
+		return vipLevelSettingEnum
+	}
 
 	const vipLevel =
 		find(vipLevelSettingEnum, {
@@ -232,7 +249,7 @@ const SettingVipLevelModal = ({
 									setOpenLevelPopConfirm(true)
 								}}
 							>
-								{vipLevelSettingEnum.map(level => (
+								{filteredVipLevelSettingEnum().map(level => (
 									<Option key={level.level} value={level.level}>
 										{level.levelName}
 									</Option>

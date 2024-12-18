@@ -50,8 +50,8 @@ export default defineConfig({
 		// dev proxy
 		proxy: proxyPaths.reduce((acc, proxyPath) => {
 			acc[proxyPath] = {
-				// nova: https://backoffice.uat12csd.com
-				// 12-bet: http://adminsiteservice.nova88dev.com
+				// 12-bet: https://backoffice.uat12csd.com
+				// nova: http://adminsiteservice.nova88dev.com
 				target: 'http://adminsiteservice.nova88dev.com',
 				changeOrigin: true,
 			}
