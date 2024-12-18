@@ -1339,5 +1339,9 @@
 	"Label_Awardee": "Awardee",
 	"Label_Predict_Reward": "Predict Reward",
 	"Label_SureToProcess": "Sure to Process ?",
-	"Label_DefaultLevel": "Default Level"
+	"Label_DefaultLevel": "Default Level",
+	"Label_UpdateVipLevelNotification": "Are you sure ? update VIP level",
+	"Label_UpdateVipLevelWarning": "here will not credit tier upgrade bonus & points",
+	"Label_OneTwoBet_VIP_Level_One": "Black Tortoise",
+	"Label_OneTwoBet_VIP_Level_Two": "Qilin"
 }

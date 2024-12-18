@@ -745,11 +745,25 @@ export const memberProfileApi = createApi({
 			IAxiosResponse<void>,
 			{
 				custId: number
-				vipLevel: number
+				vipLevel?: number
 			}
 		>({
 			query: data => ({
 				url: 'Member/SetVipLevel',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['SetVipLevel'],
+		}),
+		setVipLevelDefault: builder.mutation<
+			IAxiosResponse<void>,
+			{
+				custId: number
+				vipLevel?: number
+			}
+		>({
+			query: data => ({
+				url: 'Member/SetVipLevelDefault',
 				method: 'POST',
 				data,
 			}),
@@ -1294,4 +1308,5 @@ export const {
 	useResetOtpTimesMutation,
 	useSetCustTpGameTypeSettingMutation,
 	useLazyGetCustTpGameTypeSettingQuery,
+	useSetVipLevelDefaultMutation,
 } = memberProfileApi

@@ -7,4 +7,5 @@ export enum SiteIds {
 	IvorySport,
 	Leobet,
 	Tuk555,
+	OneTwoBet = 101,
 }

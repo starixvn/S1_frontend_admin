@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import {
 	Button,
@@ -24,10 +24,13 @@ import {
 	useLazyGetVipLevelLogByCustIdQuery,
 	useSetVipLevelMutation,
 	useSetVipLevelManuallyMutation,
+	useSetVipLevelDefaultMutation,
 } from 'features/memberProfile/api'
-import { VIPLevelInfoByCustIdResponse } from 'features/memberProfile/type'
+import type { VIPLevelInfoByCustIdResponse } from 'features/memberProfile/type'
 import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { SiteIds } from '../../../../app/constants/siteIds'
+import { VIP_LEVEL_SETTING_LIST } from '../../sites/onetwobet/constants'
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -44,6 +47,17 @@ const SettingVipLevelModal = ({
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const { visible, onCancel } = vipLevelModal
 	const { timeZoneUtcOffset } = useTimeZone()
+
+	// level
+	const [tempLevel, setTempLevel] = useState<number | undefined>(undefined)
+	const [openLevelPopConfirm, setOpenLevelPopConfirm] = useState(false)
+
+	// default level
+	const [tempDefaultLevel, setDefaultTempLevel] = useState<number | undefined>(
+		undefined
+	)
+	const [openDefaultLevelPopConfirm, setDefaultOpenLevelPopConfirm] =
+		useState(false)
 
 	const [
 		getVipLevelSettingEnum,
@@ -64,9 +78,21 @@ const SettingVipLevelModal = ({
 	const [setVipLevelManually, { isLoading: isSetVipLevelManuallyLoading }] =
 		useSetVipLevelManuallyMutation()
 
-	const handleSetVipLevel = async (vipLevel: number) => {
+	const [setVipLevelDefault, { isLoading: isSetVipLevelDefaultLoading }] =
+		useSetVipLevelDefaultMutation()
+
+	const handleSetVipLevel = async ({
+		vipLevel,
+		isDefault = false,
+	}: {
+		vipLevel: number | undefined
+		isDefault: boolean
+	}) => {
 		try {
-			await setVipLevel({ custId, vipLevel }).unwrap
+			if (!isDefault) {
+				await setVipLevel({ custId, vipLevel }).unwrap
+			}
+			await setVipLevelDefault({ custId, vipLevel }).unwrap
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -88,24 +114,27 @@ const SettingVipLevelModal = ({
 		manually,
 		vipLevel: levelName,
 		qualifiedTime,
-		defaultLevel,
+		defaultLevel: defaultLevelNumber,
 	} = vipLevelInfo ?? {}
 
-	const selectedDefaultLevel = find(vipLevelSettingEnum, {
-		level: defaultLevel,
+	const vipLevel =
+		find(vipLevelSettingEnum, {
+			levelName,
+		})?.level ?? null
+
+	const vipDefaultLevel =
+		find(VIP_LEVEL_SETTING_LIST, {
+			level: defaultLevelNumber,
+		})?.level ?? null // undefined 綁在 Select 元件時會自動填入
+
+	// level 顯示在 popConfirm 上
+	const selectedTemptLevel = find(vipLevelSettingEnum, {
+		level: tempLevel,
 	})
-
-	useEffect(() => {
-		if (visible) {
-			getVipLevelSettingEnum({ siteId })
-			getVipLevelInfoByCustId({ custId }).unwrap()
-			getVipLevelLogByCustId({ custId }).unwrap()
-		}
-	}, [visible])
-
-	const vipLevel: number | undefined = find(vipLevelSettingEnum, {
-		levelName,
-	})?.level
+	// defaultLevel 顯示在 popConfirm 上
+	const selectedTemptDefaultLevel = find(VIP_LEVEL_SETTING_LIST, {
+		level: tempDefaultLevel,
+	})
 
 	const columns: any[] = [
 		{
@@ -138,6 +167,14 @@ const SettingVipLevelModal = ({
 		},
 	]
 
+	useEffect(() => {
+		if (visible) {
+			getVipLevelSettingEnum({ siteId })
+			getVipLevelInfoByCustId({ custId }).unwrap()
+			getVipLevelLogByCustId({ custId }).unwrap()
+		}
+	}, [visible])
+
 	return (
 		<Modal
 			open={visible}
@@ -151,7 +188,13 @@ const SettingVipLevelModal = ({
 			]}
 		>
 			<Title level={5}>{t('Label_Level')}</Title>
-			<Spin spinning={isSetVipLevelLoading || isSetVipLevelManuallyLoading}>
+			<Spin
+				spinning={
+					isSetVipLevelLoading ||
+					isSetVipLevelManuallyLoading ||
+					isSetVipLevelDefaultLoading
+				}
+			>
 				<Descriptions layout='vertical' bordered column={4}>
 					<Descriptions.Item label={t('Label_Manually')}>
 						<Popconfirm
@@ -162,21 +205,82 @@ const SettingVipLevelModal = ({
 						</Popconfirm>
 					</Descriptions.Item>
 					<Descriptions.Item label={t('Label_Level')}>
-						<Select
-							value={vipLevel}
-							style={{ width: '200px' }}
-							onChange={level => handleSetVipLevel(level)}
+						<Popconfirm
+							title={
+								<>
+									{t('Label_UpdateVipLevelNotification')}{' '}
+									<Text strong style={{ color: 'red' }}>
+										{selectedTemptLevel?.levelName}
+									</Text>{' '}
+									{t('Label_UpdateVipLevelWarning')}
+								</>
+							}
+							open={openLevelPopConfirm}
+							onConfirm={() => {
+								handleSetVipLevel({ vipLevel: tempLevel, isDefault: false })
+								setOpenLevelPopConfirm(false)
+							}}
+							onCancel={() => {
+								setOpenLevelPopConfirm(false)
+							}}
 						>
-							{vipLevelSettingEnum.map(level => (
-								<Option key={level.level} value={level.level}>
-									{level.levelName}
-								</Option>
-							))}
-						</Select>
+							<Select
+								value={vipLevel}
+								style={{ width: '150px' }}
+								onSelect={level => {
+									setTempLevel(level)
+									setOpenLevelPopConfirm(true)
+								}}
+							>
+								{vipLevelSettingEnum.map(level => (
+									<Option key={level.level} value={level.level}>
+										{level.levelName}
+									</Option>
+								))}
+							</Select>
+						</Popconfirm>
 					</Descriptions.Item>
-					<Descriptions.Item label={t('Label_DefaultLevel')}>
-						<Text>{selectedDefaultLevel?.levelName}</Text>
-					</Descriptions.Item>
+					{siteId === SiteIds.OneTwoBet && (
+						<Descriptions.Item label={t('Label_DefaultLevel')}>
+							<Popconfirm
+								title={
+									<>
+										{t('Label_UpdateVipLevelNotification')}{' '}
+										<Text strong style={{ color: 'red' }}>
+											{t(selectedTemptDefaultLevel?.defaultLevel || '')}
+										</Text>{' '}
+										{t('Label_UpdateVipLevelWarning')}
+									</>
+								}
+								open={openDefaultLevelPopConfirm}
+								onConfirm={() => {
+									handleSetVipLevel({
+										vipLevel: tempDefaultLevel,
+										isDefault: true,
+									})
+									setDefaultOpenLevelPopConfirm(false)
+								}}
+								onCancel={() => {
+									setDefaultOpenLevelPopConfirm(false)
+								}}
+							>
+								<Select
+									value={vipDefaultLevel}
+									style={{ width: '150px' }}
+									onSelect={defaultLevel => {
+										setDefaultTempLevel(defaultLevel)
+										setDefaultOpenLevelPopConfirm(true)
+									}}
+								>
+									{VIP_LEVEL_SETTING_LIST.map(({ level, defaultLevel }) => (
+										<Option key={level} value={level}>
+											{t(defaultLevel)}
+										</Option>
+									))}
+								</Select>
+							</Popconfirm>
+						</Descriptions.Item>
+					)}
 					<Descriptions.Item label={t('Label_AuQualifiedTime')}>
 						{dayjs(qualifiedTime)
 							.utcOffset(timeZoneUtcOffset)
