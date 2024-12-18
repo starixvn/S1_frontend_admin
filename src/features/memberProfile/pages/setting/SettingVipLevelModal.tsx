@@ -94,6 +94,7 @@ const SettingVipLevelModal = ({
 		try {
 			if (!isDefault) {
 				await setVipLevel({ custId, vipLevel }).unwrap
+				return
 			}
 			await setVipLevelDefault({ custId, vipLevel }).unwrap
 		} catch (error) {
