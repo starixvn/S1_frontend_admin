@@ -9,7 +9,7 @@ import BatchLogTable from 'features/vipReview/modal/BatchLogTable'
 import { SiteIds } from '../../../app/constants/siteIds'
 
 interface IVipLevelAssignBatchModalProps {
-	siteId: number
+	siteId?: number
 	loading: boolean
 	success: boolean
 	visible: boolean
