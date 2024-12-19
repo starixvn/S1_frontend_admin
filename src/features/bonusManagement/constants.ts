@@ -113,6 +113,6 @@ export const promotionActionList: ListType = [
 ]
 
 export const predictionEventDepositAmountType = {
-	Both: 0,
-	OneOfTheFollowing: 1,
+	OneOfTheFollowing: 0,
+	Both: 1,
 } as const

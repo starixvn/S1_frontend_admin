@@ -177,6 +177,7 @@ const UpdateBonus: FC<{
 				blockTagList,
 				hideForUnlogin,
 				isPopUp = false,
+				depositConditionStatus,
 			} = formData
 
 			// 時區一律設定成 +0
@@ -267,6 +268,7 @@ const UpdateBonus: FC<{
 								sameRealNameRestrictAvailableCount ?? 0,
 							hideForUnlogin,
 							isPopUp,
+							depositConditionStatus,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
@@ -453,6 +455,7 @@ const UpdateBonus: FC<{
 					turnoverTpGameTypeList,
 					depositCountAchieved,
 					depositTermPeriodDays,
+					depositConditionStatus,
 				} = specificData
 				// cashBack setting only cash back need this
 				const { lossAmount, cashBackTpInfos } = cashBackSetting
@@ -482,6 +485,7 @@ const UpdateBonus: FC<{
 								turnoverTpGameTypeList,
 								depositCountAchieved,
 								depositTermPeriodDays,
+								depositConditionStatus,
 							},
 						},
 					})

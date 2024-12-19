@@ -51,6 +51,7 @@ export type ISpecificData = {
 	turnoverTpGameTypeList?: number[]
 	depositCountAchieved: number
 	depositTermPeriodDays: number
+	depositConditionStatus: number
 }
 
 export interface ISpecificDataFrontend extends ISpecificData {
@@ -166,6 +167,7 @@ export interface ISetArgs {
 		blockTagList: number[]
 		hideForUnlogin: boolean
 		isPopUp: boolean
+		depositConditionStatus: number
 	}
 	displayConditionAboutVipLevel: IDisplayCondition
 }

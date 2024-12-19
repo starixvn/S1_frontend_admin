@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect } from 'react'
 import {
 	Button,
 	Checkbox,
@@ -12,7 +12,6 @@ import {
 	Typography,
 	Divider,
 	Radio,
-	RadioChangeEvent,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { EditOutlined, EyeOutlined } from '@ant-design/icons'
@@ -51,9 +50,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	currency,
 }) => {
 	const { t } = useTranslation()
-	const [predictionEventType, setPredictionEventType] = useState<number>(
-		predictionEventDepositAmountType.Both
-	)
 	const { isoCode, currencyId } = currency
 	const { form, editPermission, setCurrentTabActive, onSetGroupBonusClick } =
 		useContext(EditBonusContext)
@@ -68,12 +64,11 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 	const bonusType = Form.useWatch(['specific', isoCode, 'bonusType'], form)
 	const minLoss = Form.useWatch(['specific', isoCode, 'minLoss'], form)
 	const bonus = Form.useWatch(['specific', isoCode, 'bonus'], form)
-
-	// 目前只有 prediction type Both and One Of 的判斷
-	const requiredAmountForm = Form.useWatch(
-		['specific', isoCode, 'requiredAmount'],
+	const depositConditionStatus = Form.useWatch(
+		['specific', isoCode, 'depositConditionStatus'],
 		form
 	)
+
 	const depositCountAchievedForm = Form.useWatch(
 		['specific', isoCode, 'depositCountAchieved'],
 		form
@@ -107,18 +102,6 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 			categoryId: currentCategory,
 			siteIds: [siteId],
 			currencyId,
-		})
-	}
-
-	const handlePredictionEventType = (e: RadioChangeEvent) => {
-		setPredictionEventType(e.target.value)
-		form?.setFieldsValue({
-			specific: {
-				[isoCode]: {
-					requiredAmount: 0,
-					depositCountAchieved: 0,
-				},
-			},
 		})
 	}
 
@@ -334,6 +317,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 								minLoss: 0,
 								depositCountAchieved: 0,
 								depositTermPeriodDays: 0,
+								depositConditionStatus: predictionEventDepositAmountType.Both,
 							},
 						},
 					}}
@@ -1204,23 +1188,22 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 							</Row>
 							<div style={{ border: '1.5px solid #f0f0f0', padding: '10px' }}>
 								<Divider orientation='left'>
-									<Radio.Group
-										onChange={handlePredictionEventType}
-										value={predictionEventType}
+									<Form.Item
+										name={['specific', isoCode, 'depositConditionStatus']}
 									>
-										<Radio
-											value={predictionEventDepositAmountType.Both}
-											disabled={!isActiveAndEditable}
-										>
-											{t('Label_Both')}
-										</Radio>
-										<Radio
-											value={predictionEventDepositAmountType.OneOfTheFollowing}
-											disabled={!isActiveAndEditable}
-										>
-											{t('Label_One_Of_The_Following')}
-										</Radio>
-									</Radio.Group>
+										<Radio.Group disabled={!isActiveAndEditable}>
+											<Radio value={predictionEventDepositAmountType.Both}>
+												{t('Label_Both')}
+											</Radio>
+											<Radio
+												value={
+													predictionEventDepositAmountType.OneOfTheFollowing
+												}
+											>
+												{t('Label_One_Of_The_Following')}
+											</Radio>
+										</Radio.Group>
+									</Form.Item>
 								</Divider>
 								<Row gutter={16}>
 									<Col span={12}>
@@ -1233,13 +1216,34 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 													required:
 														active &&
 														!(
-															predictionEventType ===
+															depositConditionStatus ===
 																predictionEventDepositAmountType.OneOfTheFollowing &&
 															!!depositCountAchievedForm
 														),
 													message: t('Label_Required', {
 														key: t('Label_Deposit_Amount'),
 													}),
+												},
+												{
+													validator: (_, value) => {
+														const depositCountAchieved = form?.getFieldValue([
+															'specific',
+															isoCode,
+															'depositCountAchieved',
+														])
+														if (
+															depositConditionStatus ===
+															predictionEventDepositAmountType.OneOfTheFollowing
+														) {
+															return value > 0 || depositCountAchieved > 0
+																? Promise.resolve()
+																: Promise.reject()
+														}
+														return Promise.resolve()
+													},
+													message: t(
+														'label_DepositCountAchievedAndDepositAmountNotBothZero'
+													),
 												},
 												{
 													type: 'number',
@@ -1252,12 +1256,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 												type='number'
 												controls={false}
 												style={{ width: '100%' }}
-												disabled={
-													!isActiveAndEditable ||
-													(predictionEventType ===
-														predictionEventDepositAmountType.OneOfTheFollowing &&
-														!!depositCountAchievedForm)
-												}
+												disabled={!isActiveAndEditable}
 											/>
 										</Form.Item>
 									</Col>
@@ -1267,16 +1266,31 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 											label={t('Label_Deposit_Count_Achieved')}
 											rules={[
 												{
-													required:
-														active &&
-														!(
-															predictionEventType ===
-																predictionEventDepositAmountType.OneOfTheFollowing &&
-															!!requiredAmountForm
-														),
+													required: active,
 													message: t('Label_Required', {
 														key: t('Label_Deposit_Count_Achieved'),
 													}),
+												},
+												{
+													validator: (_, value) => {
+														const requiredAmount = form?.getFieldValue([
+															'specific',
+															isoCode,
+															'requiredAmount',
+														])
+														if (
+															depositConditionStatus ===
+															predictionEventDepositAmountType.OneOfTheFollowing
+														) {
+															return value > 0 || requiredAmount > 0
+																? Promise.resolve()
+																: Promise.reject()
+														}
+														return Promise.resolve()
+													},
+													message: t(
+														'label_DepositCountAchievedAndDepositAmountNotBothZero'
+													),
 												},
 												{
 													type: 'number',
@@ -1290,12 +1304,7 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 												type='number'
 												controls={false}
 												style={{ width: '100%' }}
-												disabled={
-													!isActiveAndEditable ||
-													(predictionEventType ===
-														predictionEventDepositAmountType.OneOfTheFollowing &&
-														!!requiredAmountForm)
-												}
+												disabled={!isActiveAndEditable}
 											/>
 										</Form.Item>
 									</Col>
