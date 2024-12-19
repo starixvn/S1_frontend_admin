@@ -52,7 +52,7 @@ export default defineConfig({
 			acc[proxyPath] = {
 				// 12-bet: https://backoffice.uat12csd.com
 				// nova: http://adminsiteservice.nova88dev.com
-				target: 'https://backoffice.uat12csd.com',
+				target: 'http://adminsiteservice.nova88dev.com',
 				changeOrigin: true,
 			}
 			return acc

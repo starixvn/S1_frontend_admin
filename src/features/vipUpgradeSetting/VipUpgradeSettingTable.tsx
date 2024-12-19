@@ -1,10 +1,11 @@
+import { find } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import React, { Dispatch, SetStateAction } from 'react'
 import { numberFormatter } from 'common/utils/format'
 import { EditableCellRows } from 'components'
 import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { PermissionInterface } from 'type'
-import { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
+import type { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
 import { SiteIds } from 'app/constants/siteIds'
 import { useGetVipLevelNameQuery } from './api'
 
@@ -38,8 +39,6 @@ const VipUpgradeSettingTable = ({
 		isLoading: isGetVipLevelNameLoading,
 	} = useGetVipLevelNameQuery({ siteId })
 
-	console.log(vipLevelNameList)
-
 	const onEdit = (record: IUpgradeSettingTableData) => {
 		form.setFieldsValue({ ...record })
 		setEditingKey(record.type)
@@ -49,24 +48,6 @@ const VipUpgradeSettingTable = ({
 		record.type === editingKey
 
 	const columns = () => {
-		const vipClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
-				}[siteId] ?? ''
-			)
-		}
-		const vintageClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
-				}[siteId] ?? ''
-			)
-		}
 		return [
 			{
 				title: t('Label_Action'),
@@ -104,7 +85,7 @@ const VipUpgradeSettingTable = ({
 				render: (typeName: string) => typeName || '-',
 			},
 			{
-				title: vintageClubTitle(),
+				title: find(vipLevelNameList, { level: 1 })?.levelName,
 				key: 'vintageClub',
 				dataIndex: 'vintageClub',
 				align: 'center' as 'center',
@@ -113,7 +94,7 @@ const VipUpgradeSettingTable = ({
 					vintageClub !== null ? numberFormatter.format(vintageClub) : '-',
 			},
 			{
-				title: t('Label_SliverClub'),
+				title: find(vipLevelNameList, { level: 2 })?.levelName,
 				key: 'silverClub',
 				dataIndex: 'silverClub',
 				align: 'center' as 'center',
@@ -123,7 +104,7 @@ const VipUpgradeSettingTable = ({
 					silverClub !== null ? numberFormatter.format(silverClub) : '-',
 			},
 			{
-				title: t('Label_GoldClub'),
+				title: find(vipLevelNameList, { level: 3 })?.levelName,
 				key: 'goldClub',
 				dataIndex: 'goldClub',
 				align: 'center' as 'center',
@@ -133,7 +114,7 @@ const VipUpgradeSettingTable = ({
 					goldClub !== null ? numberFormatter.format(goldClub) : '-',
 			},
 			{
-				title: t('Label_TitaniumClub'),
+				title: find(vipLevelNameList, { level: 4 })?.levelName,
 				key: 'titaniumClub',
 				dataIndex: 'titaniumClub',
 				align: 'center' as 'center',
@@ -143,7 +124,7 @@ const VipUpgradeSettingTable = ({
 					titaniumClub !== null ? numberFormatter.format(titaniumClub) : '-',
 			},
 			{
-				title: t('Label_DiamondClub'),
+				title: find(vipLevelNameList, { level: 5 })?.levelName,
 				key: 'diamondClub',
 				dataIndex: 'diamondClub',
 				align: 'center' as 'center',
@@ -153,7 +134,7 @@ const VipUpgradeSettingTable = ({
 					diamondClub !== null ? numberFormatter.format(diamondClub) : '-',
 			},
 			{
-				title: vipClubTitle(),
+				title: find(vipLevelNameList, { level: 6 })?.levelName,
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				align: 'center' as 'center',
