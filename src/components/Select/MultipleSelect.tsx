@@ -6,6 +6,7 @@ const MultipleSelect: FC<SelectProps> = ({ children, ...props }) => {
 		<Select
 			allowClear
 			mode='multiple'
+			optionFilterProp='children'
 			maxTagCount='responsive'
 			maxTagPlaceholder={omittedValues =>
 				`+${omittedValues.length} Items Selected`

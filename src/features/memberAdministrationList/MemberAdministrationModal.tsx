@@ -203,7 +203,7 @@ const MemberAdministrationModal = ({
 					<Col span={12}>
 						<Form.Item
 							name='areaCode'
-							label={t('Label_AccountStatus')}
+							label={t('Label_CountryCode')}
 							rules={[{ required: true }]}
 						>
 							<Select
