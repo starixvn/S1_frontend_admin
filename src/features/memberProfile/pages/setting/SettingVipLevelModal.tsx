@@ -128,7 +128,7 @@ const SettingVipLevelModal = ({
 					![
 						oneTwoBetVipDefaultLevelEnum.BlackTortoise,
 						oneTwoBetVipDefaultLevelEnum.Qilin,
-					].includes(vip.level) // Exclude levels 1 and 2
+					].includes(vip.level)
 			)
 		}
 
@@ -213,52 +213,52 @@ const SettingVipLevelModal = ({
 					isSetVipLevelDefaultLoading
 				}
 			>
-				<Descriptions layout='vertical' bordered column={4}>
-					<Descriptions.Item label={t('Label_Manually')}>
-						<Popconfirm
-							title={t('Label_AreYouSure')}
-							onConfirm={() => handleSetVipLevelManually(!manually)}
-						>
-							<Switch checked={Boolean(manually)} />
-						</Popconfirm>
-					</Descriptions.Item>
-					<Descriptions.Item label={t('Label_Level')}>
-						<Popconfirm
-							title={
-								<>
-									{t('Label_UpdateVipLevelNotification')}{' '}
-									<Text strong style={{ color: 'red' }}>
-										{selectedTemptLevel?.levelName}
-									</Text>{' '}
-									{t('Label_UpdateVipLevelWarning')}
-								</>
-							}
-							open={openLevelPopConfirm}
-							onConfirm={() => {
-								handleSetVipLevel({ vipLevel: tempLevel, isDefault: false })
-								setOpenLevelPopConfirm(false)
-							}}
-							onCancel={() => {
-								setOpenLevelPopConfirm(false)
-							}}
-						>
-							<Select
-								value={vipLevel}
-								style={{ width: '150px' }}
-								onSelect={level => {
-									setTempLevel(level)
-									setOpenLevelPopConfirm(true)
+				{siteId === SiteIds.OneTwoBet ? (
+					<Descriptions layout='vertical' bordered column={4}>
+						<Descriptions.Item label={t('Label_Manually')}>
+							<Popconfirm
+								title={t('Label_AreYouSure')}
+								onConfirm={() => handleSetVipLevelManually(!manually)}
+							>
+								<Switch checked={Boolean(manually)} />
+							</Popconfirm>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_Level')}>
+							<Popconfirm
+								title={
+									<>
+										{t('Label_UpdateVipLevelNotification')}{' '}
+										<Text strong style={{ color: 'red' }}>
+											{selectedTemptLevel?.levelName}
+										</Text>{' '}
+										{t('Label_UpdateVipLevelWarning')}
+									</>
+								}
+								open={openLevelPopConfirm}
+								onConfirm={() => {
+									handleSetVipLevel({ vipLevel: tempLevel, isDefault: false })
+									setOpenLevelPopConfirm(false)
+								}}
+								onCancel={() => {
+									setOpenLevelPopConfirm(false)
 								}}
 							>
-								{filteredVipLevelSettingEnum().map(level => (
-									<Option key={level.level} value={level.level}>
-										{level.levelName}
-									</Option>
-								))}
-							</Select>
-						</Popconfirm>
-					</Descriptions.Item>
-					{siteId === SiteIds.OneTwoBet && (
+								<Select
+									value={vipLevel}
+									style={{ width: '150px' }}
+									onSelect={level => {
+										setTempLevel(level)
+										setOpenLevelPopConfirm(true)
+									}}
+								>
+									{filteredVipLevelSettingEnum().map(level => (
+										<Option key={level.level} value={level.level}>
+											{level.levelName}
+										</Option>
+									))}
+								</Select>
+							</Popconfirm>
+						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_DefaultLevel')}>
 							<Popconfirm
 								title={
@@ -298,13 +298,42 @@ const SettingVipLevelModal = ({
 								</Select>
 							</Popconfirm>
 						</Descriptions.Item>
-					)}
-					<Descriptions.Item label={t('Label_AuQualifiedTime')}>
-						{dayjs(qualifiedTime)
-							.utcOffset(timeZoneUtcOffset)
-							.format(timeFormat)}
-					</Descriptions.Item>
-				</Descriptions>
+						<Descriptions.Item label={t('Label_AuQualifiedTime')}>
+							{dayjs(qualifiedTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format(timeFormat)}
+						</Descriptions.Item>
+					</Descriptions>
+				) : (
+					<Descriptions layout='vertical' bordered>
+						<Descriptions.Item label={t('Label_Manually')}>
+							<Switch
+								checked={Boolean(manually)}
+								onChange={value => handleSetVipLevelManually(value)}
+							/>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_Level')}>
+							<Select
+								value={vipLevel}
+								style={{ width: '200px' }}
+								onSelect={level =>
+									handleSetVipLevel({ vipLevel: level, isDefault: false })
+								}
+							>
+								{vipLevelSettingEnum.map(level => (
+									<Option key={level.level} value={level.level}>
+										{level.levelName}
+									</Option>
+								))}
+							</Select>
+						</Descriptions.Item>
+						<Descriptions.Item label={t('Label_AuQualifiedTime')}>
+							{dayjs(qualifiedTime)
+								.utcOffset(timeZoneUtcOffset)
+								.format(timeFormat)}
+						</Descriptions.Item>
+					</Descriptions>
+				)}
 			</Spin>
 
 			<br />

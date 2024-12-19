@@ -195,7 +195,34 @@ const VipUpgradeSettingTable = ({
 				summary={
 					// eslint-disable-next-line react/no-unstable-nested-components
 					() => {
-						return (
+						return siteId === SiteIds.OneTwoBet ? (
+							<Summary.Row>
+								<Summary.Cell index={1} align='center'>
+									{' '}
+								</Summary.Cell>
+								<Summary.Cell index={2} align='center'>
+									{' '}
+								</Summary.Cell>
+								<Summary.Cell index={3} align='center'>
+									{t('Label_Normal')}
+								</Summary.Cell>
+								<Summary.Cell index={4} align='center'>
+									{t('Label_Monthly')}
+								</Summary.Cell>
+								<Summary.Cell index={5} align='center'>
+									{t('Label_ThreeTimesMonth')}
+								</Summary.Cell>
+								<Summary.Cell index={6} align='center'>
+									{t('Label_Monthly')}
+								</Summary.Cell>
+								<Summary.Cell index={7} align='center'>
+									{t('Label_Monthly')}
+								</Summary.Cell>
+								<Summary.Cell index={8} align='center'>
+									{t('Label_Monthly')}
+								</Summary.Cell>
+							</Summary.Row>
+						) : (
 							<Summary.Row>
 								<Summary.Cell index={1} align='center'>
 									{' '}
