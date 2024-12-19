@@ -6,6 +6,7 @@ import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { PermissionInterface } from 'type'
 import { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
 import { SiteIds } from 'app/constants/siteIds'
+import { useGetVipLevelNameQuery } from './api'
 
 interface IVipUpgradeSettingTableProps {
 	loading: boolean
@@ -31,6 +32,13 @@ const VipUpgradeSettingTable = ({
 	onRowSaved,
 }: IVipUpgradeSettingTableProps) => {
 	const { t } = useTranslation()
+
+	const {
+		data: { data: vipLevelNameList = [] } = {},
+		isLoading: isGetVipLevelNameLoading,
+	} = useGetVipLevelNameQuery({ siteId })
+
+	console.log(vipLevelNameList)
 
 	const onEdit = (record: IUpgradeSettingTableData) => {
 		form.setFieldsValue({ ...record })
@@ -174,7 +182,7 @@ const VipUpgradeSettingTable = ({
 	return (
 		<Form form={form} component={false}>
 			<Table
-				loading={loading}
+				loading={loading || isGetVipLevelNameLoading}
 				components={{
 					body: {
 						cell: EditableCellRows,

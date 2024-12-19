@@ -385,6 +385,7 @@ const VipReview = ({ pageTitle }: { pageTitle?: string }) => {
 					/>
 				)}
 			<VipLevelAssignBatchModal
+				siteId={siteId}
 				loading={changeVipLevelBatchLoading}
 				success={uploadSuccess}
 				visible={vipLevelAssignBatchModal.visible}

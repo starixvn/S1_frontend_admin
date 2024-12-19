@@ -6,6 +6,7 @@ import {
 	IGetVipUpgradeSupportCurrencyArgs,
 	IVipUpgradeSupportCurrencyResponse,
 	ISetUpgradeSettingArgs,
+	IVipLevelNameResponse,
 } from 'features/vipUpgradeSetting/type'
 
 export const upgradeSettingApi = rootApi.injectEndpoints({
@@ -40,6 +41,13 @@ export const upgradeSettingApi = rootApi.injectEndpoints({
 				data,
 			}),
 		}),
+		getVipLevelName: builder.query<IVipLevelNameResponse, { siteId: number }>({
+			query: data => ({
+				url: 'VipLevel/GetVipLevelName',
+				method: 'POST',
+				data,
+			}),
+		}),
 	}),
 })
 
@@ -47,4 +55,5 @@ export const {
 	useGetVipUpgradeSupportCurrencyQuery,
 	useLazyGetUpgradeSettingQuery,
 	useSetUpgradeSettingMutation,
+	useGetVipLevelNameQuery,
 } = upgradeSettingApi

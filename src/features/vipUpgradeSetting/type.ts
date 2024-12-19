@@ -76,3 +76,10 @@ export enum VipLevelsEnum {
 	DiamondClub,
 	NovaClub,
 }
+
+export interface IVipLevelNameData {
+	level: number
+	levelName: string
+}
+
+export type IVipLevelNameResponse = IAxiosResponse<IVipLevelNameData[]>

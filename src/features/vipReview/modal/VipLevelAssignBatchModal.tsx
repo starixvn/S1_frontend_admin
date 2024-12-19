@@ -6,8 +6,10 @@ import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { IVipLevelData } from 'features/vipReview/type'
 import BatchLogTable from 'features/vipReview/modal/BatchLogTable'
+import { SiteIds } from '../../../app/constants/siteIds'
 
 interface IVipLevelAssignBatchModalProps {
+	siteId: number
 	loading: boolean
 	success: boolean
 	visible: boolean
@@ -18,6 +20,7 @@ interface IVipLevelAssignBatchModalProps {
 }
 
 const VipLevelAssignBatchModal = ({
+	siteId,
 	loading,
 	success,
 	visible,
@@ -74,7 +77,11 @@ const VipLevelAssignBatchModal = ({
 				</Col>
 				<Col span={24} style={{ textAlign: 'center', marginBottom: 24 }}>
 					<Link
-						to='/exampleFile/ChangeVipTemplateFile.xlsx'
+						to={
+							siteId === SiteIds.OneTwoBet
+								? '/exampleFile/ChangeVipTemplateFile-new.xlsx'
+								: '/exampleFile/ChangeVipTemplateFile.xlsx'
+						}
 						download='ChangeVipTemplateFile.xlsx'
 						target='_blank'
 						style={{ color: 'white' }}
