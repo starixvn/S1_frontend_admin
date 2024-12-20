@@ -45,7 +45,7 @@ const PredictChallengeReportTable = ({
 			width: 300,
 			align: 'center' as 'center',
 			render: (record: IPredictionChallengeReportTransformedData) => {
-				const { bonusCode, battleTime, homeTeamName, awayTeamName, result } =
+				const { bonusCode, battleTime, homeTeamName, awayTeamName } =
 					record || {}
 				const battleTimeFormat = battleTime
 					? dayjs(battleTime)
@@ -59,11 +59,9 @@ const PredictChallengeReportTable = ({
 							{bonusCode}
 						</Typography.Text>
 						<br />
-						{result && (
-							<Typography.Text type='secondary'>
-								{`${battleTimeFormat} ${homeTeamName}-vs-${awayTeamName}`}
-							</Typography.Text>
-						)}
+						<Typography.Text type='secondary'>
+							{`${battleTimeFormat} ${homeTeamName}-vs-${awayTeamName}`}
+						</Typography.Text>
 					</Typography.Paragraph>
 				)
 			},
