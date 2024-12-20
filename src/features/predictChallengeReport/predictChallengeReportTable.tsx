@@ -59,9 +59,12 @@ const PredictChallengeReportTable = ({
 							{bonusCode}
 						</Typography.Text>
 						<br />
-						<Typography.Text type='secondary'>
-							{`${battleTimeFormat} ${homeTeamName}-vs-${awayTeamName}`}
-						</Typography.Text>
+						{/* result 無法判斷 battleTimeFormat homeTeamName awayTeamName 是否有值 */}
+						{battleTimeFormat && homeTeamName && awayTeamName && (
+							<Typography.Text type='secondary'>
+								{`${battleTimeFormat} ${homeTeamName}-vs-${awayTeamName}`}
+							</Typography.Text>
+						)}
 					</Typography.Paragraph>
 				)
 			},
