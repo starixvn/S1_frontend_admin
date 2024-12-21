@@ -1,0 +1,100 @@
+# [Admin]
+
+Every time you choose to apply a rule(s), explicitly state the rule(s) in the output. You can abbreviate the rule description to a single word or phrase.
+
+## Project Context
+[This is a project for Nova Goal Bwing yashbet OneTwobet CMS]
+- [more description]
+- [more description]
+- [more description]
+
+## Code Style and Structure
+- Write concise, technical TypeScript code with accurate examples
+- Use functional and declarative programming patterns; avoid classes
+- Prefer iteration and modularization over code duplication
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+- Structure repository files as follows:
+```
+
+├── src/
+    ├── components/         # Shared components based on antd ui
+    ├── assets/             # static assets
+    ├── common/             # Helper functions
+        ├── auth/           # auth related functions
+        ├── context/     # react context
+        ├── enum/           # global enum api
+        ├── hooks/          # custom hooks
+        ├── i18n/           # translation
+        ├── permissionForm/ # permission form for userSetting
+        ├── service/        # global service api
+        ├── utils/          # global utils
+    ├── feature/            # main feature for the page of the project display on the sidebar
+    ├── type/           # global type
+    ├── typing/         # typing for the project
+
+## Tech Stack
+- React
+- TypeScript
+- antd ui
+
+## Naming Conventions
+- Use camelCase for directories in features (e.g., features/adjustmentLogReport)
+- Use PascalCase for files and fitting component name in directories under features (e.g., features/adjustmentLogReport/AdjustmentLogReportFilter.tsx)
+- Favor named exports for components and utilities
+- Use PascalCase for component files (e.g., VisaForm.tsx)
+- Use camelCase for utility files (e.g., formValidator.ts)
+
+## TypeScript Usage
+- Use TypeScript for all code; prefer interfaces over types
+- Avoid enums; use const objects with 'as const' assertion
+- Use functional components with TypeScript interfaces
+- Define strict types for message passing between different parts of the extension
+- Avoid try/catch blocks unless there's good reason to translate or handle error in that abstraction
+- Use explicit return types for all functions
+
+## State Management
+- Use Redux for global state when needed
+
+## Syntax and Formatting
+- Use array function for pure functions
+- Avoid unnecessary curly braces in conditionals
+- Use declarative TSX
+- Implement proper TypeScript discriminated unions for message types
+
+## UI and Styling
+- Use antd ui for components
+
+## Error Handling
+- Use Try Catch for error handling 
+
+## Testing
+- No testing for Now
+
+
+## Security
+- Implement Content Security Policy
+- Sanitize user inputs
+- Handle sensitive data properly
+
+## Git Usage
+Commit Message Prefixes:
+- "fix:" for bug fixes
+- "feat:" for new features
+- "perf:" for performance improvements
+- "docs:" for documentation changes
+- "style:" for formatting changes
+- "refactor:" for code refactoring
+- "test:" for adding missing tests
+- "chore:" for maintenance tasks
+
+Rules:
+- Use lowercase for commit messages
+- Keep the summary line concise
+
+## Documentation
+- Maintain clear README with setup instructions
+- Document API interactions and data flows
+- Don't include comments unless it's for complex logic
+
+## Development Workflow
+- Implement proper code review process
