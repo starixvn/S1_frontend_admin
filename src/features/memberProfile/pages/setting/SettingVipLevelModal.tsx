@@ -121,20 +121,6 @@ const SettingVipLevelModal = ({
 		defaultLevel: defaultLevelNumber,
 	} = vipLevelInfo ?? {}
 
-	const filteredVipLevelSettingEnum = () => {
-		if (siteId === SiteIds.OneTwoBet) {
-			return vipLevelSettingEnum.filter(
-				vip =>
-					![
-						oneTwoBetVipDefaultLevelEnum.BlackTortoise,
-						oneTwoBetVipDefaultLevelEnum.Qilin,
-					].includes(vip.level)
-			)
-		}
-
-		return vipLevelSettingEnum
-	}
-
 	const vipLevel =
 		find(vipLevelSettingEnum, {
 			levelName,
@@ -149,10 +135,25 @@ const SettingVipLevelModal = ({
 	const selectedTemptLevel = find(vipLevelSettingEnum, {
 		level: tempLevel,
 	})
-	// defaultLevel 顯示在 popConfirm 上
-	const selectedTemptDefaultLevel = find(VIP_LEVEL_SETTING_LIST, {
-		level: tempDefaultLevel,
-	})
+
+	const filteredVipLevelSettingEnum = () => {
+		if (siteId === SiteIds.OneTwoBet) {
+			let excludedLevel: number | null = null
+
+			if (vipDefaultLevel === oneTwoBetVipDefaultLevelEnum.Qilin) {
+				excludedLevel = oneTwoBetVipDefaultLevelEnum.BlackTortoise
+			} else if (
+				vipDefaultLevel === oneTwoBetVipDefaultLevelEnum.BlackTortoise
+			) {
+				excludedLevel = oneTwoBetVipDefaultLevelEnum.Qilin
+			}
+			return vipLevelSettingEnum.filter(
+				vip => ![excludedLevel].includes(vip.level)
+			)
+		}
+
+		return vipLevelSettingEnum
+	}
 
 	const columns: any[] = [
 		{
@@ -230,7 +231,8 @@ const SettingVipLevelModal = ({
 										{t('Label_UpdateVipLevelNotification')}{' '}
 										<Text strong style={{ color: 'red' }}>
 											{selectedTemptLevel?.levelName}
-										</Text>{' '}
+										</Text>
+										<br />
 										{t('Label_UpdateVipLevelWarning')}
 									</>
 								}
@@ -261,15 +263,7 @@ const SettingVipLevelModal = ({
 						</Descriptions.Item>
 						<Descriptions.Item label={t('Label_DefaultLevel')}>
 							<Popconfirm
-								title={
-									<>
-										{t('Label_UpdateVipLevelNotification')}{' '}
-										<Text strong style={{ color: 'red' }}>
-											{t(selectedTemptDefaultLevel?.defaultLevel || '')}
-										</Text>{' '}
-										{t('Label_UpdateVipLevelWarning')}
-									</>
-								}
+								title={t('Label_AreYouSure')}
 								open={openDefaultLevelPopConfirm}
 								onConfirm={() => {
 									handleSetVipLevel({
