@@ -1339,5 +1339,6 @@
 	"Label_Awardee": "Awardee",
 	"Label_Predict_Reward": "Predict Reward",
 	"Label_SureToProcess": "Sure to Process ?",
-	"label_DepositCountAchievedAndDepositAmountNotBothZero": "Deposit Count Achieved and Deposit Amount cannot both be 0 at the same time"
+	"label_DepositCountAchievedAndDepositAmountNotBothZero": "Deposit Count Achieved and Deposit Amount cannot both be 0 at the same time",
+	"Label_Sites": "Sites"
 }

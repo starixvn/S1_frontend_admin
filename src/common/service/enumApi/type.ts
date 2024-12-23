@@ -72,6 +72,8 @@ export type EnumNameType =
 	| 'WithdrawalBlockTypeEnum'
 	| 'DepositChannelTypeEnum'
 	| 'WithdrawalChannelTypeEnum'
+	| 'PaymentAgentTypeEnum'
+	| 'PaymentAgentStatusEnum'
 
 export interface IGetEnumTypeArgs {
 	/**
@@ -135,6 +137,8 @@ export interface IGetEnumTypeArgs {
 	 * @argument {string}  WithdrawalBlockTypeEnum - 取得 WithdrawalBlockTypeEnum 列表
 	 * @argument {string}  DepositChannelTypeEnum - 取得 DepositChannelTypeEnum 列表
 	 * @argument {string}  WithdrawalChannelTypeEnum - 取得 WithdrawalChannelTypeEnum 列表
+	 * @argument {string}  PaymentAgentTypeEnum - 取得 PaymentAgentTypeEnum 列表
+	 * @argument {string}  PaymentAgentStatusEnum - 取得 PaymentAgentStatusEnum 列表
 	 */
 	enumName: EnumNameType
 }

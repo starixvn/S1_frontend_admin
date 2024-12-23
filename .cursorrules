@@ -98,3 +98,24 @@ Rules:
 
 ## Development Workflow
 - Implement proper code review process
+
+## How to create a new feature
+   ### part 1: create a new feature
+    1. create a new blank camelCase for the featureName folder under src/features
+    2. create a new blank PascalCase for the featureName.tsx file under src/features/featureName -- this is the main page of the feature
+    3. create a new blank PascalCase for the featureNameFilter.tsx file under src/features/featureName -- this is the filter component of the feature
+    4. create a new blank PascalCase for the featureNameTable.tsx file under src/features/featureName -- this is the table component of the feature
+    5. create a new blank PascalCase for the api.ts file under src/features/featureName, use rootApi.injectEndpoints to create the api -- this is the api of the feature
+    6. create a new blank PascalCase for the type.ts file under src/features/featureName -- this is the type of the feature
+
+   ### part 2: create a new route for the feature
+    !important: if not provider the functionId for the featureName.tsx and its position in the menu, then response to the chat please provide the functionId and its position in the menu with picture
+    1. provider the functionId for the featureName.tsx file and according the image of the menu for the featureName position under src/app/constants/paths.ts
+      - drawPrizeReport is under marketing so the path is marketing/drawPrizeReport
+      - the feature is consist of 3 parameters: sub(optional if not have sub, then it's empty), root, functionId
+    2. lazy import the featureName.tsx file under src/app/routes/index.tsx    
+      - webpackChunkName: pascalCase of 'featureName'
+    3. add the featureName.tsx file to the MENU_MAPPING constant under src/app/constants/menuMapping.tsx
+     - path: `${NEW_SITE_PREFIX_URL}/${paths.featureName.root}`
+     - element: <AuthRequire functionId={paths.featureName.functionId}> according the image of the menu for the featureName position under src/app/constants/paths.tsx
+    4. create a new object in MENU_MAPPING for the react-router-dom path and element under src/contants/menuMapping.tsx -- pathMode: 'NewAdmin' ,internalPath is their [parent path/featureName]

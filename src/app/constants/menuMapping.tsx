@@ -1042,4 +1042,10 @@ export const MENU_MAPPING: MenMappingInterface[] = [
 		pathMode: 'NewAdmin',
 		newAdminPath: paths.report.sub.predictChallengeReport.root,
 	},
+	{
+		icon: null,
+		functionId: paths.finance.sub.setting.sub.paymentAgentManagement.functionId,
+		pathMode: 'NewAdmin',
+		newAdminPath: paths.finance.sub.setting.sub.paymentAgentManagement.root,
+	},
 ]

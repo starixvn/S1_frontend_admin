@@ -246,6 +246,10 @@ const paths = {
 						root: 'finance/setting/pointLevelManagement',
 						functionId: 52,
 					},
+					paymentAgentManagement: {
+						root: 'finance/paymentAgentManagement',
+						functionId: 164,
+					},
 				},
 			},
 			depositWithdrawalSector: {
