@@ -99,7 +99,7 @@ const VipUpgradeSettingTable = ({
 				dataIndex: 'silverClub',
 				align: 'center' as 'center',
 				width: 140,
-				editable: true,
+				editable: siteId !== SiteIds.OneTwoBet,
 				render: (silverClub: number | null) =>
 					silverClub !== null ? numberFormatter.format(silverClub) : '-',
 			},
@@ -139,6 +139,7 @@ const VipUpgradeSettingTable = ({
 				dataIndex: 'novaClub',
 				align: 'center' as 'center',
 				width: 140,
+				editable: siteId === SiteIds.OneTwoBet,
 				render: (novaClub: string) => novaClub || '-',
 			},
 		]
