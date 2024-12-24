@@ -1,4 +1,4 @@
-import { IBonusUsingListData } from 'features/bonusManagement/type'
+import type { IBonusUsingListData } from 'features/bonusManagement/type'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Modal } from 'antd'
@@ -10,7 +10,7 @@ interface IMemberListModalProps {
 	onClose: () => void
 	bonusUsingList: IBonusUsingListData[]
 }
-const MemberListModal = ({
+const RetentionMemberListModal = ({
 	loading,
 	visible,
 	onClose,
@@ -19,13 +19,6 @@ const MemberListModal = ({
 	const { t } = useTranslation()
 	const [memberList, setMemberList] = useState<IBonusUsingListData[]>([])
 	const columns = [
-		{
-			title: t('Label_Currency'),
-			key: 'currency',
-			dataIndex: 'currency',
-			width: '30%',
-			align: 'center' as 'center',
-		},
 		{
 			title: t('Label_MemberId'),
 			key: 'userName',
@@ -69,4 +62,4 @@ const MemberListModal = ({
 	)
 }
 
-export { MemberListModal }
+export { RetentionMemberListModal }

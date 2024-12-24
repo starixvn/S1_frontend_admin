@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { useAuth, useModal } from 'common/hooks'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
-	IGetByBonusCodeResponse,
-	IGetPromotionCategoryResponse,
-	IGetPromotionTypeResponse,
+	type IGetByBonusCodeResponse,
+	type IGetPromotionCategoryResponse,
+	type IGetPromotionTypeResponse,
 	UpdateMethodsEnum,
 } from 'features/bonusManagement/type'
 import { Col, Form, message, Row } from 'antd'
@@ -17,8 +17,11 @@ import {
 	useGetPromotionListQuery,
 	useLazyGetBonusUsingListQuery,
 	useLazyGetByBonusCodeQuery,
+	useLazyGetPromotionUploadCustListQuery,
 	useSetBonusMutation,
 	useSetBonusUsingListMutation,
+	useUploadPromotionUploadCustListMutation,
+	useDeletePromotionUploadCustListMutation,
 } from 'features/bonusManagement/api'
 import {
 	IVipLevelsResponse,
@@ -44,12 +47,16 @@ import { SetGroupModal } from 'features/bonusManagement/editBonusDetail/SetGroup
 import { dateRangeToUtcFormatter, isJSON } from 'common/utils'
 import {
 	BonusTypeEnum,
+	PromotionUploadCustListEnum,
 	StatusEnum,
 	WalletTypeEnum,
 } from 'features/bonusManagement/constants'
 import { useGetAllTagQuery } from 'features/memberAdministrationList/api'
 import { RcFile } from 'antd/es/upload'
-import { MemberListModal } from 'features/bonusManagement/editBonusDetail/MemberListModal'
+import { RetentionMemberListModal } from 'features/bonusManagement/memberListModal/RetentionMemberListModal'
+import { DepositMemberListModal } from 'features/bonusManagement/memberListModal/DepositMemberListModal'
+import { SpecialMemberListModal } from 'features/bonusManagement/memberListModal/SpecialMemberListModal'
+import { useTimeZone } from '../../../components/TimeZoneSelect'
 
 const UpdateBonus: FC<{
 	pageTitle?: string
@@ -57,12 +64,21 @@ const UpdateBonus: FC<{
 	const { t } = useTranslation()
 	const [form] = Form.useForm()
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { timeZoneUtcOffset } = useTimeZone()
 	const { actionPermissions: { editPermission } = {} } = useAuth()
 	const { bonusCode } = useParams()
 	const navigate = useNavigate()
 	// 供 getCategory 使用的參數
 	const currentWalletType = Form.useWatch('walletType', form)
 	const currentBonusType = Form.useWatch('bonusType', form)
+	// 檢查 member list 及相關欄位是否開啟的狀態
+	const isPromotionUploadCustListForm = Form.useWatch(
+		'isPromotionUploadCustList',
+		form
+	)
+	// * 當未勾選代表該 bonus 未顯示，bannerUrl、title description 改為非必填
+	const isDisplayDateForm = Form.useWatch('isDisplayDate', form)
+
 	// Title 文字顯示
 	const bonusMethod =
 		bonusCode === UpdateMethodsEnum.create ? t('Label_CreateBonus') : bonusCode
@@ -82,6 +98,8 @@ const UpdateBonus: FC<{
 	// BonusType 為 Tier Redeposit 時需要用到的彈窗
 	const setGroupBonusModal = useModal()
 	const usingListModal = useModal()
+	const usingListDepositModal = useModal()
+	const usingListSpecialModal = useModal()
 
 	const {
 		data: { data: bonusTypeList = [] } = {} as IGetPromotionTypeResponse,
@@ -126,8 +144,26 @@ const UpdateBonus: FC<{
 		{ data: bonusUsingList = [], isFetching: isGetBonusUsingListLoading },
 	] = useLazyGetBonusUsingListQuery()
 
+	const [
+		getPromotionUploadCustList,
+		{
+			data: promotionUploadCustList = [],
+			isFetching: isGetPromotionUploadCustListFetching,
+		},
+	] = useLazyGetPromotionUploadCustListQuery()
+
 	const [setBonusUsingList, { isLoading: isSetBonusUsingListLoading }] =
 		useSetBonusUsingListMutation()
+
+	const [
+		uploadPromotionUploadCustList,
+		{ isLoading: isUploadPromotionUploadCustListLoading },
+	] = useUploadPromotionUploadCustListMutation()
+
+	const [
+		deletePromotionUploadCustList,
+		{ isLoading: isDeletePromotionUploadCustListLoading },
+	] = useDeletePromotionUploadCustListMutation()
 
 	const handleGetBonusDetail = async () => {
 		if (!bonusCode) return
@@ -197,7 +233,8 @@ const UpdateBonus: FC<{
 			}
 
 			let foundEmptyTier = false
-			// 如果bonusType為MissionBonus,提交前要判斷是否有添加級距
+			// 如果bonusType為MissionBonus 提交前要判斷是否有添加級距
+
 			if (promotionType === BonusTypeEnum.MissionBonus) {
 				foundEmptyTier = Object.keys(rawSpecific).some(currency => {
 					const { tierAmountList, turnoverTpGameTypeList } =
@@ -210,16 +247,16 @@ const UpdateBonus: FC<{
 						tierAmountList.length === 0
 					)
 				})
+
+				if (foundEmptyTier) {
+					message.error(t('Label_Required', { key: t('Label_SetAmountGroup') }))
+					return
+				}
 			}
 
 			// 在送單時才驗證時間，displayDate 結束不可超過 periodDate結束時間
 			if (displayToTime > periodToTime) {
 				message.error(t('Label_BonusManagementDisplayTimeErrorMsg'))
-			} else if (
-				foundEmptyTier &&
-				promotionType === BonusTypeEnum.MissionBonus
-			) {
-				message.error(t('Label_Required', { key: t('Label_SetAmountGroup') }))
 			} else {
 				try {
 					await setBonus({
@@ -269,6 +306,9 @@ const UpdateBonus: FC<{
 							hideForUnlogin,
 							isPopUp,
 							depositConditionStatus,
+							isPromotionUploadCustList: isPromotionUploadCustListForm
+								? PromotionUploadCustListEnum.Checked
+								: PromotionUploadCustListEnum.UnChecked,
 						},
 						displayConditionAboutVipLevel:
 							displayConditionRequestConverter(selectedVipLevel),
@@ -321,6 +361,28 @@ const UpdateBonus: FC<{
 			)
 		}
 	}
+	// usingList 針對能重複更新的 google sheet 表(針對後端)
+	const handleClickMemberListPromotionUpload = async () => {
+		if (!siteId || !bonusCode) return
+		try {
+			await getPromotionUploadCustList({ siteId, bonusCode }).unwrap()
+
+			switch (currentBonusType) {
+				case BonusTypeEnum.FirstDeposit || BonusTypeEnum.ReDeposit:
+					usingListDepositModal.onOpen()
+					break
+				case BonusTypeEnum.ManualBonus:
+					usingListSpecialModal.onOpen()
+					break
+				default:
+					usingListDepositModal.onOpen()
+			}
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 
 	const handleUploadUsingList = async (file: RcFile) => {
 		if (!siteId || !bonusCode) return
@@ -330,6 +392,39 @@ const UpdateBonus: FC<{
 		formData.append('BonusCode', bonusCode)
 		try {
 			await setBonusUsingList(formData).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleUploadPromotionUploadCustList = async (file: RcFile) => {
+		if (!siteId || !bonusCode) return
+		const formData = new FormData()
+		formData.append('excelUpload', file)
+		formData.append('SiteId', String(siteId))
+		formData.append('BonusCode', bonusCode)
+		formData.append('PromotionType', currentBonusType)
+		try {
+			await uploadPromotionUploadCustList(formData).unwrap()
+			message.success(t('System.Label_Success'))
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleDeletePromotionUploadCustList = async (custId: number) => {
+		if (!siteId || !bonusCode) return
+		try {
+			await deletePromotionUploadCustList({
+				siteId,
+				bonusCode,
+				custId,
+			}).unwrap()
 			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
@@ -379,6 +474,7 @@ const UpdateBonus: FC<{
 				sameRealNameRestrictAvailableCount,
 				hideForUnlogin,
 				isPopUp,
+				isPromotionUploadCustList,
 			} = bonusDetailData
 
 			const parsedSpecific = specificDataConverter(specific, currencyListBySite)
@@ -430,7 +526,9 @@ const UpdateBonus: FC<{
 				),
 				hideForUnlogin,
 				isPopUp,
+				isPromotionUploadCustList,
 			})
+
 			parsedSpecific?.forEach(specificData => {
 				// subForm init
 				const {
@@ -553,6 +651,10 @@ const UpdateBonus: FC<{
 				value={{
 					form,
 					editPermission,
+					isPromotionUploadCustListForm,
+					isPromotionUploadCustList: bonusDetailData?.isPromotionUploadCustList,
+					isDisplayDateForm,
+					currentBonusType,
 					setCurrentTabActive,
 					setCurrentCurrency,
 					setInfoTabsKey,
@@ -566,13 +668,22 @@ const UpdateBonus: FC<{
 					<Col lg={12} xs={24}>
 						<BonusDetailMainForm
 							loading={loading}
-							uploadUsingListLoading={isSetBonusUsingListLoading}
+							uploadUsingListLoading={
+								isSetBonusUsingListLoading ||
+								isUploadPromotionUploadCustListLoading
+							}
 							tagList={tagList}
 							isEdit={isEdit}
 							bonusTypeList={bonusTypeList}
 							vipLevelList={vipLevelList}
 							onUploadUsingList={handleUploadUsingList}
 							onClickMemberList={handleClickMemberList}
+							onUploadPromotionUploadCustList={
+								handleUploadPromotionUploadCustList
+							}
+							onClickMemberListPromotionUpload={
+								handleClickMemberListPromotionUpload
+							}
 						/>
 					</Col>
 					<Col lg={12} xs={24}>
@@ -606,11 +717,35 @@ const UpdateBonus: FC<{
 						onFinish={setGroupBonusModal.onCancel}
 					/>
 				)}
-				<MemberListModal
+				<RetentionMemberListModal
 					loading={isGetBonusUsingListLoading}
 					visible={usingListModal.visible}
 					onClose={usingListModal.onCancel}
 					bonusUsingList={bonusUsingList}
+				/>
+				<DepositMemberListModal
+					loading={
+						isGetPromotionUploadCustListFetching ||
+						isDeletePromotionUploadCustListLoading
+					}
+					visible={usingListDepositModal.visible}
+					editPermission={editPermission}
+					onClose={usingListDepositModal.onCancel}
+					timeZoneUtcOffset={timeZoneUtcOffset}
+					promotionUploadCustList={promotionUploadCustList}
+					onDeletePromotionUploadCustList={handleDeletePromotionUploadCustList}
+				/>
+				<SpecialMemberListModal
+					loading={
+						isGetPromotionUploadCustListFetching ||
+						isDeletePromotionUploadCustListLoading
+					}
+					visible={usingListSpecialModal.visible}
+					editPermission={editPermission}
+					onClose={usingListSpecialModal.onCancel}
+					timeZoneUtcOffset={timeZoneUtcOffset}
+					promotionUploadCustList={promotionUploadCustList}
+					onDeletePromotionUploadCustList={handleDeletePromotionUploadCustList}
 				/>
 			</EditBonusContext.Provider>
 			<AffixButtons>

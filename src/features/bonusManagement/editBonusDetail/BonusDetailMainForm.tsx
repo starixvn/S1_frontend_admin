@@ -17,8 +17,8 @@ import { InputNumber } from 'components'
 import { RcFile } from 'antd/es/upload'
 import {
 	DownloadOutlined,
-	UploadOutlined,
 	ProfileOutlined,
+	UploadOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from 'app/store'
@@ -26,12 +26,12 @@ import { selectCurrencyListBySite } from 'common/enum'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import { IGetPromotionTypeData } from 'features/bonusManagement/type'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import dayjs, { Dayjs } from 'dayjs'
 import {
 	BonusTypeEnum,
-	devicesDetailList,
 	DevicesDetailEnum,
+	devicesDetailList,
 	PeriodTypeEnum,
 	periodTypeList,
 	PromotionActionEnum,
@@ -57,6 +57,8 @@ interface IBonusDetailMainForm {
 	isEdit: boolean
 	onUploadUsingList: (file: RcFile) => void
 	onClickMemberList: () => void
+	onUploadPromotionUploadCustList: (file: RcFile) => void
+	onClickMemberListPromotionUpload: () => void
 }
 
 const { Option } = Select
@@ -71,14 +73,22 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 	tagList,
 	onUploadUsingList,
 	onClickMemberList,
+	onUploadPromotionUploadCustList,
+	onClickMemberListPromotionUpload,
 }) => {
 	const { t } = useTranslation()
-	const { form, categoryList, editPermission } = useContext(EditBonusContext)
+	const {
+		form,
+		categoryList,
+		editPermission,
+		isPromotionUploadCustListForm,
+		// 預設要是 true，新增需要顯示
+		isPromotionUploadCustList = true,
+		currentBonusType,
+	} = useContext(EditBonusContext)
 	const currencyListBySite = useAppSelector(selectCurrencyListBySite)
-
 	const canEdit = !!editPermission?.canUse
 
-	const currentBonusType = Form.useWatch('bonusType', form)
 	const sameByActive = Form.useWatch('sameByActive', form)
 	// * displayDate => 後端有情境會回傳 [null,null]
 	const displayDate: [Dayjs | null, Dayjs | null] = Form.useWatch(
@@ -176,7 +186,18 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 		accept: xlsxMimeType,
 		maxCount: 1,
 		beforeUpload: file => {
-			onUploadUsingList(file)
+			if (
+				multiEqual(currentBonusType as number, [
+					BonusTypeEnum.FirstDeposit as number,
+					BonusTypeEnum.ReDeposit as number,
+					BonusTypeEnum.ManualBonus as number,
+				])
+			) {
+				onUploadPromotionUploadCustList(file)
+			} else {
+				onUploadUsingList(file)
+			}
+
 			return false
 		},
 		fileList: [],
@@ -345,42 +366,43 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 							BonusTypeEnum.ReDeposit as number,
 							BonusTypeEnum.FreeBet as number,
 							BonusTypeEnum.DeviceBonus as number,
-						]) && (
-							<Col lg={14} md={14} sm={14}>
-								<Form.Item
-									name='specialCode'
-									label={
-										<Space>
-											<Form.Item
-												name='isSpecial'
-												valuePropName='checked'
-												noStyle
-											>
-												<Checkbox disabled={isEdit}>
-													{t('Label_ScratchCode')}
-												</Checkbox>
-											</Form.Item>
-											{/* 是 freeBet 然後 有勾specialCode 才可以設定 newMember  */}
-											{(currentBonusType === BonusTypeEnum.FreeBet ||
-												currentBonusType === BonusTypeEnum.DeviceBonus) &&
-												isSpecialCode && (
-													<Form.Item
-														name='onlyRegistered'
-														valuePropName='checked'
-														noStyle
-													>
-														<Checkbox disabled={isEdit}>
-															{t('Label_NewMember')}
-														</Checkbox>
-													</Form.Item>
-												)}
-										</Space>
-									}
-								>
-									<Input disabled={!isSpecialCode || isEdit} />
-								</Form.Item>
-							</Col>
-						)}
+						]) &&
+							!isPromotionUploadCustListForm && (
+								<Col lg={14} md={14} sm={14}>
+									<Form.Item
+										name='specialCode'
+										label={
+											<Space>
+												<Form.Item
+													name='isSpecial'
+													valuePropName='checked'
+													noStyle
+												>
+													<Checkbox disabled={isEdit}>
+														{t('Label_ScratchCode')}
+													</Checkbox>
+												</Form.Item>
+												{/* 是 freeBet 然後 有勾specialCode 才可以設定 newMember  */}
+												{(currentBonusType === BonusTypeEnum.FreeBet ||
+													currentBonusType === BonusTypeEnum.DeviceBonus) &&
+													isSpecialCode && (
+														<Form.Item
+															name='onlyRegistered'
+															valuePropName='checked'
+															noStyle
+														>
+															<Checkbox disabled={isEdit}>
+																{t('Label_NewMember')}
+															</Checkbox>
+														</Form.Item>
+													)}
+											</Space>
+										}
+									>
+										<Input disabled={!isSpecialCode || isEdit} />
+									</Form.Item>
+								</Col>
+							)}
 					</Row>
 					<Row gutter={16}>
 						<Col lg={16} md={12} xs={12}>
@@ -436,7 +458,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										<RangePicker
 											disabled={!(isDisplayDate && canEdit)}
 											style={{ width: '100%' }}
-											ranges={RANGE_PICKER_RANGES([
+											presets={RANGE_PICKER_PRESETS([
 												'Today',
 												'Yesterday',
 												'Last Week',
@@ -466,10 +488,20 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 									<Select
 										placeholder={t('Label_Select')}
 										disabled={
-											// 此欄位只有 當BonusType = ReDeposit / CashBack 時在 edit 狀態不可修改
-											(currentBonusType === BonusTypeEnum.ReDeposit ||
-												currentBonusType === BonusTypeEnum.CashBack) &&
-											isEdit
+											// 1. 當 bonus 類型是 `CashBack` 並且處於編輯狀態（isEdit）。
+											// 2. 當 bonus 類型是 `ReDeposit`，並且滿足以下任一條件：
+											//    - 使用了客戶列表上傳表單（isPromotionUploadCustListForm）。
+											//    - 處於編輯狀態（isEdit）。
+											[
+												{ type: BonusTypeEnum.CashBack, condition: isEdit },
+												{
+													type: BonusTypeEnum.ReDeposit,
+													condition: isPromotionUploadCustListForm || isEdit,
+												},
+											].some(
+												({ type, condition }) =>
+													currentBonusType === type && condition
+											)
 										}
 									>
 										{
@@ -511,7 +543,7 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 										<RangePicker
 											disabled={sameByActive || !canEdit}
 											style={{ width: '100%' }}
-											ranges={RANGE_PICKER_RANGES([
+											presets={RANGE_PICKER_PRESETS([
 												'Today',
 												'Yesterday',
 												'Last Week',
@@ -585,6 +617,106 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 						</Col>
 					</Row>
 
+					{multiEqual(currentBonusType as number, [
+						BonusTypeEnum.FirstDeposit as number,
+						BonusTypeEnum.ReDeposit as number,
+						BonusTypeEnum.ManualBonus as number,
+					]) &&
+						isPromotionUploadCustList && (
+							<Row gutter={16} align='middle'>
+								<Col span={8}>
+									<Form.Item
+										label={
+											<Space align='center' size={30}>
+												<Form.Item
+													name='isPromotionUploadCustList'
+													valuePropName='checked'
+													noStyle
+												>
+													<Checkbox
+														disabled={isEdit}
+														onChange={e => {
+															const isChecked = e.target.checked
+															if (
+																isChecked &&
+																currentBonusType === BonusTypeEnum.ReDeposit
+															) {
+																form?.setFieldsValue({
+																	periodType: PeriodTypeEnum.Unlimited,
+																})
+															}
+														}}
+													>
+														{t('Label_MemberListUpload')}
+													</Checkbox>
+												</Form.Item>
+											</Space>
+										}
+									>
+										{currentBonusType === BonusTypeEnum.ManualBonus ? (
+											<Link
+												to='/exampleFile/SpecialBonusUpload.xlsx'
+												download='SpecialBonusUpload.xlsx'
+												target='_blank'
+												style={{ color: 'white' }}
+											>
+												<Button
+													type='primary'
+													icon={<DownloadOutlined />}
+													block
+													disabled={!canEdit}
+												>
+													{t('Label_TemplateFile')}
+												</Button>
+											</Link>
+										) : (
+											<Link
+												to='/exampleFile/DepositBonusUpload.xlsx'
+												download='DepositBonusUpload.xlsx'
+												target='_blank'
+												style={{ color: 'white' }}
+											>
+												<Button
+													type='primary'
+													icon={<DownloadOutlined />}
+													block
+													disabled={!canEdit}
+												>
+													{t('Label_TemplateFile')}
+												</Button>
+											</Link>
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={8}>
+									<Form.Item label={` `}>
+										<StyleUpload {...uploadProps} disabled={!isEdit}>
+											<Button
+												icon={<UploadOutlined />}
+												loading={uploadUsingListLoading}
+												disabled={!(isEdit && canEdit)}
+											>
+												{t('Label_Upload', { key: t('Label_File') })}
+											</Button>
+										</StyleUpload>
+									</Form.Item>
+								</Col>
+								<Col span={8}>
+									<Form.Item label={` `}>
+										<Button
+											icon={<ProfileOutlined />}
+											block
+											type='primary'
+											onClick={onClickMemberListPromotionUpload}
+											disabled={!isEdit}
+										>
+											{t('Label_MemberList')}
+										</Button>
+									</Form.Item>
+								</Col>
+							</Row>
+						)}
+
 					{currentBonusType === BonusTypeEnum.RetentionFreeBet && (
 						// bonus using list
 						<Row gutter={16} align='middle'>
@@ -635,131 +767,133 @@ const BonusDetailMainForm: FC<IBonusDetailMainForm> = ({
 							</Col>
 						</Row>
 					)}
-					{multiEqual(currentBonusType as number, [
-						BonusTypeEnum.FirstDeposit as number,
-						BonusTypeEnum.FreeBet as number,
-						BonusTypeEnum.DeviceBonus as number,
-						BonusTypeEnum.ReDeposit as number,
-						BonusTypeEnum.CashBack as number,
-					]) && (
-						<>
-							<Row gutter={16} align='middle'>
-								<Col lg={8} md={12} xs={12}>
-									<Form.Item
-										name='sameDeviceIDAvailableCount'
-										label={
-											<Form.Item
-												name='sameDeviceIDRestrict'
-												valuePropName='checked'
-												noStyle
-											>
-												<Checkbox
-													onChange={e => {
-														const value = e.target.checked
-														if (value) {
-															form?.setFieldsValue({
-																sameDeviceIDAvailableCount: 1,
-															})
-														} else {
-															form?.setFieldsValue({
-																sameDeviceIDAvailableCount: null,
-															})
-														}
-													}}
-													disabled={!canEdit}
+					{!isPromotionUploadCustListForm &&
+						multiEqual(currentBonusType as number, [
+							BonusTypeEnum.FirstDeposit as number,
+							BonusTypeEnum.FreeBet as number,
+							BonusTypeEnum.DeviceBonus as number,
+							BonusTypeEnum.ReDeposit as number,
+							BonusTypeEnum.CashBack as number,
+						]) && (
+							<>
+								<Row gutter={16} align='middle'>
+									<Col lg={8} md={12} xs={12}>
+										<Form.Item
+											name='sameDeviceIDAvailableCount'
+											label={
+												<Form.Item
+													name='sameDeviceIDRestrict'
+													valuePropName='checked'
+													noStyle
 												>
-													{t('Label_SameDeviceIDRestrictCount')}
-												</Checkbox>
-											</Form.Item>
-										}
-									>
-										<InputNumber disabled={!isSameDeviceIDRestrict} />
-									</Form.Item>
-								</Col>
-								<Col lg={8} md={12} xs={12}>
-									<Form.Item
-										name='sameRealNameRestrictAvailableCount'
-										label={
-											<Form.Item
-												name='sameRealNameRestrict'
-												valuePropName='checked'
-												noStyle
-											>
-												<Checkbox
-													onChange={e => {
-														const value = e.target.checked
-														if (value) {
-															form?.setFieldsValue({
-																sameRealNameRestrictAvailableCount: 1,
-															})
-														} else {
-															form?.setFieldsValue({
-																sameRealNameRestrictAvailableCount: null,
-															})
-														}
-													}}
-													disabled={!canEdit}
+													<Checkbox
+														onChange={e => {
+															const value = e.target.checked
+															if (value) {
+																form?.setFieldsValue({
+																	sameDeviceIDAvailableCount: 1,
+																})
+															} else {
+																form?.setFieldsValue({
+																	sameDeviceIDAvailableCount: null,
+																})
+															}
+														}}
+														disabled={!canEdit}
+													>
+														{t('Label_SameDeviceIDRestrictCount')}
+													</Checkbox>
+												</Form.Item>
+											}
+										>
+											<InputNumber disabled={!isSameDeviceIDRestrict} />
+										</Form.Item>
+									</Col>
+									<Col lg={8} md={12} xs={12}>
+										<Form.Item
+											name='sameRealNameRestrictAvailableCount'
+											label={
+												<Form.Item
+													name='sameRealNameRestrict'
+													valuePropName='checked'
+													noStyle
 												>
-													{t('Label_SameRealNameRestrictCount')}
-												</Checkbox>
-											</Form.Item>
-										}
-									>
-										<InputNumber disabled={!isSameRealNameRestrict} />
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={16} align='middle'>
-								<Col lg={8} md={12} xs={12}>
-									<Form.Item
-										name='sameIPRestrictAvailableCount'
-										label={
-											<Form.Item
-												name='sameIPRestrict'
-												valuePropName='checked'
-												noStyle
-											>
-												<Checkbox
-													onChange={e => {
-														const value = e.target.checked
-														if (value) {
-															form?.setFieldsValue({
-																sameIPRestrictAvailableCount: 1,
-															})
-														} else {
-															form?.setFieldsValue({
-																sameIPRestrictAvailableCount: null,
-															})
-														}
-													}}
-													disabled={!canEdit}
+													<Checkbox
+														onChange={e => {
+															const value = e.target.checked
+															if (value) {
+																form?.setFieldsValue({
+																	sameRealNameRestrictAvailableCount: 1,
+																})
+															} else {
+																form?.setFieldsValue({
+																	sameRealNameRestrictAvailableCount: null,
+																})
+															}
+														}}
+														disabled={!canEdit}
+													>
+														{t('Label_SameRealNameRestrictCount')}
+													</Checkbox>
+												</Form.Item>
+											}
+										>
+											<InputNumber disabled={!isSameRealNameRestrict} />
+										</Form.Item>
+									</Col>
+								</Row>
+								<Row gutter={16} align='middle'>
+									<Col lg={8} md={12} xs={12}>
+										<Form.Item
+											name='sameIPRestrictAvailableCount'
+											label={
+												<Form.Item
+													name='sameIPRestrict'
+													valuePropName='checked'
+													noStyle
 												>
-													{t('Label_SameIPRestrictCount')}
-												</Checkbox>
-											</Form.Item>
-										}
-									>
-										<InputNumber disabled={!isSameIPRestrict} />
-									</Form.Item>
-								</Col>
-							</Row>
-						</>
-					)}
+													<Checkbox
+														onChange={e => {
+															const value = e.target.checked
+															if (value) {
+																form?.setFieldsValue({
+																	sameIPRestrictAvailableCount: 1,
+																})
+															} else {
+																form?.setFieldsValue({
+																	sameIPRestrictAvailableCount: null,
+																})
+															}
+														}}
+														disabled={!canEdit}
+													>
+														{t('Label_SameIPRestrictCount')}
+													</Checkbox>
+												</Form.Item>
+											}
+										>
+											<InputNumber disabled={!isSameIPRestrict} />
+										</Form.Item>
+									</Col>
+								</Row>
+							</>
+						)}
 					{/* Rebate type 不可選以下三者  */}
-					{currentBonusType !== BonusTypeEnum.Rebate && (
-						<>
-							<Row>
-								<Col lg={16} md={16} sm={16}>
-									{vipLevelSelect()}
-								</Col>
-							</Row>
-							<Row>
-								<Col lg={16} md={16} xs={16}>
-									{tagsSelect()}
-								</Col>
-							</Row>
-						</>
-					)}
+					{currentBonusType !== BonusTypeEnum.Rebate &&
+						!isPromotionUploadCustListForm && (
+							<>
+								<Row>
+									<Col lg={16} md={16} sm={16}>
+										{vipLevelSelect()}
+									</Col>
+								</Row>
+								<Row>
+									<Col lg={16} md={16} xs={16}>
+										{tagsSelect()}
+									</Col>
+								</Row>
+							</>
+						)}
 					{currentBonusType !== BonusTypeEnum.Rebate && (
 						<Row gutter={16}>
 							<Col lg={8} md={8} xs={12}>

@@ -6,6 +6,10 @@ import { IGetPromotionCategoryData } from 'features/bonusManagement/type'
 
 interface IEditBonusContextProps {
 	form?: FormInstance
+	isPromotionUploadCustListForm: boolean | undefined
+	isPromotionUploadCustList: boolean | undefined
+	isDisplayDateForm: boolean | undefined
+	currentBonusType?: number | undefined
 	categoryList: IGetPromotionCategoryData[]
 	currentActiveCurrency: Currency
 	onEditDetailClick: () => void
@@ -22,6 +26,9 @@ const onSetGroupBonusClick = () => {}
 const initValue = {
 	categoryList: [],
 	currentActiveCurrency: {} as Currency,
+	isPromotionUploadCustListForm: false,
+	isPromotionUploadCustList: false,
+	isDisplayDateForm: false,
 	onEditDetailClick,
 	onSetGroupBonusClick,
 }

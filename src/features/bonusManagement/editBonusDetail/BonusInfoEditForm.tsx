@@ -20,6 +20,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 	const { t } = useTranslation()
 	const {
 		form,
+		isDisplayDateForm,
 		onEditDetailClick,
 		currentActiveCurrency,
 		setInfoTabsKey,
@@ -29,9 +30,6 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 	// 因為巢狀結構太複雜 , form 只允許一層巢狀 , 只好用 currencyId + langCode 轉成字串的方式
 	const tabsKey = JSON.stringify({ currencyId, langCode })
 	const promotionAction = Form.useWatch('promotionAction', form)
-
-	// * 當未勾選代表該 bonus 未顯示，bannerUrl、title description 改為非必填
-	const isDisplayDate = Form.useWatch('isDisplayDate', form)
 
 	const canEdit = !!editPermission?.canUse
 
@@ -76,7 +74,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_BannerUrl')}
 							rules={[
 								{
-									required: currentTabActive && isDisplayDate,
+									required: currentTabActive && isDisplayDateForm,
 									message: t('Label_Required', {
 										key: t('Label_BannerUrl'),
 									}),
@@ -98,7 +96,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_Title')}
 							rules={[
 								{
-									required: currentTabActive && isDisplayDate,
+									required: currentTabActive && isDisplayDateForm,
 									message: t('Label_Required', {
 										key: t('Label_Title'),
 									}),
@@ -114,7 +112,7 @@ const BonusInfoEditForm: FC<IBonusInfoEditForm> = ({
 							label={t('Label_Description')}
 							rules={[
 								{
-									required: currentTabActive && isDisplayDate,
+									required: currentTabActive && isDisplayDateForm,
 									message: t('Label_Required', {
 										key: t('Label_Description'),
 									}),

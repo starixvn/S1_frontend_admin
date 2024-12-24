@@ -116,3 +116,8 @@ export const predictionEventDepositAmountType = {
 	OneOfTheFollowing: 0,
 	Both: 1,
 } as const
+
+export const PromotionUploadCustListEnum = {
+	UnChecked: 0,
+	Checked: 1,
+} as const

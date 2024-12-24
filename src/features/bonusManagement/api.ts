@@ -2,8 +2,9 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { baseUrl } from 'common/service/Api'
 import { axiosBaseQuery, IAxiosResponse } from 'common/service/axiosBaseQuery'
 import { IPostUploadImageResponse } from 'features/bannerManagement/api'
-import {
+import type {
 	IBonusUsingListData,
+	IDeletePromotionUploadCustArgs,
 	IDuplicateArgs,
 	IExportScratchCardListArgs,
 	IGenScratchCardCodeArgs,
@@ -17,8 +18,10 @@ import {
 	IGetPromotionCategoryArgs,
 	IGetPromotionCategoryResponse,
 	IGetPromotionTypeResponse,
+	IGetPromotionUploadCustArgs,
 	IGetScratchCardListArgs,
 	IGetScratchCardListResponse,
+	IPromotionUploadCustData,
 	ISetArgs,
 	IUpdateStatusArgs,
 } from 'features/bonusManagement/type'
@@ -26,7 +29,7 @@ import {
 export const bonusManagementApi = createApi({
 	reducerPath: 'bonusManagementApi',
 	baseQuery: axiosBaseQuery({ baseUrl }),
-	tagTypes: ['POST', 'SCRATCH'],
+	tagTypes: ['POST', 'SCRATCH', 'MEMBER_LIST'],
 	refetchOnMountOrArgChange: true,
 	endpoints: builder => ({
 		getBonusList: builder.query<IGetBonusListResponse, IGetBonusListArgs>({
@@ -152,6 +155,44 @@ export const bonusManagementApi = createApi({
 				},
 			}),
 		}),
+		// deposit re-deposit special bonus 用的名單功能
+		getPromotionUploadCustList: builder.query<
+			IPromotionUploadCustData[],
+			IGetPromotionUploadCustArgs
+		>({
+			query: data => ({
+				url: 'Bonus/GetPromotionUploadCustList',
+				method: 'POST',
+				data,
+			}),
+			providesTags: ['MEMBER_LIST'],
+		}),
+		uploadPromotionUploadCustList: builder.mutation<
+			IAxiosResponse<void>,
+			FormData
+		>({
+			query: data => ({
+				url: 'Bonus/UploadPromotionUploadCustList',
+				method: 'POST',
+				data,
+				// FormData content-type
+				headers: {
+					'content-type':
+						'multipart/form-data; boundary=<calculated when request is sent>',
+				},
+			}),
+		}),
+		deletePromotionUploadCustList: builder.mutation<
+			IAxiosResponse<null>,
+			IDeletePromotionUploadCustArgs
+		>({
+			query: data => ({
+				url: 'Bonus/DeletePromotionUploadCustList',
+				method: 'POST',
+				data,
+			}),
+			invalidatesTags: ['MEMBER_LIST'],
+		}),
 		uploadBonusImage: builder.mutation<IPostUploadImageResponse, FormData>({
 			query: data => ({
 				url: 'UploadImage/BonusManagement',
@@ -181,4 +222,7 @@ export const {
 	useLazyGetBonusUsingListQuery,
 	useSetBonusUsingListMutation,
 	useUploadBonusImageMutation,
+	useLazyGetPromotionUploadCustListQuery,
+	useUploadPromotionUploadCustListMutation,
+	useDeletePromotionUploadCustListMutation,
 } = bonusManagementApi

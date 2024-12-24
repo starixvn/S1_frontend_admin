@@ -103,6 +103,7 @@ export interface IGetBonusListData {
 	currencyList: string[]
 	currencys: string[]
 	isPopUp: boolean
+	isPromotionUploadCustList: boolean
 }
 
 export type IGetBonusListResponse = IAxiosResponse<IGetBonusListData[]>
@@ -167,6 +168,7 @@ export interface ISetArgs {
 		blockTagList: number[]
 		hideForUnlogin: boolean
 		isPopUp: boolean
+		isPromotionUploadCustList: number
 		depositConditionStatus: number
 	}
 	displayConditionAboutVipLevel: IDisplayCondition
@@ -266,4 +268,24 @@ export type IBonusUsingListData = {
 	currency: string
 	userName: string
 	status: number
+}
+
+export interface IGetPromotionUploadCustArgs {
+	siteId: number
+	bonusCode: string
+}
+
+export interface IPromotionUploadCustData {
+	userName: string
+	custId: number
+	rollOver: number
+	bonus: number
+	expiryDate: string
+	status: boolean
+}
+
+export interface IDeletePromotionUploadCustArgs {
+	siteId: number
+	bonusCode: string
+	custId: number
 }

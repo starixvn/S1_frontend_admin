@@ -51,8 +51,13 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 }) => {
 	const { t } = useTranslation()
 	const { isoCode, currencyId } = currency
-	const { form, editPermission, setCurrentTabActive, onSetGroupBonusClick } =
-		useContext(EditBonusContext)
+	const {
+		form,
+		editPermission,
+		isPromotionUploadCustListForm,
+		setCurrentTabActive,
+		onSetGroupBonusClick,
+	} = useContext(EditBonusContext)
 
 	const { siteId } = useAppSelector(selectUserSite) ?? {}
 	const active = Form.useWatch(['specific', isoCode, 'active'], form)
@@ -624,16 +629,18 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 						currentBonusType === BonusTypeEnum.FirstDeposit) && (
 						// TierRedepositBonus
 						<>
-							<Row gutter={16}>
-								<Col span={8}>
-									<Form.Item
-										name={['specific', isoCode, 'vN_AffCodes']}
-										label={t('Label_AffiliateCode')}
-									>
-										<Input disabled={!isActiveAndEditable} />
-									</Form.Item>
-								</Col>
-							</Row>
+							{!isPromotionUploadCustListForm && (
+								<Row gutter={16}>
+									<Col span={8}>
+										<Form.Item
+											name={['specific', isoCode, 'vN_AffCodes']}
+											label={t('Label_AffiliateCode')}
+										>
+											<Input disabled={!isActiveAndEditable} />
+										</Form.Item>
+									</Col>
+								</Row>
+							)}
 							<Row gutter={16}>
 								<Col span={8}>
 									<Form.Item
@@ -705,52 +712,54 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 									</Col>
 								)}
 							</Row>
-							<Row gutter={16}>
-								<Col span={6}>
-									<Form.Item
-										name={['specific', isoCode, 'usage']}
-										label={t('Label_DailyLimit')}
-										rules={[
-											{
-												required: active,
-												message: t('Label_Required', {
-													key: t('Label_DailyLimit'),
-												}),
-											},
-											{ type: 'number', min: 0 },
-										]}
-									>
-										<InputNumber
-											type='number'
-											controls={false}
-											style={{ width: '100%' }}
-											disabled={!isActiveAndEditable}
-										/>
-									</Form.Item>
-								</Col>
-								<Col span={6}>
-									<Form.Item
-										name={['specific', isoCode, 'totalUsageLimit']}
-										label={t('Label_TotalLimit')}
-										rules={[
-											{
-												required: active,
-												message: t('Label_Required', {
-													key: t('Label_TotalLimit'),
-												}),
-											},
-											{ type: 'number', min: 0 },
-										]}
-									>
-										<InputNumber
-											type='number'
-											controls={false}
-											style={{ width: '100%' }}
-											disabled={!isActiveAndEditable}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
+							{!isPromotionUploadCustListForm && (
+								<Row gutter={16}>
+									<Col span={6}>
+										<Form.Item
+											name={['specific', isoCode, 'usage']}
+											label={t('Label_DailyLimit')}
+											rules={[
+												{
+													required: active,
+													message: t('Label_Required', {
+														key: t('Label_DailyLimit'),
+													}),
+												},
+												{ type: 'number', min: 0 },
+											]}
+										>
+											<InputNumber
+												type='number'
+												controls={false}
+												style={{ width: '100%' }}
+												disabled={!isActiveAndEditable}
+											/>
+										</Form.Item>
+									</Col>
+									<Col span={6}>
+										<Form.Item
+											name={['specific', isoCode, 'totalUsageLimit']}
+											label={t('Label_TotalLimit')}
+											rules={[
+												{
+													required: active,
+													message: t('Label_Required', {
+														key: t('Label_TotalLimit'),
+													}),
+												},
+												{ type: 'number', min: 0 },
+											]}
+										>
+											<InputNumber
+												type='number'
+												controls={false}
+												style={{ width: '100%' }}
+												disabled={!isActiveAndEditable}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+							)}
 						</>
 					)}
 					{currentBonusType === BonusTypeEnum.CashBack && (
@@ -950,43 +959,47 @@ const BonusDetailSubForm: FC<IBonusDetailSubFormProps> = ({
 					{currentBonusType === BonusTypeEnum.ManualBonus && (
 						// Manual
 						<>
-							<Row gutter={16}>
-								<Col lg={8} md={12} xs={24}>
-									<Form.Item
-										name={['specific', isoCode, 'vN_AffCodes']}
-										label={t('Label_AffiliateCode')}
-									>
-										<Input disabled={!isActiveAndEditable} />
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={16}>
-								<Col lg={8} md={12} xs={24}>
-									<Form.Item
-										name={['specific', isoCode, 'maxBonus']}
-										label={t('Label_MaxBonus')}
-										rules={[
-											{
-												required: active,
-												message: t('Label_Required', {
-													key: t('Label_MaxBonus'),
-												}),
-											},
-											{
-												type: 'number',
-												min: 0,
-											},
-										]}
-									>
-										<InputNumber
-											type='number'
-											controls={false}
-											style={{ width: '100%' }}
-											disabled={!isActiveAndEditable}
-										/>
-									</Form.Item>
-								</Col>
-							</Row>
+							{!isPromotionUploadCustListForm && (
+								<Row gutter={16}>
+									<Col lg={8} md={12} xs={24}>
+										<Form.Item
+											name={['specific', isoCode, 'vN_AffCodes']}
+											label={t('Label_AffiliateCode')}
+										>
+											<Input disabled={!isActiveAndEditable} />
+										</Form.Item>
+									</Col>
+								</Row>
+							)}
+							{!isPromotionUploadCustListForm && (
+								<Row gutter={16}>
+									<Col lg={8} md={12} xs={24}>
+										<Form.Item
+											name={['specific', isoCode, 'maxBonus']}
+											label={t('Label_MaxBonus')}
+											rules={[
+												{
+													required: active,
+													message: t('Label_Required', {
+														key: t('Label_MaxBonus'),
+													}),
+												},
+												{
+													type: 'number',
+													min: 0,
+												},
+											]}
+										>
+											<InputNumber
+												type='number'
+												controls={false}
+												style={{ width: '100%' }}
+												disabled={!isActiveAndEditable}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
+							)}
 							<Row gutter={16}>
 								<Col lg={6} md={12} xs={12}>
 									<Form.Item
