@@ -332,7 +332,7 @@ const SettingVipLevelModal = ({
 
 			<br />
 
-			<Title level={5}>{t('Label_City')}</Title>
+			<Title level={5}>{t('Label_VipLevelLog')}</Title>
 			<Table
 				size='small'
 				columns={columns}
