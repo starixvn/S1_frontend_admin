@@ -54,6 +54,7 @@ export type IEditForm = {
 	goldClub: number
 	titaniumClub: number
 	diamondClub: number
+	novaClub: number // nova 是 string 不會編輯
 }
 
 export type IUpgradeSettingTableData = {
@@ -65,7 +66,7 @@ export type IUpgradeSettingTableData = {
 	goldClub: number | null
 	titaniumClub: number | null
 	diamondClub: number | null
-	novaClub: string | null
+	novaClub: string | number | undefined
 }
 
 export enum VipLevelsEnum {

@@ -20,6 +20,7 @@ import {
 } from 'features/vipUpgradeSetting/type'
 import { vipUpgradeSettingConverter } from 'features/vipUpgradeSetting/utils'
 import VipUpgradeSettingTable from 'features/vipUpgradeSetting/VipUpgradeSettingTable'
+import { SiteIds } from '../../app/constants/siteIds'
 
 const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
@@ -71,7 +72,7 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleRowSaved = async () => {
-		const { silverClub, goldClub, titaniumClub, diamondClub } =
+		const { silverClub, goldClub, titaniumClub, diamondClub, novaClub } =
 			await editForm.validateFields()
 		// typeName,type 沒有出現在編輯框中
 		const { currencyId, typeName, type }: IUpgradeSettingTableData =
@@ -86,11 +87,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 				type,
 				typeName,
 				detail: [
-					{
-						level: VipLevelsEnum.SilverClub,
-						// tableData 只在拿取資料時做 set 故從 tableData 拿原值
-						levelValue: String(find(tableData, { type })?.silverClub),
-					},
+					...(siteId !== SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.SilverClub,
+									levelValue: String(find(tableData, { type })?.silverClub),
+								},
+						  ]
+						: []),
 					{
 						level: VipLevelsEnum.GoldClub,
 						levelValue: String(find(tableData, { type })?.goldClub),
@@ -103,6 +107,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 						level: VipLevelsEnum.DiamondClub,
 						levelValue: String(find(tableData, { type })?.diamondClub),
 					},
+					...(siteId === SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.NovaClub,
+									levelValue: String(find(tableData, { type })?.novaClub),
+								},
+						  ]
+						: []),
 				],
 			},
 			after: {
@@ -111,10 +123,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 				type,
 				typeName,
 				detail: [
-					{
-						level: VipLevelsEnum.SilverClub,
-						levelValue: String(silverClub),
-					},
+					...(siteId !== SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.SilverClub,
+									levelValue: String(silverClub),
+								},
+						  ]
+						: []),
 					{
 						level: VipLevelsEnum.GoldClub,
 						levelValue: String(goldClub),
@@ -127,6 +143,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 						level: VipLevelsEnum.DiamondClub,
 						levelValue: String(diamondClub),
 					},
+					...(siteId === SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.NovaClub,
+									levelValue: String(novaClub),
+								},
+						  ]
+						: []),
 				],
 			},
 		}

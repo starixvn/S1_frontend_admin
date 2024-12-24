@@ -1,4 +1,4 @@
-import { find } from 'lodash'
+import { find, isNumber } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import React, { Dispatch, SetStateAction } from 'react'
 import { numberFormatter } from 'common/utils/format'
@@ -140,7 +140,10 @@ const VipUpgradeSettingTable = ({
 				align: 'center' as 'center',
 				width: 140,
 				editable: siteId === SiteIds.OneTwoBet,
-				render: (novaClub: string) => novaClub || '-',
+				render: (novaClub: string | number) => {
+					if (isNumber(novaClub)) return numberFormatter.format(novaClub)
+					return novaClub || '-'
+				},
 			},
 		]
 	}

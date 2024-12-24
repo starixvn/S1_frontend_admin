@@ -1,3 +1,4 @@
+import { isNaN } from 'lodash'
 import {
 	IUpgradeSettingData,
 	IUpgradeSettingTableData,
@@ -23,7 +24,10 @@ export const vipUpgradeSettingConverter = (
 			goldClub: Number(getLevelValue(VipLevelsEnum.GoldClub)) || null,
 			titaniumClub: Number(getLevelValue(VipLevelsEnum.TitaniumClub)) || null,
 			diamondClub: Number(getLevelValue(VipLevelsEnum.DiamondClub)) || null,
-			novaClub: getLevelValue(VipLevelsEnum.NovaClub) ?? null,
+			// 有可能是 number | string ， number 需編輯，string 直接顯示
+			novaClub: !isNaN(Number(getLevelValue(VipLevelsEnum.NovaClub)))
+				? Number(getLevelValue(VipLevelsEnum.NovaClub))
+				: getLevelValue(VipLevelsEnum.NovaClub),
 		}
 	})
 }
