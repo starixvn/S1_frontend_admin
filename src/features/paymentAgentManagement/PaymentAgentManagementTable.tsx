@@ -1,64 +1,70 @@
-import React from 'react'
-import dayjs from 'dayjs'
-import {
-	Form,
-	Select,
-	Space,
-	Table,
-	TablePaginationConfig,
-	Typography,
-} from 'antd'
+import { find, isEmpty } from 'lodash'
+import React, { Dispatch, SetStateAction } from 'react'
+import { Form, FormInstance, Space, Table, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { IPaymentAgentData } from './type'
 import { EditableCellRows } from '../../components'
 import { LayoutContent } from '../../app/pages/layout'
-import { IGetPaymentAdjustmentReportData } from '../paymentAdjustment/type'
-import { multiEqual } from '../../common/utils'
-import { AdjustmentTypeEnum } from '../paymentAdjustment/constants'
-import { NEW_SITE_PREFIX_URL } from '../../app/config'
-import paths from '../../app/constants/paths'
-import { numberFormatter, timeFormat } from '../../common/utils/format'
+import { PAYMENT_AGENT_TYPE_LIST } from './constants'
+import { PermissionInterface } from '../../type'
 
 interface IPaymentAgentManagementTableProps {
+	loading: boolean
+	editingKey: number | undefined
+	form: FormInstance
+	editPermission?: PermissionInterface
 	paymentAgentList: IPaymentAgentData[]
+	setEditingKey: Dispatch<SetStateAction<number | undefined>>
+	onRowSaved: () => void
+	onAgentUser: (agentId: number) => void
 }
 
 const PaymentAgentManagementTable = ({
+	loading,
+	editingKey,
+	form,
+	editPermission,
 	paymentAgentList,
+	setEditingKey,
+	onRowSaved,
+	onAgentUser,
 }: IPaymentAgentManagementTableProps) => {
 	const { t } = useTranslation()
+
+	const onEdit = (record: IPaymentAgentData) => {
+		form.setFieldsValue({ ...record })
+		setEditingKey(record.agentId)
+	}
+
+	const isEditing = (record: IPaymentAgentData) => record.agentId === editingKey
 
 	const columns = [
 		{
 			title: t('Label_Action'),
-			key: 'operation',
-			width: 120,
+			key: 'action',
+			width: 100,
 			align: 'center' as 'center',
-			// render: (record: IGetPaymentAdjustmentReportData) => {
-			// 	const { transId } = record
-			// 	const editable = isEditing(transId)
-			//
-			// 	return editable ? (
-			// 		<Space>
-			// 			<Typography.Link
-			// 				onClick={() => onSaved(record)}
-			// 				style={{ marginRight: 8 }}
-			// 			>
-			// 				{t('Label_Save')}
-			// 			</Typography.Link>
-			// 			<Typography.Link onClick={() => setEditingKey(undefined)}>
-			// 				{t('Label_Cancel')}
-			// 			</Typography.Link>
-			// 		</Space>
-			// 	) : (
-			// 		<Typography.Link
-			// 			disabled={!editPermission?.canUse}
-			// 			onClick={() => onEdit(record)}
-			// 		>
-			// 			{t('Label_Edit')}
-			// 		</Typography.Link>
-			// 	)
-			// },
+			render: (record: IPaymentAgentData) => {
+				const editable = isEditing(record)
+				return editable ? (
+					<Space size='middle'>
+						<Typography.Link onClick={onRowSaved}>
+							{t('Label_Save')}
+						</Typography.Link>
+
+						<Typography.Link onClick={() => setEditingKey(undefined)}>
+							{t('Label_Cancel')}
+						</Typography.Link>
+					</Space>
+				) : (
+					<Typography.Link
+						disabled={!editPermission?.canUse}
+						onClick={() => onEdit(record)}
+					>
+						{t('Label_Edit')}
+					</Typography.Link>
+				)
+			},
 		},
 		{
 			title: t('Label_AgentName'),
@@ -69,10 +75,23 @@ const PaymentAgentManagementTable = ({
 		},
 		{
 			title: t('Label_Type'),
-			key: 'transId',
-			dataIndex: 'transId',
+			key: 'type',
+			dataIndex: 'type',
 			width: 100,
 			align: 'center' as 'center',
+			editable: true,
+			render: (type: number) => {
+				const displayName = find(
+					PAYMENT_AGENT_TYPE_LIST,
+					paymentAgentType => paymentAgentType.value === type
+				)?.displayName
+
+				return (
+					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
+						{displayName ? t(displayName) : '-'}
+					</Typography.Text>
+				)
+			},
 		},
 		{
 			title: t('Label_Sites'),
@@ -87,19 +106,57 @@ const PaymentAgentManagementTable = ({
 			dataIndex: 'currencyIds',
 			width: 100,
 			align: 'center' as 'center',
+			render: (currencyIds: number[]) => {
+				return !isEmpty(currencyIds) ? currencyIds : '-'
+			},
 		},
 		{
 			title: t('Label_UserList'),
-			key: 'walletType',
-			dataIndex: 'walletType',
+			key: 'agentId',
+			dataIndex: 'agentId',
 			width: 100,
 			align: 'center' as 'center',
+			render: (agentId: number) => {
+				return (
+					<Typography.Link onClick={() => onAgentUser(agentId)}>
+						{agentId}
+					</Typography.Link>
+				)
+			},
 		},
 	]
 
+	const mergeColumns = columns.map(col => {
+		const { title, dataIndex, editable } = col
+		if (!editable) return col
+
+		return {
+			...col,
+			onCell: (record: IPaymentAgentData) => ({
+				record,
+				title,
+				dataIndex,
+				editing: isEditing(record),
+				inputType: 'text',
+			}),
+		}
+	})
+
 	return (
 		<LayoutContent.Card>
-			<Table dataSource={paymentAgentList} columns={columns} />
+			<Form form={form} component={false}>
+				<Table
+					loading={loading}
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					pagination={false}
+					dataSource={paymentAgentList}
+					columns={mergeColumns}
+				/>
+			</Form>
 		</LayoutContent.Card>
 	)
 }
