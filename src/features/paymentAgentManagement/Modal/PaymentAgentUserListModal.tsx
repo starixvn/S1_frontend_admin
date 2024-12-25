@@ -84,30 +84,18 @@ const PaymentAgentUserListModal = ({
 			},
 		},
 		{
-			title: t('Label_AgentName'),
-			key: 'agentName',
-			dataIndex: 'agentName',
+			title: t('Label_Status'),
+			key: 'status',
+			dataIndex: 'status',
 			width: 60,
 			align: 'center' as 'center',
 		},
 		{
-			title: t('Label_Type'),
-			key: 'type',
-			dataIndex: 'type',
-			width: 100,
+			title: t('Label_Status'),
+			key: 'userName',
+			dataIndex: 'userName',
+			width: 60,
 			align: 'center' as 'center',
-			render: (type: number) => {
-				const displayName = find(
-					PAYMENT_AGENT_TYPE_LIST,
-					paymentAgentType => paymentAgentType.value === type
-				)?.displayName
-
-				return (
-					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
-						{displayName ? t(displayName) : '-'}
-					</Typography.Text>
-				)
-			},
 		},
 		{
 			title: t('Label_Sites'),
@@ -127,9 +115,9 @@ const PaymentAgentUserListModal = ({
 			},
 		},
 		{
-			title: t('Label_UserList'),
-			key: 'agentId',
-			dataIndex: 'agentId',
+			title: t('Label_Group'),
+			key: 'groupIds',
+			dataIndex: 'groupIds',
 			width: 100,
 			align: 'center' as 'center',
 			editable: true,
@@ -154,6 +142,7 @@ const PaymentAgentUserListModal = ({
 
 	return (
 		<Modal
+			width='60%'
 			open={visible}
 			onCancel={onCancel}
 			footer={false}
@@ -163,6 +152,7 @@ const PaymentAgentUserListModal = ({
 				</div>
 			}
 			afterClose={onClosed}
+			destroyOnClose
 		>
 			<LayoutContent.Card>
 				<Form form={form} component={false}>

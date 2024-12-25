@@ -30,7 +30,12 @@ export interface IEditForm {
 	status: number
 }
 
-export interface IModalForm {}
+export interface IModalForm {
+	siteIds: number[]
+	currencyIds: number[]
+	groupIds: number[]
+	userName: string
+}
 
 export interface ISetPaymentAgentStatusArgs {
 	agentId: number
