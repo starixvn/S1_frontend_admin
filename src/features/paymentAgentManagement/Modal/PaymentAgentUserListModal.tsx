@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Form, FormInstance, List, Modal, Space, Table, Typography } from 'antd'
 import { EditableCellRows } from '../../../components'
 import { LayoutContent } from '../../../app/pages/layout'
-import { IPaymentAgentData } from '../type'
+import { IPaymentAgentData, IPaymentAgentUserData } from '../type'
 import { PAYMENT_AGENT_TYPE_LIST } from '../constants'
 import { PermissionInterface } from '../../../type'
 
@@ -12,7 +12,7 @@ interface IPaymentAgentUserListModalProps {
 	loading: boolean
 	form: FormInstance
 	editPermission?: PermissionInterface
-	paymentAgentUserList: IPaymentAgentData[]
+	paymentAgentUserList: IPaymentAgentUserData[]
 	visible: boolean
 	onCancel: () => void
 	onModalRowSaved: () => void
@@ -31,7 +31,7 @@ const PaymentAgentUserListModal = ({
 	const { t } = useTranslation()
 
 	const [modalAgentUserListState, setModalAgentUserListState] = useState<
-		IPaymentAgentData[]
+		IPaymentAgentUserData[]
 	>([])
 	const [editingModalKey, setEditingModalKey] = useState<number | undefined>(
 		undefined
@@ -47,13 +47,13 @@ const PaymentAgentUserListModal = ({
 		setModalAgentUserListState([])
 	}
 
-	const onEdit = (record: IPaymentAgentData) => {
+	const onEdit = (record: IPaymentAgentUserData) => {
 		form.setFieldsValue({ ...record })
-		setEditingModalKey(record.agentId)
+		setEditingModalKey(record.userId)
 	}
 
-	const isEditing = (record: IPaymentAgentData) =>
-		record.agentId === editingModalKey
+	const isEditing = (record: IPaymentAgentUserData) =>
+		record.userId === editingModalKey
 
 	const columns = [
 		{
@@ -61,7 +61,7 @@ const PaymentAgentUserListModal = ({
 			key: 'action',
 			width: 100,
 			align: 'center' as 'center',
-			render: (record: IPaymentAgentData) => {
+			render: (record: IPaymentAgentUserData) => {
 				const editable = isEditing(record)
 				return editable ? (
 					<Space size='middle'>
@@ -142,7 +142,7 @@ const PaymentAgentUserListModal = ({
 
 		return {
 			...col,
-			onCell: (record: IPaymentAgentData) => ({
+			onCell: (record: IPaymentAgentUserData) => ({
 				record,
 				title,
 				dataIndex,
@@ -158,7 +158,9 @@ const PaymentAgentUserListModal = ({
 			onCancel={onCancel}
 			footer={false}
 			title={
-				<div style={{ textAlign: 'center' }}>{t('Label_AssociateAccount')}</div>
+				<div style={{ textAlign: 'center' }}>
+					{t('Label_AgentNameUserList')}
+				</div>
 			}
 			afterClose={onClosed}
 		>
@@ -172,7 +174,7 @@ const PaymentAgentUserListModal = ({
 							},
 						}}
 						pagination={false}
-						dataSource={paymentAgentUserList}
+						dataSource={modalAgentUserListState}
 						columns={mergeColumns}
 					/>
 				</Form>

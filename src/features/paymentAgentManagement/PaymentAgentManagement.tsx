@@ -1,43 +1,37 @@
 import { isEmpty } from 'lodash'
-import React, { useState } from 'react'
-import { Card, Form, message } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Form, message } from 'antd'
 import { useGetEnumTypeQuery } from 'common/service/enumApi'
 import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
 	useLazyGetPaymentAgentListQuery,
 	useLazyGetPaymentAgentUserListQuery,
+	useSetPaymentAgentStatusMutation,
+	useSetPaymentAgentMutation,
 } from './api'
 import PaymentAgentManagementFilter from './PaymentAgentManagementFilter'
 import PaymentAgentManagementTable from './PaymentAgentManagementTable'
-import {
-	PAGINATION,
-	useAuth,
-	useModal,
-	useQueryParams,
-} from '../../common/hooks'
-import { dateRangeToUtcFormatter } from '../../common/utils'
-import { useTimeZone } from '../../components/TimeZoneSelect'
+import { useAuth, useModal, useQueryParams } from '../../common/hooks'
 import {
 	IFilterForm,
 	IEditForm,
 	IModalForm,
-	IPaymentAgentData,
-	PaymentAgentResponse,
+	IPaymentAgentUserData,
+	IPaymentAgentUserResponse,
 } from './type'
-import { useAppSelector } from '../../app/store'
-import { selectUserSite } from '../../common/enum'
-import { useLazyGetIovationAssociateAccountQuery } from '../iovation/api'
 import PaymentAgentUserListModal from './Modal/PaymentAgentUserListModal'
+import { PaymentAgentTypeEnum } from './constants'
 
 const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
-	const [form] = Form.useForm<IFilterForm>()
+	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
 	const [modalForm] = Form.useForm<IModalForm>()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const { actionPermissions: { editPermission } = {} } = useAuth()
-	const { siteId } = useAppSelector(selectUserSite) ?? {}
+	const { actionPermissions: { editPermission, setUserAgentPermission } = {} } =
+		useAuth()
+
 	const agentUserModal = useModal()
 
 	const [
@@ -48,8 +42,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		},
 	] = useLazyGetPaymentAgentUserListQuery()
 
-	const { timeZoneUtcOffset, onTimeZoneChange } = useTimeZone()
-
 	const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 
 	const [
@@ -59,6 +51,12 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			isFetching: isGetPaymentAgentListFetching,
 		},
 	] = useLazyGetPaymentAgentListQuery()
+
+	const [setPaymentAgentStatus, { isLoading: isSetPaymentAgentStatusLoading }] =
+		useSetPaymentAgentStatusMutation()
+
+	const [setPaymentAgent, { isLoading: isSetPaymentAgentLoading }] =
+		useSetPaymentAgentMutation()
 
 	const {
 		data: { data: paymentAgentTypeEnum = [] } = {},
@@ -71,7 +69,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	} = useGetEnumTypeQuery({ enumName: 'PaymentAgentStatusEnum' })
 
 	const handleAgentUser = async (agentId: number) => {
-		console.log(agentId)
 		agentUserModal.onOpen()
 		try {
 			await getPaymentAgentUserList({ agentId }).unwrap()
@@ -83,7 +80,7 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	}
 
 	const handleSearch = async () => {
-		const { types, status } = form.getFieldsValue()
+		const { types, status } = filterForm.getFieldsValue()
 
 		try {
 			await getPaymentAgentList({
@@ -94,8 +91,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 				types,
 				status,
 			})
-
-			message.success(t('System.Label_Success'))
 		} catch (error) {
 			message.error(
 				(error as Error)?.message || t('System.Label_NotExpectedServerError')
@@ -103,15 +98,77 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		}
 	}
 
-	const handleRowSaved = async () => {}
+	const handleRowSaved = async () => {
+		const { agentId, agentName, type, siteIds, currencyIds, status } =
+			editForm.getFieldsValue(true)
+		try {
+			await setPaymentAgent({
+				agentId,
+				agentName,
+				type,
+				siteIds,
+				currencyIds,
+				status,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 	const handleModalRowSaved = async () => {}
+	const handleSetAgentStatus = async ({
+		agentId,
+		status,
+	}: {
+		agentId: number
+		status: boolean
+	}) => {
+		try {
+			await setPaymentAgentStatus({
+				agentId,
+				status: status
+					? PaymentAgentTypeEnum.OutSource
+					: PaymentAgentTypeEnum.Internal,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 
 	const filterLoading =
-		isPaymentAgentTypeEnumLoading ||
+		isPaymentAgentTypeEnumLoading || isPaymentAgentStatusEnumLoading
+
+	const tableLoading =
 		isGetPaymentAgentListFetching ||
-		isPaymentAgentStatusEnumLoading
+		isSetPaymentAgentStatusLoading ||
+		isSetPaymentAgentLoading
 
 	const modalLoading = isGetPaymentAgentUserListFetching
+
+	useEffect(() => {
+		const init = () => {
+			if (isEmpty(queryParams)) {
+				filterForm.setFieldsValue({
+					types: paymentAgentTypeEnum?.map(({ value }) => value),
+					status: paymentAgentStatusEnum?.map(({ value }) => value),
+				})
+			} else {
+				const { types = [], status = [] } = queryParams
+				filterForm.setFieldsValue({
+					types: types.map((value: string) => Number(value)),
+					status: status.map((value: string) => Number(value)),
+				})
+
+				handleSearch()
+			}
+		}
+		if (!filterLoading) {
+			init()
+		}
+	}, [filterLoading])
 
 	return (
 		<LayoutContent.Main>
@@ -119,14 +176,14 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 			<PaymentAgentManagementFilter
 				loading={filterLoading}
-				form={form}
+				form={filterForm}
 				paymentAgentTypeEnum={paymentAgentTypeEnum}
 				paymentAgentStatusEnum={paymentAgentStatusEnum}
 				onSearch={handleSearch}
 			/>
 			{!isEmpty(queryParams) && (
 				<PaymentAgentManagementTable
-					loading={isGetPaymentAgentListFetching}
+					loading={tableLoading}
 					form={editForm}
 					editingKey={editingKey}
 					editPermission={editPermission}
@@ -134,6 +191,7 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					setEditingKey={setEditingKey}
 					onRowSaved={handleRowSaved}
 					onAgentUser={handleAgentUser}
+					onSetAgentStatus={handleSetAgentStatus}
 				/>
 			)}
 

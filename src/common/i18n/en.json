@@ -1342,5 +1342,6 @@
 	"label_DepositCountAchievedAndDepositAmountNotBothZero": "Deposit Count Achieved and Deposit Amount cannot both be 0 at the same time",
 	"Label_Sites": "Sites",
 	"Label_Internal": "Internal",
-	"Label_OutSource": "OutSource"
+	"Label_OutSource": "OutSource",
+	"Label_AgentNameUserList": "AgentName UserList"
 }

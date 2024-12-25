@@ -83,4 +83,5 @@ export const ACTION_NAMES: {
 	89: 'editWithdrawalAutoVerifyRulePermission',
 	90: 'editSystemBankInfoPermission',
 	91: 'editWithdrawalBlockSwitchPermission',
+	92: 'setUserAgentPermission',
 }

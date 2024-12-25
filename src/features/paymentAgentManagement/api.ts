@@ -1,6 +1,8 @@
-import {
-	GetPaymentAgentListArgs,
+import type {
+	IGetPaymentAgentListArgs,
 	IGetPaymentAgentUserArgs,
+	IPaymentAgentUserData,
+	IPaymentAgentUserResponse,
 	ISetPaymentAgentArgs,
 	ISetPaymentAgentStatusArgs,
 	ISetPaymentAgentUserArgs,
@@ -13,13 +15,14 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 	endpoints: builder => ({
 		getPaymentAgentList: builder.query<
 			PaymentAgentResponse,
-			GetPaymentAgentListArgs
+			IGetPaymentAgentListArgs
 		>({
 			query: data => ({
 				url: 'PaymentAgent/GetList',
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST'],
 		}),
 		setPaymentAgentStatus: builder.mutation<void, ISetPaymentAgentStatusArgs>({
 			query: data => ({
@@ -27,6 +30,7 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 		setPaymentAgent: builder.mutation<void, ISetPaymentAgentArgs>({
 			query: data => ({
@@ -34,6 +38,7 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST'],
 		}),
 		setPaymentAgentUser: builder.mutation<void, ISetPaymentAgentUserArgs>({
 			query: data => ({
@@ -41,6 +46,7 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST2'],
 		}),
 		setPaymentAgentUserStatus: builder.mutation<
 			void,
@@ -51,9 +57,10 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			invalidatesTags: ['POST2'],
 		}),
 		getPaymentAgentUserList: builder.query<
-			PaymentAgentResponse,
+			IPaymentAgentUserResponse,
 			IGetPaymentAgentUserArgs
 		>({
 			query: data => ({
@@ -61,6 +68,7 @@ export const paymentAgentApi = rootApi.injectEndpoints({
 				method: 'POST',
 				data,
 			}),
+			providesTags: ['POST2'],
 		}),
 		// 沒用到通知 anise 刪除
 		getPaymentAgentUser: builder.query<

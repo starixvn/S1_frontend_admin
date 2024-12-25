@@ -1,11 +1,19 @@
 import { find, isEmpty } from 'lodash'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Form, FormInstance, Space, Table, Typography } from 'antd'
+import {
+	Form,
+	FormInstance,
+	Popconfirm,
+	Space,
+	Switch,
+	Table,
+	Typography,
+} from 'antd'
 import { useTranslation } from 'react-i18next'
 import { IPaymentAgentData } from './type'
 import { EditableCellRows } from '../../components'
 import { LayoutContent } from '../../app/pages/layout'
-import { PAYMENT_AGENT_TYPE_LIST } from './constants'
+import { PAYMENT_AGENT_TYPE_LIST, PaymentAgentTypeEnum } from './constants'
 import { PermissionInterface } from '../../type'
 
 interface IPaymentAgentManagementTableProps {
@@ -17,6 +25,13 @@ interface IPaymentAgentManagementTableProps {
 	setEditingKey: Dispatch<SetStateAction<number | undefined>>
 	onRowSaved: () => void
 	onAgentUser: (agentId: number) => void
+	onSetAgentStatus: ({
+		agentId,
+		status,
+	}: {
+		agentId: number
+		status: boolean
+	}) => void
 }
 
 const PaymentAgentManagementTable = ({
@@ -28,6 +43,7 @@ const PaymentAgentManagementTable = ({
 	setEditingKey,
 	onRowSaved,
 	onAgentUser,
+	onSetAgentStatus,
 }: IPaymentAgentManagementTableProps) => {
 	const { t } = useTranslation()
 
@@ -37,6 +53,13 @@ const PaymentAgentManagementTable = ({
 	}
 
 	const isEditing = (record: IPaymentAgentData) => record.agentId === editingKey
+
+	const displayTypeName = (type: number) => {
+		return find(
+			PAYMENT_AGENT_TYPE_LIST,
+			paymentAgentType => paymentAgentType.value === type
+		)?.displayName
+	}
 
 	const columns = [
 		{
@@ -67,6 +90,34 @@ const PaymentAgentManagementTable = ({
 			},
 		},
 		{
+			title: t('Label_Status'),
+			key: 'status',
+			width: 60,
+			align: 'center' as 'center',
+			render: (record: IPaymentAgentData) => {
+				const { status, type, agentId } = record || {}
+				const isShowStatus = type === PaymentAgentTypeEnum.OutSource
+
+				return isShowStatus ? (
+					<Popconfirm
+						disabled={
+							// * type 狀態在0 時不可打開
+							!editPermission?.canUse
+						}
+						title={t('Label_AreYouSure')}
+						onConfirm={() => onSetAgentStatus({ agentId, status: !status })}
+					>
+						<Switch
+							checked={Boolean(status)}
+							disabled={!editPermission?.canUse}
+						/>
+					</Popconfirm>
+				) : (
+					'-'
+				)
+			},
+		},
+		{
 			title: t('Label_AgentName'),
 			key: 'agentName',
 			dataIndex: 'agentName',
@@ -81,10 +132,7 @@ const PaymentAgentManagementTable = ({
 			align: 'center' as 'center',
 			editable: true,
 			render: (type: number) => {
-				const displayName = find(
-					PAYMENT_AGENT_TYPE_LIST,
-					paymentAgentType => paymentAgentType.value === type
-				)?.displayName
+				const displayName = displayTypeName(type)
 
 				return (
 					<Typography.Text style={{ whiteSpace: 'nowrap', padding: '10px' }}>
@@ -113,14 +161,17 @@ const PaymentAgentManagementTable = ({
 		{
 			title: t('Label_UserList'),
 			key: 'agentId',
-			dataIndex: 'agentId',
 			width: 100,
 			align: 'center' as 'center',
-			render: (agentId: number) => {
-				return (
+			render: (record: IPaymentAgentData) => {
+				const { agentId, type } = record || {}
+				const isShowUserList = type === PaymentAgentTypeEnum.OutSource
+				return isShowUserList ? (
 					<Typography.Link onClick={() => onAgentUser(agentId)}>
 						{agentId}
 					</Typography.Link>
+				) : (
+					'-'
 				)
 			},
 		},
@@ -132,13 +183,15 @@ const PaymentAgentManagementTable = ({
 
 		return {
 			...col,
-			onCell: (record: IPaymentAgentData) => ({
-				record,
-				title,
-				dataIndex,
-				editing: isEditing(record),
-				inputType: 'text',
-			}),
+			onCell: (record: IPaymentAgentData) => {
+				return {
+					record,
+					title,
+					dataIndex,
+					editing: isEditing(record),
+					inputType: 'text',
+				}
+			},
 		}
 	})
 

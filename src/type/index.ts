@@ -104,6 +104,7 @@ export interface ActionPermissions {
 	editWithdrawalAutoVerifyRulePermission: PermissionInterface
 	editSystemBankInfoPermission: PermissionInterface
 	editWithdrawalBlockSwitchPermission: PermissionInterface
+	setUserAgentPermission: PermissionInterface
 }
 export interface PermissionInterface {
 	permissionId: number

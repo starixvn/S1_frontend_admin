@@ -1,6 +1,6 @@
 import { IAxiosResponse } from 'common/service/axiosBaseQuery'
 
-export interface GetPaymentAgentListArgs {
+export interface IGetPaymentAgentListArgs {
 	types: number[]
 	status: number[]
 }
@@ -33,8 +33,8 @@ export interface IEditForm {
 export interface IModalForm {}
 
 export interface ISetPaymentAgentStatusArgs {
-	agentId: 2
-	status: 0
+	agentId: number
+	status: number
 }
 
 export interface ISetPaymentAgentArgs {
@@ -64,3 +64,14 @@ export interface ISetPaymentAgentUserStatusArgs {
 export interface IGetPaymentAgentUserArgs {
 	agentId: number
 }
+
+export interface IPaymentAgentUserData {
+	userId: number
+	userName: string
+	status: number
+	currencyIds: number[]
+	groupIds: number[]
+	siteIds: number[]
+}
+
+export type IPaymentAgentUserResponse = IAxiosResponse<IPaymentAgentUserData[]>
