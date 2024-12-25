@@ -78,6 +78,14 @@ export enum VipLevelsEnum {
 	NovaClub,
 }
 
+// 者裡每個 site 的 siteName 名稱都不ㄧ樣，故此命名，nova 缺少 type 1
+export enum VipLevelsTypeEnum {
+	levelTypeOne = 1,
+	levelTypeTwo,
+	levelTypeThree,
+	levelTypeFour,
+}
+
 export interface IVipLevelNameData {
 	level: number
 	levelName: string

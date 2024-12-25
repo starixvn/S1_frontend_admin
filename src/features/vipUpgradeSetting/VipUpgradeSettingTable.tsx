@@ -5,7 +5,10 @@ import { numberFormatter } from 'common/utils/format'
 import { EditableCellRows } from 'components'
 import { Typography, Space, FormInstance, Form, Table } from 'antd'
 import { PermissionInterface } from 'type'
-import type { IUpgradeSettingTableData } from 'features/vipUpgradeSetting/type'
+import {
+	IUpgradeSettingTableData,
+	VipLevelsTypeEnum,
+} from 'features/vipUpgradeSetting/type'
 import { SiteIds } from 'app/constants/siteIds'
 import { useGetVipLevelNameQuery } from './api'
 
@@ -44,15 +47,16 @@ const VipUpgradeSettingTable = ({
 		setEditingKey(record.type)
 	}
 
-	const isEditing = (record: IUpgradeSettingTableData) =>
-		record.type === editingKey
+	const isEditing = (record: IUpgradeSettingTableData) => {
+		return record.type === editingKey
+	}
 
 	const columns = () => {
 		return [
 			{
 				title: t('Label_Action'),
 				key: 'operation',
-				width: 125,
+				width: 120,
 				align: 'center' as 'center',
 				render: (record: IUpgradeSettingTableData) => {
 					const editable = isEditing(record)
@@ -81,7 +85,7 @@ const VipUpgradeSettingTable = ({
 				key: 'typeName',
 				dataIndex: 'typeName',
 				align: 'center' as 'center',
-				width: 300,
+				width: 180,
 				render: (typeName: string) => typeName || '-',
 			},
 			{
@@ -89,7 +93,7 @@ const VipUpgradeSettingTable = ({
 				key: 'vintageClub',
 				dataIndex: 'vintageClub',
 				align: 'center' as 'center',
-				width: 140,
+				width: 80,
 				render: (vintageClub: number | null) =>
 					vintageClub !== null ? numberFormatter.format(vintageClub) : '-',
 			},
@@ -98,7 +102,7 @@ const VipUpgradeSettingTable = ({
 				key: 'silverClub',
 				dataIndex: 'silverClub',
 				align: 'center' as 'center',
-				width: 140,
+				width: 80,
 				editable: siteId !== SiteIds.OneTwoBet,
 				render: (silverClub: number | null) =>
 					silverClub !== null ? numberFormatter.format(silverClub) : '-',
@@ -106,19 +110,23 @@ const VipUpgradeSettingTable = ({
 			{
 				title: find(vipLevelNameList, { level: 3 })?.levelName,
 				key: 'goldClub',
-				dataIndex: 'goldClub',
 				align: 'center' as 'center',
-				width: 140,
-				editable: siteId !== SiteIds.OneTwoBet,
-				render: (goldClub: number | null) =>
-					goldClub !== null ? numberFormatter.format(goldClub) : '-',
+				width: 80,
+				editable: (record: IUpgradeSettingTableData) => {
+					if (siteId !== SiteIds.OneTwoBet) return true
+					return record.type === VipLevelsTypeEnum.levelTypeTwo
+				},
+				render: (record: IUpgradeSettingTableData) => {
+					const { goldClub } = record || {}
+					return goldClub !== null ? numberFormatter.format(goldClub) : '-'
+				},
 			},
 			{
 				title: find(vipLevelNameList, { level: 4 })?.levelName,
 				key: 'titaniumClub',
 				dataIndex: 'titaniumClub',
 				align: 'center' as 'center',
-				width: 140,
+				width: 80,
 				editable: true,
 				render: (titaniumClub: number | null) =>
 					titaniumClub !== null ? numberFormatter.format(titaniumClub) : '-',
@@ -128,7 +136,7 @@ const VipUpgradeSettingTable = ({
 				key: 'diamondClub',
 				dataIndex: 'diamondClub',
 				align: 'center' as 'center',
-				width: 140,
+				width: 80,
 				editable: true,
 				render: (diamondClub: number) =>
 					diamondClub !== null ? numberFormatter.format(diamondClub) : '-',
@@ -138,7 +146,7 @@ const VipUpgradeSettingTable = ({
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				align: 'center' as 'center',
-				width: 140,
+				width: 80,
 				editable: siteId === SiteIds.OneTwoBet,
 				render: (novaClub: string | number) => {
 					if (isNumber(novaClub)) return numberFormatter.format(novaClub)
@@ -149,7 +157,7 @@ const VipUpgradeSettingTable = ({
 	}
 
 	const mergeColumns = columns().map(col => {
-		const { title, dataIndex, editable } = col
+		const { title, editable, key } = col
 		if (!editable) return col
 
 		return {
@@ -157,8 +165,14 @@ const VipUpgradeSettingTable = ({
 			onCell: (record: IUpgradeSettingTableData) => ({
 				record,
 				title,
-				dataIndex,
-				editing: isEditing(record),
+				// 因 silverClub 欄位沒有 dataIndex 所以在編輯時無法 auto fill 到 input
+				// 感覺之後可以都走用 dataIndex 綁 key 的方式
+				dataIndex: key,
+				editing:
+					isEditing(record) &&
+					// If `editable` is a function, call it.
+					// If it's a boolean, just use the boolean.
+					(typeof editable === 'function' ? editable(record) : editable),
 				inputType: 'number',
 			}),
 		}
@@ -167,6 +181,7 @@ const VipUpgradeSettingTable = ({
 	return (
 		<Form form={form} component={false}>
 			<Table
+				tableLayout='fixed'
 				loading={loading || isGetVipLevelNameLoading}
 				components={{
 					body: {
