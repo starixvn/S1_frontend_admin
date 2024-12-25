@@ -95,10 +95,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 								},
 						  ]
 						: []),
-					{
-						level: VipLevelsEnum.GoldClub,
-						levelValue: String(find(tableData, { type })?.goldClub),
-					},
+					...(siteId !== SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.GoldClub,
+									levelValue: String(find(tableData, { type })?.goldClub),
+								},
+						  ]
+						: []),
 					{
 						level: VipLevelsEnum.TitaniumClub,
 						levelValue: String(find(tableData, { type })?.titaniumClub),
@@ -131,10 +135,14 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 								},
 						  ]
 						: []),
-					{
-						level: VipLevelsEnum.GoldClub,
-						levelValue: String(goldClub),
-					},
+					...(siteId !== SiteIds.OneTwoBet
+						? [
+								{
+									level: VipLevelsEnum.GoldClub,
+									levelValue: String(goldClub),
+								},
+						  ]
+						: []),
 					{
 						level: VipLevelsEnum.TitaniumClub,
 						levelValue: String(titaniumClub),

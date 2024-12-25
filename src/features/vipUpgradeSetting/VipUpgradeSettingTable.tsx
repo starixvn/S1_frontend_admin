@@ -109,7 +109,7 @@ const VipUpgradeSettingTable = ({
 				dataIndex: 'goldClub',
 				align: 'center' as 'center',
 				width: 140,
-				editable: true,
+				editable: siteId !== SiteIds.OneTwoBet,
 				render: (goldClub: number | null) =>
 					goldClub !== null ? numberFormatter.format(goldClub) : '-',
 			},
