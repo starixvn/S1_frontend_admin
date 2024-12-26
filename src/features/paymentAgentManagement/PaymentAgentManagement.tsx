@@ -9,6 +9,7 @@ import {
 	useLazyGetPaymentAgentUserListQuery,
 	useSetPaymentAgentStatusMutation,
 	useSetPaymentAgentMutation,
+	useSetPaymentAgentUserStatusMutation,
 } from './api'
 import PaymentAgentManagementFilter from './PaymentAgentManagementFilter'
 import PaymentAgentManagementTable from './PaymentAgentManagementTable'
@@ -57,6 +58,11 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 
 	const [setPaymentAgent, { isLoading: isSetPaymentAgentLoading }] =
 		useSetPaymentAgentMutation()
+
+	const [
+		setPaymentAgentUserStatus,
+		{ isLoading: isSetPaymentAgentUserStatusLoading },
+	] = useSetPaymentAgentUserStatusMutation()
 
 	const {
 		data: { data: paymentAgentTypeEnum = [] } = {},
@@ -137,6 +143,26 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 		}
 	}
+	const handleSetUserAgentStatus = async ({
+		status,
+		userId,
+	}: {
+		status: boolean
+		userId: number
+	}) => {
+		try {
+			await setPaymentAgentUserStatus({
+				userId,
+				status: status
+					? PaymentAgentTypeEnum.OutSource
+					: PaymentAgentTypeEnum.Internal,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 
 	const filterLoading =
 		isPaymentAgentTypeEnumLoading || isPaymentAgentStatusEnumLoading
@@ -198,11 +224,12 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			<PaymentAgentUserListModal
 				loading={modalLoading}
 				form={modalForm}
-				editPermission={editPermission}
+				setUserAgentPermission={setUserAgentPermission}
 				paymentAgentUserList={paymentAgentUserList}
 				visible={agentUserModal.visible}
 				onCancel={agentUserModal.onCancel}
 				onModalRowSaved={handleModalRowSaved}
+				onSetUserAgentStatus={handleSetUserAgentStatus}
 			/>
 		</LayoutContent.Main>
 	)

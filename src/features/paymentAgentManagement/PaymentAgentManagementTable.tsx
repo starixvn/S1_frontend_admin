@@ -100,10 +100,7 @@ const PaymentAgentManagementTable = ({
 
 				return isShowStatus ? (
 					<Popconfirm
-						disabled={
-							// * type 狀態在0 時不可打開
-							!editPermission?.canUse
-						}
+						disabled={!editPermission?.canUse}
 						title={t('Label_AreYouSure')}
 						onConfirm={() => onSetAgentStatus({ agentId, status: !status })}
 					>
@@ -199,6 +196,7 @@ const PaymentAgentManagementTable = ({
 		<LayoutContent.Card>
 			<Form form={form} component={false}>
 				<Table
+					tableLayout='fixed'
 					loading={loading}
 					components={{
 						body: {

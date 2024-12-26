@@ -1,31 +1,49 @@
 import { find, isEmpty } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, FormInstance, List, Modal, Space, Table, Typography } from 'antd'
+import {
+	Form,
+	FormInstance,
+	List,
+	Modal,
+	Popconfirm,
+	Space,
+	Switch,
+	Table,
+	Typography,
+} from 'antd'
 import { EditableCellRows } from '../../../components'
 import { LayoutContent } from '../../../app/pages/layout'
 import { IPaymentAgentData, IPaymentAgentUserData } from '../type'
-import { PAYMENT_AGENT_TYPE_LIST } from '../constants'
+import { groupIdMap, PAYMENT_AGENT_TYPE_LIST } from '../constants'
 import { PermissionInterface } from '../../../type'
 
 interface IPaymentAgentUserListModalProps {
 	loading: boolean
 	form: FormInstance
-	editPermission?: PermissionInterface
+	setUserAgentPermission?: PermissionInterface
 	paymentAgentUserList: IPaymentAgentUserData[]
 	visible: boolean
 	onCancel: () => void
 	onModalRowSaved: () => void
+	onSetUserAgentStatus: ({
+		status,
+		userId,
+	}: {
+		status: boolean
+		userId: number
+	}) => void
 }
 
 const PaymentAgentUserListModal = ({
 	loading,
 	form,
-	editPermission,
+	setUserAgentPermission,
 	paymentAgentUserList,
 	visible,
 	onCancel,
 	onModalRowSaved,
+	onSetUserAgentStatus,
 }: IPaymentAgentUserListModalProps) => {
 	console.log(paymentAgentUserList)
 	const { t } = useTranslation()
@@ -75,7 +93,7 @@ const PaymentAgentUserListModal = ({
 					</Space>
 				) : (
 					<Typography.Link
-						disabled={!editPermission?.canUse}
+						disabled={!setUserAgentPermission?.canUse}
 						onClick={() => onEdit(record)}
 					>
 						{t('Label_Edit')}
@@ -86,9 +104,23 @@ const PaymentAgentUserListModal = ({
 		{
 			title: t('Label_Status'),
 			key: 'status',
-			dataIndex: 'status',
 			width: 60,
 			align: 'center' as 'center',
+			render: (record: IPaymentAgentUserData) => {
+				const { status, userId } = record || {}
+				return (
+					<Popconfirm
+						disabled={!setUserAgentPermission?.canUse}
+						title={t('Label_AreYouSure')}
+						onConfirm={() => onSetUserAgentStatus({ userId, status: !status })}
+					>
+						<Switch
+							checked={Boolean(status)}
+							disabled={!setUserAgentPermission?.canUse}
+						/>
+					</Popconfirm>
+				)
+			},
 		},
 		{
 			title: t('Label_Status'),
@@ -121,6 +153,14 @@ const PaymentAgentUserListModal = ({
 			width: 100,
 			align: 'center' as 'center',
 			editable: true,
+			render: (groupIds?: number[]) => {
+				if (!Array.isArray(groupIds) || groupIds.length === 0) {
+					return '-'
+				}
+				// Convert each numeric ID to the matching label; fallback if unrecognized
+				const labels = groupIds.map(id => groupIdMap[id] ?? `ID: ${id}`)
+				return labels.join(', ')
+			},
 		},
 	]
 
@@ -157,6 +197,7 @@ const PaymentAgentUserListModal = ({
 			<LayoutContent.Card>
 				<Form form={form} component={false}>
 					<Table
+						tableLayout='fixed'
 						loading={loading}
 						components={{
 							body: {

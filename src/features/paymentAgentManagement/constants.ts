@@ -13,3 +13,9 @@ export const PAYMENT_AGENT_TYPE_LIST = [
 		displayName: 'Label_OutSource',
 	},
 ]
+
+export const groupIdMap: Record<number, string> = {
+	1: 'Deposit',
+	2: 'Withdrawal',
+	// 3: 'Something else', etc.
+}
