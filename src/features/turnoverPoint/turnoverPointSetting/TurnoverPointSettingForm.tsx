@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { LayoutContent } from 'app/pages/layout'
 import dayjs from 'dayjs'
 import { get } from 'lodash'
-import { DATE_RANGES, RANGE_PICKER_RANGES } from 'app/constants/ranges'
+import { DATE_RANGES, RANGE_PICKER_PRESETS } from 'app/constants/ranges'
 import { IGetTurnoverPointSettingData } from '../type'
 
 interface TurnoverPointSettingFormInterface {
@@ -102,7 +102,7 @@ const TurnoverPointSettingForm: FC<TurnoverPointSettingFormInterface> = ({
 						>
 							<RangePicker
 								disabled={!status}
-								ranges={RANGE_PICKER_RANGES([
+								presets={RANGE_PICKER_PRESETS([
 									'Today',
 									'Yesterday',
 									'Last Week',

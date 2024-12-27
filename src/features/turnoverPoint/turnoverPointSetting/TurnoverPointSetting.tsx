@@ -69,7 +69,7 @@ const TurnoverPointSetting: FC<{
 			)
 
 			if (promotionStatus) {
-				if (promotionStartTime === 'Invalid date') {
+				if (promotionStartTime === 'Invalid Date') {
 					message.error(t('Label_DateRangeRequire'))
 					hasError = true
 					return
@@ -94,9 +94,9 @@ const TurnoverPointSetting: FC<{
 				promotionStatus: Number(promotionStatus),
 				promotionPointRate,
 				promotionStartTime:
-					promotionStartTime !== 'Invalid date' ? promotionStartTime : null,
+					promotionStartTime !== 'Invalid Date' ? promotionStartTime : null,
 				promotionEndTime:
-					promotionEndTime !== 'Invalid date' ? promotionEndTime : null,
+					promotionEndTime !== 'Invalid Date' ? promotionEndTime : null,
 				vipLevel: Number(vipLevel),
 			})
 		})
