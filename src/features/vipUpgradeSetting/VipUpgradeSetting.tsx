@@ -17,6 +17,7 @@ import {
 	ISetUpgradeSettingArgs,
 	IUpgradeSettingTableData,
 	VipLevelsEnum,
+	VipLevelsTypeEnum,
 } from 'features/vipUpgradeSetting/type'
 import { vipUpgradeSettingConverter } from 'features/vipUpgradeSetting/utils'
 import VipUpgradeSettingTable from 'features/vipUpgradeSetting/VipUpgradeSettingTable'
@@ -95,7 +96,10 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 								},
 						  ]
 						: []),
-					...(siteId !== SiteIds.OneTwoBet
+					// 12 bet 只有在 Tier Upgrade Bonus 的 Vermilion Bird 欄位需要編輯
+					...(siteId !== SiteIds.OneTwoBet ||
+					(siteId === SiteIds.OneTwoBet &&
+						type === VipLevelsTypeEnum.levelTypeTwo)
 						? [
 								{
 									level: VipLevelsEnum.GoldClub,
@@ -135,7 +139,10 @@ const VipUpgradeSetting = ({ pageTitle }: { pageTitle?: string }) => {
 								},
 						  ]
 						: []),
-					...(siteId !== SiteIds.OneTwoBet
+					// 12 bet 只有在 Tier Upgrade Bonus 的 Vermilion Bird 欄位需要編輯
+					...(siteId !== SiteIds.OneTwoBet ||
+					(siteId === SiteIds.OneTwoBet &&
+						type === VipLevelsTypeEnum.levelTypeTwo)
 						? [
 								{
 									level: VipLevelsEnum.GoldClub,
