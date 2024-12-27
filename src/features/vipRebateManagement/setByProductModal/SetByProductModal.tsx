@@ -1,12 +1,12 @@
 import { FC, useEffect, useRef, useState } from 'react'
-import { findIndex, assign, cloneDeep, isNumber } from 'lodash'
+import { findIndex, assign, cloneDeep, isNumber, find } from 'lodash'
 import { Form, Modal, Table } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { percentageFormatter } from 'common/utils/format'
-import { SiteIds } from 'app/constants/siteIds'
 import { GameRebateEditData, IGameRebateTableData } from '../type'
 import { SetByProductCell } from './SetByProductCell'
 import { editCellValuesToEditList } from '../utils/converters'
+import { useGetVipLevelNameQuery } from '../../vipUpgradeSetting/api'
 
 interface ISetByProductModal {
 	loading: boolean
@@ -34,6 +34,11 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 	// 	[gameTypeTableData]
 	// )
 
+	const {
+		data: { data: vipLevelNameList = [] } = {},
+		isLoading: isGetVipLevelNameLoading,
+	} = useGetVipLevelNameQuery({ siteId })
+
 	// useRef store editList
 	const editList = useRef<GameRebateEditData[]>([])
 
@@ -46,24 +51,6 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 	}
 
 	const columns = () => {
-		const vipClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
-				}[siteId] ?? ''
-			)
-		}
-		const vintageClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
-				}[siteId] ?? ''
-			)
-		}
 		return [
 			{
 				title: t('Label_Game'),
@@ -73,7 +60,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 				align: 'center' as 'center',
 			},
 			{
-				title: vintageClubTitle(),
+				title: find(vipLevelNameList, { level: 1 })?.levelName,
 				key: 'vintageClub',
 				dataIndex: 'vintageClub',
 				width: 100,
@@ -83,7 +70,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 					columnRender(vintageClub),
 			},
 			{
-				title: t('GameLevel.Label_SilverClub'),
+				title: find(vipLevelNameList, { level: 2 })?.levelName,
 				key: 'silverClub',
 				dataIndex: 'silverClub',
 				width: 100,
@@ -93,7 +80,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 					columnRender(silverClub),
 			},
 			{
-				title: t('GameLevel.Label_GoldClub'),
+				title: find(vipLevelNameList, { level: 3 })?.levelName,
 				key: 'goldClub',
 				dataIndex: 'goldClub',
 				width: 100,
@@ -102,7 +89,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 				render: (goldClub: number | null | string) => columnRender(goldClub),
 			},
 			{
-				title: t('GameLevel.Label_TitaniumClub'),
+				title: find(vipLevelNameList, { level: 4 })?.levelName,
 				key: 'titaniumClub',
 				dataIndex: 'titaniumClub',
 				width: 100,
@@ -112,7 +99,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 					columnRender(titaniumClub),
 			},
 			{
-				title: t('GameLevel.Label_DiamondClub'),
+				title: find(vipLevelNameList, { level: 5 })?.levelName,
 				key: 'diamondClub',
 				dataIndex: 'diamondClub',
 				width: 100,
@@ -122,7 +109,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 					columnRender(diamondClub),
 			},
 			{
-				title: vipClubTitle(),
+				title: find(vipLevelNameList, { level: 6 })?.levelName,
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				width: 100,
@@ -196,7 +183,7 @@ const SetByProductModal: FC<ISetByProductModal> = ({
 							cell: SetByProductCell,
 						},
 					}}
-					loading={loading}
+					loading={loading || isGetVipLevelNameLoading}
 					columns={mergedColumns}
 					dataSource={dataSource}
 					pagination={false}

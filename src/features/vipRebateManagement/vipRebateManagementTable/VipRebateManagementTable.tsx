@@ -1,3 +1,4 @@
+import { find } from 'lodash'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, FormInstance, Space, Table, Tabs, Typography } from 'antd'
@@ -6,9 +7,9 @@ import { Currency } from 'common/enum/type'
 import { PermissionInterface } from 'type'
 import { numberFormatter, percentageFormatter } from 'common/utils/format'
 import { BsFillPencilFill } from 'react-icons/bs'
-import { SiteIds } from 'app/constants/siteIds'
 import { IRebateTableData } from '../type'
 import { EditableTableCell } from './EditableTableCell'
+import { useGetVipLevelNameQuery } from '../../vipUpgradeSetting/api'
 
 interface VipRebateTableInterface {
 	loading: boolean
@@ -42,6 +43,11 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 	const { t } = useTranslation()
 	const { TabPane } = Tabs
 
+	const {
+		data: { data: vipLevelNameList = [] } = {},
+		isLoading: isGetVipLevelNameLoading,
+	} = useGetVipLevelNameQuery({ siteId })
+
 	const onEdit = (record: IRebateTableData) => {
 		form.setFieldsValue({ ...record })
 		setEditingKey(record.categoryId)
@@ -50,25 +56,6 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 		record.categoryId === editingKey
 
 	const columns = () => {
-		const vipClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_NovaClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_Goal123Club'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BwingVVIP'),
-				}[siteId] ?? 'Highest Club'
-			)
-		}
-		const vintageClubTitle = () => {
-			return (
-				{
-					[SiteIds.Nova88 as number]: t('GameLevel.Label_VintageClub'),
-					[SiteIds.Goal123 as number]: t('GameLevel.Label_BronzeClub'),
-					[SiteIds.Bwing as number]: t('GameLevel.Label_BronzeClub'),
-				}[siteId] ?? t('GameLevel.Label_VintageClub') // * 默認值
-			)
-		}
-
 		return [
 			{
 				title: t('Label_Action'),
@@ -105,7 +92,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				align: 'center' as 'center',
 			},
 			{
-				title: vintageClubTitle(),
+				title: find(vipLevelNameList, { level: 1 })?.levelName,
 				key: 'vintageClub',
 				dataIndex: 'vintageClub',
 				width: 120,
@@ -116,7 +103,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: t('GameLevel.Label_SilverClub'),
+				title: find(vipLevelNameList, { level: 2 })?.levelName,
 				key: 'silverClub',
 				dataIndex: 'silverClub',
 				width: 120,
@@ -127,7 +114,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: t('GameLevel.Label_GoldClub'),
+				title: find(vipLevelNameList, { level: 3 })?.levelName,
 				key: 'goldClub',
 				dataIndex: 'goldClub',
 				width: 120,
@@ -138,7 +125,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: t('GameLevel.Label_TitaniumClub'),
+				title: find(vipLevelNameList, { level: 4 })?.levelName,
 				key: 'titaniumClub',
 				dataIndex: 'titaniumClub',
 				width: 120,
@@ -151,7 +138,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: t('GameLevel.Label_DiamondClub'),
+				title: find(vipLevelNameList, { level: 5 })?.levelName,
 				key: 'diamondClub',
 				dataIndex: 'diamondClub',
 				width: 120,
@@ -162,7 +149,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 				},
 			},
 			{
-				title: vipClubTitle(),
+				title: find(vipLevelNameList, { level: 6 })?.levelName,
 				key: 'novaClub',
 				dataIndex: 'novaClub',
 				width: 120,
@@ -245,7 +232,7 @@ const VipRebateManagementTable: FC<VipRebateTableInterface> = ({
 										cell: EditableTableCell,
 									},
 								}}
-								loading={loading}
+								loading={loading || isGetVipLevelNameLoading}
 								columns={mergedColumns}
 								dataSource={rebateTableData ?? []}
 							/>
