@@ -249,6 +249,11 @@ const paths = {
 					paymentAgentManagement: {
 						root: 'finance/paymentAgentManagement',
 						functionId: 164,
+						sub: {
+							AgentNameUserList: {
+								root: 'finance/paymentAgentManagement/AgentNameUserList',
+							},
+						},
 					},
 				},
 			},

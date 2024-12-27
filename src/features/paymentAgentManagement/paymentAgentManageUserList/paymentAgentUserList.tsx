@@ -1,69 +1,38 @@
-import { find, isEmpty } from 'lodash'
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useState } from 'react'
 import {
 	Form,
-	FormInstance,
-	List,
-	Modal,
+	message,
 	Popconfirm,
 	Space,
 	Switch,
 	Table,
 	Typography,
 } from 'antd'
-import { EditableCellRows } from '../../../components'
+import { isEmpty } from 'lodash'
+import { useTranslation } from 'react-i18next'
+
+import { useAuth, useQueryParams } from '../../../common/hooks'
 import { LayoutContent } from '../../../app/pages/layout'
-import { IPaymentAgentData, IPaymentAgentUserData } from '../type'
-import { groupIdMap, PAYMENT_AGENT_TYPE_LIST } from '../constants'
-import { PermissionInterface } from '../../../type'
+import { EditableCellRows } from '../../../components'
+import {
+	useGetPaymentAgentUserListQuery,
+	useSetPaymentAgentUserMutation,
+	useSetPaymentAgentUserStatusMutation,
+} from '../api'
+import { groupIdMap, PaymentAgentTypeEnum } from '../constants'
+import { IModalForm, IPaymentAgentUserData } from '../type'
 
-interface IPaymentAgentUserListModalProps {
-	loading: boolean
-	form: FormInstance
-	setUserAgentPermission?: PermissionInterface
-	paymentAgentUserList: IPaymentAgentUserData[]
-	visible: boolean
-	onCancel: () => void
-	onModalRowSaved: () => void
-	onSetUserAgentStatus: ({
-		status,
-		userId,
-	}: {
-		status: boolean
-		userId: number
-	}) => void
-}
-
-const PaymentAgentUserListModal = ({
-	loading,
-	form,
-	setUserAgentPermission,
-	paymentAgentUserList,
-	visible,
-	onCancel,
-	onModalRowSaved,
-	onSetUserAgentStatus,
-}: IPaymentAgentUserListModalProps) => {
-	console.log(paymentAgentUserList)
+const PaymentAgentUserList = () => {
 	const { t } = useTranslation()
+	const { actionPermissions: { setUserAgentPermission } = {} } = useAuth()
+	const [form] = Form.useForm<IModalForm>()
+	const [queryParams] = useQueryParams()
 
-	const [modalAgentUserListState, setModalAgentUserListState] = useState<
-		IPaymentAgentUserData[]
-	>([])
 	const [editingModalKey, setEditingModalKey] = useState<number | undefined>(
 		undefined
 	)
 
-	useEffect(() => {
-		if (!loading) {
-			setModalAgentUserListState(paymentAgentUserList)
-		}
-	}, [loading])
-
-	const onClosed = () => {
-		setModalAgentUserListState([])
-	}
+	const { agentId = 0 } = queryParams
 
 	const onEdit = (record: IPaymentAgentUserData) => {
 		form.setFieldsValue({ ...record })
@@ -72,6 +41,60 @@ const PaymentAgentUserListModal = ({
 
 	const isEditing = (record: IPaymentAgentUserData) =>
 		record.userId === editingModalKey
+
+	const {
+		data: { data: paymentAgentUserList = [] } = {},
+		isFetching: isPaymentAgentUserListFetching,
+	} = useGetPaymentAgentUserListQuery({ agentId })
+
+	const [setPaymentAgentUser, { isLoading: isSetPaymentAgentUserLoading }] =
+		useSetPaymentAgentUserMutation()
+
+	const [
+		setPaymentAgentUserStatus,
+		{ isLoading: isSetPaymentAgentUserStatusLoading },
+	] = useSetPaymentAgentUserStatusMutation()
+
+	const handleUserListRowSaved = async () => {
+		const { userId, userName, password, currencyIds, siteIds, groupIds } =
+			form.getFieldsValue(true)
+		try {
+			await setPaymentAgentUser({
+				userId,
+				agentId,
+				userName,
+				password,
+				siteIds,
+				currencyIds,
+				groupIds,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
+
+	const handleSetUserAgentStatus = async ({
+		status,
+		userId,
+	}: {
+		status: boolean
+		userId: number
+	}) => {
+		try {
+			await setPaymentAgentUserStatus({
+				userId,
+				status: status
+					? PaymentAgentTypeEnum.OutSource
+					: PaymentAgentTypeEnum.Internal,
+			})
+		} catch (error) {
+			message.error(
+				(error as Error)?.message || t('System.Label_NotExpectedServerError')
+			)
+		}
+	}
 
 	const columns = [
 		{
@@ -83,7 +106,7 @@ const PaymentAgentUserListModal = ({
 				const editable = isEditing(record)
 				return editable ? (
 					<Space size='middle'>
-						<Typography.Link onClick={onModalRowSaved}>
+						<Typography.Link onClick={handleUserListRowSaved}>
 							{t('Label_Save')}
 						</Typography.Link>
 
@@ -112,7 +135,9 @@ const PaymentAgentUserListModal = ({
 					<Popconfirm
 						disabled={!setUserAgentPermission?.canUse}
 						title={t('Label_AreYouSure')}
-						onConfirm={() => onSetUserAgentStatus({ userId, status: !status })}
+						onConfirm={() =>
+							handleSetUserAgentStatus({ userId, status: !status })
+						}
 					>
 						<Switch
 							checked={Boolean(status)}
@@ -180,38 +205,29 @@ const PaymentAgentUserListModal = ({
 		}
 	})
 
+	const loading =
+		isPaymentAgentUserListFetching ||
+		isSetPaymentAgentUserLoading ||
+		isSetPaymentAgentUserStatusLoading
+
 	return (
-		<Modal
-			width='60%'
-			open={visible}
-			onCancel={onCancel}
-			footer={false}
-			title={
-				<div style={{ textAlign: 'center' }}>
-					{t('Label_AgentNameUserList')}
-				</div>
-			}
-			afterClose={onClosed}
-			destroyOnClose
-		>
-			<LayoutContent.Card>
-				<Form form={form} component={false}>
-					<Table
-						tableLayout='fixed'
-						loading={loading}
-						components={{
-							body: {
-								cell: EditableCellRows,
-							},
-						}}
-						pagination={false}
-						dataSource={modalAgentUserListState}
-						columns={mergeColumns}
-					/>
-				</Form>
-			</LayoutContent.Card>
-		</Modal>
+		<LayoutContent.Card>
+			<Form form={form} component={false}>
+				<Table
+					tableLayout='fixed'
+					loading={loading}
+					components={{
+						body: {
+							cell: EditableCellRows,
+						},
+					}}
+					pagination={false}
+					dataSource={paymentAgentUserList}
+					columns={mergeColumns}
+				/>
+			</Form>
+		</LayoutContent.Card>
 	)
 }
 
-export default PaymentAgentUserListModal
+export default PaymentAgentUserList

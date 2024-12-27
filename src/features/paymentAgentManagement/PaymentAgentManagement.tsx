@@ -6,42 +6,21 @@ import { LayoutContent } from 'app/pages/layout'
 import { useTranslation } from 'react-i18next'
 import {
 	useLazyGetPaymentAgentListQuery,
-	useLazyGetPaymentAgentUserListQuery,
 	useSetPaymentAgentStatusMutation,
 	useSetPaymentAgentMutation,
-	useSetPaymentAgentUserStatusMutation,
 } from './api'
 import PaymentAgentManagementFilter from './PaymentAgentManagementFilter'
 import PaymentAgentManagementTable from './PaymentAgentManagementTable'
-import { useAuth, useModal, useQueryParams } from '../../common/hooks'
-import {
-	IFilterForm,
-	IEditForm,
-	IModalForm,
-	IPaymentAgentUserData,
-	IPaymentAgentUserResponse,
-} from './type'
-import PaymentAgentUserListModal from './Modal/PaymentAgentUserListModal'
+import { useAuth, useQueryParams } from '../../common/hooks'
+import { IFilterForm, IEditForm } from './type'
 import { PaymentAgentTypeEnum } from './constants'
 
 const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const { t } = useTranslation()
 	const [filterForm] = Form.useForm<IFilterForm>()
 	const [editForm] = Form.useForm<IEditForm>()
-	const [modalForm] = Form.useForm<IModalForm>()
 	const [queryParams, setQueryParams] = useQueryParams()
-	const { actionPermissions: { editPermission, setUserAgentPermission } = {} } =
-		useAuth()
-
-	const agentUserModal = useModal()
-
-	const [
-		getPaymentAgentUserList,
-		{
-			data: { data: paymentAgentUserList = [] } = {},
-			isFetching: isGetPaymentAgentUserListFetching,
-		},
-	] = useLazyGetPaymentAgentUserListQuery()
+	const { actionPermissions: { editPermission } = {} } = useAuth()
 
 	const [editingKey, setEditingKey] = useState<number | undefined>(undefined)
 
@@ -59,11 +38,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 	const [setPaymentAgent, { isLoading: isSetPaymentAgentLoading }] =
 		useSetPaymentAgentMutation()
 
-	const [
-		setPaymentAgentUserStatus,
-		{ isLoading: isSetPaymentAgentUserStatusLoading },
-	] = useSetPaymentAgentUserStatusMutation()
-
 	const {
 		data: { data: paymentAgentTypeEnum = [] } = {},
 		isLoading: isPaymentAgentTypeEnumLoading,
@@ -73,17 +47,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		data: { data: paymentAgentStatusEnum = [] } = {},
 		isLoading: isPaymentAgentStatusEnumLoading,
 	} = useGetEnumTypeQuery({ enumName: 'PaymentAgentStatusEnum' })
-
-	const handleAgentUser = async (agentId: number) => {
-		agentUserModal.onOpen()
-		try {
-			await getPaymentAgentUserList({ agentId }).unwrap()
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
-	}
 
 	const handleSearch = async () => {
 		const { types, status } = filterForm.getFieldsValue()
@@ -122,7 +85,7 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 		}
 	}
-	const handleModalRowSaved = async () => {}
+
 	const handleSetAgentStatus = async ({
 		agentId,
 		status,
@@ -143,27 +106,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 			)
 		}
 	}
-	const handleSetUserAgentStatus = async ({
-		status,
-		userId,
-	}: {
-		status: boolean
-		userId: number
-	}) => {
-		try {
-			await setPaymentAgentUserStatus({
-				userId,
-				status: status
-					? PaymentAgentTypeEnum.OutSource
-					: PaymentAgentTypeEnum.Internal,
-			})
-		} catch (error) {
-			message.error(
-				(error as Error)?.message || t('System.Label_NotExpectedServerError')
-			)
-		}
-	}
-
 	const filterLoading =
 		isPaymentAgentTypeEnumLoading || isPaymentAgentStatusEnumLoading
 
@@ -171,8 +113,6 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 		isGetPaymentAgentListFetching ||
 		isSetPaymentAgentStatusLoading ||
 		isSetPaymentAgentLoading
-
-	const modalLoading = isGetPaymentAgentUserListFetching
 
 	useEffect(() => {
 		const init = () => {
@@ -216,21 +156,9 @@ const PaymentAgentManagement = ({ pageTitle }: { pageTitle?: string }) => {
 					paymentAgentList={paymentAgentList}
 					setEditingKey={setEditingKey}
 					onRowSaved={handleRowSaved}
-					onAgentUser={handleAgentUser}
 					onSetAgentStatus={handleSetAgentStatus}
 				/>
 			)}
-
-			<PaymentAgentUserListModal
-				loading={modalLoading}
-				form={modalForm}
-				setUserAgentPermission={setUserAgentPermission}
-				paymentAgentUserList={paymentAgentUserList}
-				visible={agentUserModal.visible}
-				onCancel={agentUserModal.onCancel}
-				onModalRowSaved={handleModalRowSaved}
-				onSetUserAgentStatus={handleSetUserAgentStatus}
-			/>
 		</LayoutContent.Main>
 	)
 }

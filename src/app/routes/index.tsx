@@ -1189,6 +1189,13 @@ const PaymentAgentManagement = lazy(
 		)
 )
 
+const PaymentAgentManagementUserList = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'PaymentAgentManagementUserList' */ 'features/paymentAgentManagement/paymentAgentManageUserList/paymentAgentUserList'
+		)
+)
+
 const routesWithMenu: RouteObject[] = MENU_MAPPING.filter(
 	({ pathMode, element }) => pathMode === 'Internal' || Boolean(element)
 ).map(
@@ -2953,6 +2960,18 @@ const routes: RouteObject[] = [
 						}
 					>
 						<PaymentAgentManagement />
+					</AuthRequire>
+				),
+			},
+			{
+				path: `${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.paymentAgentManagement.sub.AgentNameUserList.root}`,
+				element: (
+					<AuthRequire
+						functionId={
+							paths.finance.sub.setting.sub.paymentAgentManagement.functionId
+						}
+					>
+						<PaymentAgentManagementUserList />
 					</AuthRequire>
 				),
 			},

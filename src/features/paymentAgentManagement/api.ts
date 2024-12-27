@@ -1,7 +1,6 @@
 import type {
 	IGetPaymentAgentListArgs,
 	IGetPaymentAgentUserArgs,
-	IPaymentAgentUserData,
 	IPaymentAgentUserResponse,
 	ISetPaymentAgentArgs,
 	ISetPaymentAgentStatusArgs,
@@ -90,6 +89,6 @@ export const {
 	useSetPaymentAgentMutation,
 	useSetPaymentAgentUserMutation,
 	useSetPaymentAgentUserStatusMutation,
-	useLazyGetPaymentAgentUserListQuery,
+	useGetPaymentAgentUserListQuery,
 	useGetPaymentAgentUserQuery,
 } = paymentAgentApi

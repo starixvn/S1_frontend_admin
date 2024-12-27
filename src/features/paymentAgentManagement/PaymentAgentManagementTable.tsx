@@ -15,6 +15,8 @@ import { EditableCellRows } from '../../components'
 import { LayoutContent } from '../../app/pages/layout'
 import { PAYMENT_AGENT_TYPE_LIST, PaymentAgentTypeEnum } from './constants'
 import { PermissionInterface } from '../../type'
+import { NEW_SITE_PREFIX_URL } from '../../app/config'
+import paths from '../../app/constants/paths'
 
 interface IPaymentAgentManagementTableProps {
 	loading: boolean
@@ -24,7 +26,6 @@ interface IPaymentAgentManagementTableProps {
 	paymentAgentList: IPaymentAgentData[]
 	setEditingKey: Dispatch<SetStateAction<number | undefined>>
 	onRowSaved: () => void
-	onAgentUser: (agentId: number) => void
 	onSetAgentStatus: ({
 		agentId,
 		status,
@@ -42,7 +43,6 @@ const PaymentAgentManagementTable = ({
 	paymentAgentList,
 	setEditingKey,
 	onRowSaved,
-	onAgentUser,
 	onSetAgentStatus,
 }: IPaymentAgentManagementTableProps) => {
 	const { t } = useTranslation()
@@ -164,7 +164,10 @@ const PaymentAgentManagementTable = ({
 				const { agentId, type } = record || {}
 				const isShowUserList = type === PaymentAgentTypeEnum.OutSource
 				return isShowUserList ? (
-					<Typography.Link onClick={() => onAgentUser(agentId)}>
+					<Typography.Link
+						href={`/${NEW_SITE_PREFIX_URL}/${paths.finance.sub.setting.sub.paymentAgentManagement.sub.AgentNameUserList.root}?agentId=${agentId}`}
+						target='_blank'
+					>
 						{agentId}
 					</Typography.Link>
 				) : (
