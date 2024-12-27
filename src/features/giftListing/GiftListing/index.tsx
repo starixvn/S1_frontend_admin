@@ -102,6 +102,7 @@ const GiftListing: FC<{
 
 		try {
 			await updateGiftMutation({
+				siteId,
 				giftId,
 				categoryId,
 				tags: uniq(tags.map(tag => tag.tagId)),
